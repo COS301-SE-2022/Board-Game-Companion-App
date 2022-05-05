@@ -1,6 +1,9 @@
 
 # BoardGameCompanionApp
 
+[![Node.js CI](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
+
+
 This project was generated using [Nx](https://nx.dev).
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
