@@ -1,0 +1,27 @@
+{
+  "sourceRoot": "apps/board-game-companion-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/board-game-companion-app-e2e/cypress.json",
+        "devServerTarget": "board-game-companion-app:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "board-game-companion-app:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/board-game-companion-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["board-game-companion-app"]
+}
