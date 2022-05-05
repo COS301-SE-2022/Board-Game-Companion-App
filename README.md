@@ -1,7 +1,7 @@
 
 # BoardGameCompanionApp
 
-[![Tests](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
+[![Tests](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
 
 
 This project was generated using [Nx](https://nx.dev).
