@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "board-game-companion-app": "apps/board-game-companion-app",
+    "board-game-companion-app-e2e": "apps/board-game-companion-app-e2e"
+  }
+}
