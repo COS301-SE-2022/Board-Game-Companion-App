@@ -73,3 +73,10 @@ I am a third year Computer science student at the university of Pretoria
 - <a href="https://github.com/Joseph-Makgopa">Github Profile</a> <br/>
 - <a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
 
+<h1><b>Nasiphi Mjobo<b></h1>
+ ![ME](https://user-images.githubusercontent.com/93937047/167925966-3c9f3fc5-688d-47a1-93e6-26d261f41bce.jpeg)
+ 
+  <h4>Description</h4>
+  I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
+  An individual eager to learning new skills, while remaining humble and teachable. A committed and dedicated individual with a positive outlook on life. I aim to embark on a long-term journey that teaches me skills and knowledge in the world of technology, and the world itself. 
+ A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. 
