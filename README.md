@@ -43,9 +43,9 @@ The following are the presentation videos for the respectives demonstrations.
 
 <h1><b>Matome Joseph Makgopa</b></h1>
 
-<h2>Description</h2>
+<h4>Description</h4>
 I am a third year Computer science student at the university of Pretoria
 <p></p>
-<a href="https://github.com/Joseph-Makgopa">Github Profile</a>
+<a href="https://github.com/Joseph-Makgopa">Github Profile</a> <br/>
 <a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
 
