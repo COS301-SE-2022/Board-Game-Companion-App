@@ -1,7 +1,7 @@
 # Frontend Forerunners
 
 <p align="center">
-  <a href="https://getbootstrap.com/">
+  <a href="#">
     <img src="apps/client/src/assets/images/logo.png?raw=true" alt="Bootstrap logo" width="200" height="200">
   </a>
 </p>
@@ -13,11 +13,18 @@ The board game companion app allows its users to keep track of their board game 
 </p>
 
 ## Contents
-
+- [Status](#status)
+- [Technologies](#technology-stack)
 - [Presentation Video](#demo-videos)
-- [Software Requirements Specification](#software-requirements-specification)
+- [Documentation](#documentation)
 - [Project Management Tool](#project-management)
 - [Profile Descriptions](#profiles)
+
+
+## Status
+
+
+## Technologies
 
 
 ## Presentation Video
@@ -31,4 +38,14 @@ The following are the presentation videos for the respectives demonstrations.
 
 ## Project Management Tool
 - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
-## Profile Descriptions
+## Profiles
+- Meet the Frontend Forerunners team:
+
+<h1><b>Matome Joseph Makgopa</b></h1>
+
+<h2>Description</h2>
+I am a third year Computer science student at the university of Pretoria
+<p></p>
+<a href="https://github.com/Joseph-Makgopa">Github Profile</a>
+<a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
+
