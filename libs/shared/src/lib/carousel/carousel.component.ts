@@ -61,8 +61,8 @@ export class CarouselComponent implements OnInit {
               {
                 for(let i = 0; i<this.listResults.length; i++)
                 {
-                  myContainer.innerHTML +="<span><p>"+name+"</p><br>"
-                  myContainer.innerHTML += "<img src=\""+url+"\"width=\"42\" height=\"42\"></span>";
+                  myContainer.innerHTML +="<div class= \"slide\"><div class=\"BGName\">"+name+"</div>"
+                  myContainer.innerHTML += "<div class=\"BGImage\"><img src=\""+url+"\"width=\"42\" height=\"42\"></div></div>";
                 }
               }
               
