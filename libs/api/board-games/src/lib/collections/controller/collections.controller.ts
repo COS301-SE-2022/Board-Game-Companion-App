@@ -8,8 +8,12 @@ export class CollectionsController {
     constructor(private readonly collectionService:CollectionsService) {
         
     }
-    @Get('getCollections')
+
+    @Get('get-collections')
     getCollectionsForUser(@Query('email') owner:string):collection[]{
         return this.collectionService.getCollectionByUser(owner);
     }
+
+    // Post('create-collection')
+    // createCollection()
 }
