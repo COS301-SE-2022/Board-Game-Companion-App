@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="#">
-    <img src="apps/client/src/assets/images/logo.png?raw=true" alt="Bootstrap logo" width="200" height="200">
+    <img src="apps/client/src/assets/images/logo.png?raw=true" alt="logo" width="200" height="200">
   </a>
 </p>
 
@@ -25,7 +25,7 @@ The board game companion app allows its users to keep track of their board game 
 
 
 ## Technologies
-
+<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> Angular <br/>
 
 ## Presentation Video
 The following are the presentation videos for the respectives demonstrations.
