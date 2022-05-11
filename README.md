@@ -22,6 +22,9 @@ The board game companion app allows its users to keep track of their board game 
 
 
 ## Status
+![issues](https://img.shields.io/github/issues/COS301-SE-2022/Board-Game-Companion-App?cacheSeconds=3600)
+[![builds](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml)
+[![tests](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
 
 
 ## Technologies
