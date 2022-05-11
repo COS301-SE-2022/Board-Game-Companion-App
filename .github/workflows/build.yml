@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build client
-    - run: npm run build api
+    - run: npm install yarn -g
+    - run: yarn install
+    - run: yarn run build client
+    - run: yarn run build api
