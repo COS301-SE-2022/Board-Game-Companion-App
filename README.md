@@ -47,7 +47,7 @@ The board game companion app allows its users to keep track of their board game 
 
 ### Hosting
 
-<img src="apps/client/src/assets/images/heroku-log.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
+<img src="apps/client/src/assets/images/heroku-logo.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
 
 
 
