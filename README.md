@@ -30,5 +30,5 @@ The following are the presentation videos for the respectives demonstrations.
 - Requirements specification for board-game-companion app: `requirements specification link`
 
 ## Project Management Tool
-- Project management: [Github Projects Board]("https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1")
+- Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
 ## Profile Descriptions
