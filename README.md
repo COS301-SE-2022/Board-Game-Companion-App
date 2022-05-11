@@ -25,10 +25,10 @@ The board game companion app allows its users to keep track of their board game 
 
 
 ## Technologies
-<img style="margin-bottom:15px" src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/>
-<img style="margin-bottom:15px" src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/>
-<img style="margin-bottom:15px" src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/>
-<img style="margin-bottom:15px" src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100"> 
+<img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/> <br/>
+<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
+<img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
+<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100"> 
 
 
 ## Presentation Video
