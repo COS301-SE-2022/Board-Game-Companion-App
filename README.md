@@ -75,7 +75,7 @@ I am a third year Computer science student at the university of Pretoria
 
 <h1><b>Nasiphi Mjobo<b></h1>
 
- ![ME](https://user-images.githubusercontent.com/93937047/167926543-6de55d8d-bacb-41f7-baeb-58e21a9eea20.jpeg)
+ ![ME](https://user-images.githubusercontent.com/93937047/167926543-6de55d8d-bacb-41f7-baeb-58e21a9eea20.jpeg | width=30)
 
   <h4>Description</h4>
   I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
