@@ -25,7 +25,10 @@ The board game companion app allows its users to keep track of their board game 
 
 
 ## Technologies
-<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> Angular <br/>
+<img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/>
+<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/>
+<img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> 
+
 
 ## Presentation Video
 The following are the presentation videos for the respectives demonstrations.
