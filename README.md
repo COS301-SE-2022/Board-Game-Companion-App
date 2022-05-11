@@ -10,7 +10,7 @@
 
 ## Contents
 
-- [Presentation Video](#Demo videos)
-- [Software Requirements Specification](#Software requirements specification)
-- [Project Management Tool](#Project Management)
-- [Profile Descriptions](#Profiles)
+- [Presentation Video](#demo videos)
+- [Software Requirements Specification](#software requirements specification)
+- [Project Management Tool](#project Management)
+- [Profile Descriptions](#profiles)
