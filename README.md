@@ -6,8 +6,11 @@
   </a>
 </p>
 
-<h3 align="center">Frontend Forerunners</h3>
-
+<h3 align="center">Board-Game-Companion</h3>
+The board game companion app allows its users to keep track of their board game collections, gather play statistics and provides an opportunity to play against an AI opponent. The application also provides a built-in editor for writing and uploading scripts that are used by the AI opponent.
+<p align="center">
+  
+</p>
 ## Contents
 
 - [Presentation Video](#demo-videos)
