@@ -13,38 +13,73 @@ import { HttpClient } from '@angular/common/http';
 export class CarouselComponent implements OnInit {
   constructor(private bggSearch:BggSearchService) {}
 
-  listResults: SearchResult = new SearchResult("","");
+  
+
+
+
+
+  listResults: SearchResult[] = [new SearchResult("","")];
 
   ngOnInit(): void {
-    
-    this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id=43490")
+    this.listResults.pop;
+    this.bggSearch.getComments("https://api.geekdo.com/xmlapi2/search?query=a&type=boardgame")
     .subscribe(
 
-      
       data=>
       {
-        
-        let result:string = data.toString();
-        let name:string = "";
-        let url:string = "";
 
-        let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
-      
-        parseXml.querySelectorAll("name").forEach(n=>{
-          name = n.getAttribute("value") || "";
-      });
-        parseXml.querySelectorAll("image").forEach(imgUrl=>{
-            url = imgUrl.innerHTML;
-        });
-        this.listResults = new SearchResult(name, url);
-        
-        
         const myContainer = document.getElementById('setOne') as HTMLElement ;
-        if(myContainer != null)
+        let id:string[] = [];
+      
+        //get the id of the elements
+        let listOfBoardGames = new window.DOMParser().parseFromString(data.toString(), "text/xml");
+        listOfBoardGames.querySelectorAll("item").forEach(i=>{
+          id.push(i.getAttribute("id") || "");
+          
+      });
+      
+        //list first 5 results
+        for(let i = 0; i<5; i++)
         {
-          myContainer.innerHTML +="<p>"+name+"</p><br>"
-          myContainer.innerHTML += "<img src=\""+url+"\"width=\"42\" height=\"42\">";
+          //search for that element's data
+          this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+id[i])
+          .subscribe(
+            data=>{
+              let result:string = data.toString();
+              let name:string = "";
+              let url:string = "";
+
+              let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+            
+              parseXml.querySelectorAll("name").forEach(n=>{
+                name = n.getAttribute("value") || "";
+            });
+              parseXml.querySelectorAll("image").forEach(imgUrl=>{
+                  url = imgUrl.innerHTML;
+              });
+              if(myContainer != null)
+              {
+                for(let i = 0; i<this.listResults.length; i++)
+                {
+                  myContainer.innerHTML +="<span><p>"+name+"</p><br>"
+                  myContainer.innerHTML += "<img src=\""+url+"\"width=\"42\" height=\"42\"></span>";
+                }
+              }
+              
+              
+              
+          }
+          );
         }
+       
+        
+        
+          
+          
+        
+
+
+        
         
         
       }
