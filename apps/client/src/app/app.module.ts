@@ -10,6 +10,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 
 
+
 @NgModule({
   declarations: [AppComponent, NxWelcomeComponent],
   imports: [
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     PagesModule,
     HttpClientModule
+
   ],
   providers: [SharedModule, HttpClient],
   bootstrap: [AppComponent],
