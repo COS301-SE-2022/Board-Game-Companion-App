@@ -28,10 +28,27 @@ The board game companion app allows its users to keep track of their board game 
 
 
 ## Technologies
+
+### Repository Structure
+
 <img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/> <br/>
+
+### Frontend
+
 <img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
+
+### API
+
+<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100">
+
+### Database
+
 <img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100"> 
+
+### Hosting
+
+<img src="apps/client/src/assets/images/heroku-log.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
+
 
 
 ## Presentation Video
