@@ -1,0 +1,31 @@
+#wrapper{
+    width:80%;
+    margin:20px auto;
+}
+
+hr.solid {
+    border-top: 3px solid #bbb;
+}
+
+#topic{
+    text-align:center;
+    margin-top:10px;
+    margin-bottom:5px;
+}
+
+.game-image{
+    overflow-y:hidden; 
+    height:250px;
+}
+
+.game-image>a>img{
+    height:100%;
+}
+
+.board-game{ 
+    transition: all .2s ease-in-out; 
+}
+
+.board-game:hover { 
+    transform: scale(1.025); 
+}
