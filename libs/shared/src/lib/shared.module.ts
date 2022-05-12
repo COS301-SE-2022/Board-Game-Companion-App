@@ -8,7 +8,7 @@ import { SearchResult } from './classes/search-result';
 @NgModule({
   imports: [CommonModule],
   declarations: [CarouselComponent, HeaderComponent],
-  exports: [CarouselComponent, HeaderComponent],
+  exports: [CarouselComponent, HeaderComponent, BggSearchService],
   providers: [BggSearchService],
 })
 export class SharedModule {}

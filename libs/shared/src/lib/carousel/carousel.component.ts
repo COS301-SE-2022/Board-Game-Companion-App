@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
 import { BggSearchService } from '../services/bgg-search.service';
 import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./carousel.component.scss']
   
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnChanges {
   constructor(private bggSearch:BggSearchService) {}
 
   
@@ -21,16 +21,16 @@ export class CarouselComponent implements OnInit {
 
   listResults: SearchResult[] = [new SearchResult("","")];
 
-  ngOnInit(): void {
-    
-    this.listResults.pop;
-    for(let j = 0; j<5 ||j<this.ids.length; j++)
+  ngOnChanges(): void {
+
+    for(let j = 0; j<5 &&j<this.ids.length; j++)
     {
       //if id at j is defined
       if(this.ids[j]!=null)
       {
       this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.ids[j])
           .subscribe(
+            
             data=>{
               let result:string = data.toString();
               let name:string = "";
