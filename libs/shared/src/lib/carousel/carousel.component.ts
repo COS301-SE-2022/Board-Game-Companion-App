@@ -24,9 +24,18 @@ export class CarouselComponent implements OnChanges {
 
   listResults: SearchResult[] = [];
 
-  getDetails(id:string)
+  prev()
+  {
+    //
+  }
+  next()
   {
     
+  }
+
+  getDetails(id:string)
+  {
+
     this.router.navigate(['board-game-details', {my_object: id}] )
 
 
