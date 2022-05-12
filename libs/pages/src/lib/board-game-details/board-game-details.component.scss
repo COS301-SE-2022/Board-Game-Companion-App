@@ -1,0 +1,40 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+.result
+{
+    max-width: 80%;
+    position: relative;
+    margin: auto;
+    display: flex;
+}
+#descr
+{
+    font-family: sans-serif;
+    text-align: center;
+    
+}
+#title
+{
+    font-weight: bold;
+    font-size: x-large;
+    font-family: sans-serif;
+    text-align: center;
+}
+#addGame
+{
+    font-family: sans-serif;
+    text-align: center;
+}
+.buttonDiv
+{
+    
+    display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#DDD;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+    vertical-align:middle;
+    text-align: center;
+    padding:1%;
+    position:relative;
+    left:50%;
+}
