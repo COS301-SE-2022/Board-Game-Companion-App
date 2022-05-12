@@ -1,5 +1,4 @@
-
-
+@import 'apps/client/src/assets/globalstylesheet/global';
 
 .resultSet {
   max-width: 80%;
@@ -8,9 +7,12 @@
   display: flex;
 }
 
-
-
 .BGName {
     float: left;
     overflow: hidden;
+}
+
+#carouselBG{
+  left: 25%;
+  background-color: $Pcolour-3;
 }
