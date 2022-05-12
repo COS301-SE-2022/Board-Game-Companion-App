@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { PagesModule } from '@board-game-companion-app/pages';
 import { SharedModule } from '@board-game-companion-app/shared';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 
 

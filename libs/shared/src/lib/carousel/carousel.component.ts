@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BggSearchService } from '../services/bgg-search.service';
 import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
@@ -15,34 +15,21 @@ export class CarouselComponent implements OnInit {
 
   
 
-
+  @Input()
+  ids!: string[];
 
 
   listResults: SearchResult[] = [new SearchResult("","")];
 
   ngOnInit(): void {
+    
     this.listResults.pop;
-    this.bggSearch.getComments("https://api.geekdo.com/xmlapi2/search?query=a&type=boardgame")
-    .subscribe(
-
-      data=>
+    for(let j = 0; j<5 ||j<this.ids.length; j++)
+    {
+      //if id at j is defined
+      if(this.ids[j]!=null)
       {
-
-        const myContainer = document.getElementById('setOne') as HTMLElement ;
-        let id:string[] = [];
-      
-        //get the id of the elements
-        let listOfBoardGames = new window.DOMParser().parseFromString(data.toString(), "text/xml");
-        listOfBoardGames.querySelectorAll("item").forEach(i=>{
-          id.push(i.getAttribute("id") || "");
-          
-      });
-      
-        //list first 5 results
-        for(let j = 0; j<5; j++)
-        {
-          //search for that element's data
-          this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+id[j])
+      this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.ids[j])
           .subscribe(
             data=>{
               let result:string = data.toString();
@@ -57,6 +44,8 @@ export class CarouselComponent implements OnInit {
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   url = imgUrl.innerHTML;
               });
+
+              const myContainer = document.getElementById('setOne') as HTMLElement ;
               if(myContainer != null)
               {
                 for(let i = 0; i<this.listResults.length; i++)
@@ -73,26 +62,15 @@ export class CarouselComponent implements OnInit {
                   
                 }
               }
-              
-              
-              
+            });
           }
-          );
-        }
-       
+    }
+    
+          
         
         
           
-          
         
-
-
-        
-        
-        
-      }
-      
-    );
     
   }
 }
