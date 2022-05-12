@@ -23,7 +23,7 @@ export class BoardGameDetailsComponent implements OnInit {
       if (localStorage.getItem("collection") === null) {
         //collection is empty
         //create array
-        let collection = [document.getElementById("addGame")?.getAttribute("value")]
+        let collection = [this.id]
 
         localStorage.setItem("collection", JSON.stringify(collection));
 

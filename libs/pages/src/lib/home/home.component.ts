@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
           listOfBoardGames.querySelectorAll("item").forEach(i=>{
             idlist.push(i.getAttribute("id") || "");
           });
-          this.ids = idlist;
+          this.ids = idlist.slice(0,5);
         });
 
       }
