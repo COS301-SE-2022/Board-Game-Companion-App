@@ -93,6 +93,6 @@ I am a third year Computer science student at the university of Pretoria
   
   <h4>Description</h4>
     I am a third year Multimedia student at the University of Pretoria.
-    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and       seek to learn through new challenges. <br />
-  <a href = "https://github.com/MatthewRobinMarsden">Github Profile</a> <br />
-  <a href = "https://www.linkedin.com/in/matthew-marsden-081138210/">LinkedIn Profile</a>
+    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and       seek to learn through new challenges. <p></p>
+  - <a href = "https://github.com/MatthewRobinMarsden">Github Profile</a> <br />
+  - <a href = "https://www.linkedin.com/in/matthew-marsden-081138210/">LinkedIn Profile</a>
