@@ -5,6 +5,6 @@ import { CollectionsService } from './collections/service/collections.service';
 @Module({
   controllers: [CollectionsController],
   providers: [CollectionsService],
-  exports: [CollectionsController,CollectionsService],
+  exports: [],
 })
 export class ApiBoardGamesModule {}
