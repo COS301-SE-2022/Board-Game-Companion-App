@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   constructor() {}
-
+  ids!: string[];
   ngOnInit(): void {
     
-    
+    this.ids = ['11111', '20202', '3030'];
 
   }
 }
