@@ -10,8 +10,8 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
 })
 export class HomeComponent implements OnInit {
   constructor(private bggSearch:BggSearchService) {}
-
   ids: string[] | undefined;
+  
   ngOnInit(): void {
     
     //check if there are existing collections
