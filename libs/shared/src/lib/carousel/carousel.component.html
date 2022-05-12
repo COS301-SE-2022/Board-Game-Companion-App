@@ -1,8 +1,10 @@
 
 <div id="carouselBG" class="carousel slide relative mt-10" data-carousel="static" data-bs-ride="carousel" style = "width: 800px;">
-    <div class="carousel-inner relative w-full overflow-hidden" id = "setOne">
-      <div class = "carousel-item active relative object-center float-left w-full"  style="height:500px;" *ngFor = "let game of listResults">
-        <button type="button" (click)="getDetails(game.getID())"><img class= "block w-full\" [src] =  'game.getimgUrl()'  height = "500px\"></button><div class="carousel-caption hidden md:block absolute text-center"><h3 class="text-7xl">{{game.getName()}}</h3>
+    <div class="carousel-inner relative w-full overflow-hidden">
+      <div class = "carousel-item active relative object-center float-left w-full"  style="height:500px;">
+      </div>
+      <div class = "carousel-item relative object-center float-left w-full"  style="height:500px;" *ngFor = "let game of listResults">
+        <button type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'  height = "500px"></button><div class="carousel-caption hidden md:block absolute text-center"><h3 class="text-7xl">{{game.getName()}}</h3>
       </div>
     </div>
     <button

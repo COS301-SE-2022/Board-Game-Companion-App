@@ -4,6 +4,8 @@ import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import {CommonModule} from '@angular/common';
+
 
 @Component({
   selector: 'board-game-companion-app-carousel',
@@ -18,7 +20,7 @@ export class CarouselComponent implements OnChanges {
 
   @Input()
   ids!: string[];
-  
+
 
   listResults: SearchResult[] = [];
 
@@ -43,6 +45,7 @@ export class CarouselComponent implements OnChanges {
             
             data=>{
               
+              
               let result:string = data.toString();
               let name:string = "";
               let url:string = "";
@@ -56,8 +59,10 @@ export class CarouselComponent implements OnChanges {
                   url = imgUrl.innerHTML;
               });
 
-              
+               
                 this.listResults.push(new SearchResult(name, url,this.ids[j]))
+
+
                   
             });
           }
