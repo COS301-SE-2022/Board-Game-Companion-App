@@ -34,12 +34,13 @@ export class CollectionsService {
 
 
     create(input:collection): string{
-        if(!input.owner || input.owner == ""){
+        if(input.owner === ""){
             return "owner of collection needs to be set";
-        }else if(!input.name || input.name == ""){
+        }else if(input.name === ""){
             return "name of collection needs to be set";
         }else{
             this.data.push(input);
+            return "success";
         }
     }
 
@@ -72,13 +73,13 @@ export class CollectionsService {
         let temp:collection[] = [];
         let result = false;
 
-        if(!owner || !name || name === "" || owner == "")
+        if(name === "" || owner === "")
             return false;
 
         for(let count = 0; count < this.data.length; count++){
             if(this.data[count].owner == owner && this.data[count].name == name){
-                continue;
                 result = true;
+                continue;
             }else
                 temp.push(this.data[count]);
         }

@@ -39,10 +39,10 @@ export class CarouselComponent implements OnInit {
       });
       
         //list first 5 results
-        for(let i = 0; i<5; i++)
+        for(let j = 0; j<5; j++)
         {
           //search for that element's data
-          this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+id[i])
+          this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+id[j])
           .subscribe(
             data=>{
               let result:string = data.toString();
@@ -61,8 +61,16 @@ export class CarouselComponent implements OnInit {
               {
                 for(let i = 0; i<this.listResults.length; i++)
                 {
-                  myContainer.innerHTML +="<div class= \"slide\"><div class=\"BGName\">"+name+"</div>"
-                  myContainer.innerHTML += "<div class=\"BGImage\"><img src=\""+url+"\"width=\"42\" height=\"42\"></div></div>";
+                  if(j == 0)
+                  {
+                    myContainer.innerHTML += "<div class=\"carousel-item active relative object-center float-left w-full\"  style=\"height:500px;\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                  }
+                  else
+                  {
+                    myContainer.innerHTML += "<div class=\"carousel-item relative object-center float-left w-full\"  style=\"height:500px;\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                  }
+                  
+                  
                 }
               }
               
