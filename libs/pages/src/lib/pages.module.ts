@@ -5,9 +5,21 @@ import { BoardGameDetailsComponent } from './board-game-details/board-game-detai
 import { BoardGameSearchComponent } from './board-game-search/board-game-search.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@board-game-companion-app/shared';
+import { RouterModule , Routes} from '@angular/router';
+
+const routes:Routes = [{
+    path:'board-game-details',
+    component:BoardGameDetailsComponent
+  },{
+    path:'board-game-search',
+    component: BoardGameSearchComponent
+  },{
+    path:'home',
+    component:HomeComponent
+  }];
 
 @NgModule({
-  imports: [CommonModule,SharedModule,FormsModule],
+  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes)],
   declarations: [
     HomeComponent,
     BoardGameDetailsComponent,

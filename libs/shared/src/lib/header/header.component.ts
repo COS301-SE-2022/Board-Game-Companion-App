@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'board-game-companion-app-header',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(private readonly router:Router) {}
 
   ngOnInit(): void {}
+
+  moveTo(path:string):void{
+    this.router.navigate(['/' + path]);
+  }
 }

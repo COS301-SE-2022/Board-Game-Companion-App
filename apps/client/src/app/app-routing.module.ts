@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BoardGameDetailsComponent } from '@board-game-companion-app/pages';
 
 const routes: Routes = [
-  { path: 'BoardGameDetails', component: BoardGameDetailsComponent }
+  { 
+    path: '',
+    loadChildren: () => import('@board-game-companion-app/pages').then(m => m.PagesModule)
+  }
 ];
 
 @NgModule({
