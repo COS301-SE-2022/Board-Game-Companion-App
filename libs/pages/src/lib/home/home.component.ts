@@ -15,9 +15,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     
     //check if there are existing collections
-    if (localStorage.getItem("collections") === null) {
+    if (localStorage.getItem("collection") === null) {
       //there arent any collections
-
+      
       //get five random ID's to display as suggestions
       this.bggSearch.getComments("https://api.geekdo.com/xmlapi2/search?query=a&type=boardgame")
       .subscribe(
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
           listOfBoardGames.querySelectorAll("item").forEach(i=>{
             idlist.push(i.getAttribute("id") || "");
           });
-          this.ids = idlist;
+          this.ids = idlist.slice(0,5);
         });
 
       }
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
     else
     {
       //there are
-
+      this.ids =JSON.parse(localStorage.getItem("collection")||"")
     }
 
 
