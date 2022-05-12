@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, Output, SimpleChange ,EventEmitter} from '@angular/core';
 import { BggSearchService } from '../services/bgg-search.service';
 import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
@@ -10,40 +10,28 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./carousel.component.scss']
   
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnChanges {
   constructor(private bggSearch:BggSearchService) {}
-
+  
   
 
-
-
+  @Input()
+  ids!: string[];
+  
 
   listResults: SearchResult[] = [new SearchResult("","")];
 
-  ngOnInit(): void {
-    this.listResults.pop;
-    this.bggSearch.getComments("https://api.geekdo.com/xmlapi2/search?query=a&type=boardgame")
-    .subscribe(
 
-      data=>
+  ngOnChanges(): void {
+
+    for(let j = 0; j<5 &&j<this.ids.length; j++)
+    {
+      //if id at j is defined
+      if(this.ids[j]!=null)
       {
-
-        const myContainer = document.getElementById('setOne') as HTMLElement ;
-        let id:string[] = [];
-      
-        //get the id of the elements
-        let listOfBoardGames = new window.DOMParser().parseFromString(data.toString(), "text/xml");
-        listOfBoardGames.querySelectorAll("item").forEach(i=>{
-          id.push(i.getAttribute("id") || "");
-          
-      });
-      
-        //list first 5 results
-        for(let i = 0; i<5; i++)
-        {
-          //search for that element's data
-          this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+id[i])
+      this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.ids[j])
           .subscribe(
+            
             data=>{
               let result:string = data.toString();
               let name:string = "";
@@ -57,34 +45,35 @@ export class CarouselComponent implements OnInit {
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   url = imgUrl.innerHTML;
               });
+
+              const myContainer = document.getElementById('setOne') as HTMLElement ;
               if(myContainer != null)
               {
                 for(let i = 0; i<this.listResults.length; i++)
                 {
-                  myContainer.innerHTML +="<div class= \"slide\"><div class=\"BGName\">"+name+"</div>"
-                  myContainer.innerHTML += "<div class=\"BGImage\"><img src=\""+url+"\"width=\"42\" height=\"42\"></div></div>";
+                  if(j == 0)
+                  {
+                    myContainer.innerHTML += "<div class=\"carousel-item active relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                  }
+                  else
+                  {
+                    myContainer.innerHTML += "<div class=\"carousel-item relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                  }
+                  
+                  
                 }
               }
-              
-              
-              
+            });
           }
-          );
-        }
-       
+    }
+    
+          
         
         
           
-          
         
-
-
-        
-        
-        
-      }
-      
-    );
     
   }
+
+  
 }
