@@ -1,91 +1,85 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { collection } from '../models/collection';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class CollectionsService {
-    private data:collection[] = [
-        {
-            owner:"Joseph Makgopa",
-            name:"favourite",
-            description:"This is a list of my favourite board games",
-            boardGames: ["Chess","Scrabble"]
-        },{
-            owner:"Kyle Haarhoff",
-            name:"favourite",
-            description:"This is a list of my favourite boardgames",
-            boardGames: ["Root,Monopoly"]
-        },{
-            owner:"Nasiphi Mjobo",
-            name:"favourite",
-            description:"This is a list of my favourite boardgames",
-            boardGames: ["Monopoly,Scrabble"]
-        },{
-            owner:"Matthew Marsden",
-            name:"favourite",
-            description:"This is a list of my favourite boardgames",
-            boardGames: ["Root,Monopoly"]
-        },{
-            owner:"Njabulo Ntuli",
-            name:"Abstract Strategy Board Game",
-            description:"This is a list of my favourite abstract strategy boardgames",
-            boardGames: ["Chess,Checkers,Go"]
-        }
-    ];
 
+    async create(input:collection): Promise<string>{
 
-    create(input:collection): string{
         if(input.owner === ""){
             return "owner of collection needs to be set";
-        }else if(input.name === ""){
+        }
+        else if(input.name === ""){
             return "name of collection needs to be set";
-        }else{
-            this.data.push(input);
-            return "success";
+        }
+        
+        const newCollection = new this.collectionModel({
+            owner:input.owner,
+            name:input.name,
+            description:input.description,
+            boardgames:input.boardgames,
+        });
+
+        const result = await newCollection.save();
+        if(!result){
+            return "Failed";
+        }
+        else{
+            return "Success";
         }
     }
+    constructor(@InjectModel('collection')private collectionModel: Model<collection>){
 
-    getCollectionByUser(owner: string): collection[]{
-        let result:collection[] = [];
-
-        for(let count = 0; count < this.data.length; count++){
-            if(owner === this.data[count].owner){
-                result.push(this.data[count]);
+    }
+    async getCollectionByUser(owner: string): Promise<collection[]>{
+        const result:collection[] = [];
+        let data;
+        try{
+            data = await this.collectionModel.find({owner:owner});
+        }
+        catch(error){
+            throw new NotFoundException("Internal Server error");
+        }
+        if(data===null)
+        {
+            throw new NotFoundException("The collection is not Found");
+        }
+        for(let count = 0; count < data.length; count++){
+            if(owner === data[count].owner){
+                result.push(data[count]);
             }
         }
-
+        
         return result;
     }
 
-    addBoardGame(boardgame:string,name:string,owner:string): boolean{
-        let result = false;
-
-        for(let count = 0; count < this.data.length; count++){
-            if(this.data[count].name == name && this.data[count].owner == owner){
-                this.data[count].boardGames.push(boardgame);
-                result = true;
-            }
+    async addBoardGame(boardgame:string,name:string,owner:string): Promise<boolean>{
+        const result = await this.collectionModel.findOne({owner:owner,name:name});
+        if(!result){
+            throw new NotFoundException("The collection owner does not exist.");
         }
-
-        return result;
-    }
-
-    removeCollection(owner:string,name:string):boolean{
-        let temp:collection[] = [];
-        let result = false;
-
-        if(name === "" || owner === "")
+        if(!result){
             return false;
-
-        for(let count = 0; count < this.data.length; count++){
-            if(this.data[count].owner == owner && this.data[count].name == name){
-                result = true;
-                continue;
-            }else
-                temp.push(this.data[count]);
+        }
+        else{
+            result.boardgames.push(boardgame);
+            result.save();
+            return true;
         }
 
-        this.data = temp;
 
-        return result;
+    }
+
+    async removeCollection(owner:string,name:string):Promise<boolean>{
+
+        const result = await this.collectionModel.deleteOne({owner:owner,name:name});
+        if(result.deletedCount>0){
+            return true;
+        }
+        else{
+            throw new NotFoundException("There exist no such owner.");
+        }
     }
 }
