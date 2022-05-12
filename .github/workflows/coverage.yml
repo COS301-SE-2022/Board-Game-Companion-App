@@ -24,3 +24,6 @@ steps:
     name: codecov-umbrella
     fail_ci_if_error: true
     verbose: true
+- run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+- run: chmod +x codecov 
+- run: ./codecov 
