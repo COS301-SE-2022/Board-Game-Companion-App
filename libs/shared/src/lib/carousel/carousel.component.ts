@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, Input, OnChanges, Output, SimpleChange ,EventEmitter} from '@angular/core';
 import { BggSearchService } from '../services/bgg-search.service';
 import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
@@ -12,14 +12,15 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CarouselComponent implements OnChanges {
   constructor(private bggSearch:BggSearchService) {}
-
+  
   
 
   @Input()
   ids!: string[];
-
+  
 
   listResults: SearchResult[] = [new SearchResult("","")];
+
 
   ngOnChanges(): void {
 
@@ -52,11 +53,11 @@ export class CarouselComponent implements OnChanges {
                 {
                   if(j == 0)
                   {
-                    myContainer.innerHTML += "<div class=\"carousel-item active relative object-center float-left w-full\"  style=\"height:500px;\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                    myContainer.innerHTML += "<div class=\"carousel-item active relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
                   }
                   else
                   {
-                    myContainer.innerHTML += "<div class=\"carousel-item relative object-center float-left w-full\"  style=\"height:500px;\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
+                    myContainer.innerHTML += "<div class=\"carousel-item relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
                   }
                   
                   
@@ -73,4 +74,6 @@ export class CarouselComponent implements OnChanges {
         
     
   }
+
+  
 }

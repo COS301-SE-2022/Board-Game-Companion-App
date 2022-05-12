@@ -18,6 +18,7 @@ const routes:Routes = [{
     component:HomeComponent
   }];
 
+
 @NgModule({
   imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes)],
   declarations: [
