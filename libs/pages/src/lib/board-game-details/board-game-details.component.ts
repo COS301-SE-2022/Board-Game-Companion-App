@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.service';
 
@@ -9,9 +10,10 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
   styleUrls: ['./board-game-details.component.scss'],
 })
 export class BoardGameDetailsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService) {}
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute) {}
 
   id:string = "1010";
+
   Added:boolean = false;
 
   addToCollection()
@@ -20,14 +22,19 @@ export class BoardGameDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //get id
+    console.log(this.route.snapshot.paramMap.get('my_object'));
+    this.id = this.route.snapshot.paramMap.get('my_object')||"";
+    
     //check if board game has been added to a collection
     if(this.Added != true)
     {
+      //if it hasnt, display button to add it
       this.Added = true;
     }
 
 
-    //get id
+    
     
 
     //get info on board game from api

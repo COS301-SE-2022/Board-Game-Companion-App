@@ -17,9 +17,9 @@
             <div class = "board-game" *ngFor = "let game of mostActive">
                 <div class="flex justify-center mt-2">
                     <div class="game-image rounded-lg shadow-lg bg-white max-w-sm" >
-                    <a href="#!" data-mdb-ripple="true" data-mdb-ripple-color="light" style="width:100%;height:100%">
+                    <button (click)="getDetails(game.id)" data-mdb-ripple="true" data-mdb-ripple-color="light" style="width:100%;height:100%">
                         <img class="rounded-t-lg" [src]="game.image" alt=""/>
-                    </a>
+                    </button>
                     </div>
                 </div>
                 <h5 class="text-gray-900 text-xl font-medium mt-2" style="text-align:center">{{game.name}} </h5>
