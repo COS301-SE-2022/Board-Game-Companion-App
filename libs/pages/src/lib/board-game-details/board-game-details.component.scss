@@ -1,10 +1,18 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
+
+
+.container{
+    margin-top: 10em;
+}
 .result
 {
     max-width: 80%;
     position: relative;
     margin: auto;
     display: flex;
+}
+#imgDiv{
+    margin-right: 5em;
 }
 #descr
 {
@@ -23,18 +31,4 @@
 {
     font-family: sans-serif;
     text-align: center;
-}
-.buttonDiv
-{
-    
-    display:inline-block;
-    color:#444;
-    border:1px solid #CCC;
-    background:#DDD;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-    vertical-align:middle;
-    text-align: center;
-    padding:1%;
-    position:relative;
-    left:50%;
 }
