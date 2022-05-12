@@ -3,6 +3,9 @@ import { BggSearchService } from '../services/bgg-search.service';
 import { SearchResult } from '../classes/search-result';
 import { XmlParser } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import {CommonModule} from '@angular/common';
+
 
 @Component({
   selector: 'board-game-companion-app-carousel',
@@ -11,15 +14,32 @@ import { HttpClient } from '@angular/common/http';
   
 })
 export class CarouselComponent implements OnChanges {
-  constructor(private bggSearch:BggSearchService) {}
+  constructor(private bggSearch:BggSearchService, private router:Router) {}
   
   
 
   @Input()
   ids!: string[];
-  
 
-  listResults: SearchResult[] = [new SearchResult("","")];
+
+  listResults: SearchResult[] = [];
+
+  prev()
+  {
+    //
+  }
+  next()
+  {
+    
+  }
+
+  getDetails(id:string)
+  {
+
+    this.router.navigate(['board-game-details', {my_object: id}] )
+
+
+  }
 
 
   ngOnChanges(): void {
@@ -33,6 +53,8 @@ export class CarouselComponent implements OnChanges {
           .subscribe(
             
             data=>{
+              
+              
               let result:string = data.toString();
               let name:string = "";
               let url:string = "";
@@ -46,25 +68,15 @@ export class CarouselComponent implements OnChanges {
                   url = imgUrl.innerHTML;
               });
 
-              const myContainer = document.getElementById('setOne') as HTMLElement ;
-              if(myContainer != null)
-              {
-                for(let i = 0; i<this.listResults.length; i++)
-                {
-                  if(j == 0)
-                  {
-                    myContainer.innerHTML += "<div class=\"carousel-item active relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
-                  }
-                  else
-                  {
-                    myContainer.innerHTML += "<div class=\"carousel-item relative object-center float-left w-full\"  style=\"height:500px;\"><button type=\"button\" (click)=\"getDetails()\"><img class= \"block w-full\" src = \"" +url+ "\" height = \"500px\"></button><div class=\"carousel-caption hidden md:block absolute text-center\"><h3 class=\"text-7xl\">"+name+"</h3></div></div>"
-                  }
+               
+                this.listResults.push(new SearchResult(name, url,this.ids[j]))
+
+
                   
-                  
-                }
-              }
             });
           }
+
+          
     }
     
           

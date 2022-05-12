@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BggSearchService,MostActive } from '../bgg-search-service/bgg-search.service';
 
 @Component({
@@ -11,8 +12,8 @@ export class BoardGameSearchComponent implements OnInit {
   contentType = "Most Active";
   searchValue = "";
 
-  constructor(private readonly searchService:BggSearchService) {
-
+  constructor(private readonly searchService:BggSearchService, private router:Router) {
+    
   }
 
   ngOnInit(): void {
@@ -23,7 +24,13 @@ export class BoardGameSearchComponent implements OnInit {
       });
     }
   }
+  getDetails(id:string)
+  {
+    
+    this.router.navigate(['board-game-details', {my_object: id}] )
 
+
+  }
   sort():void{
     let temp:MostActive;
 

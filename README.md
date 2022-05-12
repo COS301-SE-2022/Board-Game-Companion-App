@@ -80,3 +80,11 @@ I am a third year Computer science student at the university of Pretoria
   I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
   An individual eager to learning new skills, while remaining humble and teachable. A committed and dedicated individual with a positive outlook on life. I aim to embark on a long-term journey that teaches me skills and knowledge in the world of technology, and the world itself. 
  A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. 
+<h1><b>Kyle Haarhoff</b></h1>
+
+<h4>Description</h4>
+  I am a third year Computer Science student at the university of Pretoria.
+  I have an interest in AI, and enjoy software developement in general.
+  <p></p>
+- <a href="https://github.com/KyleHaarhoff">Github Profile</a> <br/>
+- <a href="https://www.linkedin.com/in/kyle-haarhoff-7b2265239/">LinkedIn Profile</a>
