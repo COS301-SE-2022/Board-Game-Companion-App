@@ -58,7 +58,9 @@ The following are the presentation videos for the respectives demonstrations.
 
 ## Software Requirements Specification
 
-- Requirements specification for board-game-companion app: `requirements specification link`
+- Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
+
+- Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
 
 ## Project Management Tool
 - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
