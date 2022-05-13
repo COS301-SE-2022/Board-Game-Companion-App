@@ -80,3 +80,19 @@ I am a third year Computer science student at the university of Pretoria
   I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
   An individual eager to learning new skills, while remaining humble and teachable. A committed and dedicated individual with a positive outlook on life. I aim to embark on a long-term journey that teaches me skills and knowledge in the world of technology, and the world itself. 
  A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. 
+<h1><b>Kyle Haarhoff</b></h1>
+
+<h4>Description</h4>
+  I am a third year Computer Science student at the university of Pretoria.
+  I have an interest in AI, and enjoy software developement in general.
+  <p></p>
+- <a href="https://github.com/KyleHaarhoff">Github Profile</a> <br/>
+- <a href="https://www.linkedin.com/in/kyle-haarhoff-7b2265239/">LinkedIn Profile</a>
+  
+  <h1><b>Matthew Robin Marsden</b></h1>
+  
+  <h4>Description</h4>
+    I am a third year Multimedia student at the University of Pretoria.
+    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and       seek to learn through new challenges. <p></p>
+  - <a href = "https://github.com/MatthewRobinMarsden">Github Profile</a> <br />
+  - <a href = "https://www.linkedin.com/in/matthew-marsden-081138210/">LinkedIn Profile</a>

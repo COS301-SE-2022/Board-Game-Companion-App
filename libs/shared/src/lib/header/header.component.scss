@@ -5,14 +5,30 @@ header{
     width: 100%;
 }
 
+ul{
+    height: 130px;
+}
+
 li{
+    height: 100%;
     font-size: 1.5em;
     font-weight: bold;
     color: $Pcolour-2;
-    height: 160px;
 }
 
 li:hover{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
+}
+
+a{
+    cursor: pointer;
+}
+
+#logo{
+   height: 100%;
+}
+
+img{
+    padding-top: 5px;
 }
