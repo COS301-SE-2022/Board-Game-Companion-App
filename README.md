@@ -14,7 +14,7 @@ The board game companion app allows its users to keep track of their board game 
 
 ## Contents
 - [Status](#status)
-- [Technologies](#technology-stack)
+- [Technologies](#technologies)
 - [Presentation Video](#demo-videos)
 - [Documentation](#documentation)
 - [Project Management Tool](#project-management)
@@ -51,12 +51,12 @@ The board game companion app allows its users to keep track of their board game 
 
 
 
-## Presentation Video
+## Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
 - Demo 1: `video presentation link`
 
-## Software Requirements Specification
+## Ddocumentation
 
 - Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
 
