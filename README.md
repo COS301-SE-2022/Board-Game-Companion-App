@@ -70,7 +70,7 @@ The following are the presentation videos for the respectives demonstrations.
 <h1><b>Matome Joseph Makgopa</b></h1>
 <img align="left" src="https://user-images.githubusercontent.com/93937047/168194550-fabcbc9a-2554-418f-b4eb-8ffbebfcf59f.jpeg" width="180" height="180" />
 <h4>Description</h4>
-I am a third year Computer science student at the university of Pretoria. I strongly believe in hard work and deligence. I apply myself in all that I do, to ensure that I get the best results out of my efforts. I believe that with hard work, the world is oyster. 
+I am a third year Computer science student at the university of Pretoria. I strongly believe in hard work and deligence. I apply myself in all that I do, to ensure that I get the best results out of my efforts. I believe that with hard work and determination, Nothing is impossible. 
 <p></p>
 - <a href="https://github.com/Joseph-Makgopa">Github Profile</a> <br/>
 - <a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
@@ -88,7 +88,7 @@ I am a third year Computer science student at the university of Pretoria. I stro
  
 <h1><b>Kyle Haarhoff</b></h1>
 <img align="left" src="https://user-images.githubusercontent.com/93937047/168194872-50a85901-0c0f-4139-b692-bbefa704e67b.PNG"width="180" height="180" />
-  
+  <p></p>
 <h4>Description</h4>
   I am a third year Computer Science student at the university of Pretoria.
   I have an interest in AI, and enjoy software developement in general.
