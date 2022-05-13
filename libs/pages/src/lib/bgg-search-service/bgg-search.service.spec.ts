@@ -1,16 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import {BggSearchService, MostActive} from './bgg-search.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { BggSearchService } from './bgg-search.service';
-
-describe('BggSearchService', () => {
-  let service: BggSearchService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(BggSearchService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+describe('search service testing',()=>{
+    let service:BggSearchService;
+    
+})
