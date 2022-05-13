@@ -31,6 +31,7 @@ export class BoardGameSearchComponent implements OnInit {
 
 
   }
+  
   sort():void{
     let temp:MostActive;
 
