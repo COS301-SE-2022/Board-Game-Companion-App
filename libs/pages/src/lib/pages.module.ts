@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { LoginComponent } from './login/login.component';
 //import { BrowserModule } from '@angular/platform-browser';
-//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login'; 
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login'; 
 //import{ GoogleLoginProvider} from 'angularx-social-login';
 import { SharedModule } from '@board-game-companion-app/shared';
 
@@ -36,35 +36,16 @@ const routes:Routes = [{
   },{
     path:'home',
     component:HomeComponent
+  },{
+    path:'login',
+    component:LoginComponent
   }];
 
 @NgModule({
-  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes)], //BrowserModule, SocialLoginModule
+  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes), SocialLoginModule],
   declarations: [HomeComponent, BoardGameDetailsComponent, LoginComponent, BoardGameSearchComponent],
   providers: [SharedModule],
-    /*{
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              'clientId'
-            )
-            /*provide: AuthServiceConfig,
-            useFactory: provideConfig
-          },
-         
-        
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (err: any) => {
-          console.error(err);
-        } 
-      }as SocialAuthServiceConfig,*/
-   // }
- // ],
-  exports: [HomeComponent, BoardGameDetailsComponent, BoardGameSearchComponent, LoginComponent]
+    exports: [HomeComponent, BoardGameDetailsComponent, BoardGameSearchComponent, LoginComponent]
 })
 
 export class PagesModule {}

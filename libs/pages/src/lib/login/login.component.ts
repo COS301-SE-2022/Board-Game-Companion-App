@@ -1,19 +1,40 @@
-import { Component } from '@angular/core';
-import { SocialAuthService } from 'angularx-social-login';
+import { Component,OnInit } from '@angular/core';
+import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 //import { ConnectableObservable } from 'rxjs';
-import { GoogleLoginProvider } from "angularx-social-login";
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'board-game-companion-app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-  //user:any;
-  constructor(private authService:SocialAuthService) {}
-  
 
-  //ngOnInit(): void {}
+export class LoginComponent implements OnInit{
+  loginForm!: FormGroup;
+  socialUser!: SocialUser;
+  Loggedin?: boolean;
+ 
+  //user:any;
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService:SocialAuthService, 
+    private router:Router
+    ) {}
+
+  //constructor(private router:Router){}
+
+   ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      Email: ['', Validators.required],
+      Password: ['', Validators.required],
+    });
+    this.authService.authState.subscribe((user) => {
+      this.socialUser = user;
+      this.Loggedin = user != null;
+      console.log(this.socialUser);
+    });
+  }
   //sign to sign in with google
 
   signUserIn():void
@@ -23,7 +44,8 @@ export class LoginComponent {
       console.log(platform + "logged in user data is=" ,response);
 
       this.user =response;*/
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    // this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    this.router.navigate(['home']);
   }
     
 
@@ -36,7 +58,12 @@ export class LoginComponent {
       this.user =response;
     }
     );*/
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    //this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.router.navigate(['/home']);
+  }
+
+  TokenRefresher(): void {
+    this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
 

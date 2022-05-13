@@ -2892,11 +2892,6 @@ ajv@^8.0.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-angular-6-social-login@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/angular-6-social-login/-/angular-6-social-login-1.1.1.tgz#272f09b0a4be48bd367df9dad14e1b03ef844c9f"
-  integrity sha512-/JCUhzHIRP8I+0m5yWQY3A7HjxgLQPjxLTyjxlQpQ7TEyZhd2Uy1NOvSPnBxODwFwTLnfAyJXlubzssYFhqzdw==
-
 angularx-social-login@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/angularx-social-login/-/angularx-social-login-4.1.0.tgz#e32333605bd5b36a05148b82aa329cebbd747d98"
