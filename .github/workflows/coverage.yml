@@ -10,20 +10,20 @@ on:
     branches: [ main , release/** , develop ]
 
 jobs:
-  build:
+  coverage_upload:
 
     runs-on: ubuntu-latest
 
-steps:
-- uses: actions/checkout@master
-- uses: codecov/codecov-action@v2
-  with:
-    token: ${{ secrets.CODECOV_TOKEN }}
-    files: ./coverage1.xml,./coverage2.xml
-    flags: unittests
-    name: codecov-umbrella
-    fail_ci_if_error: true
-    verbose: true
-- run: curl -Os https://uploader.codecov.io/latest/linux/codecov
-- run: chmod +x codecov 
-- run: ./codecov 
+    steps:
+    - uses: actions/checkout@master
+    - uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage1.xml,./coverage2.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
+    - run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+    - run: chmod +x codecov 
+    - run: ./codecov 
