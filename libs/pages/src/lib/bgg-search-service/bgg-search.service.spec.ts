@@ -1,4 +1,9 @@
-// import { HttpClient } from '@angular/common/http';
-// import { TestBed } from '@angular/core/testing';
-// import exp = require('constants');
-// import { BggSearchService, MostActive } from './bgg-search.service';
+import { TestBed } from '@angular/core/testing';
+import {BggSearchService, MostActive} from './bgg-search.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+describe('search service testing',()=>{
+    let service:BggSearchService;
+    
+})
