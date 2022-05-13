@@ -84,7 +84,8 @@ I am a third year Computer science student at the university of Pretoria
 
 <h4>Description</h4>
   I am a third year Computer Science student at the university of Pretoria.
-  I have an interest in AI, and enjoy software developement in general.
+  I have an interest in AI, and enjoy software developement in general. 
+  I intend to apply myself fully and provide the best possible product I can. 
   <p></p>
 - <a href="https://github.com/KyleHaarhoff">Github Profile</a> <br/>
 - <a href="https://www.linkedin.com/in/kyle-haarhoff-7b2265239/">LinkedIn Profile</a>
