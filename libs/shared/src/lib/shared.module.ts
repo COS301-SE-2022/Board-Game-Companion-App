@@ -5,6 +5,7 @@ import { BggSearchService } from './services/bgg-search.service';
 import { HeaderComponent } from './header/header.component';
 import { SearchResult } from './classes/search-result';
 
+
 @NgModule({
   imports: [CommonModule],
   declarations: [CarouselComponent, HeaderComponent],
