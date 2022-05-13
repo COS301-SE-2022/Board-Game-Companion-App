@@ -14,7 +14,7 @@ The board game companion app allows its users to keep track of their board game 
 
 ## Contents
 - [Status](#status)
-- [Technologies](#technology-stack)
+- [Technologies](#technologies)
 - [Presentation Video](#demo-videos)
 - [Documentation](#documentation)
 - [Project Management Tool](#project-management)
@@ -51,14 +51,16 @@ The board game companion app allows its users to keep track of their board game 
 
 
 
-## Presentation Video
+## Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
 - Demo 1: `video presentation link`
 
-## Software Requirements Specification
+## Ddocumentation
 
-- Requirements specification for board-game-companion app: `requirements specification link`
+- Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
+
+- Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
 
 ## Project Management Tool
 - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
@@ -66,12 +68,13 @@ The following are the presentation videos for the respectives demonstrations.
 - Meet the Frontend Forerunners team:
 
 <h1><b>Matome Joseph Makgopa</b></h1>
-
+<img align="left" src="https://user-images.githubusercontent.com/93937047/168194550-fabcbc9a-2554-418f-b4eb-8ffbebfcf59f.jpeg" width="180" height="180" />
 <h4>Description</h4>
-I am a third year Computer science student at the university of Pretoria
+I am a third year Computer science student at the university of Pretoria. I strongly believe in hard work and deligence. I apply myself in all that I do, to ensure that I get the best results out of my efforts. I believe that with hard work and determination, Nothing is impossible. 
 <p></p>
 - <a href="https://github.com/Joseph-Makgopa">Github Profile</a> <br/>
 - <a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
+- <br>
 
 <h1><b>Nasiphi Mjobo<b></h1>
 
@@ -79,9 +82,13 @@ I am a third year Computer science student at the university of Pretoria
   <h4>Description</h4>
   I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
   An individual eager to learning new skills, while remaining humble and teachable. A committed and dedicated individual with a positive outlook on life. I aim to embark on a long-term journey that teaches me skills and knowledge in the world of technology, and the world itself. 
- A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. 
+ A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. <br/>
+  <a href="https://github.com/NasiphiM">GitHub</a><br/>
+  <a href="www.linkedin.com/in/nasiphi-mjobo-420483204">LinkedIn Profile</a>
+ 
 <h1><b>Kyle Haarhoff</b></h1>
-
+<img align="left" src="https://user-images.githubusercontent.com/93937047/168194872-50a85901-0c0f-4139-b692-bbefa704e67b.PNG"width="180" height="180" />
+  <p></p>
 <h4>Description</h4>
   I am a third year Computer Science student at the university of Pretoria.
   I have an interest in AI, and enjoy software developement in general.
@@ -90,9 +97,15 @@ I am a third year Computer science student at the university of Pretoria
 - <a href="https://www.linkedin.com/in/kyle-haarhoff-7b2265239/">LinkedIn Profile</a>
   
   <h1><b>Matthew Robin Marsden</b></h1>
-  
+  <img align="left" src="https://user-images.githubusercontent.com/93937047/168195045-c6339657-fdfa-45b7-b2c2-ae4a2625bcbc.jpeg" width="180" height="185" />
+
   <h4>Description</h4>
     I am a third year Multimedia student at the University of Pretoria.
-    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and       seek to learn through new challenges. <p></p>
+    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and seek to learn through new challenges. <p></p>
   - <a href = "https://github.com/MatthewRobinMarsden">Github Profile</a> <br />
   - <a href = "https://www.linkedin.com/in/matthew-marsden-081138210/">LinkedIn Profile</a>
+  
+  <h1><b>Njabulo Ntuli<b></h1>
+    <img align="left" src="https://user-images.githubusercontent.com/93937047/168195313-c12b999b-0d54-4a0d-88cd-f3a6113eba53.jpeg" width="180" height="180" />
+
+    
