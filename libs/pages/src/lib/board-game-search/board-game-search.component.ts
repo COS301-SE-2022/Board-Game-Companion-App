@@ -13,7 +13,7 @@ export class BoardGameSearchComponent implements OnInit {
   searchValue = "";
 
   constructor(private readonly searchService:BggSearchService, private router:Router) {
-
+    
   }
 
   ngOnInit(): void {
@@ -31,6 +31,7 @@ export class BoardGameSearchComponent implements OnInit {
 
 
   }
+  
   sort():void{
     let temp:MostActive;
 

@@ -1,7 +1,14 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
 #wrapper{
-    width:80%;
+    width:85%;
     margin:20px auto;
 }
+
+#search{
+    border-color: $Pcolour-2;
+}
+
 
 hr.solid {
     border-top: 3px solid #bbb;
@@ -15,7 +22,6 @@ hr.solid {
 
 .game-image{
     overflow-y:hidden; 
-    height:250px;
 }
 
 .game-image>a>img{
@@ -28,4 +34,9 @@ hr.solid {
 
 .board-game:hover { 
     transform: scale(1.025); 
+}
+
+#content
+{
+    border: 1px solid  $Pcolour-3;
 }
