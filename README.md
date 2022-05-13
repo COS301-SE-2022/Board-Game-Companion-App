@@ -109,7 +109,7 @@ I am a third year Computer science student at the university of Pretoria. I stro
     <img align="left" src="https://user-images.githubusercontent.com/93937047/168195313-c12b999b-0d54-4a0d-88cd-f3a6113eba53.jpeg" width="180" height="180" />
 
   <h4>Description</h4>
-    I am Computer Science Student at the University of Pretoria. I enjoy the data working with data. I aspire to be a Data Scientist.
+    I am a Computer Science Student at the University of Pretoria. I enjoy the data working with data. I aspire to be a Data Scientist.
   <p></p>
   - <a href = "https://github.com/QabaNjabulo">Github Profile</a> <br />
   - <a href = "https://www.linkedin.com/in/njabulo-ntuli-a195b1229/">LinkedIn Profile</a>
