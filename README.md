@@ -1,94 +1,115 @@
+# Frontend Forerunners
+
+<p align="center">
+  <a href="#">
+    <img src="apps/client/src/assets/images/logo.png?raw=true" alt="logo" width="200" height="200">
+  </a>
+</p>
+
+<h3 align="center">Board-Game-Companion</h3>
+
+<p align="center">
+The board game companion app allows its users to keep track of their board game collections, gather play statistics and provides an opportunity to play against an AI opponent. The application also provides a built-in editor for writing and uploading scripts that are used by the AI opponent. 
+</p>
+
+## Contents
+- [Status](#status)
+- [Technologies](#technologies)
+- [Presentation Video](#demo-videos)
+- [Documentation](#documentation)
+- [Project Management Tool](#project-management)
+- [Profile Descriptions](#profiles)
 
 
-# BoardGameCompanionApp
+## Status
+![issues](https://img.shields.io/github/issues/COS301-SE-2022/Board-Game-Companion-App?cacheSeconds=3600)
+[![builds](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml)
+[![tests](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
 
-This project was generated using [Nx](https://nx.dev).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Technologies
 
-🔎 **Smart, Fast and Extensible Build System**
+### Repository Structure
 
-## Adding capabilities to your workspace
+<img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/> <br/>
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+### Frontend
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
 
-Below are our core plugins:
+### API
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100">
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+### Database
 
-## Generate an application
+<img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+### Hosting
 
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@board-game-companion-app/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+<img src="apps/client/src/assets/images/heroku-logo.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
 
 
 
-## ☁ Nx Cloud
+## Demo-videos
+The following are the presentation videos for the respectives demonstrations.
 
-### Distributed Computation Caching & Distributed Task Execution
+- Demo 1: `video presentation link`
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+## Ddocumentation
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+- Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
+- Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
 
-Visit [Nx Cloud](https://nx.app/) to learn more.
+## Project Management Tool
+- Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
+## Profiles
+- Meet the Frontend Forerunners team:
+
+<h1><b>Matome Joseph Makgopa</b></h1>
+<img align="left" src="https://user-images.githubusercontent.com/93937047/168194550-fabcbc9a-2554-418f-b4eb-8ffbebfcf59f.jpeg" width="180" height="180" />
+<h4>Description</h4>
+I am a third year Computer science student at the university of Pretoria. I strongly believe in hard work and deligence. I apply myself in all that I do, to ensure that I get the best results out of my efforts. I believe that with hard work and determination, Nothing is impossible. 
+<p></p>
+- <a href="https://github.com/Joseph-Makgopa">Github Profile</a> <br/>
+- <a href="https://www.linkedin.com/in/matome-makgopa-828822170">LinkedIn Profile</a>
+- <br>
+
+<h1><b>Nasiphi Mjobo<b></h1>
+
+<img align="left" src="https://user-images.githubusercontent.com/93937047/167927158-3b0a4fb8-e2e9-4289-b3c5-00da5767dde2.jpeg" width="180" height="180" />
+  <h4>Description</h4>
+  I am a final year Computer Science Student at the University Of Pretoria. I consider myself to be a hardworking individual focused on providing the best of my ability. 
+  An individual eager to learning new skills, while remaining humble and teachable. A committed and dedicated individual with a positive outlook on life. I aim to embark on a long-term journey that teaches me skills and knowledge in the world of technology, and the world itself. 
+ A result driven individual that believes that collaboration is the best form of productivity and success, as team work makes the dream work. <br/>
+  <a href="https://github.com/NasiphiM">GitHub</a><br/>
+  <a href="www.linkedin.com/in/nasiphi-mjobo-420483204">LinkedIn Profile</a>
+ 
+<h1><b>Kyle Haarhoff</b></h1>
+<img align="left" src="https://user-images.githubusercontent.com/93937047/168194872-50a85901-0c0f-4139-b692-bbefa704e67b.PNG"width="180" height="180" />
+  <p></p>
+<h4>Description</h4>
+  I am a third year Computer Science student at the university of Pretoria.
+  I have an interest in AI, and enjoy software developement in general.
+  <p></p>
+- <a href="https://github.com/KyleHaarhoff">Github Profile</a> <br/>
+- <a href="https://www.linkedin.com/in/kyle-haarhoff-7b2265239/">LinkedIn Profile</a>
+  
+  <h1><b>Matthew Robin Marsden</b></h1>
+  <img align="left" src="https://user-images.githubusercontent.com/93937047/168195045-c6339657-fdfa-45b7-b2c2-ae4a2625bcbc.jpeg" width="180" height="185" />
+
+  <h4>Description</h4>
+    I am a third year Multimedia student at the University of Pretoria.
+    My main interests are in game development, graphic  design, AI and software engineering. I enjoy the challenges of working in the programming field and       have learnt to adapt to many situations. I consider myself a creative and smart working individual, I like to focus on solving problems efficently and seek to learn through new challenges. <p></p>
+  - <a href = "https://github.com/MatthewRobinMarsden">Github Profile</a> <br />
+  - <a href = "https://www.linkedin.com/in/matthew-marsden-081138210/">LinkedIn Profile</a>
+  
+  <h1><b>Njabulo Ntuli<b></h1>
+    <img align="left" src="https://user-images.githubusercontent.com/93937047/168195313-c12b999b-0d54-4a0d-88cd-f3a6113eba53.jpeg" width="180" height="180" />
+
+  <h4>Description</h4>
+    I am a Computer Science Student at the University of Pretoria. I enjoy the data working with data. I aspire to be a Data Scientist.
+  <p></p>
+  - <a href = "https://github.com/QabaNjabulo">Github Profile</a> <br />
+  - <a href = "https://www.linkedin.com/in/njabulo-ntuli-a195b1229/">LinkedIn Profile</a>
