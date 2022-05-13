@@ -5,5 +5,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('search service testing',()=>{
     let service:BggSearchService;
+    beforeEach(() => {
+        TestBed.configureTestingModule({imports: [RouterTestingModule,HttpClientTestingModule]});
+        service = TestBed.inject(BggSearchService);
+      });
     
+      it('should be created', () => {
+        expect(service).toBeTruthy();
+      });
 })
