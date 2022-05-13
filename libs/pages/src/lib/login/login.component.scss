@@ -53,6 +53,7 @@ body{
 .form__title {
     display:flex; 
     justify-content: center;
+    text-align: center;
     margin-bottom: 2rem;
 }
 
@@ -72,6 +73,13 @@ body{
     font-weight: bold;
     color:var(--color-secondary);
     font-size:50px;
+}
+
+.form__header img{
+   width: 180px;
+   height: 100px; 
+   align-items: left;
+   padding-top: 5px;
 }
 
 .fa-solid fa-user{
