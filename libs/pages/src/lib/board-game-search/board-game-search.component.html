@@ -1,23 +1,22 @@
-
+<board-game-companion-app-header></board-game-companion-app-header>
 <div id = "wrapper">
     <div class="flex justify-center">
         <div class="mb-3 xl:w-full">
           <div class="input-group relative flex flex-wrap items-stretch w-full mb-4">
-            <input [(ngModel)] = "searchValue" name = "searchValue" type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon3">
-            <button (click)="search()" class="btn inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" type="button" id="button-addon3">Search</button>
+            <input id = "search" [(ngModel)] = "searchValue" name = "searchValue" type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon3">
+            <button (click)="search()" class="btn inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-bold text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" type="button" id="button-addon3">Search</button>
           </div>
         </div>
     </div>
 
     <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1>
-    <hr class="solid">
-    <div id = "content">
-        <div class="grid grid-cols-4 gap-4">
+    <div class = "shadow-xl" id = "content">
+        <div class="grid grid-cols-4 gap-5">
 
             <div class = "board-game" *ngFor = "let game of mostActive">
-                <div class="flex justify-center mt-2">
+                <div class="flex justify-center mt-5">
                     <div class="game-image rounded-lg shadow-lg bg-white max-w-sm" >
-                    <button (click)="getDetails(game.id)" data-mdb-ripple="true" data-mdb-ripple-color="light" style="width:100%;height:100%">
+                    <button (click)="getDetails(game.id)" data-mdb-ripple="true" data-mdb-ripple-color="light">
                         <img class="rounded-t-lg" [src]="game.image" alt=""/>
                     </button>
                     </div>

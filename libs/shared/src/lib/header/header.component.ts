@@ -1,3 +1,4 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,6 +13,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   moveTo(path:string):void{
-    this.router.navigate(['/' + path]);
+    if(path == "collection")
+    {
+      this.router.navigate(['/home']);
+    }
+    else{
+      this.router.navigate(['/' + path]);
+    }
   }
 }
