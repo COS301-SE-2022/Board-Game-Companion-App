@@ -88,7 +88,7 @@ I am a third year Computer science student at the university of Pretoria. I stro
  
 <h1><b>Kyle Haarhoff</b></h1>
 <img align="left" src="https://user-images.githubusercontent.com/93937047/168194872-50a85901-0c0f-4139-b692-bbefa704e67b.PNG"width="180" height="180" />
-  
+  <p></p>
 <h4>Description</h4>
   I am a third year Computer Science student at the university of Pretoria.
   I have an interest in AI, and enjoy software developement in general.
