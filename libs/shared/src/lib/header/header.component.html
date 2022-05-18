@@ -1,16 +1,24 @@
 <header>
     <nav class="navbar navbar-expand-md shadow-xl relative flex items-center w-full justify-between">
         <div class=" w-full flex flex-wrap items-center justify-between ">
-            <div class="navbar-collapse collapse grow items-center ">
+            <div class="navbar-collapse collapse grow items-center">
                 <ul class="navbar-nav pb-0 lg:flex lg:flex-row ">
                     <li class="nav-item shadow-xl">
                         <a (click)="moveTo('home')" id = "logo"><img src = "assets/images/logo.png" alt = "logo"></a>
                     </li>
-                    <li class="nav-item pt-11 pl-5 pr-5">
+                    <li class="nav-item p-6">
                         <a class = "nav-link block" (click)="moveTo('collection')">Collections</a>
                     </li>
-                    <li class="nav-item pt-11 pl-5 pr-5">
+                    <li class="nav-item p-6">
                         <a class = "nav-link block" (click)="moveTo('board-game-search')">Board Games</a>
+                    </li>
+                </ul>
+                <ul id = "login" class="navbar-nav pb-0 lg:flex lg:flex-row ">
+                    <li  class="nav-item pt-6 pl-6 pb-6">
+                        <a id = "l" class = "nav-link block" (click)="moveTo('login')">Login</a>
+                    </li>
+                    <li class="nav-item pt-6 pb-6 pr-6">
+                        <a id = "s" class = "nav-link block" (click)="moveTo('login')">Sign in</a>
                     </li>
                 </ul>
             </div>
