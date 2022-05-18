@@ -2,13 +2,15 @@
 
 
 .container{
-    margin-top: 10em;
+    width: 100%;
+    position: relative;
 }
 .result
 {
     max-width: 80%;
     position: relative;
     margin: auto;
+    margin-top: 8em;
     display: flex;
 }
 #imgDiv{
