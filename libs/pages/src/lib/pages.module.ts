@@ -10,6 +10,9 @@ import { SharedModule } from '@board-game-companion-app/shared';
 //const google_oauth_client_id = "13912431210-vfi8j8pi30e1ree2j3f3vsfb4o762p3t.apps.googleusercontent.com";
 //user:any;
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PaginationComponent } from './board-game-search/pagination/pagination.component';
+
 //const configure = [
   //{
    // id: GoogleLoginProvider.PROVIDER_ID,
@@ -41,8 +44,21 @@ const routes:Routes = [{
   }];
 
 @NgModule({
-  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes), SocialLoginModule,FlexLayoutModule],
-  declarations: [HomeComponent, BoardGameDetailsComponent, LoginComponent, BoardGameSearchComponent],
+  imports: [CommonModule,
+            SharedModule,
+            FormsModule,
+            RouterModule.forChild(routes),
+            SocialLoginModule,
+            FlexLayoutModule,
+            MatProgressSpinnerModule
+          ],
+  declarations: [ 
+                  HomeComponent, 
+                  BoardGameDetailsComponent, 
+                  LoginComponent, 
+                  BoardGameSearchComponent,
+                  PaginationComponent
+                ],
   providers: [SharedModule],
     exports: [HomeComponent, BoardGameDetailsComponent, BoardGameSearchComponent, LoginComponent]
 })

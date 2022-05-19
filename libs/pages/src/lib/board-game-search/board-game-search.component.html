@@ -1,5 +1,5 @@
 <board-game-companion-app-header></board-game-companion-app-header>
-<div id = "container">
+<div id = "container">    
     <div id = "wrapper">
         <div class="flex justify-center">
             <div class="mb-3 xl:w-full">
@@ -10,24 +10,20 @@
             </div>
         </div>
 
-        <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1>
-        <div class = "shadow-xl" id = "content">
-            <div class="grid grid-cols-4 gap-5">
 
-                <div class = "board-game" *ngFor = "let game of mostActive">
-                    <div class="flex justify-center mt-5">
-                        <div class="game-image rounded-lg shadow-lg bg-white max-w-sm" >
-                        <button (click)="getDetails(game.id)" data-mdb-ripple="true" data-mdb-ripple-color="light">
-                            <img class="rounded-t-lg" [src]="game.image" alt=""/>
-                        </button>
-                        </div>
-                    </div>
-                    <h5 class="text-gray-900 text-xl font-medium mt-2" style="text-align:center">{{game.name}} </h5>
+        <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1>
+        <div class = "shadow-xl mb-5" id = "content" >
+            <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
+                <div fxFlex = "1 1 auto" class = "board-game" *ngFor = "let game of show">
+                    <img class = "board-game-image rounded-lg shadow-lg" (click)="getDetails(game.id)" [src] =  game.image >
+                
+                    <h5 style="text-align:center" class = "text-gray-900 text-xl font-medium mt-3">{{game.name}} </h5>
                 </div>
             </div>
 
         </div>
+        <board-game-companion-app-board-game-search-pagination class = "pagination" [boardsPerPage] = boardsPerPage [numberOfBoardGames] = mostActive.length (newPageEvent)="changePage($event)"></board-game-companion-app-board-game-search-pagination>
     </div>
 
-    <board-game-companion-app-footer></board-game-companion-app-footer>
+    <board-game-companion-app-footer ></board-game-companion-app-footer>
 </div>

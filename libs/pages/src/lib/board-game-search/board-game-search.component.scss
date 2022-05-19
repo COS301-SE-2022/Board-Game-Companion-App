@@ -37,6 +37,9 @@ hr.solid {
 
 .board-game{ 
     transition: all .2s ease-in-out; 
+    width: 180px;
+    max-width: 380px;
+    border-radius: 5px;
 }
 
 .board-game:hover { 
@@ -48,4 +51,10 @@ hr.solid {
     border: 1px solid  $Pcolour-2;
     padding: 1em;
 
+}
+
+.board-game-image{
+    background-size:cover;
+    width:100%;
+    height:75%; 
 }

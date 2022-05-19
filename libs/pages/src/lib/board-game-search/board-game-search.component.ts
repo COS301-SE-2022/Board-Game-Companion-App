@@ -9,8 +9,14 @@ import { BggSearchService,MostActive } from '../bgg-search-service/bgg-search.se
 })
 export class BoardGameSearchComponent implements OnInit {
   mostActive:MostActive[] = [];
+  show:MostActive[] = [];
   contentType = "Most Active";
   searchValue = "";
+  left = 1;
+  middle = 2;
+  right = 3;
+  current = 1;
+  boardsPerPage = 10;
 
   constructor(private readonly searchService:BggSearchService, private router:Router) {
     
@@ -21,16 +27,19 @@ export class BoardGameSearchComponent implements OnInit {
       this.searchService.getMostActive().subscribe(result =>{
         this.contentType = "Most Active";
         this.mostActive = this.searchService.parseMostActive(result.toString());
+        this.show = this.mostActive.slice(0,this.boardsPerPage);
       });
     }
   }
-  getDetails(id:string)
-  {
-    
-    this.router.navigate(['board-game-details', {my_object: id}] )
 
-
+  changePage(page:number):void{
+    this.show = this.mostActive.slice((page - 1) * 10,page * 10);
   }
+
+  getDetails(id:string): void{
+    this.router.navigate(['board-game-details', {my_object: id}] )
+  }
+
   
   sort():void{
     let temp:MostActive;
