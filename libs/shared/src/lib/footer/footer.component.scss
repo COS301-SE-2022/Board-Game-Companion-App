@@ -1,0 +1,19 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+
+footer{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    position: absolute;
+    width: 100%;
+    height: 5em;
+    text-align: center;
+    bottom: 0;
+   
+    
+}
+span{
+    font-size: 1.4em;
+    font-style: italic;
+    font-weight: bold;
+}
