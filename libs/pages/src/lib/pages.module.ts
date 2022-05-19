@@ -7,10 +7,9 @@ import { LoginComponent } from './login/login.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login'; 
 //import{ GoogleLoginProvider} from 'angularx-social-login';
 import { SharedModule } from '@board-game-companion-app/shared';
-
 //const google_oauth_client_id = "13912431210-vfi8j8pi30e1ree2j3f3vsfb4o762p3t.apps.googleusercontent.com";
 //user:any;
-
+import {FlexLayoutModule} from '@angular/flex-layout';
 //const configure = [
   //{
    // id: GoogleLoginProvider.PROVIDER_ID,
@@ -42,7 +41,7 @@ const routes:Routes = [{
   }];
 
 @NgModule({
-  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes), SocialLoginModule],
+  imports: [CommonModule,SharedModule,FormsModule,RouterModule.forChild(routes), SocialLoginModule,FlexLayoutModule],
   declarations: [HomeComponent, BoardGameDetailsComponent, LoginComponent, BoardGameSearchComponent],
   providers: [SharedModule],
     exports: [HomeComponent, BoardGameDetailsComponent, BoardGameSearchComponent, LoginComponent]
