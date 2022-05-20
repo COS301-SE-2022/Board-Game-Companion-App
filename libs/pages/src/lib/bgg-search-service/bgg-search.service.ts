@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http'
-
+import { HttpClient } from '@angular/common/http';
 
 export interface MostActive{
   id:string,
@@ -20,8 +19,9 @@ export class BggSearchService {
     this.url = "https://api.geekdo.com/xmlapi2/"
   }
 
-  getBoardGameByName(name:string):Observable<any>{
-    return this.httpClient.get(this.url + "search?query="+name+"&type=boardgame",{responseType: 'text'})
+  getBoardGameByName(name:string,exact:boolean):Observable<any>{
+
+    return this.httpClient.get(this.url + "search?query="+name+"&type=boardgame" + (exact ? "&exact=1":""),{responseType: 'text'})
   }
 
   parseGetBoardGameByName(data:string):MostActive[]{

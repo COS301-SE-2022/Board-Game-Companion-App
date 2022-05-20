@@ -49,9 +49,11 @@
   },
   "dependencies": {
     "@angular/animations": "~13.3.0",
+    "@angular/cdk": "^13.3.7",
     "@angular/common": "~13.3.0",
     "@angular/compiler": "~13.3.0",
     "@angular/core": "~13.3.0",
+    "@angular/flex-layout": "^13.0.0-beta.38",
     "@angular/forms": "~13.3.0",
     "@angular/material": "^13.3.7",
     "@angular/platform-browser": "~13.3.0",
@@ -69,6 +71,7 @@
     "tslib": "^2.3.0",
     "tw-elements": "^1.0.0-alpha12",
     "xml-parse": "^0.4.0",
+    "xml2js": "^0.4.23",
     "yarn": "^1.22.18",
     "zone.js": "~0.11.4"
   }
