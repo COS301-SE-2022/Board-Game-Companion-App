@@ -38,15 +38,18 @@ export class CarouselComponent implements OnChanges {
   ngOnChanges(): void {
     
     //check if collection is empty
-    if (localStorage.getItem("collection") === null) {
+    if (localStorage.getItem("collection") === null || localStorage.getItem("collection") == "[]") {
       let elem = document.getElementById("first") as HTMLElement;
       elem.innerHTML = "Your collection is empty <br> here are some suggestions"
 
     }
     else
     {
+      
+      
       let elem = document.getElementById("first") as HTMLElement;
       elem.innerHTML = "Your collection!"
+      
     }
 
 
@@ -59,7 +62,7 @@ export class CarouselComponent implements OnChanges {
           .subscribe(
             
             data=>{
-              console.log(this.ids[j])
+              
               
               let result:string = data.toString();
               let name:string = "";
@@ -76,7 +79,7 @@ export class CarouselComponent implements OnChanges {
 
                
                 this.listResults.push(new SearchResult(name, url,this.ids[j]))
-                console.log(this.listResults);
+                
 
                   
             });

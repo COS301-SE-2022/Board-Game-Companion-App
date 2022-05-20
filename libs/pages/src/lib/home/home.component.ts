@@ -15,7 +15,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     
     //check if there are existing collections
-    if (localStorage.getItem("collection") === null) {
+    
+    if (localStorage.getItem("collection") === null ||localStorage.getItem("collection") == "[]") {
       //there arent any collections
       
       //get five random ID's to display as suggestions
