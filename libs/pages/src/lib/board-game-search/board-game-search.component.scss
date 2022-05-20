@@ -10,12 +10,16 @@
     margin: auto;
     margin-top: 3em;
     margin-bottom: 10em;
+    height:70%;
 }
 
 #search{
     border-color: $Pcolour-2;
 }
 
+#search-tools{
+    width:100%;
+}
 
 hr.solid {
     border-top: 3px solid #bbb;
@@ -38,6 +42,7 @@ hr.solid {
 .board-game{ 
     transition: all .2s ease-in-out; 
     width: 180px;
+    height: 250px;
     max-width: 380px;
     border-radius: 5px;
 }

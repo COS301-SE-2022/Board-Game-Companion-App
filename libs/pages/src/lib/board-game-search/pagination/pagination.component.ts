@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'board-game-companion-app-board-game-search-pagination',
@@ -17,6 +17,13 @@ export class PaginationComponent implements OnInit {
 
   ngOnInit(): void {
     this.boardsPerPage = 10;
+    addEventListener('reloadPagination',(event)=>{
+      this.changePage(1);
+    });
+  }
+
+  ngOnChange(): void{
+    this.current = 1;
   }
 
   changePage(value:number): void{

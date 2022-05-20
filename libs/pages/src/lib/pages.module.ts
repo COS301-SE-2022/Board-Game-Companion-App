@@ -12,6 +12,7 @@ import { SharedModule } from '@board-game-companion-app/shared';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PaginationComponent } from './board-game-search/pagination/pagination.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 //const configure = [
   //{
@@ -50,7 +51,8 @@ const routes:Routes = [{
             RouterModule.forChild(routes),
             SocialLoginModule,
             FlexLayoutModule,
-            MatProgressSpinnerModule
+            MatProgressSpinnerModule,
+            MatSlideToggleModule
           ],
   declarations: [ 
                   HomeComponent, 

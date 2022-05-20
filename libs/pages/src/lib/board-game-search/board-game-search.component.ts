@@ -12,11 +12,14 @@ export class BoardGameSearchComponent implements OnInit {
   show:MostActive[] = [];
   contentType = "Most Active";
   searchValue = "";
+  searchMode = "approximate";
   left = 1;
   middle = 2;
   right = 3;
   current = 1;
   boardsPerPage = 10;
+  size = 0;
+  exactMatch = false;
 
   constructor(private readonly searchService:BggSearchService, private router:Router) {
     
@@ -28,6 +31,7 @@ export class BoardGameSearchComponent implements OnInit {
         this.contentType = "Most Active";
         this.mostActive = this.searchService.parseMostActive(result.toString());
         this.show = this.mostActive.slice(0,this.boardsPerPage);
+        this.size = this.mostActive.length;
       });
     }
   }
@@ -38,6 +42,10 @@ export class BoardGameSearchComponent implements OnInit {
 
   getDetails(id:string): void{
     this.router.navigate(['board-game-details', {my_object: id}] )
+  }
+
+  changeSearchMode(value:string):void{
+    this.searchMode = value;
   }
 
   
@@ -59,7 +67,7 @@ export class BoardGameSearchComponent implements OnInit {
     let retrieved = 0;
     let required = 0;
 
-    this.searchService.getBoardGameByName(this.searchValue).subscribe(result=>{
+    this.searchService.getBoardGameByName(this.searchValue,this.exactMatch).subscribe(result=>{
       const temp:MostActive[] = this.searchService.parseGetBoardGameByName(result.toString());
       required = temp.length;
       this.mostActive = [];
@@ -68,10 +76,19 @@ export class BoardGameSearchComponent implements OnInit {
         this.searchService.getBoardGameById(temp[count].id).subscribe(result=>{
           retrieved++;
           this.mostActive.push(this.searchService.parseGetBoardGameById(result));
+          
+          if(this.mostActive[this.mostActive.length - 1].image === ''){
+            this.mostActive[this.mostActive.length - 1].image = 'assets/images/logo.png';
+          }
 
           if(retrieved == required){
             this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
             this.sort();
+            this.show = this.mostActive.slice(0,this.boardsPerPage);
+            this.size = this.mostActive.length;
+
+            dispatchEvent(new Event('reloadPagination'));
+            
             this.ngOnInit();
           }
         },error =>{
@@ -80,6 +97,9 @@ export class BoardGameSearchComponent implements OnInit {
           if(retrieved == required){
             this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
             this.sort();
+            this.show = this.mostActive.slice(0,this.boardsPerPage);
+            this.size = this.mostActive.length;
+            dispatchEvent(new Event('reloadPagination'));
             this.ngOnInit();
           }
         });
