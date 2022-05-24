@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
     else
     {
       //there is a collection
-      let  collections:string[] = JSON.parse(localStorage.getItem("collection")||"");
+      let  collections:string[] = JSON.parse(localStorage.getItem("collections")||"");
 
       //use ids for first collection in list
       this.ids =JSON.parse(localStorage.getItem(collections[0])||"");

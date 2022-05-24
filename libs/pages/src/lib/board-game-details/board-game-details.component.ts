@@ -18,7 +18,7 @@ export class BoardGameDetailsComponent implements OnInit {
 
   addToCollection()
   {
-    this.router.navigate(['addGame']);
+    this.router.navigate(['addGame', {my_object: this.id}]);
 
     
     

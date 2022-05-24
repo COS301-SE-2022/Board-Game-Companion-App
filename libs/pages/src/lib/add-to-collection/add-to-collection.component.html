@@ -7,13 +7,15 @@
 </button>
 </div>
 <div>
-<select name="Collections" id="Collections">
-    <option value="MyCollection">MyCollection</option>
-    <option value="AnotherCollection">AnotherCollection</option>
+  <select name="Collections" id="Collections">
+    <option *ngFor="let title of options" 
+      [value]="title">
+      {{title}}
+</option>
   </select>
 </div>
 <div>
-  <button type="button">
+  <button type="button" (click)="addtoCollection()">
     Add to collection
     </button>
   </div>

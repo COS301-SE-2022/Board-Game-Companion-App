@@ -10,7 +10,7 @@ export class AddToCollectionComponent implements OnInit {
   constructor(private router:Router, private route: ActivatedRoute) {}
 
   id = "1010";
-  
+  options = [];
   newCollection(): void{
     //get name of collection from the text box,
     let name = (<HTMLInputElement>document.getElementById('collectionName')).value ||"";
@@ -21,6 +21,7 @@ export class AddToCollectionComponent implements OnInit {
       //there is no collections set, so we must set it then add
       let collections = [name];
       let collection = [this.id]
+      console.log(this.id);
 
       localStorage.setItem("collections", JSON.stringify(collections));
       localStorage.setItem(name, JSON.stringify(collection));
@@ -46,17 +47,32 @@ export class AddToCollectionComponent implements OnInit {
       else
       {
         //the collection is already there so just add the id to the existing collection
-        let collection = JSON.parse(localStorage.getItem("collections")||"");
+        let collection = JSON.parse(localStorage.getItem(name)||"");
         collection.push(this.id);
         localStorage.setItem(name, JSON.stringify(collection));
       }
     }
 
   }
+  addtoCollection(): void{
+    //get the list value from the select form
+    let name = (<HTMLInputElement>document.getElementById('Collections')).value ||"";
+    //collection exists, so just add to it
+    let collection = JSON.parse(localStorage.getItem(name)||"");
+    collection.push(this.id);
+    localStorage.setItem(name, JSON.stringify(collection));
 
+  }
   ngOnInit(): void {
     //set id
     this.id = this.route.snapshot.paramMap.get('my_object')||"";
     
+    
+    if (!localStorage.getItem("collections") === null) {
+      //there are some collections to display in the form
+      this.options = JSON.parse(localStorage.getItem("collections")||"");
+
+    }
+
   }
 }
