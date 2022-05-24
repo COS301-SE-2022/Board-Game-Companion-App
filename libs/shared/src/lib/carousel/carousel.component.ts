@@ -34,12 +34,17 @@ export class CarouselComponent implements OnChanges {
 
   }
 
+  getCollections()
+  {
+    this.router.navigate(['collections'])
+  }
+
 
   ngOnChanges(): void {
     
     //check if collection is empty
     if (localStorage.getItem("collection") === null || localStorage.getItem("collection") == "[]") {
-      let elem = document.getElementById("first") as HTMLElement;
+      let elem = document.getElementById("head") as HTMLElement;
       elem.innerHTML = "Your collection is empty <br> here are some suggestions"
 
     }
@@ -47,8 +52,8 @@ export class CarouselComponent implements OnChanges {
     {
       
       
-      let elem = document.getElementById("first") as HTMLElement;
-      elem.innerHTML = "Your collection!"
+      let elem = document.getElementById("head") as HTMLElement;
+      elem.innerHTML = "Explore your collection"
       
     }
 
@@ -67,18 +72,18 @@ export class CarouselComponent implements OnChanges {
               let result:string = data.toString();
               let name:string = "";
               let url:string = "";
+              let designer:string = "";
 
               let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
             
               parseXml.querySelectorAll("name").forEach(n=>{
                 name = n.getAttribute("value") || "";
-            });
+              });
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   url = imgUrl.innerHTML;
               });
-
                
-                this.listResults.push(new SearchResult(name, url,this.ids[j]))
+                this.listResults.push(new SearchResult(name, url, this.ids[j]))
                 
 
                   
