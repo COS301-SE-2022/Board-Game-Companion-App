@@ -8,8 +8,17 @@ import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [CarouselComponent, HeaderComponent, FooterComponent],
-  exports: [CarouselComponent, HeaderComponent, BggSearchService, FooterComponent],
+  declarations: [
+    CarouselComponent,
+    HeaderComponent,
+    FooterComponent,
+  ],
+  exports: [
+    CarouselComponent,
+    HeaderComponent,
+    BggSearchService,
+    FooterComponent
+  ],
   providers: [BggSearchService],
 })
 export class SharedModule {}

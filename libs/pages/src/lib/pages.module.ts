@@ -32,7 +32,11 @@ import { BoardGameSearchComponent } from './board-game-search/board-game-search.
 import { FormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
+
 import { CollectionsComponent } from './collections/collections.component';
+
+import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
+
 
 const routes: Routes = [
   {
@@ -51,6 +55,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
   },
+
   {
     path: 'collections',
     component: CollectionsComponent,
@@ -75,6 +80,9 @@ const routes: Routes = [
     BoardGameSearchComponent,
     PaginationComponent,
     CollectionsComponent,
+
+    AddToCollectionComponent,
+
   ],
   providers: [SharedModule],
   exports: [
@@ -82,7 +90,10 @@ const routes: Routes = [
     BoardGameDetailsComponent,
     BoardGameSearchComponent,
     LoginComponent,
+
     CollectionsComponent,
+
+    AddToCollectionComponent,
   ],
 })
 export class PagesModule {}
