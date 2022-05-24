@@ -1,16 +1,20 @@
 <board-game-companion-app-header></board-game-companion-app-header>
 
-<div>Add to collection</div>
-<input type="text" id="fname" name="fname">
-<button type="button">
+<div>
+<input type="text" id="collectionName" name="collectionName">
+<button type="button" (click)="newCollection()">
     Add to new collection
 </button>
+</div>
+<div>
 <select name="Collections" id="Collections">
-    <option value="MyCollection">Volvo</option>
+    <option value="MyCollection">MyCollection</option>
     <option value="AnotherCollection">AnotherCollection</option>
   </select>
+</div>
+<div>
   <button type="button">
     Add to collection
     </button>
-
+  </div>
 <board-game-companion-app-footer></board-game-companion-app-footer>

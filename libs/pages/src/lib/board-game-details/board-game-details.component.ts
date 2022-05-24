@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'board-game-companion-app-board-game-details',
@@ -10,7 +10,7 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
   styleUrls: ['./board-game-details.component.scss'],
 })
 export class BoardGameDetailsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute) {}
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
 
   id:string = "1010";
 
@@ -18,33 +18,9 @@ export class BoardGameDetailsComponent implements OnInit {
 
   addToCollection()
   {
+    this.router.navigate(['addGame']);
 
-    if(document.getElementById('addGame')?.getAttribute("value") == "add")
-    {
-      if (localStorage.getItem("collection") === null) {
-        //collection is empty
-        //create array
-        let collection = [this.id]
-
-        localStorage.setItem("collection", JSON.stringify(collection));
-
-      }
-      else
-      {
-        //there is a collection
-
-        //get the array
-        let collection = JSON.parse(localStorage.getItem("collection")||"");
-        if(!collection.includes(this.id))
-        {
-          
-          //element isnt in collection, we can add
-          collection.push(this.id);
-          //save to local storage
-          localStorage.setItem("collection", JSON.stringify(collection));
-        }
-      }
-    }
+    
     
   }
 
