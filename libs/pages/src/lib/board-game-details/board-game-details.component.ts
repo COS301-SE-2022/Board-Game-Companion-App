@@ -125,6 +125,7 @@ export class BoardGameDetailsComponent implements OnInit {
               let description:string = "";
               
               let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+              
             
               //get information
               parseXml.querySelectorAll("name").forEach(n=>{
@@ -135,6 +136,7 @@ export class BoardGameDetailsComponent implements OnInit {
               });
               parseXml.querySelectorAll("description").forEach(descr=>{
                 description = descr.innerHTML;
+                description = description.replace(/&amp;#10;/g,'');
             });
 
 
