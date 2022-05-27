@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'board-game-companion-app-board-game-details',
@@ -10,7 +10,7 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
   styleUrls: ['./board-game-details.component.scss'],
 })
 export class BoardGameDetailsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute) {}
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
 
   id:string = "1010";
 
@@ -18,69 +18,10 @@ export class BoardGameDetailsComponent implements OnInit {
 
   addToCollection()
   {
-    if(document.getElementById('addGame')?.getAttribute("value") == "add")
-    {
-      if (localStorage.getItem("collection") === null) {
-        //collection is empty
-        //create array
-        let collection = [this.id]
+    this.router.navigate(['addGame', {my_object: this.id}]);
 
-        localStorage.setItem("collection", JSON.stringify(collection));
-
-        //change button
-        let elem = document.getElementById('addGame') as HTMLElement;
-        if(elem != null)
-        {
-          elem.innerHTML = "remove from collection";
-          elem.setAttribute("value", "remove")
-        }
-
-      }
-      else
-      {
-        //there is a collection
-
-        //get the array
-        let collection = JSON.parse(localStorage.getItem("collection")||"");
-        if(!collection.includes(this.id))
-        {
-          
-          //element isnt in collection, we can add
-          collection.push(this.id);
-          //save to local storage
-          localStorage.setItem("collection", JSON.stringify(collection));
-          //update the button
-          let elem = document.getElementById('addGame') as HTMLElement;
-          if(elem != null)
-          {
-            elem.innerHTML = "remove from collection";
-            elem.setAttribute("value", "remove")
-          }
-
-        }
-      }
-    }
-    else{
-      if (localStorage.getItem("collection") !== null) {
-        //the collection exists, retrieve it
-        let collection = JSON.parse(localStorage.getItem("collection")||"");
-        const index = collection.indexOf(this.id);
-        if (index > -1) {
-          collection.splice(index, 1); // remove the element from the array
-        }
-        //save to local storage
-        localStorage.setItem("collection", JSON.stringify(collection));
-
-        //update the button
-        let elem = document.getElementById('addGame') as HTMLElement;
-        if(elem != null)
-        {
-          elem.innerHTML = "Add to collection!";
-          elem.setAttribute("value", "add")
-        }
-
-      }
-    }
+    
+    
   }
 
   ngOnInit(): void {
@@ -88,28 +29,7 @@ export class BoardGameDetailsComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('my_object')||"";
     //;
 
-    //check if board game has been added to a collection
-    if (localStorage.getItem("collection") === null) 
-    {
-      //nothing added
-      
-    }
-    else
-    {
-      //there is a collection check it
-      let collection = JSON.parse(localStorage.getItem("collection")||"");
-      if(collection.includes(this.id))
-      {
-        //we must change the button button
-        
-        let elem = document.getElementById('addGame') as HTMLElement;
-        if(elem != null)
-        {
-          elem.innerHTML = "remove from collection";
-          elem.setAttribute("value", "remove")
-        }
-      }
-    }
+    
 
     
     
