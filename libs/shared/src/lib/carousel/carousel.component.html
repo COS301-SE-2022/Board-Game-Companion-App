@@ -2,29 +2,50 @@
   <button (click) = "getCollections()"><h2 id = "head"></h2></button>
   <div id="carouselBG" class="carousel slide relative mt-10" data-carousel="static" data-bs-ride="carousel">
       <div class="carousel-inner relative w-full overflow-hidden">
-        <div id="first" class = "carousel-item active relative object-center float-left w-full" >
-            Hello
-        </div>
-        <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults">
-          <button id = "b" type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
+        <div class="carousel-inner relative w-full overflow-hidden">
+          <div id="first" class = "carousel-item active relative object-center float-left w-full">
+            <button id = "b" type="button" (click)= "getDetails(listResults[1].getID())"><img class= "block w-full" [src] =  'listResults[1].getimgUrl()'></button>
+            <div class="carousel-caption">
+              <div class = "in" id = "name">
+                Name: {{listResults[1].getName()}}
+              </div>
+              <div class = "in" id = "cb">
+                Created by: {{listResults[1].getDesigner()}}
+              </div>
+              <div class = "in" id = "Players">
+                Players: {{listResults[1].getMinPlayers()}}-{{listResults[1].getMaxPlayers()}}
+              </div>
+              <div class = "in" id = "PlayTime">
+                Play Time: {{listResults[1].getMinPlayTime()}}-{{listResults[1].getMaxPlayTime()}} min
+              </div>
+              <div class = "in" id = "age">
+                Min Age: {{listResults[1].getAge()}}
+              </div>
+              <div class = "in" id = "Complexity">
+                Category: {{listResults[1].getCategory()}}
+              </div>
+            </div>
+          </div>
+          <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:2 ">
+            <button  id = "b" type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
           <div class="carousel-caption">
             <div class = "in" id = "name">
               Name: {{game.getName()}}
             </div>
             <div class = "in" id = "cb">
-              Created by: 
+              Created by: {{game.getDesigner()}}
             </div>
             <div class = "in" id = "Players">
-              Players:
+              Players: {{game.getMinPlayers()}}-{{game.getMaxPlayers()}}
             </div>
             <div class = "in" id = "PlayTime">
-              Play Time:
+              Play Time: {{game.getMinPlayTime()}}-{{game.getMaxPlayTime()}} min
             </div>
             <div class = "in" id = "age">
-              Age:
+              Min Age: {{game.getAge()}}
             </div>
             <div class = "in" id = "Complexity">
-              Complexity:
+              Category: {{game.getCategory()}}
             </div>
           </div>
         </div>
