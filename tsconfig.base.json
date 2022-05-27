@@ -18,6 +18,9 @@
       "@board-game-companion-app/api/board-games": [
         "libs/api/board-games/src/index.ts"
       ],
+      "@board-game-companion-app/api/script-editor": [
+        "libs/api/script-editor/src/index.ts"
+      ],
       "@board-game-companion-app/pages": ["libs/pages/src/index.ts"],
       "@board-game-companion-app/shared": ["libs/shared/src/index.ts"]
     }
