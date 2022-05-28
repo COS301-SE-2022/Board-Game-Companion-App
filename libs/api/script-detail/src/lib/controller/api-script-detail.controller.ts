@@ -15,7 +15,7 @@ export class ApiScriptDetailController {
         return {success:true,message:"script saved.",content:await this.scriptService.create(dto)}; 
     }
 
-    @Get('retrieve')
+    @Get('retrieve/byid')
     async retrieveScript(@Query('id')id:number): Promise<Script>{
         return await this.scriptService.findById(id);
     }

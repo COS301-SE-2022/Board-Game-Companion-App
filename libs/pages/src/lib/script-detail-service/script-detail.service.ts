@@ -41,7 +41,7 @@ export class ScriptDetailService {
   private url = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.url = "https://localhost:3333/scripts/";
+    this.url = "http://localhost:3333/api/scripts/";
   }
 
   getScriptById(id:string):Observable<script>{
