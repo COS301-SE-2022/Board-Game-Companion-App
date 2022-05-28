@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
 
       //use ids for first collection in list
       this.ids =JSON.parse(localStorage.getItem(collections[0])||"");
+      console.log(this.ids);
     }
 
 
