@@ -21,8 +21,9 @@ export class CarouselComponent implements OnChanges {
   @Input()
   ids!: string[];
 
+  
 
-  listResults: SearchResult[] = [];
+  listResults: SearchResult[] = new Array<SearchResult>();
 
   
 
@@ -43,7 +44,7 @@ export class CarouselComponent implements OnChanges {
   ngOnChanges(): void {
     
     //check if collection is empty
-    if (localStorage.getItem("collection") === null || localStorage.getItem("collection") == "[]") {
+    if (localStorage.getItem("collections") === null || localStorage.getItem("collections") == "[]") {
       let elem = document.getElementById("head") as HTMLElement;
       elem.innerHTML = "Your collection is empty <br> here are some suggestions"
 
@@ -57,9 +58,9 @@ export class CarouselComponent implements OnChanges {
       
     }
 
-
     for(let j = 0; j<this.ids.length; j++)
     {
+      
       //if id at j is defined
       if(this.ids[j]!=null)
       {
@@ -81,7 +82,6 @@ export class CarouselComponent implements OnChanges {
               let category:string = "";
 
               let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
-              console.log(parseXml);
             
               parseXml.querySelectorAll("name").forEach(n=>{
                 name = n.getAttribute("value") || "";
@@ -118,7 +118,7 @@ export class CarouselComponent implements OnChanges {
               });
     
                
-                this.listResults.push(new SearchResult(name, url, age, designer, minPlayers, maxPlayers, minPlayTime, maxPlayTime, category, this.ids[j]))
+              this.listResults.push(new SearchResult(name, url, age, designer, minPlayers, maxPlayers, minPlayTime, maxPlayTime, category, this.ids[j]))
                 
 
                   
@@ -131,7 +131,6 @@ export class CarouselComponent implements OnChanges {
           
         
         
-          
         
     
   }
