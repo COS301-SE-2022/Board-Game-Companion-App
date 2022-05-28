@@ -16,6 +16,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PaginationComponent } from './board-game-search/pagination/pagination.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ScriptDetailComponent } from './script-detail/script-detail.component';
+import { CommentSectionComponent } from './script-detail/comment-section/comment-section.component'
 
 //const configure = [
 //{
@@ -36,7 +38,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { CollectionsComponent } from './collections/collections.component';
 
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
-
 
 const routes: Routes = [
   {
@@ -63,7 +64,10 @@ const routes: Routes = [
   {
     path: 'addGame',
     component: AddToCollectionComponent,
-  },
+  },{
+    path: 'script-detail',
+    component: ScriptDetailComponent
+  }
 ];
 
 @NgModule({
@@ -86,7 +90,8 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
-
+    ScriptDetailComponent,
+    CommentSectionComponent
   ],
   providers: [SharedModule],
   exports: [
@@ -98,6 +103,7 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
+    ScriptDetailComponent,
   ],
 })
 export class PagesModule {}
