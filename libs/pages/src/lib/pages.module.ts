@@ -4,8 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
-//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login'; 
-import{ ReactiveFormsModule} from '@angular/forms';
+//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { ReactiveFormsModule } from '@angular/forms';
 //import { BrowserModule } from '@angular/platform-browser';
 import {
   SocialLoginModule,
@@ -40,7 +40,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CollectionsComponent } from './collections/collections.component';
 
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
-
+import { EditorComponent } from './editor/editor.component';
 
 const routes: Routes = [
   {
@@ -92,7 +92,7 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
-
+    EditorComponent,
   ],
   providers: [SharedModule],
   exports: [
@@ -104,7 +104,7 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
+    EditorComponent,
   ],
-
 })
 export class PagesModule {}
