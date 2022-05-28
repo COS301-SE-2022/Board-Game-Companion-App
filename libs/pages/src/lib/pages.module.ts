@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { LoginComponent } from './login/login.component';
 //import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -82,6 +83,7 @@ const routes: Routes = [
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    RichTextEditorModule
   ],
   declarations: [
     HomeComponent,

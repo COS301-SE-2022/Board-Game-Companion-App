@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { LoginComponent, PagesModule } from '@board-game-companion-app/pages';
@@ -25,7 +26,8 @@ import { environment } from '../environments/environment';
     SocialLoginModule,
     PagesModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RichTextEditorModule
 
   ],
   providers: [
