@@ -13,25 +13,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit{
   loginForm!: FormGroup;
   socialUser!: SocialUser;
-  Loggedin?: boolean;
+  isLoggedin?: boolean;
  
   //user:any;
   constructor(
     private formBuilder: FormBuilder,
     private authService:SocialAuthService, 
     private router:Router
-    ) {}
+  ) {}
 
   //constructor(private router:Router){}
 
-   ngOnInit(): void {
+  ngOnInit() {
     this.loginForm = this.formBuilder.group({
       Email: ['', Validators.required],
       Password: ['', Validators.required],
     });
     this.authService.authState.subscribe((user) => {
       this.socialUser = user;
-      this.Loggedin = user != null;
+      this.isLoggedin = user != null;
       console.log(this.socialUser);
     });
   }
@@ -44,8 +44,9 @@ export class LoginComponent implements OnInit{
       console.log(platform + "logged in user data is=" ,response);
 
       this.user =response;*/
-    // this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-    this.router.navigate(['home']);
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(() =>
+    this.router.navigate(['home']));
+    /*this.router.navigate(['home']);*/
   }
     
 
@@ -58,14 +59,17 @@ export class LoginComponent implements OnInit{
       this.user =response;
     }
     );*/
-    //this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.router.navigate(['/home']);
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    /*this.router.navigate(['/home']);*/
   }
 
   TokenRefresher(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
+  /*logout(): void{
+    this.authService.signOut();
+  }*/
 
 }
 
