@@ -18,6 +18,7 @@ import { PaginationComponent } from './board-game-search/pagination/pagination.c
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ScriptDetailComponent } from './script-detail/script-detail.component';
 import { CommentSectionComponent } from './script-detail/comment-section/comment-section.component'
+import { CommentComponent } from './script-detail/comment/comment.component';
 
 //const configure = [
 //{
@@ -88,10 +89,10 @@ const routes: Routes = [
     BoardGameSearchComponent,
     PaginationComponent,
     CollectionsComponent,
-
     AddToCollectionComponent,
     ScriptDetailComponent,
-    CommentSectionComponent
+    CommentSectionComponent,
+    CommentComponent
   ],
   providers: [SharedModule],
   exports: [
