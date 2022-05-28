@@ -8,3 +8,4 @@ export * from './lib/login/login.component';
 
 export * from './lib/board-game-search/board-game-search.component';
 
+export * from './lib/add-to-collection/add-to-collection.component';

@@ -1,25 +1,63 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-.resultSet {
-  max-width: 80%;
-  position: relative;
+
+#wrapper{
+  width: 70%;
   margin: auto;
-  display: flex;
+  padding: 2em;
+  border: 3px solid $Pcolour-2;
+  border-radius: 0.5em;
+  margin-top: 5em;
+  background-color: #ffffff;
 }
 
-.BGName {
-    float: left;
-    overflow: hidden;
+#first{
+  width: 100%;
+  max-height: 25em;
+}
+
+.carousel-control-next{
+  right: 25%;
+}
+
+h2{
+  font-weight: bold;
+  font-size: 2em;
+  color: $Pcolour-2;
+}
+
+.carousel-caption{
+  position: absolute;
+  color: $Pcolour-2;
+  height: 100%;
+  width: 100%;
+  font-weight: bold;
+  padding-bottom: 10em;
+  margin-left: 40em;
+}
+
+.in{
+  padding-bottom: 2em;
+}
+
+.resultSet {
+  width: 40em;
+  height: 25em;
+}
+
+#b{
+  width: 75%;
+  max-width: 75%;
+  max-height: 25em;
+  height: 25em;
+}
+
+#carItem{
+  width: 100%;
+  max-height: 25em;
 }
 
 #carouselBG{
-  left: 25%;
-  background-color: $Pcolour-3;
-}
-#first
-{
-  text-align: center;
-  font-weight: bold;
-  font-size: x-large;
-  font-family: sans-serif;
+  width: 95%;
+  height: 25em;
 }

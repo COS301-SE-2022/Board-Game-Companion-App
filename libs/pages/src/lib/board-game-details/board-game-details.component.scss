@@ -1,6 +1,7 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
 
+
 .container{
     width: 100%;
     position: relative;
@@ -25,12 +26,19 @@
 #title
 {
     font-weight: bold;
-    font-size: x-large;
+    font-size: xx-large;
     font-family: sans-serif;
     text-align: center;
+    margin-bottom: 1em;
 }
 #addGame
 {
     font-family: sans-serif;
     text-align: center;
+}
+#center{
+    margin: 0;
+    margin-top: 2em;
+    position: absolute;
+    left: 50%;
 }

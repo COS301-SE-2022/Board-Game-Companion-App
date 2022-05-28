@@ -34,12 +34,17 @@ export class CarouselComponent implements OnChanges {
 
   }
 
+  getCollections()
+  {
+    this.router.navigate(['collections'])
+  }
+
 
   ngOnChanges(): void {
     
     //check if collection is empty
     if (localStorage.getItem("collection") === null || localStorage.getItem("collection") == "[]") {
-      let elem = document.getElementById("first") as HTMLElement;
+      let elem = document.getElementById("head") as HTMLElement;
       elem.innerHTML = "Your collection is empty <br> here are some suggestions"
 
     }
@@ -47,8 +52,8 @@ export class CarouselComponent implements OnChanges {
     {
       
       
-      let elem = document.getElementById("first") as HTMLElement;
-      elem.innerHTML = "Your collection!"
+      let elem = document.getElementById("head") as HTMLElement;
+      elem.innerHTML = "Explore your collection"
       
     }
 
@@ -67,18 +72,53 @@ export class CarouselComponent implements OnChanges {
               let result:string = data.toString();
               let name:string = "";
               let url:string = "";
+              let age:string = "";
+              let designer:string = "";
+              let minPlayers:string = "";
+              let maxPlayers:string = "";
+              let minPlayTime:string = "";
+              let maxPlayTime:string = "";
+              let category:string = "";
 
               let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+              console.log(parseXml);
             
               parseXml.querySelectorAll("name").forEach(n=>{
                 name = n.getAttribute("value") || "";
-            });
+              });
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   url = imgUrl.innerHTML;
               });
+              parseXml.querySelectorAll("minage").forEach(min=>{
+                age = min.getAttribute("value") || "";
+              });
+              parseXml.querySelectorAll("link").forEach(des=>{
+                
+                if(des.getAttribute("type") == "boardgamedesigner")
+                {
+                  designer = des.getAttribute("value") || "";
+                }
 
+                if(des.getAttribute("type") == "boardgamecategory")
+                {
+                  category = des.getAttribute("value") || "";
+                }
+              });
+              parseXml.querySelectorAll("minplayers").forEach(min=>{
+                minPlayers = min.getAttribute("value") || "";
+              });
+              parseXml.querySelectorAll("maxplayers").forEach(max=>{
+                maxPlayers = max.getAttribute("value") || "";
+              });
+              parseXml.querySelectorAll("minplaytime").forEach(min=>{
+                minPlayTime = min.getAttribute("value") || "";
+              });
+              parseXml.querySelectorAll("maxplaytime").forEach(max=>{
+                maxPlayTime = max.getAttribute("value") || "";
+              });
+    
                
-                this.listResults.push(new SearchResult(name, url,this.ids[j]))
+                this.listResults.push(new SearchResult(name, url, age, designer, minPlayers, maxPlayers, minPlayTime, maxPlayTime, category, this.ids[j]))
                 
 
                   

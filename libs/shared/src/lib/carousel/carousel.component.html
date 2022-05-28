@@ -1,29 +1,73 @@
-
-<div id="carouselBG" class="carousel slide relative mt-10" data-carousel="static" data-bs-ride="carousel" style = "width: 800px;">
-    <div class="carousel-inner relative w-full overflow-hidden">
-      <div id="first" class = "carousel-item active relative object-center float-left w-full"  style="height:500px;">
+<div id = "wrapper">
+  <button (click) = "getCollections()"><h2 id = "head"></h2></button>
+  <div id="carouselBG" class="carousel slide relative mt-10" data-carousel="static" data-bs-ride="carousel">
+      <div class="carousel-inner relative w-full overflow-hidden">
+        <div class="carousel-inner relative w-full overflow-hidden">
+          <div id="first" class = "carousel-item active relative object-center float-left w-full">
+            <button id = "b" type="button" (click)= "getDetails(listResults[1].getID())"><img class= "block w-full" [src] =  'listResults[1].getimgUrl()'></button>
+            <div class="carousel-caption">
+              <div class = "in" id = "name">
+                Name: {{listResults[1].getName()}}
+              </div>
+              <div class = "in" id = "cb">
+                Created by: {{listResults[1].getDesigner()}}
+              </div>
+              <div class = "in" id = "Players">
+                Players: {{listResults[1].getMinPlayers()}}-{{listResults[1].getMaxPlayers()}}
+              </div>
+              <div class = "in" id = "PlayTime">
+                Play Time: {{listResults[1].getMinPlayTime()}}-{{listResults[1].getMaxPlayTime()}} min
+              </div>
+              <div class = "in" id = "age">
+                Min Age: {{listResults[1].getAge()}}
+              </div>
+              <div class = "in" id = "Complexity">
+                Category: {{listResults[1].getCategory()}}
+              </div>
+            </div>
+          </div>
+          <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:2 ">
+            <button  id = "b" type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
+          <div class="carousel-caption">
+            <div class = "in" id = "name">
+              Name: {{game.getName()}}
+            </div>
+            <div class = "in" id = "cb">
+              Created by: {{game.getDesigner()}}
+            </div>
+            <div class = "in" id = "Players">
+              Players: {{game.getMinPlayers()}}-{{game.getMaxPlayers()}}
+            </div>
+            <div class = "in" id = "PlayTime">
+              Play Time: {{game.getMinPlayTime()}}-{{game.getMaxPlayTime()}} min
+            </div>
+            <div class = "in" id = "age">
+              Min Age: {{game.getAge()}}
+            </div>
+            <div class = "in" id = "Complexity">
+              Category: {{game.getCategory()}}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class = "carousel-item relative object-center float-left w-full"  style="height:500px;" *ngFor = "let game of listResults">
-        <button type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'  height = "500px"></button><div class="carousel-caption hidden md:block absolute text-center"><h3 class="text-7xl">{{game.getName()}}</h3>
-      </div>
-    </div>
+      <button
+      class="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
+      type="button"
+      data-bs-target="#carouselBG"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
     <button
-    class="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline left-0"
-    type="button"
-    data-bs-target="#carouselBG"
-    data-bs-slide="prev"
-  >
-    <span class="carousel-control-prev-icon inline-block bg-no-repeat" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button
-    class="carousel-control-next absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline right-0"
-    type="button"
-    data-bs-target="#carouselBG"
-    data-bs-slide="next"
-  >
-    <span class="carousel-control-next-icon inline-block bg-no-repeat" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+      class="carousel-control-next absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline"
+      type="button"
+      data-bs-target="#carouselBG"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
+</div>
   
