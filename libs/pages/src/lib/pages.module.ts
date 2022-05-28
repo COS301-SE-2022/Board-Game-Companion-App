@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { RichTextEditorModule, ToolbarService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { LoginComponent } from './login/login.component';
-//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { ReactiveFormsModule } from '@angular/forms';
-//import { BrowserModule } from '@angular/platform-browser';
+
 import {
   SocialLoginModule,
-  SocialAuthServiceConfig,
+  //SocialAuthServiceConfig,
 } from 'angularx-social-login';
 //import{ GoogleLoginProvider} from 'angularx-social-login';
 import { SharedModule } from '@board-game-companion-app/shared';
@@ -96,7 +95,7 @@ const routes: Routes = [
     AddToCollectionComponent,
     EditorComponent,
   ],
-  providers: [SharedModule],
+  providers: [SharedModule, ToolbarService, LinkService, HtmlEditorService],
   exports: [
     HomeComponent,
     BoardGameDetailsComponent,

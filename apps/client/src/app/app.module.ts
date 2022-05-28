@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { RichTextEditorModule, ToolbarService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { LoginComponent, PagesModule } from '@board-game-companion-app/pages';
@@ -23,15 +23,17 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
     SharedModule,
+    LoginComponent,
     SocialLoginModule,
     PagesModule,
+    HttpClient,
     HttpClientModule,
     FormsModule,
     RichTextEditorModule
 
   ],
   providers: [
-    SharedModule, HttpClient,
+    SharedModule, ToolbarService, LinkService, HtmlEditorService, 
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
