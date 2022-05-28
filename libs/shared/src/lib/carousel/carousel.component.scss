@@ -11,6 +11,11 @@
   background-color: #ffffff;
 }
 
+#first{
+  width: 100%;
+  max-height: 25em;
+}
+
 .carousel-control-next{
   right: 25%;
 }
@@ -22,11 +27,13 @@ h2{
 }
 
 .carousel-caption{
-  float: right;
+  position: absolute;
   color: $Pcolour-2;
+  height: 100%;
+  width: 100%;
   font-weight: bold;
   padding-bottom: 10em;
-  padding-right: 6em;
+  margin-left: 40em;
 }
 
 .in{
@@ -34,7 +41,7 @@ h2{
 }
 
 .resultSet {
-  width: 30em;
+  width: 40em;
   height: 25em;
 }
 
