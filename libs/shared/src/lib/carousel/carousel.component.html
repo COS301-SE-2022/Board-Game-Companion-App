@@ -4,29 +4,29 @@
       <div class="carousel-inner relative w-full overflow-hidden">
         <div class="carousel-inner relative w-full overflow-hidden">
           <div id="first" class = "carousel-item active relative object-center float-left w-full">
-            <button id = "b" type="button" (click)= "getDetails(listResults[1].getID())"><img class= "block w-full" [src] =  'listResults[1].getimgUrl()'></button>
+            <button id = "b" type="button" (click)= "getDetails(listResults[0].getID())"><img class= "block w-full" [src] =  'listResults[0].getimgUrl()'></button>
             <div class="carousel-caption">
               <div class = "in" id = "name">
-                Name: {{listResults[1].getName()}}
+                Name: {{listResults[0].getName()}}
               </div>
               <div class = "in" id = "cb">
-                Created by: {{listResults[1].getDesigner()}}
+                Created by: {{listResults[0].getDesigner()}}
               </div>
               <div class = "in" id = "Players">
-                Players: {{listResults[1].getMinPlayers()}}-{{listResults[1].getMaxPlayers()}}
+                Players: {{listResults[0].getMinPlayers()}}-{{listResults[0].getMaxPlayers()}}
               </div>
               <div class = "in" id = "PlayTime">
-                Play Time: {{listResults[1].getMinPlayTime()}}-{{listResults[1].getMaxPlayTime()}} min
+                Play Time: {{listResults[0].getMinPlayTime()}}-{{listResults[0].getMaxPlayTime()}} min
               </div>
               <div class = "in" id = "age">
-                Min Age: {{listResults[1].getAge()}}
+                Min Age: {{listResults[0].getAge()}}
               </div>
               <div class = "in" id = "Complexity">
-                Category: {{listResults[1].getCategory()}}
+                Category: {{listResults[0].getCategory()}}
               </div>
             </div>
           </div>
-          <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:2 ">
+          <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:1 ">
             <button  id = "b" type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
           <div class="carousel-caption">
             <div class = "in" id = "name">

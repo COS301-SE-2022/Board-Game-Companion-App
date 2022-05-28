@@ -73,7 +73,7 @@ export class AddToCollectionComponent implements OnInit {
     
     localStorage.setItem(name, JSON.stringify(collection));
     
-    //this.router.navigate(['home']);
+    this.router.navigate(['home']);
   }
   ngOnInit(): void {
     //set id
