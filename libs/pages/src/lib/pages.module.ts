@@ -5,14 +5,14 @@ import { BoardGameDetailsComponent } from './board-game-details/board-game-detai
 import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
 import { RichTextEditorModule, ToolbarService, ImageService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
-//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-//import { BrowserModule } from '@angular/platform-browser';
+
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
-//import{ GoogleLoginProvider} from 'angularx-social-login';
+
 import { SharedModule } from '@board-game-companion-app/shared';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -39,6 +39,9 @@ import { CollectionsComponent } from './collections/collections.component';
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
 import { EditorComponent } from './editor/editor.component';
 import { GoogleLoginProvider } from 'angularx-social-login';
+
+import { ViewCollectionComponent } from './view-collection/view-collection.component';
+
 
 const routes: Routes = [
   {
@@ -98,6 +101,7 @@ const routes: Routes = [
 
     AddToCollectionComponent,
     EditorComponent,
+    ViewCollectionComponent,
   ],
   providers: [SharedModule, 
     {

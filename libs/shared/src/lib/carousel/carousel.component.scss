@@ -30,10 +30,11 @@ h2{
   position: absolute;
   color: $Pcolour-2;
   height: 100%;
-  width: 100%;
+  width: 25%;
   font-weight: bold;
-  padding-bottom: 10em;
+  display: inline-block;
   margin-left: 40em;
+  text-align: left;
 }
 
 .in{
