@@ -12,6 +12,10 @@ nav{
     position: relative;
 }
 
+ul{
+    height: 5em;
+}
+
 li{
     height: 100%;
     font-size: 1.4em;
@@ -44,10 +48,12 @@ a{
     
 }
 
-#logo{
-   height: 100%;
+a:hover{
+    color: $Pcolour-2;
 }
 
-img{
-    padding: 0.2em;
+
+#logo{
+   height: 100%;
+   
 }
