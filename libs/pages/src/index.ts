@@ -11,3 +11,4 @@ export * from './lib/board-game-search/board-game-search.component';
 export * from './lib/add-to-collection/add-to-collection.component';
 
 export * from './lib/script-detail/script-detail.component';
+export * from './lib/editor/editor.component';
