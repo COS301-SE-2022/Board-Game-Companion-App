@@ -69,6 +69,10 @@ const routes: Routes = [
     path: 'addGame',
     component: AddToCollectionComponent,
   },
+  {
+    path: 'viewCollection',
+    component: ViewCollectionComponent,
+  },
 ];
 
 @NgModule({
