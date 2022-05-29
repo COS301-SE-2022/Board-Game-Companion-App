@@ -19,9 +19,7 @@ import { environment } from '../environments/environment';
     HttpClientModule
 
   ],
-  providers: [
-    SharedModule, HttpClient],
-  bootstrap: [AppComponent],
+  providers: [SharedModule, HttpClient],
   
 })
 export class AppModule {}

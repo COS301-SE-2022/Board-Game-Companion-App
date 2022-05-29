@@ -129,5 +129,6 @@ const routes: Routes = [
     AddToCollectionComponent,
     EditorComponent,
   ],
+  bootstrap: [LoginComponent]
 })
 export class PagesModule {}
