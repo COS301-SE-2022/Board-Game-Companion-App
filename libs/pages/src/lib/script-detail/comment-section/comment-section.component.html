@@ -1,7 +1,7 @@
 <div class="block p-6 rounded-lg shadow-lg bg-white">
-  <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">6 Comments</h5>
+  <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2 hover:cursor-pointer" (click)="showComments=!showComments">6 Comments</h5>
   
-  <div class="flex my-4">
+  <div class="flex my-4" *ngIf = "showComments === true">
       <div class="block p-1 rounded-lg shadow-lg bg-gray-300 md:w-full">
           <div class="flex justify-center">
               <div class="w-full">
@@ -24,6 +24,6 @@
       </div>
   </div>
 
-  <board-game-companion-app-comment></board-game-companion-app-comment>
+  <board-game-companion-app-comment *ngIf="showComments === true"></board-game-companion-app-comment>
 
 </div>

@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comment-section.component.scss'],
 })
 export class CommentSectionComponent implements OnInit {
+  showComments = false;
   constructor() {}
 
   ngOnInit(): void {}

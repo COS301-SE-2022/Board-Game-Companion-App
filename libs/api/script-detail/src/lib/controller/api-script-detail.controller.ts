@@ -1,14 +1,23 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile } from '@nestjs/common';
 import { ScriptService } from '../service/scripts/script.service';
 import { scriptDto } from '../model/dto/scriptDto';
 import { createResponse }  from '../model/response/scriptResponse';
 import { Script } from '../schema/script.schema';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Controller('scripts')
 export class ApiScriptDetailController {
     constructor(private readonly scriptService:ScriptService){}
     
     //script functions
+
+
+    @Get('download')
+    downloadScript(@Query('name')name:string):StreamableFile{
+        const file = createReadStream(join(process.cwd(),name));
+        return new StreamableFile(file);
+    }
 
     @Post('create')
     async createScript(@Body() dto:scriptDto): Promise<createResponse>{ 
