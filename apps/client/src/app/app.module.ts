@@ -1,18 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RichTextEditorModule, ToolbarService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { LoginComponent, PagesModule } from '@board-game-companion-app/pages';
+import { PagesModule } from '@board-game-companion-app/pages';
 import { SharedModule } from '@board-game-companion-app/shared';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-    SocialLoginModule, 
-    SocialAuthServiceConfig,
-} from 'angularx-social-login';
-import { GoogleLoginProvider } from 'angularx-social-login';
 import { environment } from '../environments/environment';
 
 
@@ -20,34 +13,14 @@ import { environment } from '../environments/environment';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
     RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
     SharedModule,
-    LoginComponent,
-    SocialLoginModule,
     PagesModule,
-    HttpClient,
-    HttpClientModule,
-    FormsModule,
-    RichTextEditorModule
+    HttpClientModule
 
   ],
   providers: [
-    SharedModule, ToolbarService, LinkService, HtmlEditorService, 
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-      autoLogin: false,
-      providers: [
-        {
-          id: GoogleLoginProvider.PROVIDER_ID,
-          provider: new GoogleLoginProvider('677374700508-fqqrhga2mofdj1r9augtntsqpnn1kkkn.apps.googleusercontent.com'),
-  
-        },
-      ],
-      } as SocialAuthServiceConfig,
-    },
-  ],
+    SharedModule, HttpClient],
   bootstrap: [AppComponent],
   
 })
