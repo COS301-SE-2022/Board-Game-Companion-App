@@ -41,6 +41,7 @@ import { CollectionsComponent } from './collections/collections.component';
 
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
 import { EditorComponent } from './editor/editor.component';
+import { ViewCollectionComponent } from './view-collection/view-collection.component';
 
 const routes: Routes = [
   {
@@ -93,6 +94,7 @@ const routes: Routes = [
 
     AddToCollectionComponent,
     EditorComponent,
+    ViewCollectionComponent,
   ],
   providers: [SharedModule],
   exports: [
