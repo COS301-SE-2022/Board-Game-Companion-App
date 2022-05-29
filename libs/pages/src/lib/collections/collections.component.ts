@@ -33,7 +33,7 @@ export class CollectionsComponent implements OnInit {
         //get the 
         let ids:string[] = JSON.parse(localStorage.getItem(names[i])||"");
         let urls:string[] = new Array<string>();
-        for(let j=0; j<ids.length;j++)
+        for(let j=0; j<ids.length&&j<3;j++)
         {
           if(ids[j]!=null)
           {
@@ -42,7 +42,7 @@ export class CollectionsComponent implements OnInit {
                   data=>{
                   let result:string = data.toString();
                   let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
-                  parseXml.querySelectorAll("image").forEach(imgUrl=>{
+                  parseXml.querySelectorAll("thumbnail").forEach(imgUrl=>{
                     urls.push(imgUrl.innerHTML);
                 });
 

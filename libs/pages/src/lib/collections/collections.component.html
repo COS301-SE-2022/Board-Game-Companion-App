@@ -3,7 +3,7 @@
         <div>
             {{collection.name}}
         </div>
-        <span *ngFor="let url of collection.imgUrls">
+        <span *ngFor="let url of collection.imgUrls" class="imgSpan">
             <img [src] =  'url' width="128" height="128">
         </span>
     </div>
