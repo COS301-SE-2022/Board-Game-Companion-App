@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.service';
+import { ViewCollectionComponent } from '../view-collection/view-collection.component';
 
 
 @Component({
@@ -10,9 +12,16 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
   styleUrls: ['./collections.component.scss'],
 })
 export class CollectionsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService) {}
+  constructor(private bggSearch:BggSearchService, private router:Router) {}
 
   collections: collectionList[] = new Array<collectionList>();
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  viewCollection(n:String)
+  {
+    //
+    this.router.navigate(['viewCollection', {my_object: n}] )
+  }
 
   ngOnInit(): void {
 
