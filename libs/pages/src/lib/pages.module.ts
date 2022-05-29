@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
+//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { ReactiveFormsModule } from '@angular/forms';
 //import { BrowserModule } from '@angular/platform-browser';
 import {
   SocialLoginModule,
@@ -10,6 +13,7 @@ import {
 } from 'angularx-social-login';
 //import{ GoogleLoginProvider} from 'angularx-social-login';
 import { SharedModule } from '@board-game-companion-app/shared';
+//import { GoogleLoginProvider } from 'angularx-social-login';
 //const google_oauth_client_id = "13912431210-vfi8j8pi30e1ree2j3f3vsfb4o762p3t.apps.googleusercontent.com";
 //user:any;
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -36,7 +40,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CollectionsComponent } from './collections/collections.component';
 
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
-
+import { EditorComponent } from './editor/editor.component';
+import { ViewCollectionComponent } from './view-collection/view-collection.component';
 
 const routes: Routes = [
   {
@@ -69,8 +74,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    BrowserModule,
     SharedModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
     SocialLoginModule,
     FlexLayoutModule,
@@ -86,7 +93,8 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
-
+    EditorComponent,
+    ViewCollectionComponent,
   ],
   providers: [SharedModule],
   exports: [
@@ -98,6 +106,7 @@ const routes: Routes = [
     CollectionsComponent,
 
     AddToCollectionComponent,
+    EditorComponent,
   ],
 })
 export class PagesModule {}

@@ -2,16 +2,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { PagesModule } from '@board-game-companion-app/pages';
+import { LoginComponent, PagesModule } from '@board-game-companion-app/pages';
 import { SharedModule } from '@board-game-companion-app/shared';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     SocialLoginModule, 
     SocialAuthServiceConfig,
 } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     SharedModule,
     SocialLoginModule,
     PagesModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
 
   ],
   providers: [
@@ -35,7 +37,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
       providers: [
         {
           id: GoogleLoginProvider.PROVIDER_ID,
-          provider: new GoogleLoginProvider('883101879417-06l0onmc1qnkblboa1cs4v7bhckb6kqb.apps.googleusercontent.com')
+          provider: new GoogleLoginProvider('677374700508-fqqrhga2mofdj1r9augtntsqpnn1kkkn.apps.googleusercontent.com'),
   
         },
       ],
