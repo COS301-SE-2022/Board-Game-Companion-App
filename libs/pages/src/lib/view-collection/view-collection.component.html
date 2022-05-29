@@ -1,7 +1,10 @@
 <div>
+    <div>
+        <button id="delButton" (click)="deletion()">Remove Games?</button>
+    </div>
     <div *ngFor="let game of games" class="collectionDiv">
 
-        <button><img [src] = 'game.imgUrl'></button>
+        <button (click)="bgClick(game.id)"><img [src] = 'game.imgUrl'></button>
 
     </div>
 </div>
