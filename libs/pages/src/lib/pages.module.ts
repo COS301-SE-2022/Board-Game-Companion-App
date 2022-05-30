@@ -59,9 +59,16 @@ const routes: Routes = [
     component: AddToCollectionComponent,
   },
   {
+    path: 'viewCollection',
+    component: ViewCollectionComponent,
+  },
+
+
+  {
     path: 'editor',
     component: EditorComponent,
   }
+
 ];
 
 @NgModule({
