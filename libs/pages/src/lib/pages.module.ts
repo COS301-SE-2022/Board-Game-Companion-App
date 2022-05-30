@@ -4,18 +4,16 @@ import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
-//import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
-import { ReactiveFormsModule } from '@angular/forms';
-//import { BrowserModule } from '@angular/platform-browser';
+import { RichTextEditorModule, ToolbarService, ImageService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
-//import{ GoogleLoginProvider} from 'angularx-social-login';
+
 import { SharedModule } from '@board-game-companion-app/shared';
-//import { GoogleLoginProvider } from 'angularx-social-login';
-//const google_oauth_client_id = "13912431210-vfi8j8pi30e1ree2j3f3vsfb4o762p3t.apps.googleusercontent.com";
-//user:any;
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PaginationComponent } from './board-game-search/pagination/pagination.component';
@@ -33,7 +31,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 }*/
 
 import { BoardGameSearchComponent } from './board-game-search/board-game-search.component';
-import { FormsModule } from '@angular/forms';
 
 import { RouterModule, Routes } from '@angular/router';
 
@@ -41,7 +38,10 @@ import { CollectionsComponent } from './collections/collections.component';
 
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
 import { EditorComponent } from './editor/editor.component';
+import { GoogleLoginProvider } from 'angularx-social-login';
+
 import { ViewCollectionComponent } from './view-collection/view-collection.component';
+
 
 const routes: Routes = [
   {
@@ -69,16 +69,25 @@ const routes: Routes = [
     path: 'addGame',
     component: AddToCollectionComponent,
   },
+
   {
     path: 'viewCollection',
     component: ViewCollectionComponent,
   },
+
+
+  {
+    path: 'editor',
+    component: EditorComponent,
+  }
+
 ];
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
+    FormsModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
@@ -87,6 +96,7 @@ const routes: Routes = [
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    RichTextEditorModule
   ],
   declarations: [
     HomeComponent,
@@ -100,7 +110,21 @@ const routes: Routes = [
     EditorComponent,
     ViewCollectionComponent,
   ],
-  providers: [SharedModule],
+  providers: [SharedModule, 
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+      autoLogin: false,
+      providers: [
+        {
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider('677374700508-fqqrhga2mofdj1r9augtntsqpnn1kkkn.apps.googleusercontent.com'),
+  
+        },
+      ],
+      } as SocialAuthServiceConfig,
+    },
+    ToolbarService, ImageService, LinkService, HtmlEditorService],
   exports: [
     HomeComponent,
     BoardGameDetailsComponent,
@@ -112,5 +136,6 @@ const routes: Routes = [
     AddToCollectionComponent,
     EditorComponent,
   ],
+  bootstrap: [LoginComponent]
 })
 export class PagesModule {}

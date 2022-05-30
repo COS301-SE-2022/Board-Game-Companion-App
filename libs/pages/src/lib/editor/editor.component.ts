@@ -5,8 +5,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent implements OnInit {
-  constructor() {}
+export class EditorComponent {
+  title = 'angular-richtexteditor'
 
-  ngOnInit(): void {}
+/*public customToolBar: Object ={
+  items: ['Bold', 'Italic', 'Undo', 'Redo']
+}*/
 }
