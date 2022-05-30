@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { BoardGameDetailsComponent } from './board-game-details/board-game-details.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
-import { RichTextEditorModule, ToolbarService, ImageService, LinkService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import{ EditorModule } from '@tinymce/tinymce-angular';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,17 +18,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PaginationComponent } from './board-game-search/pagination/pagination.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
-//const configure = [
-//{
-// id: GoogleLoginProvider.PROVIDER_ID,
-// provider: new GoogleLoginProvider(google_oauth_client_id)
-//}
-//];
-
-/*export function provideConfig(){
-  return configure;
-}*/
 
 import { BoardGameSearchComponent } from './board-game-search/board-game-search.component';
 
@@ -69,7 +58,6 @@ const routes: Routes = [
     path: 'addGame',
     component: AddToCollectionComponent,
   },
-
   {
     path: 'viewCollection',
     component: ViewCollectionComponent,
@@ -96,7 +84,7 @@ const routes: Routes = [
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
-    RichTextEditorModule
+    EditorModule
   ],
   declarations: [
     HomeComponent,
@@ -123,8 +111,7 @@ const routes: Routes = [
         },
       ],
       } as SocialAuthServiceConfig,
-    },
-    ToolbarService, ImageService, LinkService, HtmlEditorService],
+    }],
   exports: [
     HomeComponent,
     BoardGameDetailsComponent,

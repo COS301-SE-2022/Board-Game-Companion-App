@@ -1,5 +1,14 @@
-<ejs-richtexteditor>
-    <ng-template #AIEditor>
-       <p> This is an example</p>    
-    </ng-template>
-</ejs-richtexteditor>
+<form> 
+<editor
+    apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
+        [init] = "{
+            icons: 'material',
+            skin: 'borderless',
+            plugins: 'wordcound',
+            menubar: true,
+            min_height: 150
+        }">
+</editor>
+</form> 
+
+<!-- Adapted from https://www.tiny.cloud/blog/angular-rich-text-editor/ [accessed 28 May 2022] -->
