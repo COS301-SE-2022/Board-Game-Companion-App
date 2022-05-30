@@ -20,6 +20,6 @@ import { environment } from '../environments/environment';
 
   ],
   providers: [SharedModule, HttpClient],
-  
+  boostrap: [AppComponent],
 })
 export class AppModule {}
