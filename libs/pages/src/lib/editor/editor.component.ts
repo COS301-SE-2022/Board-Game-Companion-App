@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AsyncSubject, Subject } from 'rxjs';
-
+import tinymce from 'tinymce/tinymce';
 
 @Component({
   selector: 'board-game-companion-app-editor',
@@ -17,9 +17,16 @@ export class EditorComponent {
     body: new FormControl("", Validators.required)
   })
 
-  onUpload():void{
-    console.log("This is upload")
-  }
+  /*myLoad():void {
+    var myContent = localStorage.getItem("myContent");
+    document.getElementById("myTextarea").value = myContent;
+  }*/
+
+  /*Download to local storage*
+  onDownload(): void{
+    const content = tinymce.get("editorTextarea").getContent();
+    localStorage.setItem("content", content);
+  } */
 
 /*public customToolbar: Object ={
   items: ['Bold', 'Italic', 'Undo', 'Redo']
