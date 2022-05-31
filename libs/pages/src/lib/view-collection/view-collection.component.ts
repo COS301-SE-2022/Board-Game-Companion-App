@@ -49,11 +49,27 @@ export class ViewCollectionComponent implements OnInit {
       if(localStorage.getItem(this.name||"") !== null)
       {
         let ids = JSON.parse(localStorage.getItem(this.name)||"");
-        const index = ids.indexOf(id, 0);
+        let index = ids.indexOf(id, 0);
         if (index > -1) {
           ids.splice(index, 1);
         }
-        localStorage.setItem(this.name, JSON.stringify(ids));
+        //
+        
+        if(ids.length ==0)
+        {
+          //remove the collection
+          localStorage.removeItem(this.name);
+          let c = JSON.parse(localStorage.getItem("collections")||"")
+          let index = c.indexOf(this.name, 0);
+          if (index > -1) {
+            c.splice(index, 1);
+          }
+          localStorage.setItem("collections", JSON.stringify(ids));
+        }
+        else
+        {
+          localStorage.setItem(this.name, JSON.stringify(ids));
+        }
       }
       for(let i = 0; i<this.games.length;i++)
       {
