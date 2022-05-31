@@ -1,20 +1,25 @@
 
-<div>
-<input type="text" id="collectionName" name="collectionName">
-<button type="button" (click)="newCollection()">
-    Add to new collection
-</button>
-</div>
-<div>
-  <select name="Collections" id="Collections">
-    <option *ngFor="let title of options" 
-      [value]="title">
-      {{title}}
-</option>
-  </select>
-</div>
-<div>
-  <button type="button" (click)="addtoCollection()">
-    Add to collection
+
+<div id = "container">
+  <h2 class = "font-medium leading-tight text-xxl mt-0 mb-2 text-green-600">
+    Add to a Collection
+  </h2>
+  <div id = "new">
+    <input type="text" id="collectionName" name="collectionName">
+    <button (click)="newCollection()">
+        Add to new collection
     </button>
   </div>
+  <div id = "collect">
+    <select name="Collections" id="Collections">
+      <option *ngFor="let title of options" 
+        [value]="title">
+        {{title}}
+      </option>
+    </select>
+    <button (click)="addtoCollection()">
+      Add to collection
+    </button>
+  </div>
+    
+</div>
