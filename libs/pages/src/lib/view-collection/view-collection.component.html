@@ -1,8 +1,8 @@
-<div>
+<div id="container">
     <div>
         <button id="delButton" (click)="deletion()">Remove Games?</button>
     </div>
-    <div *ngFor="let game of games" class="collectionDiv">
+    <div *ngFor="let game of games" class="collectionDiv" class="board-game">
 
         <button (click)="bgClick(game.id)"><img [src] = 'game.imgUrl'></button>
 

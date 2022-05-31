@@ -1,7 +1,14 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
 #CollectionsList
 {
     
     display:flex;
+    position:relative;
+    top:2em;
+    left:28em;
+    flex-direction: column;
+    height:20em;
+    overflow-y:auto;
 }
 .imgSpan
 {
@@ -9,5 +16,9 @@
 }
 .collectionDiv
 {
-
+    
+}
+.title
+{
+    
 }
