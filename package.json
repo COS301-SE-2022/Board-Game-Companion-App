@@ -73,6 +73,7 @@
     "mongoose": "^6.3.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
+    "tinymce": "^6.0.3",
     "tslib": "^2.3.0",
     "tw-elements": "^1.0.0-alpha12",
     "uuidv4": "^6.2.13",
