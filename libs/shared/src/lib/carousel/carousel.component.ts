@@ -88,7 +88,14 @@ export class CarouselComponent implements OnChanges {
               });
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   url = imgUrl.innerHTML;
+                  
               });
+              
+              if (parseXml.querySelectorAll("image").length ==0)
+              {
+                  
+                  url ='assets/images/No_image.png';
+              }
               parseXml.querySelectorAll("minage").forEach(min=>{
                 age = min.getAttribute("value") || "";
               });
