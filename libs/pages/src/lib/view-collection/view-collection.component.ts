@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.service';
 
@@ -9,11 +9,77 @@ import { BggSearchService } from 'libs/shared/src/lib/services/bgg-search.servic
   styleUrls: ['./view-collection.component.scss'],
 })
 export class ViewCollectionComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute) {}
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute,private router:Router) {}
   games: boardGameImage[] = new Array<boardGameImage>();
   name:string = "";
   
+  del = false;
 
+  deletion()
+  {
+    if(this.del)
+    {
+      let myContainer = document.getElementById('delButton') as HTMLInputElement;
+      myContainer.innerHTML = "Remove Games?";
+    }
+    else
+    {
+      let myContainer = document.getElementById('delButton') as HTMLInputElement;
+      myContainer.innerHTML = "Cancel?";
+      console.log("here")
+    }
+    
+
+    this.del = !this.del;
+
+  }
+
+  bgClick(id:string)
+  {
+    //
+    if(this.del == false)
+    {
+      //send them through to details
+      this.router.navigate(['board-game-details', {my_object: id}] )
+
+    }
+    else
+    {
+      //delete the board game
+      if(localStorage.getItem(this.name||"") !== null)
+      {
+        let ids = JSON.parse(localStorage.getItem(this.name)||"");
+        let index = ids.indexOf(id, 0);
+        if (index > -1) {
+          ids.splice(index, 1);
+        }
+        //
+        
+        if(ids.length ==0)
+        {
+          //remove the collection
+          localStorage.removeItem(this.name);
+          let c = JSON.parse(localStorage.getItem("collections")||"")
+          let index = c.indexOf(this.name, 0);
+          if (index > -1) {
+            c.splice(index, 1);
+          }
+          localStorage.setItem("collections", JSON.stringify(ids));
+        }
+        else
+        {
+          localStorage.setItem(this.name, JSON.stringify(ids));
+        }
+      }
+      for(let i = 0; i<this.games.length;i++)
+      {
+        if(this.games[i].id==id)
+        {
+          delete this.games[i];
+        }
+      }
+    }
+  }
 
   ngOnInit(): void {
 

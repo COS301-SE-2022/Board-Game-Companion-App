@@ -16,6 +16,11 @@
   max-height: 25em;
 }
 
+#carItem{
+  width: 100%;
+  max-height: 25em;
+}
+
 .carousel-control-next{
   right: 25%;
 }
@@ -32,9 +37,8 @@ h2{
   height: 100%;
   width: 25%;
   font-weight: bold;
-  display: inline-block;
-  margin-left: 40em;
   text-align: left;
+  left: 77%;
 }
 
 .in{
@@ -53,10 +57,7 @@ h2{
   height: 25em;
 }
 
-#carItem{
-  width: 100%;
-  max-height: 25em;
-}
+
 
 #carouselBG{
   width: 95%;

@@ -4,7 +4,9 @@
       <div class="carousel-inner relative w-full overflow-hidden">
         <div class="carousel-inner relative w-full overflow-hidden">
           <div id="first" class = "carousel-item active relative object-center float-left w-full">
-            <button id = "b" type="button" (click)= "getDetails(listResults[0].getID())"><img class= "block w-full" [src] =  'listResults[0].getimgUrl()'></button>
+            <div id = "b">
+              <button type="button" (click)= "getDetails(listResults[0].getID())"><img class= "block w-full" [src] =  'listResults[0].getimgUrl()'></button>
+            </div>
             <div class="carousel-caption">
               <div class = "in" id = "name">
                 Name: {{listResults[0].getName()}}
@@ -27,27 +29,29 @@
             </div>
           </div>
           <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:1 ">
-            <button  id = "b" type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
-          <div class="carousel-caption">
-            <div class = "in" id = "name">
-              Name: {{game.getName()}}
+            <div id = "b">
+              <button type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
             </div>
-            <div class = "in" id = "cb">
-              Created by: {{game.getDesigner()}}
+            <div class="carousel-caption">
+              <div class = "in" id = "name">
+                Name: {{game.getName()}}
+              </div>
+              <div class = "in" id = "cb">
+                Created by: {{game.getDesigner()}}
+              </div>
+              <div class = "in" id = "Players">
+                Players: {{game.getMinPlayers()}}-{{game.getMaxPlayers()}}
+              </div>
+              <div class = "in" id = "PlayTime">
+                Play Time: {{game.getMinPlayTime()}}-{{game.getMaxPlayTime()}} min
+              </div>
+              <div class = "in" id = "age">
+                Min Age: {{game.getAge()}}
+              </div>
+              <div class = "in" id = "Complexity">
+                Category: {{game.getCategory()}}
+              </div>
             </div>
-            <div class = "in" id = "Players">
-              Players: {{game.getMinPlayers()}}-{{game.getMaxPlayers()}}
-            </div>
-            <div class = "in" id = "PlayTime">
-              Play Time: {{game.getMinPlayTime()}}-{{game.getMaxPlayTime()}} min
-            </div>
-            <div class = "in" id = "age">
-              Min Age: {{game.getAge()}}
-            </div>
-            <div class = "in" id = "Complexity">
-              Category: {{game.getCategory()}}
-            </div>
-          </div>
         </div>
       </div>
       <button
