@@ -1,19 +1,22 @@
 <head>
     <script src="https://kit.fontawesome.com/8c29b68138.js" crossorigin="anonymous"></script>
 </head>
-<form> 
-<editor
-    apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
-        [init] = "{
-            icons: 'material',
-            skin: 'borderless',
-            plugins: 'wordcound',
-            menubar: true,
-            min_height: 150
-        }">
-</editor>
-<button onclick="Upload()" id="upload" class="form__button" type="submit">Dowload <i class="fa-solid fa-download"></i></button> 
-<button onclick="Load()" id="Admin" class="form__button" type="submit">Upload <i class="fa-solid fa-angles-up"></i> </button>
-</form> 
+<body>
+    <form> 
+        <editor
+            apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
+            [init] = "{
+                icons: 'material',
+                selector: '#editorTextarea',
+                skin: 'borderless',
+                plugins: 'wordcound',
+                menubar: true,
+                min_height: 150
+            }">
+        </editor>
+        <button onclick="onUpload()" id="upload" class="form__button" type="submit">Dowload <i class="fa-solid fa-download"></i></button> 
+        <button onclick="onDownload()" id="Admin" class="form__button" type="submit">Upload <i class="fa-solid fa-angles-up"></i> </button>
+    </form> 
+</body>
 
 <!-- Adapted from https://www.tiny.cloud/blog/angular-rich-text-editor/ [accessed 28 May 2022] -->
