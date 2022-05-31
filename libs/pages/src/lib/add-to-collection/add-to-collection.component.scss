@@ -1,0 +1,39 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+#container{
+    width: 21%;
+    margin: auto;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    padding: 2em;
+    margin-top: 5em;
+}
+
+h2{
+    font-size: 2em;
+}
+
+#new{
+    padding-top: 2em;
+    padding-bottom: 4em;
+}
+
+#collectionName{
+    border: 1px solid $Pcolour-2;
+    border-radius: 0.5em;
+}
+
+
+#Collections{
+    border: 1px solid $Pcolour-2;
+    border-radius: 0.5em;
+}
+
+button{
+    display: block;
+    margin-top: 1.5em;
+    border: 1px solid $Pcolour-2;
+    border-radius: 0.5em;
+    background-color: $Pcolour-2;
+    padding: 0.5em;
+    color: white;
+}

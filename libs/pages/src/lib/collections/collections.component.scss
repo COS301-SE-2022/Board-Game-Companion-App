@@ -1,14 +1,10 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 #CollectionsList
 {
-    
-    display:flex;
-    position:relative;
-    top:2em;
-    left:28em;
+    width: 90%;
+    margin: auto;
+    margin-top: 5em;
     flex-direction: column;
-    height:20em;
-    overflow-y:auto;
 }
 .imgSpan
 {
@@ -16,9 +12,15 @@
 }
 .collectionDiv
 {
-    
+    width: 75%;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    padding: 2em;
+    margin: 2em;
 }
 .title
 {
-    
+    font-weight: bold;
+    font-size: 1.5em;
+    padding-bottom: 1em;
 }

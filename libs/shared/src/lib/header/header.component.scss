@@ -29,15 +29,6 @@ li{
     float: right;
 }
 
-#l{
-    border-right: 1px solid $Pcolour-3;
-}
-
-#s{
-    border-left: 1px solid $Pcolour-3;
-}
-
-
 li:hover{
     background-color: $Pcolour-3;
     color: $Pcolour-2;
