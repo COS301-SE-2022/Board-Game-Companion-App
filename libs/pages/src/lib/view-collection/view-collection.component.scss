@@ -2,9 +2,12 @@
 
 #container
 {
-    display:flex;
-    position: relative;
-    overflow: auto;
+    width: 50%;
+    margin: auto;
+    margin-top: 5em;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    padding: 2em;
 }
 .game-image{
     overflow-y:hidden; 
@@ -14,7 +17,6 @@
     height:100%;
 }
 
-.board-game{ 
-
-    
+button{
+    padding: 2em;
 }
