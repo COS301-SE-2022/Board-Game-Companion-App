@@ -9,3 +9,15 @@
     display: inline-block;
     margin: 2px 15px;
 }
+
+.form__button:hover{
+
+    transform: translateY(-4px);
+    background: #28662C;
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.form__button:active{
+    transform: translateY(-2px);
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+}
