@@ -5,7 +5,7 @@
         <div class="carousel-inner relative w-full overflow-hidden">
           <div id="first" class = "carousel-item active relative object-center float-left w-full">
             <div id = "b">
-              <button type="button" (click)= "getDetails(listResults[0].getID())"><img class= "block w-full" [src] =  'listResults[0].getimgUrl()'></button>
+              <button type="button" (click)= "getDetails(listResults[0].getID())"><img class= "block w-full" [src] =  'listResults[0].getimgUrl()' onerror="this.src='assets/images/No_image.png'"></button>
             </div>
             <div class="carousel-caption">
               <div class = "in" id = "name">
@@ -30,7 +30,7 @@
           </div>
           <div id = "carItem" class = "carousel-item relative object-center float-left w-full" *ngFor = "let game of listResults | slice:1 ">
             <div id = "b">
-              <button type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()'></button>
+              <button type="button" (click)= "getDetails(game.getID())"><img class= "block w-full" [src] =  'game.getimgUrl()' /></button>
             </div>
             <div class="carousel-caption">
               <div class = "in" id = "name">
