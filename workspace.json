@@ -3,6 +3,7 @@
   "projects": {
     "api": "apps/api",
     "api-board-games": "libs/api/board-games",
+    "api-lib": "libs/api-lib",
     "api-script-detail": "libs/api/script-detail",
     "api-script-editor": "libs/api/script-editor",
     "client": "apps/client",

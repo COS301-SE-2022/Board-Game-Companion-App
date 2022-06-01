@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@board-game-companion-app/api-lib": ["libs/api-lib/src/index.ts"],
       "@board-game-companion-app/api/board-games": [
         "libs/api/board-games/src/index.ts"
       ],
