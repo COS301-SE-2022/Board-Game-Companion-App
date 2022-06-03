@@ -19,7 +19,19 @@ jobs:
       with:
         node-version: '16'
 
-    - name: run test suite  
+    - name: install yarn    
       run: npm install yarn -g
+
+    - name: install packages
       run: yarn install
-      run: nx run-many --target=test --all --parallel
+
+    - name: run test suite
+      run: yarn test:ci
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with: 
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage/lcov.info
+        path_to_write_report: ./coverage/codecov_report.txt
+      
