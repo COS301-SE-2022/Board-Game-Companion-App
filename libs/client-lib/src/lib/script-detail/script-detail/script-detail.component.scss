@@ -1,0 +1,19 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+#wrapper{
+    margin: 20px auto;
+    width: 80%;
+    max-width: 80%;
+    min-width: 500px;
+    padding: 15px;
+}
+
+.section{
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    background-color: #ffffff;    
+}
+
+.checked {
+    color: orange;
+}
