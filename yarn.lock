@@ -7587,6 +7587,13 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ngx-smart-popover@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/ngx-smart-popover/-/ngx-smart-popover-1.5.0.tgz#ca38ef1f272413f9d28a831a43cca52cdd602ddb"
+  integrity sha512-6HEP+jT/n7xhBAKA9uoATR9Zbx2d6OUK3aJPpKHHDk8YPyMKswOpqdPs8vuNSkW3jhPv2RU6w4N9ZEtAogBXwg==
+  dependencies:
+    tslib "^1.9.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
