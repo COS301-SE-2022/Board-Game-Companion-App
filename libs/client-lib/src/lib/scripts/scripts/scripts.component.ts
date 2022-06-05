@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { script } from '../../shared/models/script';
 
 @Component({
   selector: 'board-game-companion-app-scripts',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
   
 })
 export class ScriptComponent implements OnInit {
-   
+  scripts:script[] = [];
+  
   ngOnInit(): void {
   
     console.log("script");      

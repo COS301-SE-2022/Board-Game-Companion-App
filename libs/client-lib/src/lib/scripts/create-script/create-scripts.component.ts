@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-create-scripts',
@@ -21,7 +22,7 @@ export class CreateScriptComponent implements OnInit {
   boardgame = "";
   scriptname = "";
 
-  constructor(private readonly searchService:BggSearchService){}
+  constructor(private readonly searchService:BggSearchService,private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
 
@@ -39,7 +40,8 @@ export class CreateScriptComponent implements OnInit {
       this.errorOccured("Select script icon.");
     else{
       const temp = this.getboardGameId();
-      if(temp === "")
+    
+      if(temp === ""){
 
         this.searchService.getBoardGameByName(this.boardgame,true).subscribe({
           next:(value)=>{
@@ -49,7 +51,7 @@ export class CreateScriptComponent implements OnInit {
             if(response.length !== 1)
               this.errorOccured("Could not find board game '" + this.boardgame + "'.");
             else{
-              alert("save 1");
+              this.save(response[0].id);
             }
           },
           error:(e)=>{
@@ -60,8 +62,8 @@ export class CreateScriptComponent implements OnInit {
           }          
         });
 
-      else{
-        alert("save 2");
+      }else{
+        this.save(temp);
       } 
     }
   }
@@ -75,7 +77,20 @@ export class CreateScriptComponent implements OnInit {
     formData.append("name",this.scriptname);
     formData.append("boardGameId",boardGameId);
     formData.append("files",JSON.stringify(this.scriptFiles));
+    console.log("file: " + files[0].name);
     formData.append("icon",files[0]);
+
+    this.scriptService.saveScript(formData).subscribe({
+      next:(value)=>{
+        console.log(value.toString());
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }      
+  });
   }
 
   getboardGameId():string{
@@ -83,7 +98,7 @@ export class CreateScriptComponent implements OnInit {
     const temp = this.boardgamesMap.get(this.boardgame);
 
     if(temp !== undefined){
-      result = this.boardgame;
+      result = temp;
     }
 
     return result;
@@ -112,7 +127,7 @@ export class CreateScriptComponent implements OnInit {
     
 
     for(let count = 0; count < values.length; count++){
-      if(values[count].name.indexOf(name) !== -1){
+      if(values[count].name.toLowerCase().indexOf(name.toLowerCase()) !== -1){
         this.boardgamesMap.set(values[count].name,values[count].id);
         this.boardgames.push(values[count].name);
       }

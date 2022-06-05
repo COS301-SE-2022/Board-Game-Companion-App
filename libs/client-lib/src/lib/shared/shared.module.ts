@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BggSearchService } from './services/bgg-search/bgg-search.service';
+import { ScriptService } from './services/scripts/script.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { BggSearchService } from './services/bgg-search/bgg-search.service';
     CommonModule
   ],
   providers: [
-    BggSearchService
+    BggSearchService,
+    ScriptService
   ],
   exports: [
     HeaderComponent,

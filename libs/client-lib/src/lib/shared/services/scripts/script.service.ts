@@ -1,6 +1,7 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { script } from '../../models/script';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class ScriptService {
     return this.httpClient.get(this.url + "search?query="+name+"&type=boardgame" + (exact ? "&exact=1":""),{responseType: 'text'})
   }
 
-  saveScript(formData:FormData):Observable<any>{
-    return this.httpClient.post(this.url + "scripts/create-script",formData);
+  saveScript(formData:FormData):Observable<script>{
+    return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
 }

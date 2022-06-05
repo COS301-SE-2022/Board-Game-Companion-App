@@ -1,7 +1,7 @@
-import { file } from "../general/files";
-import { commentDto  } from "./commentDto";
+import { file } from "./file";
 
-export interface scriptDto{
+export interface script{
+    _id: string;
     name: string;
     author: string;
     boardgame: string;
@@ -12,7 +12,8 @@ export interface scriptDto{
     public: boolean;
     export: boolean;
     size: number;
-    comments: commentDto[];
+    comments: string[];
     files: file[];
     icon: string;
-};
+    __v: number;
+}
