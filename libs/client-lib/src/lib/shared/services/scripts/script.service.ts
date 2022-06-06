@@ -16,6 +16,14 @@ export class ScriptService {
  
   // createScript(name:string,boardgame:string,files:string[])
 
+  getApiUrl():string{
+    return this.api;
+  }
+
+  getBbgUrl():string{
+    return this.url;
+  }
+
   getBoardGameByName(name:string,exact:boolean):Observable<any>{
 
     return this.httpClient.get(this.url + "search?query="+name+"&type=boardgame" + (exact ? "&exact=1":""),{responseType: 'text'})

@@ -1,21 +1,25 @@
 <div  id = "tool-bar" class = "flex shadow-lg">
     <div class = "flex flex-row w-full border">
-        <div id = "scripts" class = "px-6 pt-1 content-center">
-            <div id = "script-buttons" class = "grid xs:grid-cols-2 sm:grid-cols-4 gap-2">
+        <div id = "scripts" class = "px-6 pt-1">
+            <div id = "script-buttons" class = "grid xs:grid-cols-2 sm:grid-cols-5 gap-2">
                 <button id = "new-script" data-bs-toggle="modal" data-bs-target="#create-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
 
-                <button id = "import-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                <button id = "import-script" data-bs-toggle="popover" data-bs-trigger="hover focus" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
 
-                <button id = "delete-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                <button *ngIf = "current !== -1" id = "delete-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
 
-                <button id = "edit-script" data-bs-toggle="modal" data-bs-target="#update-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                <button *ngIf = "current !== -1" id = "edit-script" data-bs-toggle="modal" data-bs-target="#update-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+
+                <button *ngIf = "current !== -1" id = "info-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                    <i class="fa fa-info" aria-hidden="true"></i>
                 </button>
             </div>
             <h5 class = "text-center text-gray-900 text-base leading-tight font-medium mt-1"> scripts</h5>

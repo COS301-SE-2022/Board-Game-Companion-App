@@ -1,6 +1,5 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param } from '@nestjs/common';
 import { ScriptService } from '../../services/scripts/script.service';
-import { createResponse }  from '../../models/response/scriptResponse';
 import { Script } from '../../schemas/script.schema';
 import { createReadStream } from 'fs';
 import { join } from 'path';
@@ -21,12 +20,6 @@ export class ApiScriptController {
         id = uuidv4();
     }
 
-    @Get('download')
-    downloadScript(@Query('name')name:string):StreamableFile{
-        const file = createReadStream(join(process.cwd(),name));
-        return new StreamableFile(file);
-    }
-
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon',{
         storage: diskStorage({
@@ -45,6 +38,13 @@ export class ApiScriptController {
         
         return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId); 
     }
+//http://localhost:3333/api/scripts/download/uploads/scripts/icons/572909d3-0ce2-4406-a7c9-0b69da77e465/code-slayer.png
+    @Get('download/:path')
+    download(@Param('path')path:string): StreamableFile {
+      console.log(join(process.cwd(), path));
+      const file = createReadStream(join(process.cwd(), path));
+      return new StreamableFile(file);
+    }
 
     @Get('retrieve/byid')
     async retrieveScript(@Query('id')id:number): Promise<Script>{
@@ -56,10 +56,10 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
-    @Get('download')
-    async download(@Query('id')id:string){
-        console.log('retrieveScript');
-    }
+    // @Get('download')
+    // async download(@Query('id')id:string){
+    //     console.log('retrieveScript');
+    // }
 
     @Put('visibility')
     async toggleVisibility(){
