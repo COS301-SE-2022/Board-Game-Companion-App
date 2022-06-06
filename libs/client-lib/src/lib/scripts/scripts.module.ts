@@ -7,6 +7,9 @@ import { PopoverModule } from "ngx-smart-popover";
 import { CreateScriptComponent } from './create-script/create-scripts.component';
 import { FormsModule } from '@angular/forms';
 import { UpdateScriptComponent } from './update-script/update-scripts.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+//import { NgStepperModule } from 'ng-stepper';
+
 @NgModule({
   declarations: [
     ScriptsComponent,
@@ -18,6 +21,8 @@ import { UpdateScriptComponent } from './update-script/update-scripts.component'
     CommonModule,
     PopoverModule,
     FormsModule,
+    //NgStepperModule,
+    CdkStepperModule,
     RouterModule.forChild([{path:'',component:ScriptsComponent}])
   ]
 })
