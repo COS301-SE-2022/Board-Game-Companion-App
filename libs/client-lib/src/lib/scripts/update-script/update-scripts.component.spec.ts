@@ -1,22 +1,22 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ScriptsComponent }from './scripts.component';
+import { UpdateScriptComponent }from './update-scripts.component';
 
 
-describe('ScriptsComponent', () => {
-  let component: ScriptsComponent;
-  let fixture: ComponentFixture<ScriptsComponent>;
+describe('UpdateScriptComponent', () => {
+  let component: UpdateScriptComponent;
+  let fixture: ComponentFixture<UpdateScriptComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule],
-      declarations: [ScriptsComponent],
+      declarations: [UpdateScriptComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScriptsComponent);
+    fixture = TestBed.createComponent(UpdateScriptComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

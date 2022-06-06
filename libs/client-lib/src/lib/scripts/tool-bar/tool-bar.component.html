@@ -1,7 +1,7 @@
 <div  id = "tool-bar" class = "flex shadow-lg">
     <div class = "flex flex-row w-full border">
-        <div id = "scripts" class = "xs:p-2 md:px-4 md:py-2 border-r-2 border-green-800">
-            <div id = "script-buttons" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2">
+        <div id = "scripts" class = "px-6 pt-1 content-center">
+            <div id = "script-buttons" class = "grid xs:grid-cols-2 sm:grid-cols-4 gap-2">
                 <button id = "new-script" data-bs-toggle="modal" data-bs-target="#create-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
@@ -14,30 +14,69 @@
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
 
-                <button id = "edit-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                <button id = "edit-script" data-bs-toggle="modal" data-bs-target="#update-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </button>
             </div>
-            <h5 class = "text-center text-gray-900 text-xl leading-tight font-medium mt-2"> scripts</h5>
+            <h5 class = "text-center text-gray-900 text-base leading-tight font-medium mt-1"> scripts</h5>
         </div>
 
-        <div id = "search">
+        <div id = "files" class = "px-6 pt-1 content-center">
+            <div class="flex flex-row">
+                <div class="dropdown">
+                    <a class="dropdown-toggle w-24 px-2 py-2 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-green-800 focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap"
+                        href="#" type="button" id="file-section" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-file mr-2" aria-hidden="true"></i>
+                        open
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" class="w-2 ml-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none">
+                        <li>
+                        <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" href="#">Action</a>
+                        </li>
+                    </ul>
+                </div>
 
+                <div class="flex space-x-2 ml-2">
+                    <button type="button" class="inline-block w-24 px-2 py-2 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">
+                        <i class="fas fa-copy"></i>
+                        open all
+                    </button>
+                  </div>
+            </div>
+            <h5 class = "text-center text-gray-900 text-base leading-tight font-medium mt-1"> files</h5>
         </div>
 
-        <div id = "sort">
+        <div id = "view" class = "px-6 pt-1 content-center">
+            <div id = "script-buttons">
+                <button (click) = "changeView(true)" id = "new-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                    <i class="fa fa-th-large" aria-hidden = "true"></i>
+                </button>
 
+                <button  (click) = "changeView(false)" id = "import-script" class = "ml-2 script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+                    <i class="fas fa-th-list" aria-hidden = "true"></i>
+                </button>
+            </div>
+            <h5 class = "text-center text-gray-900 text-base leading-tight font-medium mt-1"> view</h5>
         </div>
 
-        <div id = "view">
-
+        
+        <div id = "search" class = "px-6 pt-1 content-center absolute right-0">
+            <div class="flex justify-center">
+                <div class="xl:w-96">
+                  <input type="search" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300
+                      rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    id="search"
+                    placeholder="Enter script name"/>
+                </div>
+            </div>
         </div>
 
-        <div id = "files">
-
-        </div>
     </div>
 </div>
 
 
 <board-game-companion-app-create-scripts></board-game-companion-app-create-scripts>
+<board-game-companion-app-update-scripts></board-game-companion-app-update-scripts>

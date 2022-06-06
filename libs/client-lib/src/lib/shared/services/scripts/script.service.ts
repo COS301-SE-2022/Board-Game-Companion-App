@@ -24,4 +24,8 @@ export class ScriptService {
   saveScript(formData:FormData):Observable<script>{
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
+
+  retrieveAllScript():Observable<script[]>{
+    return this.httpClient.get<script[]>(this.api + "scripts/retrieve/all");
+  }
 }

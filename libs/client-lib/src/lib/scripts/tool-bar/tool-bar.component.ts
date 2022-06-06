@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'board-game-companion-app-tool-bar',
@@ -7,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   
 })
 export class ToolBarComponent implements OnInit {
-  
+  @Output()viewEvent = new EventEmitter<boolean>();
+
   ngOnInit(): void {
   
     console.log("toolbar");      
+  }
+
+  changeView(view:boolean): void{
+    this.viewEvent.emit(view);
   }
    
 }

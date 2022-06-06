@@ -1,0 +1,83 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="update-script" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md relative w-auto pointer-events-none">
+    <div class="p-4 modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+        <div id = "info" class = "flex flex-row w-full relative content-center">
+            <div id = "script-icon" class = "w-1/3 h-32 relative hover:shadow-md rounded overflow-hidden">
+                <img src="assets/images/No_image.png" id = "icon" class = "w-full h-full">
+                <input type="file" accept=".jpeg,.jpg,.png,.svg" id = "image-input" (change)="loadImage($event)"/>
+            </div>
+            <div id = "script-info" class = "w-2/3 p-2 ml-2 float-right">
+                <label for="name" class="form-label inline-block mb-1 text-gray-700 font-medium">Name</label>
+                <input [(ngModel)] = "current.name" name = "name" autocomplete="off" type="text" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="name" placeholder="Enter name">
+                
+                <div class = "mt-4 flex flex-row">
+                    <div class="flex w-2/4">
+                        <div class="form-check form-switch">
+                          <input [(ngModel)] = "current.public" name = "public" id = "public" class="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm" type="checkbox" role="switch">
+                          <label class="form-check-label inline-block text-gray-800 font-medium" for="public">Public</label>
+                        </div>
+                    </div>
+                    <div class="flex w-2/4">
+                        <div class="form-check form-switch">
+                          <input [(ngModel)] = "current.export" name = "export" id = "export" class="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm" type="checkbox" role="switch">
+                          <label class="form-check-label inline-block text-gray-800 font-medium" for="public">Export</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id = "initial-files" class = "relative w-full py-4">
+            <h5 class = "text-gray-900 text-xl leading-tight font-medium mb-2">Status</h5>
+            <ul class="stepper" data-mdb-stepper="stepper">
+                <li class="stepper-step stepper-active">
+                  <div class="stepper-head">
+                    <span class="stepper-head-icon bg-white"><i class="fas fa-times-circle" style="color:red"></i></span>
+                    <span class="stepper-head-text"> Flagged </span>
+                  </div>
+                  <div class="stepper-content h-28" style="background-color: magenta;">
+                    This files was flagged by the system for containing malicious code segments.
+                  </div>
+                </li>
+                <li class="stepper-step">
+                  <div class="stepper-head">
+                    <span class="stepper-head-icon bg-inherit"><i class="fas fa-cogs" style="color:orange"></i></span>
+                    <span class="stepper-head-text"> In progress </span>
+                  </div>
+                  <div class="stepper-content">
+                    This has been in progress for 31 days.
+                  </div>
+                </li>
+                <li class="stepper-step">
+                  <div class="stepper-head">
+                    <span class="stepper-head-icon bg-inherit"><i class="fas fa-check-circle" style="color:green"></i></span>
+                    <span class="stepper-head-text"> Published </span>
+                  </div>
+                  <div class="stepper-content">
+                    This script was published on the 21st of May, 2022.
+                  </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div *ngIf="error===true" class="bg-red-100 rounded-lg py-2 px-6 mb-4 shadow-md text-base text-red-700 mb-3" role="alert">
+            {{errorMessage}}
+        </div>
+
+        <div *ngIf="warning===true" class="bg-yellow-100 rounded-lg py-2 px-6 mb-4 shadow-md text-base text-yellow-700 mb-3" role="alert">
+            {{warningMessage}}
+        </div>
+
+        <div id = "script-actions" class = "modal-footer items-center justify-end p-0">
+            <button data-bs-dismiss="modal" id = "import-script" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <i class="fa-solid fa-rectangle-xmark fa-2x"></i>
+            </button>
+            <button (click) = "validateAndSave()" id = "import-script" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <i class="fa-solid fa-floppy-disk fa-2x"></i>
+            </button>
+        </div>
+    </div>
+  </div>
+</div>

@@ -2238,6 +2238,15 @@
     rxjs-compat "^6.5.4"
     zone.js "^0.10.2"
 
+"@syncfusion/ej2-angular-navigations@^20.1.58":
+  version "20.1.58"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-angular-navigations/-/ej2-angular-navigations-20.1.58.tgz#01961c6e88ef601425b4123195a787ac99270538"
+  integrity sha512-zGGE1GIU5e/ev9F3WefL5Fwn++glApXgnK6kouu3+D2kzw0+QXWHYi30lb4f9HZbc7mGrZ4YggIP0oOk5yFYWw==
+  dependencies:
+    "@syncfusion/ej2-angular-base" "~20.1.55"
+    "@syncfusion/ej2-base" "~20.1.57"
+    "@syncfusion/ej2-navigations" "20.1.58"
+
 "@syncfusion/ej2-angular-richtexteditor@^20.1.57":
   version "20.1.57"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-angular-richtexteditor/-/ej2-angular-richtexteditor-20.1.57.tgz#5cdafcac7eaebccb141c26e33e5b0773ea64fed4"
@@ -2247,7 +2256,7 @@
     "@syncfusion/ej2-base" "~20.1.56"
     "@syncfusion/ej2-richtexteditor" "20.1.57"
 
-"@syncfusion/ej2-base@~20.1.55", "@syncfusion/ej2-base@~20.1.56":
+"@syncfusion/ej2-base@~20.1.55", "@syncfusion/ej2-base@~20.1.56", "@syncfusion/ej2-base@~20.1.57":
   version "20.1.57"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-base/-/ej2-base-20.1.57.tgz#e8168432e2572ee4aff612429b2618795fb3f802"
   integrity sha512-mHexHWIh7Zwy9FnVyQp0AKRAwvagprUv7Sf95Ibe4mV+ArjCsCOg71bc7B8OdsxvDJj651fVvi7fWaUARKHauA==
@@ -2362,6 +2371,16 @@
     "@syncfusion/ej2-popups" "~20.1.55"
     "@syncfusion/ej2-splitbuttons" "~20.1.55"
 
+"@syncfusion/ej2-inputs@~20.1.58":
+  version "20.1.58"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-inputs/-/ej2-inputs-20.1.58.tgz#c5d7b2b34e6eb5c409912fd149372b5e1f795a31"
+  integrity sha512-cJykc770pIYTtKA9TXaUEPrTSZ76Uqtf732u8YaR4/xQyum0FgMfRwqRyZLDuxDv6zMPXuvowF8PlW30OL1/7A==
+  dependencies:
+    "@syncfusion/ej2-base" "~20.1.57"
+    "@syncfusion/ej2-buttons" "~20.1.55"
+    "@syncfusion/ej2-popups" "~20.1.58"
+    "@syncfusion/ej2-splitbuttons" "~20.1.57"
+
 "@syncfusion/ej2-layouts@~20.1.55":
   version "20.1.55"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-layouts/-/ej2-layouts-20.1.55.tgz#3e5bb48f8a1c784df011fae360289d415815bced"
@@ -2377,6 +2396,18 @@
     "@syncfusion/ej2-base" "~20.1.55"
     "@syncfusion/ej2-buttons" "~20.1.55"
     "@syncfusion/ej2-data" "~20.1.55"
+
+"@syncfusion/ej2-navigations@20.1.58":
+  version "20.1.58"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-navigations/-/ej2-navigations-20.1.58.tgz#ad538f02acda8c05295d31458e98c999c09a2212"
+  integrity sha512-ggdf8pBmLSFzC6A9kTFgp5pOi43orJMzxCSYmgGGRTJAG1ipivGH55C9ioTSafi+LBQ83j0TJeHYjhvX7oinyw==
+  dependencies:
+    "@syncfusion/ej2-base" "~20.1.57"
+    "@syncfusion/ej2-buttons" "~20.1.55"
+    "@syncfusion/ej2-data" "~20.1.55"
+    "@syncfusion/ej2-inputs" "~20.1.58"
+    "@syncfusion/ej2-lists" "~20.1.55"
+    "@syncfusion/ej2-popups" "~20.1.58"
 
 "@syncfusion/ej2-navigations@~20.1.57":
   version "20.1.57"
@@ -2403,6 +2434,14 @@
   integrity sha512-y5B+r8Nu3mCS3Q6fP/ZPv3WUn4FlsgUs1UhoO0UAgQpylkPSSLdeqTufswQJgDUlnNlOabjlyijLOIoVb1tDhQ==
   dependencies:
     "@syncfusion/ej2-base" "~20.1.56"
+    "@syncfusion/ej2-buttons" "~20.1.55"
+
+"@syncfusion/ej2-popups@~20.1.58":
+  version "20.1.58"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-popups/-/ej2-popups-20.1.58.tgz#0aff8fdf9d67beaaf9d8bfc73c9355db739693c9"
+  integrity sha512-cgh97wbBwO3pN7J7gV5jvWaXQLebDqIp+xIhPkb41H20pYujuaxarXorMq188e8sQ/8EOzM8eSPtWsDVhDab7w==
+  dependencies:
+    "@syncfusion/ej2-base" "~20.1.57"
     "@syncfusion/ej2-buttons" "~20.1.55"
 
 "@syncfusion/ej2-richtexteditor@20.1.57":
@@ -3132,6 +3171,13 @@ ajv@^6.10.0, ajv@^6.12.2, ajv@^6.12.4, ajv@^6.12.5:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+angular-ng-stepper@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/angular-ng-stepper/-/angular-ng-stepper-1.0.6.tgz#6dfaf6ba9273cade4a2af5fc00c8512e736afd57"
+  integrity sha512-oyJkkCO8jvM8rFoc2NGO9aB1lb0dZpoq3zGADJQaD9Cm22iweNQ/HyIil3jnozPpjy5bKMwrXvGgAhvnxj3mvg==
+  dependencies:
+    tslib "^1.10.0"
 
 angularx-social-login@^4.1.0:
   version "4.1.0"
@@ -9820,7 +9866,7 @@ tslib@2.3.1:
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

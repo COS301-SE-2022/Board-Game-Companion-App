@@ -51,6 +51,11 @@ export class ApiScriptController {
         return await this.scriptService.findById(id);
     }
 
+    @Get('retrieve/all')
+    async retrieveAllScripts():Promise<Script[]>{
+        return await this.scriptService.findAll();
+    }
+
     @Get('download')
     async download(@Query('id')id:string){
         console.log('retrieveScript');

@@ -1,1 +1,15 @@
-<board-game-companion-app-tool-bar></board-game-companion-app-tool-bar>
+<board-game-companion-app-tool-bar (viewEvent)="changeView($event)"></board-game-companion-app-tool-bar>
+
+<div class = "flex flex-row justify-center" *ngIf="gridView===true">
+    <div id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript !== count,'border-green-800 border-4 hover:border-0':currentScript === count}" *ngFor = "let count of [1,2,3,4,5,6,7,8,9,10]" [id] = "count" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(count)">
+            <span class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+            <!-- <span class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span> -->
+            <!-- <span class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span> -->
+            <img class="w-full h-full" src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" alt=""/>
+            <div class = "child absolute bottom-0 w-full h-8 bg-inherit z-10 text-center text-white text-base">
+                <b>Name Of Script</b>
+            </div>
+        </div>
+    </div>
+</div>
