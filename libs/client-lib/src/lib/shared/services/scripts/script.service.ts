@@ -34,10 +34,8 @@ export class ScriptService {
   }
 
   removeScript(id:string):Observable<void>{
-    let param = new HttpParams();
-    param = param.append('id',id);
 
-    return this.httpClient.delete<void>(this.api + "scripts/remove-script",{params:param});
+    return this.httpClient.delete<void>(this.api + "scripts/remove/" + id);
   }
 
   retrieveAllScript():Observable<script[]>{

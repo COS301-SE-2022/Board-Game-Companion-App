@@ -60,12 +60,11 @@ export class ApiScriptController {
         console.log('toggleVisibility');
     }
 
-    @Delete('remove')
-    async removeScript(@Body('id')id:string){
-       console.log("id: " + id);
+    @Delete('remove/:id')
+    async removeScript(@Param('id')id:string){
        await this.scriptService.removeById(id); 
     }
-    
+
     //rating functions
     
     @Post('create-rating')

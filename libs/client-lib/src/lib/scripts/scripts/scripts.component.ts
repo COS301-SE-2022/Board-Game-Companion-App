@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { MenuItemModel } from '@syncfusion/ej2-navigations';
-import { status } from '../../shared/models/status';
 
 @Component({
   selector: 'board-game-companion-app-scripts',
@@ -83,7 +81,25 @@ export class ScriptsComponent implements OnInit {
   }
 
   removeScript(id:string): void{
-    this.scriptService.removeScript(id);
+    this.scriptService.removeScript(id).subscribe({
+      next:(value)=>{
+        const temp:script[] = [];
+
+        for(let count = 0; count < this.scripts.length; count++){
+          if(this.scripts[count]._id !== id)
+            temp.push(this.scripts[count]);
+        }
+
+        this.currentScript = "";
+        this.scripts = temp;
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }
+    });
   }
    
 }

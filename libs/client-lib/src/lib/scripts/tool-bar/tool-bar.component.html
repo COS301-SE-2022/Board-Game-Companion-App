@@ -9,8 +9,8 @@
                 <button id = "import-script" data-bs-toggle="popover" data-bs-trigger="hover focus" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
-
-                <button (click) = "removeCurrentScript()"  *ngIf = "current !== ''" id = "delete-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
+<!-- (click) = "removeCurrentScript()"  -->
+                <button data-bs-toggle="modal" data-bs-target="#exampleModalSm" *ngIf = "current !== ''" id = "delete-script" class = "script-button bg-gray-200 px-2 py-1 rounded hover:shadow-md hover:bg-zinc-400 active:bg-lime-700 active:shadow-none">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
 
@@ -84,3 +84,24 @@
 
 <board-game-companion-app-create-scripts (newScript)="propagateScript($event)"></board-game-companion-app-create-scripts>
 <board-game-companion-app-update-scripts></board-game-companion-app-update-scripts>
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalSm" tabindex="-1" aria-labelledby="exampleModalSmLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+      <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+        <div class="modal-body relative p-2" >
+            <h5 class="text-xl font-medium leading-normal text-gray-800 text-center">
+                Are you sure you want to delete the script ?
+            </h5>
+            <div class="w-full flex flex-row p-2 justify-center">
+                <button type="button"
+                    class="inline-block px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out"
+                    data-bs-dismiss="modal">cancel
+                </button>
+                <button type="button" data-bs-dismiss="modal" (click) = "removeCurrentScript()"
+                    class="inline-block px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out ml-1">delete
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
