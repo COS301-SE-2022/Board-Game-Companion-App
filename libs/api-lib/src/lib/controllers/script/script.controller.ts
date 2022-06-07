@@ -62,8 +62,10 @@ export class ApiScriptController {
 
     @Delete('remove')
     async removeScript(@Body('id')id:string){
-       console.log('removeScript'); 
+       console.log("id: " + id);
+       await this.scriptService.removeById(id); 
     }
+    
     //rating functions
     
     @Post('create-rating')
