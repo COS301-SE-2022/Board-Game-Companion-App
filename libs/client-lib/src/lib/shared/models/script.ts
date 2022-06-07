@@ -1,4 +1,5 @@
 import { file } from "./file";
+import { status } from "./status";
 
 export interface script{
     _id: string;
@@ -9,9 +10,11 @@ export interface script{
     published: Date;
     downloads: number;
     lastdownload: Date;
+    lastupdate: Date;
     public: boolean;
     export: boolean;
     size: number;
+    status: status;
     comments: string[];
     files: file[];
     icon: string;
@@ -27,8 +30,10 @@ export const empty:script = {
     published: new Date(0),
     downloads: 0,
     lastdownload: new Date(0),
+    lastupdate: new Date(0),
     public: false,
     export: false,
+    status: status.flaggged,
     size: 0,
     comments: [],
     files: [],

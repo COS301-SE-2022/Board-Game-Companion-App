@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { script } from '../../shared/models/script';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
@@ -9,7 +10,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
   
 })
 export class CreateScriptComponent implements OnInit {
-
+  @Output()newScript = new EventEmitter<script>();
   scriptFiles:string[] = ["main"];
   scriptfile = "";
   maxfiles = 3;
@@ -83,9 +84,12 @@ export class CreateScriptComponent implements OnInit {
     this.scriptService.saveScript(formData).subscribe({
       next:(value)=>{
         console.log(value.toString());
+        document.getElementById('cancel-save-script')?.click();
+        this.newScript.emit(value);
       },
       error:(e)=>{
-        console.log(e)
+        console.log(e);
+        this.errorOccured(e.message);
       },
       complete:()=>{
         console.log("complete")
@@ -113,7 +117,7 @@ export class CreateScriptComponent implements OnInit {
         this.loadBoardGameSuggestions(temp,this.boardgame);
       },
       error:(e)=>{
-        console.log(e)
+        console.log(e);
       },
       complete:()=>{
         console.log("complete")

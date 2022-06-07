@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
+import { status } from '../models/general/status';
 import { Comment } from './comment.schema';
 
 export type ScriptDocument = Script & Document;
-
 
 @Schema()
 export class Script{
@@ -19,6 +19,12 @@ export class Script{
 
     @Prop({required:true})
     created: string;
+
+    @Prop()
+    lastupdate: Date;
+
+    @Prop()
+    status:number;
 
     @Prop()
     published: Date;

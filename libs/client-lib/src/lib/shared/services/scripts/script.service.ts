@@ -1,6 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { script } from '../../models/script';
 
 
@@ -31,6 +31,13 @@ export class ScriptService {
 
   saveScript(formData:FormData):Observable<script>{
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
+  }
+
+  removeScript(id:string):void{
+    let param = new HttpParams();
+    param = param.append('id',id);
+
+    this.httpClient.delete<script>(this.api + "scripts/remove-script",{params:param});
   }
 
   retrieveAllScript():Observable<script[]>{

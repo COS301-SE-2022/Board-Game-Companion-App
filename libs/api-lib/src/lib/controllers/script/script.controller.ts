@@ -1,4 +1,4 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { ScriptService } from '../../services/scripts/script.service';
 import { Script } from '../../schemas/script.schema';
 import { createReadStream } from 'fs';
@@ -7,6 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
+import { resourceLimits } from 'worker_threads';
 
 let id = uuidv4();
 
@@ -35,15 +36,8 @@ export class ApiScriptController {
     async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
         const tempId = id;
         this.updateId();
-        
-        return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId); 
-    }
-//http://localhost:3333/api/scripts/download/uploads/scripts/icons/572909d3-0ce2-4406-a7c9-0b69da77e465/code-slayer.png
-    @Get('download/:path')
-    download(@Param('path')path:string): StreamableFile {
-      console.log(join(process.cwd(), path));
-      const file = createReadStream(join(process.cwd(), path));
-      return new StreamableFile(file);
+
+        return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId);
     }
 
     @Get('retrieve/byid')

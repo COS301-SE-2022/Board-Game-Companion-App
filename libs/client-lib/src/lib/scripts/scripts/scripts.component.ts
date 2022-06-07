@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { MenuItemModel } from '@syncfusion/ej2-navigations';
+import { status } from '../../shared/models/status';
 
 @Component({
   selector: 'board-game-companion-app-scripts',
@@ -11,9 +12,10 @@ import { MenuItemModel } from '@syncfusion/ej2-navigations';
 })
 export class ScriptsComponent implements OnInit {
   scripts:script[] = [];
-  currentScript = -1;
+  currentScript = "";
   gridView = true;
-
+  months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  
   constructor(private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
@@ -49,7 +51,20 @@ export class ScriptsComponent implements OnInit {
     return result;
   }
 
-  selected(id:number): void{
+  formatDate(date:Date):string{
+    let result = "";
+    
+    const val = new Date(date);
+
+    result = val.getDate() + " ";
+    result += this.months[val.getMonth()] + " ";
+    result += val.getFullYear() + ", ";
+    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+
+    return result;
+  }
+
+  selected(id:string): void{
     this.currentScript = id;
 
   }
@@ -60,7 +75,15 @@ export class ScriptsComponent implements OnInit {
 
   containerClick(event:any): void{
     if(event.target.id == "wrapper")
-      this.currentScript = -1;
+      this.currentScript = "";
+  }
+
+  newScript(value:script): void{
+    this.scripts.push(value);
+  }
+
+  removeScript(id:string): void{
+    this.scriptService.removeScript(id);
   }
    
 }

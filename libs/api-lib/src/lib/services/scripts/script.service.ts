@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Script, ScriptDocument } from '../../schemas/script.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
 import fs = require('fs');
+import { status } from '../../models/general/status';
 
 @Injectable()
 export class ScriptService {
@@ -18,10 +19,12 @@ export class ScriptService {
             boardgame: boardGameId,
             created: new Date(),
             published: null,
+            lastupdate: new Date(),
             downloads: 0,
             lastdownload: null,
             public: false,
             export: false,
+            status: status.inProgress,
             size: 0,
             comments: [],
             files: [],
@@ -50,9 +53,23 @@ export class ScriptService {
             });
         }
 
+        if((await this.contains(name)).valueOf)
+            return null;
+
         const createdScript = new this.scriptModel(dto);
         
         return createdScript.save();
+    }
+
+    async contains(name:string):Promise<boolean>{
+        let result = true;
+
+        const value = await this.scriptModel.find({name:name}).exec();
+        
+        if(value)
+            result = false;
+
+        return result;
     }
 
     async findAll(): Promise<Script[]>{

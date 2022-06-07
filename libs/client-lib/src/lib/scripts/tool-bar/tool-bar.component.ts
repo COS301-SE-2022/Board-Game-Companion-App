@@ -9,7 +9,10 @@ import { script ,empty} from '../../shared/models/script';
 })
 export class ToolBarComponent implements OnInit {
   @Output()viewEvent = new EventEmitter<boolean>();
-  @Input()current = -1;
+  @Output()newScript = new EventEmitter<script>();
+  @Output()removeScript = new EventEmitter<string>();
+
+  @Input()current = "";
 
   ngOnInit(): void {
 
@@ -23,5 +26,12 @@ export class ToolBarComponent implements OnInit {
   changeView(view:boolean): void{
     this.viewEvent.emit(view);
   }
+
+  propagateScript(value:script): void{
+    this.newScript.emit(value);
+  }
    
+  removeCurrentScript(): void{
+    this.removeScript.emit(this.current);
+  }
 }
