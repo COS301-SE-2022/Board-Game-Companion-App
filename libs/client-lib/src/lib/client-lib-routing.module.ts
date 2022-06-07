@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'editor',
     loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m=>m.AdminModule)
   }
 ];
 
