@@ -5,18 +5,20 @@
     <form> 
         <editor
             apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
+            
             [init] = "{
                 icons: 'material',
                 selector: '#editorTextarea',
                 skin: 'borderless',
-                plugins: 'code',
-                toolbar: 'undo redo | alignleft aligncenter alignright | code | indent outdent',
+                plugins: 'code save',
+                toolbar: 'save undo redo | alignleft aligncenter alignright | code | indent outdent',
                 menubar: false,
+                
                 min_height: 150
             }">
         </editor>
-        <button onclick="onUpload()" id="upload" class="form__button" type="submit">Dowload <i class="fa-solid fa-download"></i></button> 
-        <button onclick="onDownload()" id="Admin" class="form__button" type="submit">Upload <i class="fa-solid fa-angles-up"></i> </button>
+        <button (click)="onDownload()" class="form__button">Dowload <i class="fa-solid fa-download"></i></button> 
+        <button (click)="onUpload()" class="form__button">Upload <i class="fa-solid fa-angles-up"></i></button>
     </form> 
 </body>
 
