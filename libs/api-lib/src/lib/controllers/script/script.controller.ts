@@ -36,7 +36,7 @@ export class ApiScriptController {
     async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
         const tempId = id;
         this.updateId();
-
+        console.log("name: " + name);
         return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId);
     }
 

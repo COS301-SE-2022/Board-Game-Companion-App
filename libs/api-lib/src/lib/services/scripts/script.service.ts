@@ -53,23 +53,10 @@ export class ScriptService {
             });
         }
 
-        if((await this.contains(name)).valueOf)
-            return null;
-
+        
         const createdScript = new this.scriptModel(dto);
         
         return createdScript.save();
-    }
-
-    async contains(name:string):Promise<boolean>{
-        let result = true;
-
-        const value = await this.scriptModel.find({name:name}).exec();
-        
-        if(value)
-            result = false;
-
-        return result;
     }
 
     async removeById(id:string): Promise<void>{

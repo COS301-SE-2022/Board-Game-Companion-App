@@ -10,9 +10,9 @@ import { script ,empty} from '../../shared/models/script';
 export class ToolBarComponent implements OnInit {
   @Output()viewEvent = new EventEmitter<boolean>();
   @Output()newScript = new EventEmitter<script>();
-  @Output()removeScript = new EventEmitter<string>();
+  @Output()removeScript = new EventEmitter<script>();
 
-  @Input()current = "";
+  @Input()current:script = empty;
 
   ngOnInit(): void {
 

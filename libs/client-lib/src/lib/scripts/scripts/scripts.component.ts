@@ -10,7 +10,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class ScriptsComponent implements OnInit {
   scripts:script[] = [];
-  currentScript = "";
+  currentScript:script = empty;
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   
@@ -62,8 +62,8 @@ export class ScriptsComponent implements OnInit {
     return result;
   }
 
-  selected(id:string): void{
-    this.currentScript = id;
+  selected(value:script): void{
+    this.currentScript = value;
 
   }
 
@@ -73,24 +73,24 @@ export class ScriptsComponent implements OnInit {
 
   containerClick(event:any): void{
     if(event.target.id == "wrapper")
-      this.currentScript = "";
+      this.currentScript = empty;
   }
 
   newScript(value:script): void{
     this.scripts.push(value);
   }
 
-  removeScript(id:string): void{
-    this.scriptService.removeScript(id).subscribe({
-      next:(value)=>{
+  removeScript(value:script): void{
+    this.scriptService.removeScript(value._id).subscribe({
+      next:(val)=>{
         const temp:script[] = [];
 
         for(let count = 0; count < this.scripts.length; count++){
-          if(this.scripts[count]._id !== id)
+          if(this.scripts[count]._id !== value._id)
             temp.push(this.scripts[count]);
         }
 
-        this.currentScript = "";
+        this.currentScript = empty;
         this.scripts = temp;
       },
       error:(e)=>{
