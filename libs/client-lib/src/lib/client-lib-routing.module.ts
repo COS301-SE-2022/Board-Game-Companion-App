@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m=>m.LoginModule),
+    loadChildren: () => import('./google-login/google-login.module').then(m=>m.LoginModule),
   },
   {
     path: 'collections',
@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'editor',
     loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
+  },
+  {
+    path: 'scripts',
+    loadChildren: () => import ('./scripts/scripts.module').then(m=>m.ScriptsModule)
   },
   {
     path: 'admin',

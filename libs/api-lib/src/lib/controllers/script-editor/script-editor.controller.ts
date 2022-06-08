@@ -24,7 +24,7 @@ export class ScriptEditorController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('script',storage))
-  async UploadScript(@Body('author') author: string, @Body('downloads') downloads: number, @Body('ratings') ratings: number,@UploadedFile() script){
+  async UploadScript(@Body('author') author: string, @Body('downloads') downloads: string, @Body('ratings') ratings: string,@UploadedFile() script){
     const metadata: Metadata = {
       author: author,
       downloads: downloads,

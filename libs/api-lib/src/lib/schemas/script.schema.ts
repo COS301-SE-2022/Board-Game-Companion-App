@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { file } from '../models/general/files';
+import { status } from '../models/general/status';
 import { Comment } from './comment.schema';
 
 export type ScriptDocument = Script & Document;
@@ -16,6 +18,15 @@ export class Script{
     boardgame: string;
 
     @Prop({required:true})
+    created: string;
+
+    @Prop()
+    lastupdate: Date;
+
+    @Prop()
+    status:number;
+
+    @Prop()
     published: Date;
 
     @Prop()
@@ -27,6 +38,9 @@ export class Script{
     @Prop({required:true})
     public: boolean;
     
+    @Prop({required:true})
+    export: boolean;
+
     @Prop({required: true})
     size: number;
 
@@ -34,10 +48,10 @@ export class Script{
     comments: Comment[];
 
     @Prop({required:true})
-    path: string;
+    files: file[];
 
     @Prop()
-    avatar: string; 
+    icon: string; 
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);
