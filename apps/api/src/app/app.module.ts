@@ -11,7 +11,7 @@ import { ApiLibModule } from '@board-game-companion-app/api-lib';
     ApiLibModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb+srv://new_forerunner:P3tfeMMw8N1d0Ii8@board-game-companion-ap.wxt0n.mongodb.net/Collections?retryWrites=true&w=majority')
-    //mongodb://localhost:27017
+    //
   ],
   controllers: [AppController],
   providers: [AppService],
