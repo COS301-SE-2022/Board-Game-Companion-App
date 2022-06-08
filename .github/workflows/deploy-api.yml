@@ -17,11 +17,9 @@ jobs:
           heroku_email: "frontend.forerunners16@gmail.com"
           justlogin: true
 
-      - name: clone heroku app
-        run: git remote add heroku https://git.heroku.com/board-game-companion-app-api.git
-        run: git fetch heroku
-
-      - name: update proc file
-        run: git add .
-        run: git commit -m "(procfile):updated procfile"
-        run: git push heroku
+      - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+      - run: git fetch heroku
+      - run: node tools/scripts/create-api-procfile.js
+      - run: git add .
+      - run: git commit -m "(procfile):updated procfile"
+      - run: git push heroku
