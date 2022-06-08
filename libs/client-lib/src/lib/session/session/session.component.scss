@@ -1,0 +1,37 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+#container{
+    width: 30%;
+    margin: auto;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    background-color: #fff;
+    padding: 1em;
+}
+
+img{
+   height: inherit;
+   width: inherit;
+}
+
+table{
+    width: 100%;
+    display: inline-block;
+}
+
+thead{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 1.1em;
+}
+
+tr{
+    border: 1px solid $Pcolour-2;
+}
+
+th{
+    padding: 2em;
+    border: 1px solid $Pcolour-2;
+}

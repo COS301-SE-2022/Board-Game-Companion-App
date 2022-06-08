@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 export interface scriptFace{
   date:string,
@@ -11,6 +13,8 @@ export interface scriptFace{
   providedIn: 'root'
 })
 export class AdminService {
+ 
+ 
   dummyArray: scriptFace[]=
   [{
     date:"09 June 2012",
@@ -26,7 +30,7 @@ export class AdminService {
     date:"17 August 2021",
     author:"Steven",
     name:"monopoly",
-    status: "Flagged"
+    status: "flagged"
   },{
     date:"30 February 2012",
     author:"Keita ",
@@ -53,9 +57,10 @@ export class AdminService {
     name:"Scrabble",
     status: "Active"
   }];
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getScripts():scriptFace[]{
-    return this.dummyArray;
+  getScripts():Observable<scriptFace[]>{
+    return of(this.dummyArray);
   }
+ 
 }

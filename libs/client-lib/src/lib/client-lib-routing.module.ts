@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m=>m.LoginModule),
+    loadChildren: () => import('./google-login/google-login.module').then(m=>m.LoginModule),
   },
   {
     path: 'collections',
@@ -40,8 +40,26 @@ const routes: Routes = [
     loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
   },
   {
+    path: 'scripts',
+    loadChildren: () => import ('./scripts/scripts.module').then(m=>m.ScriptsModule)
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m=>m.AdminModule)
+  },
+  {
+
+    path:'scriptExecutor',
+    loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
+  },
+  {
+    path: 'gameSessions',
+    loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
+  },
+  {
+    path: 'session',
+    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
+
   }
 ];
 

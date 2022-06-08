@@ -1,16 +1,16 @@
 import { Test } from '@nestjs/testing';
-import { ApiScriptDetailController } from './api-script-detail.controller';
+import { ApiScriptController } from './script.controller';
 
 describe('ApiScriptDetailController', () => {
-  let controller: ApiScriptDetailController;
+  let controller: ApiScriptController;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [],
-      controllers: [ApiScriptDetailController],
+      controllers: [ApiScriptController],
     }).compile();
 
-    controller = module.get(ApiScriptDetailController);
+    controller = module.get(ApiScriptController);
   });
 
   it('should be defined', () => {

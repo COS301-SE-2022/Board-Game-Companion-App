@@ -1,0 +1,27 @@
+name: deploy-api
+
+on:
+  push:
+    branches: [ main , release/** , develop ]
+  pull_request:
+    branches: [ main , release/** , develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ""
+          heroku_email: "frontend.forerunners16@gmail.com"
+          justlogin: true
+
+      - name: clone heroku app
+        run: git remote add heroku https://git.heroku.com/board-game-companion-app-api.git
+        run: git fetch heroku
+
+      - name: update proc file
+        run: git add .
+        run: git commit -m "(procfile):updated procfile"
+        run: git push heroku
