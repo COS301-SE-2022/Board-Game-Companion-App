@@ -4,6 +4,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BggSearchService } from './services/bgg-search/bgg-search.service';
 import { ScriptService } from './services/scripts/script.service';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { GoogleAuthService } from 'libs/api-lib/src/lib/services/GoogleAuth/google-auth.service';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
@@ -12,11 +15,14 @@ import { ScriptService } from './services/scripts/script.service';
     HeaderComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    OAuthModule.forRoot(),
+    
   ],
   providers: [
     BggSearchService,
-    ScriptService
+    ScriptService,
+    GoogleAuthService
   ],
   exports: [
     HeaderComponent,
