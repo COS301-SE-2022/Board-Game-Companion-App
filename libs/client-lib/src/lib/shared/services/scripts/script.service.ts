@@ -34,8 +34,11 @@ export class ScriptService {
   }
 
   removeScript(id:string):Observable<void>{
-
     return this.httpClient.delete<void>(this.api + "scripts/remove/" + id);
+  }
+
+  updateScriptInfo(data:any):Observable<script>{
+    return this.httpClient.post<script>(this.api + "scripts/update",data);
   }
 
   retrieveAllScript():Observable<script[]>{

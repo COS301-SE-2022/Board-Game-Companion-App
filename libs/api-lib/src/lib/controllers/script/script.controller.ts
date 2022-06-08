@@ -30,7 +30,7 @@ export class ApiScriptController {
                     const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
                     const extension: string = path.parse(file.originalname).ext;
       
-                    cb(null, `${filename}${extension}`)
+                    cb(null, `${filename}${extension}`) 
                 }
           })
         }))
@@ -51,7 +51,19 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
-    @Put('update')
+        // @UseInterceptors(FileInterceptor('icon',{
+    //     storage: diskStorage({
+    //         destination:"./uploads/scripts/icons/"+id+"/",
+    //             filename: (req, file, cb) => {
+    //                 const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
+    //                 const extension: string = path.parse(file.originalname).ext;
+      
+    //                 cb(null, `${filename}${extension}`) 
+    //             }
+    //       })
+    //     }))
+
+    @Post('update')
     async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
         return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
     }

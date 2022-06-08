@@ -78,7 +78,7 @@ export class ScriptService {
         this.scriptModel.findByIdAndRemove(id).exec();
     }
 
-    async findAll(): Promise<Script[]>{
+    async findAll(): Promise<Script[]>{ 
         return this.scriptModel.find().exec();
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { script, empty } from '../../shared/models/script';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
@@ -11,6 +11,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class UpdateScriptComponent implements OnInit {
   @Input()current:script = empty;
+  @Output()updateScriptEvent = new EventEmitter<script>();
   scriptFiles:string[] = ["main"];
   scriptfile = "";
   maxfiles = 3;
@@ -26,7 +27,7 @@ export class UpdateScriptComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("create script");      
+    console.log("update script");      
   }
 
   display(value:number):void{
@@ -69,62 +70,48 @@ export class UpdateScriptComponent implements OnInit {
   }
 
   validateAndSave(): void{
-    const fileinput:HTMLInputElement = <HTMLInputElement>document.getElementById("image-input") || new HTMLInputElement;
-
-    if(this.scriptname === "")
+    if(this.current.name === "")
       this.errorOccured("Script name missing.");
-    else if(this.boardgame === "")
-      this.errorOccured("Board game missing.");
-    else if(fileinput.files?.length == 0)
-      this.errorOccured("Select script icon.");
     else{
-      const temp = ''//this.getboardGameId();
-    
-      if(temp === ""){
-
-        this.searchService.getBoardGameByName(this.boardgame,true).subscribe({
-          next:(value)=>{
-            console.log(value.toString());
-            const response:MostActive[] = this.searchService.parseGetBoardGameByName(value.toString());
-            
-            if(response.length !== 1)
-              this.errorOccured("Could not find board game '" + this.boardgame + "'.");
-            else{
-              this.save(response[0].id);
-            }
-          },
-          error:(e)=>{
-            console.log(e)
-          },
-          complete:()=>{
-            console.log("complete")
-          }          
-        });
-
-      }else{
-        this.save(temp);
-      } 
+      this.save();
     }
   }
 
-  save(boardGameId:string): void{
-    const formData:FormData = new FormData();
-    const fileinput:HTMLInputElement = <HTMLInputElement>document.getElementById("image-input") || new HTMLInputElement;
+  save(): void{
+    const fileinput:HTMLInputElement = <HTMLInputElement>document.getElementById("update-image-input") || new HTMLInputElement();
     const files = fileinput.files || [];
+    let data:any;
 
-    formData.append("user",localStorage.getItem("user") || "Joseph");
-    formData.append("name",this.scriptname);
-    formData.append("boardGameId",boardGameId);
-    formData.append("files",JSON.stringify(this.scriptFiles));
-    console.log("file: " + files[0].name);
-    formData.append("icon",files[0]);
+    
+    if(files.length !== 0){
+      console.log(files[0]);
+      data = {
+        id : this.current._id,
+        name : this.current.name,
+        public : this.current.public,
+        export : this.current.export,
+        status : this.current.status,
+        icon : files[0]
+      }
+    }else{
+      data = {
+        id : this.current._id,
+        name : this.current.name,
+        public : this.current.public,
+        export : this.current.export,
+        status: this.current.status
+      }     
+    }
 
-    this.scriptService.saveScript(formData).subscribe({
+
+    this.scriptService.updateScriptInfo(data).subscribe({
       next:(value)=>{
-        console.log(value.toString());
+        this.updateScriptEvent.emit(value);   
+        document.getElementById("import-script-cancel")?.click;
       },
       error:(e)=>{
-        console.log(e)
+        console.log(e);
+        this.errorOccured(e);
       },
       complete:()=>{
         console.log("complete")
@@ -161,7 +148,7 @@ export class UpdateScriptComponent implements OnInit {
     const file = files[0];
     const filereader = new FileReader();
 
-    const display = document.getElementById("icon");
+    const display = document.getElementById("update-icon");
     
     if(display){
       filereader.readAsDataURL(file);

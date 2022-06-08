@@ -34,4 +34,15 @@ export class ToolBarComponent implements OnInit {
   removeCurrentScript(): void{
     this.removeScript.emit(this.current);
   }
+
+  updateScript(value:script): void{
+    this.current.name = value.name;
+    this.current.status = value.status;
+    this.current.public = value.public;
+    this.current.export = value.export;
+  }
+
+  copy(value:script):script{
+    return JSON.parse(JSON.stringify(this.current));
+  }
 }
