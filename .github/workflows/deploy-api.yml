@@ -13,9 +13,16 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "board-game-companion-app-api" 
+          heroku_app_name: ""
           heroku_email: "frontend.forerunners16@gmail.com"
-          procfile: "web: npm run start-api"
-          healthcheck: "https://board-game-companion-app-api.herokuapp.com/health"
-          checkstring: "ok"
-          rollbackonhealthcheckfailed: true
+          justlogin: true
+
+      - name: clone heroku app
+        run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+        run: git fetch heroku
+
+      - name: update proc file
+        run: node tools/scripts/create-client-procfile.js
+
+      - name: deploy to heroku
+        run: ./tools/scripts/deploy-client.sh
