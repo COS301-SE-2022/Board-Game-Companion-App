@@ -5,7 +5,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { BggSearchService } from './services/bgg-search/bgg-search.service';
 import { ScriptService } from './services/scripts/script.service';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { GoogleAuthService } from 'libs/api-lib/src/lib/services/GoogleAuth/google-auth.service';
+import { GoogleAuthService } from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({

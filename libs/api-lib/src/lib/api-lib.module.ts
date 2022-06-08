@@ -4,7 +4,6 @@ import { ApiScriptController } from './controllers/script/script.controller';
 import { ScriptEditorController } from './controllers/script-editor/script-editor.controller';
 import { CollectionsService } from './services/collection/collections.service';
 import { ScriptService } from './services/scripts/script.service';
-//import { GoogleAuthService } from './services/GoogleAuth/google-auth.service';
 import { ScriptEditorService } from './services/editor/script-editor.service';
 import { RatingService } from './services/ratings/rating.service';
 import { CommentService } from './services/comments/comment.service';
@@ -34,8 +33,7 @@ import { MetadataSchema } from './schemas/Metadata';
     ScriptEditorService,
     ScriptService,
     RatingService,
-    CommentService,
-    //GoogleAuthService
+    CommentService
   ],
   exports: [],
 })
