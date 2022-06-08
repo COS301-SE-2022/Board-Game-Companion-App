@@ -1,0 +1,72 @@
+<board-game-companion-app-tool-bar (removeScript)="removeScript($event)" (newScript)="newScript($event)" (viewEvent)="changeView($event)" [current]="currentScript"></board-game-companion-app-tool-bar>
+
+<div class = "flex flex-row justify-center" *ngIf="gridView===true">
+    <div (click) = "containerClick($event)" id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor = "let value of scripts" [id] = "value._id" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(value)">
+            <span *ngIf = "value.status === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+            <span *ngIf = "value.status === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
+            <span *ngIf = "value.status === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
+            
+            <img class="w-full h-full" [src]="'http://localhost:3333/' + replaceBackSlash(value.icon)" alt=""/>
+            <div class = "child absolute bottom-0 w-full h-8 bg-inherit z-10 text-center text-white text-base">
+                <b>{{value.name}}</b>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class = "flex flex-col justify-center" *ngIf="gridView===false">
+    <div id = "wrapper" class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                    <th>
+                        Last Update
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Size
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr (click)="selected(value)" [ngClass]="{'bg-slate-700 text-white':currentScript._id === value._id}" [id] = "value._id" *ngFor = "let value of scripts" class = "hover:bg-slate-500 hover:text-white">
+                    <td>
+                        <div class = "flex flex-row">
+                            <div class = "w-8 h-8">
+                                <img class="w-full h-full" [src]="'http://localhost:3333/' + replaceBackSlash(value.icon)" alt=""/>
+                            </div>
+                            <div class = "ml-2">
+                                {{value.name}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {{formatDate(value.created)}}
+                    </td>
+                    <td>
+                        {{formatDate(value.lastupdate)}}
+                    </td>
+                    <td>
+                        <span *ngIf = "value.status===0" class = "mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+                        <span *ngIf = "value.status===1" class = " mr-2"><i class="fas fa-cogs" style="color:orange"></i></span>
+                        <span *ngIf = "value.status===2" class = " mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
+                        {{value.status === 0 ? "Flagged" : (value.status === 1 ? "In Progress" : "Published")}}
+                    </td>
+                    <td>
+                        {{value.size}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

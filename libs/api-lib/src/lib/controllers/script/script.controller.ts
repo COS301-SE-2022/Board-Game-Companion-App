@@ -1,27 +1,43 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { ScriptService } from '../../services/scripts/script.service';
-import { scriptDto } from '../../models/dto/scriptDto';
-import { createResponse }  from '../../models/response/scriptResponse';
 import { Script } from '../../schemas/script.schema';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import path = require('path');
+import { resourceLimits } from 'worker_threads';
+
+let id = uuidv4();
 
 @Controller('scripts')
-export class ApiScriptDetailController {
+export class ApiScriptController {
+    private id:string;
     constructor(private readonly scriptService:ScriptService){}
     
     //script functions
-
-
-    @Get('download')
-    downloadScript(@Query('name')name:string):StreamableFile{
-        const file = createReadStream(join(process.cwd(),name));
-        return new StreamableFile(file);
+    updateId():void{
+        id = uuidv4();
     }
 
-    @Post('create')
-    async createScript(@Body() dto:scriptDto): Promise<createResponse>{ 
-        return {success:true,message:"script saved.",content:await this.scriptService.create(dto)}; 
+    @Post('create-script')
+    @UseInterceptors(FileInterceptor('icon',{
+        storage: diskStorage({
+            destination:"./uploads/scripts/icons/"+id+"/",
+                filename: (req, file, cb) => {
+                    const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
+                    const extension: string = path.parse(file.originalname).ext;
+      
+                    cb(null, `${filename}${extension}`)
+                }
+          })
+        }))
+    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
+        const tempId = id;
+        this.updateId();
+        console.log("name: " + name);
+        return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId);
     }
 
     @Get('retrieve/byid')
@@ -29,20 +45,26 @@ export class ApiScriptDetailController {
         return await this.scriptService.findById(id);
     }
 
-    @Get('download')
-    async download(@Query('id')id:string){
-        console.log('retrieveScript');
+    @Get('retrieve/all')
+    async retrieveAllScripts():Promise<Script[]>{
+        return await this.scriptService.findAll();
     }
+
+    // @Get('download')
+    // async download(@Query('id')id:string){
+    //     console.log('retrieveScript');
+    // }
 
     @Put('visibility')
     async toggleVisibility(){
         console.log('toggleVisibility');
     }
 
-    @Delete('remove')
-    async removeScript(@Body('id')id:string){
-       console.log('removeScript'); 
+    @Delete('remove/:id')
+    async removeScript(@Param('id')id:string){
+       await this.scriptService.removeById(id); 
     }
+
     //rating functions
     
     @Post('create-rating')

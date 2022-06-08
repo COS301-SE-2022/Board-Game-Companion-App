@@ -1,0 +1,12 @@
+#wrapper{
+    width: 90%;
+    margin: 20px auto;
+}
+
+.parent .child{
+    display: none;
+}
+  
+.parent:hover .child{
+    display: block;
+}

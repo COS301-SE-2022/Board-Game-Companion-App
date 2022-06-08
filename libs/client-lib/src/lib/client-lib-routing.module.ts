@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
   },
   {
+    path: 'scripts',
+    loadChildren: () => import ('./scripts/scripts.module').then(m=>m.ScriptsModule)
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m=>m.AdminModule)
   }
