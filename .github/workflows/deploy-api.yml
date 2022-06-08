@@ -23,4 +23,4 @@ jobs:
       - run: node tools/scripts/create-api-procfile.js
       - run: git add .
       - run: git commit -m "(procfile):updated procfile"
-      - run: git push heroku HEAD:main
+      - run: git push https://git.heroku.com/board-game-companion-app.git HEAD:main
