@@ -1,25 +1,21 @@
-
-name: Tests
+name: deploy-api
 
 on:
   push:
     branches: [ main , release/** , develop ]
   pull_request:
     branches: [ main , release/** , develop ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js 16
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    - name: run test suite  
-      run: npm install yarn -g
-      run: yarn install
-      run: nx run-many --target=test --all --parallel
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "board-game-companion-app" 
+          heroku_email: "frontend.forerunners16@gmail.com"
+          procfile: "web: npm run start-client"
+          healthcheck: "https://board-game-companion-app.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true

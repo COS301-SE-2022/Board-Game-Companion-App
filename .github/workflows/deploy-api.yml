@@ -1,0 +1,21 @@
+name: deploy-api
+
+on:
+  push:
+    branches: [ main , release/** , develop ]
+  pull_request:
+    branches: [ main , release/** , develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "board-game-companion-app-api" 
+          heroku_email: "frontend.forerunners16@gmail.com"
+          procfile: "web: npm run start-api"
+          healthcheck: "https://board-game-companion-app-api.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
