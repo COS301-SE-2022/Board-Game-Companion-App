@@ -24,4 +24,4 @@ jobs:
       - run: node tools/scripts/create-client-procfile.js
       - run: git add .
       - run: git commit -m "(procfile):updated procfile"
-      - run: git push heroku
+      - run: git push heroku HEAD:main
