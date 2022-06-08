@@ -46,6 +46,14 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m=>m.AdminModule)
+  },
+  {
+    path: 'gameSessions',
+    loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
+  },
+  {
+    path: 'session',
+    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
   }
 ];
 
