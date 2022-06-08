@@ -11,14 +11,29 @@ import { InjectModel } from '@nestjs/mongoose';
 export class ScriptEditorService {
     constructor(@InjectModel('Metadata')private metadataModel: Model<Metadata> ){}
     async saveFile(metadata: Metadata) : Promise<string>{
+        /*this.metadataModel.findOneAndUpdate({author: metadata.author,
+            downloads: metadata.downloads,
+            ratings: metadata.ratings,
+            filename: metadata.filename,
+            script: metadata.script
+        });*/
 
-        const scriptEd = new this.metadataModel({
+        //if you find one, update it with two , upsert: if you find it great else create it 
+        const saved = await this.metadataModel.findOneAndUpdate({author:metadata.author, filename:metadata.filename},{author: metadata.author,
+            downloads: metadata.downloads,
+            ratings: metadata.ratings,
+            filename: metadata.filename,
+            script: metadata.script
+        },{upsert:true});
+        console.log(metadata);
+        /*const scriptEd = new this.metadataModel({
             author: metadata.author,
             downloads: metadata.downloads,
             ratings: metadata.ratings,
-            filename: metadata.filename
+            filename: metadata.filename,
+            script: metadata.script
         });
-        const saved = await scriptEd.save();
+        const saved = await scriptEd.save();*/
         
         if(!saved)
             return "The file is saved successfully to the database.";
@@ -26,13 +41,21 @@ export class ScriptEditorService {
             return "Not saved in the database"; 
 
     }
-    async FileUpdate(author: string) : Promise<StreamableFile>{
+    async FileUpdate(author: string, filename: string ) : Promise<any>{
 
         if(author==""){
             throw new NotFoundException("NO AUTHOR PROVIDED");
         }
-        const found = await this.metadataModel.find({author:author});
-        const file = createReadStream(join(process.cwd(), "uploads/scripts/"+found[0].filename));
-        return new StreamableFile(file);
+        if(filename==""){
+            throw new NotFoundException("NO FILE NAME PROVIDED");
+        }
+        const found = await this.metadataModel.findOne({author:author, filename:filename});
+        //const file = createReadStream(join(process.cwd(), "uploads/scripts/"+found[0].filename));
+        //return new StreamableFile(file);
+        return found;
     }
+    async getFiles() : Promise<any>{
+        return await this.metadataModel.find({});
+    }
+
 }
