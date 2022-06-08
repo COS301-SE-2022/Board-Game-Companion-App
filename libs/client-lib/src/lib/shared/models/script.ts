@@ -33,7 +33,7 @@ export const empty:script = {
     lastupdate: new Date(0),
     public: false,
     export: false,
-    status: status.flaggged,
+    status: {value:0,message:"script has been flagged by the system"},
     size: 0,
     comments: [],
     files: [],

@@ -33,8 +33,7 @@ import { MetadataSchema } from './schemas/Metadata';
     ScriptEditorService,
     ScriptService,
     RatingService,
-    CommentService,
-    
+    CommentService
   ],
   exports: [],
 })

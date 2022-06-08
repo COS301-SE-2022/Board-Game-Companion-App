@@ -8,11 +8,13 @@ import { status } from '../../models/general/status';
 
 @Injectable()
 export class ScriptService {
+    months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    
     constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>){
 
     }
 
-    async create(user:string,name:string,boardGameId:string,files:string[],icon:string,id:string): Promise<Script> {
+    async create(user:string,name:string,boardGameId:string,stat:status,files:string[],icon:string,id:string): Promise<Script> {
         const dto:scriptDto = {
             name: name,
             author: user,
@@ -24,7 +26,7 @@ export class ScriptService {
             lastdownload: null,
             public: false,
             export: false,
-            status: status.inProgress,
+            status: stat,
             size: 0,
             comments: [],
             files: [],
@@ -59,11 +61,24 @@ export class ScriptService {
         return createdScript.save();
     }
 
+    formatDate(date:Date):string{
+        let result = "";
+        
+        const val = new Date(date);
+    
+        result = val.getDate() + " ";
+        result += this.months[val.getMonth()] + " ";
+        result += val.getFullYear() + ", ";
+        result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+    
+        return result;
+      }
+
     async removeById(id:string): Promise<void>{
         this.scriptModel.findByIdAndRemove(id).exec();
     }
 
-    async findAll(): Promise<Script[]>{
+    async findAll(): Promise<Script[]>{ 
         return this.scriptModel.find().exec();
     }
 
@@ -71,7 +86,7 @@ export class ScriptService {
         return this.scriptModel.findById(id).exec();
     }
 
-    // async findByName(name:string):Promise<Script>{
-    //     return this.scriptModel.find({name:'joseph'}).exec();
-    // }
+    async updateInfo(id:string,name:string,pub:boolean,exp:boolean,stat:status){
+        return this.scriptModel.findByIdAndUpdate(id,{name:name,public:pub,export:exp,status:stat}).exec();
+    }
 }

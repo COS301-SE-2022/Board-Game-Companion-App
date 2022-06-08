@@ -5,8 +5,8 @@
     <div class="p-4 modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
         <div id = "info" class = "flex flex-row w-full relative content-center">
             <div id = "script-icon" class = "w-1/3 h-32 relative hover:shadow-md rounded overflow-hidden">
-                <img [src]="'http://localhost:3333/' + replaceBackSlash(current.icon)" id = "icon" class = "w-full h-full">
-                <input type="file" accept=".jpeg,.jpg,.png,.svg" id = "image-input" (change)="loadImage($event)"/>
+                <img [src]="'http://localhost:3333/' + replaceBackSlash(current.icon)" id = "update-icon" class = "w-full h-full">
+                <input type="file" accept=".jpeg,.jpg,.png,.svg" id = "update-image-input" (change)="loadImage($event)"/>
             </div>
             <div id = "script-info" class = "w-2/3 p-2 ml-2 float-right">
                 <label for="name" class="form-label inline-block mb-1 text-gray-700 font-medium">Name</label>
@@ -16,16 +16,17 @@
 
                     <div class="flex w-2/4">
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="public" name = "public" [(ngModel)] = "current.public">
+                        <input class="form-check-input" type="checkbox" id="public" name = "public" [(ngModel)] = "current.public" [value]="current.public">
                         <label class="form-check-label font-medium" for="public">Public</label>
                       </div>
                     </div>
                     <div class="flex w-2/4">
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" [(ngModel)] = "current.export" name = "export" id = "export" >
+                        <input [disabled] = "current.public" class="form-check-input" type="checkbox" [(ngModel)] = "current.export" name = "export" id = "export" >
                         <label class="form-check-label font-medium" for="export">Export</label>
                       </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -34,30 +35,24 @@
             <h5 class = "text-gray-900 text-xl leading-tight font-medium mb-2">Status</h5>
             <div id = "status-content" class = "flex flex-row">
               <div id = "status-radio-group" class = "w-1/3">
-                <div class="form-check">
-                  <input (click) = "display(current.status)" [(ngModel)] = "current.status" class="form-check-input" type="radio" name="status" id="status-flagged" value = "0">
-                  <label  class="form-check-label" for="flexRadioDefault1">
-                    Flagged
-                  </label>
+
+                <div class="dropdown">
+                  <a class="btn btn-secondary dropdown-toggle" role="button" id="status-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{current.status.value===0 ? "Flagged" : (current.status.value === 1 ? "In Progress" : "Published")}}
+                  </a>
+                
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a (click)="setStatus(1)" class="dropdown-item">In Progress</a></li>
+                    <li><a (click)="setStatus(2)" class="dropdown-item">Published</a></li>
+                  </ul>
                 </div>
-                <div class="form-check">
-                  <input (click) = "display(current.status)" [(ngModel)] = "current.status" class="form-check-input checked" type="radio" name="status" id="status-progress" value = "1">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    In Progress
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input (click) = "display(current.status)" [(ngModel)] = "current.status" class="form-check-input" type="radio" name="status" id="status-published" value = "2">
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    Published
-                  </label>
-                </div>
+
               </div>
 
               <div id = "status-message" class = "ml-14 w-3/4">
                 <div class="flex w-full h-full">
-                  <div class="w-full h-full block p-4 shadow-md text-white" [ngClass]="{'bg-red-600':current.status===0,'bg-orange-600':current.status ===1,'bg-green-600':current.status===2}">
-                  
+                  <div class="w-full h-full block p-4 shadow-md text-white" [ngClass]="{'bg-red-600':current.status.value===0,'bg-orange-600':current.status.value ===1,'bg-green-600':current.status.value ===2}">
+                    {{current.status.message}}
                   </div>
                 </div>
               </div>
@@ -73,10 +68,10 @@
         </div>
 
         <div id = "script-actions" class = "modal-footer items-center justify-end p-0">
-            <button data-bs-dismiss="modal" id = "import-script" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+            <button  data-bs-dismiss="modal" id = "import-script-cancel" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
                 <i class="fa-solid fa-rectangle-xmark fa-2x"></i>
             </button>
-            <button (click) = "validateAndSave()" id = "import-script" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+            <button (click) = "validateAndSave()" id = "import-script-save" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
                 <i class="fa-solid fa-floppy-disk fa-2x"></i>
             </button>
         </div>

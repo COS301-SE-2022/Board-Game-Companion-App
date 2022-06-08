@@ -83,7 +83,7 @@
 
 
 <board-game-companion-app-create-scripts (newScript)="propagateScript($event)"></board-game-companion-app-create-scripts>
-<board-game-companion-app-update-scripts [current]="current" ></board-game-companion-app-update-scripts>
+<board-game-companion-app-update-scripts (updateScriptEvent)="updateScript($event)" [current]="copy(current)" ></board-game-companion-app-update-scripts>
 
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="delete-prompt" tabindex="-1" aria-labelledby="exampleModalSmLabel" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
