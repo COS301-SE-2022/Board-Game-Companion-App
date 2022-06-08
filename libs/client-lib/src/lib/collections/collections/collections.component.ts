@@ -41,7 +41,7 @@ export class CollectionsComponent implements OnInit {
         //get the 
         const ids:string[] = JSON.parse(localStorage.getItem(names[i])||"");
         const urls:string[] = new Array<string>();
-        for(let j=0; j<ids.length&&j<3;j++)
+        for(let j=0; j<ids.length&&j<4;j++)
         {
           if(ids[j]!=null)
           {
