@@ -18,7 +18,10 @@ jobs:
           justlogin: true
 
       
+      - run: git config --global user.email "u18166793@tuks.co.za"
+      - run: git config --global user.name "Joseph-Makgopa"
       - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+      - run: git fetch heroku
       - run: node tools/scripts/create-client-procfile.js
       - run: git add .
       - run: git commit -m "(procfile):updated procfile"
