@@ -1,5 +1,4 @@
-export enum status{
-    flaggged,
-    inProgress,
-    published
+export interface status{
+    value: number,
+    message: string
 }

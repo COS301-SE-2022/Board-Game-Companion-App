@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
-import { status } from '../models/general/status';
+import { status as stat} from '../models/general/status';
 import { Comment } from './comment.schema';
 
 export type ScriptDocument = Script & Document;
@@ -23,8 +23,8 @@ export class Script{
     @Prop()
     lastupdate: Date;
 
-    @Prop()
-    status:number;
+    @Prop({type:{value:0,message:""}})
+    status:stat;
 
     @Prop()
     published: Date;

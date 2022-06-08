@@ -18,10 +18,9 @@ export class UpdateScriptComponent implements OnInit {
   warningMessage = "";
   error = false;
   warning = false;
-  boardgames:string[] = [];
-  boardgamesMap:Map<string,string> = new Map();
   boardgame = "";
   scriptname = "";
+  months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   constructor(private readonly searchService:BggSearchService,private readonly scriptService:ScriptService){}
 
@@ -32,6 +31,29 @@ export class UpdateScriptComponent implements OnInit {
 
   display(value:number):void{
     alert(value);
+  }
+
+  setStatus(val:number): void{
+    this.current.status.value = val;
+    
+    if(this.current.status.value === 1){
+      this.current.status.message = this.current.name + " has been in progress since " +this.formatDate(new Date()) + ".";
+    }else if(this.current.status.value === 2){
+      this.current.status.message = this.current.name + " was published on the following date '" +this.formatDate(new Date()) + "'.";
+    }
+  }
+
+  formatDate(date:Date):string{
+    let result = "";
+    
+    const val = new Date(date);
+
+    result = val.getDate() + " ";
+    result += this.months[val.getMonth()] + " ";
+    result += val.getFullYear() + ", ";
+    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+
+    return result;
   }
 
   replaceBackSlash(input:string):string{

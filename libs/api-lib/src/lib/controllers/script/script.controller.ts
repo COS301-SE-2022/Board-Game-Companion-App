@@ -8,6 +8,7 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { resourceLimits } from 'worker_threads';
+import { status } from '../../models/general/status';
 
 let id = uuidv4();
 
@@ -36,8 +37,8 @@ export class ApiScriptController {
     async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
         const tempId = id;
         this.updateId();
-        console.log("name: " + name);
-        return this.scriptService.create(user,name,boardGameId,JSON.parse(files),icon.path,tempId);
+        const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
+        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon.path,tempId);
     }
 
     @Get('retrieve/byid')
@@ -50,14 +51,9 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
-    // @Get('download')
-    // async download(@Query('id')id:string){
-    //     console.log('retrieveScript');
-    // }
-
-    @Put('visibility')
-    async toggleVisibility(){
-        console.log('toggleVisibility');
+    @Put('update')
+    async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
+        return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
     }
 
     @Delete('remove/:id')
