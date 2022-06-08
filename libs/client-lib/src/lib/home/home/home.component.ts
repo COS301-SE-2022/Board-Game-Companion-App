@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { ActivatedRoute,NavigationEnd,Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'board-game-companion-app-home',
@@ -9,7 +11,14 @@ import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.se
   
 })
 export class HomeComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService) {}
+  constructor(private bggSearch:BggSearchService, private router:Router) {
+    this.router.events
+	      .pipe(filter((e) => e instanceof NavigationEnd))
+	      .subscribe((e: any) => {
+		    // this.showHideTabs();
+		    console.log(e.url);
+	});
+  }
   ids: string[] | undefined;
   
   ngOnInit(): void {

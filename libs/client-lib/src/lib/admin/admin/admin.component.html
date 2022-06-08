@@ -120,10 +120,38 @@
                         </td >
                         </ng-template>
                         <td class="text-center align-middle">
-                            <a href="#" class="btn btn-success mx-2" data-toggle="modal">
-                                <span class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
+                            <button (click)="onEdit()" class="btn btn-success mx-2" data-toggle="modal">
+                                <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
+                            </button>
+                            <a href="#" class="btn btn-danger" data-toggle="modal">
+                                <span class="fa fa-trash" data-toggle="tooltip" title="Delete"></span>
                             </a>
-                            <a href="#" class="btn btn-primary" data-toggle="modal">
+                            <a href="#" class="btn btn-primary mx-2" data-toggle="modal">
+                                <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            13 April 2022
+                        </td>
+                        <td>
+                            Paul
+                        </td>
+                        <td>
+                            Root
+                        </td>
+                        <td class="text-success">
+                            Active
+                        </td>
+                        <td class="text-center align-middle">
+                            <button (click)="onEdit()" class="btn btn-success mx-2" data-toggle="modal">
+                                <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
+                            </button>
+                            <a href="#" class="btn btn-danger" data-toggle="modal">
+                                <span class="fa fa-trash" data-toggle="tooltip" title="Delete"></span>
+                            </a>
+                            <a href="#" class="btn btn-primary mx-2" data-toggle="modal">
                                 <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
                             </a>
                         </td>

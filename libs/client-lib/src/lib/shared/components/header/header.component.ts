@@ -11,8 +11,10 @@ import { GoogleAuthService, userDetails} from 'libs/client-lib/src/lib/google-lo
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+
   UserDetails: userDetails | undefined;
   log = "login";
+
 
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService) {
     
