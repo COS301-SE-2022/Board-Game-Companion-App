@@ -18,11 +18,10 @@ jobs:
           justlogin: true
 
       - name: clone heroku app
-        run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+        run: git remote add heroku https://git.heroku.com/board-game-companion-app-api.git
         run: git fetch heroku
 
       - name: update proc file
-        run: node tools/scripts/create-client-procfile.js
-
-      - name: deploy to heroku
-        run: ./tools/scripts/deploy-client.sh
+        run: git add .
+        run: git commit -m "(procfile):updated procfile"
+        run: git push heroku

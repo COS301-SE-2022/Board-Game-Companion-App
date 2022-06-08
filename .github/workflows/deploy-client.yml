@@ -22,4 +22,6 @@ jobs:
         run: git fetch heroku
 
       - name: update proc file
-        run: node tools/scripts/create-client-procfile.js
+        run: git add .
+        run: git commit -m "(procfile):updated procfile"
+        run: git push heroku
