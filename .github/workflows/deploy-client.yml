@@ -22,5 +22,4 @@ jobs:
         run: git fetch heroku
 
       - name: update proc file
-        run: echo "web: npm run start-api" > Procfile
-        run: cat Procfile
+        run: node tools/scripts/create-client-procfile.js
