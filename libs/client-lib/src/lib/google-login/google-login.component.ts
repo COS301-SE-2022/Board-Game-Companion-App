@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { GoogleAuthService } from 'libs/api-lib/src/lib/services/GoogleAuth/google-auth.service';
+import { GoogleAuthService } from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-google-login',
