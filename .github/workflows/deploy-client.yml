@@ -25,4 +25,4 @@ jobs:
         run: node tools/scripts/create-client-procfile.js
 
       - name: deploy to heroku
-        run: ./tools/scripts/deploy-client.sh
+        run: node tools/scripts/create-client-procfile.js
