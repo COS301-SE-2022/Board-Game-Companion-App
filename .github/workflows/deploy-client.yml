@@ -19,3 +19,4 @@ jobs:
 
       - name: clone heroku app
         run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+        run: git fetch heroku
