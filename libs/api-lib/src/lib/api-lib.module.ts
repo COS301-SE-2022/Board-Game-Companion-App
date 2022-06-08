@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CollectionsController } from './controllers/board-collection/collections.controller';
-import { ApiScriptDetailController } from './controllers/script-detail/api-script-detail.controller';
+import { ApiScriptController } from './controllers/script/script.controller';
 import { ScriptEditorController } from './controllers/script-editor/script-editor.controller';
 import { CollectionsService } from './services/collection/collections.service';
 import { ScriptService } from './services/scripts/script.service';
@@ -26,7 +26,7 @@ import { MetadataSchema } from './schemas/Metadata';
   ],
   controllers: [
     CollectionsController,
-    ApiScriptDetailController,
+    ApiScriptController,
     ScriptEditorController
   ],
   providers: [

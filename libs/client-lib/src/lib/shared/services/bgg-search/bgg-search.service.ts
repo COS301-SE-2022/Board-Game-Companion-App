@@ -1,6 +1,7 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
 
 export interface MostActive{
   id:string,
@@ -28,10 +29,15 @@ export class BggSearchService {
 
   parseGetBoardGameByName(data:string):MostActive[]{
     const result: MostActive[] = []
+    let temp: MostActive = {id:"",name:"",image:""};
+
     const list = new window.DOMParser().parseFromString(data.toString(), "text/xml");
 
     list.querySelectorAll('item').forEach(item=>{
-        result.push({id: item.getAttribute('id') || "",name:"",image:""});
+        temp = {id:"",name:"",image:""};
+        temp.id = item.getAttribute('id') || "";
+        temp.name = item.querySelector("name")?.getAttribute('value') || "";
+        result.push(temp);
     })
 
     return result;
