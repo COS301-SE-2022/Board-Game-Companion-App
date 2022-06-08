@@ -18,4 +18,4 @@ jobs:
           justlogin: true
 
       - name: clone heroku app
-        run: git remote add https://git.heroku.com/board-game-companion-app.git
+        run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
