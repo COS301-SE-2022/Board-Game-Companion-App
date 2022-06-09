@@ -14,7 +14,8 @@ export class HeaderComponent implements OnInit {
 
   UserDetails: userDetails | undefined;
   log = "login";
-
+  loggedIn = false;
+  admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com"];
 
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService) {
     
@@ -29,23 +30,30 @@ export class HeaderComponent implements OnInit {
 
     if(this.gapi.isLoggedIn())
     {
+      this.loggedIn = true;
       const el = document.getElementById('l');
       if(el!=null)
       {
         el.innerHTML = "logout";
 
         this.log = "logout";
-      }
-      
-        
-        
-      
-      
+      } 
 
-    }
+    }else
+      this.router.navigate(['/home']);
     
   }
 
+  isAdmin():boolean{
+    let result = false;
+
+    for(let count = 0; count < this.admin.length && !result; count++){
+      if(this.admin[count] === this.UserDetails?.details.email)
+        result = true;
+    }
+
+    return result;
+  }
   moveTo(path:string):void{
     if(path == "collection")
     {
@@ -59,6 +67,7 @@ export class HeaderComponent implements OnInit {
       }
       else
       {
+        this.loggedIn = false;
         this.gapi.signOut();
         this.router.navigate(['/home']);
       }

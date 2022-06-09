@@ -29,6 +29,13 @@ export class ScriptService {
     return this.httpClient.get(this.url + "search?query="+name+"&type=boardgame" + (exact ? "&exact=1":""),{responseType: 'text'})
   }
 
+  getScriptById(id:string):Observable<script>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<script>(this.api + "scripts/retrieve/byid",{params:param});
+  }
+
   saveScript(formData:FormData):Observable<script>{
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }

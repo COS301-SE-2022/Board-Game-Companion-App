@@ -1,78 +1,45 @@
 <div id = "wrapper">
     <div class="flex">
         <div class="flex flex-col md:flex-row md:w-full rounded-lg bg-white shadow-lg p-4 section">
-          <img style = "height:98%" class=" w-full object-cover md:w-72 rounded-lg md:rounded-lg" src="assets/images/Game_baddie_Borg.svg" alt="" />
+          <img style = "height:98%" class=" w-full object-cover md:w-72 rounded-lg md:rounded-lg" [src]="'http://localhost:3333/' + replaceBackSlash(current.icon)" alt="" />
           
-          <div class="pl-6 flex flex-col justify-start md:w-full">
-            <div class="flex flex-col w-full">
-                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div class=" inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="overflow-hidden">
-                      <table class="min-w-full border">
-                        <tbody>
-                          <tr class="bg-gray-100 border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Name</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              Cookie Monster
-                            </td>
-                          </tr>
-                          <tr class="bg-white border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Author</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              Jacob Smith
-                            </td>
-                          </tr>
-                          <tr class="bg-gray-100 border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BoardGame</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              Root
-                            </td>
-                          </tr>
-                          <tr class="bg-white border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Published</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              Jacob
-                            </td>
-                          </tr>
-                          <tr class="bg-gray-100 border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Size</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              127 kb
-                            </td>
-                          </tr>
-                          <tr class="bg-white border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Downloads</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              102
-                            </td>
-                          </tr>
-                          <tr class="bg-gray-100 border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Last Downloads</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              27 May 2020
-                            </td>
-                          </tr>
-                          <tr class="bg-white border-b">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Rating</td>
-                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              4.7
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class = "pl-6 flex flex-col justify-start md:w-full">
+            <table class="table table-striped table-hover">
+              <tbody>
+                <tr>
+                  <th scope="row">Name</th>
+                  <td>{{current.name}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Author</th>
+                  <td>{{current.author}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">BoardGame</th>
+                  <td>{{boardGameName}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Published</th>
+                  <td>{{formatDate(current.published)}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Downloads</th>
+                  <td>{{current.downloads}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Last Download</th>
+                  <td>{{current.downloads}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        
         </div>
     </div>
 
     <div class="flex my-4">
         <div class="flex flex-row block p-2 rounded-lg shadow-lg bg-white md:w-full relative section">
 
-            <ul class="flex w-1/3 border-2 rounded-md p-2">
+            <ul class="flex w-1/3 border-2 rounded-md p-2" *ngIf = "false">
                 <span class = "w-16 text-gray-800 text-2xl font-bold">Rate </span>
                 <span class = "w-7 ml-4 fa-2x fa-solid fa-star checked"></span>
                 <span class = "w-7 ml-4 fa-2x fa-solid fa-star checked"></span>
@@ -82,7 +49,7 @@
             </ul>
 
             <div class="flex w-1/5 ml-9">
-                <button type="button" class="justify-center inline-block w-full px-4 pt-3 pb-1 bg-green-700 hover:bg-green-800 text-white font-medium text-xs leading-normal uppercase rounded hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-zinc-700 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+                <button type="button" class="justify-center inline-block w-full px-4 pt-2 pb-1 bg-green-700 hover:bg-green-800 text-white font-medium text-xs leading-normal uppercase rounded hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-zinc-700 active:shadow-lg transition duration-150 ease-in-out flex align-center">
                     <span class = "fa fa-download fa-2x"></span>
                     <p class = "ml-2 text-base">Download</p>   
                 </button>
