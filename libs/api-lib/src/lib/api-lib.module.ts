@@ -12,7 +12,7 @@ import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
-import { MetadataSchema } from './schemas/Metadata';
+
 
 @Module({
   imports:[
@@ -20,7 +20,6 @@ import { MetadataSchema } from './schemas/Metadata';
                                 {name:Script.name,schema: ScriptSchema},
                                 {name:Comment.name,schema:CommentSchema},
                                 {name:Rating.name,schema:RatingSchema},
-                                { name: 'Metadata', schema: MetadataSchema }
                               ])
   ],
   controllers: [
