@@ -48,6 +48,10 @@ export class EditorComponent {
     //const content = tinymce.get("editorTextarea").getContent();
     //localStorage.setItem("content", content);
   }
+
+  onCreate(): void{
+    console.log("This is the button to push script content to script");
+  }
   
   //recieve JSONvar 
   getFile(id:string, filename:string):void{
