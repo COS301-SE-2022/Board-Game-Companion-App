@@ -36,7 +36,7 @@ export class ScriptService {
         for(let count = 0; count < files.length; count++){
             dto.files.push({name:"",path:""});
 
-            dto.files[count].path = "uploads/scripts/files/" + id + "/" + files[count];
+            dto.files[count].path = "libs/uploads/src/lib/scripts/files/" + id + "/" + files[count];
             dto.files[count].name = files[count];
 
             if(dto.files[count].name.indexOf(".module.ts") == -1){
@@ -44,7 +44,7 @@ export class ScriptService {
                 dto.files[count].path += ".module.ts";
             }
             try{
-                fs.mkdirSync("uploads/scripts/files/" + id,{recursive:true});
+                fs.mkdirSync("libs/uploads/src/lib/scripts/files/" + id,{recursive:true});
             }catch(err){
                 console.log(err);
             }

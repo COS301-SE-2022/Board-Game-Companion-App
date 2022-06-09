@@ -25,7 +25,7 @@ export class ApiScriptController {
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon',{
         storage: diskStorage({
-            destination:"./uploads/scripts/icons/"+id+"/",
+            destination:"./libs/uploads/src/lib/scripts/icons/"+id+"/",
                 filename: (req, file, cb) => {
                     const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
                     const extension: string = path.parse(file.originalname).ext;
