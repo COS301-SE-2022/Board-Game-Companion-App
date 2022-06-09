@@ -39,9 +39,9 @@ export class ScriptService {
             dto.files[count].path = "uploads/scripts/files/" + id + "/" + files[count];
             dto.files[count].name = files[count];
 
-            if(dto.files[count].name.indexOf(".ts") == -1){
-                dto.files[count].name += ".ts";
-                dto.files[count].path += ".ts";
+            if(dto.files[count].name.indexOf("module.ts") == -1){
+                dto.files[count].name += "module.ts";
+                dto.files[count].path += "module.ts";
             }
             try{
                 fs.mkdirSync("uploads/scripts/files/" + id,{recursive:true});
