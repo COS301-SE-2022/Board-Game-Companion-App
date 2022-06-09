@@ -31,10 +31,10 @@ export class ScriptExecutorComponent implements OnInit {
           path = path.replace("uploads/scripts/files/","")
           console.log(path);
 
-          import("uploads/scripts/files/"+path+".module").then(module=>
-            {
-              module.ScriptExecutorModule.play();
-            });
+          //import(path+".module").then(module=>
+          //  {
+           //   module.ScriptExecutorModule.play();
+           // });
         }});
         
 
