@@ -14,8 +14,8 @@ export class BoardGameDetailsComponent implements OnInit {
 
   id = "1010";
 
-
-
+  
+  
   addToCollection()
   {
     this.router.navigate(['addGame', {my_object: this.id}]);
