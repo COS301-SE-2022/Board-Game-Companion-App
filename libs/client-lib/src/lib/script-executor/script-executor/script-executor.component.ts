@@ -9,18 +9,15 @@ import { ActivatedRoute } from '@angular/router';
 export class ScriptExecutorComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
-  scriptID = "./test.module";
-  url = "http://localhost:3333/uploads/scripts/files/42a58303-990e-4230-94c6-a9f5dd629500/test.module.ts";
+  scriptID = "";
+  url = "42a58303-990e-4230-94c6-a9f5dd629500/test";
   ngOnInit(): void {
 
     //get id
-    this.scriptID = this.route.snapshot.paramMap.get('my_object')||"./test.module";
+    this.scriptID = this.route.snapshot.paramMap.get('my_object')||"42a58303-990e-4230-94c6-a9f5dd629500/test";
     try
     {
-      
-
-
-      import("./test.module").then(module=>
+      import(`uploads/scripts/files/${this.url}.module`).then(module=>
       {
         module.ScriptExecutorModule.play();
       });

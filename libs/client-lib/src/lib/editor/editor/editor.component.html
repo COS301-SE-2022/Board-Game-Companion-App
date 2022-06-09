@@ -3,7 +3,7 @@
 </head>
 <body>
     <form [formGroup]="editForm"> 
-        <label>File Name:</label><input type="text" formControlName="FileName" /><br>
+        <label class="form__label">File Name:</label><input type="text" formControlName="FileName" /><br>
         <editor
             apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
             formControlName = "body"
@@ -16,14 +16,16 @@
                 menu: {
                     file: { title:'File', items: 'save | newdocument'},  
                     edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
-                    view: {title: 'View', items:'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments' },
+                    view: {title: 'View', items:'visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments' },
                     tools: {title: 'Tools', items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' }
                 }, 
-                removed_menuitems: 'format, insert',
+                removed_menuitems: 'format, insert, bold, italic, underline, strikethrough, superscript, subscript, horizontal line ',
                 min_height: 150
             }">
         </editor>
         <button (click)="onUpload()" class="form__button">Upload <i class="fa-solid fa-angles-up"></i></button>
+        <button (click)="onCreate()" class="form__button"> Create <i class="fa-solid fa-circle-plus"></i></button>
+        <button (click)="onExecute()" class="form__button"> Run <i class="fa-solid fa-play"></i></button>
     </form> 
 </body>
 
