@@ -45,7 +45,7 @@ export class ApiScriptController {
     async retrieveScript(@Query('id')id:number): Promise<Script>{
         return await this.scriptService.findById(id);
     }
-
+    
     @Get('retrieve/all')
     async retrieveAllScripts():Promise<Script[]>{
         return await this.scriptService.findAll();

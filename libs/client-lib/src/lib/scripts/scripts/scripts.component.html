@@ -1,4 +1,4 @@
-<board-game-companion-app-tool-bar (removeScript)="removeScript($event)" (newScript)="newScript($event)" (viewEvent)="changeView($event)" [current]="currentScript"></board-game-companion-app-tool-bar>
+<board-game-companion-app-tool-bar (searchValueEvent)="search($event)" (removeScript)="removeScript($event)" (newScript)="newScript($event)" (viewEvent)="changeView($event)" [current]="currentScript"></board-game-companion-app-tool-bar>
 
 <div class = "flex flex-row justify-center" *ngIf="gridView===true">
     <div (click) = "containerClick($event)" id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
