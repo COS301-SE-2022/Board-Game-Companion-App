@@ -38,7 +38,7 @@
                     </a>
                     <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none">
                         <li *ngFor = "let file of current.files">
-                        <a (click) = "navigateToEditor()" class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" href="#">{{file.name}}</a>
+                        <a (click) = "navigateToEditor(file.name)" class="hover:cursor-pointer dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">{{file.name}}</a>
                         </li>
                     </ul>
                 </div>

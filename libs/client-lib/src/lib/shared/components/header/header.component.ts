@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
   UserDetails: userDetails | undefined;
   log = "login";
 
-
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService) {
     
 
@@ -35,12 +34,7 @@ export class HeaderComponent implements OnInit {
         el.innerHTML = "logout";
 
         this.log = "logout";
-      }
-      
-        
-        
-      
-      
+      } 
 
     }
     

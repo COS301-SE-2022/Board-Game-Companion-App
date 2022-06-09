@@ -60,7 +60,8 @@ export class ToolBarComponent implements OnInit {
     this.searchValueEvent.emit(this.searchValue);
   }
 
-  navigateToEditor(): void{
-    this.router.navigate(['editor'],{state: {filename:'Root', author:'default'}});
+  navigateToEditor(filename:string): void{
+    const id = this.current._id;
+    this.router.navigate(['editor'],{state: {id, filename}});
   }
 }

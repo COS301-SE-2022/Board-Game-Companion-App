@@ -14,6 +14,6 @@ export class AppComponent {
   }
 
   ngOnInit():void{
-    this.router.navigate(['/scripts']);
+    console.log('app');
   }
 }
