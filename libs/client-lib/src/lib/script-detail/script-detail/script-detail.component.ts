@@ -21,6 +21,19 @@ export class ScriptDetailComponent implements OnInit {
     this.current = JSON.parse(item);  
   }
 
+  replaceBackSlash(input:string):string{
+    let result = "";
+
+    for(let count = 0; count < input.length; count++){
+      if(input[count] === "\\")
+        result += "/";
+      else
+        result += input[count];
+    }
+    return result;
+  }
+
+  
   getBoardGameName(){
     this.boardGameService.getBoardGameById(this.current.boardgame).subscribe({
       next:(val)=>{
