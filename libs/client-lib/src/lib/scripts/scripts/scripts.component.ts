@@ -10,6 +10,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class ScriptsComponent implements OnInit {
   scripts:script[] = [];
+  store:script[] = [];
   currentScript:script = empty;
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -23,7 +24,8 @@ export class ScriptsComponent implements OnInit {
   loadAllScripts(): void{
     this.scriptService.retrieveAllScript().subscribe({
       next:(value)=>{
-        this.scripts = value;
+        this.store = this.scripts = value;
+
         for(let count = 0; count < this.scripts.length; count++){
           console.log(this.scriptService.getApiUrl() + this.replaceBackSlash(this.scripts[count].icon));
         }
@@ -64,7 +66,22 @@ export class ScriptsComponent implements OnInit {
 
   selected(value:script): void{
     this.currentScript = value;
+  }
 
+  search(value:string): void{
+    const temp:script[] = [];
+    
+    if(value === ""){
+      this.scripts = this.store;
+      return;
+    }
+
+    for(let count = 0; count < this.store.length; count++){
+      if(this.store[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1)
+        temp.push(this.store[count]);
+    }
+
+    this.scripts = temp;
   }
 
   changeView(event:boolean): void{

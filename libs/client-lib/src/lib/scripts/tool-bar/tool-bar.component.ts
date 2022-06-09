@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { script ,empty} from '../../shared/models/script';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'board-game-companion-app-tool-bar',
@@ -11,8 +12,12 @@ export class ToolBarComponent implements OnInit {
   @Output()viewEvent = new EventEmitter<boolean>();
   @Output()newScript = new EventEmitter<script>();
   @Output()removeScript = new EventEmitter<script>();
-
+  @Output()searchValueEvent = new EventEmitter<string>();
+  searchValue = "";
   @Input()current:script = empty;
+
+
+  constructor(private readonly router:Router){}
 
   ngOnInit(): void {
 
@@ -21,6 +26,11 @@ export class ToolBarComponent implements OnInit {
 
   ngOnChanges(): void{
     console.log(this.current);
+  }
+
+  info(): void{
+    localStorage.setItem("script-detail",JSON.stringify(this.current));
+    this.router.navigate(['/script-detail']);
   }
 
   changeView(view:boolean): void{
@@ -44,5 +54,13 @@ export class ToolBarComponent implements OnInit {
 
   copy(value:script):script{
     return JSON.parse(JSON.stringify(this.current));
+  }
+
+  search(): void{
+    this.searchValueEvent.emit(this.searchValue);
+  }
+
+  navigateToEditor(): void{
+    this.router.navigate(['editor'],{state: {filename:'Root', author:'default'}});
   }
 }
