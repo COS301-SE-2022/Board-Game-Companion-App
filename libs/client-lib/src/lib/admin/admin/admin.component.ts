@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminService,scriptFace } from '../admin-service/admin.service';
+import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminComponent implements OnInit {
 
   // private name: string;
-  scripts: scriptFace[]=[];
+  public scripts : any;
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
   
@@ -24,19 +24,31 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.scripts.length);
-    if(this.scripts.length==0){
+ 
+    if(this.scripts==null){
       this.adminService.getScripts().subscribe(data=>{
         this.scripts = data;
-        // console.log(this.scripts.length);
+        for(let i=0; i < this.scripts.length; i++){
+          const date = this.scripts[i].created.split(" ");
+  
+          this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+        }
+        // console.log(this.scripts);
       });
     }
-    // console.log(this.scripts[0].name);
+    // console.log(this.scripts);
   }
+
   findAll(): void{
     this.adminService.getScripts().subscribe(data=>{
+
       this.scripts = data;
-      // console.log(this.scripts.length);
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
+
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
+      // console.log(this.scripts);
     });
   }
   currentMonth(): void{
@@ -47,36 +59,30 @@ export class AdminComponent implements OnInit {
   
       const month = date.toLocaleString('default', { month: 'long' });
 
-      this.scripts = data.filter( res => res.date.indexOf(month)>0);
-      // for(let index=0; index<data.length; index++){
-      //   if(data[index].date.indexOf(month)>0)
-      //     this.scripts.push(data[index]);
-      // }
+      this.scripts = data.filter( (res: { created: string | string[]; }) => res.created.indexOf(month)>0);
+      this.scripts = data;
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
+
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
+      
       this.ngOnInit();
     });
 
   }
 
-
-  
-  // currentMonth(month:string): void{
-  //   this.currentMonth = this.adminService.getScripts();
-  //   this.scripts.splice(0);
-  //   for(let index=0; index<this.currentMonth.length; index++){
-  //     if(this.currentMonth[index])
-  //       this.scripts.push();
-  //   }
-
   runningScripts(status:string): void{
 
     this.adminService.getScripts().subscribe(data=>{
 
-      this.scripts = data.filter( res => res.status==status);
+      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
+      // this.scripts = data;
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
 
-      // for(let index=0; index<data.length; index++){
-      //   if(data[index].status===status)
-      //     this.scripts.push(data[index]);
-      // }
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
       this.ngOnInit();
     });
     
@@ -85,18 +91,27 @@ export class AdminComponent implements OnInit {
   flaggedScripts(status:string): void{
     this.adminService.getScripts().subscribe(data=>{
       
-      this.scripts = data.filter( res => res.status==status);
-      // for(let index=0; index<data.length; index++){
-      //   if(data[index].status===status)
-      //     this.scripts.push(data[index]);
-      // }
+      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
+      // this.scripts = data;
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
+
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
       this.ngOnInit();
     });
   }
 
-  // send(){
-  //   this.testP.emit<string>('An essage from lover');
-  //   this.router.navigate(['/collections']);
+  ProgressScripts(status:string): void{
+    this.adminService.getScripts().subscribe(data=>{
+      
+      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
 
-  // }
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
+      this.ngOnInit();
+    });
+  }
 }
