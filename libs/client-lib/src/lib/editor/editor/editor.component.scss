@@ -2,7 +2,49 @@
     font-weight: bold;
     font-size: 20px;
     color:#28662C;
+}
+
+.form__textarea, .lineNum {
+    margin: 0;
+    padding: 10px 0;
+    height: 75vh;
+    border-radius: 0;
+    resize: none;
+    font-size: 16px;
+    line-height: 1.2;
+    outline: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.lineNum:focus-visible,
+.form__textarea:focus-visible {
+    outline:none;
+}
+.lineNum {
+    display: flex;
+    border-color: transparent;
+    overflow-y: hidden;
+    text-align: right;
+    box-shadow: none;
+    color: #5F6A6A;
+    background-color: #d8d8d8;
+    position: absolute;
+    width: 3.5rem;
+    /* Determine appearance of line counter */
+    background-color:#ECF0F1;
+    border-color:#3E3D32;
+    color:#928869;
+}
+
+.form__textarea{
     
+    padding-left: calc(3.5rem + 5px);
+    width:100%;
+    background-color:white;
+    border-color:#272822;
+    color: black;
 }
 .form__button{
     background-color: #2f8735;
