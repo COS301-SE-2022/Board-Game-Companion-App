@@ -137,7 +137,7 @@
                             {{ "Published" }}
                         </td >                        
                         <td class="text-center align-middle">
-                            <button (click)="onEdit()" class="btn btn-success mx-2" data-toggle="modal">
+                            <button (click)="onEdit(script.files[0].name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
                                 <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
                             </button>
                             <a href="#" class="btn btn-primary mx-2" data-toggle="modal">

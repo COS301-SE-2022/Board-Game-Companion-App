@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 
 
 // import { TestPassService } from '../../test-pass.service';
@@ -18,9 +19,9 @@ export class AdminComponent implements OnInit {
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
   
-  onEdit(): void{
+  onEdit(filename: string, id: string): void{
     console.log("this works okay");
-    this.router.navigate(['editor'],{state: {filename:'Root', author:'default'}});
+    this.router.navigate(['editor'],{state: {id, filename}});
   }
 
   ngOnInit(): void {

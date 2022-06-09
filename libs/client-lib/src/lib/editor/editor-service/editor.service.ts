@@ -12,13 +12,13 @@ export class EditorService {
   }
 
   //:Observable<any>
-  postScript(fname:string, content:any):Observable<any>{
+  postScript(id:string, fname:string, content:any):Observable<any>{
     console.log(fname);
-    return this.httpClient.post(this.url+'/upload',{author:'default', downloads: 0, ratings: 0, script: content, filename: fname});
+    return this.httpClient.post(this.url+'/upload',{id:id, filename:fname, content:content});
   }
 
-  getScript(author:string, filename:string){
-    return this.httpClient.get(this.url+'/update',{params:{author:author, filename:filename}});
+  getScript(id:string, filename:string){
+    return this.httpClient.get(this.url+'/content',{params:{id:id, filename:filename}});
   }
 
   
