@@ -125,7 +125,7 @@ static AiMove():void
 
 static updateState(c: string,position: number):boolean
 {
-  var s = new ScriptExecutorModule();
+    let s = new ScriptExecutorModule();
   //update the state 
   this.GameState[position] = c;
 

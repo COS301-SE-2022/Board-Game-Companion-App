@@ -1,0 +1,26 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+#container{
+    width: 70%;
+    margin: auto;
+    padding: 2em;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    margin-top: 5em;
+    background-color: #ffffff;
+}
+
+#action{
+    background-color: $Pcolour-2;
+    padding: 1em;
+    border-radius: 0.5em;
+    color: $Pcolour-3;
+    font-weight: bold;
+}
+
+#enterMove{
+    border: 1px solid $Pcolour-2;
+    border-radius: 0.5em;
+    margin: 1em;
+}
+  
