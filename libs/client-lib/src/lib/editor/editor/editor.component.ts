@@ -52,6 +52,10 @@ export class EditorComponent {
   onCreate(): void{
     console.log("This is the button to push script content to script");
   }
+
+  onExecute():void{
+    this.router.navigate(['scriptExecutor', {my_object: this.id}]);
+  }
   
   //recieve JSONvar 
   getFile(id:string, filename:string):void{
