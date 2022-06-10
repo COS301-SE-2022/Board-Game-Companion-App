@@ -18,9 +18,17 @@
     padding: 2em;
     margin: 2em;
 }
-.title
+#title
 {
     font-weight: bold;
     font-size: 1.5em;
     padding-bottom: 1em;
+}
+#remove{
+    background-color: $Pcolour-2;
+    padding: 1em;
+    border-radius: 0.5em;
+    color: $Pcolour-3;
+    font-weight: bold;
+    margin: 1em;
 }

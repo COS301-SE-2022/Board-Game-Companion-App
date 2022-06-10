@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -13,7 +14,7 @@ export class ScriptDetailComponent implements OnInit {
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
 
-  constructor(private readonly scriptService:ScriptService,private readonly boardGameService:BggSearchService) {
+  constructor(private readonly scriptService:ScriptService,private readonly boardGameService:BggSearchService, private readonly router:Router) {
   }
 
   ngOnInit(): void {
@@ -56,5 +57,11 @@ export class ScriptDetailComponent implements OnInit {
     result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
 
     return result;
+  }
+
+  play()
+  {
+    const id = this.current._id
+    this.router.navigate(['scriptExecutor', {my_object: id}]);
   }
 }
