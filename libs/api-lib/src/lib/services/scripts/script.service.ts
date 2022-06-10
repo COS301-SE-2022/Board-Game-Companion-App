@@ -48,17 +48,58 @@ export class ScriptService {
             }catch(err){
                 console.log(err);
             }
+            if(count == 0)
+            {
+                let content = "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n@NgModule({\ndeclarations: [\n],\nimports: [\nCommonModule\n\n]\n})\n\nexport class "+name+"Module {}";
+                fs.readFile("libs/uploads/src/lib/scripts/files/default.txt", (error, data) => {
+                    if(error) {
+                        throw error;
+                    }
+                    content = data.toString();
+                });
 
-            fs.writeFile(dto.files[count].path,'',(err)=>{
-                if(err)
-                    console.log(err);
-            });
+                fs.writeFile(dto.files[count].path,content,(err)=>{
+                    if(err)
+                        console.log(err);
+                });
+
+                //update uploads.module.ts
+                fs.readFile('libs/uploads/src/lib/uploads.module.ts', 'utf8', (err, data) => {
+                    if (err) {
+                    console.error(err);
+                    return;
+                    }
+                    let b = " ,DefaultModule";
+                    
+                    let position = data.indexOf("]");
+                    let output = [data.slice(0, position), b, data.slice(position)].join('');
+
+                    b="import { "+name+"Module } from './scripts/files/"+id+"/main.module';"
+                    position = 0;
+                    output = [output.slice(0, position), b, output.slice(position)].join('');
+
+                    fs.writeFile('libs/uploads/src/lib/uploads.module.ts',output,(err)=>{
+                        if(err)
+                            console.log(err);
+                    });
+                });
+            }
+            else
+            {
+                fs.writeFile(dto.files[count].path,'',(err)=>{
+                    if(err)
+                        console.log(err);
+                });
+            }
+
         }
-
+        
         
         const createdScript = new this.scriptModel(dto);
         
         return createdScript.save();
+
+
     }
 
     formatDate(date:Date):string{
