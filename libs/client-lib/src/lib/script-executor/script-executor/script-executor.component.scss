@@ -1,7 +1,7 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
 #container{
-    width: 70%;
+    width: 50%;
     margin: auto;
     padding: 2em;
     border: 3px solid $Pcolour-2;
@@ -23,4 +23,22 @@
     border-radius: 0.5em;
     margin: 1em;
 }
-  
+#ReturnedMove{
+    color: $Pcolour-2;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 1em;
+}
+#instruction{
+    color: $Pcolour-2;
+    font-size: 1.1em;
+    margin: 1em;
+}
+#exit{
+    background-color: $Pcolour-2;
+    padding: 1em;
+    border-radius: 0.5em;
+    color: $Pcolour-3;
+    font-weight: bold;
+    margin-top: 2em;
+}
