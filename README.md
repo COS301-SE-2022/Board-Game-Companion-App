@@ -56,11 +56,21 @@ The following are the presentation videos for the respectives demonstrations.
 
 - Demo 1: `video presentation link`
 
-## Ddocumentation
+## Documentation
 
 - Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
 
 - Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
+
+## Demo 2: 
+### Coding Standards: [FrontendForerunners_Coding_Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876367/FrontendForerunners_Coding_Standards.pdf)
+
+### User Manual: [FrontendForerunners_User_Manual (2).pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876368/FrontendForerunners_User_Manual.2.pdf)
+
+### SRS: [Capstone_SRS.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
+
+### Architectural Design: [Capstone_Architectural_Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
+
 
 ## Project Management Tool
 - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
