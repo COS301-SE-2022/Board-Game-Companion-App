@@ -1,0 +1,34 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+#CollectionsList
+{
+    width: 90%;
+    margin: auto;
+    margin-top: 5em;
+    flex-direction: column;
+}
+.imgSpan
+{
+    float: left;
+}
+.collectionDiv
+{
+    width: 75%;
+    border: 3px solid $Pcolour-2;
+    border-radius: 0.5em;
+    padding: 2em;
+    margin: 2em;
+}
+#title
+{
+    font-weight: bold;
+    font-size: 1.5em;
+    padding-bottom: 1em;
+}
+#remove{
+    background-color: $Pcolour-2;
+    padding: 1em;
+    border-radius: 0.5em;
+    color: $Pcolour-3;
+    font-weight: bold;
+    margin: 1em;
+}

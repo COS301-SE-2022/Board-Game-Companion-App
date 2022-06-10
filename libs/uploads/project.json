@@ -1,0 +1,22 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/uploads/src",
+  "prefix": "board-game-companion-app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/uploads"],
+      "options": {
+        "jestConfig": "libs/uploads/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/uploads/**/*.ts", "libs/uploads/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

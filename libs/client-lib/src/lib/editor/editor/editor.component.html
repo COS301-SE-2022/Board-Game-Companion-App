@@ -1,0 +1,34 @@
+<head>
+    <script src="https://kit.fontawesome.com/8c29b68138.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form [formGroup]="editForm"> 
+        <label class="form__label">File Name:</label><input type="text" formControlName="FileName" /><br>
+        <p><textarea id='lineNumber' class="lineNum" wrap='off' readonly>1.</textarea>
+        <textarea  id="editorTextarea" class="form__textarea" formControlName = "body" (keydown.tab)="addTab($event)" (keydown.enter)="addLine($event)"></textarea><br>
+        <!-- <editor
+            apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
+            formControlName = "body"
+            [init] = "{
+                icons: 'material',
+                selector: '#editorTextarea',
+                skin: 'borderless',
+                plugins: 'code save',
+                toolbar: false,
+                menu: {
+                    file: { title:'File', items: 'save | newdocument'},  
+                    edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
+                    view: {title: 'View', items:'visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments' },
+                    tools: {title: 'Tools', items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' }
+                }, 
+                removed_menuitems: 'format, insert, bold, italic, underline, strikethrough, superscript, subscript, horizontal line ',
+                min_height: 150
+            }">
+        </editor> -->
+        <button (click)="onUpload()" class="form__button">Upload <i class="fa-solid fa-angles-up"></i></button>
+        <button (click)="onCreate()" class="form__button"> Create <i class="fa-solid fa-circle-plus"></i></button>
+        <button (click)="onExecute()" class="form__button"> Run <i class="fa-solid fa-play"></i></button>
+    </form> 
+</body>
+
+<!-- Adapted from https://www.tiny.cloud/blog/angular-rich-text-editor/ [accessed 28 May 2022] -->

@@ -2,10 +2,10 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-board-games": "libs/api/board-games",
+    "api-lib": "libs/api-lib",
     "client": "apps/client",
     "client-e2e": "apps/client-e2e",
-    "pages": "libs/pages",
-    "shared": "libs/shared"
+    "client-lib": "libs/client-lib",
+    "uploads": "libs/uploads"
   }
 }

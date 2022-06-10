@@ -1,0 +1,11 @@
+<div class = "grid grid-cols-3" id="CollectionsList">
+    <div *ngFor="let collection of collections" class="collectionDiv">
+        <div id ="title">
+            {{collection.name}}
+        </div>
+        <span *ngFor="let url of collection.imgUrls" class="imgSpan">
+            <button (click) = "viewCollection(collection.name)"><img [src] =  'url' width="120" height="120"></button>
+        </span>
+        <button (click) = "deletion(collection.name)" id = "remove">Remove Collection</button>
+    </div>
+</div>

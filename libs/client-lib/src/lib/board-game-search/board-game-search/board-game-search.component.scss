@@ -1,0 +1,66 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+
+#container{
+    position: relative;
+    overflow: auto
+}
+
+#wrapper{
+    width:85%;
+    margin: auto;
+    margin-top: 3em;
+    margin-bottom: 10em;
+    height:70%;
+}
+
+#search{
+    border-color: $Pcolour-2;
+}
+
+#search-tools{
+    width:100%;
+}
+
+hr.solid {
+    border-top: 3px solid #bbb;
+}
+
+#topic{
+    text-align:center;
+    margin-top:10px;
+    margin-bottom:5px;
+}
+
+.game-image{
+    overflow-y:hidden; 
+}
+
+.game-image>a>img{
+    height:100%;
+}
+
+.board-game{ 
+    transition: all .2s ease-in-out; 
+    width: 180px;
+    height: 250px;
+    max-width: 380px;
+    border-radius: 5px;
+}
+
+.board-game:hover { 
+    transform: scale(1.025); 
+}
+
+#content
+{
+    border: 1px solid  $Pcolour-2;
+    padding: 1em;
+
+}
+
+.board-game-image{
+    background-size:cover;
+    width:100%;
+    height:75%; 
+}

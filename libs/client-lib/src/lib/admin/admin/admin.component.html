@@ -1,0 +1,152 @@
+<div class="container py-2">
+    <h3 class="display-4 text-center">ADMIN PAGE</h3>
+</div>
+<!-- General Information -->
+<div class="container-fluid px-5 pt-12">
+    <div class="row g-4 justify-content-center">
+        <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div class="card border-left-primary shadow h-100 py-2" id="card-1">
+                <div class="card-body" (click)="currentMonth()">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                scripts published this month</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fa-solid fa-download fa-2x text-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body" (click)="findAll()">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                total number of scripts</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">23</div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fa-solid fa-file fa-2x text-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body" (click)="runningScripts('Active')">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                running scripts</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fa-solid fa-check fa-2x text-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body" (click)="flaggedScripts('flagged')">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                flagged scripts</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fa-solid fa-xmark fa-2x text-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body" (click)="ProgressScripts('progress')">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                In Progress scripts</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fa-solid fa-bars-progress fa-2x text-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Side bar for most downloads and a table -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover" data-toggle="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Author
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th class="text-center">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody *ngFor="let script of scripts">
+                    <tr>
+                        <td>
+                            {{ script.created }}
+                        </td>
+                        <td>
+                            {{ script.author }}
+                        </td>
+                        <td>
+                            {{ script.name }}
+                        </td>
+                        <td *ngIf="script.status.value===0" class="bg-red text-danger">
+                            {{ "flagged" }}
+                        </td>                        
+                        <td *ngIf="script.status.value===1" class="bg-red text-primary">
+                            {{ "In Progress"}}
+                        </td >
+                        <td *ngIf="script.status.value===2" class="bg-red text-success" >
+                            {{ "Published" }}
+                        </td >                        
+                        <td class="text-center align-middle">
+                            <button (click)="onEdit(script.files[0].name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
+                                <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
+                            </button>
+                            <a href="#" class="btn btn-primary mx-2" data-toggle="modal">
+                                <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
