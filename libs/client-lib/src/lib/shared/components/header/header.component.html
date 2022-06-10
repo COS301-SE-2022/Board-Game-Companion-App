@@ -12,7 +12,7 @@
                     <li class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('board-game-search')">Board Games</a>
                     </li>
-                    <li *ngIf = "loggedIn === true" class="nav-item p-3">
+                    <li class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('scripts')">Scripts</a>
                     </li>
                     <li *ngIf = "loggedIn === true && isAdmin()" class="nav-item p-3">
