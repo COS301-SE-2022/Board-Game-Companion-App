@@ -22,6 +22,19 @@ export class CollectionsComponent implements OnInit {
     this.router.navigate(['viewCollection', {my_object: n}] )
   }
 
+  //delete a selected collection
+  deletion(n:string)
+  {
+    localStorage.removeItem(n);
+    let c = JSON.parse(localStorage.getItem("collections")||"")
+    let index = c.indexOf(n, 0);
+    if (index > -1) {
+      c.splice(index, 1);
+    }
+    localStorage.setItem("collections", JSON.stringify(c))
+    window.location.reload()
+  }
+
   ngOnInit(): void {
 
     //get collections

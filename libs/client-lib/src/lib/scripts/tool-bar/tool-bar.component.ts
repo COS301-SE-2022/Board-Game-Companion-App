@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { script ,empty} from '../../shared/models/script';
 import { Router } from '@angular/router';
+import { GoogleAuthService, userDetails} from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-tool-bar',
@@ -16,11 +17,22 @@ export class ToolBarComponent implements OnInit {
   searchValue = "";
   @Input()current:script = empty;
 
-
-  constructor(private readonly router:Router){}
+  loggedIn = false;
+  UserDetails: userDetails | undefined;
+  
+  constructor(private readonly router:Router,private readonly gapi: GoogleAuthService)
+  {
+    gapi.UserSubject.subscribe(details=>{
+      this.UserDetails = details;
+      console.log(this.UserDetails);
+    })
+  }
 
   ngOnInit(): void {
-
+    if(this.gapi.isLoggedIn())
+    {
+      this.loggedIn = true;
+    }
     console.log("toolbar");      
   }
 
@@ -63,5 +75,11 @@ export class ToolBarComponent implements OnInit {
   navigateToEditor(filename:string): void{
     const id = this.current._id;
     this.router.navigate(['editor'],{state: {id, filename}});
+  }
+
+  play()
+  {
+    const id = this.current._id
+    this.router.navigate(['scriptExecutor', {my_object: id}]);
   }
 }

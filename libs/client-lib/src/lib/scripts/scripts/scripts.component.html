@@ -5,8 +5,7 @@
         <div [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor = "let value of scripts" [id] = "value._id" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(value)">
             <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
             <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
-            <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
-            
+            <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
             <img class="w-full h-full" [src]="'http://localhost:3333/' + replaceBackSlash(value.icon)" alt=""/>
             <div class = "child absolute bottom-0 w-full h-8 bg-inherit z-10 text-center text-white text-base">
                 <b>{{value.name}}</b>
