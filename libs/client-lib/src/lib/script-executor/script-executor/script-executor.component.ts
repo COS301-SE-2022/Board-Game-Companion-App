@@ -53,8 +53,8 @@ export class ScriptExecutorComponent implements OnInit {
     }
     else
     {
-      let c = JSON.parse(localStorage.getItem("sessions")||"")
-      let name = "#" + (c.length + 1);
+      let c = [];
+      let name = "#1";
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
       let session = []
