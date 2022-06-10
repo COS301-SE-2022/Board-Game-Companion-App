@@ -24,17 +24,21 @@ export class ScriptExecutorComponent implements OnInit {
     try
     {
       this.scriptService.getScriptById(this.scriptID).subscribe({
-        next:(value)=>{
+        next:async(value)=>{
           
-          console.log(value.files)
+          
           let path = value.files[0].path.replace(".module.ts","");
           path = path.replace("libs/uploads/src/lib/scripts/files/","")
-          console.log(path);
 
           import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
             {
-              module.ScriptExecutorModule.play();
+              
+              module[Object.keys(module)[0]].play();
             });
+
+            
+            
+            
         }});
         
 

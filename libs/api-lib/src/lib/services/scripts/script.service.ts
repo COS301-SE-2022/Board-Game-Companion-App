@@ -69,12 +69,12 @@ export class ScriptService {
                     console.error(err);
                     return;
                     }
-                    let b = " ,DefaultModule";
+                    let b = " ,"+name+"Module";
                     
                     let position = data.indexOf("]");
                     let output = [data.slice(0, position), b, data.slice(position)].join('');
 
-                    b="import { "+name+"Module } from './scripts/files/"+id+"/main.module';"
+                    b="import { "+name+"Module } from './scripts/files/"+id+"/main.module';\n"
                     position = 0;
                     output = [output.slice(0, position), b, output.slice(position)].join('');
 
