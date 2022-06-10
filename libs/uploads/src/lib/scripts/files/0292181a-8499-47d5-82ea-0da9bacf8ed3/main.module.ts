@@ -34,7 +34,7 @@ export class ScriptExecutorModule {
 
   static PlayerMove():void 
   {
-    const input = document.getElementById("EnterMove") as HTMLInputElement;
+    const input = document.getElementById("enterMove") as HTMLInputElement;
     const button = document.getElementById("action") ;
     input.value = "";
     if(button!= null)
@@ -125,7 +125,7 @@ static AiMove():void
 
 static updateState(c: string,position: number):boolean
 {
-    let s = new ScriptExecutorModule();
+  var s = new ScriptExecutorModule();
   //update the state 
   this.GameState[position] = c;
 
@@ -200,7 +200,7 @@ function handlePlayerChoice(e:MouseEvent)
     if(button!=null)
       button.removeEventListener("click", handlePlayerChoice);
 
-    let input = document.getElementById("EnterMove") as HTMLInputElement;
+    let input = document.getElementById("enterMove") as HTMLInputElement;
     if(input.value.includes("first")||input.value.includes("First")||input.value.includes("1")) 
     {
       const instruction = document.getElementById("instruction");
@@ -233,7 +233,7 @@ function handlePlayerChoice(e:MouseEvent)
   
   function handlePlayerMove(e:MouseEvent)
 {
-  const input = document.getElementById("EnterMove") as HTMLInputElement;
+  const input = document.getElementById("enterMove") as HTMLInputElement;
   const button = document.getElementById("action") ;
   if(button!= null)
     button.removeEventListener("click", handlePlayerMove);

@@ -9,7 +9,9 @@ import { CommonModule } from '@angular/common';
   ]
 })
 
-export class ScriptExecutorModule {
+
+
+export class TicTacToeModule {
   static GameState = ["0","0","0","0","0","0","0","0","0"];
   static char = "x";
   static play() {
@@ -125,7 +127,7 @@ static AiMove():void
 
 static updateState(c: string,position: number):boolean
 {
-  var s = new ScriptExecutorModule();
+  var s = new TicTacToeModule();
   //update the state 
   this.GameState[position] = c;
 
@@ -212,8 +214,8 @@ function handlePlayerChoice(e:MouseEvent)
       }
 
       //player moves first
-      ScriptExecutorModule.char = "x";
-      ScriptExecutorModule.PlayerMove();
+      TicTacToeModule.char = "x";
+      TicTacToeModule.PlayerMove();
     }
     else
     {
@@ -222,9 +224,9 @@ function handlePlayerChoice(e:MouseEvent)
       {
         instruction.innerHTML = "In which square will you place a naught?";
       }
-      ScriptExecutorModule.char = "o";
+      TicTacToeModule.char = "o";
       //ai moves first
-      ScriptExecutorModule.AiMove();
+      TicTacToeModule.AiMove();
     }
   }
 
@@ -242,9 +244,9 @@ function handlePlayerChoice(e:MouseEvent)
   let i = +input.value;
   
   //if valid, update state and check if game ends
-  ScriptExecutorModule.updateState(ScriptExecutorModule.char, i-1);
+  TicTacToeModule.updateState(TicTacToeModule.char, i-1);
   
-  if(ScriptExecutorModule.hasEnded(ScriptExecutorModule.char))
+  if(TicTacToeModule.hasEnded(TicTacToeModule.char))
   {
     //we won
     const el = document.getElementById("ReturnedMove");
@@ -259,7 +261,7 @@ function handlePlayerChoice(e:MouseEvent)
     }
     return;
   }
-  else if(ScriptExecutorModule.isDraw())
+  else if(TicTacToeModule.isDraw())
   {
     //draw
     const el = document.getElementById("ReturnedMove");
@@ -279,13 +281,14 @@ function handlePlayerChoice(e:MouseEvent)
     //if game continues, pass to AI
 
     
-    ScriptExecutorModule.AiMove();
+    TicTacToeModule.AiMove();
     
   }
 
 
 }
   
+
 
 
 
