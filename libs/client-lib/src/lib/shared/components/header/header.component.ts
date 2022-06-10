@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
     let result = false;
 
     for(let count = 0; count < this.admin.length && !result; count++){
-      if(this.admin[count] === this.UserDetails?.details.email)
+     if(this.admin[count] === this.UserDetails?.details.email)
         result = true;
     }
 
