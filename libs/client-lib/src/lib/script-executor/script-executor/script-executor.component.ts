@@ -28,13 +28,13 @@ export class ScriptExecutorComponent implements OnInit {
           
           console.log(value.files)
           let path = value.files[0].path.replace(".module.ts","");
-          path = path.replace("uploads/scripts/files/","")
+          path = path.replace("libs/uploads/src/lib/scripts/files/","")
           console.log(path);
 
-          //import(path+".module").then(module=>
-          //  {
-           //   module.ScriptExecutorModule.play();
-           // });
+          import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
+            {
+              module.ScriptExecutorModule.play();
+            });
         }});
         
 
