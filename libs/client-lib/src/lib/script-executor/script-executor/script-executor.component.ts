@@ -19,6 +19,8 @@ export class ScriptExecutorComponent implements OnInit {
   h:number = 0;
   min = "min";
   m:number = 0;
+  s:number = 0;
+  sec = "sec";
   
   
 
@@ -28,23 +30,49 @@ export class ScriptExecutorComponent implements OnInit {
   back()
   {
    //Timer
-    let c = JSON.parse(localStorage.getItem("sessions")||"")
-    let name = "#" + (c.length + 1);
-    c.push(name);
-    localStorage.setItem("sessions", JSON.stringify(c))
-    let session = []
-    session.push("tictactoe10")
-    this.scriptID = this.route.snapshot.paramMap.get('my_object')||"";
-    session.push(this.scriptID)
-    session.push("2")
-    session.push("N/A")
-    this.hours = this.h + this.hours + " "
-    this.min = this.m + this.min
-    session.push(this.hours + this.min)
-    session.push("Win")
-    const now = new Date();
-    session.push(now.toLocaleDateString())
-    localStorage.setItem(name, JSON.stringify(session))
+    if(localStorage.getItem("sessions")||"" !== null)
+    {
+      let c = JSON.parse(localStorage.getItem("sessions")||"")
+      let name = "#" + (c.length + 1);
+      c.push(name);
+      localStorage.setItem("sessions", JSON.stringify(c))
+      let session = []
+      session.push("tictactoe10")
+      this.scriptID = this.route.snapshot.paramMap.get('my_object')||"";
+      session.push(this.scriptID)
+      session.push("2")
+      session.push("N/A")
+      this.hours = this.h + this.hours + " "
+      this.min = this.m + this.min + " "
+      this.sec = this.s + this.sec 
+      session.push(this.hours + this.min + this.sec)
+      session.push("Win")
+      const now = new Date();
+      session.push(now.toLocaleDateString())
+      localStorage.setItem(name, JSON.stringify(session))
+    }
+    else
+    {
+      let c = JSON.parse(localStorage.getItem("sessions")||"")
+      let name = "#" + (c.length + 1);
+      c.push(name);
+      localStorage.setItem("sessions", JSON.stringify(c))
+      let session = []
+      session.push("tictactoe10")
+      this.scriptID = this.route.snapshot.paramMap.get('my_object')||"";
+      session.push(this.scriptID)
+      session.push("2")
+      session.push("N/A")
+      this.hours = this.h + this.hours + " "
+      this.min = this.m + this.min + " "
+      this.sec = this.s + this.sec
+      session.push(this.hours + this.min + this.sec)
+      session.push("Win")
+      const now = new Date();
+      session.push(now.toLocaleDateString())
+      localStorage.setItem(name, JSON.stringify(session))
+    }
+    
     
     this.router.navigate(['scripts']);
   }
@@ -56,11 +84,15 @@ export class ScriptExecutorComponent implements OnInit {
 
  
   setInterval(() => {
-    this.m++
-    if(this.m === 60)
+    this.s++
+    if(this.s === 60)
+    {
+      
+      this.m++
+    }
+    if(this.m == 60)
     {
       this.h++
-      this.m = 0
     }
   }, 1000);
 
