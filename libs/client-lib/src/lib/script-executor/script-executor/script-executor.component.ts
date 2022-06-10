@@ -25,7 +25,7 @@ export class ScriptExecutorComponent implements OnInit {
   back()
   {
    //Timer
-    if(localStorage.getItem("sessions")||"" !== null)
+    if(localStorage.getItem("sessions") !== null)
     {
       let c = JSON.parse(localStorage.getItem("sessions")||"")
       let name = "#" + (c.length + 1);
