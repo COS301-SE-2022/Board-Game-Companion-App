@@ -22,11 +22,6 @@ export class ScriptExecutorComponent implements OnInit {
   s:number = 0;
   sec = "sec";
   
-  
-
-  
-  
-  
   back()
   {
    //Timer
@@ -53,8 +48,8 @@ export class ScriptExecutorComponent implements OnInit {
     }
     else
     {
-      let c = JSON.parse(localStorage.getItem("sessions")||"")
-      let name = "#" + (c.length + 1);
+      let c = [];
+      let name = "#1";
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
       let session = []
@@ -72,8 +67,7 @@ export class ScriptExecutorComponent implements OnInit {
       session.push(now.toLocaleDateString())
       localStorage.setItem(name, JSON.stringify(session))
     }
-    
-    
+
     this.router.navigate(['scripts']);
   }
 
