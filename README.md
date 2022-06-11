@@ -73,7 +73,8 @@ The following are the presentation videos for the respectives demonstrations.
 
 ### Architectural Design: [Capstone_Architectural_Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
 
-### Burndown Chart (Planning): [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883396/Burndown_Chart.pdf)
+### Burndown Chart (Planning): [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
+
 
 
 
