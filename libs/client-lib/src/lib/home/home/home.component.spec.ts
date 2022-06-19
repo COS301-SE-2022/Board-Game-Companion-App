@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BggSearchService } from '../bgg-search-service/bgg-search.service';
+import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import {HomeComponent }from './home.component';
 
 
