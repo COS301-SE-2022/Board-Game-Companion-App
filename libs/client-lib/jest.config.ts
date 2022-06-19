@@ -1,7 +1,7 @@
 /* eslint-disable */
-export default {
+module.exports = {
   displayName: 'client-lib',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {

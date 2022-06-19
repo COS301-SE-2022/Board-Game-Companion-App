@@ -1,1 +1,1 @@
-import 'jest-preset-angular/setup-jest.mjs';
+import 'jest-preset-angular/setup-jest';
