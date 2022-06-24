@@ -13,14 +13,6 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ""
+          heroku_app_name: "board-game-companion-app"
           heroku_email: "frontend.forerunners16@gmail.com"
           justlogin: true
-
-      - run: git config --global user.email "u18166793@tuks.co.za"
-      - run: git config --global user.name "Joseph-Makgopa"
-      - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
-      - run: node tools/scripts/create-api-procfile.js
-      - run: git add .
-      - run: git commit -m "(procfile):updated procfile"
-      - run: git push https://git.heroku.com/board-game-companion-app.git HEAD:main
