@@ -1,44 +1,32 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, Req ,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { ScriptService } from '../../services/scripts/script.service';
 import { Script } from '../../schemas/script.schema';
-import { createReadStream } from 'fs';
-import { join } from 'path';
+import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
-import { resourceLimits } from 'worker_threads';
 import { status } from '../../models/general/status';
 
 let id = uuidv4();
 
 @Controller('scripts')
 export class ApiScriptController {
-    private id:string;
     constructor(private readonly scriptService:ScriptService){}
     
     //script functions
     updateId():void{
         id = uuidv4();
     }
-
+    
     @Post('create-script')
-    @UseInterceptors(FileInterceptor('icon',{
-        storage: diskStorage({
-            destination:"./libs/uploads/src/lib/scripts/icons/"+id+"/",
-                filename: (req, file, cb) => {
-                    const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
-                    const extension: string = path.parse(file.originalname).ext;
-      
-                    cb(null, `${filename}${extension}`) 
-                }
-          })
-        }))
-    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
+    @UseInterceptors(FileInterceptor('icon'))
+    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
         const tempId = id;
         this.updateId();
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
-        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon.path,tempId);
+
+        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon,tempId);
     }
 
     @Get('retrieve/byid')
@@ -50,18 +38,6 @@ export class ApiScriptController {
     async retrieveAllScripts():Promise<Script[]>{
         return await this.scriptService.findAll();
     }
-
-        // @UseInterceptors(FileInterceptor('icon',{
-    //     storage: diskStorage({
-    //         destination:"./uploads/scripts/icons/"+id+"/",
-    //             filename: (req, file, cb) => {
-    //                 const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
-    //                 const extension: string = path.parse(file.originalname).ext;
-      
-    //                 cb(null, `${filename}${extension}`) 
-    //             }
-    //       })
-    //     }))
 
     @Post('update')
     async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
