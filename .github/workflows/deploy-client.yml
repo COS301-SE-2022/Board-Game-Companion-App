@@ -18,6 +18,7 @@ jobs:
           justlogin: true
 
       - run: heroku git:remote -a board-game-companion-app
+      - run: git status
       - run: git add .
       - run: git commit -m "client-deployment"
       - run: git push heroku main
