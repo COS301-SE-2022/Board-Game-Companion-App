@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { EditorComponent } from './editor.component';
 
@@ -9,6 +11,7 @@ describe('EditorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditorComponent],
+      imports: [HttpClientTestingModule,RouterTestingModule],
     }).compileComponents();
   });
 

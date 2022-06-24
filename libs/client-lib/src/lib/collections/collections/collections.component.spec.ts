@@ -12,6 +12,8 @@ describe('CollectionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CollectionsComponent],
+      imports: [HttpClientTestingModule,RouterTestingModule],
+      providers: [BggSearchService],
     }).compileComponents();
   });
 
