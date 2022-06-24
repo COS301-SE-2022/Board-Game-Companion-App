@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { GoogleAuthService, userDetails} from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
+import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
 
 
 
