@@ -18,5 +18,7 @@ jobs:
           justlogin: true
 
       - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
+      - run: git config --global user.name "Joseph-Makgopa"
+      - run: git config --global user.email "u18166793@tuks.co.za"
       - run: git pull heroku main
       - run: git push heroku main 
