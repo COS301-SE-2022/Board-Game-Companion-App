@@ -14,4 +14,4 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "board-game-companion-app"
-          heroku_email: "frontend.forerunners16@gmail.com" 
+          heroku_email: "${{secrets.HEROKU_EMAIL}}" 
