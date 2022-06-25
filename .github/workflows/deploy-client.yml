@@ -17,6 +17,6 @@ jobs:
           heroku_email: "frontend.forerunners16@gmail.com"
           justlogin: true
 
-      - run: heroku git:remote -a board-game-companion-app
+      - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
       - run: git pull heroku main
       - run: git push heroku main 
