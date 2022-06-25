@@ -5,17 +5,15 @@ on:
     branches: [ main , release/** , develop ]
   pull_request:
     branches: [ main , release/** , develop ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Deploy to Heroku
+        uses: behe/heroku-build@v1.1
         with:
-            fetch-depth: 0 
-      - uses: akhileshns/heroku-deploy@v3.12.12 
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "board-game-companion-app"
-          heroku_email: "${{secrets.HEROKU_EMAIL}}" 
-          dontuseforce: true
-          dontautocreate: true
+          app-name: "your-app-name-on-heroku"
+          api-key: "${{secrets.HEROKU_API_KEY}}"
+          path: "optional-path-of-build-to-deploy"
