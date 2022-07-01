@@ -21,4 +21,4 @@ jobs:
 
     - run: npm install yarn -g
     - run: yarn install
-    - run: nx run-many --target=test --all --parallel
+    - run: yarn run test-all
