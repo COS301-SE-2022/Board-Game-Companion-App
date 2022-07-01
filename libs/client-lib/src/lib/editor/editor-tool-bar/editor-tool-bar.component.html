@@ -1,0 +1,44 @@
+<div [style.height.px]="height" class = "editor__tool-bar flex flex-row bg-zinc-600">
+    <div class = "editor-logo p-1">
+        <img src="assets/images/logo.png">
+    </div>
+    
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            File
+        </button>
+        <div class = "menu-content absolute">
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">New</a>
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Exit</a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            Edit
+        </button>
+        <div class = "menu-content absolute">
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Cut</a>
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Copy</a>
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Paste</a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            View
+        </button>
+        <div class = "menu-content absolute">
+            <a class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Theme</a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            Run
+        </button>
+        <div class = "menu-content absolute">
+            <a (click) = "execute()" class = "bg-zinc-800 text-white py-1 px-2 hover:bg-green-600">Execute</a>
+        </div>
+    </div>
+</div>
