@@ -14,12 +14,5 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "board-game-companion-app"
-          heroku_email: "frontend.forerunners16@gmail.com"
-          justlogin: true
-
-      - run: git remote add heroku https://git.heroku.com/board-game-companion-app.git
-      - run: git config --global user.name "Joseph-Makgopa"
-      - run: git config --global user.email "u18166793@tuks.co.za"
-      - run: git pull heroku main
-      - run: git push heroku main 
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
