@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - run: heroku git:remote -a ${{secrets.HEROKU_APP_NAME}}
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
