@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -11,9 +11,41 @@ export class EditorConsoleComponent implements OnInit{
   @Input() width = 0;
   @Input() margin = 0;
   @Input() bottom = 0;
+  @Output() changeHeightEvent = new EventEmitter<number>();
+  show = true;
+
   messages:string[] = [];
+  
   ngOnInit(): void {
     console.log("editor-tool-bar");   
+  }
+
+  reduceHeight(): void{
+    if(this.height > 40)
+      this.height -= 10;
+    else
+      this.close();
+      
+    this.changeHeightEvent.emit(this.height);
+  }
+
+  increaseHeight(): void{
+    if(this.height < 200)
+      this.height += 10;
+
+    this.changeHeightEvent.emit(this.height);
+  }
+
+  open(): void{
+    this.show = true;
+    this.height = 150;
+    this.changeHeightEvent.emit(this.height);
+  }
+
+  close(): void{
+    this.show = false;
+    this.height = 0;
+    this.changeHeightEvent.emit(this.height);
   }
 
   print(message:string){
@@ -22,11 +54,9 @@ export class EditorConsoleComponent implements OnInit{
 
   clear(){
     this.messages = [];
-
   }
 
   defineConsole(): any{
-
     const console = (function (windowConsole:any,editorConsole:EditorConsoleComponent){
       return {
         log: function(text:string){
@@ -47,7 +77,6 @@ export class EditorConsoleComponent implements OnInit{
         }
       }
     })(window.console,this);
-
 
     return console;
   }

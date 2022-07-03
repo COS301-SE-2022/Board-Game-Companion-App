@@ -48,10 +48,21 @@ export class EditorComponent implements OnInit{
     this.bodyWidth = this.screenWidth - this.sideBarWidth;
   }
 
-  execute(): void{
+  updateConsoleHeight(height:number):void{
+    this.consoleHeight = height;
+    this.updateDimensions();
+  }
 
+  changeTheme():void{
+    const theme = localStorage.getItem("board-game-companion-script-editor-theme");
+
+    if(theme !== null)
+      this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
+  }
+
+  execute(): void{
     
-    
+    this.editorConsole.open();
     try{
       const console = this.editorConsole.defineConsole();
 

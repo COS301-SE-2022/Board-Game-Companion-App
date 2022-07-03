@@ -1,3 +1,11 @@
 <div id = "editor" class = "editor-body fixed" [style.top.px] = "top" [style.margin-left.px] = "margin" [style.height.px] = "height" [style.width.px] = "width">
+    <div class = "editor-tabs flex flex-row overflow-y-auto" style="height:8%">
+        <div *ngFor = "let file of openFiles" class = "tab px-2.5 py-1 bg-zinc-200 hover:bg-zinc-400 flex flex-row">
+            <div class = "file-name"><strong>{{file.name}}</strong></div>
+            <div (click)="removeOpenFile(file)" class = "close-file btn-close ml-2" ></div>
+        </div>
+    </div>
+    <div id = "editor-content" class = "editor-content" style="height:92%">
 
+    </div>
 </div>
