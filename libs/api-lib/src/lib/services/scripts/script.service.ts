@@ -21,7 +21,7 @@ export class ScriptService {
             author: user,
             boardgame: boardGameId,
             created: new Date(),
-            published: null,
+            release: null,
             lastupdate: new Date(),
             downloads: 0,
             lastdownload: null,

@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as ace from "ace-builds";
 
-interface tab{
-  id:string;
-  content:any;
-}
 
 interface file{
   name:string;

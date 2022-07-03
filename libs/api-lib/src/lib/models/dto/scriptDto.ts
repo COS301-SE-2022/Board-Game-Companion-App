@@ -8,7 +8,7 @@ export interface scriptDto{
     boardgame: string;
     created: Date;
     lastupdate: Date;
-    published: Date;
+    release: Date;
     downloads: number;
     lastdownload: Date;
     status: status;

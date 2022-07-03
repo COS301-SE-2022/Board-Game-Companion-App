@@ -27,7 +27,7 @@ export class Script{
     status:stat;
 
     @Prop()
-    published: Date;
+    release: Date;
 
     @Prop()
     downloads: number;

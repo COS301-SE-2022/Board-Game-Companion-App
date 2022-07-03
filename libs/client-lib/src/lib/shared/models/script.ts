@@ -7,7 +7,7 @@ export interface script{
     author: string;
     boardgame: string;
     created: Date;
-    published: Date;
+    release: Date;
     downloads: number;
     lastdownload: Date;
     lastupdate: Date;
@@ -27,7 +27,7 @@ export const empty:script = {
     author: "",
     boardgame: "",
     created: new Date(0),
-    published: new Date(0),
+    release: new Date(0),
     downloads: 0,
     lastdownload: new Date(0),
     lastupdate: new Date(0),
