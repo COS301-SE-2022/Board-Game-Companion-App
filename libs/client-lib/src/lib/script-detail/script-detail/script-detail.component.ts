@@ -10,28 +10,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  current:script = empty;
-  months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  _id = "62c19fffe801724a44a90106";
+  current: script = empty;
+  months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
 
   constructor(private readonly scriptService:ScriptService,private readonly boardGameService:BggSearchService, private readonly router:Router) {
   }
 
-  ngOnInit(): void {
-    const item = localStorage.getItem("script-detail") || JSON.stringify(empty);
-    this.current = JSON.parse(item);  
-  }
-
-  replaceBackSlash(input:string):string{
-    let result = "";
-
-    for(let count = 0; count < input.length; count++){
-      if(input[count] === "\\")
-        result += "/";
-      else
-        result += input[count];
-    }
-    return result;
+  ngOnInit(): void { 
+    this.scriptService.getScriptById(this._id).subscribe({
+      next:(value)=>{
+        this.current = value;
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    }); 
   }
 
   

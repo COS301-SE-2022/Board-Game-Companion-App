@@ -1,23 +1,23 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-#wrapper{
-    margin: 20px auto;
-    width: 80%;
-    max-width: 80%;
-    min-width: 500px;
-    padding: 15px;
+.script-detail__column-0,.script-detail__column-1{
+    border: 1px solid black;
 }
 
-.section{
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    background-color: #ffffff;    
+.script-information{
+    border: 2px solid $Pcolour-2;
 }
 
-.checked {
-    color: orange;
+.script-title{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-transform: capitalize;
+    color: $Pcolour-3;
 }
 
-button{
-    margin: 1em;
+.script-field-name{
+    color:whitesmoke;
+}
+
+.script-field-value{
+    color: $Pcolour-3;
 }
