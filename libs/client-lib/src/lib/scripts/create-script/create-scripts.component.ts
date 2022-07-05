@@ -11,8 +11,6 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class CreateScriptComponent implements OnInit {
   @Output()newScript = new EventEmitter<script>();
-  scriptFiles:string[] = ["main"];
-  scriptfile = "";
   maxfiles = 3;
   errorMessage = "";
   warningMessage = "";
@@ -31,14 +29,10 @@ export class CreateScriptComponent implements OnInit {
   }
 
   validateAndSave(): void{
-    const fileinput:HTMLInputElement = <HTMLInputElement>document.getElementById("image-input") || new HTMLInputElement;
-
     if(this.scriptname === "")
       this.errorOccured("Script name missing.");
     else if(this.boardgame === "")
       this.errorOccured("Board game missing.");
-    else if(fileinput.files?.length == 0)
-      this.errorOccured("Select script icon.");
     else{
       const temp = this.getboardGameId();
     
@@ -77,8 +71,6 @@ export class CreateScriptComponent implements OnInit {
     formData.append("user",localStorage.getItem("user") || "Joseph");
     formData.append("name",this.scriptname);
     formData.append("boardGameId",boardGameId);
-    formData.append("files",JSON.stringify(this.scriptFiles));
-    console.log("file: " + files[0].name);
     formData.append("icon",files[0]);
 
     this.scriptService.saveScript(formData).subscribe({
@@ -140,13 +132,6 @@ export class CreateScriptComponent implements OnInit {
     console.log(this.boardgames);
   }
 
-  checkKeyPress(event:KeyboardEvent){
-    if(event.key === "Enter"){
-      event.preventDefault();
-      this.addScriptFile();
-    }
-  }
-
   errorOccured(message:string): void{
     this.errorMessage = message;
     this.error = true;
@@ -165,48 +150,6 @@ export class CreateScriptComponent implements OnInit {
       this.warning = false;
     },5000);
   
-  }
-
-  addScriptFile(): void{
-
-    if(this.scriptfile === "")
-      this.errorOccured("Empty script file name.");
-    else if(this.containsScriptFile(this.scriptfile))
-      this.errorOccured("File already created.");
-    else if(this.scriptFiles.length == this.maxfiles)
-      this.warningOccured("A maximum " + this.maxfiles + " initial files allowed.")
-    else  
-      this.scriptFiles.push(this.scriptfile);
-    
-    this.scriptfile = "";
-  }
-
-  containsScriptFile(name:string): boolean{
-    let result = false;
-
-    for(let count = 0; count < this.scriptFiles.length && !result; count++){
-      if(this.scriptFiles[count] === name){
-        result = true;
-      }
-    }
-    
-    return result;
-  }
-
-  removeScriptFile(name:string): void{
-    if(name === "main")
-      this.errorOccured("You are not allowed to remove main file.");
-    else if(name !== ""){
-      const temp:string[] = [];
-      
-      for(let count = 0; count < this.scriptFiles.length; count++){
-        if(this.scriptFiles[count] !== name){
-          temp.push(this.scriptFiles[count]);
-        }
-      }
-
-      this.scriptFiles = temp;
-    }
   }
 
   loadImage(event:any): void{

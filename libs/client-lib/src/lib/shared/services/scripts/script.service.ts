@@ -51,4 +51,8 @@ export class ScriptService {
   retrieveAllScript():Observable<script[]>{
     return this.httpClient.get<script[]>(this.api + "scripts/retrieve/all");
   }
+
+  getFileData(file:string):Observable<any>{
+    return this.httpClient.get(file);
+  }
 }

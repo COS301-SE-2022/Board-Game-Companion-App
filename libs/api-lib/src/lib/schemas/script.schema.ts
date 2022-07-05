@@ -8,6 +8,7 @@ export type ScriptDocument = Script & Document;
 
 @Schema()
 export class Script{
+
     @Prop({required: true})
     name: string;
 

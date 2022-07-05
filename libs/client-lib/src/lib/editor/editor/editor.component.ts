@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener, ViewChild  } from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
-
+import { empty, script } from '../../shared/models/script';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 interface message{
   message: string;
   class: string;
@@ -24,14 +25,30 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent();
+  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
+  currentScript:script = empty;
+
+  constructor(private readonly scriptService:ScriptService){
+
+  }
 
   ngOnInit(): void {
     console.log("editor");
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    this.updateDimensions();  
+    this.updateDimensions();
+    this.scriptService.getScriptById("62c19fffe801724a44a90106").subscribe({
+      next:(value)=>{
+        this.currentScript = value;
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    });  
   }
 
   @HostListener('window:resize', ['$event'])

@@ -9,13 +9,13 @@ export class S3Service {
         secretAccessKey: process.env.AWS_SECRET_KEY,
     });
 
-    async upload(file,path:string):Promise<string>{
-        const key = (process.env.PROJECT_STATUS == "production" ? "production/" : "development/") + path + file.originalname;
+    async upload(name:string,path:string,data:any,type:string):Promise<string>{
+        const key = (process.env.PROJECT_STATUS == "production" ? "production/" : "development/") + path + name;
         const params = {
             Bucket: this.bucket,
             Key: String(key),
-            Body: file.buffer,
-            ContentType: file.mimetype,
+            Body: data,//file.buffer,
+            ContentType: type,//file.mimetype,
             ContentDisposition:"inline"
         };
 

@@ -8,25 +8,17 @@ import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { status } from '../../models/general/status';
 
-let id = uuidv4();
 
 @Controller('scripts')
 export class ApiScriptController {
     constructor(private readonly scriptService:ScriptService){}
     
-    //script functions
-    updateId():void{
-        id = uuidv4();
-    }
-    
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
-        const tempId = id;
-        this.updateId();
+    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
-        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon,tempId);
+        return this.scriptService.create(user,name,boardGameId,stat,icon);
     }
 
     @Get('retrieve/byid')

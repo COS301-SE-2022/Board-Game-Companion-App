@@ -1,3 +1,3 @@
-function main(){
+(function main(){
     console.print("Script Entry Point.");
-}();
+})();

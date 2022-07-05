@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as ace from "ace-builds";
+import { ScriptService } from '../../shared/services/scripts/script.service';
 
 
 interface file{
@@ -19,7 +20,12 @@ export class EditorBodyComponent implements OnInit{
   @Input() top = 0;
   codeEditor:any;
   themeEditor = "Dracula";
-  openFiles:file[] = [];
+  @Input()openFiles:file[] = [];
+  focusFile = 0;
+
+  constructor(private readonly scriptService:ScriptService){
+
+  }
 
   ngOnInit(): void {
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
@@ -27,11 +33,8 @@ export class EditorBodyComponent implements OnInit{
     if(theme != null)
       this.themeEditor = theme;
 
-    this.openFiles.push({name:"main.js",location:"a"});
-    this.openFiles.push({name:"model.js",location:"b"});
-    this.openFiles.push({name:"generate.js",location:"c"});
-    this.openFiles.push({name:"interface.json",location:"d"});
     this.createEditor();
+    //this.loadFocusFile();
   }
 
   createEditor():void{
@@ -45,6 +48,24 @@ export class EditorBodyComponent implements OnInit{
       enableLiveAutocompletion: true
     });
 
+  }
+
+  loadFocusFile(name:string): void{
+    if(this.openFiles.length > 0){
+
+
+      this.scriptService.getFileData(this.openFiles[this.focusFile].location).subscribe({
+        next:(value)=>{
+          console.log(value);
+        },
+        error:(e)=>{
+          console.log(e)
+        },
+        complete:()=>{
+          console.log("complete")
+        }
+      });
+    }
   }
 
   addOpenFile(val:file):void{
