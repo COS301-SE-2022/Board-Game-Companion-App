@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule} from './app-routing.module';
 import { ClientLibModule } from '@board-game-companion-app/client-lib';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,7 +14,8 @@ import { ClientLibModule } from '@board-game-companion-app/client-lib';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    ClientLibModule
+    ClientLibModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production})
   ],
   providers: [ HttpClient],
   bootstrap: [AppComponent],

@@ -8,6 +8,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 
+
 @Module({
   imports: [
     ApiLibModule,
@@ -18,7 +19,7 @@ import { join } from 'path';
 
     MongooseModule.forRoot('mongodb+srv://new_forerunner:P3tfeMMw8N1d0Ii8@board-game-companion-ap.wxt0n.mongodb.net/Board-Game-Companion-App?retryWrites=true&w=majority')
     //
-
+   
   ],
   controllers: [AppController],
   providers: [AppService],
