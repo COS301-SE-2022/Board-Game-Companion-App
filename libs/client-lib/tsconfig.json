@@ -11,12 +11,15 @@
     }
   ],
   "compilerOptions": {
+    "allowJs":true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

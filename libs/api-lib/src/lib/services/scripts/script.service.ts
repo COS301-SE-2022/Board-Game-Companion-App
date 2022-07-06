@@ -5,13 +5,14 @@ import { Script, ScriptDocument } from '../../schemas/script.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
 import fs = require('fs');
 import { status } from '../../models/general/status';
+import { S3Service } from '../../services/aws/s3.service';
 
 @Injectable()
 export class ScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
-    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>){
-
+    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,private readonly s3Service:S3Service){
+        
     }
 
     async create(user:string,name:string,boardGameId:string,stat:status,files:string[],icon:string,id:string): Promise<Script> {
@@ -30,32 +31,10 @@ export class ScriptService {
             size: 0,
             comments: [],
             files: [],
-            icon: icon
+            icon: ""
         };
-
-        for(let count = 0; count < files.length; count++){
-            dto.files.push({name:"",path:""});
-
-            dto.files[count].path = "uploads/scripts/files/" + id + "/" + files[count];
-            dto.files[count].name = files[count];
-
-            if(dto.files[count].name.indexOf("module.ts") == -1){
-                dto.files[count].name += "module.ts";
-                dto.files[count].path += "module.ts";
-            }
-            try{
-                fs.mkdirSync("uploads/scripts/files/" + id,{recursive:true});
-            }catch(err){
-                console.log(err);
-            }
-
-            fs.writeFile(dto.files[count].path,'',(err)=>{
-                if(err)
-                    console.log(err);
-            });
-        }
-
         
+        dto.icon = await this.s3Service.upload(icon,"scripts/icon/" + id + "/");
         const createdScript = new this.scriptModel(dto);
         
         return createdScript.save();

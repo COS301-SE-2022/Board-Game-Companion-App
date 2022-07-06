@@ -12,7 +12,7 @@ import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
-
+import { S3Service } from './services/aws/s3.service';
 
 @Module({
   imports:[
@@ -32,7 +32,8 @@ import { Rating, RatingSchema } from './schemas/rating.schema';
     ScriptEditorService,
     ScriptService,
     RatingService,
-    CommentService
+    CommentService,
+    S3Service
   ],
   exports: [],
 })

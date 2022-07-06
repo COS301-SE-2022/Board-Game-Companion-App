@@ -9,8 +9,10 @@
     "start-api": "node dist/apps/api/main.js",
     "build": "nx build",
     "test": "nx test",
+    "deploy": "./tools/scripts/deploy-client.sh",
+    "test-all": "nx run-many --target=test --all --parallel",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "heroku-postbuild": "nx build api ---prod && nx build client --prod && ls"
+    "heroku-postbuild": "nx build api ---prod && nx build client --prod"
   },
   "private": true,
   "devDependencies": {
@@ -76,10 +78,13 @@
     "@syncfusion/ej2-angular-navigations": "^20.1.58",
     "@syncfusion/ej2-angular-richtexteditor": "^20.1.57",
     "@tinymce/tinymce-angular": "^6.0.1",
+    "ace-builds": "^1.6.0",
     "angular-oauth2-oidc": "^13.0.1",
     "angularx-social-login": "^4.1.0",
+    "aws-sdk": "^2.1157.0",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.1.3",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.3.3",
     "ngx-smart-popover": "^1.5.0",

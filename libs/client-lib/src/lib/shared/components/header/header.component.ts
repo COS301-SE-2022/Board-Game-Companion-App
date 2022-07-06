@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { GoogleAuthService, userDetails} from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
+import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
 
 
 
@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/home']);
+      this.router.navigate(['/scripts']);
     
   }
 
@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
     let result = false;
 
     for(let count = 0; count < this.admin.length && !result; count++){
-      if(this.admin[count] === this.UserDetails?.details.email)
+     if(this.admin[count] === this.UserDetails?.details.email)
         result = true;
     }
 

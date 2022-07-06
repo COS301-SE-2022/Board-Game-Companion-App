@@ -1,4 +1,4 @@
-<header>
+<header *ngIf="false">
     <nav class="navbar navbar-expand-md relative flex items-center w-full justify-between">
         <div class=" w-full flex flex-wrap items-center justify-between ">
             <div class="navbar-collapse collapse grow items-center">
@@ -12,13 +12,13 @@
                     <li class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('board-game-search')">Board Games</a>
                     </li>
-                    <li *ngIf = "loggedIn === true" class="nav-item p-3">
+                    <li class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('scripts')">Scripts</a>
                     </li>
                     <li *ngIf = "loggedIn === true && isAdmin()" class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('admin')">Administration</a>
                     </li>
-                    <li *ngIf = "loggedIn === true" class="nav-item p-3">
+                    <li class="nav-item p-3">
                         <a class = "nav-link block" (click)="moveTo('gameSessions')">Game Sessions</a>
                     </li>
                 </ul>

@@ -18,7 +18,9 @@
           "node_modules/bootstrap/dist/css/bootstrap.min.css",
           "apps/client/src/styles.scss"
         ],
-        "scripts": []
+        "scripts": [
+          "apps/client/src/assets/js/ace-editor/src-min/ace.js"
+        ]
       },
       "configurations": {
         "production": {

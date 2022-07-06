@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@board-game-companion-app/api-lib": ["libs/api-lib/src/index.ts"],
-      "@board-game-companion-app/client-lib": ["libs/client-lib/src/index.ts"]
+      "@board-game-companion-app/client-lib": ["libs/client-lib/src/index.ts"],
+      "@board-game-companion-app/uploads": ["libs/uploads/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
