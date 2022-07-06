@@ -22,6 +22,7 @@ export class ScriptDetailComponent implements OnInit {
     this.scriptService.getScriptById(this._id).subscribe({
       next:(value)=>{
         this.current = value;
+		this.getBoardGameName();
       },
       error:(e)=>{
         console.log(e)
@@ -33,7 +34,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   
-  getBoardGameName(){
+  getBoardGameName():void{
     this.boardGameService.getBoardGameById(this.current.boardgame).subscribe({
       next:(val)=>{
         this.boardGameName = this.boardGameService.parseGetBoardGameById(val.toString()).name;

@@ -3,13 +3,13 @@
     <div class = "script-information p-2 bg-gray-800">
       <h5 class = "script-title"><b>{{current.name}}</b></h5>
       <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author}}</p>
-      <label class = "script-field-name">Board game: </label><p class = "script-field-value">{{getBoardGameName()}}</p>
+      <label class = "script-field-name">Board game: </label><p class = "script-field-value">{{boardGameName}}</p>
       <label class = "script-field-name">Release date: </label><p class = "script-field-value">{{formatDate(current.release)}}</p>
       <label class = "script-field-name">Size: </label><p class = "script-field-value">{{current.size}}</p>
       <div class = "flex flex-row">
         <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
         <label class = "script-field-name">Last downloads: </label><p class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
-      </div>
+      </div> 
       
     </div>
   </div>
