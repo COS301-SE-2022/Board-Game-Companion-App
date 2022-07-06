@@ -10,8 +10,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                scripts published this month</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                            current month</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ currentPub }}</div>
                         </div>
                         <div class="col-auto">
                             <span class="fa-solid fa-download fa-2x text-gray-300"></span>
@@ -26,8 +26,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                total number of scripts</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">23</div>
+                                Total</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ totalPub }}</div>
                         </div>
                         <div class="col-auto">
                             <span class="fa-solid fa-file fa-2x text-gray-300"></span>
@@ -39,12 +39,12 @@
 
         <div class="col-xl-2 col-md-6 mb-4 g-2">
             <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body" (click)="runningScripts('Active')">
+                <div class="card-body" (click)="runningScripts()">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                running scripts</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">15</div>
+                                Running</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ Active }}</div>
                         </div>
                         <div class="col-auto">
                             <span class="fa-solid fa-check fa-2x text-gray-300"></span>
@@ -56,12 +56,12 @@
 
         <div class="col-xl-2 col-md-6 mb-4 g-2">
             <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body" (click)="flaggedScripts('flagged')">
+                <div class="card-body" (click)="flaggedScripts()">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                flagged scripts</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                                Flagged</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ Flagged }}</div>
                         </div>
                         <div class="col-auto">
                             <span class="fa-solid fa-xmark fa-2x text-gray-300"></span>
@@ -73,12 +73,12 @@
 
         <div class="col-xl-2 col-md-6 mb-4 g-2">
             <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body" (click)="ProgressScripts('progress')">
+                <div class="card-body" (click)="ProgressScripts()">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                In Progress scripts</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                                In Progress</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ InProgress }}</div>
                         </div>
                         <div class="col-auto">
                             <span class="fa-solid fa-bars-progress fa-2x text-gray-300"></span>
