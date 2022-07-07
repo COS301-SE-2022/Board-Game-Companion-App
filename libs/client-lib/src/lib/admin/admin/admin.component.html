@@ -116,7 +116,7 @@
                     </tr>
                 </thead>
 
-                <tbody *ngFor="let script of scripts">
+                <tbody *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page } ">
                     <tr>
                         <td>
                             {{ script.created }}
@@ -147,6 +147,7 @@
                     </tr>
                 </tbody>
             </table>
+            <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
         </div>
     </div>
 </div>
