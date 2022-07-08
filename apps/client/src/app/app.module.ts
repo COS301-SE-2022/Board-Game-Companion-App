@@ -15,7 +15,7 @@ import { environment } from '../environments/environment.prod';
     HttpClientModule,
     AppRoutingModule,
     ClientLibModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production})
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production,  registrationStrategy: 'registerWhenStable:30000',})
   ],
   providers: [ HttpClient],
   bootstrap: [AppComponent],
