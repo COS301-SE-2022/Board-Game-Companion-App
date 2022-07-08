@@ -19,6 +19,9 @@ export class AdminComponent implements OnInit {
   public Flagged = 0 ; // Total number of flagged scripts.
   public InProgress = 0; // Total number of scripts In progress.
   public Active = 0; // Total number of current running scripts.
+
+  public page = 1;
+
   public scripts : any;
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
