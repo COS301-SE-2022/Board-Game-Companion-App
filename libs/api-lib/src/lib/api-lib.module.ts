@@ -13,6 +13,7 @@ import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
+import { Like, LikeSchema } from './schemas/like.schema';
 import { S3Service } from './services/aws/s3.service';
 
 @Module({
@@ -21,6 +22,7 @@ import { S3Service } from './services/aws/s3.service';
                                 {name:Script.name,schema: ScriptSchema},
                                 {name:Comment.name,schema:CommentSchema},
                                 {name:Rating.name,schema:RatingSchema},
+                                {name:Like.name,schema:LikeSchema}
                               ])
   ],
   controllers: [
