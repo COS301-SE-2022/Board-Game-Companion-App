@@ -3,11 +3,13 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { commentDto } from '../../models/dto/commentDto';
 import { Comment,CommentDocument } from '../../schemas/comment.schema';
+import { Like, LikeDocument } from '../../schemas/like.schema';
+import { likeCount } from '../../models/general/likeCount';
 
 @Injectable()
 export class CommentService {
 
-    constructor(@InjectModel(Comment.name) private commentModel: Model<CommentDocument>){}
+    constructor(@InjectModel(Comment.name) private commentModel: Model<CommentDocument>,@InjectModel(Like.name) private likeModel: Model<LikeDocument>){}
 
     async createComment(name:string,image:string,script:string,content:string):Promise<Comment>{
         const dto:commentDto = {
@@ -48,5 +50,37 @@ export class CommentService {
             result.replies.unshift(replyId);
             result.save();
         }
+    }
+
+    async like(comment:string,user:string,like:boolean):Promise<Like>{
+
+        let value:LikeDocument = await this.likeModel.findOne({comment:comment,user:user});
+
+        if(value === null){
+            const createLike = new this.likeModel({
+                comment:comment,
+                user:user,
+                like:like
+            });
+
+            value =  await createLike.save();
+        }else{
+            value.like = like;
+            value.save();
+        }
+
+        return value;
+    }
+
+    async countLikes(comment:string):Promise<likeCount>{
+        const result:likeCount = {
+            likes: 0,
+            dislikes: 0
+        }
+
+        result.likes = await this.likeModel.countDocuments({comment:comment,like:true});
+        result.dislikes = await this.likeModel.countDocuments({comment:comment,like:false});
+        
+        return result;
     }
 }
