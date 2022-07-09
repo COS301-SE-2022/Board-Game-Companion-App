@@ -19,6 +19,9 @@ export class Script{
     boardgame: string;
 
     @Prop({required:true})
+    description: string;
+
+    @Prop({required:true})
     created: string;
 
     @Prop()
@@ -46,7 +49,7 @@ export class Script{
     size: number;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
-    comments: Comment[];
+    comments: string[];
 
     @Prop({required:true})
     files: file[];

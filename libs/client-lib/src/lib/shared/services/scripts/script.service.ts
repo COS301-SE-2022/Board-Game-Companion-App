@@ -41,6 +41,10 @@ export class ScriptService {
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
 
+  addComment(scriptId:string,commentId:string):void{
+    this.httpClient.put(this.api + "scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
+  }
+
   removeScript(id:string):Observable<void>{
     return this.httpClient.delete<void>(this.api + "scripts/remove/" + id);
   }

@@ -1,9 +1,10 @@
 export interface commentDto{
-    user: string;
-    time: number;
-    published: Date;
+    name: string;
+    image: string;
+    created: Date;
+    script: string;
     likes: number;
     dislikes: number;
     content: string;
-    replies: Comment[];     
+    replies: string[];     
 };

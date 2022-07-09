@@ -20,6 +20,7 @@ export class CreateScriptComponent implements OnInit {
   boardgamesMap:Map<string,string> = new Map();
   boardgame = "";
   scriptname = "";
+  description = "";
 
   constructor(private readonly searchService:BggSearchService,private readonly scriptService:ScriptService){}
 
@@ -33,6 +34,8 @@ export class CreateScriptComponent implements OnInit {
       this.errorOccured("Script name missing.");
     else if(this.boardgame === "")
       this.errorOccured("Board game missing.");
+    else if(this.description === "")
+      this.errorOccured("Description missing.");
     else{
       const temp = this.getboardGameId();
     
@@ -71,6 +74,7 @@ export class CreateScriptComponent implements OnInit {
     formData.append("user",localStorage.getItem("user") || "Joseph");
     formData.append("name",this.scriptname);
     formData.append("boardGameId",boardGameId);
+    formData.append("description",this.description);
     formData.append("icon",files[0]);
 
     this.scriptService.saveScript(formData).subscribe({

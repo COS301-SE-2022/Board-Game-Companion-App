@@ -17,11 +17,12 @@ export class ScriptService {
         
     }
 
-    async create(user:string,name:string,boardGameId:string,stat:status,icon:any): Promise<Script> {
+    async create(user:string,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
         const dto:scriptDto = {
             name: name,
             author: user,
             boardgame: boardGameId,
+            description: description,
             created: new Date(),
             release: null,
             lastupdate: new Date(),
@@ -115,5 +116,19 @@ export class ScriptService {
 
     async updateInfo(id:string,name:string,pub:boolean,exp:boolean,stat:status){
         return this.scriptModel.findByIdAndUpdate(id,{name:name,public:pub,export:exp,status:stat}).exec();
+    }
+
+    async addComment(scriptId:string,commentId:string): Promise<void>{
+        const script:ScriptDocument = await this.scriptModel.findById(scriptId);
+        let add = true;
+
+        for(let count = 0; count < script.comments.length && add; count++){
+            if(script.comments[count] === commentId)
+                add = false;
+        }
+        
+        script.comments.unshift(commentId);
+        
+        script.save();
     }
 }

@@ -6,6 +6,7 @@ export interface scriptDto{
     name: string;
     author: string;
     boardgame: string;
+    description: string;
     created: Date;
     lastupdate: Date;
     release: Date;

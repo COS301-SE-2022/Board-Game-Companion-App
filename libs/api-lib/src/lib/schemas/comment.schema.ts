@@ -6,13 +6,16 @@ export type CommentDocument = Comment & Document;
 @Schema()
 export class Comment{
     @Prop({required: true})
-    user: string;
+    name: string;
 
-    @Prop()
-    time: number;
+    @Prop({required: true})
+    image: string;
 
-    @Prop()
-    published: Date;
+    @Prop({required: true})
+    created: Date;
+
+    @Prop({required: true})
+    script: string;
 
     @Prop({required:true})
     likes: number;
@@ -24,7 +27,7 @@ export class Comment{
     content: string;
 
     @Prop({type: [{type:mongoose.Schema.Types.ObjectId,ref:'Comment'}]})
-    replies: Comment[]; 
+    replies: string[]; 
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

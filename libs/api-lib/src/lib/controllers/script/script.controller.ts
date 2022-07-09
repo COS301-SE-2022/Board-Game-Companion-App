@@ -15,10 +15,10 @@ export class ApiScriptController {
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@UploadedFile()icon): Promise<Script>{ 
+    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
-        return this.scriptService.create(user,name,boardGameId,stat,icon);
+        return this.scriptService.create(user,name,boardGameId,stat,description,icon);
     }
 
     @Get('retrieve/byid')
@@ -59,39 +59,8 @@ export class ApiScriptController {
     }
 
     //comment functions
-
-    @Post('create-comment')
-    async createComment(@Body('user')user:string,@Body('content')content:string){
-        console.log('createComment');
-    }
-
-    @Post('reply-to-comment')
-    async createReplyToComment(@Body('comment')commentId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createToComment');
-    }
-
-    @Post('reply-to-reply')
-    async createReplyToReply(@Body('comment')replyId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createReplyToReply');
-    }
-
-    @Get('retrieve-comments')
-    async retrieveComments(@Query('comments')comments:string[]){
-        console.log('retrieveComments');
-    }
-
-    @Put('update-comment-content')
-    async updateCommentContent(@Body('comment')commentId:string,@Body('content')content:string){
-        console.log('updateCommentContent');
-    }
-
-    @Put('update-comment-likes')
-    async updateCommentLikes(@Body('comment')commentId:string,@Body('likeCount')likeCount:number){
-        console.log('updateCommentLikes');
-    }
-
-    @Put('update-comment-dislikes')
-    async updateCommentDisLikes(@Body('comment')commentId:string,@Body('disLikeCount')DisLikeCount:number){
-        console.log('updateCommentDisLikes');
-    }
+    @Put('add-comment')
+    async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
+        this.scriptService.addComment(scriptId,commentId);
+    }   
 }

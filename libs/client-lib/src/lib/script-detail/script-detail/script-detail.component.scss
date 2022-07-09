@@ -8,6 +8,10 @@
     border: 2px solid $Pcolour-2;
 }
 
+.script-comments{
+    border: 2px solid $Pcolour-2;
+}
+
 .script-title{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-transform: capitalize;
@@ -15,9 +19,25 @@
 }
 
 .script-field-name{
-    color:yellow;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:whitesmoke;
 }
 
 .script-field-value{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-left: 10px;
+    color: $Pcolour-3;
+}
+
+.name-value-pair{
+    margin-top:10px;
+}
+
+.script-comment-counter{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:whitesmoke;    
+}
+
+.script-comment-counter:hover{
     color: $Pcolour-3;
 }

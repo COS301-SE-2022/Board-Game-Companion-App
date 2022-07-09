@@ -6,6 +6,7 @@ export interface script{
     name: string;
     author: string;
     boardgame: string;
+    description: string;
     created: Date;
     release: Date;
     downloads: number;
@@ -26,6 +27,7 @@ export const empty:script = {
     name: "",
     author: "",
     boardgame: "",
+    description: "",
     created: new Date(0),
     release: new Date(0),
     downloads: 0,

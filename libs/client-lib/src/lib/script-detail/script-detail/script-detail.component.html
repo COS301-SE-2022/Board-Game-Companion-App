@@ -1,16 +1,38 @@
 <div class = "script-detail__wrapper w-full h-full p-4 flex flex-row" style="border:1px solid black">
   <div class = "script-detail__column-0 w-3/4 p-4">
     <div class = "script-information p-2 bg-gray-800">
-      <h5 class = "script-title"><b>{{current.name}}</b></h5>
-      <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author}}</p>
-      <label class = "script-field-name">Board game: </label><p class = "script-field-value">{{boardGameName}}</p>
-      <label class = "script-field-name">Release date: </label><p class = "script-field-value">{{formatDate(current.release)}}</p>
-      <label class = "script-field-name">Size: </label><p class = "script-field-value">{{current.size}}</p>
-      <div class = "flex flex-row">
-        <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
-        <label class = "script-field-name">Last downloads: </label><p class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
-      </div> 
+      <h1 class = "script-title text-xl"><b>{{current.name}}</b></h1>
+      <div class = "flex flex-row name-value-pair text-sm">
+        <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author}}</p>
+      </div>
       
+      <div class = "flex flex-row name-value-pair text-sm">
+        <label class = "script-field-name">Board game: </label><p class = "script-field-value">{{boardGameName}}</p>
+      </div>
+      
+      <div class = "flex flex-row name-value-pair text-sm">
+        <label class = "script-field-name">Release date: </label><p class = "script-field-value">{{formatDate(current.release)}}</p>
+      </div>
+      
+      <div class = "flex flex-row name-value-pair text-sm">
+        <label class = "script-field-name">Size: </label><p class = "script-field-value">{{current.size}}</p>
+      </div>
+      
+      <div class = "flex flex-row name-value-pair text-sm">
+        <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
+        <label class = "script-field-name" style="margin-left:120px">Last downloads: </label><p class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
+      </div>
+      
+      <div class = "text-sm name-value-pair">
+        <label class = "script-field-name">Description: </label>
+        <p class = "script-field-value mt-2" style = "margin-left: 0px;">{{current.description}}</p>
+      </div>
+      
+    </div>
+
+    <div class = "script-comments p-2 bg-gray-800 mt-4">
+      <p (click) = "toggleComments()" class = "script-comment-counter text-md">{{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
+      <board-game-companion-app-comment-section *ngIf = "showComments" (incrementCommentCounter) = "incrementCommentCounter()" [currentScript]="current" ></board-game-companion-app-comment-section>
     </div>
   </div>
   <div class = "script-detail__column-1 w-1/4">
