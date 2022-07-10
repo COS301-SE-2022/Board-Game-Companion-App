@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
+// import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 
 
 // import { TestPassService } from '../../test-pass.service';
@@ -14,7 +14,14 @@ import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 })
 export class AdminComponent implements OnInit {
 
-  // private name: string;
+  public currentPub = 0 ; // Total number of scripts posted this month.
+  public totalPub = 0 ; // Total number of scripts.
+  public Flagged = 0 ; // Total number of flagged scripts.
+  public InProgress = 0; // Total number of scripts In progress.
+  public Active = 0; // Total number of current running scripts.
+
+  public page = 1;
+
   public scripts : any;
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
@@ -27,17 +34,28 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
  
     if(this.scripts==null){
+      
       this.adminService.getScripts().subscribe(data=>{
+        const date = new Date();
+        const month = date.toLocaleString('default', { month: 'long' });
+        this.scripts = data.filter( (res: { created: string | string[]; }) => res.created.indexOf(month)>0);
+        this.currentPub = this.scripts.length;
+        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
+        this.Active = this.scripts.length;
+        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+        this.InProgress = this.scripts.length;
+        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
+        this.Flagged = this.scripts.length;
+
         this.scripts = data;
+        this.totalPub = this.scripts.length;
         for(let i=0; i < this.scripts.length; i++){
           const date = this.scripts[i].created.split(" ");
   
           this.scripts[i].created = [date[3], date[1], date[2]].join("-");
         }
-        // console.log(this.scripts);
       });
     }
-    // console.log(this.scripts);
   }
 
   findAll(): void{
@@ -49,7 +67,6 @@ export class AdminComponent implements OnInit {
 
         this.scripts[i].created = [date[3], date[1], date[2]].join("-");
       }
-      // console.log(this.scripts);
     });
   }
   currentMonth(): void{
@@ -61,10 +78,10 @@ export class AdminComponent implements OnInit {
       const month = date.toLocaleString('default', { month: 'long' });
 
       this.scripts = data.filter( (res: { created: string | string[]; }) => res.created.indexOf(month)>0);
-      this.scripts = data;
+
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
-
+        console.log(date);
         this.scripts[i].created = [date[3], date[1], date[2]].join("-");
       }
       
@@ -73,12 +90,12 @@ export class AdminComponent implements OnInit {
 
   }
 
-  runningScripts(status:string): void{
+  runningScripts(): void{
 
     this.adminService.getScripts().subscribe(data=>{
 
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
-      // this.scripts = data;
+
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
 
@@ -89,11 +106,11 @@ export class AdminComponent implements OnInit {
     
   }
 
-  flaggedScripts(status:string): void{
+  flaggedScripts(): void{
     this.adminService.getScripts().subscribe(data=>{
       
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-      // this.scripts = data;
+
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
 
@@ -103,7 +120,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  ProgressScripts(status:string): void{
+  ProgressScripts(): void{
     this.adminService.getScripts().subscribe(data=>{
       
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
