@@ -10,7 +10,7 @@ export class Rating{
     user: string;
 
     @Prop({required: true,type:mongoose.Schema.Types.ObjectId, ref:'Script'})
-    script: Script;
+    script: string;
 
     @Prop({required: true})
     value: number;

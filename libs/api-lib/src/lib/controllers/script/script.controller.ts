@@ -7,11 +7,13 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { status } from '../../models/general/status';
+import { RatingService } from '../../services/ratings/rating.service';
+import { Rating } from '../../schemas/rating.schema';
 
 
 @Controller('scripts')
 export class ApiScriptController {
-    constructor(private readonly scriptService:ScriptService){}
+    constructor(private readonly scriptService:ScriptService,private readonly ratingService:RatingService){}
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
@@ -43,19 +45,24 @@ export class ApiScriptController {
 
     //rating functions
     
-    @Post('create-rating')
-    async createUserRating(@Body('user')user:number,@Body('script')scriptId:string,@Body('value')value:number){
-        console.log('createUserRating');
+    @Post('rate')
+    async createUserRating(@Body('user')user:string,@Body('script')script:string,@Body('value')value:number):Promise<Rating>{
+        return this.ratingService.rate(user,script,value);
     }
 
     @Get('retrieve-rating')
-    async retrieveUserRating(@Query('id')user:number): Promise<Script>{
-        return await this.scriptService.findById(user);
+    async retrieveUserRating(@Query('id')user:string,@Query('script')script:string): Promise<Rating>{
+        return this.ratingService.getRating(user,script);
     }
 
-    @Put('update-rating')
-    async updateUserRating(@Body('id')ratingId:string,@Body('value')value:number){
-        console.log('updateRating');
+    @Get('count-rating')
+    async countRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.countRating(script);
+    }
+
+    @Get('average-rating')
+    async averateRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.average(script);
     }
 
     //comment functions
