@@ -1,0 +1,8 @@
+PROJECT_STATUS = development
+
+MONGO_URI_DEV = mongodb+srv://new_forerunner:P3tfeMMw8N1d0Ii8@board-game-companion-ap.wxt0n.mongodb.net/Board-Game-Companion-App-DEV?retryWrites=true&w=majority
+MONGO_URI_PROD = mongodb+srv://new_forerunner:P3tfeMMw8N1d0Ii8@board-game-companion-ap.wxt0n.mongodb.net/Board-Game-Companion-App-PROD?retryWrites=true&w=majority
+
+BUCKET = board-game-companion-app
+AWS_ACCESS_KEY = AKIAXNWVNCGKRJNGKZXD
+AWS_SECRET_KEY = 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
