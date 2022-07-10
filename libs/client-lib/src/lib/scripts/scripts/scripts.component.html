@@ -6,7 +6,7 @@
             <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
             <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
             <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
-            <img class="w-full h-full" [src]="'http://localhost:3333/' + replaceBackSlash(value.icon)" alt=""/>
+            <img class="w-full h-full" [src]="value.icon" alt=""/>
             <div class = "child absolute bottom-0 w-full h-8 bg-inherit z-10 text-center text-white text-base">
                 <b>{{value.name}}</b>
             </div>
@@ -42,7 +42,7 @@
                     <td>
                         <div class = "flex flex-row">
                             <div class = "w-8 h-8">
-                                <img class="w-full h-full" [src]="'http://localhost:3333/' + replaceBackSlash(value.icon)" alt=""/>
+                                <img class="w-full h-full" [src]="value.icon" alt=""/>
                             </div>
                             <div class = "ml-2">
                                 {{value.name}}

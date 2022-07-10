@@ -5,15 +5,19 @@ import { ScriptDetailComponent } from './script-detail/script-detail.component';
 import { CommentComponent } from './comment/comment.component';
 import { CommentSectionComponent } from './comment-section/comment-section.component';
 import { ScriptDetailService } from './script-detail-service/script-detail.service';
+import { CommentFormComponent } from './comment-form/comment-form.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     ScriptDetailComponent,
     CommentComponent,
-    CommentSectionComponent
+    CommentSectionComponent,
+    CommentFormComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild([{path:'',component:ScriptDetailComponent}])
   ],
   providers: [

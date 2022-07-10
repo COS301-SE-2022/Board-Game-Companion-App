@@ -8,6 +8,7 @@ export type ScriptDocument = Script & Document;
 
 @Schema()
 export class Script{
+
     @Prop({required: true})
     name: string;
 
@@ -16,6 +17,9 @@ export class Script{
 
     @Prop({required:true})
     boardgame: string;
+
+    @Prop({required:true})
+    description: string;
 
     @Prop({required:true})
     created: string;
@@ -27,7 +31,7 @@ export class Script{
     status:stat;
 
     @Prop()
-    published: Date;
+    release: Date;
 
     @Prop()
     downloads: number;
@@ -45,7 +49,7 @@ export class Script{
     size: number;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
-    comments: Comment[];
+    comments: string[];
 
     @Prop({required:true})
     files: file[];

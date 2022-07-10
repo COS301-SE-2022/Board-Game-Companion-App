@@ -22,7 +22,7 @@ export class ScriptEditorService {
         
         for(let i=0; i < saved.files.length; i++){
             if(saved.files[i].name==filename){
-                fs.writeFile(saved.files[i].path,content,(err)=>{
+                fs.writeFile(saved.files[i].location,content,(err)=>{
                     if(err)
                         console.log(err);
                 });
@@ -48,7 +48,7 @@ export class ScriptEditorService {
         let content = "";
         for(let i=0; i < found.files.length; i++){
             if(found.files[i].name==filename){
-               content = fs.readFileSync(found.files[i].path,"utf-8")
+               content = fs.readFileSync(found.files[i].location,"utf-8")
             }
         }
         return content;

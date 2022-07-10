@@ -1,23 +1,53 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-#wrapper{
-    margin: 20px auto;
-    width: 80%;
-    max-width: 80%;
-    min-width: 500px;
-    padding: 15px;
+.script-detail__column-0,.script-detail__column-1{
+    
 }
 
-.section{
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    background-color: #ffffff;    
+.script-information{
+    border: 2px solid $Pcolour-2;
 }
 
-.checked {
-    color: orange;
+.script-comments{
+    border: 2px solid $Pcolour-2;
 }
 
-button{
-    margin: 1em;
+.script-title{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-transform: capitalize;
+    color: $Pcolour-3;
 }
+
+.script-detail__column-1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.script-field-name{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:whitesmoke;
+}
+
+.script-field-value{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-left: 10px;
+    color: $Pcolour-3;
+}
+
+.name-value-pair{
+    margin-top:10px;
+}
+
+.script-comment-counter{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:whitesmoke;    
+}
+
+.script-cover-header,.script-download-header,.script-rate-header{
+    background-color: $Pcolour-3;
+    color: whitesmoke;
+}
+
+.script-cover,.script-download,.script-rate{
+    border: 2px solid $Pcolour-2;
+}
+

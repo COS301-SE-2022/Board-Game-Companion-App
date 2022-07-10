@@ -17,7 +17,7 @@ import { join } from 'path';
     }),
     ConfigModule.forRoot(),
 
-    MongooseModule.forRoot('mongodb+srv://new_forerunner:P3tfeMMw8N1d0Ii8@board-game-companion-ap.wxt0n.mongodb.net/Board-Game-Companion-App?retryWrites=true&w=majority')
+    MongooseModule.forRoot(process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD)
     //
    
   ],

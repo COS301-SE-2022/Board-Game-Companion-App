@@ -2,6 +2,7 @@ import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { script } from '../../models/script';
+import { rating } from '../../models/rating';
 
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ScriptService {
   constructor(private readonly httpClient:HttpClient) { 
     this.url = "https://api.geekdo.com/xmlapi2/"
     this.api = "http://localhost:3333/api/";
+    //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
  
   // createScript(name:string,boardgame:string,files:string[])
@@ -40,6 +42,10 @@ export class ScriptService {
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
 
+  addComment(scriptId:string,commentId:string):void{
+    this.httpClient.put(this.api + "scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
+  }
+
   removeScript(id:string):Observable<void>{
     return this.httpClient.delete<void>(this.api + "scripts/remove/" + id);
   }
@@ -51,4 +57,36 @@ export class ScriptService {
   retrieveAllScript():Observable<script[]>{
     return this.httpClient.get<script[]>(this.api + "scripts/retrieve/all");
   }
+
+  getFileData(file:string):Observable<any>{
+    return this.httpClient.get(file);
+  }
+
+  rate(user:string,script:string,value:number):Observable<rating>{
+    return this.httpClient.post<rating>(this.api + "scripts/rate",{user:user,script:script,value:value});
+  }
+
+  getRating(user:string,script:string):Observable<rating>{
+    let param = new HttpParams();
+    param = param.set("user",user);
+    param = param.set("script",script);
+    
+    return this.httpClient.get<rating>(this.api + "scripts/retrieve-rating",{params:param});
+  }
+
+  countRating(script:string):Observable<number>{
+    let param = new HttpParams();
+    param = param.set("script",script);
+
+    return this.httpClient.get<number>(this.api + "scripts/count-rating",{params:param});
+  }
+
+  averageRating(script:string):Observable<number>{
+    let param = new HttpParams();
+    param = param.set("script",script);
+
+    return this.httpClient.get<number>(this.api + "scripts/average-rating",{params:param});
+  }
+
+
 }

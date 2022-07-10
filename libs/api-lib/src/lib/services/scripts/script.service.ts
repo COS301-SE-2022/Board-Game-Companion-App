@@ -6,6 +6,8 @@ import { scriptDto } from '../../models/dto/scriptDto';
 import fs = require('fs');
 import { status } from '../../models/general/status';
 import { S3Service } from '../../services/aws/s3.service';
+import { file } from '../../models/general/files';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ScriptService {
@@ -15,13 +17,14 @@ export class ScriptService {
         
     }
 
-    async create(user:string,name:string,boardGameId:string,stat:status,files:string[],icon:string,id:string): Promise<Script> {
+    async create(user:string,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
         const dto:scriptDto = {
             name: name,
             author: user,
             boardgame: boardGameId,
+            description: description,
             created: new Date(),
-            published: null,
+            release: null,
             lastupdate: new Date(),
             downloads: 0,
             lastdownload: null,
@@ -34,10 +37,56 @@ export class ScriptService {
             icon: ""
         };
         
-        dto.icon = await this.s3Service.upload(icon,"scripts/icon/" + id + "/");
-        const createdScript = new this.scriptModel(dto);
+        const id = uuidv4();
+        dto.files = await this.createInitialFiles(id);
+        dto.icon = await this.storeIcon(id,icon);
         
-        return createdScript.save();
+        
+        const createdScript = new this.scriptModel(dto);
+        const result:Script =  await createdScript.save();
+
+        return result;
+    }
+
+    async createInitialFiles(id:string):Promise<file[]>{
+        const result:file[] = [];
+        let temp:file = {name:"main.js",location:""};
+        const path = "scripts/" + id + "/files/";
+        let data = "";
+
+        console.log(process.cwd());
+
+        try{
+            data = fs.readFileSync("templates/main.js","utf8");
+        }catch(err){
+            console.log(err);
+        }
+
+        temp.location = await this.s3Service.upload("main.js",path,data,"text/javascript");
+
+        result.push(temp);
+
+        temp = {name:"interface.json",location:""};
+        
+        try{
+            data = fs.readFileSync("templates/interface.json","utf8");
+        }catch(err){
+            console.log(err);
+        }
+
+        temp.location = await this.s3Service.upload("interface.json",path,data,"application/json");
+        result.push(temp);
+
+        return result;
+    }
+
+    async storeIcon(id:string,icon:any):Promise<string>{
+        let result = "";
+        const path = "scripts/" + id + "/icons/";
+        
+        result = await this.s3Service.upload(icon.originalname,path,icon.buffer,icon.mimetype);
+
+        return result;
     }
 
     formatDate(date:Date):string{
@@ -67,5 +116,19 @@ export class ScriptService {
 
     async updateInfo(id:string,name:string,pub:boolean,exp:boolean,stat:status){
         return this.scriptModel.findByIdAndUpdate(id,{name:name,public:pub,export:exp,status:stat}).exec();
+    }
+
+    async addComment(scriptId:string,commentId:string): Promise<void>{
+        const script:ScriptDocument = await this.scriptModel.findById(scriptId);
+        let add = true;
+
+        for(let count = 0; count < script.comments.length && add; count++){
+            if(script.comments[count] === commentId)
+                add = false;
+        }
+        
+        script.comments.unshift(commentId);
+        
+        script.save();
     }
 }

@@ -3,6 +3,8 @@ import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { Router } from '@angular/router';
+import { CommentService } from '../../shared/services/comments/comment.service';
+import { rating } from '../../shared/models/rating';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -10,32 +12,47 @@ import { Router } from '@angular/router';
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  current:script = empty;
-  months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  _id = "62c571451aad0198cf88306b";
+  current: script = empty;
+  months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
+  showComments = true;
+  numberOfComments = 0;
+  rate:rating = {_id:"",user:"",script:"",value:0};
+  averageRating = 0;
+  voterCount = 0;
 
-  constructor(private readonly scriptService:ScriptService,private readonly boardGameService:BggSearchService, private readonly router:Router) {
+  constructor(private readonly scriptService:ScriptService,
+    private readonly boardGameService:BggSearchService,
+    private readonly commentService:CommentService,
+    private readonly router:Router) {
   }
 
-  ngOnInit(): void {
-    const item = localStorage.getItem("script-detail") || JSON.stringify(empty);
-    this.current = JSON.parse(item);  
+  ngOnInit(): void { 
+    this.scriptService.getScriptById(this._id).subscribe({
+      next:(value)=>{
+        this.current = value;
+		    this.getBoardGameName();
+        this.countComments();
+        this.getRating();
+        this.getAverageRating();
+        this.getVoterCount();
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    }); 
   }
 
-  replaceBackSlash(input:string):string{
-    let result = "";
-
-    for(let count = 0; count < input.length; count++){
-      if(input[count] === "\\")
-        result += "/";
-      else
-        result += input[count];
-    }
-    return result;
+  toggleComments(){
+    this.showComments = !this.showComments;
   }
 
   
-  getBoardGameName(){
+  getBoardGameName():void{
     this.boardGameService.getBoardGameById(this.current.boardgame).subscribe({
       next:(val)=>{
         this.boardGameName = this.boardGameService.parseGetBoardGameById(val.toString()).name;
@@ -46,9 +63,56 @@ export class ScriptDetailComponent implements OnInit {
     });
   }
 
+  getRating(): void{
+    this.scriptService.getRating("Joseph",this.current._id).subscribe({
+      next:(val)=>{
+        if(val !== null)
+          this.rate = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });
+  }
+
+  getAverageRating(): void{
+    this.scriptService.averageRating(this.current._id).subscribe({
+      next:(val)=>{
+        this.averageRating = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });   
+  }
+
+  getVoterCount(): void{
+    this.scriptService.countRating(this.current._id).subscribe({
+      next:(val)=>{
+        this.voterCount = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });      
+  }
+
+  rateScript(val:number): void{
+    this.scriptService.rate("Joseph",this.current._id,val).subscribe({
+      next:(val)=>{
+        this.getAverageRating();
+        this.getVoterCount();
+        this.rate = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }      
+    })
+  }
+
   formatDate(date:Date):string{
     let result = "";
-    
+
     const val = new Date(date);
 
     result = val.getDate() + " ";
@@ -59,9 +123,26 @@ export class ScriptDetailComponent implements OnInit {
     return result;
   }
 
-  play()
-  {
+  incrementCommentCounter(): void{
+    this.numberOfComments++;
+  }
+
+  play(){
     const id = this.current._id
     this.router.navigate(['scriptExecutor', {my_object: id}]);
+  }
+
+  countComments(): void{
+    this.commentService.countComments(this.current._id).subscribe({
+      next:(value)=>{
+        this.numberOfComments = value;
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    });
   }
 }

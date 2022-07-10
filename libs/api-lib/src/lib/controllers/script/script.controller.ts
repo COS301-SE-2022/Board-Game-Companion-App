@@ -7,26 +7,20 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { status } from '../../models/general/status';
+import { RatingService } from '../../services/ratings/rating.service';
+import { Rating } from '../../schemas/rating.schema';
 
-let id = uuidv4();
 
 @Controller('scripts')
 export class ApiScriptController {
-    constructor(private readonly scriptService:ScriptService){}
-    
-    //script functions
-    updateId():void{
-        id = uuidv4();
-    }
+    constructor(private readonly scriptService:ScriptService,private readonly ratingService:RatingService){}
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
-        const tempId = id;
-        this.updateId();
+    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
-        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon,tempId);
+        return this.scriptService.create(user,name,boardGameId,stat,description,icon);
     }
 
     @Get('retrieve/byid')
@@ -51,55 +45,29 @@ export class ApiScriptController {
 
     //rating functions
     
-    @Post('create-rating')
-    async createUserRating(@Body('user')user:number,@Body('script')scriptId:string,@Body('value')value:number){
-        console.log('createUserRating');
+    @Post('rate')
+    async createUserRating(@Body('user')user:string,@Body('script')script:string,@Body('value')value:number):Promise<Rating>{
+        return this.ratingService.rate(user,script,value);
     }
 
     @Get('retrieve-rating')
-    async retrieveUserRating(@Query('id')user:number): Promise<Script>{
-        return await this.scriptService.findById(user);
+    async retrieveUserRating(@Query('user')user:string,@Query('script')script:string): Promise<Rating>{
+        return this.ratingService.getRating(user,script);
     }
 
-    @Put('update-rating')
-    async updateUserRating(@Body('id')ratingId:string,@Body('value')value:number){
-        console.log('updateRating');
+    @Get('count-rating')
+    async countRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.countRating(script);
+    }
+
+    @Get('average-rating')
+    async averateRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.average(script);
     }
 
     //comment functions
-
-    @Post('create-comment')
-    async createComment(@Body('user')user:string,@Body('content')content:string){
-        console.log('createComment');
-    }
-
-    @Post('reply-to-comment')
-    async createReplyToComment(@Body('comment')commentId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createToComment');
-    }
-
-    @Post('reply-to-reply')
-    async createReplyToReply(@Body('comment')replyId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createReplyToReply');
-    }
-
-    @Get('retrieve-comments')
-    async retrieveComments(@Query('comments')comments:string[]){
-        console.log('retrieveComments');
-    }
-
-    @Put('update-comment-content')
-    async updateCommentContent(@Body('comment')commentId:string,@Body('content')content:string){
-        console.log('updateCommentContent');
-    }
-
-    @Put('update-comment-likes')
-    async updateCommentLikes(@Body('comment')commentId:string,@Body('likeCount')likeCount:number){
-        console.log('updateCommentLikes');
-    }
-
-    @Put('update-comment-dislikes')
-    async updateCommentDisLikes(@Body('comment')commentId:string,@Body('disLikeCount')DisLikeCount:number){
-        console.log('updateCommentDisLikes');
-    }
+    @Put('add-comment')
+    async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
+        this.scriptService.addComment(scriptId,commentId);
+    }   
 }

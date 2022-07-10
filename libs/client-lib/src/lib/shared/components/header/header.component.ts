@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/scripts']);
+      this.router.navigate(['/script-detail']);
     
   }
 

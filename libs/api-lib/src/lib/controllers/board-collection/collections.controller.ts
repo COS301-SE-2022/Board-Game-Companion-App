@@ -7,7 +7,7 @@ export class CollectionsController {
     
     constructor(private readonly collectionService:CollectionsService) {
         
-    }
+    } 
 
     @Get('get-collections')
     getCollectionsForUser(@Query('owner') owner:string):Promise<collection[]>{
