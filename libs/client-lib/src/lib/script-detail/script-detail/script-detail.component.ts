@@ -4,6 +4,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
+import { rating } from '../../shared/models/rating';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -17,6 +18,9 @@ export class ScriptDetailComponent implements OnInit {
   boardGameName = "";
   showComments = true;
   numberOfComments = 0;
+  rate:rating = {_id:"",user:"",script:"",value:0};
+  averageRating = 0;
+  voterCount = 0;
 
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
@@ -30,6 +34,9 @@ export class ScriptDetailComponent implements OnInit {
         this.current = value;
 		    this.getBoardGameName();
         this.countComments();
+        this.getRating();
+        this.getAverageRating();
+        this.getVoterCount();
       },
       error:(e)=>{
         console.log(e)
@@ -54,6 +61,53 @@ export class ScriptDetailComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  getRating(): void{
+    this.scriptService.getRating("Joseph",this.current._id).subscribe({
+      next:(val)=>{
+        if(val !== null)
+          this.rate = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });
+  }
+
+  getAverageRating(): void{
+    this.scriptService.averageRating(this.current._id).subscribe({
+      next:(val)=>{
+        this.averageRating = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });   
+  }
+
+  getVoterCount(): void{
+    this.scriptService.countRating(this.current._id).subscribe({
+      next:(val)=>{
+        this.voterCount = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });      
+  }
+
+  rateScript(val:number): void{
+    this.scriptService.rate("Joseph",this.current._id,val).subscribe({
+      next:(val)=>{
+        this.getAverageRating();
+        this.getVoterCount();
+        this.rate = val;
+      },
+      error:(err)=>{
+        console.log(err);
+      }      
+    })
   }
 
   formatDate(date:Date):string{

@@ -38,9 +38,22 @@
   
   <div class = "script-detail__column-1 w-1/4 p-4">
     
-    <div class = "script-cover p-2 mb-4 bg-gray-800">
+    <div class = "script-cover p-2 mb-4 bg-gray-800 relative">
       <div class = "script-cover-header p-1 mb-2"><b>Cover</b></div>
       <img [src]="current.icon" class = "w-full" style="height:16rem">
+
+      <div *ngIf = "voterCount !== 0" class = "absolute right-0 left-0 bottom-0 h-20" style = "background-color:rgba(0,0,0,0.5)">
+        <ul class="w-full h-10 p-2 space-x-1 text-center">
+          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 1,'text-white':averageRating < 1}"></i>
+          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 2,'text-white':averageRating < 2}"></i>
+          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 3,'text-white':averageRating < 3}"></i>
+          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 4,'text-white':averageRating < 4}"></i>
+          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 5,'text-white':averageRating < 5}"></i>
+        </ul>  
+        <div class = "w-full h-10 text-xs text-center text-white">
+          {{voterCount}} user{{voterCount === 1 ? "":"s"}}
+        </div>      
+      </div>
     </div>
     
     <div class = "script-download p-2 mb-4 bg-gray-800 text-center">
@@ -55,13 +68,13 @@
     <div class = "script-rate p-2 bg-gray-800 text-center">
       <div class = "script-rate-header p-1 mb-4 text-left"><b>Rate</b></div>
 
-      <ul class="w-full h-10 p-2 space-x-1">
-        <i class="fas fa-star fa-2xl text-orange-500"></i>
-        <i class="fas fa-star fa-2xl text-orange-300"></i>
-        <i class="fas fa-star fa-2xl text-white"></i>
-        <i class="fas fa-star fa-2xl text-white"></i>
-        <i class="fas fa-star fa-2xl text-white"></i>
-    </ul>
+      <ul class="w-full h-10 p-2 mb-2 space-x-1">
+        <i (click)="rateScript(1)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=1,'text-white':rate.value < 1}"></i>
+        <i (click)="rateScript(2)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=2,'text-white':rate.value < 2}"></i>
+        <i (click)="rateScript(3)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=3,'text-white':rate.value < 3}"></i>
+        <i (click)="rateScript(4)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=4,'text-white':rate.value < 4}"></i>
+        <i (click)="rateScript(5)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=5,'text-white':rate.value < 5}"></i>
+      </ul>
     </div>
   </div>
 </div>

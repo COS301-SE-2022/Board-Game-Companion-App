@@ -131,8 +131,8 @@ export class CommentComponent implements OnInit {
       if(temp !== 0){
         result = temp.toString() + " month" + (temp == 1 ? "" :"s") + " ago";
       }else{
-        temp = today.getDay() - current.getDay();
-        
+        temp = today.getDate() - current.getDate();
+
         if(temp !== 0){
           result = temp.toString() + " day" + (temp == 1 ? "" :"s") + " ago";
         }else{

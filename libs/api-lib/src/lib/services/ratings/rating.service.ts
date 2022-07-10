@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Rating, RatingDocument } from '../../schemas/rating.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class RatingService {
@@ -10,6 +11,9 @@ export class RatingService {
 
     async rate(user:string,script:string,value:number):Promise<Rating>{
         let result:RatingDocument = await this.ratingModel.findOne({user:user,script:script});
+
+        value = Math.min(5,value);
+        value = Math.max(0,value);
 
         if(result === null){
             const createLike = new this.ratingModel({
@@ -32,12 +36,16 @@ export class RatingService {
     }
 
     async average(script:string):Promise<number>{
-        const temp:any = this.ratingModel.aggregate().match({script:script}).group({_id:"$script",average:{$avg : '$value'}}).exec();
-        console.log(temp);
-        return 0;
+        const id:mongoose.Types.ObjectId = new mongoose.Types.ObjectId(script);
+
+        const temp:any = await this.ratingModel.aggregate([{$match:{script:id}},{$group: {_id: '$script',sum: { $sum: "$value"}}}]);
+        const count: number = await this.countRating(script);
+
+        return Math.floor(temp[0].sum / count);
     }
 
     async countRating(script:string):Promise<number>{
-        return this.ratingModel.countDocuments({script:script});
+        const id:mongoose.Types.ObjectId = new mongoose.Types.ObjectId(script);
+        return this.ratingModel.countDocuments({script:id});
     }
 }
