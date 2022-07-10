@@ -51,7 +51,7 @@ export class ApiScriptController {
     }
 
     @Get('retrieve-rating')
-    async retrieveUserRating(@Query('id')user:string,@Query('script')script:string): Promise<Rating>{
+    async retrieveUserRating(@Query('user')user:string,@Query('script')script:string): Promise<Rating>{
         return this.ratingService.getRating(user,script);
     }
 
