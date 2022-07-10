@@ -18,6 +18,10 @@
     color: $Pcolour-3;
 }
 
+.script-detail__column-1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .script-field-name{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color:whitesmoke;
@@ -38,6 +42,12 @@
     color:whitesmoke;    
 }
 
-.script-comment-counter:hover{
-    color: $Pcolour-3;
+.script-cover-header,.script-download-header,.script-rate-header{
+    background-color: $Pcolour-3;
+    color: whitesmoke;
 }
+
+.script-cover,.script-download,.script-rate{
+    border: 2px solid $Pcolour-2;
+}
+

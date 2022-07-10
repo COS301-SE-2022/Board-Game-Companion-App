@@ -17,8 +17,6 @@ export class CommentService {
             image: image,
             created: new Date(),
             script:script,
-            likes: 0,
-            dislikes: 0,
             content: content,
             replies: []
         }
@@ -70,6 +68,14 @@ export class CommentService {
         }
 
         return value;
+    }
+
+    async getLike(comment:string,user:string):Promise<Like>{
+        return this.likeModel.findOne({comment:comment,user:user});
+    }
+
+    async removeLike(id:string):Promise<void>{
+        this.likeModel.findByIdAndDelete(id);
     }
 
     async countLikes(comment:string):Promise<likeCount>{

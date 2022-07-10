@@ -15,7 +15,7 @@ export class ScriptDetailComponent implements OnInit {
   current: script = empty;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
-  showComments = false;
+  showComments = true;
   numberOfComments = 0;
 
   constructor(private readonly scriptService:ScriptService,

@@ -3,8 +3,6 @@ export interface commentDto{
     image: string;
     created: Date;
     script: string;
-    likes: number;
-    dislikes: number;
     content: string;
     replies: string[];     
 };

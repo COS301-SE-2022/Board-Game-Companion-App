@@ -1,4 +1,4 @@
-<div class = "script-detail__wrapper w-full h-full p-4 flex flex-row" style="border:1px solid black">
+<div class = "script-detail__wrapper w-full h-full px-20 py-4 flex flex-row" style="border:1px solid black">
   <div class = "script-detail__column-0 w-3/4 p-4">
     <div class = "script-information p-2 bg-gray-800">
       <h1 class = "script-title text-xl"><b>{{current.name}}</b></h1>
@@ -31,11 +31,37 @@
     </div>
 
     <div class = "script-comments p-2 bg-gray-800 mt-4">
-      <p (click) = "toggleComments()" class = "script-comment-counter text-md">{{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
+      <p (click) = "toggleComments()" class = "script-comment-counter text-md cursor-pointer hover:underline hover:underline-offset-2">{{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
       <board-game-companion-app-comment-section *ngIf = "showComments" (incrementCommentCounter) = "incrementCommentCounter()" [currentScript]="current" ></board-game-companion-app-comment-section>
     </div>
   </div>
-  <div class = "script-detail__column-1 w-1/4">
+  
+  <div class = "script-detail__column-1 w-1/4 p-4">
+    
+    <div class = "script-cover p-2 mb-4 bg-gray-800">
+      <div class = "script-cover-header p-1 mb-2"><b>Cover</b></div>
+      <img [src]="current.icon" class = "w-full" style="height:16rem">
+    </div>
+    
+    <div class = "script-download p-2 mb-4 bg-gray-800 text-center">
+      <div class = "script-download-header p-1 mb-2 j text-left"><b>Download</b></div>
+      <button type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+        <i class="fas fa-download text-white fa-3x"></i>
+        <p class = "text-lg"><b>DOWNLOAD</b></p>
+      </button>
+    </div>
 
+
+    <div class = "script-rate p-2 bg-gray-800 text-center">
+      <div class = "script-rate-header p-1 mb-4 text-left"><b>Rate</b></div>
+
+      <ul class="w-full h-10 p-2 space-x-1">
+        <i class="fas fa-star fa-2xl text-orange-500"></i>
+        <i class="fas fa-star fa-2xl text-orange-300"></i>
+        <i class="fas fa-star fa-2xl text-white"></i>
+        <i class="fas fa-star fa-2xl text-white"></i>
+        <i class="fas fa-star fa-2xl text-white"></i>
+    </ul>
+    </div>
   </div>
 </div>

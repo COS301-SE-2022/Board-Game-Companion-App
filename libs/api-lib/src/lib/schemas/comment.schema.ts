@@ -18,12 +18,6 @@ export class Comment{
     script: string;
 
     @Prop({required:true})
-    likes: number;
-
-    @Prop({required:true})
-    dislikes: number;
-
-    @Prop({required:true})
     content: string;
 
     @Prop({type: [{type:mongoose.Schema.Types.ObjectId,ref:'Comment'}]})

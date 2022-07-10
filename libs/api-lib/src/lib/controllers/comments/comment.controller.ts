@@ -40,4 +40,14 @@ export class ApiCommentController {
     async countLikes(@Query('comment')comment:string):Promise<likeCount>{
         return this.commentService.countLikes(comment);
     }
+
+    @Get('retrieve-like')
+    async getLike(@Query('comment')comment:string,@Query('user')user:string):Promise<Like>{
+        return this.commentService.getLike(comment,user);
+    }
+
+    @Delete('remove-like')
+    async removeLike(@Query('id')id:string){
+        await this.commentService.removeLike(id);
+    }
 }

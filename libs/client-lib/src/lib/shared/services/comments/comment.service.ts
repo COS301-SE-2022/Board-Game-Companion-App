@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { comment } from '../../models/comment';
+import { like } from '../../models/like';
+import { likeCount } from '../../models/likeCount';
 
 
 @Injectable()
@@ -38,5 +40,31 @@ export class CommentService {
 
   addReply(commentId:string,replyId:string): void{
     this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId}).subscribe();
+  }
+
+  like(comment:string,user:string,like:boolean): Observable<like>{
+    return this.httpClient.post<like>(this.api + "comments/like",{comment:comment,user:user,like:like});
+  }
+
+  countlikes(comment:string):Observable<likeCount>{
+    let param = new HttpParams();
+    param = param.set("comment",comment);
+
+    return this.httpClient.get<likeCount>(this.api + "comments/count-likes",{params:param});
+  }
+
+  getLike(comment:string,user:string):Observable<like>{
+    let param = new HttpParams();
+    param = param.set("comment",comment);
+    param = param.set("user",user);    
+
+    return this.httpClient.get<like>(this.api + "comments/retrieve-like");
+  }
+
+  removeLike(id:string){
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.delete(this.api + "comments/remove-like",{params:param}).subscribe();
   }
 }
