@@ -3,7 +3,6 @@ import * as ace from "ace-builds";
 import { String } from 'aws-sdk/clients/apigateway';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
-
 interface file{
   name:string;
   location:string;
@@ -133,6 +132,5 @@ export class EditorBodyComponent implements OnInit{
       })
     },3000);
   }
-
 
 }
