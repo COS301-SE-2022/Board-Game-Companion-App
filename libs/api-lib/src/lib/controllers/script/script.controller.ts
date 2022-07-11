@@ -9,11 +9,14 @@ import path = require('path');
 import { status } from '../../models/general/status';
 import { RatingService } from '../../services/ratings/rating.service';
 import { Rating } from '../../schemas/rating.schema';
-
+import { CompilerService } from '../../services/compiler/compiler.service';
+import * as chevrotain from 'chevrotain';
 
 @Controller('scripts')
 export class ApiScriptController {
-    constructor(private readonly scriptService:ScriptService,private readonly ratingService:RatingService){}
+    constructor(private readonly scriptService:ScriptService,
+        private readonly ratingService:RatingService,
+        private readonly compiler:CompilerService){}
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
@@ -74,5 +77,10 @@ export class ApiScriptController {
     @Put("update-file")
     async updateFile(@Body('id')id:string,@Body('name')name:string,@Body('content')content:string):Promise<any>{
         return {message: await this.scriptService.updateFile(id,name,content)};
+    }
+
+    @Post('compile')
+    compile(@Body('input')input:string):chevrotain.ILexingResult{
+        return this.compiler.scan(input);
     }
 }
