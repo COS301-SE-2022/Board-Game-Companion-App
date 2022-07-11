@@ -46,11 +46,7 @@ export class EditorComponent implements OnInit{
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.updateDimensions();
-<<<<<<< HEAD
-    this.scriptService.getScriptById("62cb40735524bf033e649a02").subscribe({
-=======
     this.scriptService.getScriptById(this.scriptID).subscribe({
->>>>>>> 12996bc501c742720817154bab3b0e20287b38b1
       next:(value)=>{
         this.currentScript = value;
       },
