@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as ace from "ace-builds";
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
-
 interface file{
   name:string;
   location:string;
@@ -91,6 +90,5 @@ export class EditorBodyComponent implements OnInit{
 
     return result;
   }
-
 
 }

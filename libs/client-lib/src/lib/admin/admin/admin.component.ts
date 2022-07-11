@@ -21,14 +21,19 @@ export class AdminComponent implements OnInit {
   public Active = 0; // Total number of current running scripts.
 
   public page = 1;
-
+  public search = "";
   public scripts : any;
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
   
   onEdit(filename: string, id: string): void{
     console.log("this works okay");
-    this.router.navigate(['editor'],{state: {id, filename}});
+    this.router.navigate(['editor',{id, filename}]);
+  }
+  
+  onComment(filename:string, id: string): void {
+    console.log(" Comment on script: "+id);
+    this.router.navigate(['script-detail',{id, filename}]);
   }
 
   ngOnInit(): void {
@@ -124,6 +129,19 @@ export class AdminComponent implements OnInit {
     this.adminService.getScripts().subscribe(data=>{
       
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
+
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
+      this.ngOnInit();
+    });
+  }
+
+  onSearch(): void{
+    this.adminService.getScripts().subscribe(data=>{
+      this.scripts = data.filter( (res: {name: string;}) => res.name === this.search);
+
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
 

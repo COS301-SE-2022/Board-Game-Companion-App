@@ -1,8 +1,9 @@
-import { Component, OnInit, HostListener, ViewChild  } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { ActivatedRoute } from '@angular/router';
 interface message{
   message: string;
   class: string;
@@ -25,20 +26,25 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
+  scriptID = "62cb40735524bf033e649a02";
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   currentScript:script = empty;
 
-  constructor(private readonly scriptService:ScriptService){
+  constructor(private readonly scriptService:ScriptService, private route: ActivatedRoute){
 
   }
 
   ngOnInit(): void {
     console.log("editor");
+    if(this.route.snapshot.paramMap.get("id")!==null){
+      this.scriptID = this.route.snapshot.paramMap.get("id")||"";
+    }
+
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.updateDimensions();
-    this.scriptService.getScriptById("62c19fffe801724a44a90106").subscribe({
+    this.scriptService.getScriptById(this.scriptID).subscribe({
       next:(value)=>{
         this.currentScript = value;
       },
