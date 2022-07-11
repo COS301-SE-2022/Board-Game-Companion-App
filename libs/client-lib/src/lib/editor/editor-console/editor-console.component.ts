@@ -74,6 +74,9 @@ export class EditorConsoleComponent implements OnInit{
         },
         print: function(message:string){
           editorConsole.print(message);      
+        },
+        clear: function(){
+          editorConsole.clear();
         }
       }
     })(window.console,this);

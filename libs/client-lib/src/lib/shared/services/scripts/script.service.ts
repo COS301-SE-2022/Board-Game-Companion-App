@@ -1,6 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { script } from '../../models/script';
 import { rating } from '../../models/rating';
 
@@ -59,7 +59,11 @@ export class ScriptService {
   }
 
   getFileData(file:string):Observable<any>{
-    return this.httpClient.get(file);
+    return this.httpClient.get(file,{responseType:'text'});
+  }
+
+  updateFile(id:string,name:string,content:string):Observable<{message:string}>{
+    return this.httpClient.put<{message:string}>(this.api + "scripts/update-file",{id:id,name:name,content:content});
   }
 
   rate(user:string,script:string,value:number):Observable<rating>{

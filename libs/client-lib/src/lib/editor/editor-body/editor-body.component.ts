@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as ace from "ace-builds";
+import { String } from 'aws-sdk/clients/apigateway';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
 
@@ -18,13 +19,16 @@ export class EditorBodyComponent implements OnInit{
   @Input() width = 0;
   @Input() margin = 0;
   @Input() top = 0;
+  @Output() changesTracker = new EventEmitter<number>();
   codeEditor:any;
   themeEditor = "Dracula";
   @Input()openFiles:file[] = [];
-  focusFile = 0;
+  @Input()scriptId = "";
+  focusFile = "";
+  sendChangesTimer = 0;
 
   constructor(private readonly scriptService:ScriptService){
-
+    
   }
 
   ngOnInit(): void {
@@ -34,7 +38,14 @@ export class EditorBodyComponent implements OnInit{
       this.themeEditor = theme;
 
     this.createEditor();
-    //this.loadFocusFile();
+    
+    this.codeEditor.session.on('change', (delta:any)=>{
+      //console.log(delta);
+      if(this.focusFile !== ""){
+        this.changesTracker.emit(1);
+        this.sendChanges(this.focusFile);
+      }
+    });
   }
 
   createEditor():void{
@@ -52,11 +63,10 @@ export class EditorBodyComponent implements OnInit{
 
   loadFocusFile(name:string): void{
     if(this.openFiles.length > 0){
-
-
-      this.scriptService.getFileData(this.openFiles[this.focusFile].location).subscribe({
+      this.focusFile = name;
+      this.scriptService.getFileData(this.openFiles[this.focusFile  === "main.js" ? 0 : 1].location).subscribe({
         next:(value)=>{
-          console.log(value);
+          this.codeEditor.session.setValue(value,-1);
         },
         error:(e)=>{
           console.log(e)
@@ -78,18 +88,50 @@ export class EditorBodyComponent implements OnInit{
     for(let count = 0; count < this.openFiles.length; count++){
       if(this.openFiles[count].location != val.location)
         temp.push(this.openFiles[count]);
+      else{
+        if(this.focusFile == val.name){
+          let newFocusIndex = count;
+
+          if(count + 1 >= this.openFiles.length){
+            if(count - 1 >= 0)
+              newFocusIndex--;
+            else
+              continue;
+          }else
+            newFocusIndex++;
+
+          this.loadFocusFile(this.openFiles[newFocusIndex].name);
+        }
+      }
     }
     
     this.openFiles = temp;
   }
 
   getCode(): string{
-    let result = "";
+    return this.codeEditor.getValue();
+  }
 
-    for(let count = 0; count < this.codeEditor.length; count++)
-      result += this.codeEditor[count].content.getValue();
-
-    return result;
+  sendChanges(name:string): void{
+    clearTimeout(this.sendChangesTimer);
+    this.sendChangesTimer = window.setTimeout(()=>{
+      this.scriptService.updateFile(this.scriptId,name,this.codeEditor.getValue()).subscribe({
+        next:(value)=>{
+          console.log(value)
+          if(value.message === "success")
+            this.changesTracker.emit(2);
+          else
+            this.changesTracker.emit(0);
+        },
+        error:(e)=>{
+          console.log(e);
+          this.changesTracker.emit(0);
+        },
+        complete:()=>{
+          console.log("complete")
+        }
+      })
+    },3000);
   }
 
 
