@@ -1,7 +1,7 @@
 <div class="container py-2">
     <h3 class="display-4 text-center">ADMIN PAGE</h3>
 </div>
-<!-- General Information -->
+<!-- Information -->
 <div class="container-fluid px-5 pt-12">
     <div class="row g-4 justify-content-center">
         <div class="col-xl-2 col-md-6 mb-4 g-2">
@@ -89,10 +89,12 @@
         </div>
     </div>
 </div>
-
-<!-- Side bar for most downloads and a table -->
-
+<!-- a table and search functionality -->
 <div class="container">
+    <div class="input-group">
+        <input [(ngModel)] = "search" name = "search" type="search" class="form-control rounded" placeholder="Search by name..." aria-label="Search" aria-describedby="search-addon" />
+        <button (click)="onSearch()" type="button" class="btn btn-outline-success">search</button>
+      </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover" data-toggle="table">
@@ -140,9 +142,9 @@
                             <button (click)="onEdit(script.files[0].name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
                                 <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
                             </button>
-                            <a href="#" class="btn btn-primary mx-2" data-toggle="modal">
+                            <button (click)="onComment(script.files[0].name,script._id)" class="btn btn-primary mx-2" data-toggle="modal">
                                 <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

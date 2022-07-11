@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { rating } from '../../shared/models/rating';
 
@@ -25,10 +25,16 @@ export class ScriptDetailComponent implements OnInit {
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
     private readonly commentService:CommentService,
-    private readonly router:Router) {
+    private readonly router:Router,
+    private route: ActivatedRoute) {
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+
+    if(this.route.snapshot.paramMap.get("id")!==null){
+      this._id = this.route.snapshot.paramMap.get("id")||"";
+    }
+    
     this.scriptService.getScriptById(this._id).subscribe({
       next:(value)=>{
         this.current = value;
