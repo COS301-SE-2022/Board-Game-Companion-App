@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
+import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ActivatedRoute } from '@angular/router';
@@ -18,7 +19,7 @@ export class EditorComponent implements OnInit{
   toolBarHeight = 35;
   sideBarWidth = 180;
   sideBarHeight = 0;
-  statusBarHeight = 20;
+  statusBarHeight = 25;
   screenWidth = 0;
   screenHeight = 0;
   consoleWidth = 0;
@@ -29,6 +30,7 @@ export class EditorComponent implements OnInit{
   scriptID = "62cb40735524bf033e649a02";
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
+  @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
   currentScript:script = empty;
 
   constructor(private readonly scriptService:ScriptService, private route: ActivatedRoute){
@@ -88,6 +90,7 @@ export class EditorComponent implements OnInit{
     this.editorConsole.open();
     try{
       const console = this.editorConsole.defineConsole();
+      this.editorConsole.clear();
 
       const code = new Function("console",this.editorCode.getCode());
       code(console);
@@ -99,6 +102,10 @@ export class EditorComponent implements OnInit{
   toggleSideBar(): void{
     this.sideBarWidth =  this.sideBarWidth == 20 ? 100 : 20;
     this.updateDimensions();    
+  }
+
+  changesTracker(value:number): void{
+    this.editorStatusBar.updateStatusOfChanges(value);
   }
 
 }

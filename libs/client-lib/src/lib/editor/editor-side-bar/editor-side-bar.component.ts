@@ -12,7 +12,7 @@ export class EditorSideBarComponent implements OnInit{
   
   ngOnInit(): void {
     console.log("editor");
-    //const codeEditor = ace.edit("codeEditor");    
+   
   }
 
 }
