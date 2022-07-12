@@ -11,9 +11,11 @@ export class CompilerService {
     defineAllTokenTypes(): chevrotain.TokenType[]{
         const result:chevrotain.TokenType[] = []
 
+        //user defined identifier
+        const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
         // class and function declaration
-        result.push(chevrotain.createToken({name:"Class",pattern:/class/}));
-        result.push(chevrotain.createToken({name:"Class",pattern:/func/}));
+        result.push(chevrotain.createToken({name:"Class",pattern:/class/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Function",pattern:/func/,longer_alt:tUserDefinedIdentifier}));
         
         //punctuation
         result.push(chevrotain.createToken({name:"Comma",pattern:/,/}));
@@ -26,82 +28,83 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
         result.push(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
 
-        //arithmetic operators
-        result.push(chevrotain.createToken({name:"Plus",pattern:/\+/}));
-        result.push(chevrotain.createToken({name:"Minus",pattern:/-/ }));
-        result.push(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
-        result.push(chevrotain.createToken({name:"Divide",pattern:/\\/}));
-        result.push(chevrotain.createToken({name:"Mod",pattern:/mod/}));
-
-        //logical operators
-        result.push(chevrotain.createToken({name:"And",pattern:/and/}));
-        result.push(chevrotain.createToken({name:"Or",pattern:/or/ }));
-        result.push(chevrotain.createToken({name:"Not",pattern:/not/}));
-
-        //relation operators
-        result.push(chevrotain.createToken({name:"GreaterThan",pattern:/>/}));
-        result.push(chevrotain.createToken({name:"LessThan",pattern:/</ }));
-        result.push(chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/}));
-        result.push(chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/}));
-        result.push(chevrotain.createToken({name:"Equal",pattern:/==/}));
+        //relational operators
+        const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
+        const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
+        const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+        result.push(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
+        result.push(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
 
         //Assignment operators
-        result.push(chevrotain.createToken({name:"Assign",pattern:/=/}));
-        result.push(chevrotain.createToken({name:"PlusAssign",pattern:/\+=/ }));
-        result.push(chevrotain.createToken({name:"MinusAssign",pattern:/-=/}));
-        result.push(chevrotain.createToken({name:"DivideAssign",pattern:/\\=/}));
-        result.push(chevrotain.createToken({name:"MultiplyAssign",pattern:/\*=/ }));
+        result.push(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
+        const tPlusAssign = chevrotain.createToken({name:"PlusAssign",pattern:/\+=/ });
+        const tMinusAssign = chevrotain.createToken({name:"MinusAssign",pattern:/-=/});
+        const tDivideAssign = chevrotain.createToken({name:"DivideAssign",pattern:/\\=/});
+        const tMultiplyAssign = chevrotain.createToken({name:"MultiplyAssign",pattern:/\*=/ });
 
         //increment
-        result.push(chevrotain.createToken({name:"Increment",pattern:/\+\+/}));
+        const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
 
         //decrement
-        result.push(chevrotain.createToken({name:"Decrement",pattern:/--/ }));
+        const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+        
+        //arithmetic operators
+        result.push(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:[tIncrement,tPlusAssign]}));
+        result.push(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:[tDecrement,tMinusAssign]}));
+        result.push(chevrotain.createToken({name:"Multiply",pattern:/\*/,longer_alt:tMultiplyAssign}));
+        result.push(chevrotain.createToken({name:"Divide",pattern:/\\/,longer_alt:tDivideAssign}));
+        result.push(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
+
+        //logical operators
+        result.push(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
+
 
         //datatypes
-        result.push(chevrotain.createToken({name:"Boolean",pattern:/boolean/}));
-        result.push(chevrotain.createToken({name:"Integer",pattern:/integer/ }));
-        result.push(chevrotain.createToken({name:"Float",pattern:/float/}));
-        result.push(chevrotain.createToken({name:"String",pattern:/string/}));
-        result.push(chevrotain.createToken({name:"String",pattern:/void/}));
+        result.push(chevrotain.createToken({name:"Boolean",pattern:/boolean/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Integer",pattern:/integer/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Float",pattern:/float/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"String",pattern:/string/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"String",pattern:/void/,longer_alt:tUserDefinedIdentifier}));
 
         //literals
-        result.push(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/}));
-        result.push(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
-        result.push(chevrotain.createToken({name:"FloatLiteral",pattern:/[+-]?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)$/}));
-        result.push(chevrotain.createToken({name:"False",pattern:/false/}));
-        result.push(chevrotain.createToken({name:"True",pattern:/true/}));
+        const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
         
-        //user defined identifier
-        result.push(chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/}));
+
+        result.push(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
+        result.push(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+        result.push(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+        
         
         //input output
-        result.push(chevrotain.createToken({name:"Input",pattern:/input/}));
-        result.push(chevrotain.createToken({name:"Output",pattern:/output/}));
-        result.push(chevrotain.createToken({name:"Read",pattern:/read/}));
+        result.push(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Output",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
 
         //loops
-        result.push(chevrotain.createToken({name:"While",pattern:/while/}));
-        result.push(chevrotain.createToken({name:"For",pattern:/for/}));
-        result.push(chevrotain.createToken({name:"do",pattern:/do/}));
+        result.push(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:tUserDefinedIdentifier}));
 
         //branch
-        result.push(chevrotain.createToken({name:"If",pattern:/if/}));
-        result.push(chevrotain.createToken({name:"Else",pattern:/else/}));
+        result.push(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:tUserDefinedIdentifier}));
 
         //flow control
-        result.push(chevrotain.createToken({name:"Break",pattern:/break/}));
-        result.push(chevrotain.createToken({name:"Continue",pattern:/continue/}));
+        result.push(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:tUserDefinedIdentifier}));
 
         //presets
-        result.push(chevrotain.createToken({name:"Minmax",pattern:/minmax/}));
+        result.push(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
         result.push(chevrotain.createToken({name:"CreateDecisionTreeModel",pattern:/decision_tree.createModel/}));
         result.push(chevrotain.createToken({name:"NeuralNetworkOptions",pattern:/neural_network.options/}));
         result.push(chevrotain.createToken({name:"NeuralNetworkTrainingData",pattern:/neural_network.training_data/}));
         result.push(chevrotain.createToken({name:"NeuralNetworkNormilize",pattern:/neural_network.normilize/}));
 
         //instantiate
-        result.push(chevrotain.createToken({name:"New",pattern:/new/}));
+        result.push(chevrotain.createToken({name:"New",pattern:/new/,longer_alt:tUserDefinedIdentifier}));
 
         //whitespace
         result.push(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
@@ -109,6 +112,19 @@ export class CompilerService {
         //comments
         result.push(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
         
+        
+        result.push(tUserDefinedIdentifier);
+        result.push(tGreaterThanOrEqual);
+        result.push(tLessThanOrEqual);
+        result.push(tEqual);
+        result.push(tPlusAssign);
+        result.push(tMinusAssign);
+        result.push(tDivideAssign);
+        result.push(tMultiplyAssign);
+        result.push(tIncrement);
+        result.push(tDecrement);
+        result.push(tFloatLiteral);
+
         return result;
     }
 
