@@ -72,7 +72,7 @@ export class ApiScriptController {
     @Put('add-comment')
     async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
         this.scriptService.addComment(scriptId,commentId);
-    }   
+    }    
 
     @Put("update-file")
     async updateFile(@Body('id')id:string,@Body('name')name:string,@Body('content')content:string):Promise<any>{
