@@ -102,7 +102,7 @@ export class ScriptExecutorComponent implements OnInit {
         next:async(value)=>{
           
           
-          let path = value.files[0].path.replace(".module.ts","");
+          let path = value.files[0].location.replace(".module.ts","");
           path = path.replace("libs/uploads/src/lib/scripts/files/","")
 
           import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
