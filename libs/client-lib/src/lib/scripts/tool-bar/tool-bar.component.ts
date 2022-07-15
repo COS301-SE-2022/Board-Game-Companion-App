@@ -1,8 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { script ,empty} from '../../shared/models/script';
 import { Router } from '@angular/router';
-import { GoogleAuthService, userDetails} from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
-
+import { GoogleAuthService, userDetails} from '../../google-login/GoogleAuth/google-auth.service';
 @Component({
   selector: 'board-game-companion-app-tool-bar',
   templateUrl: './tool-bar.component.html',
