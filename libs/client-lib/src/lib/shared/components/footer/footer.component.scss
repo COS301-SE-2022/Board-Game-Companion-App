@@ -6,13 +6,24 @@ footer{
     color: $Pcolour-3;
     position: absolute;
     width: 100%;
-    height: 3em;
+    height: 64px;
     bottom: 0;
     display:flex;
-    font-size: 1.5em;
-    font-style: italic;
-    font-weight: bold;
+    font-size: 16px;
     justify-content:center;
     align-items:center;
     margin-top: 5em;
 }
+
+#left{
+    font-weight: none;
+    border-right: solid 1px $Pcolour-3;
+    padding-right: 16px;
+}
+
+#right{
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 16px;
+}
+

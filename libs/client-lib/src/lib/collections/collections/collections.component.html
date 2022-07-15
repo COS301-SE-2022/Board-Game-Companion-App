@@ -1,11 +1,24 @@
-<div class = "grid grid-cols-3" id="CollectionsList">
-    <div *ngFor="let collection of collections" class="collectionDiv">
-        <div id ="title">
-            {{collection.name}}
+<div id="CollectionsList">
+    <h1 class = "font-bold">Collections</h1>
+    <input>
+    <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
+    <select id="sorting" class="btn px-2 py-1 font-bold">
+        <option selected>Alphabetical</option>
+        <option value="amount">Amount</option>
+    </select>
+    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+    <div id = "CollectionsContent">
+        <div *ngFor="let collection of collections" class="collectionDiv">
+            <span id ="title">
+                {{collection.name}}
+            </span>
+            <span *ngFor="let url of collection.imgUrls" class="imgSpan">
+                <button (click) = "viewCollection(collection.name)"><img [src] =  'url'></button>
+            </span>
+            <div id = "actions">
+                <button (click) = "viewCollection(collection.name)" id = "explore" class = "btn px-4 py-2">Explore</button>
+                <button (click) = "deletion(collection.name)" id = "remove" class = "btn px-4 py-2"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
         </div>
-        <span *ngFor="let url of collection.imgUrls" class="imgSpan">
-            <button (click) = "viewCollection(collection.name)"><img [src] =  'url' width="120" height="120"></button>
-        </span>
-        <button (click) = "deletion(collection.name)" id = "remove">Remove Collection</button>
     </div>
 </div>
