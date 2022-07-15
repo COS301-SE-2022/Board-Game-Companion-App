@@ -289,13 +289,6 @@
     glob "8.0.3"
     yargs "^17.2.1"
 
-"@angular/material@^13.3.7":
-  version "13.3.7"
-  resolved "https://registry.npmjs.org/@angular/material/-/material-13.3.7.tgz"
-  integrity sha512-CXdLvohaxl3Nii6I70pEJX2FZRRkBPNiocUNP39hFHXf2PW/eNYCN8TS5DG2uOAaR2wyPwrXrU95mDjgvlqXqQ==
-  dependencies:
-    tslib "^2.3.0"
-
 "@angular/platform-browser-dynamic@~13.3.0":
   version "13.3.6"
   resolved "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.3.6.tgz"
