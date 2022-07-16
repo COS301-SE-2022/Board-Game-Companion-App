@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<head> 
+
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <title>LogIn Page</title>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600&family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600&family=Roboto:wght@500&display=swap"
+        rel="stylesheet">
     <script src="https://kit.fontawesome.com/8c29b68138.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <div class="container">
+    <!-- <div class="container">
         <form id="signin">
             <div class="form__header">
-            <img src="assets/images/logo.png" alt="logo"><h1 class="form__title">Login</h1>
+                <img src="assets/images/logo.png" alt="logo">
+                <h1 class="form__title">Login</h1>
             </div>
             <br>
 
-            <div class ="form__message form__message--error"></div>        
-            <label class="form__label" for="stdUser">Sign In With Gmail:</label>
+            <div class="form__message form__message--error"></div>
+            <div class="btn-center">
+                <label class="form__label" for="stdUser">Sign In With Gmail:</label>
+                <br>
+                <br>
+                <br>
+                <button (click)="signUserIn();" id="standard" mat-raised-button class="form__button"> <i
+                        class="fa-solid fa-user"></i> Sign In With Google</button>
+            </div>
             <br>
-            <button (click)="signUserIn();" id="standard" mat-raised-button class="form__button"> <i class="fa-solid fa-user"></i> Sign In With Google</button>
-            <br>
+
         </form>
+    </div> -->
+    <div class="flex flex-col center bg-white p-10 rounded-xl">
+        <div class="flex flex-col mb-12 sm:flex-row align-middle justify-align-middle items-center">
+            <img class="flex-0" src="assets/images/logo.png" alt="" />
+            <h1 class="text-green-700 text-4xl font-bold sm:ml-2">Login</h1>
+        </div>
+        <button (click)="signUserIn()" id="standard" type="button" class="bg-green-700 text-white px-4 py-2 rounded-lg"> <i
+            class="fa-solid fa-user mr-2"></i> Sign in with Google</button>
     </div>
 
     <!-- <script src="./src/signin.js"></script> -->

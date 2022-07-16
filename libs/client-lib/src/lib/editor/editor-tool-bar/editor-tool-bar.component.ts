@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import * as ace from "ace-builds";
 
 @Component({
@@ -7,11 +8,16 @@ import * as ace from "ace-builds";
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 export class EditorToolBarComponent implements OnInit{
+  constructor(private readonly router: Router) {
+
+  }
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
   @Output() themeEvent = new EventEmitter();
   themes:string[] = ["Ambiance","Chaos","Clouds_Midnight","Chrome","Clouds","Cobalt","Crimson_Editor","Dawn","Dracula","Dreamweaver","Eclipse","GitHub","GOB","Gruvbox","idle_Fingers","IPlastic","KatzenMilch","kr_Theme","Kuroir","Merbivore","Merbivore_Soft","Mono_Industrial","Monokai","Nord_Dark","One_Dark","Pastel_on_dark","Solarized_Dark","Solarized_Light","SQLServer","Terminal","TextMate","Tomorrow","Tomorrow_Night","Tomorrow_Night_Blue","Tomorrow_Night_Bright","Tomorrow_Night_Eighties","Twilight","Vibrant_Ink","XCode"];
   selection = "";
+
+  
 
   ngOnInit(): void {
     console.log("edit-tool-bar");
@@ -23,6 +29,14 @@ export class EditorToolBarComponent implements OnInit{
 
   select(val:string) {
     this.selection = val;
+  }
+
+  moveTo(path:string):void{
+    if(path == "home")
+    {
+      this.router.navigate(['/script-detail']);
+    }
+    
   }
 
   apply(): void {

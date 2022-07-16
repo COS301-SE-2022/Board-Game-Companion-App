@@ -1,4 +1,4 @@
-import { Component, KeyValueDiffer, KeyValueDiffers, OnInit } from '@angular/core';
+import { Component, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
@@ -11,7 +11,7 @@ import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
+  @ViewChild('menu', {static:false}) menu: any; //similar to getelementbyid in js
   UserDetails: userDetails | undefined;
   log = "login";
   loggedIn = false;
@@ -46,6 +46,11 @@ export class HeaderComponent implements OnInit {
     }else
       this.router.navigate(['/editor']);
     
+  }
+
+  toggleMenu():void{
+    //console.log(this.menu);
+    this.menu.nativeElement.classList.toggle('translate-y-0')
   }
 
   isAdmin():boolean{
