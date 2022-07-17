@@ -1,10 +1,55 @@
-<div id="container">
-    <div class = "grid grid-cols-4 gap-4">
-        <span *ngFor="let game of games" class="collectionDiv" class="board-game">
-            <button (click)="bgClick(game.id)"><img [src] = 'game.imgUrl'></button>
-        </span>
-    </div>
-    <div>
-        <button type ="button" class= "focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" id="delButton" (click)="deletion()">Remove Games?</button>
+<div id = "container">
+    <select id="sorting" class="btn px-2 py-1 font-bold">
+        <option selected>Alphabetical</option>
+        <option value="amount">Amount</option>
+    </select>
+    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+    <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
+    <input id = "textInput">
+    <h1>{{name}}</h1>
+   
+    <div id="content">
+        <table class="table-auto">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Players</th>
+                <th>Playing Time</th>
+                <th>Age</th>
+                <th>Category</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let game of games; let i = index" class="collectionDiv" class="board-game">
+                    <td>
+                        <img [src] = 'game.imgUrl'>
+                    </td>
+                    <td class = "info">
+                        {{listResults[i].getName()}}
+                    </td>
+                    <td class = "info">
+                        {{listResults[i].getMinPlayers()}}-{{listResults[i].getMaxPlayers()}}
+                    </td>
+                    <td class = "info">
+                        {{listResults[i].getMinPlayTime()}}-{{listResults[i].getMaxPlayTime()}} min
+                    </td>
+                    <td class = "info">
+                        {{listResults[i].getAge()}}
+                    </td>
+                    <td class = "info">
+                        {{listResults[i].getCategory()}}
+                    </td>
+                    <td>
+                        <button (click) = "bgClick(game.id)" id = "explore" class = "btn px-2 py-1">Explore</button>
+                    </td>
+                    <td>
+                        <button (click) = "deletion(game.id)" id = "remove" class = "btn px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
     </div>
 </div>

@@ -1,34 +1,89 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
+
 #CollectionsList
 {
-    width: 90%;
+    width: 80%;
     margin: auto;
     margin-top: 5em;
     flex-direction: column;
 }
+h1{
+    font-size: 48px;
+    text-decoration: underline;
+    color: $Pcolour-2;
+}
 .imgSpan
 {
     float: left;
+    padding-right: 2em;
 }
 .collectionDiv
 {
-    width: 75%;
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    padding: 2em;
+    width: 90%;
+    height: 200px;
     margin: 2em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    border-bottom: 3px solid $Pcolour-3;
 }
 #title
 {
     font-weight: bold;
-    font-size: 1.5em;
-    padding-bottom: 1em;
+    font-size: 32px;
+    color: $Pcolour-2;
+    float: left;
+    padding-right: 2em;
+    padding-top: 1em;
+}
+input{
+    border-radius: 10px;
+    height: 20px;
+    width: 400px;
+    color: black;
+    margin-top: 14px;
+    margin-right: 16px;
+}
+input:focus{
+    outline: none;
+}
+#search{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+}
+#sort{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    float: right;
+}
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    float: right;
+    background-color: white;
+}
+#CollectionsContent{
+    width: 100%;
+    padding-bottom: 2em;
+    background-color: white;
+}
+#actions{
+    float: right;
+    margin: 0 auto;
+    top: 50%;
+}
+#explore{
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 1em;
 }
 #remove{
-    background-color: $Pcolour-2;
-    padding: 1em;
-    border-radius: 0.5em;
-    color: $Pcolour-3;
-    font-weight: bold;
-    margin: 1em;
+    background-color: $Pcolour-4;
+}
+i{
+    transform: scale(1.3);
+    color: white;
 }

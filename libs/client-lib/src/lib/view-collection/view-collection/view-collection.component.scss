@@ -1,22 +1,106 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-#container
-{
-    width: 50%;
+#container{
+    width: 80%;
     margin: auto;
     margin-top: 5em;
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    padding: 2em;
 }
-.game-image{
-    overflow-y:hidden; 
+table{
+    width: 100%;
 }
 
-.game-image>a>img{
-    height:100%;
+#content
+{
+    background-color: white;
+    height: auto;
 }
 
 button{
     padding: 2em;
+}
+
+h1{
+    font-size: 48px;
+    font-weight: bold;
+    color: $Pcolour-2;
+    background-color: $Pcolour-3;
+    padding: 8px;
+    width: 23%;
+    border-radius: 10px 10px 0 0;
+}
+img{
+    width: 97px;
+    height: 76px;
+    margin-left: 16px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    margin-right: 80px;
+}
+thead{
+    width: 100%;
+    background-color: $Pcolour-2;
+    color: white;
+}
+#explore{
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 1em;
+}
+#remove{
+    background-color: $Pcolour-4;
+    font-size: 16px;
+}
+i{
+    color: white;
+}
+th{
+    font-size: 32px;
+    font-weight: bold;
+    padding-right: 84px;
+    white-space: nowrap;
+}
+td{
+    font-size: 24px;
+    color: black;
+    font-weight: bold;
+}
+.board-game{
+    border-bottom: solid 3px $Pcolour-2;
+}
+input{
+    border-radius: 10px;
+    height: 20px;
+    width: 400px;
+    color: black;
+    float: right;
+    margin-right: 16px;
+    margin-top: 28px;
+}
+input:focus{
+    outline: none;
+    
+}
+#search{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    float: right;
+    margin-right: 64px;
+    margin-top: 24px;
+}
+#sort{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    margin-top: 24px;
+    float: right;
+}
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    float: right;
+    margin-top: 24px;
+    background-color: white;
 }
