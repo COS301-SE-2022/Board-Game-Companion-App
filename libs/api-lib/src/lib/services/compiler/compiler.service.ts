@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
+import { lexerResult } from '../../models/general/lexerResult';
 
 @Injectable()
 export class CompilerService {
@@ -14,9 +15,17 @@ export class CompilerService {
         //user defined identifier
         const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
         // class and function declaration
-        result.push(chevrotain.createToken({name:"Class",pattern:/class/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"Function",pattern:/func/,longer_alt:tUserDefinedIdentifier}));
-        
+        result.push(chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
+
         //punctuation
         result.push(chevrotain.createToken({name:"Comma",pattern:/,/}));
         result.push(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
@@ -27,20 +36,20 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
         result.push(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
         result.push(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
+        result.push(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
 
         //relational operators
         const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
         const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
         const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+        result.push(tGreaterThanOrEqual);
+        result.push(tLessThanOrEqual);
+        result.push(tEqual);
         result.push(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
         result.push(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
 
         //Assignment operators
         result.push(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
-        const tPlusAssign = chevrotain.createToken({name:"PlusAssign",pattern:/\+=/ });
-        const tMinusAssign = chevrotain.createToken({name:"MinusAssign",pattern:/-=/});
-        const tDivideAssign = chevrotain.createToken({name:"DivideAssign",pattern:/\\=/});
-        const tMultiplyAssign = chevrotain.createToken({name:"MultiplyAssign",pattern:/\*=/ });
 
         //increment
         const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
@@ -48,25 +57,19 @@ export class CompilerService {
         //decrement
         const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
         
+        result.push(tIncrement);
+        result.push(tDecrement);
         //arithmetic operators
-        result.push(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:[tIncrement,tPlusAssign]}));
-        result.push(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:[tDecrement,tMinusAssign]}));
-        result.push(chevrotain.createToken({name:"Multiply",pattern:/\*/,longer_alt:tMultiplyAssign}));
-        result.push(chevrotain.createToken({name:"Divide",pattern:/\\/,longer_alt:tDivideAssign}));
+        result.push(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:tIncrement}));
+        result.push(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tDecrement}));
+        result.push(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
+        result.push(chevrotain.createToken({name:"Divide",pattern:/\\/}));
         result.push(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
 
         //logical operators
         result.push(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
         result.push(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
         result.push(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
-
-
-        //datatypes
-        result.push(chevrotain.createToken({name:"Boolean",pattern:/boolean/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"Integer",pattern:/integer/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"Float",pattern:/float/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"String",pattern:/string/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"String",pattern:/void/,longer_alt:tUserDefinedIdentifier}));
 
         //literals
         const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
@@ -80,8 +83,10 @@ export class CompilerService {
         
         //input output
         result.push(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"Output",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:tUserDefinedIdentifier}));
         result.push(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
+        result.push(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
         //loops
         result.push(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
@@ -98,13 +103,10 @@ export class CompilerService {
 
         //presets
         result.push(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
-        result.push(chevrotain.createToken({name:"CreateDecisionTreeModel",pattern:/decision_tree.createModel/}));
-        result.push(chevrotain.createToken({name:"NeuralNetworkOptions",pattern:/neural_network.options/}));
-        result.push(chevrotain.createToken({name:"NeuralNetworkTrainingData",pattern:/neural_network.training_data/}));
-        result.push(chevrotain.createToken({name:"NeuralNetworkNormilize",pattern:/neural_network.normilize/}));
+        result.push(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
 
-        //instantiate
-        result.push(chevrotain.createToken({name:"New",pattern:/new/,longer_alt:tUserDefinedIdentifier}));
+        //variable
+        result.push(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
 
         //whitespace
         result.push(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
@@ -114,25 +116,31 @@ export class CompilerService {
         
         
         result.push(tUserDefinedIdentifier);
-        result.push(tGreaterThanOrEqual);
-        result.push(tLessThanOrEqual);
-        result.push(tEqual);
-        result.push(tPlusAssign);
-        result.push(tMinusAssign);
-        result.push(tDivideAssign);
-        result.push(tMultiplyAssign);
-        result.push(tIncrement);
-        result.push(tDecrement);
         result.push(tFloatLiteral);
 
         return result;
     }
 
-    scan(input:string):chevrotain.ILexingResult{
+    scanHelper(input:string):chevrotain.ILexingResult{
         const tokens:chevrotain.TokenType[] = this.defineAllTokenTypes(); 
         const lexer = new chevrotain.Lexer(tokens);
         
         return lexer.tokenize(input);
+    }
+
+    scan(input:string):lexerResult{
+        const tokens:chevrotain.ILexingResult = this.scanHelper(input);
+        const result:lexerResult = {
+            success: true,
+            errors: []
+        }
+
+        if(tokens.errors.length !== 0){
+            result.success = false;
+            result.errors = tokens.errors;
+        }
+
+        return result;
     }
 
     parse(input:string):string{

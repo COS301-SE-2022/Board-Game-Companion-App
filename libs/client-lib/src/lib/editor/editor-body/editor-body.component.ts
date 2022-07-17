@@ -23,7 +23,8 @@ export class EditorBodyComponent implements OnInit{
   themeEditor = "Dracula";
   @Input()scriptId = "";
   sendChangesTimer = 0;
-
+  showFindCheck = true;
+  showReplaceCheck = true;
   constructor(private readonly scriptService:ScriptService){
     
   }
@@ -59,6 +60,50 @@ export class EditorBodyComponent implements OnInit{
 
   getCode(): string{
     return this.codeEditor.getValue();
+  }
+
+
+  undo(): void{
+    this.codeEditor.undo();
+  }
+
+  redo(): void{
+    this.codeEditor.redo();
+  }
+
+  copy(): void{
+    const text = this.codeEditor.getCopyText();
+    navigator.clipboard.writeText(text);
+  }
+
+  cut(): void{
+    const text = this.codeEditor.getCopyText();
+    this.codeEditor.execCommand("cut");
+    navigator.clipboard.writeText(text);
+  }
+
+  paste(): void{
+    const editor = this.codeEditor;
+
+    navigator.clipboard.read().then((items)=>{
+      for(let count = 0; count < items.length; count++){
+        if(items[count].types.includes("text/plain")){
+          items[count].getType("text/plain").then(function(blob){
+              blob.text().then(function(text){
+                  editor.session.insert(editor.getCursorPosition(), text);
+              });
+          });        
+        }
+      }
+    })
+  }
+
+  showFind(): void{
+
+  }
+
+  showReplace(): void{
+
   }
 
   sendChanges(): void{

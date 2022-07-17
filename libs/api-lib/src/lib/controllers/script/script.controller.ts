@@ -11,6 +11,7 @@ import { RatingService } from '../../services/ratings/rating.service';
 import { Rating } from '../../schemas/rating.schema';
 import { CompilerService } from '../../services/compiler/compiler.service';
 import * as chevrotain from 'chevrotain';
+import { lexerResult } from '../../models/general/lexerResult';
 
 @Controller('scripts')
 export class ApiScriptController {
@@ -80,7 +81,7 @@ export class ApiScriptController {
     }
 
     @Post('compile')
-    compile(@Body('input')input:string):chevrotain.ILexingResult{
+    compile(@Body('input')input:string):lexerResult{
         return this.compiler.scan(input);
     }
 }

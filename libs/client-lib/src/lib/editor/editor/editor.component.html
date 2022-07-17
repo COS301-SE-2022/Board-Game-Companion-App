@@ -1,4 +1,4 @@
-<board-game-companion-app-editor-tool-bar (themeEvent)="changeTheme()" (executeEvent)="execute()" [height] = "toolBarHeight"></board-game-companion-app-editor-tool-bar>
+<board-game-companion-app-editor-tool-bar (showFindEvent)="showFind()" (showReplaceEvent)="showReplace()" (copyEvent)="copy()" (cutEvent)="cut()" (pasteEvent)="paste()" (redoEvent)="redo()" (undoEvent)="undo()" (themeEvent)="changeTheme()" (executeEvent)="execute()" [height] = "toolBarHeight"></board-game-companion-app-editor-tool-bar>
 <board-game-companion-app-editor-side-bar [width]="sideBarWidth" [height] = "sideBarHeight"></board-game-companion-app-editor-side-bar>
 <board-game-companion-app-editor-body (changesTracker)="changesTracker($event)" [scriptId]="currentScript._id" [top] = "toolBarHeight" [width] = "bodyWidth" [height] = "bodyHeight" [margin] = "sideBarWidth"></board-game-companion-app-editor-body>
 <board-game-companion-app-editor-console (changeHeightEvent)="updateConsoleHeight($event)" class = "console" [height]="consoleHeight" [width] = "consoleWidth" [margin] = "sideBarWidth" [bottom] = "statusBarHeight"></board-game-companion-app-editor-console>
