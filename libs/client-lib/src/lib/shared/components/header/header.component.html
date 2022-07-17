@@ -1,79 +1,100 @@
 <header>
-    <nav class="bg-green-700 shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
+    <nav class="inline-block align-middle navbar-expand-md flex items-center w-full justify-between">
+        <div class="flex w-full flex-wrap items-center justify-between">
             <div class="flex justify-between">
                 <div class="flex space-x-7">
-                    <ul class="navbar-nav pb-0 lg:flex lg:flex-row ">
-                    <!-- logo -->
-                    <div> 
-                        <li class="nav-item shadow-xl items-center w-20 py-4 px-2">
-                            <a (click)="moveTo('home')" id="logo"><img src="assets/images/logo.png" alt="logo" mr-0
-                                    mt-0></a>
-                        </li>
-                    </div>
-                    <!-- primary items -->
-                    <div #menu class="hidden sm:flex items-center space-x-1">
-                        <li class="nav-item p-3">
-                            <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('collections')">Collections</a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('board-game-search')">Board Games</a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('scripts')">Scripts</a>
-                        </li>
-                        <li *ngIf="loggedIn === true && isAdmin()" class="nav-item p-3">
-                            <a class="nav-link block" (click)="moveTo('admin')">Administration</a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('gameSessions')">Game Sessions</a>
-                        </li>
-                    </div>
+                    <ul class="navbar-nav lg:flex lg:flex-row ">
+
+                        <!-- logo -->
+                        <div>
+                            <li class="nav-item items-center px-1 py-1">
+                                <a (click)="moveTo('home')" id="logo"><img id="logs" src="assets/images/logo.png"
+                                        alt="logo" mr-0 mt-0></a>
+                            </li>
+                        </div>
+
+                        <!-- primary items -->
+                        <div #menu class="translate-x-full sm:transform-none transition">
+                            <ul class="list-none flex flex-col mr-0 sm:flex-row justify-around">
+                                <li class="nav-item  px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
+                                </li>
+                                <li class="nav-item px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
+                                </li>
+                                <li class="nav-item px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
+                                </li>
+                                <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('admin')">Administration</a>
+                                </li>
+                                <li class="nav-item px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
+                                </li>
+                                <li class="hidden sm:nav-item px-4 pt-2.5">
+                                    <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Search</a>
+                                </li>
+                            </ul>
+                        </div>
                     </ul>
                 </div>
-                <!-- login -->
-                <div class="hidden sm:flex items-center space-x-2 ">
-                    <ul id="login" class="navbar-nav pb-0 lg:flex lg:flex-row ">
-                        <li class="nav-item p-3" id="logButton">
-                            <img id="prof" src="">
-                            <a id="l" class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('login')">Login</a>
+
+                <!--middle dice-->
+                <div id="con" class="hidden sm:flex items-center justify-between">
+                    <img id="dice" src="assets/images/Dice.png" alt="logo">
+                </div>
+
+                <!--second portion-->
+                <div class="hidden sm:flex items-center justify-between space-x-5 mr-0">
+                    <!--Search & login-->
+                    <ul id="login" class="navbar-nav lg:flex lg:flex-row ">
+                        <input class="block" name="searchValue" type="search">
+                        <button (click)="moveTo('board-game-search')" id="search"
+                            class="btn px-2 font-bold">Search</button>
+                        <span></span>
+                        <li class="nav-item  pr-4 pt-2.5" id="logButton">
+                            <a id="l" class="nav-link block p-0" (click)="moveTo('login')">Login</a>
                         </li>
                     </ul>
                 </div>
 
-                <!--Hamburger Menu button-->
-                <div class="sm:hidden flex items-center">
-                    <button (click)="toggleMenu()" class="outline-none mobile-btn">
-                        <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 30 30"
-                            stroke="currentColor">
-                            <path d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-
+                
+            </div>
+            <!--Hamburger Menu button-->
+            <div (click)="toggleMenu()" class="sm:hidden flex items-center">
+                <button class="outline-none mobile-btn">
+                    <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 30 30"
+                        stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
 
         <!-- drop down menu -->
-        <div class="hidden mobile-menu">
+        <!-- <div class="hidden mobile-menu">
             <ul class="">
                 <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('collections')">Collections</a>
+                    <a class="nav-link block text-green-400 text-lg font-bold"
+                        (click)="moveTo('collections')">Collections</a>
                 </li>
                 <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('board-game-search')">Board Games</a>
+                    <a class="nav-link block text-green-400 text-lg font-bold"
+                        (click)="moveTo('board-game-search')">Board Games</a>
                 </li>
                 <li>
                     <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('scripts')">Scripts</a>
                 </li>
-                <li *ngIf="loggedIn === true && isAdmin()" >
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('admin')">Administration</a>
+                <li *ngIf="loggedIn === true && isAdmin()">
+                    <a class="nav-link block text-green-400 text-lg font-bold"
+                        (click)="moveTo('admin')">Administration</a>
                 </li>
                 <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('gameSessions')">Game Sessions</a>
+                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('gameSessions')">Game
+                        Sessions</a>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </nav>
 </header>

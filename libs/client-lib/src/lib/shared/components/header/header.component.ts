@@ -1,4 +1,4 @@
-import { Component, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
@@ -11,11 +11,13 @@ import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  @ViewChild('menu', {static:false}) menu: any; //similar to getelementbyid in js
+  @ViewChild('menu', {static: false, read: ElementRef}) 
+  burgerbtn: any; //similar to getElementById
   UserDetails: userDetails | undefined;
   log = "login";
   loggedIn = false;
   admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com"];
+  searchValue = "";
   
   differ: KeyValueDiffer<string, any>;
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
@@ -44,13 +46,13 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/editor']);
+      this.router.navigate(['/home']);
     
   }
 
   toggleMenu():void{
-    //console.log(this.menu);
-    this.menu.nativeElement.classList.toggle('translate-y-0')
+    console.log('toggle function called');
+    this.burgerbtn.nativeElement.classList.toggle('translate-x-0');
   }
 
   isAdmin():boolean{
@@ -99,7 +101,7 @@ export class HeaderComponent implements OnInit {
       
       if(el!=null)
       {
-        el.innerHTML = "logout";
+        el.innerHTML = "Logout";
 
         this.log = "logout";
       } 
@@ -109,7 +111,7 @@ export class HeaderComponent implements OnInit {
       this.loggedIn = false;
       if(el!=null)
       {
-        el.innerHTML = "login";
+        el.innerHTML = "Login";
 
         this.log = "login";
       } 
@@ -117,3 +119,5 @@ export class HeaderComponent implements OnInit {
     }
   }
 }
+
+
