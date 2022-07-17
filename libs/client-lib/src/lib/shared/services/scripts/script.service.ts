@@ -62,7 +62,7 @@ export class ScriptService {
     return this.httpClient.get(file,{responseType:'text'});
   }
 
-  updateFile(id:string,name:string,content:string):Observable<{message:string}>{
+  updateFile(id:string,content:string):Observable<{message:string}>{
     return this.httpClient.put<{message:string}>(this.api + "scripts/update-file",{id:id,name:name,content:content});
   }
 

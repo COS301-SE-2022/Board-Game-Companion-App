@@ -8,6 +8,7 @@ import { EditorSideBarComponent } from './editor-side-bar/editor-side-bar.compon
 import { EditorStatusBarComponent } from './editor-status-bar/editor-status-bar.component';
 import { EditorConsoleComponent } from './editor-console/editor-console.component';
 import { EditorBodyComponent } from './editor-body/editor-body.component';
+//import { IgxStepperModule } from 'igniteui-angular';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { EditorBodyComponent } from './editor-body/editor-body.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    //IgxStepperModule,
     RouterModule.forChild([{path:'',component:EditorComponent}])
   ]
 })
