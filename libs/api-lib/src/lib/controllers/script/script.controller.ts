@@ -20,7 +20,7 @@ export class ApiScriptController {
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
+    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
         return this.scriptService.create(user,name,boardGameId,stat,description,icon);
@@ -75,8 +75,8 @@ export class ApiScriptController {
     }    
 
     @Put("update-file")
-    async updateFile(@Body('id')id:string,@Body('name')name:string,@Body('content')content:string):Promise<any>{
-        return {message: await this.scriptService.updateFile(id,name,content)};
+    async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<any>{
+        return {message: await this.scriptService.updateFile(id,content)};
     }
 
     @Post('compile')
