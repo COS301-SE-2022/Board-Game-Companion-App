@@ -1,37 +1,91 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
 #container{
-    width: 30%;
+    width: 50%;
     margin: auto;
     margin-top: 5em;
     margin-bottom: 5em;
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    background-color: #fff;
-    padding: 1em;
 }
 
-img{
-   height: inherit;
-   width: inherit;
+#details{
+    background-color: white;
+    width: 400px;
+    border-radius: 10px;
 }
 
 table{
-    width: 100%;
-    display: inline-block;
+    margin: auto;
+    display: flex;
+    
 }
 
 thead{
-    background-color: $Pcolour-2;
     color: $Pcolour-3;
-    font-size: 1.1em;
+    float: left;
+}
+
+tbody{
+    display: flex;
+    flex-direction: row;
 }
 
 tr{
-    border: 1px solid $Pcolour-2;
+    display: flex;
+    flex-direction: column;
 }
 
 th{
-    padding: 2em;
-    border: 1px solid $Pcolour-2;
+    padding: 16px;
+    font-size: 18px;
+    color: $Pcolour-2;
+    white-space: nowrap;
+}
+
+td{
+    padding: 16px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#d{
+    font-size: 32px;
+    color: white;
+    background-color: $Pcolour-3;
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+}
+
+#sessionDetails{
+    width: 100%;
+    height: 250px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+#ss{
+    font-size: 32px;
+    color: white;
+    background-color: $Pcolour-2;
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+}
+
+#first{
+    display: inline-block;
+    margin-right: 8em;
+}
+#second{
+    display: inline-block;
+}
+
+#sessionName{
+    font-size: 48px;
+    color: $Pcolour-2;
+    margin: auto;
+    font-weight: bold;
+    text-align: center;
 }
