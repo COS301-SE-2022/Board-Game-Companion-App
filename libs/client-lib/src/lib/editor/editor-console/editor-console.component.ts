@@ -1,6 +1,11 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 
+interface message{
+  type: boolean;
+  outputMessage: string;
+}
+
 @Component({
   selector: 'board-game-companion-app-editor-console',
   templateUrl: './editor-console.component.html',
@@ -14,7 +19,7 @@ export class EditorConsoleComponent implements OnInit{
   @Output() changeHeightEvent = new EventEmitter<number>();
   show = true;
 
-  messages:string[] = [];
+  messages:message[] = [];
   
   ngOnInit(): void {
     console.log("editor-tool-bar");   
@@ -48,7 +53,7 @@ export class EditorConsoleComponent implements OnInit{
     this.changeHeightEvent.emit(this.height);
   }
 
-  print(message:string){
+  print(message:message){
     this.messages.push(message);
   }
 
@@ -61,7 +66,7 @@ export class EditorConsoleComponent implements OnInit{
       return {
         log: function(text:string){
           windowConsole.log(text);
-          editorConsole.print(text);
+          editorConsole.print({type:false,outputMessage:text});
         },
         info: function(strInfo:string){
           windowConsole.info(strInfo);
@@ -72,8 +77,11 @@ export class EditorConsoleComponent implements OnInit{
         error: function(strError:string){
           windowConsole.error(strError);
         },
-        print: function(message:string){
-          editorConsole.print(message);      
+        print: function(text:string){
+          editorConsole.print({type:false,outputMessage:text});      
+        },
+        input: function(){
+          editorConsole.print({type:true,outputMessage:""});
         },
         clear: function(){
           editorConsole.clear();

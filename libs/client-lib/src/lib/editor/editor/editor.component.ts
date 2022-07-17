@@ -31,6 +31,7 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
+  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   currentScript:script = empty;
 
   constructor(private readonly scriptService:ScriptService, private route: ActivatedRoute){
@@ -106,6 +107,34 @@ export class EditorComponent implements OnInit{
 
   changesTracker(value:number): void{
     this.editorStatusBar.updateStatusOfChanges(value);
+  }
+
+  undo(): void{
+    this.editorBody.undo();
+  }
+
+  redo(): void{
+    this.editorBody.redo();
+  }
+
+  copy(): void{
+    this.editorBody.copy();
+  }
+
+  paste(): void{
+    this.editorBody.paste();
+  }
+
+  cut(): void{
+    this.editorBody.cut();
+  }
+
+  showFind(): void{
+    this.editorBody.showFind();
+  }
+
+  showReplace(): void{
+    this.editorBody.showReplace();
   }
 
 }

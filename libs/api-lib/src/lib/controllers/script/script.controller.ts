@@ -11,6 +11,7 @@ import { RatingService } from '../../services/ratings/rating.service';
 import { Rating } from '../../schemas/rating.schema';
 import { CompilerService } from '../../services/compiler/compiler.service';
 import * as chevrotain from 'chevrotain';
+import { lexerResult } from '../../models/general/lexerResult';
 
 @Controller('scripts')
 export class ApiScriptController {
@@ -20,7 +21,7 @@ export class ApiScriptController {
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Req() request: Request,@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
+    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
         return this.scriptService.create(user,name,boardGameId,stat,description,icon);
@@ -72,15 +73,15 @@ export class ApiScriptController {
     @Put('add-comment')
     async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
         this.scriptService.addComment(scriptId,commentId);
-    }   
+    }    
 
     @Put("update-file")
-    async updateFile(@Body('id')id:string,@Body('name')name:string,@Body('content')content:string):Promise<any>{
-        return {message: await this.scriptService.updateFile(id,name,content)};
+    async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<any>{
+        return {message: await this.scriptService.updateFile(id,content)};
     }
 
     @Post('compile')
-    compile(@Body('input')input:string):chevrotain.ILexingResult{
+    compile(@Body('input')input:string):lexerResult{
         return this.compiler.scan(input);
     }
 }

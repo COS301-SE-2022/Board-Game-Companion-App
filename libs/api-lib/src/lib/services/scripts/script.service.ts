@@ -34,12 +34,12 @@ export class ScriptService {
             status: stat,
             size: 0,
             comments: [],
-            files: [],
+            file: null,
             icon: ""
         };
         
         const id = uuidv4();
-        dto.files = await this.createInitialFiles(id);
+        dto.file = await this.createInitialFile(id);
         dto.icon = await this.storeIcon(id,icon);
         
         
@@ -49,40 +49,21 @@ export class ScriptService {
         return result;
     }
 
-    async createInitialFiles(id:string):Promise<file[]>{
-        const result:file[] = [];
-        let temp:file = {name:"main.js",location:"",awsKey:""};
+    async createInitialFile(id:string):Promise<file>{
+        const result:file = {name:"main.txt",location:"",awsKey:""};
         let fileUploadResult:awsUpload = {key:"",location:""};
         const path = "scripts/" + id + "/files/";
         let data = "";
 
-        console.log(process.cwd());
-
         try{
-            data = fs.readFileSync("templates/main.js","utf8");
+            data = fs.readFileSync("templates/main.txt","utf8");
         }catch(err){
             console.log(err);
         }
 
-        fileUploadResult = await this.s3Service.upload("main.js",path,data,"text/plain");
-        temp.location = fileUploadResult.location;
-        temp.awsKey = fileUploadResult.key;
-
-        result.push(temp);
-
-        temp = {name:"interface.json",location:"",awsKey:""};
-        
-        try{
-            data = fs.readFileSync("templates/interface.json","utf8");
-        }catch(err){
-            console.log(err);
-        }
-
-        fileUploadResult = await this.s3Service.upload("interface.json",path,data,"application/json");
-        temp.location = fileUploadResult.location;
-        temp.awsKey = fileUploadResult.key;
-        
-        result.push(temp);
+        fileUploadResult = await this.s3Service.upload("main.txt",path,data,"text/plain");
+        result.location = fileUploadResult.location;
+        result.awsKey = fileUploadResult.key;
 
         return result;
     }
@@ -125,26 +106,21 @@ export class ScriptService {
     }
 
 
-    async updateFile(id:string,name:string,content:string):Promise<string>{
+    async updateFile(id:string,content:string):Promise<string>{
         const script:ScriptDocument = await this.scriptModel.findById(id);
         let result = "success";
 
         if(script === null )
             result = "invalid script id";
         else{
-            if(name !== "main.js" && name !== "interface.json")
-                result = "invalid file name";
-            else{
-                const index = name === "main.js" ? 0 : 1;
-
-                try{
-                    this.s3Service.update(script.files[index].awsKey,content);
-                    script.lastupdate = new Date();
-                    script.save();
-                }catch(e){
-                    result = "something went wrong while upload file, contact developers if this error persists";
-                }
+            try{
+                this.s3Service.update(script.file.awsKey,content);
+                script.lastupdate = new Date();
+                script.save();
+            }catch(e){
+                result = "something went wrong while upload file, contact developers if this error persists";
             }
+            
         }
 
         return result;

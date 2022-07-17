@@ -8,6 +8,14 @@
         </div>    
     </div>
     <div class = "console-messages overflow-auto text-xs mt-2 h-4/5">
-        <div *ngFor = "let message of messages" class = "console-message text-white"><strong>:> {{message}}</strong></div>
+        <div *ngFor = "let message of messages" class = "console-message text-white">
+            <div *ngIf = "message.type === false">
+                <strong>:> {{message.outputMessage}}</strong>
+            </div>
+
+            <div *ngIf = "message.type === true">
+                <input type = "text">
+            </div>
+        </div>
     </div>
 </div>
