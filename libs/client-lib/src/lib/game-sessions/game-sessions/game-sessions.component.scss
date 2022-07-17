@@ -5,34 +5,98 @@
     margin: auto;
     margin-top: 5em;
     margin-bottom: 5em;
-    border: 3px solid $Pcolour-2;
-    border-radius: 0.5em;
-    background-color: #fff;
+}
+
+#content{
+    background-color: white;
+}
+
+#headInput{
+    width: 100%;
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    background-color: $Pcolour-3;
+    padding: 16px;
+    border-radius: 10px 10px 0 0;
+}
+
+input{
+    border-radius: 10px;
+    height: 20px;
+    width: 400px;
+    color: black;
+    float: right;
+    margin-right: 16px;
+    margin-top: 28px;
+}
+input:focus{
+    outline: none;
+    
+}
+#search{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    float: right;
+    margin-right: 64px;
+    margin-top: 24px;
+}
+#sort{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    margin-top: 24px;
+    float: right;
+}
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    float: right;
+    margin-top: 24px;
+    background-color: white;
 }
 
 table{
     width: 100%;
     margin: auto;
+    display: flex;
     
 }
 
 thead{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
-    font-size: 1.1em;
+    float: left;
+}
+
+tbody{
+    display: flex;
+    flex-direction: row;
 }
 
 tr{
-    border: 1px solid $Pcolour-2;
+    border-right: 2px solid $Pcolour-2;
+    display: flex;
+    flex-direction: column;
 }
 
 th{
-    padding: 2em;
+    padding: 1em;
+    font-size: 24px;
+    color: white;
 }
 
-button{
-    background-color: $Pcolour-2;
-    color: $Pcolour-3;
+td{
     padding: 1em;
-    border-radius: 0.5em;
+    font-size: 24px;
+}
+
+#explore{
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
 }
