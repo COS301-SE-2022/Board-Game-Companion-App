@@ -1,9 +1,9 @@
 <header>
-    <nav class="inline-block align-middle navbar-expand-md flex items-center w-full justify-between">
+    <nav class="flex inline-block align-middle navbar-expand-md flex flex-wrap items-center w-full justify-between">
         <div class="flex w-full flex-wrap items-center justify-between">
             <div class="flex justify-between">
                 <div class="flex space-x-7">
-                    <ul class="navbar-nav lg:flex lg:flex-row ">
+                    <ul class="navbar-nav sm:flex sm:flex-row ">
 
                         <!-- logo -->
                         <div>
@@ -14,8 +14,8 @@
                         </div>
 
                         <!-- primary items -->
-                        <div #menu class="translate-x-full sm:transform-none transition">
-                            <ul class="list-none flex flex-col mr-0 sm:flex-row justify-around">
+                        <div #menu [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}" class="translate-x-full sm:transform-none transition  sm:flex sm: flex-grow items-center">
+                            <ul class="flex list-none w-full flex-col sm:flex-row ml-auto">
                                 <li class="nav-item  px-4 pt-2.5">
                                     <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
                                 </li>
@@ -31,7 +31,7 @@
                                 <li class="nav-item px-4 pt-2.5">
                                     <a class="nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
                                 </li>
-                                <li class="hidden sm:nav-item px-4 pt-2.5">
+                                <li class="nav-item px-4 pt-2.5 sm:hidden">
                                     <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Search</a>
                                 </li>
                             </ul>
@@ -57,11 +57,9 @@
                         </li>
                     </ul>
                 </div>
-
-                
             </div>
             <!--Hamburger Menu button-->
-            <div (click)="toggleMenu()" class="sm:hidden flex items-center">
+            <div (click)="toggleMenu()" class="sm:hidden relative flex items-center">
                 <button class="outline-none mobile-btn">
                     <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu" fill="none"
                         stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 30 30"
@@ -71,30 +69,5 @@
                 </button>
             </div>
         </div>
-
-        <!-- drop down menu -->
-        <!-- <div class="hidden mobile-menu">
-            <ul class="">
-                <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold"
-                        (click)="moveTo('collections')">Collections</a>
-                </li>
-                <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold"
-                        (click)="moveTo('board-game-search')">Board Games</a>
-                </li>
-                <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('scripts')">Scripts</a>
-                </li>
-                <li *ngIf="loggedIn === true && isAdmin()">
-                    <a class="nav-link block text-green-400 text-lg font-bold"
-                        (click)="moveTo('admin')">Administration</a>
-                </li>
-                <li>
-                    <a class="nav-link block text-green-400 text-lg font-bold" (click)="moveTo('gameSessions')">Game
-                        Sessions</a>
-                </li>
-            </ul>
-        </div> -->
     </nav>
 </header>
