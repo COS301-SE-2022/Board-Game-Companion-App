@@ -10,7 +10,7 @@
             File
         </button>
         <div class = "menu-content absolute">
-            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">New</a>
+            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Model</a>
             <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Exit</a>
         </div>
     </div>
@@ -20,9 +20,13 @@
             Edit
         </button>
         <div class = "menu-content absolute">
-            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Cut</a>
-            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Copy</a>
-            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Paste</a>
+            <a (click) = "undo()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Undo</a>
+            <a (click) = "redo()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Redo</a>
+            <a (click) = "cut()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Cut</a>
+            <a (click) = "copy()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Copy</a>
+            <a (click) = "paste()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Paste</a>
+            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "findClick()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Find</a>
+            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "replaceClick()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Replace</a>
         </div>
     </div>
 
@@ -31,7 +35,7 @@
             View
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "initialiseThemes()" data-bs-toggle="modal" data-bs-target="#themeModal" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Theme</a>
+            <a (click) = "initialiseThemes()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Theme</a>
         </div>
     </div>
 
@@ -48,6 +52,8 @@
 </div>
 
 <!-- modals -->
+
+<!-- themes -->
 
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="themeModal" tabindex="-1" aria-labelledby="themeModal" aria-hidden="true">
     <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
@@ -77,5 +83,75 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Models -->
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="findReplace" tabindex="-1" aria-labelledby="findlabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-md relative w-auto pointer-events-none">
+        <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">        
+            <div class="modal-body relative p-1">
+                <div style = "font-family: Verdana, Geneva, Tahoma, sans-serif;" class = "p-1 text-xs">
+                    <div class = "flex flex-row">
+                        <div class="form-check mr-8">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="regex">
+                            Regular Expression
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mr-8">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="case">
+                            Case Sensitive
+                            </label>
+                        </div>
+                        <div class="form-check mr-8">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="ww">
+                            Whole Word
+                            </label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="wrap">
+                            Wrap
+                            </label>
+                        </div>
+                    </div>
+                    <div class = "flex flex-row mb-2 w-full">
+                        <div class="w-4/5 mr-2">
+                            <input type="text" class=" form-control block w-full px-1 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="findInput" placeholder="Find"/>
+                        </div>
+                        
+                        <button type="button" class="mr-2 inline-block w-8 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                        
+                        <button type="button" class="mr-2 inline-block w-8 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                    </div>
+
+                    <div class = "flex flex-row w-full" *ngIf = "showReplace === true">
+                        <div class="w-4/5 mr-2">
+                            <input type="text" class=" form-control block w-full px-1 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="ReplaceInput" placeholder="Replace"/>
+                        </div>
+
+                        <button type="button" class="mr-2 inline-block w-8 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-exchange"></i>
+                        </button>
+
+                        <button type="button" class="mr-2 inline-block w-8 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-exchange"></i>
+                            <i class="fas fa-exchange"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+      </div>
     </div>
 </div>

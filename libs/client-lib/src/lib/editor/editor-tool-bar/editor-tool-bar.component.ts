@@ -14,6 +14,14 @@ export class EditorToolBarComponent implements OnInit{
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
   @Output() themeEvent = new EventEmitter();
+  @Output() undoEvent = new EventEmitter();
+  @Output() redoEvent = new EventEmitter();
+  @Output() copyEvent = new EventEmitter();
+  @Output() cutEvent = new EventEmitter();
+  @Output() pasteEvent = new EventEmitter();
+  @Output() showFindEvent = new EventEmitter();
+  @Output() showReplaceEvent = new EventEmitter();
+  showReplace = false;
   themes:string[] = ["Ambiance","Chaos","Clouds_Midnight","Chrome","Clouds","Cobalt","Crimson_Editor","Dawn","Dracula","Dreamweaver","Eclipse","GitHub","GOB","Gruvbox","idle_Fingers","IPlastic","KatzenMilch","kr_Theme","Kuroir","Merbivore","Merbivore_Soft","Mono_Industrial","Monokai","Nord_Dark","One_Dark","Pastel_on_dark","Solarized_Dark","Solarized_Light","SQLServer","Terminal","TextMate","Tomorrow","Tomorrow_Night","Tomorrow_Night_Blue","Tomorrow_Night_Bright","Tomorrow_Night_Eighties","Twilight","Vibrant_Ink","XCode"];
   selection = "";
 
@@ -44,6 +52,38 @@ export class EditorToolBarComponent implements OnInit{
     this.themeEvent.emit();
     document.getElementById("cancel-save-theme")?.click();
   }
+
+  undo(): void{
+    this.undoEvent.emit();
+  }
+
+  redo(): void{
+    this.redoEvent.emit();
+  }
+
+  copy(): void{
+    this.copyEvent.emit();
+  }
+
+  cut(): void{
+    this.cutEvent.emit();
+  }
+
+  paste(): void{
+    this.pasteEvent.emit();
+  }
+
+  findClick(): void{
+    this.showReplace = false;
+    alert(false)
+  }
+
+  replaceClick(): void{
+    this.showReplace = true;
+    alert(true)
+  }
+
+
 
   initialiseThemes():void{
     let editor:any;

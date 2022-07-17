@@ -17,6 +17,6 @@ export interface scriptDto{
     export: boolean;
     size: number;
     comments: commentDto[];
-    files: file[];
+    file: file;
     icon: string;
 };

@@ -51,8 +51,8 @@ export class Script{
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
     comments: string[];
 
-    @Prop({required:true})
-    files: file[];
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    file: file;
 
     @Prop()
     icon: string; 
