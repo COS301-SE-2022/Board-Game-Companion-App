@@ -157,12 +157,12 @@ describe('Test script service',()=>{
   });
 
   it('should update file and return message in an object',()=>{
-    service.updateFile('12345','chess','Guqa uthandaze').subscribe((data)=>{
+    service.updateFile('12345','chess chess chess').subscribe((data)=>{
       expect(data).toBe({message:'update was successful'});
     });
     const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update-file');
     expect(req.request.method).toBe('PUT');
-    expect(req.request.body).toStrictEqual({id:'12345',name:'chess',content:'Guqa uthandaze'});
+    expect(req.request.body).toStrictEqual({id:'12345',name:name,content:'chess chess chess'});
 
     req.flush({message:'update was successful'});
   });
