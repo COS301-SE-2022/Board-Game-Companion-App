@@ -15,12 +15,9 @@ header{
     height: 48px;
 }
 
-
-// nav{
-//     height: 100%;
-//     position: relative;
-// }
-
+#menu{
+    background-color: $Pcolour-2;
+}
 // ul{
 //     height: 5em;
 // }
@@ -42,10 +39,9 @@ header{
 //     background-color: $Pcolour-3;
 //     color: $Pcolour-2;
 
-ul{
-    height: 48px;
-    
-}
+// ul{
+//     height: 48px;
+// }
 
 li{
     height: 100%;
@@ -115,10 +111,7 @@ li:hover{
    position: relative;
 }
 
-#dice{
-    height: 35px;
-    width: 51px;
-}
+
 
 span{
     border-top: 24px solid transparent;
@@ -129,8 +122,6 @@ span{
 
 input{
     border-radius: 10px;
-    height: 20px;
-    width: 400px;
     color: black;
     margin-top: 14px;
     margin-right: 16px;
