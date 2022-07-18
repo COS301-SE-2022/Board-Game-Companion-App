@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import * as ace from "ace-builds";
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
@@ -9,6 +10,9 @@ import { replace } from '../../shared/models/replace';
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 export class EditorToolBarComponent implements OnInit{
+  constructor(private readonly router: Router) {
+
+  }
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
   @Output() themeEvent = new EventEmitter();
@@ -36,6 +40,8 @@ export class EditorToolBarComponent implements OnInit{
   sideBar = true;
   console = true;
 
+  
+
   ngOnInit(): void {
     console.log("edit-tool-bar");
   }
@@ -56,6 +62,14 @@ export class EditorToolBarComponent implements OnInit{
 
   select(val:string) {
     this.selection = val;
+  }
+
+  moveTo(path:string):void{
+    if(path == "home")
+    {
+      this.router.navigate(['/script-detail']);
+    }
+    
   }
 
   apply(): void {

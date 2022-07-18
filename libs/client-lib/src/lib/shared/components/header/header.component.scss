@@ -1,5 +1,13 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
+
+// header{
+//     background-color: $Pcolour-2;
+//     color: $Pcolour-3;
+//     width: 100%;
+//     height: 5em;
+// }
+
 header{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
@@ -7,13 +15,36 @@ header{
     height: 48px;
 }
 
-nav{
-    height: 100%;
-    position: relative;
-}
+
+// nav{
+//     height: 100%;
+//     position: relative;
+// }
+
+// ul{
+//     height: 5em;
+// }
+
+// li{
+//     height: 100%;
+//     font-size: 1.4em;
+//     font-weight: bold;
+//     margin-left: auto;
+//     float: left;
+// }
+
+// #login{
+//     margin-left: auto;
+//     float: right;
+// }
+
+// li:hover{
+//     background-color: $Pcolour-3;
+//     color: $Pcolour-2;
 
 ul{
     height: 48px;
+    
 }
 
 li{
@@ -38,14 +69,39 @@ li:hover{
     color: $Pcolour-2;
 }
 
-a{
-    cursor: pointer;
-    
-}
 
-a:hover{
-    color: $Pcolour-2;
-}
+// a{
+//     cursor: pointer;
+    
+// }
+
+// a:hover{
+//     color: $Pcolour-2;
+// }
+
+
+
+// #logo{
+//    height: 100%;
+   
+// }
+
+// label #btn, 
+// label #cancel{
+//     color: white;
+//     font-size: 30px;
+//     float: right;
+//     line-height: 78px;
+//     margin-right: 40px;
+//     cursor: pointer;
+//     display: none;
+
+// }
+
+// #check{
+//     display: none;
+// }
+
 
 
 #logs{
@@ -91,3 +147,4 @@ input:focus{
     margin-top: 13px;
     font-size: 14px;
 }
+

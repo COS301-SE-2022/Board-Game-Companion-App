@@ -7,7 +7,7 @@ import { GoogleAuthService } from './GoogleAuth/google-auth.service';
   templateUrl: './google-login.component.html',
   styleUrls: ['./google-login.component.scss'],
 })
-export class GoogleLoginComponent implements OnInit {
+export class GoogleLoginComponent implements OnInit{
   constructor(private readonly gapi: GoogleAuthService) {}
 
   ngOnInit(): void {}

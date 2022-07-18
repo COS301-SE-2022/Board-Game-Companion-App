@@ -1,23 +1,36 @@
 <div id="CollectionsList">
-    <h1 class = "font-bold">Collections</h1>
-    <input id = "textInput">
-    <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
+    <h1 class="font-bold">Collections</h1>
+
+    <!--Search-->
+    <div class="relative w-6/12 mb-8 float-left">
+        <input id="textInput" type="text"
+            class="bg-gray-20 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search">
+        <i id="searchIcon" class="fa-solid fa-magnifying-glass text-black sm:hidden"></i>
+        <button id="search" class="btn px-2 py-1 font-bold">Search</button>
+    </div>
+    
+
+    <!--Sorting-->
     <select id="sorting" class="btn px-2 py-1 font-bold">
         <option selected>Alphabetical</option>
         <option value="amount">Amount</option>
     </select>
-    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
-    <div id = "CollectionsContent">
+    <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
+    
+    <!--Contents-->
+    <div id="CollectionsContent">
         <div *ngFor="let collection of collections" class="collectionDiv">
-            <span id ="title">
+            <span id="title">
                 {{collection.name}}
             </span>
             <span *ngFor="let url of collection.imgUrls" class="imgSpan">
-                <button (click) = "viewCollection(collection.name)"><img [src] =  'url'></button>
+                <button (click)="viewCollection(collection.name)"><img [src]='url'></button>
             </span>
-            <div id = "actions">
-                <button (click) = "viewCollection(collection.name)" id = "explore" class = "btn px-4 py-2">Explore</button>
-                <button (click) = "deletion(collection.name)" id = "remove" class = "btn px-4 py-2"><i class="fa-regular fa-trash-can"></i></button>
+            <div id="actions">
+                <button (click)="viewCollection(collection.name)" id="explore" class="btn px-4 py-2">Explore</button>
+                <button (click)="deletion(collection.name)" id="remove" class="btn px-4 py-2"><i
+                        class="fa-regular fa-trash-can"></i></button>
             </div>
         </div>
     </div>
