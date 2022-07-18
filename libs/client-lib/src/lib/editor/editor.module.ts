@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EditorComponent } from './editor/editor.component';
 import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
 import { EditorToolBarComponent } from './editor-tool-bar/editor-tool-bar.component';
 import { EditorSideBarComponent } from './editor-side-bar/editor-side-bar.component';
 import { EditorStatusBarComponent } from './editor-status-bar/editor-status-bar.component';
@@ -22,7 +23,7 @@ import { EditorBodyComponent } from './editor-body/editor-body.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    //IgxStepperModule,
+    FormsModule,
     RouterModule.forChild([{path:'',component:EditorComponent}])
   ]
 })

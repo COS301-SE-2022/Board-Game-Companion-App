@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as ace from "ace-builds";
-import { String } from 'aws-sdk/clients/apigateway';
+import { find } from '../../shared/models/find';
+import { replace } from '../../shared/models/replace';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
 interface file{
@@ -98,12 +99,42 @@ export class EditorBodyComponent implements OnInit{
     })
   }
 
-  showFind(): void{
+  find(value:find): void{
+    console.log(value);
 
+    this.codeEditor.find(value.text,{
+      backwards: false,
+      wrap: value.wrap,
+      caseSensitive: value.caseSensitive,
+      wholeWord: value.wholeWord,
+      regExp: value.regularExpression
+    })
   }
 
-  showReplace(): void{
+  findNext(): void{
+    this.codeEditor.findNext();
+  }
 
+  findPrevious(): void{
+    this.codeEditor.findPrevious();
+  }
+
+  replace(value:replace): void{
+    this.codeEditor.find(value.text,{
+      backwards: false,
+      wrap: value.wrap,
+      caseSensitive: value.caseSensitive,
+      wholeWord: value.wholeWord,
+      regExp: value.regularExpression
+    })
+
+    this.codeEditor.replace(value.replace);
+  }
+
+  replaceAll(value:replace): void{
+    this.codeEditor.find(value.text);
+
+    this.codeEditor.replaceAll(value.replace);    
   }
 
   sendChanges(): void{
