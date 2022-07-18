@@ -3,18 +3,31 @@
         <div class="flex w-full flex-wrap items-center justify-between">
             <div class="flex justify-between">
                 <div class="flex space-x-7">
+                    <!-- hfull and bg-black -->
                     <ul class="navbar-nav sm:flex sm:flex-row">
 
                         <!-- logo -->
-                        <div>
-                            <li class="nav-item items-center px-1 py-1">
+                        <div class="w-full" style="background-color:red">
+                            <li class="relative flex flex-row nav-item px-1 py-1">
                                 <a (click)="moveTo('home')" id="logo"><img id="logs" src="assets/images/logo.png"
-                                        alt="logo" mr-0 mt-0></a>
+                                        alt="logo" mr-0 mt-0 class="absolute left-0"></a>
+
+                                <!--Hamburger Menu button-->
+                                <a (click)="toggleMenu()" class="sm:hidden absolute right-0">
+                                    <button class="outline-none mobile-btn">
+                                        <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            viewBox="0 0 30 30" stroke="currentColor">
+                                            <path d="M4 6h16M4 12h16M4 18h16"></path>
+                                        </svg>
+                                    </button>
+                                </a>
                             </li>
                         </div>
 
                         <!-- primary items -->
-                        <div #menu [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}" class="translate-x-full sm:transform-none transition  sm:flex sm: flex-grow items-center">
+                        <div #menu [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}"
+                            class="translate-x-full sm:transform-none transition  sm:flex sm: flex-grow items-center">
                             <ul class="flex list-none w-full flex-col sm:flex-row ml-auto">
                                 <li class="nav-item  px-4 pt-2.5">
                                     <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
@@ -52,22 +65,13 @@
                         <button (click)="moveTo('board-game-search')" id="search"
                             class="btn px-2 font-bold">Search</button>
                         <span></span>
-                        <li class="nav-item  pr-4 pt-2.5" id="logButton">
+                        <li class="nav-item pr-4 pt-2.5" id="logButton">
                             <a id="l" class="nav-link block p-0" (click)="moveTo('login')">Login</a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <!--Hamburger Menu button-->
-            <div (click)="toggleMenu()" class="sm:hidden relative flex items-center">
-                <button class="outline-none mobile-btn">
-                    <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu" fill="none"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 30 30"
-                        stroke="currentColor">
-                        <path d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
+
         </div>
     </nav>
 </header>
