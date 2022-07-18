@@ -22,18 +22,32 @@ export class EditorToolBarComponent implements OnInit{
   @Output() findNextEvent = new EventEmitter();
   @Output() findPreviousEvent = new EventEmitter();
   @Output() replaceAllEvent = new EventEmitter<replace>();
+  @Output() toggleSideBarEvent = new EventEmitter<boolean>();
+  @Output() toggleConsoleEvent = new EventEmitter<boolean>();
   showReplace = false;
   caseSensitive = false;
-  wrap = false;
+  wrap = true;
   regEx = false;
   wholeWord = false;
   findText = "";
   replaceWithText = "";
   themes:string[] = ["Ambiance","Chaos","Clouds_Midnight","Chrome","Clouds","Cobalt","Crimson_Editor","Dawn","Dracula","Dreamweaver","Eclipse","GitHub","GOB","Gruvbox","idle_Fingers","IPlastic","KatzenMilch","kr_Theme","Kuroir","Merbivore","Merbivore_Soft","Mono_Industrial","Monokai","Nord_Dark","One_Dark","Pastel_on_dark","Solarized_Dark","Solarized_Light","SQLServer","Terminal","TextMate","Tomorrow","Tomorrow_Night","Tomorrow_Night_Blue","Tomorrow_Night_Bright","Tomorrow_Night_Eighties","Twilight","Vibrant_Ink","XCode"];
   selection = "";
+  sideBar = true;
+  console = true;
 
   ngOnInit(): void {
     console.log("edit-tool-bar");
+  }
+
+  toggleSideBar(): void{
+    this.sideBar = !this.sideBar;
+    this.toggleSideBarEvent.emit(this.sideBar);
+  }
+
+  toggleConsole(): void{
+    this.console = !this.console;
+    this.toggleConsoleEvent.emit(this.console);
   }
 
   execute(): void {

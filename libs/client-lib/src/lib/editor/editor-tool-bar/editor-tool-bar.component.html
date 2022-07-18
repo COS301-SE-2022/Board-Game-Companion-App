@@ -33,7 +33,10 @@
             View
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "initialiseThemes()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Theme</a>
+            <a (click) = "initialiseThemes()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Theme</a>
+            <a (click) = "toggleSideBar()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "hide" : "show"}} side bar</a>
+            <a (click) = "toggleConsole()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "hide" : "show"}} console</a>
+            
         </div>
     </div>
 
