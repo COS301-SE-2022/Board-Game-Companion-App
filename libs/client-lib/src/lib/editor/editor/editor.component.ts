@@ -5,6 +5,8 @@ import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ActivatedRoute } from '@angular/router';
+import { find } from '../../shared/models/find';
+import { replace } from '../../shared/models/replace';
 interface message{
   message: string;
   class: string;
@@ -129,12 +131,24 @@ export class EditorComponent implements OnInit{
     this.editorBody.cut();
   }
 
-  showFind(): void{
-    this.editorBody.showFind();
+  find(value:find): void{
+    this.editorBody.find(value);
   }
 
-  showReplace(): void{
-    this.editorBody.showReplace();
+  findNext(): void{
+    this.editorBody.findNext();
+  }
+
+  findPrevious(): void{
+    this.editorBody.findPrevious(); 
+  }
+
+  replace(value:replace): void{
+    this.editorBody.find(value);
+  }
+
+  replaceAll(value:replace): void{
+    this.editorBody.replaceAll(value);
   }
 
 }
