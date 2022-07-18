@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   log = "login";
   loggedIn = false;
   admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com"];
+  searchValue = "";
   
   differ: KeyValueDiffer<string, any>;
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
@@ -94,7 +95,7 @@ export class HeaderComponent implements OnInit {
       
       if(el!=null)
       {
-        el.innerHTML = "logout";
+        el.innerHTML = "Logout";
 
         this.log = "logout";
       } 
@@ -104,7 +105,7 @@ export class HeaderComponent implements OnInit {
       this.loggedIn = false;
       if(el!=null)
       {
-        el.innerHTML = "login";
+        el.innerHTML = "Login";
 
         this.log = "login";
       } 

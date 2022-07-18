@@ -12,7 +12,7 @@ import { rating } from '../../shared/models/rating';
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  _id = "62c571451aad0198cf88306b";
+  _id = "62cb40735524bf033e649a02";
   current: script = empty;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";

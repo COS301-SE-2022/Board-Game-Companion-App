@@ -1,66 +1,78 @@
 <div id="container">
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th>
-                    Session ID
-                </th>
-                <th>
-                    Board Game
-                </th>
-                <th>
-                    Script Used
-                </th>
-                <th>
-                    Number of Opponents
-                </th>
-                <th>
-                    Score
-                </th>
-                <th>
-                    Time Played
-                </th>
-                <th>
-                    Result
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    View
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let results of listResults">
-                <th>
-                    {{results.getID()}}
-                </th>
-                <th>
-                    {{results.getBoardGame()}}
-                </th>
-                <th>
-                    {{results.getScript()}}
-                </th>
-                <th>
-                    {{results.getNumOpponents()}}
-                </th>
-                <th>
-                    {{results.getScore()}}
-                </th>
-                <th>
-                    {{results.getTimePlayed()}}
-                </th>
-                <th>
-                    {{results.getResult()}}
-                </th>
-                <th>
-                    {{results.getDate()}}
-                </th>
-                <th>
-                    <button (click) = "viewSession(results.getID())">...</button>
-                </th>
-            </tr>
-        </tbody>
-    </table>
+    <div id = "headInput">
+        <select id="sorting" class="btn px-2 py-1 font-bold">
+            <option selected>Alphabetical</option>
+            <option value="amount">Amount</option>
+        </select>
+        <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+        <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
+        <input id = "textInput">
+        <h1>Your game sessions</h1>
+    </div>
+    <div id = "content">
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Session:
+                    </th>
+                    <th>
+                        Game:
+                    </th>
+                    <th>
+                        Script:
+                    </th>
+                    <th>
+                        Score:
+                    </th>
+                    <th>
+                        Play Time:
+                    </th>
+                    <th>
+                        Players
+                    </th>
+                    <th>
+                        Result:
+                    </th>
+                    <th>
+                        Date:
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let results of listResults">
+                    <td>
+                        {{results.getID()}}
+                    </td>
+                    <td>
+                        {{results.getBoardGame()}}
+                    </td>
+                    <td>
+                        {{results.getScript()}}
+                    </td>
+                    <td>
+                        {{results.getScore()}}
+                    </td>
+                    <td>
+                        {{results.getTimePlayed()}}
+                    </td>
+                    <td>
+                        {{results.getNumOpponents()}}
+                    </td>
+                    <td>
+                        {{results.getResult()}}
+                    </td>
+                    <td>
+                        {{results.getDate()}}
+                    </td>
+                    <td>
+                        <button (click) = "viewSession(results.getID())" id = "explore">Explore</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

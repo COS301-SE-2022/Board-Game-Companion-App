@@ -5,6 +5,9 @@ import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ActivatedRoute } from '@angular/router';
+import { find } from '../../shared/models/find';
+import { replace } from '../../shared/models/replace';
+import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
 interface message{
   message: string;
   class: string;
@@ -31,6 +34,8 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
+  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
+  @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   currentScript:script = empty;
 
   constructor(private readonly scriptService:ScriptService, private route: ActivatedRoute){
@@ -99,13 +104,72 @@ export class EditorComponent implements OnInit{
     }
   }
 
-  toggleSideBar(): void{
-    this.sideBarWidth =  this.sideBarWidth == 20 ? 100 : 20;
-    this.updateDimensions();    
-  }
 
   changesTracker(value:number): void{
     this.editorStatusBar.updateStatusOfChanges(value);
+  }
+
+  undo(): void{
+    this.editorBody.undo();
+  }
+
+  redo(): void{
+    this.editorBody.redo();
+  }
+
+  copy(): void{
+    this.editorBody.copy();
+  }
+
+  paste(): void{
+    this.editorBody.paste();
+  }
+
+  cut(): void{
+    this.editorBody.cut();
+  }
+
+  find(value:find): void{
+    this.editorBody.find(value);
+  }
+
+  findNext(): void{
+    this.editorBody.findNext();
+  }
+
+  findPrevious(): void{
+    this.editorBody.findPrevious(); 
+  }
+
+  replace(value:replace): void{
+    this.editorBody.replace(value);
+  }
+
+  replaceAll(value:replace): void{
+    this.editorBody.replaceAll(value);
+  }
+
+  sideBarResize(value:number): void{
+    if(value <= this.editorSideBar.getMaxWidth()){
+      this.sideBarWidth = value;
+      this.updateDimensions();
+    }
+  }
+
+  toggleSideBar(value:boolean): void{
+    if(value){
+      this.editorSideBar.open();
+    }else{
+      this.editorSideBar.close();
+    }
+  }
+
+  toggleConsole(value:boolean): void{
+    if(value){
+      this.editorConsole.open();
+    }else{
+      this.editorConsole.close();
+    }
   }
 
 }

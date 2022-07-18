@@ -2,30 +2,35 @@
     <nav class="navbar navbar-expand-md relative flex items-center w-full justify-between">
         <div class=" w-full flex flex-wrap items-center justify-between ">
             <div class="navbar-collapse collapse grow items-center">
-                <ul class="navbar-nav pb-0 lg:flex lg:flex-row ">
-                    <li class="nav-item shadow-xl">
-                        <a (click)="moveTo('home')" id = "logo"><img src = "assets/images/logo.png" alt = "logo"></a>
+                <ul class="navbar-nav lg:flex lg:flex-row ">
+                    <li class="nav-item px-1 py-1">
+                        <a (click)="moveTo('home')" id = "logo"><img id = "logs" src = "assets/images/logo.png" alt = "logo"></a>
                     </li>
-                    <li class="nav-item p-3">
-                        <a class = "nav-link block" (click)="moveTo('collections')">Collections</a>
+                    <li class="nav-item  px-4 pt-2.5">
+                        <a class = "nav-link block p-0" (click)="moveTo('collections')">Collections</a>
                     </li>
-                    <li class="nav-item p-3">
-                        <a class = "nav-link block" (click)="moveTo('board-game-search')">Board Games</a>
+                    <li class="nav-item px-4 pt-2.5">
+                        <a class = "nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
                     </li>
-                    <li class="nav-item p-3">
-                        <a class = "nav-link block" (click)="moveTo('scripts')">Scripts</a>
+                    <li class="nav-item px-4 pt-2.5">
+                        <a class = "nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
                     </li>
-                    <li *ngIf = "loggedIn === true && isAdmin()" class="nav-item p-3">
-                        <a class = "nav-link block" (click)="moveTo('admin')">Administration</a>
+                    <li *ngIf = "loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5">
+                        <a class = "nav-link block p-0" (click)="moveTo('admin')">Administration</a>
                     </li>
-                    <li class="nav-item p-3">
-                        <a class = "nav-link block" (click)="moveTo('gameSessions')">Game Sessions</a>
+                    <li class="nav-item px-4 pt-2.5">
+                        <a class = "nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
                     </li>
                 </ul>
-                <ul id = "login" class="navbar-nav pb-0 lg:flex lg:flex-row ">
-                    <li  class="nav-item p-3" id="logButton">
-                        <img id = "prof" src="">
-                        <a id = "l" class = "nav-link block" (click)="moveTo('login')">Login</a>
+                <div id = "con">
+                    <img id = "dice" src = "assets/images/Dice.png" alt = "logo">
+                </div>
+                <ul id = "login"  class="navbar-nav lg:flex lg:flex-row ">
+                    <input class = "block" name = "searchValue" type="search">
+                    <button (click)="moveTo('board-game-search')" id = "search" class="btn px-2 font-bold">Search</button>
+                    <span></span>
+                    <li  class="nav-item pr-4 pt-2.5" id="logButton">
+                        <a id = "l" class = "nav-link block p-0" (click)="moveTo('login')">Login</a>
                     </li>
                 </ul>
             </div>
