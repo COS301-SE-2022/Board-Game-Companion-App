@@ -37,6 +37,7 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
         result.push(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
         result.push(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
+        result.push(chevrotain.createToken({name:"Dot",pattern:/./}));
 
         //relational operators
         const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
