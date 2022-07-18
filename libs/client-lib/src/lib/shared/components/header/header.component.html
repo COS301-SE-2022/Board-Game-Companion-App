@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <header>
     <nav class="flex inline-block align-middle navbar-expand-md flex flex-wrap items-center w-full justify-between">
         <div class="flex w-full flex-wrap items-center justify-between">
@@ -70,34 +69,7 @@
                             <a id="l" class="nav-link block p-0" (click)="moveTo('login')">Login</a>
                         </li>
                     </ul>
-=======
-<header *ngIf = "false">
-    <nav class="navbar navbar-expand-md relative flex items-center w-full justify-between">
-        <div class=" w-full flex flex-wrap items-center justify-between ">
-            <div class="navbar-collapse collapse grow items-center">
-                <ul class="navbar-nav lg:flex lg:flex-row ">
-                    <li class="nav-item px-1 py-1">
-                        <a (click)="moveTo('home')" id = "logo"><img id = "logs" src = "assets/images/logo.png" alt = "logo"></a>
-                    </li>
-                    <li class="nav-item  px-4 pt-2.5">
-                        <a class = "nav-link block p-0" (click)="moveTo('collections')">Collections</a>
-                    </li>
-                    <li class="nav-item px-4 pt-2.5">
-                        <a class = "nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
-                    </li>
-                    <li class="nav-item px-4 pt-2.5">
-                        <a class = "nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
-                    </li>
-                    <li *ngIf = "loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5">
-                        <a class = "nav-link block p-0" (click)="moveTo('admin')">Administration</a>
-                    </li>
-                    <li class="nav-item px-4 pt-2.5">
-                        <a class = "nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
-                    </li>
-                </ul>
-                <div id = "con">
-                    <img id = "dice" src = "assets/images/Dice.png" alt = "logo">
->>>>>>> e40f25f81087e724dde4b148a95bb8d13771537d
+
                 </div>
             </div>
 
