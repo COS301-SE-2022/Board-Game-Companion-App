@@ -8,7 +8,7 @@
     flex-direction: column;
 }
 h1{
-    font-size: 48px;
+    font-size: xxx-large;
     text-decoration: underline;
     color: $Pcolour-2;
 }
@@ -101,6 +101,8 @@ i{
     #actions{
         margin: 0 auto;
     }
+
+
 }
 
 @media (max-width:639px){
@@ -125,5 +127,17 @@ i{
     #actions{
         margin-bottom:1em;
     }
-    
+
+    #heading{
+        width:90%;
+        height:60%;
+    }
+
+    // #searchPortion{
+    //     width: 
+    // }
+
+    // #sortingPortion{
+    //     width:
+    // }
 }

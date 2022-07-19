@@ -1,20 +1,20 @@
 <div id="CollectionsList">
     <!--Heading-->
-    <div>
+    <div id="heading">
         <h1 class="font-bold">Collections</h1>
     </div>
 
     <!--Search&Sort-->
     <div class="h-8 flex mt-2">
         <!--Search-->
-        <div class="flex items-center w-1/2">
+        <div id="searchPortion" class="flex items-center w-2/3 sm:w-1/2">
             <input id="textInput" class="h-5/6 w-2/3 px-2 py-1 mt-0 border rounded-xl drop-shadow-lg">
             <button id="search" class="btn font-bold h-5/6 w-1/6 px-2 py-1 sm:text-sm"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i> <a id="word">Search </a></button>
         </div>
 
 
         <!--Sorting-->
-        <div class="w-1/2">
+        <div id="sortingPortion" class="w-1/3 sm:w-1/2">
             <select id="sorting" class="btn px-2 py-1 font-bold">
                 <option disabled selected>Sort By...</option>
                 <option value="alphabetical">Alphabet</option>
@@ -49,8 +49,8 @@
                 </div>
 
                 <!--Actions-->
-                <div id="actions" class="mt-2">
-                    <div class="relative sm:inset-y-1/2">
+                <div id="actions" class="mt-2 sm:flex justify-center sm:mt-0">
+                    <div class="relative sm:py-5">
                         <button (click)="viewCollection(collection.name)" id="explore"
                             class="btn text-base px-4 py-2 mr-0">Explore</button>
                         <button (click)="deletion(collection.name)" id="remove" class="btn px-4 py-2"><i
