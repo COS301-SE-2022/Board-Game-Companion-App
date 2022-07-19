@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: 'editor',
-    loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
+    loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
   },
   {
     path: 'scripts',

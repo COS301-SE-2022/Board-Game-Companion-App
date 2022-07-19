@@ -14,6 +14,7 @@ export class GameSessionsComponent implements OnInit {
   constructor(private router:Router){}
 
   listResults: fetchSessionResults[] = new Array<fetchSessionResults>();
+  public search = "";
 
   viewSession(n:string)
   {
@@ -40,6 +41,18 @@ export class GameSessionsComponent implements OnInit {
         this.listResults.push(new fetchSessionResults(game,script,time,date,num,score,result,id));
         
       }
+    }
+  }
+
+  Onsearch(): void
+  {
+    if(this.listResults.length!=0)
+    {
+      let temp: fetchSessionResults[] = new Array<fetchSessionResults>();
+      temp = this.listResults;
+      this.listResults = new Array<fetchSessionResults>();
+      this.listResults = temp.filter( (res) => res.getBoardGame().toLowerCase() === this.search.toLowerCase());
+      console.log("search on: "+ this.search.toUpperCase());
     }
   }
 }
