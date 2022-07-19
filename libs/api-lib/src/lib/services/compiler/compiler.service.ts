@@ -170,7 +170,7 @@ class parser extends CstParser
     Cards: ParserMethod<unknown[], CstNode>;
     Players: ParserMethod<unknown[], CstNode>;
     End_Game: ParserMethod<unknown[], CstNode>;
-    Parameters: ParserMethod<unknown[], CstNode>;
+    nParameters: ParserMethod<unknown[], CstNode>;
     CardEffect : ParserMethod<unknown[], CstNode>;
     CardCondition: ParserMethod<unknown[], CstNode>;
     TypeList: ParserMethod<unknown[], CstNode>;
@@ -189,11 +189,11 @@ class parser extends CstParser
     Declaration: ParserMethod<unknown[], CstNode>;
     Assignment: ParserMethod<unknown[], CstNode>;
     FlowControl: ParserMethod<unknown[], CstNode>;
-    Variable : ParserMethod<unknown[], CstNode>;
+    nVariable : ParserMethod<unknown[], CstNode>;
     Expression: ParserMethod<unknown[], CstNode>;
     MethodCall:ParserMethod<unknown[], CstNode>;
     Arguments:ParserMethod<unknown[], CstNode>;
-    Condition:ParserMethod<unknown[], CstNode>;
+    nCondition:ParserMethod<unknown[], CstNode>;
     ForLoopInitialiser:ParserMethod<unknown[], CstNode>;
     ForLoopCondition:ParserMethod<unknown[], CstNode>;
     ForLoopStep:ParserMethod<unknown[], CstNode>;
@@ -414,12 +414,12 @@ class parser extends CstParser
             $.CONSUME(Class)
             $.CONSUME(tUserDefinedIdentifier)
             $.CONSUME(OpenBrace)
-            $.SUBRULE($.Parameters),
+            $.SUBRULE($.nParameters),
             $.SUBRULE($.CardEffect )
             $.SUBRULE($.CardCondition)
             $.CONSUME(CloseBrace)
         });
-        $.RULE("Parameters", () => {
+        $.RULE("nParameters", () => {
             $.CONSUME(tParameters )
             $.CONSUME(OpenBrace)
             $.SUBRULE($.TypeList)
@@ -476,7 +476,7 @@ class parser extends CstParser
                 $.CONSUME(OpenBrace)  
                 $.SUBRULE($.statements )
                 $.CONSUME(CloseBrace)  
-                $.SUBRULE($.Condition )
+                $.SUBRULE($.nCondition )
                 $.CONSUME1(tUserDefinedIdentifier)
                 $.CONSUME1(OpenBracket)
                 $.SUBRULE1($.FormalParameters)
@@ -538,7 +538,7 @@ class parser extends CstParser
                             $.SUBRULE6($.statements)}},
 
                     { ALT: () =>{ $.CONSUME(tReturn )
-                            $.SUBRULE($.Variable )}},
+                            $.SUBRULE($.nVariable )}},
                 ])
             });
         });
@@ -556,7 +556,7 @@ class parser extends CstParser
                                 $.CONSUME1(OpenBracket )
                             $.CONSUME1(StringLiteral  )
                             $.CONSUME(Comma )
-                            $.SUBRULE($.Variable )
+                            $.SUBRULE($.nVariable )
                             $.CONSUME1(CloseBracket )
                             
                             }},
@@ -572,7 +572,7 @@ class parser extends CstParser
                             $.CONSUME3(OpenBracket )
                         $.CONSUME3(StringLiteral )
                         $.CONSUME1(Comma )
-                        $.SUBRULE1($.Variable )
+                        $.SUBRULE1($.nVariable )
                         $.CONSUME3(CloseBracket )
                         }},
 
@@ -651,7 +651,7 @@ class parser extends CstParser
                             ALT: () =>{ 
                             $.CONSUME(While )
                             $.CONSUME(OpenBracket )
-                            $.SUBRULE($.Condition)
+                            $.SUBRULE($.nCondition)
                             $.CONSUME(CloseBracket )
                             $.CONSUME(OpenBrace )
                             $.SUBRULE($.statements)
@@ -668,18 +668,18 @@ class parser extends CstParser
                                 $.SUBRULE($.ForLoopStep )
                                 $.CONSUME1(CloseBracket )
                                 $.CONSUME1(OpenBrace )
-                                $.SUBRULE($.statements)
+                                $.SUBRULE1($.statements)
                                 $.CONSUME1(CloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
                                 $.CONSUME(Do )
                                 $.CONSUME2(OpenBrace )
-                                $.SUBRULE($.statements )
+                                $.SUBRULE2($.statements )
                                 $.CONSUME2(CloseBrace )
                                 $.CONSUME1(While )
                                 $.CONSUME2(OpenBracket )
-                                $.SUBRULE1($.Condition )
+                                $.SUBRULE1($.nCondition )
                                 $.CONSUME2(CloseBracket )
                         }},
                     ])
@@ -688,14 +688,14 @@ class parser extends CstParser
 
                 $.RULE("ForLoopInitialiser", () => {
                     $.OPTION(() => {
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                     })
                 });
 
 
                 $.RULE("ForLoopCondition", () => {
                     
-                   $.SUBRULE($.Condition)
+                   $.SUBRULE($.nCondition)
                     
                 });
                 $.RULE("ForLoopStep", () => {
@@ -706,7 +706,7 @@ class parser extends CstParser
                  $.RULE("Branch", () => {
                     $.CONSUME(If )
                     $.CONSUME(OpenBracket )
-                    $.SUBRULE($.Condition)
+                    $.SUBRULE($.nCondition)
                     $.CONSUME(CloseBracket )
                     $.CONSUME(OpenBrace )
                     $.SUBRULE($.statements)
@@ -740,7 +740,7 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 $.CONSUME(tVariable)
-                                $.SUBRULE($.Variable )
+                                $.SUBRULE($.nVariable )
                             }}
                 ])
 
@@ -759,7 +759,7 @@ class parser extends CstParser
 
                  $.RULE("LHS", () => {
                     
-                    $.SUBRULE($.Variable )
+                    $.SUBRULE($.nVariable )
                  });
 
                  $.RULE("RHS", () => {
@@ -820,12 +820,13 @@ class parser extends CstParser
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Expression)
+                        $.SUBRULE($.nVariable)
                         $.SUBRULE($.Unary_Operator)
                 }},
                 { 
                     ALT: () =>{ 
                         $.SUBRULE1($.Unary_Operator)
+                        $.SUBRULE1($.nVariable)
                 }}
         ])
     });
@@ -900,7 +901,7 @@ class parser extends CstParser
 
         $.RULE("Ternary", () => {
                                 
-            $.SUBRULE($.Condition)
+            $.SUBRULE($.nCondition)
             $.CONSUME(tEqual)
             $.SUBRULE($.Ternary_Instr )
             $.CONSUME(Colon)
@@ -913,7 +914,7 @@ class parser extends CstParser
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                 }},
                 { 
                     ALT: () =>{ 
@@ -922,32 +923,38 @@ class parser extends CstParser
         ])
     });
 
-    $.RULE("Condition", () => {
+    $.RULE("nCondition", () => {
                                 
         $.OR([
             { 
                 ALT: () =>{ 
                     $.CONSUME(OpenBracket)
-                    $.SUBRULE($.Condition)
+                    $.SUBRULE($.nCondition)
                     $.CONSUME(CloseBracket)
             }},
             { 
                 ALT: () =>{ 
                     $.CONSUME(Not)
                     $.CONSUME1(OpenBracket)
-                    $.SUBRULE1($.Condition)
+                    $.SUBRULE1($.nCondition)
                     $.CONSUME1(CloseBracket)
             }},
             { 
                 ALT: () =>{ 
                     $.SUBRULE($.bool_expr)
                     $.SUBRULE($.Logical_Operator )
-                    $.SUBRULE1($.bool_expr)
+                    $.SUBRULE1($.nCondition)
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.Expression)
+                    $.SUBRULE($.nVariable)
                     $.SUBRULE($.Relational_Operator  )
+                    $.SUBRULE($.Expression)
+            }},
+            { 
+                ALT: () =>{ 
+                    $.SUBRULE($.Const)
+                    $.SUBRULE1($.Relational_Operator  )
                     $.SUBRULE1($.Expression)
             }}
     ])
@@ -966,11 +973,7 @@ class parser extends CstParser
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Variable)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.SUBRULE($.Condition)
+                        $.SUBRULE($.nVariable)
                 }}
         ])
         });
@@ -1045,7 +1048,7 @@ class parser extends CstParser
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                 }},
         ])
         });
@@ -1074,7 +1077,7 @@ class parser extends CstParser
         });
 
         
-        $.RULE("Variable", () => {
+        $.RULE("nVariable", () => {
                                 
             $.OPTION(() => {
                 $.CONSUME(tUserDefinedIdentifier)
