@@ -1,0 +1,125 @@
+<h1 class = "text-gray-900 text-xl font-medium mb-2">Train</h1>
+
+<div class="model-block w-full shadow-sm text-white p-2 mb-4">
+    <div class="mb-4">
+        <label for="data-partition" class="form-label font-medium"><b>Data</b></label>
+        <input class="form-control border-2" type="file" id="formFile">
+    </div>
+
+    <div class = "mb-4">
+        <label for="data-partition" class="form-label font-medium"><b>Data Partition</b></label>
+        <input (click) = "checkTrainingDataPercentage()" type="range" class="form-range" min="0" max="100" step="2" id="data-partition" [(ngModel)] = "trainingData">
+        <p>Training: {{trainingData}}%</p>
+        <p>Test: {{100- trainingData}}%</p>
+    </div>
+
+    <div class = "mb-4 row">
+        <div class = "col-sm-6">
+            <label for="data-partition" class="form-label font-medium"><b>Input</b></label>
+                
+            <div class="w-full">
+                <div class="input-group relative w-full mb-4">
+                    <input [(ngModel)] = "inputFeature" name = "inputFeature" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <button (click) = "addInputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                        <i class="far fa-plus fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                <div class = "w-full h-6 text-gray-700 px-1 text-sm" *ngFor = "let feature of inputs">
+                    {{feature}}
+                </div>
+            </div>
+        </div>
+        <div class = "col-sm-6">
+            <label for="data-partition" class="form-label font-medium"><b>Output</b></label>
+            <div class="w-full">
+            
+            <div class="input-group relative w-full mb-4">
+                    <input [(ngModel)] = "outputLabel" name = "outputLabel" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <button (click) = "addOutputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                        <i class="far fa-plus fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                <div class = "w-full h-6 text-gray-700 px-1 text-sm" *ngFor = "let feature of outputs">
+                    {{feature}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "w-full text-right">
+        <button type="button" class="inline-block px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">analyse</button>
+    </div>
+</div>
+
+
+<div class="model-block w-full shadow-sm text-white p-2">
+    <div class="mb-4">
+        <label for="data-partition" class="form-label font-medium"><b>Hidden Layers</b></label>
+    </div>
+
+    <div class = "row">
+        <div class = "col-sm-6 flex flex-row">
+            <label for="Nodes" class="form-label font-medium">Nodes</label>
+            <input [(ngModel)] = "nodes" name = "nodes" class="form-control p-1 ml-4" type="number" min="1" max = "200" placeholder="1" aria-label="nodes">
+        </div>
+        <div class = "col-sm-6">
+            <div class = "activation-funtion-menu">
+                <button class = "menu-btn bg-gray-300">
+                    {{activation}}
+                </button>
+                <div class = "menu-content absolute">
+                    <a (click)="setActivation('elu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">elu</a>
+                    <a (click)="setActivation('hardSigmoid')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">hardSigmoid</a>
+                    <a (click)="setActivation('linear')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">linear</a>
+                    <a (click)="setActivation('relu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">relu</a>
+                    <a (click)="setActivation('relu6')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">relu6</a>
+                    <a (click)="setActivation('selu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">selu</a>
+                    <a (click)="setActivation('sigmoid')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">sigmoid</a>
+                    <a (click)="setActivation('softmax')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">softmax</a>
+                    <a (click)="setActivation('softplus')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">softplus</a>
+                    <a (click)="setActivation('tanh')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">tanh</a>
+                </div>
+            </div>
+        </div>
+        <div class = "col-sm-12 text-right mt-3">
+            <button (click) = "addLayer()" type="button" class="inline-block px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">add</button>        
+        </div>
+    </div>
+
+    <div class = "border-2 p-1 mt-3" *ngFor = "let layer of hiddenLayers">
+        <div class = "row">
+            <div class = "col-sm-4">
+                <label for="Nodes" class="form-label font-medium">Layer {{layer.index}}</label>
+            </div>
+            <div class = "col-sm-4 flex flex-row">
+                <label for="Nodes" class="form-label font-medium">Nodes</label>
+                <input [(ngModel)] = "layer.nodes" name = "nodes" class="form-control px-1 ml-4" type="number" min="1" max = "200" placeholder="1" aria-label="nodes">
+            </div>
+            <div class = "col-sm-4">
+                <div class = "activation-funtion-menu">
+                    <button class = "menu-btn bg-gray-300">
+                        {{layer.activation}}
+                    </button>
+                    <div class = "menu-content absolute">
+                        <a (click)="setActivationByIndex(layer.index,'elu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">elu</a>
+                        <a (click)="setActivationByIndex(layer.index,'hardSigmoid')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">hardSigmoid</a>
+                        <a (click)="setActivationByIndex(layer.index,'linear')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">linear</a>
+                        <a (click)="setActivationByIndex(layer.index,'relu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">relu</a>
+                        <a (click)="setActivationByIndex(layer.index,'relu6')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">relu6</a>
+                        <a (click)="setActivationByIndex(layer.index,'selu')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">selu</a>
+                        <a (click)="setActivationByIndex(layer.index,'sigmoid')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">sigmoid</a>
+                        <a (click)="setActivationByIndex(layer.index,'softmax')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">softmax</a>
+                        <a (click)="setActivationByIndex(layer.index,'softplus')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">softplus</a>
+                        <a (click)="setActivationByIndex(layer.index,'tanh')" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600">tanh</a>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>

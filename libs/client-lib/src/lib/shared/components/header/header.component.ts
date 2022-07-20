@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/editor']);
+      this.router.navigate(['/models']);
     
   }
 
