@@ -61,7 +61,7 @@ export class GameSessionsComponent implements OnInit {
     }
   }
 
-  onSort()
+  onSort(): void
   {
     console.log(this.selected);
     this.listResults = new Array<fetchSessionResults>();
@@ -79,7 +79,7 @@ export class GameSessionsComponent implements OnInit {
           {
             return -1;
           }
-          if (gameA > gameB) 
+          if (gameA > gameB)
           {
             return 1;
           }

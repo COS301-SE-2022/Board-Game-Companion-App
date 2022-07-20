@@ -1,12 +1,12 @@
 <div id="CollectionsList">
     <h1 class = "font-bold">Collections</h1>
-    <input id = "textInput">
-    <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
-    <select id="sorting" class="btn px-2 py-1 font-bold">
-        <option selected>Alphabetical</option>
-        <option value="amount">Amount</option>
+    <input id = "textInput" [(ngModel)]="searchedValue">
+    <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
+    <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
+        <option selected value="alphabetical">Alphabetical</option>
+        <!-- <option value="amount">Amount</option> -->
     </select>
-    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+    <button id = "sort" class="btn px-2 py-1 font-bold" (click)="onSort()">Sort</button>
     <div id = "CollectionsContent">
         <div *ngFor="let collection of collections" class="collectionDiv">
             <span id ="title">
