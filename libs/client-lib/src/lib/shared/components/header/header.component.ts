@@ -1,4 +1,4 @@
-import { Component, KeyValueDiffer, KeyValueDiffers, OnInit } from '@angular/core';
+import { Component, ElementRef, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
@@ -11,7 +11,9 @@ import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
+  // @ViewChild('menu', {static: false, read: ElementRef}) 
+  // burgerbtn: any; //similar to getElementById
+  ShowMenu = false; 
   UserDetails: userDetails | undefined;
   log = "login";
   loggedIn = false;
@@ -47,6 +49,12 @@ export class HeaderComponent implements OnInit {
     }else
       this.router.navigate(['/editor']);
     
+  }
+
+  toggleMenu():void{
+    console.log('toggle function called');
+    // this.burgerbtn.nativeElement.classList.toggle('translate-x-0');
+    this.ShowMenu = !this.ShowMenu;
   }
 
   isAdmin():boolean{
@@ -113,3 +121,5 @@ export class HeaderComponent implements OnInit {
     }
   }
 }
+
+
