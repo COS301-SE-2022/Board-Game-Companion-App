@@ -31,9 +31,8 @@ describe('EditorComponent', () => {
     expect(component.updateDimensions).toHaveBeenCalled;
   });
 
-  it('updateDimensions should be called in toggleSideBar', ()=>{
-    component.toggleSideBar();
-    expect(component.updateDimensions).toHaveBeenCalled;
+  it('updateDimensions', ()=>{
+    expect(component.updateDimensions).toBeDefined();
   });
 
 });

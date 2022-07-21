@@ -100,16 +100,13 @@ i{
 }
 
 @media (min-width: 640px){
-    #searchIcon{
+    #searchIcon,
+    #exploreIcon{
         display: none;
     }
 
     #actions{
         margin: 0 auto;
-    }
-
-    #exploreIcon{
-        display:none;
     }
 
 }
@@ -153,6 +150,25 @@ i{
     }
     #expWord{
         display: none;
+    }
+
+    #explore{
+        display: flex;
+        align-items: center;
+        float:left;
+        height:100%;
+        // padding-top: 2px;
+        // padding-bottom: 2px;
+        
+    }
+
+    #remove{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        float:left;
+        padding-left: 0px; 
+        margin-left:0px;  
     }
     // #sortingPortion{
     //     width:

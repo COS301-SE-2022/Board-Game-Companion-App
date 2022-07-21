@@ -3,9 +3,8 @@
 #container{
     width: 80%;
     margin: auto;
-    // margin-left: 5em;
-    // margin-right: 5em;
-    margin-top: 5em;
+
+    margin-top: 5rem;
 }
 table{
     width: 100%;
@@ -14,30 +13,31 @@ table{
 
 #content
 {
+    width: 100%;
     background-color: white;
     height: auto;
 }
 
 button{
-    padding: 2em;
+    padding: 2rem;
 }
 
 h1{
-    font-size: 48px;
+    font-size: 3em;
     font-weight: bold;
     color: $Pcolour-2;
     background-color: $Pcolour-3;
-    padding: 8px;
-    width: 23%;
+    padding: 0.5rem;
+    width: 6em;
     border-radius: 10px 10px 0 0;
 }
 img{
     width: 97px;
     height: 76px;
-    margin-left: 16px;
-    margin-bottom: 16px;
-    margin-top: 16px;
-    margin-right: 80px;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding-right: 1rem;
 }
 thead{
     width: 100%;
@@ -47,27 +47,26 @@ thead{
 #explore{
     background-color: $Pcolour-3;
     color: $Pcolour-2;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
-    margin-right: 1em;
 }
 #remove{
     background-color: $Pcolour-4;
-    font-size: 16px;
+    font-size: 1rem;
+    margin-right: 1rem;
 }
 i{
     color: white;
 }
 th{
-    //font-size: 32px;
+
+    font-size: 2rem;
     font-weight: bold;
-    padding-right: 84px;
     white-space: nowrap;
 }
 td{
     font-size: 24px;
     color: black;
-    font-weight: bold;
 }
 .board-game{
     border-bottom: solid 3px $Pcolour-2;
@@ -80,6 +79,7 @@ input{
     float: right;
     margin-right: 16px;
     margin-top: 28px;
+    border: solid 1px  $Pcolour-2;
 }
 input:focus{
     outline: none;

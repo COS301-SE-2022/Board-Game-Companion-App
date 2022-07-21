@@ -1,28 +1,27 @@
-<div id="container">
-    <div>
-        <select id="sorting" class="btn px-2 py-1 font-bold">
-            <option selected>Alphabetical</option>
-            <option value="amount">Amount</option>
-        </select>
-        <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
-        <button id="search" class="btn px-2 py-1 font-bold">Search</button>
-        <input id="textInput">
-        <h1>{{name}}</h1>
-    </div>
-
+<div id = "container">
+    <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
+        <option selected value="alphabetical">Alphabetical</option>
+        <option value="age">Age</option>
+        <option value="max">Max play-time</option>
+    </select>
+    <button id = "sort" class="btn px-2 py-1 font-bold" (click)="onSort()">Sort</button>
+    <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
+    <input id = "textInput" [(ngModel)]="searchedValue">
+    <h1>{{name}}</h1>
+   
     <div id="content">
-        <table class="table-fixed">
-            <thead class="">
-                <tr>
-                    <th class="w-1/6"></th>
-                    <th class="w-2/6 text-3xl">Name</th>
-                    <th class="w-1/6 text-3xl">Players</th>
-                    <th class="w-1/6 text-2xl">Playing Time</th>
-                    <th class="w-1/6 text-3xl">Age</th>
-                    <th class="w-1/6 text-2xl">Category</th>
-                    <th class="w-1/6"></th>
-                    <th class="w-1/6"></th>
-                </tr>
+        <table class="table-auto">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Players</th>
+                <th>Time</th>
+                <th>Age</th>
+                <th>Category</th>
+                <th></th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let game of games; let i = index" class="collectionDiv" class="board-game">
