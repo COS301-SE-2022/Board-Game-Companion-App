@@ -11,33 +11,34 @@
             <!-- div 2 -->
             <div id="menu" class="relative w-full h-full flex-1 flex flex-col items-start sm:relative sm:flex-row mt-0">
                 <!-- primary items -->
-                <div  [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}"
-                    class="sm:flex items-center h-full">
-                    <ul class="flex list-none flex-col place-content-center sm:flex-row h-full">
-                        <li class="nav-item  px-4 pt-2.5 cursor-pointer">
+                <div  [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}" class="sm:flex h-full sm:mt-0 ml-auto mt-28" id="listDiv">
+                    <ul class="flex list-none flex-col place-content-center sm:flex-row sm:h-full h-auto">
+                        <li id="Collections" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
+                        <li id="BoardGames" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
+                        <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
                         </li>
                         <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('admin')">Administration</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
+                        <li id="GameSession" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5 sm:hidden cursor-pointer">
+                        <li id="Search" class="nav-item sm:px-4 pt-2.5 sm:hidden cursor-pointer">
+
                             <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Search</a>
                         </li>
                     </ul>
                 </div>
 
                 <!--middle dice-->
-                <div id="con" class="items-center content-center justify-between h-full pt-2.5">
-                    <div class="w-12">
+                <div id="con" class="hidden flex-1 sm:flex sm:px-8 pt-2.5 items-center justify-between h-full">
+                    <div class="w-12 mx-auto">
+
                     <img id="dice" src="assets/images/Dice.png" alt="logo" class="w-full">
                     </div>
 
@@ -64,9 +65,9 @@
             </div>
 
             <!--Hamburger Menu button-->
-            <div (click)="toggleMenu()" class="flex-0 ml-auto sm:hidden">
-                <button class="outline-none mobile-btn">
-                    <svg class=" w-10 h-8 text-white hover:text-green-500 " x-show="!showMenu" fill="none"
+            <div (click)="toggleMenu()" class="flex-0 h-full sm:hidden">
+                <button class="h-full outline-none mobile-btn">
+                    <svg class=" w-10 h-full text-white hover:text-green-500 " x-show="!showMenu" fill="none"
                         stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewBox="0 0 30 30"
                         stroke="currentColor">
                         <path d="M4 6h16M4 12h16M4 18h16"></path>

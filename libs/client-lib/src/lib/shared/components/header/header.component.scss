@@ -18,17 +18,18 @@ header{
 #menu{
     background-color: $Pcolour-2;
 }
-// ul{
-//     height: 5em;
-// }
 
-// li{
-//     height: 100%;
-//     font-size: 1.4em;
-//     font-weight: bold;
-//     margin-left: auto;
-//     float: left;
-// }
+#listDiv{
+    background-color:$Pcolour-2 ;
+}
+
+ul{
+    background-color:$Pcolour-2 ;
+}
+
+li{
+    background-color:$Pcolour-2 ;
+}
 
 // #login{
 //     margin-left: auto;
@@ -138,3 +139,34 @@ input:focus{
     margin-top: 13px;
     font-size: 14px;
 }
+
+@media (max-width: 639px){
+    #Collections{
+        padding-left: 21.5px;
+        padding-right: 21.5px;
+    }
+
+    #BoardGames{
+        padding: 13px;
+    }
+
+    #Search{
+        padding-left:38px;
+        padding-right:37.5px
+    }
+
+    #Scripts{
+        height:100%;
+        width:100%;
+    }
+
+    #GameSession{
+        padding-right:7.5px;
+        padding-left:7.5px;
+    }
+
+    .a{
+        text-align: center;
+    }
+}
+

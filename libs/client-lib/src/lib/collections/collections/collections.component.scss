@@ -12,11 +12,12 @@ h1{
     text-decoration: underline;
     color: $Pcolour-2;
 }
-.imgSpan
-{
+
+// .imgSpan
+// {
     // float: left;
     // padding-right: 2em;
-}
+// }
 
 #collectionDiv
 {
@@ -85,6 +86,11 @@ input:focus{
     font-weight: bold;
     margin-right: 1em;
 }
+
+#exploreIcon{
+    color: $Pcolour-2;
+}
+
 #remove{
     background-color: $Pcolour-4;
 }
@@ -94,14 +100,14 @@ i{
 }
 
 @media (min-width: 640px){
-    #searchIcon{
+    #searchIcon,
+    #exploreIcon{
         display: none;
     }
 
     #actions{
         margin: 0 auto;
     }
-
 
 }
 
@@ -133,10 +139,37 @@ i{
         height:60%;
     }
 
-    // #searchPortion{
-    //     width: 
-    // }
+    #explore{
+        width: 15%;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #remove{
+        width:15%;
+    }
+    #expWord{
+        display: none;
+    }
 
+    #explore{
+        display: flex;
+        align-items: center;
+        float:left;
+        height:100%;
+        // padding-top: 2px;
+        // padding-bottom: 2px;
+        
+    }
+
+    #remove{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        float:left;
+        padding-left: 0px; 
+        margin-left:0px;  
+    }
     // #sortingPortion{
     //     width:
     // }
