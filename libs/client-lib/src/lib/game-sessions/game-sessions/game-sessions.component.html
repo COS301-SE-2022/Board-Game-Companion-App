@@ -1,12 +1,13 @@
 <div id="container">
     <div id = "headInput">
-        <select id="sorting" class="btn px-2 py-1 font-bold">
-            <option selected>Alphabetical</option>
-            <option value="amount">Amount</option>
+        <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
+            <option selected value="alphabetical">Alphabetical</option>
+            <option value="score">Score</option>
+            <option value="date">Date</option>
         </select>
-        <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
-        <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
-        <input id = "textInput">
+        <button id = "sort" class="btn px-2 py-1 font-bold"  (click)="onSort()">Sort</button>
+        <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold">Search</button>
+        <input id = "textInput" [(ngModel)] = "search">
         <h1>Your game sessions</h1>
     </div>
     <div id = "content">
