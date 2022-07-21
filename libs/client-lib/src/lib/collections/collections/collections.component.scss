@@ -12,11 +12,12 @@ h1{
     text-decoration: underline;
     color: $Pcolour-2;
 }
-.imgSpan
-{
+
+// .imgSpan
+// {
     // float: left;
     // padding-right: 2em;
-}
+// }
 
 #collectionDiv
 {
@@ -85,6 +86,11 @@ input:focus{
     font-weight: bold;
     margin-right: 1em;
 }
+
+#exploreIcon{
+    color: $Pcolour-2;
+}
+
 #remove{
     background-color: $Pcolour-4;
 }
@@ -102,6 +108,9 @@ i{
         margin: 0 auto;
     }
 
+    #exploreIcon{
+        display:none;
+    }
 
 }
 
@@ -133,10 +142,18 @@ i{
         height:60%;
     }
 
-    // #searchPortion{
-    //     width: 
-    // }
-
+    #explore{
+        width: 15%;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #remove{
+        width:15%;
+    }
+    #expWord{
+        display: none;
+    }
     // #sortingPortion{
     //     width:
     // }
