@@ -10,6 +10,7 @@ describe('EditorToolBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditorToolBarComponent],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 
