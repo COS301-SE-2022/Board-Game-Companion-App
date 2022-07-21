@@ -8,37 +8,38 @@
     flex-direction: column;
 }
 h1{
-    font-size: 48px;
+    font-size: xxx-large;
     text-decoration: underline;
     color: $Pcolour-2;
 }
 .imgSpan
 {
-    float: left;
-    padding-right: 2em;
+    // float: left;
+    // padding-right: 2em;
 }
-.collectionDiv
+
+#collectionDiv
 {
     width: 90%;
-    height: 200px;
+    // height: 200px;
     margin: 2em;
     padding-top: 2em;
-    padding-bottom: 2em;
+    // padding-bottom: 2em;
     border-bottom: 3px solid $Pcolour-3;
 }
 #title
 {
     font-weight: bold;
-    font-size: 32px;
+    font-size:xx-large;
     color: $Pcolour-2;
-    float: left;
+    float:left;
     padding-right: 2em;
     padding-top: 1em;
 }
 input{
     border-radius: 10px;
-    height: 20px;
-    width: 400px;
+    // height: 20px;
+    // width: 400px;
     color: black;
     margin-top: 14px;
     margin-right: 16px;
@@ -49,18 +50,21 @@ input:focus{
 #search{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
-    font-size: 14px;
-    float: right;
+    font-size: small;
+}
+
+#searchIcon{
+    color: $Pcolour-3;  
 }
 #sort{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
-    font-size: 14px;
+    font-size: small;
     float: right;
 }
 #sorting{
     color: $Pcolour-2;
-    font-size: 14px;
+    font-size: small;
     float: right;
     background-color: white;
 }
@@ -71,13 +75,13 @@ input:focus{
 }
 #actions{
     float: right;
-    margin: 0 auto;
-    top: 50%;
+    // 
+    // top: 50%;
 }
 #explore{
     background-color: $Pcolour-3;
     color: $Pcolour-2;
-    font-size: 16px;
+    // font-size: 16px;
     font-weight: bold;
     margin-right: 1em;
 }
@@ -87,4 +91,53 @@ input:focus{
 i{
     transform: scale(1.3);
     color: white;
+}
+
+@media (min-width: 640px){
+    #searchIcon{
+        display: none;
+    }
+
+    #actions{
+        margin: 0 auto;
+    }
+
+
+}
+
+@media (max-width:639px){
+    #word{
+        display:none;
+    }
+
+    #textInput{
+        width:90%;
+        margin-left: 1px;
+        margin-right: 4px;
+    }
+
+    #sort{
+        display:none;
+    }
+
+    #sorting{
+        border: 1px solid $Pcolour-2;
+    }
+
+    #actions{
+        margin-bottom:1em;
+    }
+
+    #heading{
+        width:90%;
+        height:60%;
+    }
+
+    // #searchPortion{
+    //     width: 
+    // }
+
+    // #sortingPortion{
+    //     width:
+    // }
 }

@@ -1,44 +1,42 @@
 <header class="relative z-50">
-    <nav class="inline-block align-middle navbar-expand-md flex flex-wrap items-center w-full justify-between">
+    <nav class="inline-block align-middle navbar-expand-md flex flex-wrap items-center w-full h-12 justify-between">
         <div class="relative flex w-full h-full flex-wrap items-start flex-row">
 
             <!-- logo -->
-            <div class="">
-
-                <a (click)="moveTo('home')" id="logo"><img id="logs" src="assets/images/logo.png" alt="logo" mr-0 mt-0
+            <div class="h-full cursor-pointer pt-1">
+                <a (click)="moveTo('home')" id="logo"><img id="logs" src="assets/images/logo.png" alt="logo"
                         class="relative left-0"></a>
-
             </div>
 
             <!-- div 2 -->
-            <div id="menu" class="absolute w-full flex-1 flex flex-col items-start sm:relative sm:flex-row mt-10">
+            <div id="menu" class="relative w-full h-full flex-1 flex flex-col items-start sm:relative sm:flex-row mt-0">
                 <!-- primary items -->
                 <div  [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}"
-                    class="sm:flex items-center">
-                    <ul class="flex list-none flex-col place-content-center sm:flex-row">
-                        <li class="nav-item  px-4 pt-2.5">
+                    class="sm:flex items-center h-full">
+                    <ul class="flex list-none flex-col place-content-center sm:flex-row h-full">
+                        <li class="nav-item  px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5">
+                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5">
+                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
                         </li>
-                        <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5">
+                        <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('admin')">Administration</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5">
+                        <li class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
                         </li>
-                        <li class="nav-item px-4 pt-2.5 sm:hidden">
+                        <li class="nav-item px-4 pt-2.5 sm:hidden cursor-pointer">
                             <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Search</a>
                         </li>
                     </ul>
                 </div>
 
                 <!--middle dice-->
-                <div id="con" class="hidden flex-1 sm:flex items-center justify-between">
+                <div id="con" class="items-center content-center justify-between h-full pt-2.5">
                     <div class="w-12">
                     <img id="dice" src="assets/images/Dice.png" alt="logo" class="w-full">
                     </div>
@@ -49,12 +47,12 @@
                     <!--second portion-->
                     <div class="hidden sm:flex items-center justify-between mr-0">
                         <!--Search & login-->
-                        <ul id="login" class="navbar-nav lg:flex lg:flex-row ">
-                            <input class="w-72 h-6" name="searchValue" type="search">
+                        <ul id="login" class="navbar-nav h-full lg:flex lg:flex-row ">
+                            <input class="w-72 h-5" name="searchValue" type="search">
                             <button (click)="moveTo('board-game-search')" id="search"
                                 class="btn px-2 font-bold">Search</button>
                             <span></span>
-                            <li class="nav-item pr-4 pt-2.5" id="logButton">
+                            <li class="nav-item flex h-full pr-4 pt-2.5 cursor-pointer" id="logButton">
                                 <a id="l" class="nav-link block p-0" (click)="moveTo('login')">Login</a>
                             </li>
                         </ul>
