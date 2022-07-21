@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: 'editor',
-    loadChildren: () => import('./collections/collections.module').then(m=>m.CollectionsModule)
+    loadChildren: () => import('./editor/editor.module').then(m=>m.ScriptEditorModule)
   },
   {
     path: 'scripts',
