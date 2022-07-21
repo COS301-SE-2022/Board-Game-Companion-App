@@ -176,7 +176,6 @@ class parser extends CstParser
     TypeList: ParserMethod<unknown[], CstNode>;
     Type: ParserMethod<unknown[], CstNode>;
     statements: ParserMethod<unknown[], CstNode>;
-    bool_expr: ParserMethod<unknown[], CstNode>;
     Declarations: ParserMethod<unknown[], CstNode>;
     Actions: ParserMethod<unknown[], CstNode>;
     FormalParameters: ParserMethod<unknown[], CstNode>;
@@ -439,7 +438,10 @@ class parser extends CstParser
             $.CONSUME(OpenBrace)
             $.SUBRULE($.statements)
             $.CONSUME(tReturn)
-            $.SUBRULE($.bool_expr);
+            $.OR([
+                { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+            ])
             $.CONSUME(CloseBrace)
         });
         $.RULE("CardEffect", () => {
@@ -484,7 +486,10 @@ class parser extends CstParser
                 $.CONSUME1(OpenBrace)
                 $.SUBRULE1($.statements)
                 $.CONSUME(tReturn)
-                $.SUBRULE($.bool_expr);
+                $.OR([
+                    { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                    { ALT: () =>{ $.SUBRULE($.nVariable)}}
+                ])
                 $.CONSUME1(CloseBrace)
                 });
         })
@@ -506,7 +511,12 @@ class parser extends CstParser
             $.CONSUME(OpenBrace)
             $.SUBRULE($.statements)
             $.CONSUME(tReturn)
-            $.SUBRULE($.bool_expr);
+
+            $.OR([
+                { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+            ])
+
             $.CONSUME(CloseBrace)
             $.SUBRULE($.Actions);
         });
@@ -549,37 +559,30 @@ class parser extends CstParser
                         { ALT: () =>{ $.CONSUME(Input )
                             $.CONSUME(OpenBracket )
                             $.CONSUME(StringLiteral )
+                            this.OPTION(() => {
+                                $.CONSUME(Comma )
+                            $.SUBRULE($.nVariable )}
+                              );
                             $.CONSUME(CloseBracket )
                         }},
-
-                        { ALT: () =>{ $.CONSUME1(Input )
-                                $.CONSUME1(OpenBracket )
-                            $.CONSUME1(StringLiteral  )
-                            $.CONSUME(Comma )
-                            $.SUBRULE($.nVariable )
-                            $.CONSUME1(CloseBracket )
-                            
-                            }},
 
                         { ALT: () =>{ 
                             $.CONSUME(ConsoleInput )
                             $.CONSUME2(OpenBracket )
                         $.CONSUME2(StringLiteral )
+                        this.OPTION1(() => {
+                            $.CONSUME1(Comma )
+                            $.SUBRULE1($.nVariable )}
+                          );
                         $.CONSUME2(CloseBracket )
                     }},
 
-                        { ALT: () =>{ $.CONSUME1(ConsoleInput )
-                            $.CONSUME3(OpenBracket )
-                        $.CONSUME3(StringLiteral )
-                        $.CONSUME1(Comma )
-                        $.SUBRULE1($.nVariable )
-                        $.CONSUME3(CloseBracket )
-                        }},
+                        
 
                         { ALT: () =>{ $.CONSUME(Print )
-                            $.CONSUME4(OpenBracket )
+                            $.CONSUME3(OpenBracket )
                             $.SUBRULE($.Expression)
-                        $.CONSUME4(CloseBracket )
+                        $.CONSUME3(CloseBracket )
                         }},
 
                         { ALT: () =>{ $.CONSUME(ConsoleOutput )
@@ -596,8 +599,6 @@ class parser extends CstParser
                     $.OR([
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(tUserDefinedIdentifier )
-                        $.CONSUME(Dot )
                         $.SUBRULE($.MethodCall)
                     }},
                     { 
@@ -730,23 +731,27 @@ class parser extends CstParser
                     ])
                  });
                  $.RULE("Declarations", () => {
-                    $.OPTION(() => {
-                        $.OR([
-                            { 
-                                ALT: () =>{ 
-                                $.SUBRULE($.Declaration )
-                                $.SUBRULE($.Declarations )
-                            }},
-                            { 
-                                ALT: () =>{ 
+                    this.MANY(() => {
+                    
+                        
+                        
                                 $.CONSUME(tVariable)
                                 $.SUBRULE($.nVariable )
-                            }}
-                ])
+                                $.OPTION(() => {
+                                    $.SUBRULE($.Field )
+                                })
+                    
+                            })
 
 
                  });
 
+                 $.RULE("Declaration", () => {
+                                
+            
+                    $.CONSUME(tVariable)
+                    $.CONSUME(tUserDefinedIdentifier)
+                    $.SUBRULE($.Field)
                 });
 
 
@@ -793,25 +798,35 @@ class parser extends CstParser
                 $.OR([
                     { 
                         ALT: () =>{ 
-                        $.SUBRULE($.Unary)
+                        $.SUBRULE($.Unary_Operator)
+                        $.SUBRULE($.Value)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.SUBRULE($.Binary)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                            $.SUBRULE($.Ternary)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                            $.SUBRULE($.Const)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                        $.CONSUME(OpenBracket )
-                        $.SUBRULE($.Expression)
-                        $.CONSUME(CloseBracket )
+                            $.SUBRULE1($.Value)
+                            $.OR1([
+                            {
+                                ALT: () =>{ 
+                                    $.SUBRULE1($.Unary_Operator)
+                                }
+                            },
+                            {
+                                ALT: () =>{ 
+                                    $.SUBRULE($.Binary)
+                                }
+                            },
+                            { 
+                                ALT: () =>{ 
+                                    $.OPTION1(() => {
+                                    $.SUBRULE($.Relational_Operator)
+                                    $.SUBRULE2($.Value)
+                                    })
+                                    $.OPTION(() => {
+                                        $.SUBRULE($.Ternary)
+                                    })
+                                    
+                            }},
+                        ])
                     }}
             ])
         });
@@ -848,7 +863,6 @@ class parser extends CstParser
 
         $.RULE("Binary", () => {
                         
-            $.SUBRULE($.Value)
             $.SUBRULE($.BinaryOperator)
             $.SUBRULE1($.Value)
     });
@@ -861,6 +875,9 @@ class parser extends CstParser
             { 
                 ALT: () =>{ 
                     $.CONSUME(tUserDefinedIdentifier)
+                    $.OPTION(() => {
+                        $.SUBRULE($.Field )
+                    })
             }}
     ])
     });
@@ -886,14 +903,6 @@ class parser extends CstParser
                 { 
                     ALT: () =>{ 
                         $.CONSUME(Mod)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(Or)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(And)
                 }}
             ])
 });
@@ -901,8 +910,8 @@ class parser extends CstParser
 
         $.RULE("Ternary", () => {
                                 
-            $.SUBRULE($.nCondition)
-            $.CONSUME(tEqual)
+            
+            $.CONSUME(QuestionMark)
             $.SUBRULE($.Ternary_Instr )
             $.CONSUME(Colon)
             $.SUBRULE1($.Ternary_Instr)
@@ -941,42 +950,39 @@ class parser extends CstParser
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.bool_expr)
-                    $.SUBRULE($.Logical_Operator )
-                    $.SUBRULE1($.nCondition)
-            }},
-            { 
-                ALT: () =>{ 
                     $.SUBRULE($.nVariable)
-                    $.SUBRULE($.Relational_Operator  )
-                    $.SUBRULE($.Expression)
+                    $.OR1([
+                        { ALT: () =>{ 
+                            $.SUBRULE($.Logical_Operator )
+                            $.SUBRULE2($.nCondition)
+                        }}, 
+                        { ALT: () =>{ 
+                            $.SUBRULE($.Relational_Operator  )
+                            $.SUBRULE($.Expression)
+                        }}
+                    ])
+                    
             }},
             { 
                 ALT: () =>{ 
                     $.SUBRULE($.Const)
-                    $.SUBRULE1($.Relational_Operator  )
-                    $.SUBRULE1($.Expression)
+                    $.OR2([
+                        { ALT: () =>{ 
+                            $.SUBRULE1($.Logical_Operator )
+                            $.SUBRULE3($.nCondition)
+                        }}, 
+                        { ALT: () =>{ 
+                            $.SUBRULE1($.Relational_Operator)
+                            $.SUBRULE1($.Expression)
+                        }}
+                    ])
+                    
+                    
             }}
     ])
 });
 
-        $.RULE("bool_expr", () => {
-                                        
-            $.OR([
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(True)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(False)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.SUBRULE($.nVariable)
-                }}
-        ])
-        });
+        
 
         $.RULE("Logical_Operator", () => {
                                         
@@ -1019,13 +1025,7 @@ class parser extends CstParser
         });
 
 
-        $.RULE("Declaration", () => {
-                                
-            
-            $.CONSUME(tVariable)
-            $.CONSUME(tUserDefinedIdentifier)
-            $.SUBRULE($.Field)
-        });
+        
 
         $.RULE("Field", () => {
                                 
@@ -1079,8 +1079,9 @@ class parser extends CstParser
         
         $.RULE("nVariable", () => {
                                 
+            
+            $.CONSUME(tUserDefinedIdentifier)
             $.OPTION(() => {
-                $.CONSUME(tUserDefinedIdentifier)
                 $.SUBRULE($.Field)
             })
         });
