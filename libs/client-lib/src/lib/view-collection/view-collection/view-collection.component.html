@@ -26,31 +26,32 @@
             <tbody>
                 <tr *ngFor="let game of games; let i = index" class="collectionDiv" class="board-game">
                     <td>
-                        <img [src] = 'game.imgUrl'>
+                        <img [src]='game.imgUrl'>
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getName()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getMinPlayers()}}-{{listResults[i].getMaxPlayers()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getMinPlayTime()}}-{{listResults[i].getMaxPlayTime()}} min
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getAge()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getCategory()}}
                     </td>
                     <td>
-                        <button (click) = "bgClick(game.id)" id = "explore" class = "btn px-2 py-1">Explore</button>
+                        <button (click)="bgClick(game.id)" id="explore" class="btn px-2 py-1">Explore</button>
                     </td>
                     <td>
-                        <button (click) = "deletion(game.id)" id = "remove" class = "btn px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                        <button (click)="deletion(game.id)" id="remove" class="btn px-2 py-1"><i
+                                class="fa-regular fa-trash-can"></i></button>
                     </td>
                 </tr>
             </tbody>
-          </table>
+        </table>
     </div>
 </div>
