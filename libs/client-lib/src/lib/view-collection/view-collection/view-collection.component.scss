@@ -3,11 +3,14 @@
 #container{
     width: 80%;
     margin: auto;
+    // margin-left: 5em;
+    // margin-right: 5em;
     margin-top: 5em;
 }
 table{
     width: 100%;
 }
+
 
 #content
 {
@@ -56,7 +59,7 @@ i{
     color: white;
 }
 th{
-    font-size: 32px;
+    //font-size: 32px;
     font-weight: bold;
     padding-right: 84px;
     white-space: nowrap;

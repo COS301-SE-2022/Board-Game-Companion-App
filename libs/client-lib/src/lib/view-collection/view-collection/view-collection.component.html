@@ -1,55 +1,58 @@
-<div id = "container">
-    <select id="sorting" class="btn px-2 py-1 font-bold">
-        <option selected>Alphabetical</option>
-        <option value="amount">Amount</option>
-    </select>
-    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
-    <button id = "search" class="btn px-2 py-1 font-bold">Search</button>
-    <input id = "textInput">
-    <h1>{{name}}</h1>
-   
+<div id="container">
+    <div>
+        <select id="sorting" class="btn px-2 py-1 font-bold">
+            <option selected>Alphabetical</option>
+            <option value="amount">Amount</option>
+        </select>
+        <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
+        <button id="search" class="btn px-2 py-1 font-bold">Search</button>
+        <input id="textInput">
+        <h1>{{name}}</h1>
+    </div>
+
     <div id="content">
-        <table class="table-auto">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Players</th>
-                <th>Playing Time</th>
-                <th>Age</th>
-                <th>Category</th>
-                <th></th>
-                <th></th>
-              </tr>
+        <table class="table-fixed">
+            <thead class="">
+                <tr>
+                    <th class="w-1/6"></th>
+                    <th class="w-2/6 text-3xl">Name</th>
+                    <th class="w-1/6 text-3xl">Players</th>
+                    <th class="w-1/6 text-2xl">Playing Time</th>
+                    <th class="w-1/6 text-3xl">Age</th>
+                    <th class="w-1/6 text-2xl">Category</th>
+                    <th class="w-1/6"></th>
+                    <th class="w-1/6"></th>
+                </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let game of games; let i = index" class="collectionDiv" class="board-game">
                     <td>
-                        <img [src] = 'game.imgUrl'>
+                        <img [src]='game.imgUrl'>
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getName()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getMinPlayers()}}-{{listResults[i].getMaxPlayers()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getMinPlayTime()}}-{{listResults[i].getMaxPlayTime()}} min
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getAge()}}
                     </td>
-                    <td class = "info">
+                    <td class="info">
                         {{listResults[i].getCategory()}}
                     </td>
                     <td>
-                        <button (click) = "bgClick(game.id)" id = "explore" class = "btn px-2 py-1">Explore</button>
+                        <button (click)="bgClick(game.id)" id="explore" class="btn px-2 py-1">Explore</button>
                     </td>
                     <td>
-                        <button (click) = "deletion(game.id)" id = "remove" class = "btn px-2 py-1"><i class="fa-regular fa-trash-can"></i></button>
+                        <button (click)="deletion(game.id)" id="remove" class="btn px-2 py-1"><i
+                                class="fa-regular fa-trash-can"></i></button>
                     </td>
                 </tr>
             </tbody>
-          </table>
+        </table>
     </div>
 </div>
