@@ -110,6 +110,7 @@ td{
     #searchIcon{
         display: none;
     }
+
 }
 
 @media (max-width:639px) {
@@ -141,6 +142,8 @@ td{
 
 
     #sortingDiv{
+        display:flex;
+        order:2;
         float:right;
         width:35%;
     }
@@ -154,6 +157,7 @@ td{
     }
 
     #headingDiv{
+        display:flex;
         order:1;
         float:left;
         height:50%;
@@ -162,6 +166,7 @@ td{
     }
 
     #searchSortDiv{
+        display:flex;
         order:2;
         // display:inline-block;
         // float:left;
@@ -170,6 +175,8 @@ td{
     }
 
     #searchDiv{
+        display:flex;
+        order:1;
         width:60%;
         float:left;
     }
