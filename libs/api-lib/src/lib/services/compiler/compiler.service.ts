@@ -6,7 +6,8 @@ import { lexerResult } from '../../models/general/lexerResult';
 @Injectable()
 export class CompilerService {
     p = new parser();
-    compile(input:string):string{
+    compile(input:string):string
+    {
         return "compile " + input;
     }
 
@@ -148,7 +149,7 @@ export class CompilerService {
     parse(input:string):string{
         this.p.input = this.scanHelper(input).tokens;
         const cstOutput = this.p.Program();
-
+        
         return "parse " + cstOutput;
     }
 }
