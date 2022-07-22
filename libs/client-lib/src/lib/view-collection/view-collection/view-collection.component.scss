@@ -93,6 +93,10 @@ input:focus{
     color: $Pcolour-2;
 }
 
+#searchIcon{
+    color: $Pcolour-3;
+}
+
 #search{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
@@ -218,6 +222,15 @@ input:focus{
         float:left;
         // margin-top:0px;
     }
+
+    #explore{
+        // margin-left:2px;
+        margin-right:30px;
+    }
+
+    #remove1{
+        margin-right:2px;
+    }
 }
 
 @media(min-width:640px){
@@ -226,6 +239,10 @@ input:focus{
     }
 
     #exploreIcon{
+        display:none;
+    }
+
+    #searchIcon{
         display:none;
     }
 }
