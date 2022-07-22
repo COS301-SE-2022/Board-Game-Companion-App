@@ -3,13 +3,13 @@
         <div id="searchSortDiv">
             <div id="sortingDiv">
                 
-                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
+                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected"  (change)="onSort()">
                     <option value="" disabled selected>Sort By..</option>
                     <option value="alphabetical">Alphabetical</option>
                     <option value="score">Score</option>
                     <option value="date">Date</option>
                 </select>
-                <button id ="sort" class="btn px-2 py-1 font-bold"  (click)="onSort()">Sort</button>
+                <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
             </div>
             <div id="searchDiv">
                 <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon"

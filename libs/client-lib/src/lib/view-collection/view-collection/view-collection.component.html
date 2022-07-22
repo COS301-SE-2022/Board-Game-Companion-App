@@ -1,10 +1,10 @@
 <div id = "container">
-    <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
-        <option selected value="alphabetical">Alphabetical</option>
+    <select id="sorting" class="btn px-2 py-1 font-bold"  (change)="onSort()" [(ngModel)]="selected">
+        <option value="alphabetical">Alphabetical</option>
         <option value="age">Age</option>
         <option value="max">Max play-time</option>
     </select>
-    <button id = "sort" class="btn px-2 py-1 font-bold" (click)="onSort()">Sort</button>
+    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
     <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
     <input id = "textInput" [(ngModel)]="searchedValue">
     <h1>{{name}}</h1>
