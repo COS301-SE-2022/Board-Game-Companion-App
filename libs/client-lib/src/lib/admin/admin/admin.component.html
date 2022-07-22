@@ -88,11 +88,11 @@
 <!-- search and sort functionality -->
     <div id="searc">
         <div>
-            <input id = "textInput">
+            <input id = "textInput" [(ngModel)]="searchedValue">
             <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
         </div>
         <div>
-            <select id="sorting" class="btn px-2 py-1 font-bold">
+            <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
                 <option selected value="alphabetical">Alphabetical</option>
                 <option value="date">Date</option>
             </select>
