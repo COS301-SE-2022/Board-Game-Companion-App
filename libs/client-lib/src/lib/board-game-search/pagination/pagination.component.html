@@ -1,4 +1,4 @@
-<div class="flex">
+<div class="flex mb-3">
     <nav aria-label="Page navigation example">
       <ul class="flex list-style-none">
         <li class="page-item mr-2 hover:cursor-pointer"><a
@@ -8,17 +8,17 @@
             <span aria-hidden="true">&laquo;</span>
           </a></li>
         <li class="page-item mr-2"><a
-            [ngClass] = "{'bg-blue-600 text-white hover:cursor-pointer hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md':current===left,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==left}"
+            [ngClass] = "{'bg-green-700 text-white hover:cursor-pointer hover:text-white hover:bg-green-700 shadow-md focus:shadow-md':current===left,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==left}"
             class="page-link relative block py-1.5 px-3 rounded border-0 outline-none transition-all duration-300 rounded"
             (click)="changePage(left)"
             >{{left}}</a></li>
         <li class="page-item mr-2 hover:cursor-pointer"><a
-            [ngClass] = "{'bg-blue-600 text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md':current===middle,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==middle}"
+            [ngClass] = "{'bg-green-700 text-white hover:text-white hover:bg-green-700  shadow-md focus:shadow-md':current===middle,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==middle}"
             class="page-link relative block py-1.5 px-3 rounded border-0 outline-none transition-all duration-300 rounded"
             (click)="changePage(middle)"
             >{{middle}} </a></li>
         <li class="page-item mr-2 hover:cursor-pointer"><a
-            [ngClass] = "{'bg-blue-600 text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md':current===right,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==right}"
+            [ngClass] = "{'bg-green-700 text-white hover:text-white hover:bg-green-700  shadow-md focus:shadow-md':current===right,'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none':current!==right}"
             class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded"
             (click)="changePage(right)"
             >{{right}}</a></li>
