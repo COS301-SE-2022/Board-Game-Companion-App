@@ -97,7 +97,11 @@ export class CollectionsComponent implements OnInit {
   {
     this.collections = new Array<collectionList>();
     this.ngOnInit();
-    
+    setTimeout(()=>this.doSort(),1000);
+  }
+
+  doSort(): void
+  {
     if(this.selected==="alphabetical")
     {
       this.collections.sort(function(resultA, resultB) 

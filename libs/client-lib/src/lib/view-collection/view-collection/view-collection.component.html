@@ -2,13 +2,13 @@
     <div id="headInput">
         <div id="searchSortDiv">
             <div id="sortingDiv">
-                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
+                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
                     <option value="" disabled selected>Sort By..</option>
                     <option value="alphabetical">Alphabet</option>
                     <option value="age">Age</option>
                     <option value="max">Max play-time</option>
                 </select>
-                <button id="sort" class="btn px-2 py-1 font-bold" (click)="onSort()">Sort</button>
+                <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
             </div>
             <div id="searchDiv">
                 <button id="search" class="btn px-2 py-1 font-bold" (click)="onSearch()"><i id="searchIcon"
@@ -21,6 +21,7 @@
             <h1 id="heading">{{name}}</h1>
         </div>
     </div>
+    
     <div id="content">
         <table class="table-auto">
             <thead>
