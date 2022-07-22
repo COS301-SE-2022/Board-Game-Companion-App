@@ -1,52 +1,68 @@
-<div id = "container">
-    <select id="sorting" class="btn px-2 py-1 font-bold"  (change)="onSort()" [(ngModel)]="selected">
-        <option value="alphabetical">Alphabetical</option>
-        <option value="age">Age</option>
-        <option value="max">Max play-time</option>
-    </select>
-    <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
-    <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
-    <input id = "textInput" [(ngModel)]="searchedValue">
-    <h1>{{name}}</h1>
-   
+<div id="container">
+    <div id="headInput">
+        <div id="searchSortDiv">
+            <div id="sortingDiv">
+                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
+                    <option value="" disabled selected>Sort By..</option>
+                    <option value="alphabetical">Alphabet</option>
+                    <option value="age">Age</option>
+                    <option value="max">Max play-time</option>
+                </select>
+                <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
+            </div>
+            <div id="searchDiv">
+                <button id="search" class="btn px-2 py-1 font-bold" (click)="onSearch()"><i id="searchIcon"
+                    class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
+                <input id="textInput" [(ngModel)]="searchedValue">
+            </div>
+        </div>
+
+        <div id="headingDiv">
+            <h1 id="heading">{{name}}</h1>
+        </div>
+    </div>
+    
     <div id="content">
         <table class="table-auto">
             <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Players</th>
-                <th>Time</th>
-                <th>Age</th>
-                <th>Category</th>
-                <th></th>
-                <th></th>
-              </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Players</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Category</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let game of games; let i = index" class="collectionDiv" class="board-game">
-                    <td>
+                    <td scope="row">
                         <img [src]='game.imgUrl'>
                     </td>
-                    <td class="info">
+                    <td class="info" scope="row" data-label="Name">
                         {{listResults[i].getName()}}
                     </td>
-                    <td class="info">
+                    <td class="info" scope="row" data-label="Players">
                         {{listResults[i].getMinPlayers()}}-{{listResults[i].getMaxPlayers()}}
                     </td>
-                    <td class="info">
+                    <td class="info" scope="row" data-label="Time">
                         {{listResults[i].getMinPlayTime()}}-{{listResults[i].getMaxPlayTime()}} min
                     </td>
-                    <td class="info">
+                    <td class="info" scope="row" data-label="Age">
                         {{listResults[i].getAge()}}
                     </td>
-                    <td class="info">
+                    <td class="info" scope="row" data-label="Category">
                         {{listResults[i].getCategory()}}
                     </td>
-                    <td>
-                        <button (click)="bgClick(game.id)" id="explore" class="btn px-2 py-1">Explore</button>
+                    <td scope="row">
+                        <button (click)="bgClick(game.id)" id="explore" class="btn px-2 py-1"><i id="exploreIcon"
+                                class="fa-solid fa-compass"></i><a id="word">Explore</a></button>
+                        <button (click)="deletion(game.id)" id="remove1" class="btn px-2 py-1"><i
+                                class="fa-regular fa-trash-can"></i></button>
                     </td>
-                    <td>
+                    <td id="lastTD">
                         <button (click)="deletion(game.id)" id="remove" class="btn px-2 py-1"><i
                                 class="fa-regular fa-trash-can"></i></button>
                     </td>

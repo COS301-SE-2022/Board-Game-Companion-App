@@ -2,28 +2,26 @@
     resize: both;
 }
 
-// @media(max-width:639px){
-//     board-game-companion-app-editor-tool-bar{
-//         display:none;
-//     }
+@media(max-width:639px){
+    board-game-companion-app-editor-tool-bar{
+        display:none;
+    }
 
-//     board-game-companion-app-editor-side-bar{
-//         display:none;
-//     }
+    board-game-companion-app-editor-side-bar{
+        display:none;
+    }
 
-//     board-game-companion-app-editor-console {
-//         display:none;
-//     }
+    board-game-companion-app-editor-console {
+        display:none;
+    }
 
-//     board-game-companion-app-editor-status-bar{
-//         display:none;
-//     }
+    board-game-companion-app-editor-status-bar{
+        display:none;
+    }
 
-    // board-game-companion-app-editor-body {
-    //     //     display:none;
-    //     margin-left:0px;
-    //     width:100%;
-    // }
+    board-game-companion-app-editor-body {
+        display:none;
+        
+    }
     
-    
-// }
+}
