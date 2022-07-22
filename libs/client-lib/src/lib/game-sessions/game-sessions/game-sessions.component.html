@@ -4,16 +4,17 @@
             <div id="sortingDiv">
                 
                 <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected">
-                    <option value="" disabled selected></option>
-                    <option value="alphabetical">Alphabetical</option>
+                    <option value="" disabled selected>Sort By..</option>
+                    <option value="alphabetical">Alphabet</option>
                     <option value="score">Score</option>
                     <option value="date">Date</option>
                 </select>
                 <button id ="sort" class="btn px-2 py-1 font-bold"  (click)="onSort()">Sort</button>
             </div>
             <div id="searchDiv">
-                <button id = "search" (click)="Onsearch()" class="btn px-2 py-1 font-bold"><a id="word">Search</a></button>
                 <input id = "textInput" [(ngModel)] = "search">
+                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon"
+                        class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
             </div>
         </div>
 

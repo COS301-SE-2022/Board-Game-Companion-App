@@ -37,3 +37,10 @@ button{
     padding: 0.5em;
     color: white;
 }
+
+@media(max-width:639px){
+    #container{
+        width:90%;
+        height:100%;
+    }
+}
