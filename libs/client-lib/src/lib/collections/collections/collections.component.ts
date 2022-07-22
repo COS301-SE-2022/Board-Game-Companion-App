@@ -14,6 +14,8 @@ export class CollectionsComponent implements OnInit {
   constructor(private bggSearch:BggSearchService, private router:Router) {}
 
   collections: collectionList[] = new Array<collectionList>();
+  public selected = "";
+  public searchedValue = "";
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   viewCollection(n:String)
@@ -77,7 +79,71 @@ export class CollectionsComponent implements OnInit {
     }
     console.log(this.collections)
   }
+  onSearch(): void
+  {
+    console.log("on search: "+this.searchedValue);
+    this.collections = new Array<collectionList>();
+    this.ngOnInit();
+    if(this.collections.length!==0)
+    {
+      let temp = new Array<collectionList>();
+      temp = this.collections;
+      this.collections = new Array<collectionList>();
+      this.collections = temp.filter((res) => res.name.toLowerCase() === this.searchedValue.toLowerCase());
+    }
+  }
+
+  onSort(): void
+  {
+    this.collections = new Array<collectionList>();
+    this.ngOnInit();
+    setTimeout(()=>this.doSort(),1000);
+  }
+
+  doSort(): void
+  {
+    if(this.selected==="alphabetical")
+    {
+      this.collections.sort(function(resultA, resultB) 
+      {
+        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
+
+        if (nameA < nameB) 
+        {
+          return -1;
+        }
+        if (nameA > nameB) 
+        {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+    else if(this.selected==="amount")
+    {
+      this.collections.sort(function(resultA, resultB) 
+      {
+        const numberA = resultA.imgUrls.length;
+        const numberB = resultB.imgUrls.length;
+
+        console.log("====");
+        if (numberA < numberB) 
+        {
+          return -1;
+        }
+        if (numberA > numberB) 
+        {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+  }
 }
+
 class collectionList
 {
     public name = "";

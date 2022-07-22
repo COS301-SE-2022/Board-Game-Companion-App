@@ -12,7 +12,9 @@
     "deploy": "./tools/scripts/deploy-client.sh",
     "test-all": "nx run-many --target=test --all --parallel",
     "postinstall": "ngcc --properties es2020 browser module main",
-    "heroku-postbuild": "nx build api ---prod && nx build client --prod"
+    "heroku-postbuild": "nx build api ---prod && nx build client --prod",
+    "coverage": "jest --collect-coverage",
+    "test:watch": "yarn run test -- --watch"
   },
   "private": true,
   "devDependencies": {

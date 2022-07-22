@@ -17,3 +17,35 @@ img{
 svg{
     transform: scale(2.5);
 }
+
+
+@media(max-width:639px){
+    #slides {
+        padding-left: 1em;
+        padding-right: 1em;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    #slider1 {
+        margin-left: 1px;
+        gap: 5px !important;
+    }
+    
+    #picDiv {
+        width: 70%;
+    }
+    
+    #btnforward,
+    #btnback {
+        height: 80%;
+    }
+    
+    #btnback {
+        margin-left: 2px;
+    }
+    
+    #btnforward {
+        margin-right: 2px;
+    }
+}

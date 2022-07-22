@@ -1,3 +1,64 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+.container{
+    width: 80%;
+    margin: auto;
+    margin-top: 5rem;
+}
+
+table{
+    width: 100%;
+    background-color: white;
+}
+button{
+    padding: 2rem;
+}
+h1{
+    font-size: 64px;
+    font-weight: bold;
+    color: $Pcolour-2;
+    margin-top: 64px;
+    margin-bottom: 48px;
+}
+thead{
+    width: 100%;
+    background-color: $Pcolour-2;
+    color: white;
+}
+th{
+    font-size: 32px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+td{
+    font-size: 24px;
+    color: black;
+}
+#card-1,#card-2,#card-3,#card-4,#card-5{
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+#card-1{
+    background-color: black;
+}
+#card-2{
+    background-color: $Pcolour-2;
+}
+#card-3{
+    background-color: blue;
+}
+#card-4{
+    background-color: $Pcolour-4;
+}
+#card-5{
+    background-color: $Pcolour-3;
+}
+.fistSpan{
+    float: left;
+}
+.secondSpan{
+    float: right;
+}
 .card-body{
     transition: all .2s ease-in-out;
 }
@@ -5,4 +66,39 @@
 .card-body:hover{
     transform: scale(1.25);
     cursor: pointer;
+}
+#search{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    float: left;
+    // margin-right: 64px;
+    margin-top: 68px;
+}
+input{
+    border-radius: 10px;
+    width: 400px;
+    color: black;
+    margin-right: 16px;
+    margin-top: 68px;
+    border: solid 1px  $Pcolour-2;
+    float:left;
+}
+input:focus{
+    outline: none;
+}
+#sort{
+    background-color: $Pcolour-2;
+    color: $Pcolour-3;
+    font-size: 14px;
+    margin-top: 68px;
+    float:right;
+}
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    margin-top: 68px;
+    margin-bottom: 12px;
+    float:right;
+    background-color: white;
 }

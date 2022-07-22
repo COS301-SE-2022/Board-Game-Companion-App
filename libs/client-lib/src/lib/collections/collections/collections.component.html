@@ -1,36 +1,60 @@
 <div id="CollectionsList">
-    <h1 class="font-bold">Collections</h1>
-
-    <!--Search-->
-    <div class="relative w-6/12 mb-8 float-left">
-        <input id="textInput" type="text"
-            class="bg-gray-20 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search">
-        <i id="searchIcon" class="fa-solid fa-magnifying-glass text-black sm:hidden"></i>
-        <button id="search" class="btn px-2 py-1 font-bold">Search</button>
+    <!--Heading-->
+    <div id="heading">
+        <h1 class="font-bold">Collections</h1>
     </div>
-    
 
-    <!--Sorting-->
-    <select id="sorting" class="btn px-2 py-1 font-bold">
-        <option selected>Alphabetical</option>
-        <option value="amount">Amount</option>
-    </select>
-    <button id="sort" class="btn px-2 py-1 font-bold">Sort</button>
-    
-    <!--Contents-->
+    <!--Search&Sort-->
+    <div class="h-8 flex mt-2">
+        <!--Search-->
+        <div id="searchPortion" class="flex items-center w-2/3 sm:w-1/2">
+            <input id="textInput" class="h-5/6 w-2/3 px-2 py-1 mt-0 rounded-xl" [(ngModel)]="searchedValue">
+            <button id="search" class="btn font-bold h-5/6 w-1/6 px-2 py-1 sm:text-sm" (click)="onSearch()"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i> <a id="word">Search </a></button>
+        </div>
+
+
+        <!--Sorting-->
+        <div id="sortingPortion" class="w-1/3 sm:w-1/2">
+            <select id="sorting" class="btn px-2 py-1 font-bold" (change)="onSort()" [(ngModel)]="selected">
+                <option value="" disabled selected>Sort By...</option>
+                <option value="alphabetical">Alphabet</option>
+                <option value="amount">Amount</option>
+            </select>
+            <button id="sort" class="btn px-2 py-1 text-sm font-bold float-right">Sort</button>
+        </div>
+    </div>
+
+    <!--White Background div-->
     <div id="CollectionsContent">
-        <div *ngFor="let collection of collections" class="collectionDiv">
-            <span id="title">
-                {{collection.name}}
-            </span>
-            <span *ngFor="let url of collection.imgUrls" class="imgSpan">
-                <button (click)="viewCollection(collection.name)"><img [src]='url'></button>
-            </span>
-            <div id="actions">
-                <button (click)="viewCollection(collection.name)" id="explore" class="btn px-4 py-2">Explore</button>
-                <button (click)="deletion(collection.name)" id="remove" class="btn px-4 py-2"><i
-                        class="fa-regular fa-trash-can"></i></button>
+        <!--Collection Div-->
+        <div *ngFor="let collection of collections" id="collectionDiv" class="flex">
+            <div class="flex w-full flex-col sm:flex-row">
+                <!--Title-->
+                <div class="">
+                    <span id="title" class="pt-0 mt-0 sm:pt-1 pr-2">
+                        <!-- class="font-bold text-xl float-left mt-0.5 ml-0.5 sm:text-3xl" -->
+                        {{collection.name}}
+                    </span>
+                </div>
+
+                <!--Poster(s)-->
+                <div class="">
+                    <span *ngFor="let url of collection.imgUrls" class="imgSpan sm:float:left pr-2">
+                        <button (click)="viewCollection(collection.name)"><img [src]='url' class="object-scale-down"></button>
+                    </span>
+                    <!-- <div class="imgSpan h-48 w-48 border-8 bg-yellow-500 sm:float-left pr-2"></div> -->
+                </div>
+
+                <!--Actions-->
+                <div id="actions" class="mt-2 sm:flex justify-center sm:mt-0">
+                    <div class="relative sm:py-5">
+                        <button (click)="viewCollection(collection.name)" id="explore"
+                            class="btn text-base px-4 py-2 mr-0"><i id="exploreIcon" class="fa-solid fa-compass"></i><a id="word">Explore</a></button>
+                        <button (click)="deletion(collection.name)" id="remove" class="btn px-4 py-2"><i
+                                class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

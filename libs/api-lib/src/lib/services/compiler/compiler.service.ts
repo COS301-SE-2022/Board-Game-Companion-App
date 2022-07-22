@@ -5,7 +5,7 @@ import { lexerResult } from '../../models/general/lexerResult';
 
 @Injectable()
 export class CompilerService {
-    
+    p = new parser();
     compile(input:string):string{
         return "compile " + input;
     }
@@ -146,8 +146,10 @@ export class CompilerService {
     }
 
     parse(input:string):string{
-        
-        return "parse " + input;
+        this.p.input = this.scanHelper(input).tokens;
+        const cstOutput = this.p.Program();
+
+        return "parse " + cstOutput;
     }
 }
 
@@ -155,186 +157,25 @@ export class CompilerService {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class parser extends CstParser
 {
-    //user defined identifier
-tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
-// class and function declaration
-Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:this.tUserDefinedIdentifier});
-tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:this.tUserDefinedIdentifier}));
-tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:this.tUserDefinedIdentifier}));
-tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:this.tUserDefinedIdentifier}));
-tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:this.tUserDefinedIdentifier}));
-tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:this.tUserDefinedIdentifier}));
-Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:this.tUserDefinedIdentifier}));
-tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:this.tUserDefinedIdentifier}));
-tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:this.tUserDefinedIdentifier}));
-tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:this.tUserDefinedIdentifier}));
-
-//punctuation
-Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
-OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
-CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
-OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
-CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
-Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
-OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
-ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
-QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
-SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-
-//relational operators
-tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
-tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
-tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
-GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:this.tGreaterThanOrEqual}));
-LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:this.tLessThanOrEqual}));
-
-//Assignment operators
-Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:this.tEqual}));
-
-//increment
-tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
-
-//decrement
-tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
-
-//arithmetic operators
-Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:this.tIncrement}));
-Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:this.tDecrement}));
-Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
-Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
-Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:this.tUserDefinedIdentifier}));
-
-//logical operators
-And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:this.tUserDefinedIdentifier}));
-Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:this.tUserDefinedIdentifier}));
-Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:this.tUserDefinedIdentifier}));
-
-//literals
-tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
-
-
-IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:this.tFloatLiteral}));
-StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
-False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:this.tUserDefinedIdentifier}));
-True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:this.tUserDefinedIdentifier}));
-
-
-//input output
-Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:this.tUserDefinedIdentifier}));
-Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:this.tUserDefinedIdentifier}));
-Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:this.tUserDefinedIdentifier}));
-ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:this.tUserDefinedIdentifier}));
-ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:this.tUserDefinedIdentifier}));
-
-//loops
-While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:this.tUserDefinedIdentifier}));
-For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:this.tUserDefinedIdentifier}));
-Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:this.tUserDefinedIdentifier}));
-
-//branch
-If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:this.tUserDefinedIdentifier}));
-Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:this.tUserDefinedIdentifier}));
-
-//flow control
-Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:this.tUserDefinedIdentifier}));
-Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:this.tUserDefinedIdentifier}));
-
-//presets
-Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:this.tUserDefinedIdentifier}));
-NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
-
-//variable
-tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:this.tUserDefinedIdentifier}));
-
-//whitespace
-WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
-
-//comments
-Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
-
-
-
-
-    AllTokens = [
-        this.tUserDefinedIdentifier,
-        this.Class,
-        this.tAction,
-        this.tParameters,
-        this.tCondition,
-        this.tEffect,
-        this.tState,
-        this.Turn,
-        this.tPlayer,
-        this.tEndgame,
-        this.tReturn,
-        this.Comma,
-        this.OpenBracket,
-        this.CloseBracket,
-        this.OpenBrace,
-        this.CloseBrace,
-        this.Colon,
-        this.OpenSquareBracket,
-        this.ClosedSquareBracket,
-        this.QuestionMark,
-        this.SemiColon,
-        this.tLessThanOrEqual,
-        this.tGreaterThanOrEqual,
-        this.tEqual,
-        this.GreaterThan,
-        this.LessThan,
-        this.tIncrement,
-        this.tDecrement,
-        this.Plus,
-        this.Minus,
-        this.Multiply,
-        this.Divide,
-        this.Mod,
-        this.And,
-        this.Or,
-        this.Not,
-        this.tFloatLiteral,
-        this.IntegerLiteral,
-        this.StringLiteral,
-        this.False,
-        this.True,
-        this.Input,
-        this.Print,
-        this.Read,
-        this.ConsoleInput,
-        this.ConsoleOutput,
-        this.While,
-        this.For,
-        this.Do,
-        this.If,
-        this.Else,
-        this.Break,
-        this.Continue,
-        this.Minmax,
-        this.NeuralNetwork,
-        this.tVariable,
-        this.WhiteSpace,
-        this.Coment,
-
-    ];
+    
 
 
 
 
 
 
-
+    Program: ParserMethod<unknown[], CstNode>;
     GameState: ParserMethod<unknown[], CstNode>;
     Definition: ParserMethod<unknown[], CstNode>;
     Cards: ParserMethod<unknown[], CstNode>;
     Players: ParserMethod<unknown[], CstNode>;
     End_Game: ParserMethod<unknown[], CstNode>;
-    Parameters: ParserMethod<unknown[], CstNode>;
+    nParameters: ParserMethod<unknown[], CstNode>;
     CardEffect : ParserMethod<unknown[], CstNode>;
     CardCondition: ParserMethod<unknown[], CstNode>;
     TypeList: ParserMethod<unknown[], CstNode>;
     Type: ParserMethod<unknown[], CstNode>;
     statements: ParserMethod<unknown[], CstNode>;
-    bool_expr: ParserMethod<unknown[], CstNode>;
     Declarations: ParserMethod<unknown[], CstNode>;
     Actions: ParserMethod<unknown[], CstNode>;
     FormalParameters: ParserMethod<unknown[], CstNode>;
@@ -347,11 +188,11 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
     Declaration: ParserMethod<unknown[], CstNode>;
     Assignment: ParserMethod<unknown[], CstNode>;
     FlowControl: ParserMethod<unknown[], CstNode>;
-    Variable : ParserMethod<unknown[], CstNode>;
+    nVariable : ParserMethod<unknown[], CstNode>;
     Expression: ParserMethod<unknown[], CstNode>;
     MethodCall:ParserMethod<unknown[], CstNode>;
     Arguments:ParserMethod<unknown[], CstNode>;
-    Condition:ParserMethod<unknown[], CstNode>;
+    nCondition:ParserMethod<unknown[], CstNode>;
     ForLoopInitialiser:ParserMethod<unknown[], CstNode>;
     ForLoopCondition:ParserMethod<unknown[], CstNode>;
     ForLoopStep:ParserMethod<unknown[], CstNode>;
@@ -364,16 +205,181 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
     Ternary:ParserMethod<unknown[], CstNode>;
     Const:ParserMethod<unknown[], CstNode>;
     Unary_Operator:ParserMethod<unknown[], CstNode>;
-    Binary_Operator:ParserMethod<unknown[], CstNode>;
+    BinaryOperator:ParserMethod<unknown[], CstNode>;
     Ternary_Instr :ParserMethod<unknown[], CstNode>;
     Logical_Operator :ParserMethod<unknown[], CstNode>;
     Relational_Operator :ParserMethod<unknown[], CstNode>;
     Field:ParserMethod<unknown[], CstNode>;
     Index:ParserMethod<unknown[], CstNode>;
-
-
+    otherArgs:ParserMethod<unknown[], CstNode>;
+    Value:ParserMethod<unknown[], CstNode>;
     constructor() {
-        super([]) //should allTokens
+
+//user defined identifier
+        const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
+// class and function declaration
+        const Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier});
+        const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
+        const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
+        const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
+        const tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:tUserDefinedIdentifier}));
+        const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
+        const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
+        const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
+        const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
+        const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
+
+//punctuation
+        const Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
+        const OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
+        const CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
+        const OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
+        const CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
+        const Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
+        const OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
+        const ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
+        const QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
+        const SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
+        const Dot = chevrotain.createToken({name:"Dot",pattern:/./})
+//relational operators
+        const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
+        const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
+        const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+        const GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
+        const LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
+
+//Assignment operators
+        const Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
+
+//increment
+        const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
+
+//decrement
+        const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+
+//arithmetic operators
+        const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:tIncrement}));
+        const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tDecrement}));
+        const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
+        const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
+        const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
+
+//logical operators
+        const And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
+        const Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
+        const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
+
+//literals
+        const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
+
+
+        const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
+        const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+        const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
+        const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+
+
+//input output
+        const Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
+        const Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:tUserDefinedIdentifier}));
+        const Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
+        const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
+        const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
+
+//loops
+        const While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
+        const For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:tUserDefinedIdentifier}));
+        const Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:tUserDefinedIdentifier}));
+
+//branch
+        const If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:tUserDefinedIdentifier}));
+        const Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:tUserDefinedIdentifier}));
+
+//flow control
+        const Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:tUserDefinedIdentifier}));
+        const Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:tUserDefinedIdentifier}));
+
+//presets
+        const Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
+        const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
+
+//variable
+        const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
+
+//whitespace
+        const WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
+
+//comments
+        const Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
+
+
+
+
+    const AllTokens = [
+        tUserDefinedIdentifier,
+        Class,
+        tAction,
+        tParameters,
+        tCondition,
+        tEffect,
+        tState,
+        Turn,
+        tPlayer,
+        tEndgame,
+        tReturn,
+        Comma,
+        OpenBracket,
+        CloseBracket,
+        OpenBrace,
+        CloseBrace,
+        Colon,
+        OpenSquareBracket,
+        ClosedSquareBracket,
+        QuestionMark,
+        SemiColon,
+        Dot,
+        tLessThanOrEqual,
+        tGreaterThanOrEqual,
+        tEqual,
+        GreaterThan,
+        LessThan,
+        tIncrement,
+        tDecrement,
+        Plus,
+        Minus,
+        Multiply,
+        Divide,
+        Mod,
+        And,
+        Or,
+        Not,
+        tFloatLiteral,
+        IntegerLiteral,
+        StringLiteral,
+        False,
+        True,
+        Input,
+        Print,
+        Read,
+        ConsoleInput,
+        ConsoleOutput,
+        While,
+        For,
+        Do,
+        If,
+        Else,
+        Break,
+        Continue,
+        Minmax,
+        NeuralNetwork,
+        tVariable,
+        WhiteSpace,
+        Coment,
+
+    ];
+
+        
+        super(AllTokens) //should allTokens
 
 
         // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -389,115 +395,129 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
         $.RULE("Definition", () => {
             $.OPTION(() => {
                 $.OR([
-                    { ALT: () =>{ $.SUBRULE(this.Cards )
-                            $.SUBRULE(this.Definition)}},
+                    { ALT: () =>{ $.SUBRULE($.Cards )
+                            $.SUBRULE($.Definition)}},
 
                             
-                    { ALT: () =>{ $.SUBRULE(this.Players)
-                            $.SUBRULE(this.Definition)}},
+                    { ALT: () =>{ $.SUBRULE($.Players)
+                            $.SUBRULE1($.Definition)}},
 
-                    { ALT: () =>{ $.SUBRULE(this.End_Game)
-                            $.SUBRULE(this.Definition)}}
+                    { ALT: () =>{ $.SUBRULE($.End_Game)
+                            $.SUBRULE2($.Definition)}}
                         
                 ])
             });
         });
         
         $.RULE("Cards", () => {
-            $.CONSUME(this.Class)
-            $.CONSUME(this.tUserDefinedIdentifier)
-            $.CONSUME(this.OpenBrace)
-            $.SUBRULE($.Parameters),
+            $.CONSUME(Class)
+            $.CONSUME(tUserDefinedIdentifier)
+            $.CONSUME(OpenBrace)
+            $.SUBRULE($.nParameters),
             $.SUBRULE($.CardEffect )
             $.SUBRULE($.CardCondition)
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(CloseBrace)
         });
-        $.RULE("Parameters", () => {
-            $.CONSUME(this.tParameters )
-            $.CONSUME(this.OpenBrace)
+        $.RULE("nParameters", () => {
+            $.CONSUME(tParameters )
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.TypeList)
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(CloseBrace)
         });
 
         $.RULE("TypeList", () => {
-            $.OPTION(() => {
-                $.SUBRULE($.Type)
-                $.SUBRULE($.TypeList)
-            });
+                this.MANY(() => {
+                $.OPTION(() => {
+                    $.SUBRULE($.Type)
+                    $.CONSUME(tUserDefinedIdentifier)
+                });
+            })
         });
         $.RULE("CardCondition", () => {
-            $.CONSUME(this.tCondition )
-            $.CONSUME(this.OpenBrace)
+            $.CONSUME(tCondition )
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.statements)
-            $.CONSUME(this.tReturn)
-            $.SUBRULE($.bool_expr);
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(tReturn)
+            $.OR([
+                { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+            ])
+            $.CONSUME(CloseBrace)
         });
         $.RULE("CardEffect", () => {
-            $.CONSUME(this.tEffect )
-            $.CONSUME(this.OpenBrace)
+            $.CONSUME(tEffect )
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.statements)
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(CloseBrace)
         });
-        $.RULE("Game_State", () => {
-            $.CONSUME(this.tState )
-            $.CONSUME(this.OpenBrace)
+        $.RULE("GameState", () => {
+            $.CONSUME(tState )
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.Declarations )
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(CloseBrace)
         });
         $.RULE("Players", () => {
-            $.CONSUME(this.tPlayer)
-            $.CONSUME(this.tUserDefinedIdentifier)
-            $.CONSUME(this.OpenBrace)
+            $.CONSUME(tPlayer)
+            $.CONSUME(tUserDefinedIdentifier)
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.Actions )
-            $.CONSUME( this.Turn)
+            $.CONSUME( Turn)
             $.SUBRULE($.statements )
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(CloseBrace)
         });
 
         $.RULE("Actions", () => {
-            $.OPTION(() => {
-                
-            $.CONSUME(this.tAction)
-            $.CONSUME(this.tUserDefinedIdentifier)
-            $.CONSUME(this.OpenBracket)
-            $.SUBRULE($.FormalParameters)
-            $.CONSUME(this.CloseBracket)
-            $.CONSUME(this.OpenBrace)  
-            $.SUBRULE($.statements )
-            $.CONSUME(this.CloseBrace)  
-            $.SUBRULE($.ActionCondition )
-            $.CONSUME(this.tUserDefinedIdentifier)
-            $.CONSUME(this.OpenBracket)
-            $.SUBRULE($.FormalParameters)
-            $.CONSUME(this.CloseBracket)
-            $.CONSUME(this.OpenBrace)
-            $.SUBRULE($.statements)
-            $.CONSUME(this.tReturn)
-            $.SUBRULE($.bool_expr);
-            $.CONSUME(this.CloseBrace)
-            $.SUBRULE($.Actions);
-            });
+            this.MANY(() => {
+                $.OPTION(() => {
+                    
+                $.CONSUME(tAction)
+                $.CONSUME(tUserDefinedIdentifier)
+                $.CONSUME(OpenBracket)
+                $.SUBRULE($.FormalParameters)
+                $.CONSUME(CloseBracket)
+                $.CONSUME(OpenBrace)  
+                $.SUBRULE($.statements )
+                $.CONSUME(CloseBrace)  
+                $.SUBRULE($.nCondition )
+                $.CONSUME1(tUserDefinedIdentifier)
+                $.CONSUME1(OpenBracket)
+                $.SUBRULE1($.FormalParameters)
+                $.CONSUME1(CloseBracket)
+                $.CONSUME1(OpenBrace)
+                $.SUBRULE1($.statements)
+                $.CONSUME(tReturn)
+                $.OR([
+                    { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                    { ALT: () =>{ $.SUBRULE($.nVariable)}}
+                ])
+                $.CONSUME1(CloseBrace)
+                });
+        })
         });
         $.RULE("FormalParameters", () => {
             $.OPTION(() => {
-                $.CONSUME(this.tUserDefinedIdentifier)
+                $.CONSUME(tUserDefinedIdentifier)
                 $.SUBRULE($.OtherFormalParameters);
             });
         });
         $.RULE("OtherFormalParameters", () => {
             $.OPTION(() => {
-                $.CONSUME(this.tUserDefinedIdentifier)
+                $.CONSUME(tUserDefinedIdentifier)
                 $.SUBRULE($.OtherFormalParameters);
             });
         });
         $.RULE("End_Game", () => {
-            $.CONSUME(this.tEndgame)
-            $.CONSUME(this.OpenBrace)
+            $.CONSUME(tEndgame)
+            $.CONSUME(OpenBrace)
             $.SUBRULE($.statements)
-            $.CONSUME(this.tReturn)
-            $.SUBRULE($.bool_expr);
-            $.CONSUME(this.CloseBrace)
+            $.CONSUME(tReturn)
+
+            $.OR([
+                { ALT: () =>{ $.SUBRULE($.Const )}}, 
+                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+            ])
+
+            $.CONSUME(CloseBrace)
             $.SUBRULE($.Actions);
         });
 
@@ -510,25 +530,25 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
 
                             
                     { ALT: () =>{ $.SUBRULE($.Call)
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE1($.statements)}},
 
                     { ALT: () =>{ $.SUBRULE($.Loop)
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE2($.statements)}},
 
                     { ALT: () =>{ $.SUBRULE($.Branch)
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE3($.statements)}},
 
                     { ALT: () =>{ $.SUBRULE($.Declaration )
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE4($.statements)}},
 
                     { ALT: () =>{ $.SUBRULE($.Assignment )
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE5($.statements)}},
 
                     { ALT: () =>{ $.SUBRULE($.FlowControl )
-                            $.SUBRULE($.statements)}},
+                            $.SUBRULE6($.statements)}},
 
-                    { ALT: () =>{ $.CONSUME(this.tReturn )
-                            $.SUBRULE($.Variable )}},
+                    { ALT: () =>{ $.CONSUME(tReturn )
+                            $.SUBRULE($.nVariable )}},
                 ])
             });
         });
@@ -536,46 +556,39 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
             
                 $.OR([
                      
-                        { ALT: () =>{ $.CONSUME(this.Input )
-                            $.CONSUME(this.OpenBracket )
-                            $.CONSUME(this.StringLiteral )
-                            $.CONSUME(this.CloseBracket )
+                        { ALT: () =>{ $.CONSUME(Input )
+                            $.CONSUME(OpenBracket )
+                            $.CONSUME(StringLiteral )
+                            this.OPTION(() => {
+                                $.CONSUME(Comma )
+                            $.SUBRULE($.nVariable )}
+                              );
+                            $.CONSUME(CloseBracket )
                         }},
-
-                        { ALT: () =>{ $.CONSUME(this.Input )
-                                $.CONSUME(this.OpenBracket )
-                            $.CONSUME(this.StringLiteral  )
-                            $.CONSUME(this.Comma )
-                            $.SUBRULE($.Variable )
-                            $.CONSUME(this.CloseBracket )
-                            
-                            }},
 
                         { ALT: () =>{ 
-                            $.CONSUME(this.ConsoleInput )
-                            $.CONSUME(this.OpenBracket )
-                        $.CONSUME(this.StringLiteral )
-                        $.CONSUME(this.CloseBracket )
+                            $.CONSUME(ConsoleInput )
+                            $.CONSUME2(OpenBracket )
+                        $.CONSUME2(StringLiteral )
+                        this.OPTION1(() => {
+                            $.CONSUME1(Comma )
+                            $.SUBRULE1($.nVariable )}
+                          );
+                        $.CONSUME2(CloseBracket )
                     }},
 
-                        { ALT: () =>{ $.CONSUME(this.ConsoleInput )
-                            $.CONSUME(this.OpenBracket )
-                        $.CONSUME(this.StringLiteral )
-                        $.CONSUME(this.Comma )
-                        $.SUBRULE($.Variable )
-                        $.CONSUME(this.CloseBracket )
+                        
+
+                        { ALT: () =>{ $.CONSUME(Print )
+                            $.CONSUME3(OpenBracket )
+                            $.SUBRULE($.Expression)
+                        $.CONSUME3(CloseBracket )
                         }},
 
-                        { ALT: () =>{ $.CONSUME(this.Print )
-                            $.CONSUME(this.OpenBracket )
-                            $.SUBRULE($.Expression)
-                        $.CONSUME(this.CloseBracket )
-                        }},
-
-                        { ALT: () =>{ $.CONSUME(this.ConsoleOutput )
-                            $.CONSUME(this.OpenBracket )
-                            $.SUBRULE($.Expression)
-                        $.CONSUME(this.CloseBracket )
+                        { ALT: () =>{ $.CONSUME(ConsoleOutput )
+                            $.CONSUME5(OpenBracket )
+                            $.SUBRULE1($.Expression)
+                        $.CONSUME5(CloseBracket )
                         }},
                     ])
                     
@@ -586,27 +599,23 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                     $.OR([
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(this.tUserDefinedIdentifier )
-                        $.CONSUME(this.Comma )
                         $.SUBRULE($.MethodCall)
                     }},
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(this.Minmax )
-                        $.CONSUME(this.OpenBracket )
-                        $.CONSUME(this.OpenBrace )
+                        $.CONSUME(Minmax )
+                        $.CONSUME(OpenBracket )
+                        $.CONSUME(OpenBrace )
                         $.SUBRULE($.statements)
-                        $.CONSUME(this.CloseBrace )
-                        $.CONSUME(this.CloseBracket )
+                        $.CONSUME(CloseBrace )
+                        $.CONSUME(CloseBracket )
                     }},
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(this.NeuralNetwork )
-                        $.CONSUME(this.OpenBracket )
-                        $.CONSUME(this.QuestionMark )
-                        $.CONSUME(this.StringLiteral )
-                        $.CONSUME(this.QuestionMark )
-                        $.CONSUME(this.CloseBracket )
+                        $.CONSUME(NeuralNetwork )
+                        $.CONSUME1(OpenBracket )
+                        $.CONSUME(StringLiteral )
+                        $.CONSUME1(CloseBracket )
                     }},
                     ])
                     
@@ -619,17 +628,17 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
 
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(this.tEffect )
-                            $.CONSUME(this.OpenBracket )
+                            $.CONSUME(tEffect )
+                            $.CONSUME(OpenBracket )
                             $.SUBRULE($.Arguments )
-                            $.CONSUME(this.CloseBracket )
+                            $.CONSUME(CloseBracket )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(this.tCondition )
-                                $.CONSUME(this.OpenBracket )
-                                $.SUBRULE($.Arguments )
-                                $.CONSUME(this.CloseBracket )
+                                $.CONSUME(tCondition )
+                                $.CONSUME1(OpenBracket )
+                                $.SUBRULE1($.Arguments )
+                                $.CONSUME1(CloseBracket )
                         }},
 
                     ])
@@ -641,38 +650,38 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
 
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(this.While )
-                            $.CONSUME(this.OpenBracket )
-                            $.SUBRULE($.Condition)
-                            $.CONSUME(this.CloseBracket )
-                            $.CONSUME(this.OpenBrace )
+                            $.CONSUME(While )
+                            $.CONSUME(OpenBracket )
+                            $.SUBRULE($.nCondition)
+                            $.CONSUME(CloseBracket )
+                            $.CONSUME(OpenBrace )
                             $.SUBRULE($.statements)
-                            $.CONSUME(this.CloseBrace )
+                            $.CONSUME(CloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(this.For )
-                                $.CONSUME(this.OpenBracket )
+                                $.CONSUME(For )
+                                $.CONSUME1(OpenBracket )
                                 $.SUBRULE($.ForLoopInitialiser )
-                                $.CONSUME(this.SemiColon )
+                                $.CONSUME(SemiColon )
                                 $.SUBRULE($.ForLoopCondition )
-                                $.CONSUME(this.SemiColon )
+                                $.CONSUME1(SemiColon )
                                 $.SUBRULE($.ForLoopStep )
-                                $.CONSUME(this.CloseBracket )
-                                $.CONSUME(this.OpenBrace )
-                                $.SUBRULE($.statements)
-                                $.CONSUME(this.CloseBrace )
+                                $.CONSUME1(CloseBracket )
+                                $.CONSUME1(OpenBrace )
+                                $.SUBRULE1($.statements)
+                                $.CONSUME1(CloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(this.Do )
-                                $.CONSUME(this.OpenBrace )
-                                $.SUBRULE($.statements )
-                                $.CONSUME(this.CloseBrace )
-                                $.CONSUME(this.While )
-                                $.CONSUME(this.OpenBracket )
-                                $.SUBRULE($.Condition )
-                                $.CONSUME(this.CloseBracket )
+                                $.CONSUME(Do )
+                                $.CONSUME2(OpenBrace )
+                                $.SUBRULE2($.statements )
+                                $.CONSUME2(CloseBrace )
+                                $.CONSUME1(While )
+                                $.CONSUME2(OpenBracket )
+                                $.SUBRULE1($.nCondition )
+                                $.CONSUME2(CloseBracket )
                         }},
                     ])
                     
@@ -680,14 +689,14 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
 
                 $.RULE("ForLoopInitialiser", () => {
                     $.OPTION(() => {
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                     })
                 });
 
 
                 $.RULE("ForLoopCondition", () => {
                     
-                   $.SUBRULE($.Condition)
+                   $.SUBRULE($.nCondition)
                     
                 });
                 $.RULE("ForLoopStep", () => {
@@ -696,18 +705,18 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                      
                  });
                  $.RULE("Branch", () => {
-                    $.CONSUME(this.If )
-                    $.CONSUME(this.OpenBracket )
-                    $.SUBRULE($.Condition)
-                    $.CONSUME(this.CloseBracket )
-                    $.CONSUME(this.OpenBrace )
+                    $.CONSUME(If )
+                    $.CONSUME(OpenBracket )
+                    $.SUBRULE($.nCondition)
+                    $.CONSUME(CloseBracket )
+                    $.CONSUME(OpenBrace )
                     $.SUBRULE($.statements)
-                    $.CONSUME(this.CloseBrace )
+                    $.CONSUME(CloseBrace )
                     $.SUBRULE($.Alternative)
 
 
                  });
-                 $.RULE("Alternative_Branch ", () => {
+                 $.RULE("Alternative", () => {
                     $.OR([
                         { 
                             ALT: () =>{ 
@@ -715,43 +724,47 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                         }},
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(this.OpenBrace )
+                            $.CONSUME(OpenBrace )
                             $.SUBRULE($.statements)
-                            $.CONSUME(this.CloseBrace )
+                            $.CONSUME(CloseBrace )
                         }},
                     ])
                  });
                  $.RULE("Declarations", () => {
-                    $.OPTION(() => {
-                        $.OR([
-                            { 
-                                ALT: () =>{ 
-                                $.SUBRULE($.Declaration )
-                                $.SUBRULE($.Declarations )
-                            }},
-                            { 
-                                ALT: () =>{ 
-                                $.CONSUME(this.tVariable)
-                                $.SUBRULE($.Variable )
-                            }}
-                ])
+                    this.MANY(() => {
+                    
+                        
+                        
+                                $.CONSUME(tVariable)
+                                $.SUBRULE($.nVariable )
+                                $.OPTION(() => {
+                                    $.SUBRULE($.Field )
+                                })
+                    
+                            })
 
 
                  });
 
+                 $.RULE("Declaration", () => {
+                                
+            
+                    $.CONSUME(tVariable)
+                    $.CONSUME(tUserDefinedIdentifier)
+                    $.SUBRULE($.Field)
                 });
 
 
                  $.RULE("Assignment", () => {
                     
                     $.SUBRULE($.LHS )
-                    $.CONSUME(this.tEqual)
+                    $.CONSUME(Assign)
                     $.SUBRULE($.RHS )
                  });
 
                  $.RULE("LHS", () => {
                     
-                    $.SUBRULE($.Variable )
+                    $.SUBRULE($.nVariable )
                  });
 
                  $.RULE("RHS", () => {
@@ -772,11 +785,11 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                     $.OR([
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(this.Break)
+                            $.CONSUME(Break)
                         }},
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(this.Continue )
+                            $.CONSUME(Continue )
                         }}
                 ])
             });
@@ -785,25 +798,35 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                 $.OR([
                     { 
                         ALT: () =>{ 
-                        $.SUBRULE($.Unary)
+                        $.SUBRULE($.Unary_Operator)
+                        $.SUBRULE($.Value)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.SUBRULE($.Binary)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                            $.SUBRULE($.Ternary)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                            $.SUBRULE($.Const)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                        $.CONSUME(this.OpenBracket )
-                        $.SUBRULE($.Expression)
-                        $.CONSUME(this.CloseBracket )
+                            $.SUBRULE1($.Value)
+                            $.OR1([
+                            {
+                                ALT: () =>{ 
+                                    $.SUBRULE1($.Unary_Operator)
+                                }
+                            },
+                            {
+                                ALT: () =>{ 
+                                    $.SUBRULE($.Binary)
+                                }
+                            },
+                            { 
+                                ALT: () =>{ 
+                                    $.OPTION1(() => {
+                                    $.SUBRULE($.Relational_Operator)
+                                    $.SUBRULE2($.Value)
+                                    })
+                                    $.OPTION(() => {
+                                        $.SUBRULE($.Ternary)
+                                    })
+                                    
+                            }},
+                        ])
                     }}
             ])
         });
@@ -812,12 +835,13 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Expression)
+                        $.SUBRULE($.nVariable)
                         $.SUBRULE($.Unary_Operator)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Unary_Operator)
+                        $.SUBRULE1($.Unary_Operator)
+                        $.SUBRULE1($.nVariable)
                 }}
         ])
     });
@@ -826,66 +850,71 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                 $.OR([
                     { 
                         ALT: () =>{ 
-                            $.CONSUME(this.Minus)
-                            $.CONSUME(this.Minus)
+                            $.CONSUME(Minus)
+                            $.CONSUME1(Minus)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.CONSUME(this.Plus)
-                            $.CONSUME(this.Plus)
+                            $.CONSUME(Plus)
+                            $.CONSUME1(Plus)
                     }}
             ])
         });
 
         $.RULE("Binary", () => {
                         
-            $.SUBRULE($.Expression);
-            $.SUBRULE($.Binary_Operator);
-            $.SUBRULE($.Expression);
+            $.SUBRULE($.BinaryOperator)
+            $.SUBRULE1($.Value)
     });
-
-    $.RULE("Binary_Operator ", () => {
-                                
+    $.RULE("Value", () => {
         $.OR([
             { 
                 ALT: () =>{ 
-                    $.CONSUME(this.Minus)
+                    $.SUBRULE(this.Const)
             }},
             { 
                 ALT: () =>{ 
-                    $.CONSUME(this.Plus)
-            }},
-            { 
-                ALT: () =>{ 
-                    $.CONSUME(this.Multiply)
-            }},
-            { 
-                ALT: () =>{ 
-                    $.CONSUME(this.Divide)
-            }},
-            { 
-                ALT: () =>{ 
-                    $.CONSUME(this.Mod)
-            }},
-            { 
-                ALT: () =>{ 
-                    $.CONSUME(this.Or)
-            }},
-            { 
-                ALT: () =>{ 
-                    $.CONSUME(this.And)
+                    $.CONSUME(tUserDefinedIdentifier)
+                    $.OPTION(() => {
+                        $.SUBRULE($.Field )
+                    })
             }}
     ])
+    });
+    $.RULE("BinaryOperator", () => {
+                                
+        $.OR([
+                { 
+                    ALT: () =>{ 
+                        $.CONSUME(Minus)
+                }},
+                { 
+                    ALT: () =>{ 
+                        $.CONSUME(Plus)
+                }},
+                { 
+                    ALT: () =>{ 
+                        $.CONSUME(Multiply)
+                }},
+                { 
+                    ALT: () =>{ 
+                        $.CONSUME(Divide)
+                }},
+                { 
+                    ALT: () =>{ 
+                        $.CONSUME(Mod)
+                }}
+            ])
 });
 
 
         $.RULE("Ternary", () => {
                                 
-            $.SUBRULE($.Condition)
-            $.CONSUME(this.tEqual)
+            
+            $.CONSUME(QuestionMark)
             $.SUBRULE($.Ternary_Instr )
-            $.CONSUME(this.Colon)
-            $.SUBRULE($.Ternary_Instr)
+            $.CONSUME(Colon)
+            $.SUBRULE1($.Ternary_Instr)
         });
 
 
@@ -894,7 +923,7 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                 }},
                 { 
                     ALT: () =>{ 
@@ -903,69 +932,68 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
         ])
     });
 
-    $.RULE("Condition", () => {
+    $.RULE("nCondition", () => {
                                 
         $.OR([
             { 
                 ALT: () =>{ 
-                    $.CONSUME(this.OpenBracket)
-                    $.SUBRULE($.Condition)
-                    $.CONSUME(this.CloseBracket)
+                    $.CONSUME(OpenBracket)
+                    $.SUBRULE($.nCondition)
+                    $.CONSUME(CloseBracket)
             }},
             { 
                 ALT: () =>{ 
-                    $.CONSUME(this.Not)
-                    $.CONSUME(this.OpenBracket)
-                    $.SUBRULE($.Condition)
-                    $.CONSUME(this.CloseBracket)
+                    $.CONSUME(Not)
+                    $.CONSUME1(OpenBracket)
+                    $.SUBRULE1($.nCondition)
+                    $.CONSUME1(CloseBracket)
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.bool_expr)
-                    $.SUBRULE($.Logical_Operator )
-                    $.SUBRULE($.bool_expr)
+                    $.SUBRULE($.nVariable)
+                    $.OR1([
+                        { ALT: () =>{ 
+                            $.SUBRULE($.Logical_Operator )
+                            $.SUBRULE2($.nCondition)
+                        }}, 
+                        { ALT: () =>{ 
+                            $.SUBRULE($.Relational_Operator  )
+                            $.SUBRULE($.Expression)
+                        }}
+                    ])
+                    
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.Expression)
-                    $.SUBRULE($.Relational_Operator  )
-                    $.SUBRULE($.Expression)
+                    $.SUBRULE($.Const)
+                    $.OR2([
+                        { ALT: () =>{ 
+                            $.SUBRULE1($.Logical_Operator )
+                            $.SUBRULE3($.nCondition)
+                        }}, 
+                        { ALT: () =>{ 
+                            $.SUBRULE1($.Relational_Operator)
+                            $.SUBRULE1($.Expression)
+                        }}
+                    ])
+                    
+                    
             }}
     ])
 });
 
-        $.RULE("bool_expr", () => {
-                                        
-            $.OR([
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(this.True)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.CONSUME(this.False)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.SUBRULE($.Variable)
-                }},
-                { 
-                    ALT: () =>{ 
-                        $.SUBRULE($.Condition)
-                }}
-        ])
-        });
+        
 
         $.RULE("Logical_Operator", () => {
                                         
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.And)
+                        $.CONSUME(And)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.Or)
+                        $.CONSUME(Or)
                 }}
         ])
         });
@@ -975,42 +1003,36 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.LessThan)
+                        $.CONSUME(LessThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.GreaterThan)
+                        $.CONSUME(GreaterThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.tLessThanOrEqual)
+                        $.CONSUME(tLessThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.tGreaterThanOrEqual)
+                        $.CONSUME(tGreaterThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.tEqual)
+                        $.CONSUME(tEqual)
                 }}
         ])
         });
 
 
-        $.RULE("Declaration", () => {
-                                
-            
-            $.CONSUME(this.tVariable)
-            $.CONSUME(this.tUserDefinedIdentifier)
-            $.SUBRULE($.Field)
-        });
+        
 
         $.RULE("Field", () => {
                                 
             $.OPTION(() => {
-                $.CONSUME(this.OpenSquareBracket)
+                $.CONSUME(OpenSquareBracket)
                 $.SUBRULE($.Index)
-                $.CONSUME(this.ClosedSquareBracket)
+                $.CONSUME(ClosedSquareBracket)
             })
         });
 
@@ -1026,7 +1048,7 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Variable)
+                        $.SUBRULE($.nVariable)
                 }},
         ])
         });
@@ -1037,33 +1059,77 @@ Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//
             $.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.tFloatLiteral)
+                        $.CONSUME(tFloatLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.StringLiteral)
+                        $.CONSUME(StringLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.True)
+                        $.CONSUME(True)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(this.False)
+                        $.CONSUME(False)
                 }}
         ])
         });
 
         
-        $.RULE("Variable", () => {
+        $.RULE("nVariable", () => {
                                 
+            
+            $.CONSUME(tUserDefinedIdentifier)
             $.OPTION(() => {
-                $.CONSUME(this.tUserDefinedIdentifier)
                 $.SUBRULE($.Field)
             })
         });
 
+        $.RULE("Type", () => {
+                                        
+            
+            $.CONSUME(tPlayer)
+                
+        
+        });
+        $.RULE("Arguments", () => {
+                                        
+            $.OPTION(() => {
+                $.OR([
+                    { 
+                        ALT: () =>{ 
+                            $.CONSUME(tUserDefinedIdentifier)
+                            $.SUBRULE($.otherArgs)
+                    }},
+                    { 
+                        ALT: () =>{ 
+                            $.SUBRULE($.Const)
+                            $.SUBRULE1($.otherArgs)
+                    }}
+                ])
+            })
+        });
 
+
+        $.RULE("otherArgs", () => {
+            this.MANY(() => {                            
+                $.OPTION(() => {
+                    $.OR([
+                        { 
+                            ALT: () =>{ 
+                                $.CONSUME(tUserDefinedIdentifier)
+                                $.SUBRULE($.otherArgs)
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                $.SUBRULE($.Const)
+                                $.SUBRULE1($.otherArgs)
+                        }}
+                    ])
+                })
+            })
+        });
         this.performSelfAnalysis();
       }
 

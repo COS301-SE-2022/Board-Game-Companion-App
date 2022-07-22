@@ -3,27 +3,62 @@
 
 #container{
     position: relative;
-    overflow: auto
+    width: 100%;
+    margin: auto;
+}
+
+#heading{
+    font-size: 48px;
+    color: $Pcolour-2;
 }
 
 #wrapper{
-    width:85%;
+    width:60%;
     margin: auto;
     margin-top: 3em;
     margin-bottom: 10em;
-    height:70%;
+    background-color: white;
+}
+
+#left{
+    width: 15%;
+    float: left;
+    margin-top: 3em;
+    margin-bottom: 10em;
+    background-color: white;
+}
+
+#right{
+    width: 15%;
+    float: right;
+    margin-top: 3em;
+    margin-bottom: 10em;
+    background-color: white;
 }
 
 #search{
-    border-color: $Pcolour-2;
+    border-radius: 10px;
+    height: 24px;
+    width: 400px;
+    color: black;
+    float: right;
+    margin-right: 16px;
+    padding-left: 16px;
+}
+
+#button-addon3{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 14px;
+    float: right;
+    margin-right: 64px;
+    border-radius: 10px;
+    margin-top: 13px;
 }
 
 #search-tools{
-    width:100%;
-}
-
-hr.solid {
-    border-top: 3px solid #bbb;
+    background-color: $Pcolour-2;
+    width: 100%;
 }
 
 #topic{
@@ -52,15 +87,60 @@ hr.solid {
     transform: scale(1.025); 
 }
 
-#content
-{
-    border: 1px solid  $Pcolour-2;
-    padding: 1em;
-
-}
 
 .board-game-image{
     background-size:cover;
     width:100%;
     height:75%; 
+}
+
+#sortingDiv{
+    float: right;
+    margin: auto;
+    margin-right: 3rem;
+}
+
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    float: right;
+    background-color: white;
+    border-radius: 0 10px 10px 0;
+    margin-top: 13px;
+}
+#sort{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 14px;
+    float: right;
+    border-radius: 10px 0 0 10px;
+    margin-top: 13px;
+}
+
+#triangle1{
+    border-right: 48px solid transparent;
+    border-bottom: 52.5px solid $Pcolour-3;
+    position: absolute;
+}
+
+#triangle2{
+    border-left: 48px solid transparent;
+    border-bottom: 52.5px solid $Pcolour-3;
+    float: right;
+    right: 20%;
+    position: absolute;
+}
+
+#leftHeader{
+    background-color: $Pcolour-2;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#rightHeader{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
 }

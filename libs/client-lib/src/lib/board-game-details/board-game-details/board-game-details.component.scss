@@ -43,3 +43,46 @@
     position: absolute;
     left: 50%;
 }
+
+@media(max-width:639px){
+    .result{
+        display:flex;
+        flex-direction: column;
+        width:100%;
+        float:left;
+        align-items: center;
+        justify-content: center;   
+    }
+
+    #imgDiv{
+        display:flex;
+        flex-direction: column;
+        float:left;
+        width:100%;
+        
+    }
+
+    img{
+        height:50%;
+    }
+
+    // #info{
+    //     display:block;
+    //     align-items: center;
+    //     justify-content:center;
+    // }
+
+    #title{
+        margin-top: 34px;
+    }
+
+    #descr{
+        display:none;
+    }
+}
+
+@media(min-width:640px){
+    #viewDescrp{
+        display:none;
+    }
+}

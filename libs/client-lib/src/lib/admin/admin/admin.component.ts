@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-
+// import { script } from '../../shared/models/script';
 
 // import { TestPassService } from '../../test-pass.service';
 // import { Router } from '@angular/router';
@@ -23,6 +23,9 @@ export class AdminComponent implements OnInit {
   public page = 1;
   public search = "";
   public scripts : any;
+
+  public selected = "";
+  public searchedValue = "";
 
   constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
   
@@ -140,7 +143,7 @@ export class AdminComponent implements OnInit {
 
   onSearch(): void{
     this.adminService.getScripts().subscribe(data=>{
-      this.scripts = data.filter( (res: {name: string;}) => res.name === this.search);
+      this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase() === this.searchedValue.toLowerCase());
 
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
@@ -148,6 +151,47 @@ export class AdminComponent implements OnInit {
         this.scripts[i].created = [date[3], date[1], date[2]].join("-");
       }
       this.ngOnInit();
+    });
+  }
+
+  onSort(): void{
+    this.adminService.getScripts().subscribe((data)=>{
+      this.scripts = data;
+      for(let i=0; i < this.scripts.length; i++){
+        const date = this.scripts[i].created.split(" ");
+
+        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      }
+      if(this.selected==="alphabetical"){
+
+        this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
+        {
+          const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
+          const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
+
+          if (nameA < nameB) 
+          {
+            return -1;
+          }
+          if (nameA > nameB)
+          {
+            return 1;
+          }
+
+          return 0;
+        });
+      }
+      else if(this.selected==="date")
+      {
+        this.scripts.sort(function(resultA: { created: any; }, resultB: { created: any; }) 
+        {
+          const dateA = resultA.created; 
+          const dateB = resultB.created;
+
+          return +new Date(dateA) - +new Date(dateB);
+        });
+      }
+
     });
   }
 }
