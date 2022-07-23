@@ -174,4 +174,9 @@ export class EditorComponent implements OnInit{
     }
   }
 
+  newMessage(message:string): void{
+    this.editorConsole.clear();
+    this.editorConsole.print({type:false,outputMessage:message});
+  }
+
 }

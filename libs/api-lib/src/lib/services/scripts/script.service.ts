@@ -107,22 +107,27 @@ export class ScriptService {
     }
 
 
-    async updateFile(id:string,content:string):Promise<string>{
+    async updateFile(id:string,content:string):Promise<any>{
         const script:ScriptDocument = await this.scriptModel.findById(id);
-        let result = "success";
+        let result:any = {status:"success",message:""}
 
-        //this.compilerService.
         if(script === null)
-            result = "invalid script id";
+            result = {status:"failed",message: "invalid script id"};
         else{
             try{
+                result = {status:"success",message:this.compilerService.parse(content)};
+                
                 this.s3Service.update(script.file.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
-            }catch(e){
-                result = "something went wrong while upload file, contact developers if this error persists";
-            }
             
+            }catch(e){
+                console.log("begin-error");
+                console.log(e);
+                console.log("end-error");
+
+                result = {status:"failed",message:JSON.stringify(e)};
+            }
         }
 
         return result;

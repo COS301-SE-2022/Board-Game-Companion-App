@@ -20,6 +20,7 @@ export class EditorBodyComponent implements OnInit{
   @Input() margin = 0;
   @Input() top = 0;
   @Output() changesTracker = new EventEmitter<number>();
+  @Output() newMessageEvent = new EventEmitter<string>();
   codeEditor:any;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -163,10 +164,13 @@ export class EditorBodyComponent implements OnInit{
       this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
           console.log(value)
-          if(value.message === "success")
+          
+          if(value.status === "success")
             this.changesTracker.emit(2);
           else
             this.changesTracker.emit(0);
+
+          this.newMessageEvent.emit(value.message);
         },
         error:(e)=>{
           console.log(e);
