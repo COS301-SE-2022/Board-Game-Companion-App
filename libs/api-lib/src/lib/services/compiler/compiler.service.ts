@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
-import { CstNode, CstParser, ParserMethod } from 'chevrotain';
+import {  CstParser } from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
 
 @Injectable()
 export class CompilerService {
+
+    
+
     p = new parser();
     compile(input:string):string
     {
@@ -149,7 +152,16 @@ export class CompilerService {
     parse(input:string):string{
         this.p.input = this.scanHelper(input).tokens;
          const cstOutput = this.p.Program();
-        
+        if(this.p.errors.length!=0)
+        {
+            throw Error(this.p.errors.toString());
+        }
+
+        //otherwise successful parse
+        //read in template file
+
+        //begin transpilation
+
         return "parse " + cstOutput;
     }
 }
