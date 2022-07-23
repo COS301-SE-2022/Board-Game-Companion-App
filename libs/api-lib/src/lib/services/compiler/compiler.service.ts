@@ -42,9 +42,9 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"Dot",pattern:/./}));
 
         //relational operators
-        const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
-        const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
-        const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+         const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
+         const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
+         const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
         result.push(tGreaterThanOrEqual);
         result.push(tLessThanOrEqual);
         result.push(tEqual);
@@ -55,10 +55,10 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
 
         //increment
-        const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
+         const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
 
         //decrement
-        const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+         const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
         
         result.push(tIncrement);
         result.push(tDecrement);
@@ -75,7 +75,7 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
 
         //literals
-        const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
+         const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
         
 
         result.push(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
@@ -125,22 +125,22 @@ export class CompilerService {
     }
 
     scanHelper(input:string):chevrotain.ILexingResult{
-        const tokens:chevrotain.TokenType[] = this.defineAllTokenTypes(); 
-        const lexer = new chevrotain.Lexer(tokens);
+         const tokens:chevrotain.TokenType[] = this.defineAllTokenTypes(); 
+         const lexer = new chevrotain.Lexer(tokens);
         
         return lexer.tokenize(input);
     }
 
     scan(input:string):lexerResult{
-        const tokens:chevrotain.ILexingResult = this.scanHelper(input);
-        const result:lexerResult = {
+         const tokens:chevrotain.ILexingResult = this.scanHelper(input);
+         const result:lexerResult = {
             success: true,
             errors: []
         }
 
         if(tokens.errors.length !== 0){
             result.success = false;
-            result.errors = tokens.errors;
+            //result.errors = tokens.errors;
         }
 
         return result;
@@ -148,7 +148,7 @@ export class CompilerService {
 
     parse(input:string):string{
         this.p.input = this.scanHelper(input).tokens;
-        const cstOutput = this.p.Program();
+         const cstOutput = this.p.Program();
         
         return "parse " + cstOutput;
     }
@@ -160,163 +160,211 @@ class parser extends CstParser
 {
     
 
-
-
-
-
-
-    Program: ParserMethod<unknown[], CstNode>;
-    GameState: ParserMethod<unknown[], CstNode>;
-    Definition: ParserMethod<unknown[], CstNode>;
-    Cards: ParserMethod<unknown[], CstNode>;
-    Players: ParserMethod<unknown[], CstNode>;
-    End_Game: ParserMethod<unknown[], CstNode>;
-    nParameters: ParserMethod<unknown[], CstNode>;
-    CardEffect : ParserMethod<unknown[], CstNode>;
-    CardCondition: ParserMethod<unknown[], CstNode>;
-    TypeList: ParserMethod<unknown[], CstNode>;
-    Type: ParserMethod<unknown[], CstNode>;
-    statements: ParserMethod<unknown[], CstNode>;
-    Declarations: ParserMethod<unknown[], CstNode>;
-    Actions: ParserMethod<unknown[], CstNode>;
-    FormalParameters: ParserMethod<unknown[], CstNode>;
-    ActionCondition: ParserMethod<unknown[], CstNode>;
-    OtherFormalParameters: ParserMethod<unknown[], CstNode>;
-    IO: ParserMethod<unknown[], CstNode>;
-    Call: ParserMethod<unknown[], CstNode>;
-    Loop: ParserMethod<unknown[], CstNode>;
-    Branch: ParserMethod<unknown[], CstNode>;
-    Declaration: ParserMethod<unknown[], CstNode>;
-    Assignment: ParserMethod<unknown[], CstNode>;
-    FlowControl: ParserMethod<unknown[], CstNode>;
-    nVariable : ParserMethod<unknown[], CstNode>;
-    Expression: ParserMethod<unknown[], CstNode>;
-    MethodCall:ParserMethod<unknown[], CstNode>;
-    Arguments:ParserMethod<unknown[], CstNode>;
-    nCondition:ParserMethod<unknown[], CstNode>;
-    ForLoopInitialiser:ParserMethod<unknown[], CstNode>;
-    ForLoopCondition:ParserMethod<unknown[], CstNode>;
-    ForLoopStep:ParserMethod<unknown[], CstNode>;
-    Alternative:ParserMethod<unknown[], CstNode>;
-    Alternative_Branch:ParserMethod<unknown[], CstNode>;
-    LHS:ParserMethod<unknown[], CstNode>;
-    RHS:ParserMethod<unknown[], CstNode>;
-    Unary:ParserMethod<unknown[], CstNode>;
-    Binary:ParserMethod<unknown[], CstNode>;
-    Ternary:ParserMethod<unknown[], CstNode>;
-    Const:ParserMethod<unknown[], CstNode>;
-    Unary_Operator:ParserMethod<unknown[], CstNode>;
-    BinaryOperator:ParserMethod<unknown[], CstNode>;
-    Ternary_Instr :ParserMethod<unknown[], CstNode>;
-    Logical_Operator :ParserMethod<unknown[], CstNode>;
-    Relational_Operator :ParserMethod<unknown[], CstNode>;
-    Field:ParserMethod<unknown[], CstNode>;
-    Index:ParserMethod<unknown[], CstNode>;
-    otherArgs:ParserMethod<unknown[], CstNode>;
-    Value:ParserMethod<unknown[], CstNode>;
-    constructor() {
-
 //user defined identifier
-        const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
+ tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
 // class and function declaration
-        const Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier});
-        const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
-        const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
-        const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
-        const tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:tUserDefinedIdentifier}));
-        const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
-        const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
-        const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
-        const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
-        const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
+         Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:this.tUserDefinedIdentifier});
+         tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:this.tUserDefinedIdentifier}));
+         tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:this.tUserDefinedIdentifier}));
+         tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:this.tUserDefinedIdentifier}));
+         tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:this.tUserDefinedIdentifier}));
+         tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:this.tUserDefinedIdentifier}));
+         Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:this.tUserDefinedIdentifier}));
+         tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:this.tUserDefinedIdentifier}));
+         tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:this.tUserDefinedIdentifier}));
+         tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:this.tUserDefinedIdentifier}));
 
 //punctuation
-        const Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
-        const OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
-        const CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
-        const OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
-        const CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
-        const Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
-        const OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
-        const ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
-        const QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
-        const SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-        const Dot = chevrotain.createToken({name:"Dot",pattern:/./})
+         Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
+         OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
+         CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
+         OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
+         CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
+         Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
+         OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
+         ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
+         QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
+         SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
+         Dot = chevrotain.createToken({name:"Dot",pattern:/./})
 //relational operators
-        const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
-        const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
-        const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
-        const GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
-        const LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
+         tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
+         tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
+         tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+         GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:this.tGreaterThanOrEqual}));
+         LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:this.tLessThanOrEqual}));
 
 //Assignment operators
-        const Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
+         Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:this.tEqual}));
 
 //increment
-        const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
+         tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
 
 //decrement
-        const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+         tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
 
 //arithmetic operators
-        const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:tIncrement}));
-        const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tDecrement}));
-        const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
-        const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
-        const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
+         Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:this.tIncrement}));
+         Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:this.tDecrement}));
+         Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
+         Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
+         Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:this.tUserDefinedIdentifier}));
 
 //logical operators
-        const And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
-        const Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
-        const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
+         And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:this.tUserDefinedIdentifier}));
+         Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:this.tUserDefinedIdentifier}));
+         Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:this.tUserDefinedIdentifier}));
 
 //literals
-        const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
+         tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
 
 
-        const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-        const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
-        const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
-        const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+         IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:this.tFloatLiteral}));
+         StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+         False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:this.tUserDefinedIdentifier}));
+         True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:this.tUserDefinedIdentifier}));
 
 
 //input output
-        const Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
-        const Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:tUserDefinedIdentifier}));
-        const Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
-        const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
-        const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
+         Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:this.tUserDefinedIdentifier}));
+         Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:this.tUserDefinedIdentifier}));
+         Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:this.tUserDefinedIdentifier}));
+         ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:this.tUserDefinedIdentifier}));
+         ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:this.tUserDefinedIdentifier}));
 
 //loops
-        const While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
-        const For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:tUserDefinedIdentifier}));
-        const Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:tUserDefinedIdentifier}));
+         While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:this.tUserDefinedIdentifier}));
+         For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:this.tUserDefinedIdentifier}));
+         Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:this.tUserDefinedIdentifier}));
 
 //branch
-        const If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:tUserDefinedIdentifier}));
-        const Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:tUserDefinedIdentifier}));
+         If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:this.tUserDefinedIdentifier}));
+         Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:this.tUserDefinedIdentifier}));
 
 //flow control
-        const Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:tUserDefinedIdentifier}));
-        const Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:tUserDefinedIdentifier}));
+         Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:this.tUserDefinedIdentifier}));
+         Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:this.tUserDefinedIdentifier}));
 
 //presets
-        const Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
-        const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
+         Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:this.tUserDefinedIdentifier}));
+         NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
 
 //variable
-        const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
+         tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:this.tUserDefinedIdentifier}));
 
 //whitespace
-        const WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
+         WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
 
 //comments
-        const Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
+         Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
 
 
 
 
-    const AllTokens = [
+
+    
+    constructor() {
+        //user defined identifier
+    const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
+    // class and function declaration
+            const Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier});
+            const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
+            const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
+            const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
+            const tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:tUserDefinedIdentifier}));
+            const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
+            const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
+            const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
+            const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
+            const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
+    
+    //punctuation
+            const Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
+            const OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
+            const CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
+            const OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
+            const CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
+            const Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
+            const OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
+            const ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
+            const QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
+            const SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
+            const Dot = chevrotain.createToken({name:"Dot",pattern:/./})
+    //relational operators
+            const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
+            const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
+            const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+            const GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
+            const LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
+    
+    //Assignment operators
+            const Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
+    
+    //increment
+            const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
+    
+    //decrement
+            const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+    
+    //arithmetic operators
+            const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:tIncrement}));
+            const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tDecrement}));
+            const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
+            const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
+            const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
+    
+    //logical operators
+            const And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
+            const Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
+            const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
+    
+    //literals
+            const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
+    
+    
+            const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
+            const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+            const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
+            const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+    
+    
+    //input output
+            const Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
+            const Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:tUserDefinedIdentifier}));
+            const Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
+            const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
+            const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
+    
+    //loops
+            const While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
+            const For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:tUserDefinedIdentifier}));
+            const Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:tUserDefinedIdentifier}));
+    
+    //branch
+            const If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:tUserDefinedIdentifier}));
+            const Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:tUserDefinedIdentifier}));
+    
+    //flow control
+            const Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:tUserDefinedIdentifier}));
+            const Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:tUserDefinedIdentifier}));
+    
+    //presets
+            const Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
+            const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
+    
+    //variable
+            const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
+    
+    //whitespace
+            const WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
+    
+    //comments
+            const Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
+    
+
+
+
+
+     const AllTokens = [
         tUserDefinedIdentifier,
         Class,
         tAction,
@@ -382,364 +430,364 @@ class parser extends CstParser
         
         super(AllTokens) //should allTokens
 
-
+        this.performSelfAnalysis();
+    }
         // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const $ = this;
-
+         this = this;
         
         
-        $.RULE("Program", () => {
-            $.SUBRULE($.GameState)
-            $.SUBRULE($.Definition)
+        public Program = this.RULE("Program", () => {
+            this.SUBRULE(this.GameState)
+            this.SUBRULE(this.Definition)
         });
 
-        $.RULE("Definition", () => {
-            $.OPTION(() => {
-                $.OR([
-                    { ALT: () =>{ $.SUBRULE($.Cards )
-                            $.SUBRULE($.Definition)}},
+        private Definition = this.RULE("Definition", () => {
+            this.OPTION(() => {
+                this.OR([
+                    { ALT: () =>{ this.SUBRULE(this.Cards )
+                            this.SUBRULE(this.Definition)}},
 
                             
-                    { ALT: () =>{ $.SUBRULE($.Players)
-                            $.SUBRULE1($.Definition)}},
+                    { ALT: () =>{ this.SUBRULE(this.Players)
+                            this.SUBRULE1(this.Definition)}},
 
-                    { ALT: () =>{ $.SUBRULE($.End_Game)
-                            $.SUBRULE2($.Definition)}}
+                    { ALT: () =>{ this.SUBRULE(this.End_Game)
+                            this.SUBRULE2(this.Definition)}}
                         
                 ])
             });
         });
         
-        $.RULE("Cards", () => {
-            $.CONSUME(Class)
-            $.CONSUME(tUserDefinedIdentifier)
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.nParameters),
-            $.SUBRULE($.CardEffect )
-            $.SUBRULE($.CardCondition)
-            $.CONSUME(CloseBrace)
+        private Cards = this.RULE("Cards", () => {
+            this.CONSUME(this.Class)
+            this.CONSUME(this.tUserDefinedIdentifier)
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.nParameters),
+            this.SUBRULE(this.CardEffect )
+            this.SUBRULE(this.CardCondition)
+            this.CONSUME(this.CloseBrace)
         });
-        $.RULE("nParameters", () => {
-            $.CONSUME(tParameters )
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.TypeList)
-            $.CONSUME(CloseBrace)
+        private nParameters =this.RULE("nParameters", () => {
+            this.CONSUME(this.tParameters )
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.TypeList)
+            this.CONSUME(this.CloseBrace)
         });
 
-        $.RULE("TypeList", () => {
+        private TypeList=this.RULE("TypeList", () => {
                 this.MANY(() => {
-                $.OPTION(() => {
-                    $.SUBRULE($.Type)
-                    $.CONSUME(tUserDefinedIdentifier)
+                this.OPTION(() => {
+                    this.SUBRULE(this.Type)
+                    this.CONSUME(this.tUserDefinedIdentifier)
                 });
             })
         });
-        $.RULE("CardCondition", () => {
-            $.CONSUME(tCondition )
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.statements)
-            $.CONSUME(tReturn)
-            $.OR([
-                { ALT: () =>{ $.SUBRULE($.Const )}}, 
-                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+        private CardCondition= this.RULE("CardCondition", () => {
+            this.CONSUME(this.tCondition )
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.statements)
+            this.CONSUME(this.tReturn)
+            this.OR([
+                { ALT: () =>{ this.SUBRULE(this.Const )}}, 
+                { ALT: () =>{ this.SUBRULE(this.nVariable)}}
             ])
-            $.CONSUME(CloseBrace)
+            this.CONSUME(this.CloseBrace)
         });
-        $.RULE("CardEffect", () => {
-            $.CONSUME(tEffect )
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.statements)
-            $.CONSUME(CloseBrace)
+        private CardEffect=this.RULE("CardEffect", () => {
+            this.CONSUME(this.tEffect )
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.statements)
+            this.CONSUME(this.CloseBrace)
         });
-        $.RULE("GameState", () => {
-            $.CONSUME(tState )
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.Declarations )
-            $.CONSUME(CloseBrace)
+        private GameState=this.RULE("GameState", () => {
+            this.CONSUME(this.tState )
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.Declarations )
+            this.CONSUME(this.CloseBrace)
         });
-        $.RULE("Players", () => {
-            $.CONSUME(tPlayer)
-            $.CONSUME(tUserDefinedIdentifier)
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.Actions )
-            $.CONSUME( Turn)
-            $.SUBRULE($.statements )
-            $.CONSUME(CloseBrace)
+        private Players=this.RULE("Players", () => {
+            this.CONSUME(this.tPlayer)
+            this.CONSUME(this.tUserDefinedIdentifier)
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.Actions )
+            this.CONSUME( this.Turn)
+            this.SUBRULE(this.statements )
+            this.CONSUME(this.CloseBrace)
         });
 
-        $.RULE("Actions", () => {
+        private Actions=this.RULE("Actions", () => {
             this.MANY(() => {
-                $.OPTION(() => {
+                this.OPTION(() => {
                     
-                $.CONSUME(tAction)
-                $.CONSUME(tUserDefinedIdentifier)
-                $.CONSUME(OpenBracket)
-                $.SUBRULE($.FormalParameters)
-                $.CONSUME(CloseBracket)
-                $.CONSUME(OpenBrace)  
-                $.SUBRULE($.statements )
-                $.CONSUME(CloseBrace)  
-                $.SUBRULE($.nCondition )
-                $.CONSUME1(tUserDefinedIdentifier)
-                $.CONSUME1(OpenBracket)
-                $.SUBRULE1($.FormalParameters)
-                $.CONSUME1(CloseBracket)
-                $.CONSUME1(OpenBrace)
-                $.SUBRULE1($.statements)
-                $.CONSUME(tReturn)
-                $.OR([
-                    { ALT: () =>{ $.SUBRULE($.Const )}}, 
-                    { ALT: () =>{ $.SUBRULE($.nVariable)}}
+                this.CONSUME(this.tAction)
+                this.CONSUME(this.tUserDefinedIdentifier)
+                this.CONSUME(this.OpenBracket)
+                this.SUBRULE(this.FormalParameters)
+                this.CONSUME(this.CloseBracket)
+                this.CONSUME(this.OpenBrace)  
+                this.SUBRULE(this.statements )
+                this.CONSUME(this.CloseBrace)  
+                this.SUBRULE(this.nCondition )
+                this.CONSUME1(this.tUserDefinedIdentifier)
+                this.CONSUME1(this.OpenBracket)
+                this.SUBRULE1(this.FormalParameters)
+                this.CONSUME1(this.CloseBracket)
+                this.CONSUME1(this.OpenBrace)
+                this.SUBRULE1(this.statements)
+                this.CONSUME(this.tReturn)
+                this.OR([
+                    { ALT: () =>{ this.SUBRULE(this.Const )}}, 
+                    { ALT: () =>{ this.SUBRULE(this.nVariable)}}
                 ])
-                $.CONSUME1(CloseBrace)
+                this.CONSUME1(this.CloseBrace)
                 });
         })
         });
-        $.RULE("FormalParameters", () => {
-            $.OPTION(() => {
-                $.CONSUME(tUserDefinedIdentifier)
-                $.SUBRULE($.OtherFormalParameters);
+        private FormalParameters=this.RULE("FormalParameters", () => {
+            this.OPTION(() => {
+                this.CONSUME(this.tUserDefinedIdentifier)
+                this.SUBRULE(this.OtherFormalParameters);
             });
         });
-        $.RULE("OtherFormalParameters", () => {
-            $.OPTION(() => {
-                $.CONSUME(tUserDefinedIdentifier)
-                $.SUBRULE($.OtherFormalParameters);
+        private OtherFormalParameters=this.RULE("OtherFormalParameters", () => {
+            this.OPTION(() => {
+                this.CONSUME(this.tUserDefinedIdentifier)
+                this.SUBRULE(this.OtherFormalParameters);
             });
         });
-        $.RULE("End_Game", () => {
-            $.CONSUME(tEndgame)
-            $.CONSUME(OpenBrace)
-            $.SUBRULE($.statements)
-            $.CONSUME(tReturn)
+        private End_Game=this.RULE("End_Game", () => {
+            this.CONSUME(this.tEndgame)
+            this.CONSUME(this.OpenBrace)
+            this.SUBRULE(this.statements)
+            this.CONSUME(this.tReturn)
 
-            $.OR([
-                { ALT: () =>{ $.SUBRULE($.Const )}}, 
-                { ALT: () =>{ $.SUBRULE($.nVariable)}}
+            this.OR([
+                { ALT: () =>{ this.SUBRULE(this.Const )}}, 
+                { ALT: () =>{ this.SUBRULE(this.nVariable)}}
             ])
 
-            $.CONSUME(CloseBrace)
-            $.SUBRULE($.Actions);
+            this.CONSUME(this.CloseBrace)
+            this.SUBRULE(this.Actions);
         });
 
 
-        $.RULE("statements", () => {
-            $.OPTION(() => {
-                $.OR([
-                    { ALT: () =>{ $.SUBRULE($.IO )
-                            $.SUBRULE($.statements)}},
+        private statements=this.RULE("statements", () => {
+            this.OPTION(() => {
+                this.OR([
+                    { ALT: () =>{ this.SUBRULE(this.IO )
+                            this.SUBRULE(this.statements)}},
 
                             
-                    { ALT: () =>{ $.SUBRULE($.Call)
-                            $.SUBRULE1($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.Call)
+                            this.SUBRULE1(this.statements)}},
 
-                    { ALT: () =>{ $.SUBRULE($.Loop)
-                            $.SUBRULE2($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.Loop)
+                            this.SUBRULE2(this.statements)}},
 
-                    { ALT: () =>{ $.SUBRULE($.Branch)
-                            $.SUBRULE3($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.Branch)
+                            this.SUBRULE3(this.statements)}},
 
-                    { ALT: () =>{ $.SUBRULE($.Declaration )
-                            $.SUBRULE4($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.Declaration )
+                            this.SUBRULE4(this.statements)}},
 
-                    { ALT: () =>{ $.SUBRULE($.Assignment )
-                            $.SUBRULE5($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.Assignment )
+                            this.SUBRULE5(this.statements)}},
 
-                    { ALT: () =>{ $.SUBRULE($.FlowControl )
-                            $.SUBRULE6($.statements)}},
+                    { ALT: () =>{ this.SUBRULE(this.FlowControl )
+                            this.SUBRULE6(this.statements)}},
 
-                    { ALT: () =>{ $.CONSUME(tReturn )
-                            $.SUBRULE($.nVariable )}},
+                    { ALT: () =>{ this.CONSUME(this.tReturn )
+                            this.SUBRULE(this.nVariable )}},
                 ])
             });
         });
-        $.RULE("IO", () => {
+        private IO=this.RULE("IO", () => {
             
-                $.OR([
+                this.OR([
                      
-                        { ALT: () =>{ $.CONSUME(Input )
-                            $.CONSUME(OpenBracket )
-                            $.CONSUME(StringLiteral )
+                        { ALT: () =>{ this.CONSUME(this.Input )
+                            this.CONSUME(this.OpenBracket )
+                            this.CONSUME(this.StringLiteral )
                             this.OPTION(() => {
-                                $.CONSUME(Comma )
-                            $.SUBRULE($.nVariable )}
+                                this.CONSUME(this.Comma )
+                            this.SUBRULE(this.nVariable )}
                               );
-                            $.CONSUME(CloseBracket )
+                            this.CONSUME(this.CloseBracket )
                         }},
 
                         { ALT: () =>{ 
-                            $.CONSUME(ConsoleInput )
-                            $.CONSUME2(OpenBracket )
-                        $.CONSUME2(StringLiteral )
+                            this.CONSUME(this.ConsoleInput )
+                            this.CONSUME2(this.OpenBracket )
+                        this.CONSUME2(this.StringLiteral )
                         this.OPTION1(() => {
-                            $.CONSUME1(Comma )
-                            $.SUBRULE1($.nVariable )}
+                            this.CONSUME1(this.Comma )
+                            this.SUBRULE1(this.nVariable )}
                           );
-                        $.CONSUME2(CloseBracket )
+                        this.CONSUME2(this.CloseBracket )
                     }},
 
                         
 
-                        { ALT: () =>{ $.CONSUME(Print )
-                            $.CONSUME3(OpenBracket )
-                            $.SUBRULE($.Expression)
-                        $.CONSUME3(CloseBracket )
+                        { ALT: () =>{ this.CONSUME(this.Print )
+                            this.CONSUME3(this.OpenBracket )
+                            this.SUBRULE(this.Expression)
+                        this.CONSUME3(this.CloseBracket )
                         }},
 
-                        { ALT: () =>{ $.CONSUME(ConsoleOutput )
-                            $.CONSUME5(OpenBracket )
-                            $.SUBRULE1($.Expression)
-                        $.CONSUME5(CloseBracket )
+                        { ALT: () =>{ this.CONSUME(this.ConsoleOutput )
+                            this.CONSUME5(this.OpenBracket )
+                            this.SUBRULE1(this.Expression)
+                        this.CONSUME5(this.CloseBracket )
                         }},
                     ])
                     
                 });
 
-                $.RULE("Call", () => {
+                private Call=this.RULE("Call", () => {
             
-                    $.OR([
+                    this.OR([
                     { 
                         ALT: () =>{ 
-                        $.SUBRULE($.MethodCall)
+                        this.SUBRULE(this.MethodCall)
                     }},
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(Minmax )
-                        $.CONSUME(OpenBracket )
-                        $.CONSUME(OpenBrace )
-                        $.SUBRULE($.statements)
-                        $.CONSUME(CloseBrace )
-                        $.CONSUME(CloseBracket )
+                        this.CONSUME(this.Minmax )
+                        this.CONSUME(this.OpenBracket )
+                        this.CONSUME(this.OpenBrace )
+                        this.SUBRULE(this.statements)
+                        this.CONSUME(this.CloseBrace )
+                        this.CONSUME(this.CloseBracket )
                     }},
                     { 
                         ALT: () =>{ 
-                        $.CONSUME(NeuralNetwork )
-                        $.CONSUME1(OpenBracket )
-                        $.CONSUME(StringLiteral )
-                        $.CONSUME1(CloseBracket )
+                        this.CONSUME(this.NeuralNetwork )
+                        this.CONSUME1(this.OpenBracket )
+                        this.CONSUME(this.StringLiteral )
+                        this.CONSUME1(this.CloseBracket )
                     }},
                     ])
                     
                 });
 
 
-                $.RULE("MethodCall", () => {
+                private MethodCall=this.RULE("MethodCall", () => {
             
-                    $.OR([
+                    this.OR([
 
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(tEffect )
-                            $.CONSUME(OpenBracket )
-                            $.SUBRULE($.Arguments )
-                            $.CONSUME(CloseBracket )
+                            this.CONSUME(this.tEffect )
+                            this.CONSUME(this.OpenBracket )
+                            this.SUBRULE(this.Arguments )
+                            this.CONSUME(this.CloseBracket )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(tCondition )
-                                $.CONSUME1(OpenBracket )
-                                $.SUBRULE1($.Arguments )
-                                $.CONSUME1(CloseBracket )
+                                this.CONSUME(this.tCondition )
+                                this.CONSUME1(this.OpenBracket )
+                                this.SUBRULE1(this.Arguments )
+                                this.CONSUME1(this.CloseBracket )
                         }},
 
                     ])
                     
                 });
-                $.RULE("Loop", () => {
+                private Loop=this.RULE("Loop", () => {
             
-                    $.OR([
+                    this.OR([
 
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(While )
-                            $.CONSUME(OpenBracket )
-                            $.SUBRULE($.nCondition)
-                            $.CONSUME(CloseBracket )
-                            $.CONSUME(OpenBrace )
-                            $.SUBRULE($.statements)
-                            $.CONSUME(CloseBrace )
+                            this.CONSUME(this.While )
+                            this.CONSUME(this.OpenBracket )
+                            this.SUBRULE(this.nCondition)
+                            this.CONSUME(this.CloseBracket )
+                            this.CONSUME(this.OpenBrace )
+                            this.SUBRULE(this.statements)
+                            this.CONSUME(this.CloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(For )
-                                $.CONSUME1(OpenBracket )
-                                $.SUBRULE($.ForLoopInitialiser )
-                                $.CONSUME(SemiColon )
-                                $.SUBRULE($.ForLoopCondition )
-                                $.CONSUME1(SemiColon )
-                                $.SUBRULE($.ForLoopStep )
-                                $.CONSUME1(CloseBracket )
-                                $.CONSUME1(OpenBrace )
-                                $.SUBRULE1($.statements)
-                                $.CONSUME1(CloseBrace )
+                                this.CONSUME(this.For )
+                                this.CONSUME1(this.OpenBracket )
+                                this.SUBRULE(this.ForLoopInitialiser )
+                                this.CONSUME(this.SemiColon )
+                                this.SUBRULE(this.ForLoopCondition )
+                                this.CONSUME1(this.SemiColon )
+                                this.SUBRULE(this.ForLoopStep )
+                                this.CONSUME1(this.CloseBracket )
+                                this.CONSUME1(this.OpenBrace )
+                                this.SUBRULE1(this.statements)
+                                this.CONSUME1(this.CloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(Do )
-                                $.CONSUME2(OpenBrace )
-                                $.SUBRULE2($.statements )
-                                $.CONSUME2(CloseBrace )
-                                $.CONSUME1(While )
-                                $.CONSUME2(OpenBracket )
-                                $.SUBRULE1($.nCondition )
-                                $.CONSUME2(CloseBracket )
+                                this.CONSUME(this.Do )
+                                this.CONSUME2(this.OpenBrace )
+                                this.SUBRULE2(this.statements )
+                                this.CONSUME2(this.CloseBrace )
+                                this.CONSUME1(this.While )
+                                this.CONSUME2(this.OpenBracket )
+                                this.SUBRULE1(this.nCondition )
+                                this.CONSUME2(this.CloseBracket )
                         }},
                     ])
                     
                 });
 
-                $.RULE("ForLoopInitialiser", () => {
-                    $.OPTION(() => {
-                        $.SUBRULE($.nVariable)
+                private ForLoopInitialiser=this.RULE("ForLoopInitialiser", () => {
+                    this.OPTION(() => {
+                        this.SUBRULE(this.nVariable)
                     })
                 });
 
 
-                $.RULE("ForLoopCondition", () => {
+                private ForLoopCondition=this.RULE("ForLoopCondition", () => {
                     
-                   $.SUBRULE($.nCondition)
+                   this.SUBRULE(this.nCondition)
                     
                 });
-                $.RULE("ForLoopStep", () => {
+                private ForLoopStep=this.RULE("ForLoopStep", () => {
                     
-                    $.SUBRULE($.Expression)
+                    this.SUBRULE(this.Expression)
                      
                  });
-                 $.RULE("Branch", () => {
-                    $.CONSUME(If )
-                    $.CONSUME(OpenBracket )
-                    $.SUBRULE($.nCondition)
-                    $.CONSUME(CloseBracket )
-                    $.CONSUME(OpenBrace )
-                    $.SUBRULE($.statements)
-                    $.CONSUME(CloseBrace )
-                    $.SUBRULE($.Alternative)
+                 private Branch=this.RULE("Branch", () => {
+                    this.CONSUME(this.If )
+                    this.CONSUME(this.OpenBracket )
+                    this.SUBRULE(this.nCondition)
+                    this.CONSUME(this.CloseBracket )
+                    this.CONSUME(this.OpenBrace )
+                    this.SUBRULE(this.statements)
+                    this.CONSUME(this.CloseBrace )
+                    this.SUBRULE(this.Alternative)
 
 
                  });
-                 $.RULE("Alternative", () => {
-                    $.OR([
+                 private Alternative=this.RULE("Alternative", () => {
+                    this.OR([
                         { 
                             ALT: () =>{ 
-                            $.SUBRULE($.Branch)
+                            this.SUBRULE(this.Branch)
                         }},
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(OpenBrace )
-                            $.SUBRULE($.statements)
-                            $.CONSUME(CloseBrace )
+                            this.CONSUME(this.OpenBrace )
+                            this.SUBRULE(this.statements)
+                            this.CONSUME(this.CloseBrace )
                         }},
                     ])
                  });
-                 $.RULE("Declarations", () => {
+                 private Declarations=this.RULE("Declarations", () => {
                     this.MANY(() => {
                     
                         
                         
-                                $.CONSUME(tVariable)
-                                $.SUBRULE($.nVariable )
-                                $.OPTION(() => {
-                                    $.SUBRULE($.Field )
+                                this.CONSUME(this.tVariable)
+                                this.SUBRULE(this.nVariable )
+                                this.OPTION(() => {
+                                    this.SUBRULE(this.Field )
                                 })
                     
                             })
@@ -747,83 +795,83 @@ class parser extends CstParser
 
                  });
 
-                 $.RULE("Declaration", () => {
+                 private Declaration=this.RULE("Declaration", () => {
                                 
             
-                    $.CONSUME(tVariable)
-                    $.CONSUME(tUserDefinedIdentifier)
-                    $.SUBRULE($.Field)
+                    this.CONSUME(this.tVariable)
+                    this.CONSUME(this.tUserDefinedIdentifier)
+                    this.SUBRULE(this.Field)
                 });
 
 
-                 $.RULE("Assignment", () => {
+                 private Assignment=this.RULE("Assignment", () => {
                     
-                    $.SUBRULE($.LHS )
-                    $.CONSUME(Assign)
-                    $.SUBRULE($.RHS )
+                    this.SUBRULE(this.LHS )
+                    this.CONSUME(this.Assign)
+                    this.SUBRULE(this.RHS )
                  });
 
-                 $.RULE("LHS", () => {
+                 private LHS=this.RULE("LHS", () => {
                     
-                    $.SUBRULE($.nVariable )
+                    this.SUBRULE(this.nVariable )
                  });
 
-                 $.RULE("RHS", () => {
+                 private RHS=this.RULE("RHS", () => {
                     
-                        $.OR([
+                        this.OR([
                             { 
                                 ALT: () =>{ 
-                                $.SUBRULE($.Expression )
+                                this.SUBRULE(this.Expression )
                             }},
                             { 
                                 ALT: () =>{ 
-                                $.SUBRULE($.Call )
+                                this.SUBRULE(this.Call )
                             }}
                     ])
                 });
-                $.RULE("FlowControl", () => {
+                private FlowControl=this.RULE("FlowControl", () => {
                         
-                    $.OR([
+                    this.OR([
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(Break)
+                            this.CONSUME(this.Break)
                         }},
                         { 
                             ALT: () =>{ 
-                            $.CONSUME(Continue )
+                            this.CONSUME(this.Continue )
                         }}
                 ])
             });
-            $.RULE("Expression", () => {
+            private Expression=this.RULE("Expression", () => {
                         
-                $.OR([
+                this.OR([
                     { 
                         ALT: () =>{ 
-                        $.SUBRULE($.Unary_Operator)
-                        $.SUBRULE($.Value)
+                        this.SUBRULE(this.Unary_Operator)
+                        this.SUBRULE(this.Value)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.SUBRULE1($.Value)
-                            $.OR1([
+                            this.SUBRULE1(this.Value)
+                            this.OR1([
                             {
                                 ALT: () =>{ 
-                                    $.SUBRULE1($.Unary_Operator)
+                                    this.SUBRULE1(this.Unary_Operator)
                                 }
                             },
                             {
                                 ALT: () =>{ 
-                                    $.SUBRULE($.Binary)
+                                    this.SUBRULE(this.Binary)
                                 }
                             },
                             { 
                                 ALT: () =>{ 
-                                    $.OPTION1(() => {
-                                    $.SUBRULE($.Relational_Operator)
-                                    $.SUBRULE2($.Value)
+                                    this.OPTION1(() => {
+                                    this.SUBRULE(this.Relational_Operator)
+                                    this.SUBRULE2(this.Value)
                                     })
-                                    $.OPTION(() => {
-                                        $.SUBRULE($.Ternary)
+                                    this.OPTION(() => {
+                                        this.SUBRULE(this.Ternary)
                                     })
                                     
                             }},
@@ -831,150 +879,150 @@ class parser extends CstParser
                     }}
             ])
         });
-        $.RULE("Unary", () => {
+        private Unary=this.RULE("Unary", () => {
                         
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.nVariable)
-                        $.SUBRULE($.Unary_Operator)
+                        this.SUBRULE(this.nVariable)
+                        this.SUBRULE(this.Unary_Operator)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE1($.Unary_Operator)
-                        $.SUBRULE1($.nVariable)
+                        this.SUBRULE1(this.Unary_Operator)
+                        this.SUBRULE1(this.nVariable)
                 }}
         ])
     });
-            $.RULE("Unary_Operator", () => {
+            private Unary_Operator=this.RULE("Unary_Operator", () => {
                                 
-                $.OR([
+                this.OR([
                     { 
                         ALT: () =>{ 
-                            $.CONSUME(Minus)
-                            $.CONSUME1(Minus)
+                            this.CONSUME(this.Minus)
+                            this.CONSUME1(this.Minus)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.CONSUME(Plus)
-                            $.CONSUME1(Plus)
+                            this.CONSUME(this.Plus)
+                            this.CONSUME1(this.Plus)
                     }}
             ])
         });
 
-        $.RULE("Binary", () => {
+        private Binary=this.RULE("Binary", () => {
                         
-            $.SUBRULE($.BinaryOperator)
-            $.SUBRULE1($.Value)
+            this.SUBRULE(this.BinaryOperator)
+            this.SUBRULE1(this.Value)
     });
-    $.RULE("Value", () => {
-        $.OR([
+    private  Value = this.RULE("Value", () => {
+        this.OR([
             { 
                 ALT: () =>{ 
-                    $.SUBRULE(this.Const)
+                    this.SUBRULE(this.Const)
             }},
             { 
                 ALT: () =>{ 
-                    $.CONSUME(tUserDefinedIdentifier)
-                    $.OPTION(() => {
-                        $.SUBRULE($.Field )
+                    this.CONSUME(this.tUserDefinedIdentifier)
+                    this.OPTION(() => {
+                        this.SUBRULE(this.Field )
                     })
             }}
     ])
     });
-    $.RULE("BinaryOperator", () => {
+    private BinaryOperator=this.RULE("BinaryOperator", () => {
                                 
-        $.OR([
+        this.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Minus)
+                        this.CONSUME(this.Minus)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Plus)
+                        this.CONSUME(this.Plus)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Multiply)
+                        this.CONSUME(this.Multiply)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Divide)
+                        this.CONSUME(this.Divide)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Mod)
+                        this.CONSUME(this.Mod)
                 }}
             ])
 });
 
 
-        $.RULE("Ternary", () => {
+        private Ternary=this.RULE("Ternary", () => {
                                 
             
-            $.CONSUME(QuestionMark)
-            $.SUBRULE($.Ternary_Instr )
-            $.CONSUME(Colon)
-            $.SUBRULE1($.Ternary_Instr)
+            this.CONSUME(this.QuestionMark)
+            this.SUBRULE(this.Ternary_Instr )
+            this.CONSUME(this.Colon)
+            this.SUBRULE1(this.Ternary_Instr)
         });
 
 
-        $.RULE("Ternary_Instr", () => {
+        private Ternary_Instr=this.RULE("Ternary_Instr", () => {
                                 
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.nVariable)
+                        this.SUBRULE(this.nVariable)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Const)
+                        this.SUBRULE(this.Const)
                 }}
         ])
     });
 
-    $.RULE("nCondition", () => {
+    private nCondition=this.RULE("nCondition", () => {
                                 
-        $.OR([
+        this.OR([
             { 
                 ALT: () =>{ 
-                    $.CONSUME(OpenBracket)
-                    $.SUBRULE($.nCondition)
-                    $.CONSUME(CloseBracket)
+                    this.CONSUME(this.OpenBracket)
+                    this.SUBRULE(this.nCondition)
+                    this.CONSUME(this.CloseBracket)
             }},
             { 
                 ALT: () =>{ 
-                    $.CONSUME(Not)
-                    $.CONSUME1(OpenBracket)
-                    $.SUBRULE1($.nCondition)
-                    $.CONSUME1(CloseBracket)
+                    this.CONSUME(this.Not)
+                    this.CONSUME1(this.OpenBracket)
+                    this.SUBRULE1(this.nCondition)
+                    this.CONSUME1(this.CloseBracket)
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.nVariable)
-                    $.OR1([
+                    this.SUBRULE(this.nVariable)
+                    this.OR1([
                         { ALT: () =>{ 
-                            $.SUBRULE($.Logical_Operator )
-                            $.SUBRULE2($.nCondition)
+                            this.SUBRULE(this.Logical_Operator )
+                            this.SUBRULE2(this.nCondition)
                         }}, 
                         { ALT: () =>{ 
-                            $.SUBRULE($.Relational_Operator  )
-                            $.SUBRULE($.Expression)
+                            this.SUBRULE(this.Relational_Operator  )
+                            this.SUBRULE(this.Expression)
                         }}
                     ])
                     
             }},
             { 
                 ALT: () =>{ 
-                    $.SUBRULE($.Const)
-                    $.OR2([
+                    this.SUBRULE(this.Const)
+                    this.OR2([
                         { ALT: () =>{ 
-                            $.SUBRULE1($.Logical_Operator )
-                            $.SUBRULE3($.nCondition)
+                            this.SUBRULE1(this.Logical_Operator )
+                            this.SUBRULE3(this.nCondition)
                         }}, 
                         { ALT: () =>{ 
-                            $.SUBRULE1($.Relational_Operator)
-                            $.SUBRULE1($.Expression)
+                            this.SUBRULE1(this.Relational_Operator)
+                            this.SUBRULE1(this.Expression)
                         }}
                     ])
                     
@@ -985,42 +1033,42 @@ class parser extends CstParser
 
         
 
-        $.RULE("Logical_Operator", () => {
+        private Logical_Operator=this.RULE("Logical_Operator", () => {
                                         
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(And)
+                        this.CONSUME(this.And)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(Or)
+                        this.CONSUME(this.Or)
                 }}
         ])
         });
 
-        $.RULE("Relational_Operator", () => {
+        private Relational_Operator=this.RULE("Relational_Operator", () => {
                                         
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(LessThan)
+                        this.CONSUME(this.LessThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(GreaterThan)
+                        this.CONSUME(this.GreaterThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(tLessThanOrEqual)
+                        this.CONSUME(this.tLessThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(tGreaterThanOrEqual)
+                        this.CONSUME(this.tGreaterThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(tEqual)
+                        this.CONSUME(this.tEqual)
                 }}
         ])
         });
@@ -1028,111 +1076,110 @@ class parser extends CstParser
 
         
 
-        $.RULE("Field", () => {
+        private Field=this.RULE("Field", () => {
                                 
-            $.OPTION(() => {
-                $.CONSUME(OpenSquareBracket)
-                $.SUBRULE($.Index)
-                $.CONSUME(ClosedSquareBracket)
+            this.OPTION(() => {
+                this.CONSUME(this.OpenSquareBracket)
+                this.SUBRULE(this.Index)
+                this.CONSUME(this.ClosedSquareBracket)
             })
         });
 
 
 
 
-        $.RULE("Index", () => {
+        private Index=this.RULE("Index", () => {
                                         
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.Const)
+                        this.SUBRULE(this.Const)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.SUBRULE($.nVariable)
+                        this.SUBRULE(this.nVariable)
                 }},
         ])
         });
 
 
-        $.RULE("Const", () => {
+        private Const=this.RULE("", () => {
                                         
-            $.OR([
+            this.OR([
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(tFloatLiteral)
+                        this.CONSUME(this.tFloatLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(StringLiteral)
+                        this.CONSUME(this.StringLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(True)
+                        this.CONSUME(this.True)
                 }},
                 { 
                     ALT: () =>{ 
-                        $.CONSUME(False)
+                        this.CONSUME(this.False)
                 }}
         ])
         });
 
         
-        $.RULE("nVariable", () => {
+        private nVariable=this.RULE("nVariable", () => {
                                 
             
-            $.CONSUME(tUserDefinedIdentifier)
-            $.OPTION(() => {
-                $.SUBRULE($.Field)
+            this.CONSUME(this.tUserDefinedIdentifier)
+            this.OPTION(() => {
+                this.SUBRULE(this.Field)
             })
         });
 
-        $.RULE("Type", () => {
+        private Type=this.RULE("Type", () => {
                                         
             
-            $.CONSUME(tPlayer)
+            this.CONSUME(this.tPlayer)
                 
         
         });
-        $.RULE("Arguments", () => {
+        private Arguments=this.RULE("Arguments", () => {
                                         
-            $.OPTION(() => {
-                $.OR([
+            this.OPTION(() => {
+                this.OR([
                     { 
                         ALT: () =>{ 
-                            $.CONSUME(tUserDefinedIdentifier)
-                            $.SUBRULE($.otherArgs)
+                            this.CONSUME(this.tUserDefinedIdentifier)
+                            this.SUBRULE(this.otherArgs)
                     }},
                     { 
                         ALT: () =>{ 
-                            $.SUBRULE($.Const)
-                            $.SUBRULE1($.otherArgs)
+                            this.SUBRULE(this.Const)
+                            this.SUBRULE1(this.otherArgs)
                     }}
                 ])
             })
         });
 
 
-        $.RULE("otherArgs", () => {
+        private otherArgs=this.RULE("otherArgs", () => {
             this.MANY(() => {                            
-                $.OPTION(() => {
-                    $.OR([
+                this.OPTION(() => {
+                    this.OR([
                         { 
                             ALT: () =>{ 
-                                $.CONSUME(tUserDefinedIdentifier)
-                                $.SUBRULE($.otherArgs)
+                                this.CONSUME(this.tUserDefinedIdentifier)
+                                this.SUBRULE(this.otherArgs)
                         }},
                         { 
                             ALT: () =>{ 
-                                $.SUBRULE($.Const)
-                                $.SUBRULE1($.otherArgs)
+                                this.SUBRULE(this.Const)
+                                this.SUBRULE1(this.otherArgs)
                         }}
                     ])
                 })
             })
         });
-        this.performSelfAnalysis();
-      }
+        
 
     
 
