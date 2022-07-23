@@ -46,6 +46,10 @@ export class EditorToolBarComponent implements OnInit{
     console.log("edit-tool-bar");
   }
 
+  exit(): void{
+    document.dispatchEvent(new Event('editor-exit'));
+  }
+
   toggleSideBar(): void{
     this.sideBar = !this.sideBar;
     this.toggleSideBarEvent.emit(this.sideBar);

@@ -61,7 +61,9 @@ export class EditorComponent implements OnInit{
       complete:()=>{
         console.log("complete")
       }          
-    });  
+    });
+    
+    document.dispatchEvent(new Event('editor-page'));
   }
 
   @HostListener('window:resize', ['$event'])

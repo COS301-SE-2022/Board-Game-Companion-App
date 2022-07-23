@@ -6,6 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
+  showFooter = true;
+  ngOnInit(): void {
+    document.addEventListener('editor-page',(event)=>{
+      this.showFooter = false;
+    })
 
-  ngOnInit(): void {}
+    document.addEventListener('editor-exit',(event)=>{
+      this.showFooter = true;
+    })
+  }
 }
