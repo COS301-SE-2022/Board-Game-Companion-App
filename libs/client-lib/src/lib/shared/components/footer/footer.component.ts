@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'board-game-companion-app-footer',
   templateUrl: './footer.component.html',
@@ -7,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
   showFooter = true;
+
+
   ngOnInit(): void {
     document.addEventListener('editor-page',(event)=>{
       this.showFooter = false;
@@ -15,5 +16,9 @@ export class FooterComponent implements OnInit {
     document.addEventListener('editor-exit',(event)=>{
       this.showFooter = true;
     })
+
   }
 }
+  
+  
+
