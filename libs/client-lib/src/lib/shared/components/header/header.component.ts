@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
   loggedIn = false;
   admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com"];
   searchValue = "";
-  
+  showHeader = true;
+
   differ: KeyValueDiffer<string, any>;
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
     
@@ -48,7 +49,14 @@ export class HeaderComponent implements OnInit {
 
     }else
       this.router.navigate(['/editor']);
-    
+   
+    document.addEventListener('editor-page',(event)=>{
+      this.showHeader = false;
+    })
+
+    document.addEventListener('editor-exit',(event)=>{
+      this.showHeader = true;
+    })
   }
 
   toggleMenu():void{
