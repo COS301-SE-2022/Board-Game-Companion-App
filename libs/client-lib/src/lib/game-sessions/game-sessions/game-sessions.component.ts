@@ -56,7 +56,7 @@ export class GameSessionsComponent implements OnInit {
       let temp: fetchSessionResults[] = new Array<fetchSessionResults>();
       temp = this.listResults;
       this.listResults = new Array<fetchSessionResults>();
-      this.listResults = temp.filter( (res) => res.getBoardGame().toLowerCase() === this.search.toLowerCase());
+      this.listResults = temp.filter( (res) => res.getBoardGame().toLowerCase().includes(this.search.toLowerCase()));
       console.log("search on: "+ this.search.toUpperCase());
     }
   }

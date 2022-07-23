@@ -89,7 +89,7 @@ export class CollectionsComponent implements OnInit {
       let temp = new Array<collectionList>();
       temp = this.collections;
       this.collections = new Array<collectionList>();
-      this.collections = temp.filter((res) => res.name.toLowerCase() === this.searchedValue.toLowerCase());
+      this.collections = temp.filter((res) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
     }
   }
 

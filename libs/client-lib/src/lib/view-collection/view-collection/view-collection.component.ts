@@ -169,7 +169,7 @@ export class ViewCollectionComponent implements OnInit {
     {
       const element = temp[index].getName();
 
-      if(element.toLocaleLowerCase() === this.searchedValue.toLocaleLowerCase())
+      if(element.toLocaleLowerCase().includes(this.searchedValue.toLocaleLowerCase()))
       {
         indices.push(index);
       }
@@ -177,6 +177,7 @@ export class ViewCollectionComponent implements OnInit {
     }
     this.listResults = indices.map(index=>temp[index]);
     this.games = indices.map(index=>temp_G[index]);
+    console.log(this.listResults);
   }
 
   doSort(): void
