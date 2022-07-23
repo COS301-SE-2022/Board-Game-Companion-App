@@ -122,11 +122,8 @@ export class ScriptService {
                 script.save();
             
             }catch(e){
-                console.log("begin-error");
-                console.log(e);
-                console.log("end-error");
 
-                result = {status:"failed",message:JSON.stringify(e)};
+                result = {status:"failed",message:e};
             }
         }
 
