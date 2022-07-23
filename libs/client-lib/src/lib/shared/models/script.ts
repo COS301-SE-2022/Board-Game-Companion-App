@@ -17,7 +17,7 @@ export interface script{
     size: number;
     status: status;
     comments: string[];
-    files: file[];
+    file: file;
     icon: string;
     __v: number;
 }
@@ -38,7 +38,7 @@ export const empty:script = {
     status: {value:0,message:"script has been flagged by the system"},
     size: 0,
     comments: [],
-    files: [],
+    file: {name:"",location:"",awsKey:""},
     icon: "",
     __v: 0,
 }

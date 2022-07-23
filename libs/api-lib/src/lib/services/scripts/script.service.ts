@@ -9,12 +9,13 @@ import { S3Service } from '../../services/aws/s3.service';
 import { file } from '../../models/general/files';
 import { v4 as uuidv4 } from 'uuid';
 import { awsUpload } from '../../models/general/awsUpload';
+import { CompilerService } from '../compiler/compiler.service';
 
 @Injectable()
 export class ScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
-    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,private readonly s3Service:S3Service){
+    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,private readonly s3Service:S3Service,private readonly compilerService:CompilerService){
         
     }
 
@@ -110,7 +111,8 @@ export class ScriptService {
         const script:ScriptDocument = await this.scriptModel.findById(id);
         let result = "success";
 
-        if(script === null )
+        //this.compilerService.
+        if(script === null)
             result = "invalid script id";
         else{
             try{

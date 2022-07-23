@@ -30,7 +30,7 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  scriptID = "62cb40735524bf033e649a02";
+  scriptID = "62dc19306e70df3f5987745d";
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
