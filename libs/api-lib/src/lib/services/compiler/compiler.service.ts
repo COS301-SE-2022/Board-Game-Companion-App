@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
-import { CstNode, CstParser, ParserMethod } from 'chevrotain';
+import {  CstParser } from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
 
 @Injectable()
 export class CompilerService {
+
+    
+
     p = new parser();
     compile(input:string):string
     {
@@ -39,7 +42,7 @@ export class CompilerService {
         result.push(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
         result.push(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
         result.push(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-        result.push(chevrotain.createToken({name:"Dot",pattern:/./}));
+        result.push(chevrotain.createToken({name:"Dot",pattern:/\./}));
 
         //relational operators
          const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
@@ -149,7 +152,16 @@ export class CompilerService {
     parse(input:string):string{
         this.p.input = this.scanHelper(input).tokens;
          const cstOutput = this.p.Program();
-        
+        if(this.p.errors.length!=0)
+        {
+            throw Error(this.p.errors.toString());
+        }
+
+        //otherwise successful parse
+        //read in template file
+
+        //begin transpilation
+
         return "parse " + cstOutput;
     }
 }
@@ -185,7 +197,7 @@ class parser extends CstParser
          ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
          QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
          SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-         Dot = chevrotain.createToken({name:"Dot",pattern:/./})
+         Dot = chevrotain.createToken({name:"Dot",pattern:/\./})
 //relational operators
          tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
          tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
@@ -288,7 +300,7 @@ class parser extends CstParser
             const ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
             const QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
             const SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-            const Dot = chevrotain.createToken({name:"Dot",pattern:/./})
+            const Dot = chevrotain.createToken({name:"Dot",pattern:/\./})
     //relational operators
             const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
             const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
@@ -392,6 +404,7 @@ class parser extends CstParser
         tEqual,
         GreaterThan,
         LessThan,
+        Assign,
         tIncrement,
         tDecrement,
         Plus,
