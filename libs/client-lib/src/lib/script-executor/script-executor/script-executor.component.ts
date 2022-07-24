@@ -16,10 +16,10 @@ export class ScriptExecutorComponent implements OnInit {
   file = "test";
   folder = "42a58303-990e-4230-94c6-a9f5dd629500"
   hours = "hours";
-  h:number = 0;
+  h = 0;
   min = "min";
-  m:number = 0;
-  s:number = 0;
+  m = 0;
+  s = 0;
   sec = "sec";
   
   back()
@@ -98,23 +98,23 @@ export class ScriptExecutorComponent implements OnInit {
     
     try
     {
-      this.scriptService.getScriptById(this.scriptID).subscribe({
-        next:async(value)=>{
+      //this.scriptService.getScriptById(this.scriptID).subscribe({
+        //next:async(value)=>{
           
           
-          let path = value.files[0].location.replace(".module.ts","");
-          path = path.replace("libs/uploads/src/lib/scripts/files/","")
+          //let path = value.files[0].location.replace(".module.ts","");
+          //path = path.replace("libs/uploads/src/lib/scripts/files/","")
 
-          import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
-            {
+          //import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
+            //{
               
-              module[Object.keys(module)[0]].play();
-            });
+              //module[Object.keys(module)[0]].play();
+            //});
 
             
             
             
-        }});
+        //}});
         
 
     }

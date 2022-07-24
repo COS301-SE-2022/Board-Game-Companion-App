@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
-import {  CstParser } from 'chevrotain';
+import {  CstNode, CstParser } from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
 
 //user defined identifier
@@ -215,8 +215,10 @@ export class CompilerService {
         //read in template file
 
         //begin transpilation
-
+        visit(cstOutput)
         return "parse " + cstOutput;
+
+        
     }
 }
 
@@ -315,7 +317,11 @@ class parser extends CstParser
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.Actions )
             this.CONSUME( Turn)
+            this.CONSUME( OpenBracket)
+            this.CONSUME( CloseBracket)
+            this.CONSUME2( OpenBrace)
             this.SUBRULE(this.statements )
+            this.CONSUME2( CloseBrace)
             this.CONSUME(CloseBrace)
         });
 
@@ -593,7 +599,17 @@ class parser extends CstParser
                                 this.OPTION(() => {
                                     this.SUBRULE(this.Field )
                                 })
-                    
+                                this.CONSUME(Assign)
+                                this.OR([
+                                    { 
+                                        ALT: () =>{ 
+                                        this.SUBRULE(this.Const)
+                                    }},
+                                    { 
+                                        ALT: () =>{ 
+                                        this.SUBRULE(this.Declaration)
+                                    }},
+                                ])
                             })
 
 
@@ -907,7 +923,7 @@ class parser extends CstParser
         });
 
 
-        private Const=this.RULE("", () => {
+        private Const=this.RULE("Const", () => {
                                         
             this.OR([
                 { 
@@ -925,6 +941,11 @@ class parser extends CstParser
                 { 
                     ALT: () =>{ 
                         this.CONSUME(False)
+                }}
+                ,
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(IntegerLiteral)
                 }}
         ])
         });
@@ -989,4 +1010,36 @@ class parser extends CstParser
 
     
 
+}
+
+
+//visitor methods for the dsl
+
+function visit(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];  // current child
+
+            //decide what to do for specific childs
+
+            console.log(child)
+        }
+}
+
+function visitGameState()
+{
+    //
+}
+function visitCards()
+{
+    //
+}
+function visitPlayer()
+{
+    //
+}
+function getChildrenAsString()
+{
+    //
 }
