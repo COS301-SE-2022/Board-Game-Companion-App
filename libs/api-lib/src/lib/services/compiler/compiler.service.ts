@@ -315,7 +315,11 @@ class parser extends CstParser
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.Actions )
             this.CONSUME( Turn)
+            this.CONSUME( OpenBracket)
+            this.CONSUME( CloseBracket)
+            this.CONSUME2( OpenBrace)
             this.SUBRULE(this.statements )
+            this.CONSUME2( CloseBrace)
             this.CONSUME(CloseBrace)
         });
 
@@ -593,7 +597,17 @@ class parser extends CstParser
                                 this.OPTION(() => {
                                     this.SUBRULE(this.Field )
                                 })
-                    
+                                this.CONSUME(Assign)
+                                this.OR([
+                                    { 
+                                        ALT: () =>{ 
+                                        this.SUBRULE(this.Const)
+                                    }},
+                                    { 
+                                        ALT: () =>{ 
+                                        this.SUBRULE(this.Declaration)
+                                    }},
+                                ])
                             })
 
 
@@ -907,7 +921,7 @@ class parser extends CstParser
         });
 
 
-        private Const=this.RULE("", () => {
+        private Const=this.RULE("Const", () => {
                                         
             this.OR([
                 { 
@@ -925,6 +939,11 @@ class parser extends CstParser
                 { 
                     ALT: () =>{ 
                         this.CONSUME(False)
+                }}
+                ,
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(IntegerLiteral)
                 }}
         ])
         });
