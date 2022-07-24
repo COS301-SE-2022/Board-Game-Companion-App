@@ -77,7 +77,7 @@ export class ApiScriptController {
 
     @Put("update-file")
     async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<any>{
-        return {message: await this.scriptService.updateFile(id,content)};
+        return this.scriptService.updateFile(id,content);
     }
 
     @Post('compile')

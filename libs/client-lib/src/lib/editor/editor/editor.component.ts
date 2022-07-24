@@ -30,7 +30,7 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  scriptID = "62cb40735524bf033e649a02";
+  scriptID = "62dc19306e70df3f5987745d";
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
@@ -61,7 +61,9 @@ export class EditorComponent implements OnInit{
       complete:()=>{
         console.log("complete")
       }          
-    });  
+    });
+    
+    document.dispatchEvent(new Event('editor-page'));
   }
 
   @HostListener('window:resize', ['$event'])
@@ -170,6 +172,11 @@ export class EditorComponent implements OnInit{
     }else{
       this.editorConsole.close();
     }
+  }
+
+  newMessage(message:string): void{
+    this.editorConsole.clear();
+    this.editorConsole.print({type:false,outputMessage:message});
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges ,Output } from '@angular/core';
 import * as ace from "ace-builds";
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
@@ -20,9 +20,11 @@ export class EditorBodyComponent implements OnInit{
   @Input() margin = 0;
   @Input() top = 0;
   @Output() changesTracker = new EventEmitter<number>();
+  @Output() newMessageEvent = new EventEmitter<string>();
   codeEditor:any;
   themeEditor = "Dracula";
   @Input()scriptId = "";
+  @Input()fileLocation = "";
   sendChangesTimer = 0;
   showFindCheck = true;
   showReplaceCheck = true;
@@ -37,13 +39,31 @@ export class EditorBodyComponent implements OnInit{
       this.themeEditor = theme;
 
     this.createEditor();
-    
-    this.codeEditor.session.on('change', (delta:any)=>{
-      //console.log(delta);
-      this.changesTracker.emit(1);
-      this.sendChanges();
   
-    });
+  }
+
+  ngOnChanges(): void{
+    //console.log("changes: " + this.fileLocation);
+
+    if(this.fileLocation !== ""){
+      this.scriptService.getFileData(this.fileLocation).subscribe({
+        next:(value)=>{
+          this.codeEditor.setValue(value);
+
+          this.codeEditor.session.on('change', (delta:any)=>{
+            this.changesTracker.emit(1);
+            this.sendChanges();
+        
+          });
+        },
+        error:(e)=>{
+          console.log(e);
+        },
+        complete:()=>{
+          console.log("complete")
+        }
+      })
+    }
   }
 
   createEditor():void{
@@ -139,14 +159,18 @@ export class EditorBodyComponent implements OnInit{
 
   sendChanges(): void{
     clearTimeout(this.sendChangesTimer);
+
     this.sendChangesTimer = window.setTimeout(()=>{
       this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
           console.log(value)
-          if(value.message === "success")
+          
+          if(value.status === "success")
             this.changesTracker.emit(2);
           else
             this.changesTracker.emit(0);
+
+          this.newMessageEvent.emit(value.message);
         },
         error:(e)=>{
           console.log(e);
