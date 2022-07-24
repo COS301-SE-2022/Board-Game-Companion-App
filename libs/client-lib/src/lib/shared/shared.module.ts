@@ -5,8 +5,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { BggSearchService } from './services/bgg-search/bgg-search.service';
 import { ScriptService } from './services/scripts/script.service';
 import { CommentService } from './services/comments/comment.service';
-import { GoogleAuthService } from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
+import { GoogleAuthService } from '../google-login/GoogleAuth/google-auth.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { ModelsService } from './services/models/models.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     BggSearchService,
     ScriptService,
     GoogleAuthService,
-    CommentService
+    CommentService,
+    ModelsService
   ],
   exports: [
     HeaderComponent,
