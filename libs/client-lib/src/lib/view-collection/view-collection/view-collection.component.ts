@@ -146,13 +146,13 @@ export class ViewCollectionComponent implements OnInit {
 
   onSearch(): void
   {
-
-    this.listResults = [];
-    this.games = [];
-
-    this.ngOnInit();
-    setTimeout(()=>this.doSearch(),1000);
-
+    if(this.searchedValue!=="")
+    {
+      this.listResults = [];
+      this.games = [];
+      this.ngOnInit();
+      setTimeout(()=>this.doSearch(),1000);
+    }
   }
 
   doSearch(): void
@@ -169,7 +169,7 @@ export class ViewCollectionComponent implements OnInit {
     {
       const element = temp[index].getName();
 
-      if(element.toLocaleLowerCase() === this.searchedValue.toLocaleLowerCase())
+      if(element.toLocaleLowerCase().includes(this.searchedValue.toLocaleLowerCase()))
       {
         indices.push(index);
       }
@@ -177,6 +177,7 @@ export class ViewCollectionComponent implements OnInit {
     }
     this.listResults = indices.map(index=>temp[index]);
     this.games = indices.map(index=>temp_G[index]);
+    console.log(this.listResults);
   }
 
   doSort(): void
@@ -275,10 +276,10 @@ export class ViewCollectionComponent implements OnInit {
   onSort(): void
   {
     console.log(this.selected);
-    this.listResults = [];
-    this.games = [];
+    // this.listResults = [];
+    // this.games = [];
 
-    this.ngOnInit();
+    // this.ngOnInit();
     setTimeout(()=>this.doSort(),1000);
     
   }

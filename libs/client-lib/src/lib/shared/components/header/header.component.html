@@ -51,7 +51,7 @@
                     <div class="hidden sm:flex items-center justify-between mr-0">
                         <!--Search & login-->
                         <ul id="login" class="navbar-nav h-full lg:flex lg:flex-row ">
-                            <input class="w-72 h-5" name="searchValue" type="search">
+                            <input class="w-72 h-5" name="searchValue" type="search" [(ngModel)]="searchValue">
                             <button (click)="moveTo('board-game-search')" id="search"
                                 class="btn px-2 font-bold">Search</button>
                             <span></span>

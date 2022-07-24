@@ -93,6 +93,10 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     }
+    else if(path==="board-game-search")
+    {
+      this.router.navigate(['/board-game-search',{value:this.searchValue}]);
+    }
     else{
       this.router.navigate(['/' + path]);
     }
