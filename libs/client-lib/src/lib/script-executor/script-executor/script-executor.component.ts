@@ -22,9 +22,40 @@ export class ScriptExecutorComponent implements OnInit {
   s = 0;
   sec = "sec";
   
+  //take in string as input
+  //gets displayed to screen
+  output(message:string)
+  {
+    const m = document.getElementById("inputMessageBox");
+    if(m != null)
+    {
+      m.textContent = message;
+    }
+    
+  }
+
+  //take in value from input after button click
+  input(message:string)
+  {
+    this.output(message)
+    const v = document.getElementById("enterMove") as HTMLInputElement;
+    const value = v.value 
+    if(value === null)
+    {
+      window.prompt("please enter a value");
+    }
+    else
+    {
+      return value
+    }
+
+    return null
+  }
+
+
   back()
   {
-   //Timer
+    //Timer
     if(localStorage.getItem("sessions") !== null)
     {
       let c = JSON.parse(localStorage.getItem("sessions")||"")
