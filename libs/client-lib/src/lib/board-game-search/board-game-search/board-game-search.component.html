@@ -15,11 +15,11 @@
                       <input id = "search" class = "mt-3 ml-12 pl-4 focus:outline-none" [(ngModel)] = "searchValue" name = "searchValue" type="search" aria-label="Search" aria-describedby="button-addon3">
                       <button (click)="search()" class="btn inline-block font-bold px-2 py-0.5" type="button" id="button-addon3">Search</button>
                       <div id="sortingDiv">
-                        <select id="sorting" class="btn px-2 py-1 font-bold">
+                        <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
                             <option value=""></option>
                             <option value="alphabetical">Alphabetical</option>
-                            <option value="score">Score</option>
-                            <option value="date">Date</option>
+                            <!-- <option value="score">Score</option>
+                            <option value="date">Date</option> -->
                         </select>
                         <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
                      </div>

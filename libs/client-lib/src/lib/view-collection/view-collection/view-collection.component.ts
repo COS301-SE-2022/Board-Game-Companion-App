@@ -146,13 +146,13 @@ export class ViewCollectionComponent implements OnInit {
 
   onSearch(): void
   {
-
-    this.listResults = [];
-    this.games = [];
-
-    this.ngOnInit();
-    setTimeout(()=>this.doSearch(),1000);
-
+    if(this.searchedValue!=="")
+    {
+      this.listResults = [];
+      this.games = [];
+      this.ngOnInit();
+      setTimeout(()=>this.doSearch(),1000);
+    }
   }
 
   doSearch(): void
@@ -276,10 +276,10 @@ export class ViewCollectionComponent implements OnInit {
   onSort(): void
   {
     console.log(this.selected);
-    this.listResults = [];
-    this.games = [];
+    // this.listResults = [];
+    // this.games = [];
 
-    this.ngOnInit();
+    // this.ngOnInit();
     setTimeout(()=>this.doSort(),1000);
     
   }

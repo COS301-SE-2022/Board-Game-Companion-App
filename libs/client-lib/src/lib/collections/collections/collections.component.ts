@@ -28,8 +28,8 @@ export class CollectionsComponent implements OnInit {
   deletion(n:string)
   {
     localStorage.removeItem(n);
-    let c = JSON.parse(localStorage.getItem("collections")||"")
-    let index = c.indexOf(n, 0);
+    const c = JSON.parse(localStorage.getItem("collections")||"")
+    const index = c.indexOf(n, 0);
     if (index > -1) {
       c.splice(index, 1);
     }
@@ -81,28 +81,30 @@ export class CollectionsComponent implements OnInit {
   }
   onSearch(): void
   {
-    console.log("on search: "+this.searchedValue);
-    this.collections = new Array<collectionList>();
-    this.ngOnInit();
-    if(this.collections.length!==0)
+    if(this.searchedValue!=="")
     {
-      let temp = new Array<collectionList>();
-      temp = this.collections;
       this.collections = new Array<collectionList>();
-      this.collections = temp.filter((res) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
+      this.ngOnInit();
+      if(this.collections.length!==0)
+      {
+        let temp = new Array<collectionList>();
+        temp = this.collections;
+        this.collections = new Array<collectionList>();
+        this.collections = temp.filter((res) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
+      }
     }
   }
 
   onSort(): void
   {
-    this.collections = new Array<collectionList>();
-    this.ngOnInit();
+    // this.collections = new Array<collectionList>();
+    // this.ngOnInit();
     setTimeout(()=>this.doSort(),1000);
   }
 
   doSort(): void
   {
-    if(this.selected==="alphabetical")
+    if(this.selected==="alphabetical" && this.collections.length!==0)
     {
       this.collections.sort(function(resultA, resultB) 
       {
@@ -121,7 +123,7 @@ export class CollectionsComponent implements OnInit {
         return 0;
       });
     }
-    else if(this.selected==="amount")
+    else if(this.selected==="amount" && this.collections.length!==0)
     {
       this.collections.sort(function(resultA, resultB) 
       {

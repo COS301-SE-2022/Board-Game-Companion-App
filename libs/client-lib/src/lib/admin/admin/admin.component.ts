@@ -155,43 +155,34 @@ export class AdminComponent implements OnInit {
   }
 
   onSort(): void{
-    this.adminService.getScripts().subscribe((data)=>{
-      this.scripts = data;
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
+    if(this.selected==="alphabetical" && this.scripts.length!==0){
 
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      if(this.selected==="alphabetical"){
-
-        this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
-        {
-          const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
-          const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
-
-          if (nameA < nameB) 
-          {
-            return -1;
-          }
-          if (nameA > nameB)
-          {
-            return 1;
-          }
-
-          return 0;
-        });
-      }
-      else if(this.selected==="date")
+      this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
       {
-        this.scripts.sort(function(resultA: { created: any; }, resultB: { created: any; }) 
+        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
+
+        if (nameA < nameB) 
         {
-          const dateA = resultA.created; 
-          const dateB = resultB.created;
+          return -1;
+        }
+        if (nameA > nameB)
+        {
+          return 1;
+        }
 
-          return +new Date(dateA) - +new Date(dateB);
-        });
-      }
+        return 0;
+      });
+    }
+    else if(this.selected==="date" && this.scripts.length!==0)
+    {
+      this.scripts.sort(function(resultA: { created: any; }, resultB: { created: any; }) 
+      {
+        const dateA = resultA.created; 
+        const dateB = resultB.created;
 
-    });
+        return +new Date(dateA) - +new Date(dateB);
+      });
+    }
   }
 }
