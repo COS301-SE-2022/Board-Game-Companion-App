@@ -20,7 +20,6 @@ let jsScript = scriptTemplate;
 //user defined identifier
 const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
 // class and function declaration
-        const Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier});
         const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
         const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
         const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
@@ -122,7 +121,6 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
 
  const AllTokens = [
     
-    Class,
     tAction,
     tParameters,
     tCondition,
