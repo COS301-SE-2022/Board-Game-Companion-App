@@ -8,7 +8,7 @@ import { lexerResult } from '../../models/general/lexerResult';
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
 
 
-scriptTemplate = fs.readFileSync("libs/api-lib/src/lib/services/compiler/template_script.js","utf8");
+scriptTemplate = fs.readFileSync("templates/script.js","utf8");
 
 
   

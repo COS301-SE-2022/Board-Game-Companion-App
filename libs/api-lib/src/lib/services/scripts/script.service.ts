@@ -10,6 +10,7 @@ import { file } from '../../models/general/files';
 import { v4 as uuidv4 } from 'uuid';
 import { awsUpload } from '../../models/general/awsUpload';
 import { CompilerService } from '../compiler/compiler.service';
+import fileSize = require("url-file-size");
 
 @Injectable()
 export class ScriptService {
@@ -31,6 +32,8 @@ export class ScriptService {
                 location:fileUploadResult.location,
                 awsKey:fileUploadResult.key
             };
+
+            script.size = await fileSize(script.build.location).catch(console.error);
     
             script.save();
         }catch(e){
@@ -57,8 +60,8 @@ export class ScriptService {
             status: stat,
             size: 0,
             comments: [],
-            source: null,
-            build:null,
+            source: {name:"",location:"",awsKey:""},
+            build:{name:"",location:"",awsKey:""},
             icon: ""
         };
         
@@ -67,6 +70,8 @@ export class ScriptService {
         const result:ScriptDocument =  await createdScript.save();
         
         result.source = await this.createSourceFile(result._id);
+        result.build = await this.createBuildFile(result._id);
+        result.size = await fileSize(result.build.location).catch(console.error);
         result.icon = await this.storeIcon(result._id,icon);
         
         result.save();
@@ -100,12 +105,12 @@ export class ScriptService {
         let data = "";
 
         try{
-            data = fs.readFileSync("templates/main.txt","utf8");
+            data = fs.readFileSync("templates/script.js","utf8");
         }catch(err){
             console.log(err);
         }
 
-        fileUploadResult = await this.s3Service.upload("main.txt",path,data,"text/plain");
+        fileUploadResult = await this.s3Service.upload("main.js",path,data,"text/plain");
         result.location = fileUploadResult.location;
         result.awsKey = fileUploadResult.key;
 
