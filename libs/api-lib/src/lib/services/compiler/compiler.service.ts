@@ -230,7 +230,7 @@ export class CompilerService {
         jsScript = scriptTemplate;
         //begin transpilation
         visit(cstOutput)
-
+ 
         return "parse " + jsScript;
 
         

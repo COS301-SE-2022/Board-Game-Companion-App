@@ -75,7 +75,7 @@ class script
         //
         for(let i =0;i< this.players.length;i++)
         {
-            players[i].turn();
+            this.players[i].turn();
         }
     }
 }

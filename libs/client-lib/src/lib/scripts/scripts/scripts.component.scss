@@ -92,3 +92,11 @@ input:focus{
     float:right;
     background-color: white;
 }
+
+.child{
+    display: none;
+}
+
+.parent:hover .child{
+    display: block
+}

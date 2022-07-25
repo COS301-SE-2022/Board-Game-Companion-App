@@ -4,7 +4,7 @@
         <div class="row g-2">
             <div class="col-xl-1 col-md-3 mb-4" >
                 <div class="action card border-left-primary shadow w-20 h-100 py-1" id="card-1">
-                    <div class="card-body" (click)="test()">
+                    <div class="card-body" data-bs-toggle="modal" data-bs-target="#create-script" data-toggle="tooltip" title="new">
                         <div class="text-center">
                             <i class="fas fa-plus fa-2x"></i>
                         </div>
@@ -13,7 +13,7 @@
             </div>
             <div class="col-xl-1 col-md-3 mb-4">
                 <div class="action card border-left-primary shadow w-20 h-100 py-1" id="card-2">
-                    <div class="card-body" (click)="toggleView()">
+                    <div class="card-body" (click)="toggleView()" data-toggle="tooltip" [title]="gridView===false ? 'grid' : 'list'">
                         <div class="text-center">
                             <i *ngIf="gridView === false" class="fas fa-th-large fa-2x"></i>
                             <i *ngIf="gridView === true" class="fas fa-th-list fa-2x"></i>
@@ -46,13 +46,28 @@
         
         <div class = "flex flex-row" *ngIf="gridView===true">
             <div (click) = "containerClick($event)" id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                <div [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor="let value of scripts | paginate: { itemsPerPage: 8, currentPage: page }" [id] = "value._id" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(value)">
+                <div (mouseover)="currentHover(value)" (mouseout) = "clearHover()" [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor="let value of scripts | paginate: { itemsPerPage: 8, currentPage: page }" [id] = "value._id" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(value)">
                     <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                     <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
                     <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
                     <img class="w-full h-full" [src]="value.icon" alt=""/>
-                    <div class = "child absolute bottom-0 w-full h-8 bg-inherit z-10 text-center text-white text-base">
-                        <b>{{value.name}}</b>
+                    
+                    <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                        <div class = "w-full absolute bottom-20 content-center space-x-4">
+                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                                <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
+                            </button>
+                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                                <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                            </button>
+                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                                <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
+                            </button>
+                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                                <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                            </button>
+                        </div>
+                        <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
                     </div>
                 </div>
             </div>
@@ -111,23 +126,24 @@
                         {{value.size}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
-                        <button (click)="test()" class="hover:scale-110 p-1" data-toggle="modal">
+                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1" data-toggle="modal">
+                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1" data-toggle="modal">
+                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1" data-toggle="modal">
+                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                         </button>
-
                     </td>
                 </tr>
             </tbody>
         </table>
-        <pagination-controls class="mt-4 d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
+        <pagination-controls *ngIf = "scripts.length !== 0" class="mt-4 d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
     </div>
 </div>
+
+<board-game-companion-app-create-scripts (newScript)="insertScript($event)"></board-game-companion-app-create-scripts>

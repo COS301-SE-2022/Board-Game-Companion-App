@@ -139,8 +139,10 @@ export class ScriptService {
             result = {status:"failed",message: "invalid script id"};
         else{
             try{
-                result = {status:"success",message:this.compilerService.parse(content)};
+                const compiledCode = this.compilerService.parse(content);
+                result = {status:"success",compiledCode};
                 
+                await this.saveBuild(id,compiledCode);
                 this.s3Service.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();

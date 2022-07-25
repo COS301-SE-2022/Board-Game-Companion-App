@@ -16,6 +16,8 @@ export class ScriptsComponent implements OnInit {
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   searchValue = "";
   page = 1;
+  hover = "";
+
   constructor(private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
@@ -126,6 +128,18 @@ export class ScriptsComponent implements OnInit {
         console.log("complete")
       }
     });
+  }
+
+  insertScript(value:script){
+    this.scripts.push(value);
+  }
+
+  currentHover(value:script): void{
+    this.hover = value._id;
+  }
+
+  clearHover(): void{
+    this.hover = "";
   }
    
 }
