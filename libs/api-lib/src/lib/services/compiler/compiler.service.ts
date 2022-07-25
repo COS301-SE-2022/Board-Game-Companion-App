@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
-import {  CstNode, CstParser } from 'chevrotain';
+import {  CstNode, CstParser, IToken } from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
+
+
+  const scriptTemplate = "";
+    
+
+let jsScript = scriptTemplate;
 
 //user defined identifier
 const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
@@ -213,7 +219,7 @@ export class CompilerService {
 
         //otherwise successful parse
         //read in template file
-
+        jsScript = scriptTemplate;
         //begin transpilation
         visit(cstOutput)
         return "parse " + cstOutput;
@@ -1017,29 +1023,126 @@ class parser extends CstParser
 
 function visit(cstOutput:CstNode)
 {
+    
     let k: keyof typeof cstOutput.children;  // visit all children
         for (k in cstOutput.children) {
             const child = cstOutput.children[k];  // current child
-
+            
             //decide what to do for specific childs
 
-            console.log(child)
+            const node = child[0] as unknown as CstNode;
+            switch(node.name)//visit specific child node
+            {
+                case "GameState":
+                    visitGameState(node);
+                    break;
+                case "Definition":
+                    visit(node);
+                    break;
+                case "Cards":
+                    visitCards(node);
+                    break;
+                case "Players":
+                    visitPlayer(node);
+                    break;
+                case "End_Game":
+                    visitEnd(node);
+                    break;
+                
+            }
+            
+
+            
         }
 }
 
-function visitGameState()
+function visitGameState(cstOutput:CstNode)
+{
+    //
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
+            
+                
+            
+            //if it a token decide how to write
+            switch(token.image)
+            {
+                case "state":
+                    break;
+                case "{":
+                    break;    
+                case "}":
+                    break; 
+                default:
+                    //find the correct position
+                    //write token to position
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                    
+                    break;
+            }
+            //if it is a node continue till token
+            visitGameState(node);
+            
+        }
+
+}
+function visitCards(cstOutput:CstNode)
+{
+    //
+    
+}
+function visitPlayer(cstOutput:CstNode)
+{
+    //
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
+
+
+            if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "player":
+                        break;
+                    case "UserDefinedIdentifier":
+                        //
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        break; 
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                }
+            }
+            visitPlayerStatements(node);
+        }
+}
+function visitPlayerStatements(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image + ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+        }
+        visitPlayerStatements(node);
+
+    }
+}
+function visitEnd(cstOutput:CstNode)
 {
     //
 }
-function visitCards()
-{
-    //
-}
-function visitPlayer()
-{
-    //
-}
-function getChildrenAsString()
-{
-    //
-}
+
