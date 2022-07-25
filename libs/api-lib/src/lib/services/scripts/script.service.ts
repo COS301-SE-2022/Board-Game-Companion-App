@@ -19,6 +19,28 @@ export class ScriptService {
         
     }
 
+    async saveBuild(id:string,compiledCode:string): Promise<{status:boolean,script:Script}>{
+        let status = true;
+        const path = "scripts/" + id + "/build/";
+        const script:ScriptDocument = await this.scriptModel.findById(id).exec();
+        
+        try{
+            const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode,"text/javascript");
+            script.build = {
+                name:"main.js",
+                location:fileUploadResult.location,
+                awsKey:fileUploadResult.key
+            };
+    
+            script.save();
+        }catch(e){
+            status = false;
+        }
+
+
+        return {status:status,script:script};
+    }
+
     async create(user:string,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
         const dto:scriptDto = {
             name: name,
@@ -35,17 +57,19 @@ export class ScriptService {
             status: stat,
             size: 0,
             comments: [],
-            file: null,
+            source: null,
+            build:null,
             icon: ""
         };
         
-        const id = uuidv4();
-        dto.file = await this.createInitialFile(id);
-        dto.icon = await this.storeIcon(id,icon);
-        
         
         const createdScript = new this.scriptModel(dto);
-        const result:Script =  await createdScript.save();
+        const result:ScriptDocument =  await createdScript.save();
+        
+        result.source = await this.createInitialFile(result._id);
+        result.icon = await this.storeIcon(result._id,icon);
+        
+        result.save();
 
         return result;
     }
@@ -53,7 +77,7 @@ export class ScriptService {
     async createInitialFile(id:string):Promise<file>{
         const result:file = {name:"main.txt",location:"",awsKey:""};
         let fileUploadResult:awsUpload = {key:"",location:""};
-        const path = "scripts/" + id + "/files/";
+        const path = "scripts/" + id + "/src/";
         let data = "";
 
         try{
@@ -117,7 +141,7 @@ export class ScriptService {
             try{
                 result = {status:"success",message:this.compilerService.parse(content)};
                 
-                this.s3Service.update(script.file.awsKey,content);
+                this.s3Service.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
             

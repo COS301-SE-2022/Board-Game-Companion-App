@@ -52,7 +52,10 @@ export class Script{
     comments: string[];
 
     @Prop({required:true,type:{name:"",awsKey:"",location:""}})
-    file: file;
+    source: file;
+
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    build: file;
 
     @Prop()
     icon: string; 
