@@ -72,10 +72,13 @@ class script
 
     play()
     {
+        console.log("script-execution begins");
         //
         for(let i =0;i< this.players.length;i++)
         {
-            players[i].turn();
+            this.players[i].turn();
         }
     }
 }
+
+(new script()).play();

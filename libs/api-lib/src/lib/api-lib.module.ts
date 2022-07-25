@@ -16,6 +16,8 @@ import { Rating, RatingSchema } from './schemas/rating.schema';
 import { Like, LikeSchema } from './schemas/like.schema';
 import { S3Service } from './services/aws/s3.service';
 import { CompilerService } from './services/compiler/compiler.service';
+import { ApiModelsController } from './controllers/models/models.controller';
+import { ModelsService } from './services/models/models.service';
 
 @Module({
   imports:[
@@ -30,7 +32,8 @@ import { CompilerService } from './services/compiler/compiler.service';
     CollectionsController,
     ApiScriptController,
     ScriptEditorController,
-    ApiCommentController
+    ApiCommentController,
+    ApiModelsController
   ],
   providers: [
     CollectionsService,
@@ -39,7 +42,8 @@ import { CompilerService } from './services/compiler/compiler.service';
     RatingService,
     CommentService,
     S3Service,
-    CompilerService
+    CompilerService,
+    ModelsService
   ],
   exports: [],
 })

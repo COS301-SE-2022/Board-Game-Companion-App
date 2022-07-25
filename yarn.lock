@@ -210,10 +210,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@14.0.5":
-  version "14.0.5"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-14.0.5.tgz#4e4c6b959429044f530cce8fa02516dd5956d1b6"
-  integrity sha512-9mfrCiFI8Lyn+aVpJWgzFhTHDNA0yopjPy4p84JwgeLZ0BlJks1pUNuc7bqPNydhwvGWlRSEohsTh78hlSm1vA==
+"@angular/cdk@^14.1.0":
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-14.1.0.tgz#abf5ad3cdd96e42666bce949833ac1c2405ab031"
+  integrity sha512-EOQZmlTgj5Tc6/s50kEQUYKWH0S748rzbymBYkvyJs864lP9A8khz83IINmm+PD2sMADKtBETD3aEa5yQRhVAA==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -2513,6 +2513,13 @@
     rimraf "^3.0.2"
     semver "^7.3.4"
     tar "^6.1.0"
+
+"@nebular/theme@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nebular/theme/-/theme-9.0.3.tgz#504d5b73428ac8515f0cc27a84d491e035ee35ee"
+  integrity sha512-ILUfVkpTeVBg5H3Pr/HKnItdFEIXfHfYO2HJA07mhavuKw0gupYw2v6Ox+nxoww8VTXz8svLKTIta7YYBcpjzg==
+  dependencies:
+    tslib "^2.3.0"
 
 "@nestjs/common@^8.0.0":
   version "8.4.4"
@@ -12396,6 +12403,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+url-file-size@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/url-file-size/-/url-file-size-1.0.2.tgz#6f932f2e66b1d2fc36a5272e1cbe7c4d10eee6e1"
+  integrity sha512-IkQzPSmhFSM94wDuSwLj8KsdiP2Izr/32rvNBhu+EJUyREg6gKR7N8D4spwxA4v9e4B6Icj3X5ZqBGnXSfF3jQ==
 
 url-join@^4.0.1:
   version "4.0.1"

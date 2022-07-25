@@ -7,6 +7,7 @@ import { ScriptService } from './services/scripts/script.service';
 import { CommentService } from './services/comments/comment.service';
 import { GoogleAuthService } from '../google-login/GoogleAuth/google-auth.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { ModelsService } from './services/models/models.service';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     BggSearchService,
     ScriptService,
     GoogleAuthService,
-    CommentService
+    CommentService,
+    ModelsService
   ],
   exports: [
     HeaderComponent,

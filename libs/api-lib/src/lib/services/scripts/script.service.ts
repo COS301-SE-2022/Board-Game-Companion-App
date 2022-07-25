@@ -10,6 +10,7 @@ import { file } from '../../models/general/files';
 import { v4 as uuidv4 } from 'uuid';
 import { awsUpload } from '../../models/general/awsUpload';
 import { CompilerService } from '../compiler/compiler.service';
+import fileSize = require("url-file-size");
 
 @Injectable()
 export class ScriptService {
@@ -17,6 +18,30 @@ export class ScriptService {
     
     constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,private readonly s3Service:S3Service,private readonly compilerService:CompilerService){
         
+    }
+
+    async updateBuild(id:string,compiledCode:string): Promise<{status:boolean,script:Script}>{
+        let status = true;
+        const path = "scripts/" + id + "/build/";
+        const script:ScriptDocument = await this.scriptModel.findById(id).exec();
+        
+        try{
+            const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode,"text/javascript");
+            script.build = {
+                name:"main.js",
+                location:fileUploadResult.location,
+                awsKey:fileUploadResult.key
+            };
+
+            script.size = await fileSize(script.build.location).catch(console.error);
+    
+            script.save();
+        }catch(e){
+            status = false;
+        }
+
+
+        return {status:status,script:script};
     }
 
     async create(user:string,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
@@ -35,25 +60,29 @@ export class ScriptService {
             status: stat,
             size: 0,
             comments: [],
-            file: null,
+            source: {name:"",location:"",awsKey:""},
+            build:{name:"",location:"",awsKey:""},
             icon: ""
         };
         
-        const id = uuidv4();
-        dto.file = await this.createInitialFile(id);
-        dto.icon = await this.storeIcon(id,icon);
-        
         
         const createdScript = new this.scriptModel(dto);
-        const result:Script =  await createdScript.save();
+        const result:ScriptDocument =  await createdScript.save();
+        
+        result.source = await this.createSourceFile(result._id);
+        result.build = await this.createBuildFile(result._id);
+        result.size = await fileSize(result.build.location).catch(console.error);
+        result.icon = await this.storeIcon(result._id,icon);
+        
+        result.save();
 
         return result;
     }
 
-    async createInitialFile(id:string):Promise<file>{
+    async createSourceFile(id:string):Promise<file>{
         const result:file = {name:"main.txt",location:"",awsKey:""};
         let fileUploadResult:awsUpload = {key:"",location:""};
-        const path = "scripts/" + id + "/files/";
+        const path = "scripts/" + id + "/src/";
         let data = "";
 
         try{
@@ -67,6 +96,25 @@ export class ScriptService {
         result.awsKey = fileUploadResult.key;
 
         return result;
+    }
+
+    async createBuildFile(id:string):Promise<file>{
+        const result:file = {name:"main.js",location:"",awsKey:""};
+        let fileUploadResult:awsUpload = {key:"",location:""};
+        const path = "scripts/" + id + "/build/";
+        let data = "";
+
+        try{
+            data = fs.readFileSync("templates/script.js","utf8");
+        }catch(err){
+            console.log(err);
+        }
+
+        fileUploadResult = await this.s3Service.upload("main.js",path,data,"text/plain");
+        result.location = fileUploadResult.location;
+        result.awsKey = fileUploadResult.key;
+
+        return result;        
     }
 
     async storeIcon(id:string,icon:any):Promise<string>{
@@ -115,14 +163,16 @@ export class ScriptService {
             result = {status:"failed",message: "invalid script id"};
         else{
             try{
-                result = {status:"success",message:this.compilerService.parse(content)};
+                const compiledCode = this.compilerService.transpile(content);
+                result = {status:"success",compiledCode};
                 
-                this.s3Service.update(script.file.awsKey,content);
+                await this.updateBuild(id,compiledCode);
+                this.s3Service.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
             
             }catch(e){
-
+                console.log(e);
                 result = {status:"failed",message:e};
             }
         }
