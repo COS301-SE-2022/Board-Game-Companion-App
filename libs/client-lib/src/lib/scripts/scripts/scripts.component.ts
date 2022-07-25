@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
@@ -17,8 +18,9 @@ export class ScriptsComponent implements OnInit {
   searchValue = "";
   page = 1;
   hover = "";
-
-  constructor(private readonly scriptService:ScriptService){}
+  items = [{ title: 'Profile' }, { title: 'Log out' }];
+  
+  constructor(private readonly scriptService:ScriptService,private readonly router:Router){}
 
   ngOnInit(): void {
     this.loadAllScripts();
@@ -45,6 +47,7 @@ export class ScriptsComponent implements OnInit {
       }          
     });
   }
+  
 
   replaceBackSlash(input:string):string{
     let result = "";
@@ -136,6 +139,27 @@ export class ScriptsComponent implements OnInit {
 
   currentHover(value:script): void{
     this.hover = value._id;
+  }
+
+  showInfo(value:script){
+    this.router.navigate(['script-detail'], { state: { value: value } });
+  }
+
+  showEditor(value:script){
+    this.router.navigate(['editor'],{ state: { value: value } });
+  }
+
+  convertBytes(value:number): string{
+    const decimals = 2;
+    const kilo = 1024;
+    const deci = decimals < 0 ? 0 : decimals;
+    const ranges = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    if(value === 0)
+      return '0 B';
+    const i = Math.floor(Math.log(value) / Math.log(kilo));
+
+    return parseFloat((value / Math.pow(kilo, i)).toFixed(deci)) + ' ' + ranges[i];
   }
 
   clearHover(): void{

@@ -72,6 +72,7 @@ class script
 
     play()
     {
+        console.log("script-execution begins");
         //
         for(let i =0;i< this.players.length;i++)
         {
@@ -79,3 +80,5 @@ class script
         }
     }
 }
+
+(new script()).play();

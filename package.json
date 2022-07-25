@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@angular/animations": "14.0.6",
-    "@angular/cdk": "14.0.5",
+    "@angular/cdk": "^14.1.0",
     "@angular/common": "14.0.6",
     "@angular/compiler": "14.0.6",
     "@angular/core": "14.0.6",
@@ -70,6 +70,7 @@
     "@angular/pwa": "13.3.8",
     "@angular/router": "14.0.6",
     "@angular/service-worker": "14.0.6",
+    "@nebular/theme": "^9.0.3",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",

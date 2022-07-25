@@ -8,6 +8,7 @@ import { CreateScriptComponent } from './create-script/create-scripts.component'
 import { FormsModule } from '@angular/forms';
 import { UpdateScriptComponent } from './update-script/update-scripts.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NbContextMenuModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     UpdateScriptComponent
   ],
   imports: [
+    NbContextMenuModule,
     CommonModule,
     PopoverModule,
     FormsModule,

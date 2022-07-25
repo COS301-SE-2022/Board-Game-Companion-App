@@ -57,12 +57,13 @@
                             <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                             </button>
-                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                                 <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                             </button>
-                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                             </button>
+                        
                             <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                             </button>
@@ -123,13 +124,13 @@
                         {{value.status.value === 0 ? "Flagged" : (value.status.value === 1 ? "In Progress" : "Published")}}
                     </td>
                     <td>
-                        {{value.size}}
+                        {{convertBytes(value.size)}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
                         <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
                         <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
