@@ -7,9 +7,6 @@ export class ApiModelsController {
 
     @Post('create')
     create(@Body('data')data:any[],@Body('inputFeatures')inputFeatures:string[],@Body('outputLabels')outputLabels:string[]):any{
-        const result =  this.modelsService.convertToTensor(data,inputFeatures,outputLabels);
-        //console.log(result);
-
-        return result;
+        return this.modelsService.create(data,inputFeatures,outputLabels);
     }
 }
