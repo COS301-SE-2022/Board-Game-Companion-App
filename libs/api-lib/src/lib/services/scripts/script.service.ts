@@ -163,7 +163,7 @@ export class ScriptService {
             result = {status:"failed",message: "invalid script id"};
         else{
             try{
-                const compiledCode = this.compilerService.parse(content);
+                const compiledCode = this.compilerService.transpile(content);
                 result = {status:"success",compiledCode};
                 
                 await this.updateBuild(id,compiledCode);
@@ -172,7 +172,7 @@ export class ScriptService {
                 script.save();
             
             }catch(e){
-
+                console.log(e);
                 result = {status:"failed",message:e};
             }
         }
