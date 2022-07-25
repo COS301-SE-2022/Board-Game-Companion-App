@@ -22,7 +22,7 @@ const mockScript:script = {
   size: 344,
   status: {value: 1, message: "Active and running"},
   comments: [],
-  files: [],
+  file: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 }

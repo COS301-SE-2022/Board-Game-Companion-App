@@ -38,11 +38,11 @@ const testScript: script = {
     message: "so"
   },
   comments: [],
-  files: [{
+  file: {
       name: "",
       awsKey: "",
       location: ""
-    }],
+    },
   icon: "",
   __v: 0
 };

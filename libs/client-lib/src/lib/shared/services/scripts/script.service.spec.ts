@@ -66,7 +66,7 @@ describe('Test script service',()=>{
     status: {value:2,message:'The script is currently running'},
     size: 0,
     comments: [],
-    files: [],
+    file: {name:"",location:"",awsKey:""},
     icon: '',
     __v: 0,
   };

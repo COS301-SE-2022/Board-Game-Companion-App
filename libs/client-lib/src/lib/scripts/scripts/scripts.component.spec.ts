@@ -21,7 +21,7 @@ let mockScripts: script[] =[{
   size: 233,
   status: {value: 0, message: "flagged"},
   comments: [],
-  files: [],
+  file: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 },{
@@ -40,7 +40,7 @@ let mockScripts: script[] =[{
   size: 344,
   status: {value: 1, message: "Active and running"},
   comments: [],
-  files: [],
+  file: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 },{
@@ -59,7 +59,7 @@ let mockScripts: script[] =[{
   size: 320,
   status: {value: 2, message: "In progress"},
   comments: [],
-  files: [],
+  file: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 }];
@@ -177,7 +177,7 @@ describe('ScriptsComponent',()=>{
       size: 514,
       status: {value: 1, message: "Active and running"},
       comments: [],
-      files: [],
+      file: {name:"",location:"",awsKey:""},
       icon: "",
       __v: 0});
 
