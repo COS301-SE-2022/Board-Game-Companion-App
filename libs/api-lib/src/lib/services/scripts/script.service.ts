@@ -19,7 +19,7 @@ export class ScriptService {
         
     }
 
-    async saveBuild(id:string,compiledCode:string): Promise<{status:boolean,script:Script}>{
+    async updateBuild(id:string,compiledCode:string): Promise<{status:boolean,script:Script}>{
         let status = true;
         const path = "scripts/" + id + "/build/";
         const script:ScriptDocument = await this.scriptModel.findById(id).exec();
@@ -66,7 +66,7 @@ export class ScriptService {
         const createdScript = new this.scriptModel(dto);
         const result:ScriptDocument =  await createdScript.save();
         
-        result.source = await this.createInitialFile(result._id);
+        result.source = await this.createSourceFile(result._id);
         result.icon = await this.storeIcon(result._id,icon);
         
         result.save();
@@ -74,7 +74,7 @@ export class ScriptService {
         return result;
     }
 
-    async createInitialFile(id:string):Promise<file>{
+    async createSourceFile(id:string):Promise<file>{
         const result:file = {name:"main.txt",location:"",awsKey:""};
         let fileUploadResult:awsUpload = {key:"",location:""};
         const path = "scripts/" + id + "/src/";
@@ -91,6 +91,25 @@ export class ScriptService {
         result.awsKey = fileUploadResult.key;
 
         return result;
+    }
+
+    async createBuildFile(id:string):Promise<file>{
+        const result:file = {name:"main.js",location:"",awsKey:""};
+        let fileUploadResult:awsUpload = {key:"",location:""};
+        const path = "scripts/" + id + "/build/";
+        let data = "";
+
+        try{
+            data = fs.readFileSync("templates/main.txt","utf8");
+        }catch(err){
+            console.log(err);
+        }
+
+        fileUploadResult = await this.s3Service.upload("main.txt",path,data,"text/plain");
+        result.location = fileUploadResult.location;
+        result.awsKey = fileUploadResult.key;
+
+        return result;        
     }
 
     async storeIcon(id:string,icon:any):Promise<string>{
@@ -142,7 +161,7 @@ export class ScriptService {
                 const compiledCode = this.compilerService.parse(content);
                 result = {status:"success",compiledCode};
                 
-                await this.saveBuild(id,compiledCode);
+                await this.updateBuild(id,compiledCode);
                 this.s3Service.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
