@@ -48,24 +48,27 @@ export class GameSessionsComponent implements OnInit {
 
   Onsearch(): void
   {
-    console.log("search .");
-    this.listResults = new Array<fetchSessionResults>();
-    this.ngOnInit();
-    if(this.listResults.length!=0)
+    if(this.search!=="")
     {
-      let temp: fetchSessionResults[] = new Array<fetchSessionResults>();
-      temp = this.listResults;
+      console.log("search .");
       this.listResults = new Array<fetchSessionResults>();
-      this.listResults = temp.filter( (res) => res.getBoardGame().toLowerCase() === this.search.toLowerCase());
-      console.log("search on: "+ this.search.toUpperCase());
+      this.ngOnInit();
+      if(this.listResults.length!=0)
+      {
+        let temp: fetchSessionResults[] = new Array<fetchSessionResults>();
+        temp = this.listResults;
+        this.listResults = new Array<fetchSessionResults>();
+        this.listResults = temp.filter( (res) => res.getBoardGame().toLowerCase().includes(this.search.toLowerCase()));
+        console.log("search on: "+ this.search.toUpperCase());
+      }
     }
   }
 
   onSort(): void
   {
     console.log(this.selected);
-    this.listResults = new Array<fetchSessionResults>();
-    this.ngOnInit();
+    // this.listResults = new Array<fetchSessionResults>();
+    // this.ngOnInit();
     if(this.selected ==="alphabetical")
     {
       // sort game sessions alphabetically

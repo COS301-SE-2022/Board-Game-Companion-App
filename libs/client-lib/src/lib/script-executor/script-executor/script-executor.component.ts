@@ -16,15 +16,46 @@ export class ScriptExecutorComponent implements OnInit {
   file = "test";
   folder = "42a58303-990e-4230-94c6-a9f5dd629500"
   hours = "hours";
-  h:number = 0;
+  h = 0;
   min = "min";
-  m:number = 0;
-  s:number = 0;
+  m = 0;
+  s = 0;
   sec = "sec";
   
+  //take in string as input
+  //gets displayed to screen
+  output(message:string)
+  {
+    const m = document.getElementById("inputMessageBox");
+    if(m != null)
+    {
+      m.textContent = message;
+    }
+    
+  }
+
+  //take in value from input after button click
+  input(message:string)
+  {
+    this.output(message)
+    const v = document.getElementById("enterMove") as HTMLInputElement;
+    const value = v.value 
+    if(value === null)
+    {
+      window.prompt("please enter a value");
+    }
+    else
+    {
+      return value
+    }
+
+    return null
+  }
+
+
   back()
   {
-   //Timer
+    //Timer
     if(localStorage.getItem("sessions") !== null)
     {
       let c = JSON.parse(localStorage.getItem("sessions")||"")
@@ -98,23 +129,23 @@ export class ScriptExecutorComponent implements OnInit {
     
     try
     {
-      this.scriptService.getScriptById(this.scriptID).subscribe({
-        next:async(value)=>{
+      //this.scriptService.getScriptById(this.scriptID).subscribe({
+        //next:async(value)=>{
           
           
-          let path = value.files[0].location.replace(".module.ts","");
-          path = path.replace("libs/uploads/src/lib/scripts/files/","")
+          //let path = value.files[0].location.replace(".module.ts","");
+          //path = path.replace("libs/uploads/src/lib/scripts/files/","")
 
-          import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
-            {
+          //import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
+            //{
               
-              module[Object.keys(module)[0]].play();
-            });
+              //module[Object.keys(module)[0]].play();
+            //});
 
             
             
             
-        }});
+        //}});
         
 
     }

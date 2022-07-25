@@ -8,6 +8,7 @@ import { CommentService } from './services/comments/comment.service';
 import { GoogleAuthService } from '../google-login/GoogleAuth/google-auth.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ModelsService } from './services/models/models.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ModelsService } from './services/models/models.service';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     OAuthModule.forRoot(),
     
   ],

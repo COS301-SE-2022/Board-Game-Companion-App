@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/models']);
+      this.router.navigate(['/home']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;
@@ -92,6 +92,10 @@ export class HeaderComponent implements OnInit {
         this.gapi.signOut();
         this.router.navigate(['/home']);
       }
+    }
+    else if(path==="board-game-search")
+    {
+      this.router.navigate(['/board-game-search',{value:this.searchValue}]);
     }
     else{
       this.router.navigate(['/' + path]);
