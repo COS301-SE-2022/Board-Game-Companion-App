@@ -53,7 +53,9 @@ class player
 //functions
 function endgame()
 {
-    return true;
+    //end_game
+
+
 }
 
 
@@ -62,11 +64,18 @@ function endgame()
 class script
 {
     game = new game_state();
-    players = [];
-
+    players = [
+        //add players
+    ];
+    
+    
 
     play()
     {
         //
+        for(let i =0;i< this.players.length;i++)
+        {
+            players[i].turn();
+        }
     }
 }

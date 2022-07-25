@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
 import {  CstNode, CstParser, IToken } from 'chevrotain';
+import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
 
 
-  const scriptTemplate = "";
+let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
+
+
+scriptTemplate = fs.readFileSync("libs/api-lib/src/lib/services/compiler/template_script.js","utf8");
+
+
+  
     
+  //geiing the script template into the var
 
 let jsScript = scriptTemplate;
 
@@ -222,7 +230,8 @@ export class CompilerService {
         jsScript = scriptTemplate;
         //begin transpilation
         visit(cstOutput)
-        return "parse " + cstOutput;
+
+        return "parse " + jsScript;
 
         
     }
@@ -383,7 +392,6 @@ class parser extends CstParser
             ])
 
             this.CONSUME(CloseBrace)
-            this.SUBRULE(this.Actions);
         });
 
 
@@ -1067,25 +1075,33 @@ function visitGameState(cstOutput:CstNode)
             const node = child[0] as unknown as CstNode;
             const token = child[0] as unknown as IToken;
             
-                
+            
             
             //if it a token decide how to write
-            switch(token.image)
+            if(token.image)
             {
-                case "state":
-                    break;
-                case "{":
-                    break;    
-                case "}":
-                    break; 
-                default:
-                    //find the correct position
-                    //write token to position
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
-                    
-                    break;
+                switch(token.image)
+                {
+                    case "state":
+                        break;
+                    case "{":
+                        break;    
+                    case "}":
+                        break; 
+                    default:
+                        //find the correct position
+                        //write token to position
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                        
+                        break;
+                }
             }
             //if it is a node continue till token
+            if(node.name == "Declarations")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '\n' , jsScript.slice(jsScript.indexOf("//State"))].join('');
+                        
+            }
             visitGameState(node);
             
         }
@@ -1102,7 +1118,7 @@ function visitPlayer(cstOutput:CstNode)
     let k: keyof typeof cstOutput.children;  // visit all children
         for (k in cstOutput.children) {
             const child = cstOutput.children[k];
-
+            
             const node = child[0] as unknown as CstNode;
             const token = child[0] as unknown as IToken;
 
@@ -1111,17 +1127,30 @@ function visitPlayer(cstOutput:CstNode)
             {
                 switch(token.tokenType.name)
                 {
-                    case "player":
+                    case "Player":
                         break;
                     case "UserDefinedIdentifier":
                         //
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        //write to add players
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
+                        
                         break; 
+                    case "CloseBracket":
+                        //
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ '{ ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        break;     
                     default:
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                 }
             }
+            
             visitPlayerStatements(node);
+            if(node.name == "statements")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        
+            }
         }
 }
 function visitPlayerStatements(cstOutput:CstNode)
@@ -1129,10 +1158,14 @@ function visitPlayerStatements(cstOutput:CstNode)
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
-
+        
         const node = child[0] as unknown as CstNode;
         const token = child[0] as unknown as IToken;
-
+        if(node.name == "statements")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '\n' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    
+        }
         if(token.tokenType)
         {
             jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image + ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
@@ -1144,5 +1177,55 @@ function visitPlayerStatements(cstOutput:CstNode)
 function visitEnd(cstOutput:CstNode)
 {
     //
-}
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
 
+
+            if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "tEndgame":
+                        break;
+                    case "OpenBrace":
+                        break; 
+                    case "CloseBrace":
+                        break;  
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                }
+            }
+            
+            visitEndStatements(node);
+            if(node.name == "statements")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        
+            }
+
+        }
+}
+function visitEndStatements(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image + ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+        }
+        visitPlayerStatements(node);
+        if(node.name == "statements")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '\n' , jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                    
+        }
+    }
+}
