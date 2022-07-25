@@ -38,8 +38,8 @@ export class CommentService {
     return this.httpClient.get<comment[]>(this.api + "comments/retrieve-all",{params:param});
   }
 
-  addReply(commentId:string,replyId:string): void{
-    this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId}).subscribe();
+  addReply(commentId:string,replyId:string): Observable<any>{
+    return this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId});
   }
 
   like(comment:string,user:string,like:boolean): Observable<like>{

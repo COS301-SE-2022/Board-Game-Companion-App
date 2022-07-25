@@ -82,16 +82,16 @@ export class ScriptsComponent implements OnInit {
     this.currentScript = value;
   }
 
-  search(value:string): void{
+  search(): void{
     const temp:script[] = [];
     
-    if(value === ""){
+    if(this.searchValue === ""){
       this.scripts = this.store;
       return;
     }
 
     for(let count = 0; count < this.store.length; count++){
-      if(this.store[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1)
+      if(this.store[count].name.toLowerCase().indexOf(this.searchValue.toLowerCase()) !== -1)
         temp.push(this.store[count]);
     }
 
