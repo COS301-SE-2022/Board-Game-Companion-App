@@ -45,8 +45,11 @@ export class AdminComponent implements OnInit {
       
       this.adminService.getScripts().subscribe(data=>{
         const date = new Date();
-        const month = date.toLocaleString('default', { month: 'long' });
-        this.scripts = data.filter( (res: { created: string | string[]; }) => res.created.indexOf(month)>0);
+        // const month = date.toLocaleString('default', { month: 'long' });
+        this.scripts = data.filter( (res: { created: string | string[]; }) => {
+          const d = new Date(res.created.toString());
+          return d.getMonth()===date.getMonth();
+        });
         this.currentPub = this.scripts.length;
         this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
         this.Active = this.scripts.length;
@@ -83,13 +86,16 @@ export class AdminComponent implements OnInit {
 
       const date = new Date();
   
-      const month = date.toLocaleString('default', { month: 'long' });
+      // const month = date.toLocaleString('default', { month: 'long' });
 
-      this.scripts = data.filter( (res: { created: string | string[]; }) => res.created.indexOf(month)>0);
+      this.scripts = data.filter( (res: { created: string | string[]; }) => {
+        const d = new Date(res.created.toString());
+        return d.getMonth()===date.getMonth();
+      });
 
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
-        console.log(date);
+        // console.log(date);
         this.scripts[i].created = [date[3], date[1], date[2]].join("-");
       }
       
@@ -142,6 +148,7 @@ export class AdminComponent implements OnInit {
   }
 
   onSearch(): void{
+    this.scripts = [];
     this.adminService.getScripts().subscribe(data=>{
       this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
@@ -150,7 +157,7 @@ export class AdminComponent implements OnInit {
 
         this.scripts[i].created = [date[3], date[1], date[2]].join("-");
       }
-      this.ngOnInit();
+      // this.ngOnInit();
     });
   }
 
