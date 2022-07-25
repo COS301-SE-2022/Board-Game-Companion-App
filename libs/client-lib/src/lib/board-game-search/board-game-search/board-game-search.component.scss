@@ -13,7 +13,7 @@
 }
 
 #wrapper{
-    width:60%;
+    width:50%;
     margin: auto;
     margin-top: 3em;
     margin-bottom: 10em;
@@ -21,7 +21,7 @@
 }
 
 #left{
-    width: 15%;
+    width: 20%;
     float: left;
     margin-top: 3em;
     margin-bottom: 10em;
@@ -29,7 +29,7 @@
 }
 
 #right{
-    width: 15%;
+    width: 20%;
     float: right;
     margin-top: 3em;
     margin-bottom: 10em;
@@ -77,10 +77,15 @@
 
 .board-game{ 
     transition: all .2s ease-in-out; 
-    width: 180px;
-    height: 250px;
-    max-width: 380px;
+    width: 100px;
+    height: 120px;
+    max-width: 120px;
     border-radius: 5px;
+}
+
+#names{
+    font-size: 14px;
+    text-align: center;
 }
 
 .board-game:hover { 
@@ -127,7 +132,7 @@
     border-left: 48px solid transparent;
     border-bottom: 52.5px solid $Pcolour-3;
     float: right;
-    right: 20%;
+    right: 25%;
     position: absolute;
 }
 
@@ -143,4 +148,51 @@
     color: white;
     font-size: 1.5em;
     font-weight: bold;
+}
+
+#leftContent{
+    height: 485px;
+}
+
+#leftImg{
+    height: 70px;
+    width: 70px;
+    display: inline;
+}
+
+#leftNames{
+    display: inline;
+    font-size: 14px;
+}
+
+#leftBlock{
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#rightContent{
+    height: 485px;
+}
+
+#rightImg{
+    height: 70px;
+    width: 70px;
+    display: inline;
+}
+
+#rightNames{
+    display: inline;
+    font-size: 14px;
+    
+}
+
+#rightBlock{
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
