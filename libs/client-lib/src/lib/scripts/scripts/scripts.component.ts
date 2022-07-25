@@ -14,11 +14,16 @@ export class ScriptsComponent implements OnInit {
   currentScript:script = empty;
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  
+  searchValue = "";
+  page = 1;
   constructor(private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
     this.loadAllScripts();
+  }
+
+  test(): void{
+    console.log("test");
   }
 
   loadAllScripts(): void{
@@ -62,6 +67,10 @@ export class ScriptsComponent implements OnInit {
     result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
 
     return result;
+  }
+
+  toggleView():void {
+    this.gridView = !this.gridView;
   }
 
   selected(value:script): void{

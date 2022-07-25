@@ -7,8 +7,7 @@ import { PopoverModule } from "ngx-smart-popover";
 import { CreateScriptComponent } from './create-script/create-scripts.component';
 import { FormsModule } from '@angular/forms';
 import { UpdateScriptComponent } from './update-script/update-scripts.component';
-//import { CdkStepperModule } from '@angular/cdk/stepper';
-//import { NgStepperModule } from 'ng-stepper';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { UpdateScriptComponent } from './update-script/update-scripts.component'
     CommonModule,
     PopoverModule,
     FormsModule,
-    //NgStepperModule,
-    //CdkStepperModule,
+    NgxPaginationModule,
     RouterModule.forChild([{path:'',component:ScriptsComponent}])
   ]
 })
