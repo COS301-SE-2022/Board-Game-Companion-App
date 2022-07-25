@@ -28,6 +28,8 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
         const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
+        const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
+        
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
 
@@ -128,6 +130,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tState,
     Turn,
     tPlayer,
+    tCards,
     tEndgame,
     tReturn,
     Comma,
@@ -226,14 +229,25 @@ export class CompilerService {
         }
 
         //otherwise successful parse
+        
+
+        return "parse " + cstOutput;
+
+        
+    }
+
+
+    transpile(input:string)
+    {
+        this.DSLparser.input = this.scanHelper(input).tokens;
+        const cstOutput = this.DSLparser.Program();
+
         //read in template file
         jsScript = scriptTemplate;
         //begin transpilation
         visit(cstOutput)
 
-        return "parse " + jsScript;
-
-        
+        return jsScript;
     }
 }
 
@@ -280,7 +294,7 @@ class parser extends CstParser
         });
         
         private Cards = this.RULE("Cards", () => {
-            this.CONSUME(Class)
+            this.CONSUME(tCards)
             this.CONSUME(tUserDefinedIdentifier)
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.nParameters),
