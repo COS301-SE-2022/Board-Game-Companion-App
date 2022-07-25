@@ -33,6 +33,7 @@ class pieces
 }
 class game_state
 {
+    //State
     
 }
 class player
