@@ -33,7 +33,8 @@ class pieces
 }
 class game_state
 {
-    //State
+    
+board = 2 //State
     
 }
 class player
@@ -47,7 +48,8 @@ class player
         //redefined in subclasses
     }
 }
-//players
+class Knight extends player { x = 0 ;turn ( ){ console.log ( x ) 
+}} //players
 
 
 //functions
@@ -70,7 +72,7 @@ class script
 {
     game = new game_state();
     players = [
-        //add players
+        new Knight(),//add players
     ];
     
     

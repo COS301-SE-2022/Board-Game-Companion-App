@@ -164,6 +164,7 @@ export class ScriptService {
         else{
             try{
                 const compiledCode = this.compilerService.transpile(content);
+                
                 result = {status:"success",compiledCode};
                 
                 await this.updateBuild(id,compiledCode);
@@ -176,7 +177,7 @@ export class ScriptService {
                 result = {status:"failed",message:e};
             }
         }
-
+        console.log(result)
         return result;
     }
 
