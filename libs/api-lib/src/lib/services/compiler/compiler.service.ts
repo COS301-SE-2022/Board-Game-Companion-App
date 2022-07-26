@@ -29,6 +29,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
         const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
+        const tTile=(chevrotain.createToken({name:"Card",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
         
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
@@ -131,6 +132,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     Turn,
     tPlayer,
     tCards,
+    tTile,
     tEndgame,
     tReturn,
     Comma,
@@ -448,7 +450,7 @@ class parser extends CstParser
                      
                         { ALT: () =>{ this.CONSUME(Input )
                             this.CONSUME(OpenBracket )
-                            this.CONSUME(StringLiteral )
+                            this.SUBRULE(this.Expression)
                             this.OPTION(() => {
                                 this.CONSUME(Comma )
                             this.SUBRULE(this.nVariable )}
@@ -459,7 +461,7 @@ class parser extends CstParser
                         { ALT: () =>{ 
                             this.CONSUME(ConsoleInput )
                             this.CONSUME2(OpenBracket )
-                        this.CONSUME2(StringLiteral )
+                            this.SUBRULE2(this.Expression)
                         this.OPTION1(() => {
                             this.CONSUME1(Comma )
                             this.SUBRULE1(this.nVariable )}
@@ -471,13 +473,13 @@ class parser extends CstParser
 
                         { ALT: () =>{ this.CONSUME(Print )
                             this.CONSUME3(OpenBracket )
-                            this.SUBRULE(this.Expression)
+                            this.SUBRULE3(this.Expression)
                         this.CONSUME3(CloseBracket )
                         }},
 
                         { ALT: () =>{ this.CONSUME(ConsoleOutput )
                             this.CONSUME5(OpenBracket )
-                            this.SUBRULE1(this.Expression)
+                            this.SUBRULE4(this.Expression)
                         this.CONSUME5(CloseBracket )
                         }},
                     ])
@@ -621,25 +623,16 @@ class parser extends CstParser
                     ])
                  });
                  private Declarations=this.RULE("Declarations", () => {
-                    this.MANY(() => {
                     
+                    this.OPTION(() => {
                         
-                        this.OR([
-                            {
-                                ALT: () =>{ 
-                                this.CONSUME(tVariable)
-                                }
-                            },
-                            {
-                                ALT: () =>{ 
-                                this.CONSUME(tLet)
-                                }
-                            }
-                        ])
                                 this.SUBRULE(this.nVariable )
-                                this.OPTION(() => {
+                                
+                                this.OPTION2(() => {
                                     this.SUBRULE(this.Field )
                                 })
+
+
                                 this.CONSUME(Assign)
                                 this.OR2([
                                     { 
@@ -650,9 +643,15 @@ class parser extends CstParser
                                         ALT: () =>{ 
                                         this.SUBRULE(this.Declaration)
                                     }},
+                                    { 
+                                        ALT: () =>{ 
+                                        this.CONSUME(tTile)
+                                    }},
                                 ])
-                            })
+                            
 
+                                this.SUBRULE(this.Declarations )
+                            })
 
                  });
 
@@ -687,6 +686,10 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.SUBRULE(this.Call )
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.SUBRULE(this.IO )
                             }}
                     ])
                 });
@@ -1011,6 +1014,14 @@ class parser extends CstParser
             this.OPTION2(() => {
                 this.SUBRULE(this.Field)
             })
+            this.OPTION3(() => {
+                this.CONSUME(Dot)
+                this.CONSUME2(tUserDefinedIdentifier)
+                this.OPTION4(() => {
+                    this.SUBRULE2(this.Field)
+                })
+            })
+
         });
 
         private Type=this.RULE("Type", () => {
@@ -1130,6 +1141,10 @@ function visitGameState(cstOutput:CstNode)
                         case "}":
                             break; 
                         case "var":
+                            break;
+                        case "tile":
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), 'new tile()\n' , jsScript.slice(jsScript.indexOf("//State"))].join('');
+                                
                             break;
                         default:
                             jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
@@ -1288,7 +1303,6 @@ function visitPlayerStatements(cstOutput:CstNode)
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
-        
         const node = child[0] as unknown as CstNode;
         const token = child[0] as unknown as IToken;
         if(node.name == "statements")
@@ -1298,11 +1312,11 @@ function visitPlayerStatements(cstOutput:CstNode)
         }
         if(token.tokenType)
         {
+            //console.log(token.image)
+            //console.log(token.tokenType.name)
             switch(token.tokenType.name)
             {
-                case "StringLiteral":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//players"))].join('');
-                    break;
+                
                 case "Variable": 
                     break;
                 case "ConsoleInput":
