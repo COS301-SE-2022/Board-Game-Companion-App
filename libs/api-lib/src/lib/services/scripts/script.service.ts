@@ -48,6 +48,7 @@ export class ScriptService {
         const dto:scriptDto = {
             name: name,
             author: user,
+            owner: user,
             boardgame: boardGameId,
             description: description,
             created: new Date(),
@@ -117,6 +118,18 @@ export class ScriptService {
         return result;        
     }
 
+    async updateStatus(id:string,value:number,message:string):Promise<Script>{
+        const result:ScriptDocument = await this.scriptModel.findById(id);
+        result.status = {
+            value: value,
+            message: message
+        }
+
+        result.save();
+
+        return result;
+    }
+
     async storeIcon(id:string,icon:any):Promise<string>{
         const path = "scripts/" + id + "/icons/";
         
@@ -144,6 +157,10 @@ export class ScriptService {
 
     async findAll(): Promise<Script[]>{ 
         return this.scriptModel.find().exec();
+    }
+
+    async getAllMyScripts(owner:string): Promise<Script[]>{
+        return this.scriptModel.find({"owner":owner}).exec();
     }
 
     async findById(id:number):Promise<Script>{

@@ -42,6 +42,13 @@ export class ScriptService {
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
 
+  getAllMyScripts(owner:string):Observable<script[]>{
+    let param = new HttpParams();
+    param = param.set("owner",owner);
+
+    return this.httpClient.get<script[]>(this.api + "scripts/retrieve/byowner",{params:param});
+  }
+
   addComment(scriptId:string,commentId:string):void{
     this.httpClient.put(this.api + "scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
   }
@@ -52,6 +59,10 @@ export class ScriptService {
 
   updateScriptInfo(data:any):Observable<script>{
     return this.httpClient.post<script>(this.api + "scripts/update",data);
+  }
+
+  updateStatus(id:string,value:number,message:string):Observable<script>{
+    return this.httpClient.put<script>(this.api + "scripts/update/status",{id:id,value:value,message:message});
   }
 
   retrieveAllScript():Observable<script[]>{

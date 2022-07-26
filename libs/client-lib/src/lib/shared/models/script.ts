@@ -5,6 +5,7 @@ export interface script{
     _id: string;
     name: string;
     author: string;
+    owner: string;
     boardgame: string;
     description: string;
     created: Date;
@@ -27,6 +28,7 @@ export const empty:script = {
     _id: "",
     name: "",
     author: "",
+    owner: "",
     boardgame: "",
     description: "",
     created: new Date(0),

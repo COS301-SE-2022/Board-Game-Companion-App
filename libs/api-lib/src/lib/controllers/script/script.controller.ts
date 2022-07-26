@@ -37,9 +37,19 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
+    @Get('retrieve/byowner')
+    async getAllMyScripts(@Query('owner')owner:string):Promise<Script[]>{
+        return await this.scriptService.getAllMyScripts(owner);
+    }
+
     @Post('update')
     async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
         return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
+    }
+
+    @Put('update/status')
+    async updateStatus(@Body('id')id:string,@Body('value')value:number,@Body('message')message:string):Promise<Script>{
+        return await this.scriptService.updateStatus(id,value,message);
     }
 
     @Delete('remove/:id')

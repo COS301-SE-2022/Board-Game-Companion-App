@@ -16,6 +16,9 @@ export class Script{
     author: string;
 
     @Prop({required:true})
+    owner: string;
+
+    @Prop({required:true})
     boardgame: string;
 
     @Prop({required:true})

@@ -54,10 +54,10 @@
                     
                     <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
-                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                             </button>
-                            <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                            <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                                 <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                             </button>
                             <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
@@ -80,6 +80,9 @@
                 <tr>
                     <th>
                         Name
+                    </th>
+                    <th>
+                        Creator
                     </th>
                     <th>
                         Created
@@ -112,12 +115,15 @@
                         </div>
                     </td>
                     <td>
+                        {{value.author === value.owner ? "You" : value.owner}}
+                    </td>
+                    <td>
                         {{formatDate(value.created)}}
                     </td>
                     <td>
                         {{formatDate(value.lastupdate)}}
                     </td>
-                    <td>
+                    <td (click) = "toggleStatus(value)" class = "cursor-pointer hover:bg-green-800" data-toggle="tooltip" title="toggle status">
                         <span *ngIf = "value.status.value ===0" class = "mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                         <span *ngIf = "value.status.value ===1" class = " mr-2"><i class="fas fa-cogs" style="color:orange"></i></span>
                         <span *ngIf = "value.status.value ===2" class = " mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
@@ -127,10 +133,10 @@
                         {{convertBytes(value.size)}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
-                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
-                        <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
                         <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">

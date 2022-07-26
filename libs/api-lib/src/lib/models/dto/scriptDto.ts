@@ -5,6 +5,7 @@ import { commentDto  } from "./commentDto";
 export interface scriptDto{
     name: string;
     author: string;
+    owner: string;
     boardgame: string;
     description: string;
     created: Date;

@@ -31,7 +31,7 @@ export class ScriptsComponent implements OnInit {
   }
 
   loadAllScripts(): void{
-    this.scriptService.retrieveAllScript().subscribe({
+    this.scriptService.getAllMyScripts("Joseph").subscribe({
       next:(value)=>{
         this.store = this.scripts = value;
 
@@ -66,12 +66,39 @@ export class ScriptsComponent implements OnInit {
     
     const val = new Date(date);
 
-    result = val.getDate() + " ";
+    result = (val.getDate() < 10 ? "0": "") + val.getDate() + " ";
     result += this.months[val.getMonth()] + " ";
     result += val.getFullYear() + ", ";
-    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+    result += (val.getHours() < 10 ? "0" : "") + val.getHours() + ":" + (val.getMinutes() < 10 ? "0" : "") + val.getMinutes() + ":" + (val.getSeconds() < 10 ? "0" : "") + val.getSeconds();
 
     return result;
+  }
+
+  toggleStatus(focus:script):void{
+    if(focus.status.value === 0)
+      focus.status.value = 1;
+    else if(focus.status.value === 1)
+      focus.status.value = 2;
+    else if(focus.status.value === 2)
+      focus.status.value = 1;
+
+    this.scriptService.updateStatus(focus._id,focus.status.value,"").subscribe({
+      next:(value)=>{
+        for(let count = 0;  count < this.store.length; count++){
+          if(this.store[count]._id === value._id)
+            this.store[count] = value;
+
+          if(count < this.scripts.length && this.scripts[count]._id === value._id)
+            this.scripts[count] = value
+        }
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }      
+    })
   }
 
   toggleView():void {
@@ -84,14 +111,19 @@ export class ScriptsComponent implements OnInit {
 
   search(): void{
     const temp:script[] = [];
-    
-    if(this.searchValue === ""){
+    let value = this.searchValue;
+
+    if(value === ""){
       this.scripts = this.store;
       return;
     }
 
+    if(value.toLowerCase() === "you")
+      value = "Joseph";
+
     for(let count = 0; count < this.store.length; count++){
-      if(this.store[count].name.toLowerCase().indexOf(this.searchValue.toLowerCase()) !== -1)
+      if(this.store[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1 || 
+          this.store[count].owner.toLowerCase().indexOf(value.toLowerCase()) !== -1)
         temp.push(this.store[count]);
     }
 
