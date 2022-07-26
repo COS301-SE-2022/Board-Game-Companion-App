@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { script } from '../../models/script';
 import { rating } from '../../models/rating';
+import { string } from '@tensorflow/tfjs-node';
 
 
 @Injectable()
@@ -40,6 +41,10 @@ export class ScriptService {
 
   saveScript(formData:FormData):Observable<script>{
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
+  }
+
+  download(id:string,owner:string):Observable<{status:string,message:string}>{
+    return this.httpClient.post<{status:string,message:string}>(this.api + "scripts/download",{id:id,owner:owner});
   }
 
   getAllMyScripts(owner:string):Observable<script[]>{

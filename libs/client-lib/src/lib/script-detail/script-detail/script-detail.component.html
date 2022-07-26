@@ -40,7 +40,7 @@
     
     <div class = "script-cover p-2 mb-4 bg-gray-800 relative">
       <div class = "script-cover-header p-1 mb-2"><b>Cover</b></div>
-      <img [src]="current.icon" class = "w-full" style="height:16rem">
+      <img [src]="current.icon.location" class = "w-full" style="height:16rem">
 
       <div *ngIf = "voterCount !== 0" class = "absolute right-0 left-0 bottom-0 h-20" style = "background-color:rgba(0,0,0,0.5)">
         <ul class="w-full h-10 p-2 space-x-1 text-center">

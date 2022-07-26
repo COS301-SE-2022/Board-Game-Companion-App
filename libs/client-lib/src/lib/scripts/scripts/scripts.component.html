@@ -50,7 +50,7 @@
                     <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                     <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
                     <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
-                    <img class="w-full h-full" [src]="value.icon" alt=""/>
+                    <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                     
                     <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
@@ -107,7 +107,7 @@
                     <td>
                         <div class = "flex flex-row">
                             <div class = "w-8 h-8">
-                                <img class="w-full h-full" [src]="value.icon" alt=""/>
+                                <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                             </div>
                             <div class = "ml-2">
                                 {{value.name}}

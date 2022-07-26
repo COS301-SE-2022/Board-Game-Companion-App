@@ -20,7 +20,7 @@ export interface script{
     comments: string[];
     source: file;
     build: file;
-    icon: string;
+    icon: file;
     __v: number;
 }
 
@@ -43,6 +43,6 @@ export const empty:script = {
     comments: [],
     source: {name:"",location:"",awsKey:""},
     build: {name:"",location:"",awsKey:""},
-    icon: "",
+    icon: {name:"",location:"",awsKey:""},
     __v: 0,
 }

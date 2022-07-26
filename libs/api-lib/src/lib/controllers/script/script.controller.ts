@@ -47,6 +47,11 @@ export class ApiScriptController {
         return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
     }
 
+    @Post('download')
+    async download(@Body('id')id:string,@Body('owner')owner:string):Promise<{status:string,message:string}>{
+        return this.scriptService.download(id,owner);
+    }
+
     @Put('update/status')
     async updateStatus(@Body('id')id:string,@Body('value')value:number,@Body('message')message:string):Promise<Script>{
         return await this.scriptService.updateStatus(id,value,message);

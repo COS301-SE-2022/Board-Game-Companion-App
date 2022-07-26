@@ -42,6 +42,10 @@ export class ScriptDetailComponent implements OnInit {
     } 
   }
 
+  download(): void{
+    this.scriptService.download(this.current._id,"Joseph").subscribe();
+  }
+
   convertBytes(value:number): string{
     const decimals = 2;
     const kilo = 1024;

@@ -34,10 +34,6 @@ export class ScriptsComponent implements OnInit {
     this.scriptService.getAllMyScripts("Joseph").subscribe({
       next:(value)=>{
         this.store = this.scripts = value;
-
-        for(let count = 0; count < this.scripts.length; count++){
-          console.log(this.scriptService.getApiUrl() + this.replaceBackSlash(this.scripts[count].icon));
-        }
       },
       error:(e)=>{
         console.log(e)
@@ -61,6 +57,7 @@ export class ScriptsComponent implements OnInit {
     return result;
   }
 
+  
   formatDate(date:Date):string{
     let result = "";
     

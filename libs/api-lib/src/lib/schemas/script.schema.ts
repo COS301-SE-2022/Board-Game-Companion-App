@@ -60,8 +60,8 @@ export class Script{
     @Prop({required:true,type:{name:"",awsKey:"",location:""}})
     build: file;
 
-    @Prop()
-    icon: string; 
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    icon: file; 
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);
