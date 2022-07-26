@@ -21,7 +21,8 @@
         ],
         "styles": [
           "node_modules/bootstrap/dist/css/bootstrap.min.css",
-          "apps/client/src/styles.scss"
+          "apps/client/src/styles.scss",
+          "node_modules/@nebular/theme/styles/prebuilt/default.css"
         ],
         "scripts": ["apps/client/src/assets/js/ace-editor/src-min/ace.js"]
       },

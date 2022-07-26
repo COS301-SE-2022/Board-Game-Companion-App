@@ -3,7 +3,7 @@
 <div class="model-block w-full shadow-sm text-white p-2 mb-4">
     <div class="mb-4">
         <label for="data-partition" class="form-label font-medium"><b>Data</b></label>
-        <input class="form-control border-2" type="file" id="formFile">
+        <input (change) = "loadData($event)" class="form-control border-2" type="file" id="dataFile">
     </div>
 
     <div class = "mb-4">
@@ -38,7 +38,7 @@
             
             <div class="input-group relative w-full mb-4">
                     <input [(ngModel)] = "outputLabel" name = "outputLabel" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
-                    <button (click) = "addOutputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                    <button (click) = "addOutputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="addOutputFeature">
                         <i class="far fa-plus fa-2x"></i>
                     </button>
                 </div>
@@ -53,7 +53,7 @@
     </div>
 
     <div class = "w-full text-right">
-        <button type="button" class="inline-block px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">analyse</button>
+        <button (click) = "createModel()" type="button" class="inline-block px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">analyse</button>
     </div>
 </div>
 

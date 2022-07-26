@@ -33,6 +33,7 @@ class pieces
 }
 class game_state
 {
+    //State
     
 }
 class player
@@ -52,20 +53,40 @@ class player
 //functions
 function endgame()
 {
-    return true;
+    //end_game
+
+
 }
 
-
+function console_Input(message)
+{
+    
+    input = prompt(message);
+    return input;
+}
 
 //
 class script
 {
     game = new game_state();
-    players = [];
-
+    players = [
+        //add players
+    ];
+    
+    
 
     play()
     {
+        console.log("script-execution begins");
         //
+        for(let i =0;i< this.players.length;i++)
+        {
+            this.players[i].turn();
+        }
+
+
+
     }
 }
+
+(new script()).play();
