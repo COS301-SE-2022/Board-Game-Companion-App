@@ -33,9 +33,19 @@ class pieces
 }
 class game_state
 {
-    //State
-    
+    board = []
+    constructor()
+    {
+        //State
+
+
+        
+        //tiles
+
+        
+    }
 }
+State = new game_state()
 class player
 {
     chooseAction()

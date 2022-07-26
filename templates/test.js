@@ -34,8 +34,20 @@ class pieces
 class game_state
 {
     
-board = 2 //State
-    
+    constructor()
+    {
+        
+let t1 = new tile()
+
+t1 . Id = 2 
+//State
+
+
+        board = [
+            t1,//tiles
+
+        ]
+    }
 }
 class player
 {
@@ -48,7 +60,11 @@ class player
         //redefined in subclasses
     }
 }
-class Knight extends player { x = 0 ;turn ( ){ console.log ( x ) 
+class p1 extends player { ;turn ( ){ let x =  'hey' 
+x = 1 
+let v = 3 
+console.log ( x ) 
+console.log ( v ) 
 }} //players
 
 
@@ -72,7 +88,7 @@ class script
 {
     game = new game_state();
     players = [
-        new Knight(),//add players
+        new p1(),//add players
     ];
     
     
