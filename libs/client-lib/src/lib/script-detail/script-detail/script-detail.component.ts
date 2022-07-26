@@ -120,13 +120,13 @@ export class ScriptDetailComponent implements OnInit {
 
   formatDate(date:Date):string{
     let result = "";
-    console.log(date);
+    
     const val = new Date(date);
 
-    result = val.getDate() + " ";
+    result = (val.getDate() < 10 ? "0": "") + val.getDate() + " ";
     result += this.months[val.getMonth()] + " ";
     result += val.getFullYear() + ", ";
-    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+    result += (val.getHours() < 10 ? "0" : "") + val.getHours() + ":" + (val.getMinutes() < 10 ? "0" : "") + val.getMinutes() + ":" + (val.getSeconds() < 10 ? "0" : "") + val.getSeconds();
 
     return result;
   }

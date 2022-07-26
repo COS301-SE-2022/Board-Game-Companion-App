@@ -20,7 +20,7 @@
       
       <div class = "flex flex-row name-value-pair text-sm">
         <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
-        <label class = "script-field-name" style="margin-left:120px">Last downloads: </label><p class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
+        <label *ngIf="current.lastdownload!==null" class = "script-field-name" style="margin-left:120px">Last downloads: </label><p *ngIf="current.lastdownload!==null" class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
       </div>
       
       <div class = "text-sm name-value-pair">

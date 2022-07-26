@@ -125,6 +125,11 @@ export class ScriptService {
             message: message
         }
 
+        if(value === 2)
+            result.release = new Date();
+        else
+            result.release = null;
+
         result.save();
 
         return result;
