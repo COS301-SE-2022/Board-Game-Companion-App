@@ -61,6 +61,7 @@
     width: 100%;
 }
 
+
 #topic{
     text-align:center;
     margin-top:10px;
@@ -195,4 +196,88 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+@media(max-width:639px){
+//    #left{
+//     width:20%;
+//     margin-left: 4px;
+//    }
+    #container{
+        display:flex;
+        flex-direction: column;
+    }
+
+   #right{
+    display:none;
+   }
+
+   #wrapper{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    height:fit-content;
+    margin-bottom: 3px;
+    order:1;
+    width:100%;
+   }
+
+   #left{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    order:2;
+    margin-left:0px;
+    width:100%;
+    // margin-top: 3em;
+   }
+
+   #leftContent{
+        display:flex;
+        flex-direction: row;
+   }
+
+    #leftBlock{
+        display:flex;
+        float:left;
+        flex-direction: row;
+    }
+
+    img{
+        float:left;
+    }
+
+    h5{
+        float:left;
+    }
+
+    #triangle1{
+        display:none;
+    }
+
+    #triangle2{
+        display:none; 
+    }
+
+    #word{
+        display:none;
+    }
+
+    #search{
+        width:30%;
+    }
+
+    // #sortingDiv{
+    //     start here 
+    // }
+ 
+//    #wrapper{
+//     width:60%;
+//    }
+}
+
+@media(min-width:640px){
+    #searchIcon{
+        display:none;
+    }
 }
