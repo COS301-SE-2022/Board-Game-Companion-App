@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { rating } from '../../shared/models/rating';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -20,7 +21,8 @@ export class ScriptDetailComponent implements OnInit {
   rate:rating = {_id:"",user:"",script:"",value:0};
   averageRating = 0;
   voterCount = 0;
-
+  downloading = false;
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
@@ -43,7 +45,17 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   download(): void{
-    this.scriptService.download(this.current._id,"Joseph").subscribe();
+    this.downloading = true;
+    this.scriptService.download(this.current._id,"Joseph").subscribe({
+      next:(val)=>{
+        this.downloading = false;
+        this.notifications.add({type:val.status,message:val.message});
+      },
+      error:(err)=>{     
+        this.downloading = false;
+        this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+      }      
+    });
   }
 
   convertBytes(value:number): string{

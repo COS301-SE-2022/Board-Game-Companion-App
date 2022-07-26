@@ -48,7 +48,7 @@ export class ApiScriptController {
     }
 
     @Post('download')
-    async download(@Body('id')id:string,@Body('owner')owner:string):Promise<{status:string,message:string}>{
+    async download(@Body('id')id:string,@Body('owner')owner:string):Promise<{status:string,message:string,script:Script}>{
         return this.scriptService.download(id,owner);
     }
 

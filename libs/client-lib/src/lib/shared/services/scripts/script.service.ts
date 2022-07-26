@@ -43,8 +43,8 @@ export class ScriptService {
     return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
   }
 
-  download(id:string,owner:string):Observable<{status:string,message:string}>{
-    return this.httpClient.post<{status:string,message:string}>(this.api + "scripts/download",{id:id,owner:owner});
+  download(id:string,owner:string):Observable<{status:string,message:string,script:script}>{
+    return this.httpClient.post<{status:string,message:string,script:script}>(this.api + "scripts/download",{id:id,owner:owner});
   }
 
   getAllMyScripts(owner:string):Observable<script[]>{

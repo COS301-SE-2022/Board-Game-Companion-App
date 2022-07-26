@@ -81,14 +81,15 @@ export class ScriptService {
         return result;
     }
 
-    async download(id:string,owner:string):Promise<{status:string,message:string}>{
+    async download(id:string,owner:string):Promise<{status:string,message:string,script:Script}>{
         //warning
         //success
         //info
         //failed
         const result = {
             status:"",
-            message:""
+            message:"",
+            script:null
         }
 
         let script = await this.scriptModel.findOne({_id:id,owner:owner});
@@ -155,6 +156,7 @@ export class ScriptService {
                         }
 
                         newScript.save();
+                        result.script = newScript;
                     }
 
                 }

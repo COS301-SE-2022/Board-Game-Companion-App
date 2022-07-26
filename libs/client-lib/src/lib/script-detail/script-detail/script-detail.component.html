@@ -58,9 +58,14 @@
     
     <div class = "script-download p-2 mb-4 bg-gray-800 text-center">
       <div class = "script-download-header p-1 mb-2 j text-left"><b>Download</b></div>
-      <button type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+      <button (click)="download()" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
         <i class="fas fa-download text-white fa-3x"></i>
         <p class = "text-lg"><b>DOWNLOAD</b></p>
+      </button>
+      
+      <button *ngIf = "downloading" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+        <i class="fas fa-spinner fa-pulse"></i>
+        <p class = "text-lg"><b>DOWNLOADING</b></p>
       </button>
     </div>
 
@@ -78,3 +83,5 @@
     </div>
   </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
