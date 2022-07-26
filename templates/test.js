@@ -14,9 +14,9 @@ class cards
 
 class tile
 {
-    Name = "";//name for the tile identifier as string by default
-    Id = 0; //unique identifier for the tile 0 by default
-    Type = ""; //allows grouping of tyles by a type “” by default
+    Name;//name for the tile identifier as string by default
+    Id; //unique identifier for the tile 0 by default
+    Type; //allows grouping of tyles by a type “” by default
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
@@ -34,18 +34,23 @@ class pieces
 class game_state
 {
     
- t = 0 //State
-    
+    constructor()
+    {
+        
+let t1 = new tile()
+
+t1 . Id = 2 
+//State
 
 
+        board = [
+            t1,//tiles
 
-    listOfTiles=[
-        //tiles
-    ]
+        ]
+    }
 }
 class player
 {
-    state = new game_state();
     chooseAction()
     {
         //
@@ -55,8 +60,11 @@ class player
         //redefined in subclasses
     }
 }
-class p1 extends player { ;turn ( ){ let x = 1 
+class p1 extends player { ;turn ( ){ let x =  'hey' 
+x = 1 
+let v = 3 
 console.log ( x ) 
+console.log ( v ) 
 }} //players
 
 

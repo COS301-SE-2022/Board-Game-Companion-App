@@ -14,9 +14,9 @@ class cards
 
 class tile
 {
-    Name = "";//name for the tile identifier as string by default
-    Id = 0; //unique identifier for the tile 0 by default
-    Type = ""; //allows grouping of tyles by a type “” by default
+    Name;//name for the tile identifier as string by default
+    Id; //unique identifier for the tile 0 by default
+    Type; //allows grouping of tyles by a type “” by default
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
@@ -33,18 +33,21 @@ class pieces
 }
 class game_state
 {
-    //State
-    
+    board = []
+    constructor()
+    {
+        //State
 
 
-
-    listOfTiles=[
+        
         //tiles
-    ]
+
+        
+    }
 }
+State = new game_state()
 class player
 {
-    state = new game_state();
     chooseAction()
     {
         //

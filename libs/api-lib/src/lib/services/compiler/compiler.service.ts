@@ -1,7 +1,8 @@
 import { TokenType } from '@angular/compiler';
 import { Injectable } from '@nestjs/common';
+import { dot } from '@tensorflow/tfjs-layers/dist/exports_layers';
 import * as chevrotain from 'chevrotain';
-import {  CstNode, CstParser, IToken } from 'chevrotain';
+import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
 
@@ -29,7 +30,11 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
         const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
-        const tTile=(chevrotain.createToken({name:"Card",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+        const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+        
+
+        const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
+        const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
         
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
@@ -133,6 +138,8 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tPlayer,
     tCards,
     tTile,
+    tAddToBoard,
+    tAddAdjacency,
     tEndgame,
     tReturn,
     Comma,
@@ -582,6 +589,8 @@ class parser extends CstParser
                 private ForLoopInitialiser=this.RULE("ForLoopInitialiser", () => {
                     this.OPTION(() => {
                         this.SUBRULE(this.nVariable)
+                        this.this.CONSUME(Assign)
+                        this.SUBRULE(this.Value)
                     })
                 });
 
@@ -593,7 +602,8 @@ class parser extends CstParser
                 });
                 private ForLoopStep=this.RULE("ForLoopStep", () => {
                     
-                    this.SUBRULE(this.Expression)
+                    this.SUBRULE(this.nVariable)
+                    this.SUBRULE(this.Unary_Operator)
                      
                  });
                  private Branch=this.RULE("Branch", () => {
@@ -623,9 +633,11 @@ class parser extends CstParser
                     ])
                  });
                  private Declarations=this.RULE("Declarations", () => {
-                    
                     this.OPTION(() => {
-                        
+                        this.SUBRULE(this.SpecialMethods )
+                    })
+                    this.OPTION1(() => {
+                            
                                 this.SUBRULE(this.nVariable )
                                 
                                 this.OPTION2(() => {
@@ -654,6 +666,36 @@ class parser extends CstParser
                             })
 
                  });
+                 private SpecialMethods=this.RULE("SpecialMethods", () => {
+                    this.OR([
+                        { 
+                            ALT: () =>{
+                                this.SUBRULE(this.addTileToBoard )
+                            }},
+                            {
+                            ALT: () =>{
+                                this.SUBRULE(this.addAdj )
+                            }}
+                            
+                        ])
+                 })
+                 private addTileToBoard=this.RULE("addTileToBoard", () => {
+                    
+                    this.CONSUME(tAddToBoard)
+                    this.CONSUME(OpenBracket)
+                    this.CONSUME(tUserDefinedIdentifier)
+                    this.CONSUME(CloseBracket)    
+                 })
+                 private addAdj=this.RULE("addAdj", () => {
+                    
+                    this.CONSUME(tAddAdjacency)
+                    this.CONSUME(OpenBracket)
+                    this.CONSUME(tUserDefinedIdentifier)
+                    this.CONSUME(Comma)
+                    this.CONSUME2(tUserDefinedIdentifier)
+                    this.CONSUME(CloseBracket)    
+                 })
+
 
                  private Declaration=this.RULE("Declaration", () => {
                                 
@@ -707,16 +749,9 @@ class parser extends CstParser
                 ])
             });
             private Expression=this.RULE("Expression", () => {
-                        
-                this.OR([
-                    { 
-                        ALT: () =>{ 
-                        this.SUBRULE(this.Unary_Operator)
-                        this.SUBRULE(this.Value)
-                    }},
-                    { 
-                        ALT: () =>{ 
-                            this.SUBRULE1(this.Value)
+                this.SUBRULE(this.Value) 
+                this.SUBRULE(this.dotContinuation)    
+                this.OPTION(() => {
                             this.OR1([
                             {
                                 ALT: () =>{ 
@@ -734,15 +769,25 @@ class parser extends CstParser
                                     this.SUBRULE(this.Relational_Operator)
                                     this.SUBRULE2(this.Value)
                                     })
-                                    this.OPTION(() => {
+                                    this.OPTION2(() => {
                                         this.SUBRULE(this.Ternary)
                                     })
                                     
                             }},
                         ])
-                    }}
-            ])
+                })
+            
         });
+        private dotContinuation=this.RULE("dotContinuation", () => {
+            //
+            this.OPTION(() => {
+                this.CONSUME(Dot)
+                this.SUBRULE(this.Value) 
+                this.SUBRULE(this.dotContinuation) 
+            })
+        })
+
+
         private Unary=this.RULE("Unary", () => {
                         
             this.OR([
@@ -1016,10 +1061,8 @@ class parser extends CstParser
             })
             this.OPTION3(() => {
                 this.CONSUME(Dot)
-                this.CONSUME2(tUserDefinedIdentifier)
-                this.OPTION4(() => {
-                    this.SUBRULE2(this.Field)
-                })
+                this.SUBRULE(this.nVariable)
+                
             })
 
         });
@@ -1130,6 +1173,10 @@ function visitGameState(cstOutput:CstNode)
             //if it a token decide how to write
             if(token.image)
             {
+                console.log(token.image)
+                console.log(token.tokenType.name)
+
+                
                 if(token.tokenType.name != "StringLiteral")
                 {
                     switch(token.image)
@@ -1146,6 +1193,9 @@ function visitGameState(cstOutput:CstNode)
                             jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), 'new tile()\n' , jsScript.slice(jsScript.indexOf("//State"))].join('');
                                 
                             break;
+                        case "Dot":
+                                jsScript = [jsScript.slice(0, jsScript.indexOf("//State")-1), token.image+ '', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                                break;
                         default:
                             jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
                             
@@ -1159,12 +1209,21 @@ function visitGameState(cstOutput:CstNode)
                 }
             }
             //if it is a node continue till token
+            
             if(node.name == "Declarations")
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '\n' , jsScript.slice(jsScript.indexOf("//State"))].join('');
                         
             }
-            visitGameState(node);
+            if(node.name != "SpecialMethods")
+            {
+                visitGameState(node);
+            }
+            else
+            {
+                specialVisit(node, "//tiles")
+            }
+            
             
         }
 
@@ -1312,8 +1371,9 @@ function visitPlayerStatements(cstOutput:CstNode)
         }
         if(token.tokenType)
         {
-            //console.log(token.image)
-            //console.log(token.tokenType.name)
+            
+                
+            
             switch(token.tokenType.name)
             {
                 
@@ -1366,8 +1426,14 @@ function visitEnd(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
                 }
             }
-            
-            visitEndStatements(node);
+            if(node.name != "SpecialMethods")
+            {
+                visitEndStatements(node);
+            }
+            else
+            {
+                specialVisit(node, "//tiles")
+            }
             if(node.name == "statements")
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
@@ -1399,4 +1465,69 @@ function visitEndStatements(cstOutput:CstNode)
 }
 
 
+function specialVisit(cstOutput:CstNode, place:string)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const node = child[0] as unknown as CstNode;
 
+        if(node.name)
+        {
+            switch (node.name)
+            {
+                case "addTileToBoard":
+                    addTile(node, place)
+                    break;
+                case "addAdj":
+                    visitAdj(node, place)
+                    break;
+            }
+        }
+    }
+
+}
+function addTile(cstOutput:CstNode, place:string)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType.name == "UserDefinedIdentifier")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.board.push('+ token.image + ')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+        }
+    }
+}
+function visitAdj(cstOutput:CstNode, place:string)
+{
+    let i = 0;
+    let param1 = "";
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType.name == "UserDefinedIdentifier")
+        {
+            //
+            if( i == 0)
+            {
+                param1 = token.image;
+                i++;
+            }
+            else
+            {
+                //we have the second param
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image+".Adjacencies.push("+param1+")\n"+param1+".Adjacencies.push("+token.image+")", jsScript.slice(jsScript.indexOf(place))].join('');
+        
+            }
+        }
+
+        
+    }
+}

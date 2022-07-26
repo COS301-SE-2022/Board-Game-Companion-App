@@ -294,7 +294,7 @@ export class ScriptService {
                 result = {status:"failed",message:e};
             }
         }
-        console.log(result)
+        //console.log(result)
         return result;
     }
 
