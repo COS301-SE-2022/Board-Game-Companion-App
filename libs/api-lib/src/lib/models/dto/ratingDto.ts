@@ -1,5 +1,7 @@
+import { user } from '../general/user';
+
 export interface ratingDto{
-    user:string;
+    user:user;
     script:string;
     value:number
 };

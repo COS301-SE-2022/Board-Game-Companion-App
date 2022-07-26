@@ -4,16 +4,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { commentDto } from '../../models/dto/commentDto';
 import { Comment,CommentDocument } from '../../schemas/comment.schema';
 import { Like, LikeDocument } from '../../schemas/like.schema';
-import { likeCount } from '../../models/general/likeCount';
+import { commentCount } from '../../models/general/commentCount';
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class CommentService {
 
     constructor(@InjectModel(Comment.name) private commentModel: Model<CommentDocument>,@InjectModel(Like.name) private likeModel: Model<LikeDocument>){}
 
-    async createComment(name:string,image:string,script:string,content:string):Promise<Comment>{
+    async createComment(user:user,image:string,script:string,content:string):Promise<Comment>{
         const dto:commentDto = {
-            name: name,
+            user: user,
             image: image,
             created: new Date(),
             script:script,
@@ -50,7 +51,7 @@ export class CommentService {
         }
     }
 
-    async like(comment:string,user:string,like:boolean):Promise<Like>{
+    async like(comment:string,user:user,like:boolean):Promise<Like>{
 
         let value:LikeDocument = await this.likeModel.findOne({comment:comment,user:user});
 
@@ -70,7 +71,7 @@ export class CommentService {
         return value;
     }
 
-    async getLike(comment:string,user:string):Promise<Like>{
+    async getLike(comment:string,user:user):Promise<Like>{
         return this.likeModel.findOne({comment:comment,user:user});
     }
 
@@ -78,15 +79,21 @@ export class CommentService {
         this.likeModel.findByIdAndDelete(id);
     }
 
-    async countLikes(comment:string):Promise<likeCount>{
-        const result:likeCount = {
+    async count(comment:string):Promise<commentCount>{
+        const result:commentCount = {
             likes: 0,
-            dislikes: 0
+            dislikes: 0,
+            replies: 0
         }
 
         result.likes = await this.likeModel.countDocuments({comment:comment,like:true});
         result.dislikes = await this.likeModel.countDocuments({comment:comment,like:false});
+        const com = await this.commentModel.findById(comment);
         
+        if(com !== null){
+            result.replies = com.replies.length;
+        }
+
         return result;
     }
 }

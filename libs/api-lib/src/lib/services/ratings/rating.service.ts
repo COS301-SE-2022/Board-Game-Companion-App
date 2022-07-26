@@ -4,12 +4,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Rating, RatingDocument } from '../../schemas/rating.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
 import mongoose from 'mongoose';
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class RatingService {
     constructor(@InjectModel(Rating.name) private ratingModel: Model<RatingDocument> ){}
 
-    async rate(user:string,script:string,value:number):Promise<Rating>{
+    async rate(user:user,script:string,value:number):Promise<Rating>{
         let result:RatingDocument = await this.ratingModel.findOne({user:user,script:script});
 
         value = Math.min(5,value);
@@ -31,7 +32,7 @@ export class RatingService {
         return result;        
     }
 
-    async getRating(user:string,script:string):Promise<Rating>{
+    async getRating(user:user,script:string):Promise<Rating>{
         return this.ratingModel.findOne({user:user,script:script});
     }
 

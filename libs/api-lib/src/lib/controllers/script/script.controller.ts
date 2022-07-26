@@ -12,6 +12,7 @@ import { Rating } from '../../schemas/rating.schema';
 import { CompilerService } from '../../services/compiler/compiler.service';
 import * as chevrotain from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
+import { user } from '../../models/general/user';
 
 @Controller('scripts')
 export class ApiScriptController {
@@ -21,10 +22,10 @@ export class ApiScriptController {
     
     @Post('create-script')
     @UseInterceptors(FileInterceptor('icon'))
-    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
+    async createScript(@Body('userName')userName:string,@Body('userEmail')userEmail:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
 
-        return this.scriptService.create(user,name,boardGameId,stat,description,icon);
+        return this.scriptService.create({name:userName,email:userEmail},name,boardGameId,stat,description,icon);
     }
 
     @Get('retrieve/byid')
@@ -37,9 +38,35 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
+    @Get('retrieve/createdByMe')
+    async getScriptsCreatedByMe(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getScriptsCreatedByMe({name:ownerName,email:ownerEmail});
+    }
+
+    @Get('retrieve/downloadedByMe')
+    async getScriptsDownloadedByMe(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getScriptsDownloadedByMe({name:ownerName,email:ownerEmail});
+    }
+
+    @Get('retrieve/other')
+    async getOtherScripts(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getOtherScripts({name:ownerName,email:ownerEmail});
+    }
+
+
     @Post('update')
     async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
         return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
+    }
+
+    @Post('download')
+    async download(@Body('id')id:string,@Body('owner')owner:user):Promise<{status:string,message:string,script:Script}>{
+        return this.scriptService.download(id,owner);
+    }
+
+    @Put('update/status')
+    async updateStatus(@Body('id')id:string,@Body('value')value:number,@Body('message')message:string):Promise<Script>{
+        return await this.scriptService.updateStatus(id,value,message);
     }
 
     @Delete('remove/:id')
@@ -50,13 +77,13 @@ export class ApiScriptController {
     //rating functions
     
     @Post('rate')
-    async createUserRating(@Body('user')user:string,@Body('script')script:string,@Body('value')value:number):Promise<Rating>{
+    async createUserRating(@Body('user')user:user,@Body('script')script:string,@Body('value')value:number):Promise<Rating>{
         return this.ratingService.rate(user,script,value);
     }
 
     @Get('retrieve-rating')
-    async retrieveUserRating(@Query('user')user:string,@Query('script')script:string): Promise<Rating>{
-        return this.ratingService.getRating(user,script);
+    async retrieveUserRating(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('script')script:string): Promise<Rating>{
+        return this.ratingService.getRating({name:userName,email:userEmail},script);
     }
 
     @Get('count-rating')

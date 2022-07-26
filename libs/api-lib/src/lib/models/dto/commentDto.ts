@@ -1,5 +1,7 @@
+import { user } from '../general/user';
+
 export interface commentDto{
-    name: string;
+    user: user;
     image: string;
     created: Date;
     script: string;

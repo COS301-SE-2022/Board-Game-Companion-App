@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
 import { status as stat} from '../models/general/status';
+import { user } from '../models/general/user';
 import { Comment } from './comment.schema';
 
 export type ScriptDocument = Script & Document;
@@ -12,8 +13,11 @@ export class Script{
     @Prop({required: true})
     name: string;
 
-    @Prop({required:true})
-    author: string;
+    @Prop({required:true,type:{name:"",email:""}})
+    author: user;
+
+    @Prop({required:true,type:{name:"",email:""}})
+    owner: user;
 
     @Prop({required:true})
     boardgame: string;
@@ -57,8 +61,8 @@ export class Script{
     @Prop({required:true,type:{name:"",awsKey:"",location:""}})
     build: file;
 
-    @Prop()
-    icon: string; 
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    icon: file; 
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);

@@ -20,7 +20,7 @@
       
       <div class = "flex flex-row name-value-pair text-sm">
         <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
-        <label class = "script-field-name" style="margin-left:120px">Last downloads: </label><p class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
+        <label *ngIf="current.lastdownload!==null" class = "script-field-name" style="margin-left:120px">Last downloads: </label><p *ngIf="current.lastdownload!==null" class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
       </div>
       
       <div class = "text-sm name-value-pair">
@@ -40,7 +40,7 @@
     
     <div class = "script-cover p-2 mb-4 bg-gray-800 relative">
       <div class = "script-cover-header p-1 mb-2"><b>Cover</b></div>
-      <img [src]="current.icon" class = "w-full" style="height:16rem">
+      <img [src]="current.icon.location" class = "w-full" style="height:16rem">
 
       <div *ngIf = "voterCount !== 0" class = "absolute right-0 left-0 bottom-0 h-20" style = "background-color:rgba(0,0,0,0.5)">
         <ul class="w-full h-10 p-2 space-x-1 text-center">
@@ -58,9 +58,14 @@
     
     <div class = "script-download p-2 mb-4 bg-gray-800 text-center">
       <div class = "script-download-header p-1 mb-2 j text-left"><b>Download</b></div>
-      <button type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+      <button (click)="download()" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
         <i class="fas fa-download text-white fa-3x"></i>
         <p class = "text-lg"><b>DOWNLOAD</b></p>
+      </button>
+      
+      <button *ngIf = "downloading" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+        <i class="fas fa-spinner fa-pulse"></i>
+        <p class = "text-lg"><b>DOWNLOADING</b></p>
       </button>
     </div>
 
@@ -78,3 +83,5 @@
     </div>
   </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
