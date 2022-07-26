@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { comment,empty } from '../../shared/models/comment';
 import { like } from '../../shared/models/like';
-import { likeCount } from '../../shared/models/likeCount';
+import { commentCount } from '../../shared/models/commentCount';
 import { script } from '../../shared/models/script';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
@@ -20,7 +20,7 @@ export class CommentComponent implements OnInit {
   replies:comment[] = [];
   showReplyForm = false;
   showReplies = false;
-  likes:likeCount = {likes: 0,dislikes: 0};
+  count:commentCount = {likes: 0,dislikes: 0,replies: 0};
   likeStatus = -1;
   currentLike!:like;
 
@@ -44,7 +44,7 @@ export class CommentComponent implements OnInit {
       }          
     });
 
-    this.commentService.getLike(this.currentComment._id,"Joseph").subscribe({
+    this.commentService.getLike(this.currentComment._id,{name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
       next:(value)=>{
         if(value !== null){
           this.likeStatus = value.like ? 1 : 0;
@@ -58,6 +58,8 @@ export class CommentComponent implements OnInit {
         console.log("complete")
       } 
     })
+
+    this.getCount();
   }
 
   toggleReplyForm(): void{
@@ -69,25 +71,35 @@ export class CommentComponent implements OnInit {
   }
 
   addNewReply(value:comment): void{
-    this.commentService.addReply(this.currentComment._id,value._id);
-    this.replies.unshift(value);
-    
-    this.showReplyForm = false;
-    this.showReplies = true;
-    this.incrementCommentCounter.emit();
+    this.commentService.addReply(this.currentComment._id,value._id).subscribe({
+      next:(val)=>{
+        this.replies.unshift(value);
+        this.getCount();
+        this.showReplyForm = false;
+        this.showReplies = true;
+        this.incrementCommentCounter.emit();
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }       
+    });
+
   }
 
   like(value:number): void{
     if(value === this.likeStatus){
       this.commentService.removeLike(this.currentLike._id);
-      this.countLikes();
+      this.getCount();
       this.likeStatus = -1;
     }else{
-      this.commentService.like(this.currentComment._id,"Joseph",value === 0 ? false : true).subscribe({
+      this.commentService.like(this.currentComment._id,{name:"Joseph",email:"u18166793@tuks.co.za"},value === 0 ? false : true).subscribe({
         next:(val)=>{
           this.likeStatus = val.like ? 1 : 0;
           this.currentLike = val;
-          this.countLikes();
+          this.getCount();
         },
         error:(e)=>{
           console.log(e)
@@ -99,10 +111,10 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  countLikes(): void{
+  getCount(): void{
     this.commentService.countlikes(this.currentComment._id).subscribe({
       next:(value)=>{
-        this.likes = value;
+        this.count = value;
       },
       error:(e)=>{
         console.log(e)

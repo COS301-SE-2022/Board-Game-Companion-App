@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CollectionsController } from './controllers/board-collection/collections.controller';
 import { ApiScriptController } from './controllers/script/script.controller';
 import { ApiCommentController } from './controllers/comments/comment.controller';
-import { ScriptEditorController } from './controllers/script-editor/script-editor.controller';
 import { CollectionsService } from './services/collection/collections.service';
 import { ScriptService } from './services/scripts/script.service';
 import { ScriptEditorService } from './services/editor/script-editor.service';
@@ -31,7 +30,6 @@ import { ModelsService } from './services/models/models.service';
   controllers: [
     CollectionsController,
     ApiScriptController,
-    ScriptEditorController,
     ApiCommentController,
     ApiModelsController
   ],

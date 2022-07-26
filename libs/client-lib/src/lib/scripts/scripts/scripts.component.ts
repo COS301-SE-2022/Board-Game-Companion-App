@@ -11,7 +11,9 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class ScriptsComponent implements OnInit {
   scripts:script[] = [];
-  store:script[] = [];
+  creationStore:script[] = [];
+  downloadStore:script[] = [];
+  otherScripts:script[] = [];
   currentScript:script = empty;
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -31,13 +33,36 @@ export class ScriptsComponent implements OnInit {
   }
 
   loadAllScripts(): void{
-    this.scriptService.retrieveAllScript().subscribe({
+    this.scriptService.getScriptsCreatedByMe({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
       next:(value)=>{
-        this.store = this.scripts = value;
+        this.creationStore = value;
+        this.scripts = this.scripts.concat(value);
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    });
 
-        for(let count = 0; count < this.scripts.length; count++){
-          console.log(this.scriptService.getApiUrl() + this.replaceBackSlash(this.scripts[count].icon));
-        }
+    this.scriptService.getScriptsDownloadedByMe({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+      next:(value)=>{
+        this.otherScripts = value;
+        this.scripts = this.scripts.concat(value);
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    });
+
+    this.scriptService.getOther({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+      next:(value)=>{
+        this.downloadStore = value;
+        this.scripts = this.scripts.concat(value);
       },
       error:(e)=>{
         console.log(e)
@@ -61,17 +86,45 @@ export class ScriptsComponent implements OnInit {
     return result;
   }
 
+  
   formatDate(date:Date):string{
     let result = "";
     
     const val = new Date(date);
 
-    result = val.getDate() + " ";
+    result = (val.getDate() < 10 ? "0": "") + val.getDate() + " ";
     result += this.months[val.getMonth()] + " ";
     result += val.getFullYear() + ", ";
-    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+    result += (val.getHours() < 10 ? "0" : "") + val.getHours() + ":" + (val.getMinutes() < 10 ? "0" : "") + val.getMinutes() + ":" + (val.getSeconds() < 10 ? "0" : "") + val.getSeconds();
 
     return result;
+  }
+
+  toggleStatus(focus:script):void{
+    if(focus.status.value === 0)
+      focus.status.value = 1;
+    else if(focus.status.value === 1)
+      focus.status.value = 2;
+    else if(focus.status.value === 2)
+      focus.status.value = 1;
+
+    this.scriptService.updateStatus(focus._id,focus.status.value,"").subscribe({
+      next:(value)=>{
+        for(let count = 0;  count < this.creationStore.length; count++){
+          if(this.creationStore[count]._id === value._id)
+            this.creationStore[count] = value;
+
+          if(count < this.scripts.length && this.scripts[count]._id === value._id)
+            this.scripts[count] = value
+        }
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }      
+    })
   }
 
   toggleView():void {
@@ -82,17 +135,22 @@ export class ScriptsComponent implements OnInit {
     this.currentScript = value;
   }
 
-  search(value:string): void{
+  search(): void{
     const temp:script[] = [];
-    
+    let value = this.searchValue;
+
     if(value === ""){
-      this.scripts = this.store;
+      this.scripts = this.creationStore;
       return;
     }
 
-    for(let count = 0; count < this.store.length; count++){
-      if(this.store[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1)
-        temp.push(this.store[count]);
+    if(value.toLowerCase() === "you")
+      value = "Joseph";
+
+    for(let count = 0; count < this.creationStore.length; count++){
+      if(this.creationStore[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1 || 
+          this.creationStore[count].owner.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)
+        temp.push(this.creationStore[count]);
     }
 
     this.scripts = temp;

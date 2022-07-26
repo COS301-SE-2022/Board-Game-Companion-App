@@ -7,6 +7,7 @@ import { CommentSectionComponent } from './comment-section/comment-section.compo
 import { ScriptDetailService } from './script-detail-service/script-detail.service';
 import { CommentFormComponent } from './comment-form/comment-form.component';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:ScriptDetailComponent}])
   ],
   providers: [
