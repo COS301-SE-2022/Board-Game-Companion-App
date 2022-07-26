@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { comment } from '../../models/comment';
 import { like } from '../../models/like';
-import { likeCount } from '../../models/likeCount';
+import { commentCount } from '../../models/commentCount';
 
 
 @Injectable()
@@ -17,7 +17,7 @@ export class CommentService {
   countComments(id:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("id",id);
-
+    console.log("countComments");
     return this.httpClient.get<number>(this.api + "comments/count-comments",{params:param});
   }
 
@@ -46,11 +46,11 @@ export class CommentService {
     return this.httpClient.post<like>(this.api + "comments/like",{comment:comment,user:user,like:like});
   }
 
-  countlikes(comment:string):Observable<likeCount>{
+  countlikes(comment:string):Observable<commentCount>{
     let param = new HttpParams();
     param = param.set("comment",comment);
 
-    return this.httpClient.get<likeCount>(this.api + "comments/count-likes",{params:param});
+    return this.httpClient.get<commentCount>(this.api + "comments/count-likes",{params:param});
   }
 
   getLike(comment:string,user:string):Observable<like>{
@@ -58,7 +58,7 @@ export class CommentService {
     param = param.set("comment",comment);
     param = param.set("user",user);    
 
-    return this.httpClient.get<like>(this.api + "comments/retrieve-like");
+    return this.httpClient.get<like>(this.api + "comments/retrieve-like",{params:param});
   }
 
   removeLike(id:string){

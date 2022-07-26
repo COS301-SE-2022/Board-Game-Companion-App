@@ -33,27 +33,13 @@ export class ScriptDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.current);
-    // if(this.route.snapshot.paramMap.get("id")!==null){
-    //   this._id = this.route.snapshot.paramMap.get("id")||"";
-    // }
-    
-    // this.scriptService.getScriptById(this._id).subscribe({
-    //   next:(value)=>{
-    //     this.current = value;
-		//     this.getBoardGameName();
-    //     this.countComments();
-    //     this.getRating();
-    //     this.getAverageRating();
-    //     this.getVoterCount();
-    //   },
-    //   error:(e)=>{
-    //     console.log(e)
-    //   },
-    //   complete:()=>{
-    //     console.log("complete")
-    //   }          
-    // }); 
+    if(this.current !== null || this.current !== undefined){
+      this.getBoardGameName();
+      this.countComments();
+      this.getRating();
+      this.getAverageRating();
+      this.getVoterCount();
+    } 
   }
 
   convertBytes(value:number): string{

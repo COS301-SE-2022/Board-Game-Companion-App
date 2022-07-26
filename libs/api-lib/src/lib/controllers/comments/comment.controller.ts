@@ -2,7 +2,7 @@ import { Controller, Body,  Get, Query, Post, Put, Delete, Req ,UploadedFile, Us
 import { CommentService } from '../../services/comments/comment.service';
 import { Comment } from '../../schemas/comment.schema';
 import { Like } from '../../schemas/like.schema';
-import { likeCount } from '../../models/general/likeCount';
+import { commentCount } from '../../models/general/commentCount';
 
 
 @Controller('comments')
@@ -22,13 +22,13 @@ export class ApiCommentController {
 
     @Put('add-reply')
     async addReply(@Body('commentId')commentId:string,@Body('replyId')replyId:string):Promise<void>{
-        console.log("reply");
         this.commentService.addReply(commentId,replyId);
     }
 
     @Get('count-comments')
     async countComments(@Query('id')id:string):Promise<number>{
-        return this.commentService.countComments(id);
+
+        return await this.commentService.countComments(id);
     }
 
     @Post('like')
@@ -37,13 +37,16 @@ export class ApiCommentController {
     }
 
     @Get('count-likes')
-    async countLikes(@Query('comment')comment:string):Promise<likeCount>{
-        return this.commentService.countLikes(comment);
+    async countLikes(@Query('comment')comment:string):Promise<commentCount>{
+        return this.commentService.count(comment);
     }
 
     @Get('retrieve-like')
     async getLike(@Query('comment')comment:string,@Query('user')user:string):Promise<Like>{
-        return this.commentService.getLike(comment,user);
+        const result = await this.commentService.getLike(comment,user);
+        //console.log(comment);
+        //console.log(user);
+        return result;
     }
 
     @Delete('remove-like')

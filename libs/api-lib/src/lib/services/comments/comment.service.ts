@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { commentDto } from '../../models/dto/commentDto';
 import { Comment,CommentDocument } from '../../schemas/comment.schema';
 import { Like, LikeDocument } from '../../schemas/like.schema';
-import { likeCount } from '../../models/general/likeCount';
+import { commentCount } from '../../models/general/commentCount';
 
 @Injectable()
 export class CommentService {
@@ -78,15 +78,21 @@ export class CommentService {
         this.likeModel.findByIdAndDelete(id);
     }
 
-    async countLikes(comment:string):Promise<likeCount>{
-        const result:likeCount = {
+    async count(comment:string):Promise<commentCount>{
+        const result:commentCount = {
             likes: 0,
-            dislikes: 0
+            dislikes: 0,
+            replies: 0
         }
 
         result.likes = await this.likeModel.countDocuments({comment:comment,like:true});
         result.dislikes = await this.likeModel.countDocuments({comment:comment,like:false});
+        const com = await this.commentModel.findById(comment);
         
+        if(com !== null){
+            result.replies = com.replies.length;
+        }
+
         return result;
     }
 }
