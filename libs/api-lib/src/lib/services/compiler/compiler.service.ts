@@ -1,12 +1,26 @@
+import { TokenType } from '@angular/compiler';
 import { Injectable } from '@nestjs/common';
 import * as chevrotain from 'chevrotain';
-import {  CstNode, CstParser } from 'chevrotain';
+import {  CstNode, CstParser, IToken } from 'chevrotain';
+import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
+
+
+let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
+
+
+scriptTemplate = fs.readFileSync("templates/script.js","utf8");
+
+
+  
+    
+  //geiing the script template into the var
+
+let jsScript = scriptTemplate;
 
 //user defined identifier
 const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
 // class and function declaration
-        const Class = chevrotain.createToken({name:"Class",pattern:/card/,longer_alt:tUserDefinedIdentifier});
         const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
         const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
         const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
@@ -14,6 +28,8 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
         const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
+        const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
+        
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
 
@@ -93,6 +109,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
 
 //variable
         const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
+        const tLet=(chevrotain.createToken({name:"Let",pattern:/let/,longer_alt:tUserDefinedIdentifier}));
 
 //whitespace
         const WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
@@ -106,7 +123,6 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
 
  const AllTokens = [
     
-    Class,
     tAction,
     tParameters,
     tCondition,
@@ -114,6 +130,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tState,
     Turn,
     tPlayer,
+    tCards,
     tEndgame,
     tReturn,
     Comma,
@@ -163,6 +180,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     Minmax,
     NeuralNetwork,
     tVariable,
+    tLet,
     WhiteSpace,
     Coment,
     tUserDefinedIdentifier,
@@ -212,13 +230,28 @@ export class CompilerService {
         }
 
         //otherwise successful parse
-        //read in template file
+        
 
-        //begin transpilation
-        visit(cstOutput)
         return "parse " + cstOutput;
 
         
+    }
+
+
+    transpile(input:string)
+    {
+        this.DSLparser.input = this.scanHelper(input).tokens;
+        const cstOutput = this.DSLparser.Program();
+        if(this.DSLparser.errors.length!=0)
+        {
+            throw Error(this.DSLparser.errors.toString()+"!!"+this.scanHelper(input).tokens[0].tokenType.PATTERN);
+        }
+        //read in template file
+        jsScript = scriptTemplate;
+        //begin transpilation
+        visit(cstOutput)
+
+        return jsScript;
     }
 }
 
@@ -265,7 +298,7 @@ class parser extends CstParser
         });
         
         private Cards = this.RULE("Cards", () => {
-            this.CONSUME(Class)
+            this.CONSUME(tCards)
             this.CONSUME(tUserDefinedIdentifier)
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.nParameters),
@@ -301,6 +334,7 @@ class parser extends CstParser
         });
         private CardEffect=this.RULE("CardEffect", () => {
             this.CONSUME(tEffect )
+
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.statements)
             this.CONSUME(CloseBrace)
@@ -316,6 +350,7 @@ class parser extends CstParser
             this.CONSUME(tUserDefinedIdentifier)
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.Actions )
+            this.SUBRULE(this.Declarations )
             this.CONSUME( Turn)
             this.CONSUME( OpenBracket)
             this.CONSUME( CloseBracket)
@@ -377,7 +412,6 @@ class parser extends CstParser
             ])
 
             this.CONSUME(CloseBrace)
-            this.SUBRULE(this.Actions);
         });
 
 
@@ -396,9 +430,6 @@ class parser extends CstParser
 
                     { ALT: () =>{ this.SUBRULE(this.Branch)
                             this.SUBRULE3(this.statements)}},
-
-                    { ALT: () =>{ this.SUBRULE(this.Declaration )
-                            this.SUBRULE4(this.statements)}},
 
                     { ALT: () =>{ this.SUBRULE(this.Assignment )
                             this.SUBRULE5(this.statements)}},
@@ -593,14 +624,24 @@ class parser extends CstParser
                     this.MANY(() => {
                     
                         
-                        
+                        this.OR([
+                            {
+                                ALT: () =>{ 
                                 this.CONSUME(tVariable)
+                                }
+                            },
+                            {
+                                ALT: () =>{ 
+                                this.CONSUME(tLet)
+                                }
+                            }
+                        ])
                                 this.SUBRULE(this.nVariable )
                                 this.OPTION(() => {
                                     this.SUBRULE(this.Field )
                                 })
                                 this.CONSUME(Assign)
-                                this.OR([
+                                this.OR2([
                                     { 
                                         ALT: () =>{ 
                                         this.SUBRULE(this.Const)
@@ -952,10 +993,22 @@ class parser extends CstParser
 
         
         private nVariable=this.RULE("nVariable", () => {
-                                
-            
+            this.OPTION(() => {                 
+            this.OR([
+                {
+                    ALT: () =>{ 
+                    this.CONSUME(tVariable)
+                    }
+                },
+                {
+                    ALT: () =>{ 
+                    this.CONSUME(tLet)
+                    }
+                }
+            ])
+        })
             this.CONSUME(tUserDefinedIdentifier)
-            this.OPTION(() => {
+            this.OPTION2(() => {
                 this.SUBRULE(this.Field)
             })
         });
@@ -1017,29 +1070,319 @@ class parser extends CstParser
 
 function visit(cstOutput:CstNode)
 {
+    
     let k: keyof typeof cstOutput.children;  // visit all children
         for (k in cstOutput.children) {
             const child = cstOutput.children[k];  // current child
-
+            
             //decide what to do for specific childs
 
-            console.log(child)
+            const node = child[0] as unknown as CstNode;
+            switch(node.name)//visit specific child node
+            {
+                case "GameState":
+                    visitGameState(node);
+                    break;
+                case "Definition":
+                    visit(node);
+                    break;
+                case "Cards":
+                    visitCards(node);
+                    break;
+                case "Players":
+                    visitPlayer(node);
+                    break;
+                case "End_Game":
+                    visitEnd(node);
+                    break;
+                
+            }
+            
+
+            
         }
 }
 
-function visitGameState()
+function visitGameState(cstOutput:CstNode)
+{
+    //
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
+            
+            
+            
+            //if it a token decide how to write
+            if(token.image)
+            {
+                if(token.tokenType.name != "StringLiteral")
+                {
+                    switch(token.image)
+                    {
+                        case "state":
+                            break;
+                        case "{":
+                            break;    
+                        case "}":
+                            break; 
+                        case "var":
+                            break;
+                        default:
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                            
+                            break;
+                    }
+                }
+                else
+                {
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                            
+                }
+            }
+            //if it is a node continue till token
+            if(node.name == "Declarations")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '\n' , jsScript.slice(jsScript.indexOf("//State"))].join('');
+                        
+            }
+            visitGameState(node);
+            
+        }
+
+}
+function visitCards(cstOutput:CstNode)
+{
+    //
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+
+        if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "UserDefinedIdentifier":
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), "class "+token.image+ " extends cards ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        break;
+                    case "tCards":
+                        break;
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ " ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        break;
+
+                }
+            }
+
+        if(node.name)
+        {
+            switch(node.name)
+                {
+                    case "nParameters":
+                        visitParams(node)
+                        break;
+                    case "CardEffect":
+                        visitEffect(node)
+                        break;    
+                    case "CardCondition":
+                        visitCondition(node)
+                        break; 
+                }
+        }
+    }
+    
+    
+}
+function visitParams(cstOutput:CstNode)
 {
     //
 }
-function visitCards()
+function visitEffect(cstOutput:CstNode)
+{
+    //
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+
+        if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "tEffect":
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ "()", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        break;
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ " ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        break;
+
+                }
+            }
+
+    }
+        
+}
+function visitCondition(cstOutput:CstNode)
 {
     //
 }
-function visitPlayer()
+
+function visitPlayer(cstOutput:CstNode)
 {
     //
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+            
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
+
+
+            if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "Player":
+                        break;
+                    case "UserDefinedIdentifier":
+                        //
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        //write to add players
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
+                        
+                        break; 
+                    case "CloseBracket":
+                        //
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ '{ ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        break;     
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                }
+            }
+            
+            visitPlayerStatements(node);
+            if(node.name == "statements")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        
+            }
+            if(node.name == "Declarations")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ';' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        
+            }
+        }
 }
-function getChildrenAsString()
+function visitPlayerStatements(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(node.name == "statements")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '\n' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    
+        }
+        if(token.tokenType)
+        {
+            switch(token.tokenType.name)
+            {
+                case "StringLiteral":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    break;
+                case "Variable": 
+                    break;
+                case "ConsoleInput":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'console_Input', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    break;    
+                case "ConsoleOutput":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'console.log ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    break;
+                default:
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image + ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    break;
+
+            }
+
+            
+                
+        
+        }
+        visitPlayerStatements(node);
+
+    }
+}
+function visitEnd(cstOutput:CstNode)
 {
     //
+    let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+            const node = child[0] as unknown as CstNode;
+            const token = child[0] as unknown as IToken;
+
+
+            if(token.tokenType)
+            {
+                switch(token.tokenType.name)
+                {
+                    case "tEndgame":
+                        break;
+                    case "OpenBrace":
+                        break; 
+                    case "CloseBrace":
+                        break; 
+                    case "StringLiteral":
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                        break;
+                    default:
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                }
+            }
+            
+            visitEndStatements(node);
+            if(node.name == "statements")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                      
+            }
+
+        }
 }
+function visitEndStatements(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image + ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+        }
+        visitEndStatements(node);
+        if(node.name == "statements")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '\n' , jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                    
+        }
+    }
+}
+
+
+

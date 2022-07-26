@@ -4,7 +4,7 @@ import { EditorConsoleComponent } from '../editor-console/editor-console.compone
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
@@ -30,7 +30,6 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  scriptID = "62dc19306e70df3f5987745d";
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
@@ -38,30 +37,16 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   currentScript:script = empty;
 
-  constructor(private readonly scriptService:ScriptService, private route: ActivatedRoute){
-
+  constructor(private readonly scriptService:ScriptService, private router: Router){
+    this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
 
   ngOnInit(): void {
     console.log("editor");
-    if(this.route.snapshot.paramMap.get("id")!==null){
-      this.scriptID = this.route.snapshot.paramMap.get("id")||"";
-    }
-
+    
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.updateDimensions();
-    this.scriptService.getScriptById(this.scriptID).subscribe({
-      next:(value)=>{
-        this.currentScript = value;
-      },
-      error:(e)=>{
-        console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
-    });
     
     document.dispatchEvent(new Event('editor-page'));
   }
@@ -99,8 +84,24 @@ export class EditorComponent implements OnInit{
       const console = this.editorConsole.defineConsole();
       this.editorConsole.clear();
 
-      const code = new Function("console",this.editorCode.getCode());
-      code(console);
+      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+        
+        next:(value)=>{
+          console.log(value)
+          const code = new Function("console",value);
+          code(console);    
+        },
+        error:(e)=>{
+          console.log(e);
+          
+        },
+        complete:()=>{
+          
+          console.log("complete")
+          
+        }
+      });
+
     }catch(err){
       console.log(err);
     }

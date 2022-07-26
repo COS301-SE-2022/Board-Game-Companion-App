@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModelsService } from '../../shared/services/models/models.service';
 
 interface layer{
   index: number;
@@ -22,9 +23,40 @@ export class TrainComponent implements OnInit {
   hiddenLayers:layer[] = []
   activation = "activation function";
   nodes = 1;
+  data:any[] = []
+
+  constructor(private readonly modelsService:ModelsService){}
 
   ngOnInit(): void{
     console.log("models")
+  }
+
+  createModel(): void{
+    this.modelsService.createModel(this.data,this.inputs,this.outputs).subscribe({
+      next:(value)=>{
+        console.log(value);
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }  
+    })
+  }
+
+  loadData(value:any): void{
+    const reader = new FileReader();
+    reader.readAsText(value.target.files[0]);
+
+    reader.onload = (event)=>{
+      if(event.target !== null){
+        
+        if(typeof(event.target.result) == "string"){
+          this.data = JSON.parse(event.target.result);
+        }
+      }
+    }
   }
 
   changeTab(value:number): void{

@@ -1,12 +1,26 @@
 
 <div id = "container">
     <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1>
-    <!-- <div id = "left" class = "ml-12">
+    <div id = "left" class = "ml-16">
         <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
+        <div id = "leftContent" class = "w-full">
+            <div id = "leftBlock" class = "p-4 cursor-pointer" *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
+                <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
+                <h5  id = "leftNames" class = "text-base font-bold pl-2">{{game.name}}</h5>
+            </div>
+        </div>
     </div>
-    <div id = "right" class = "mr-12">
+    <div id = "right" class = "mr-16">
         <h1 id = "rightHeader" class = "p-3 pt-2.5 h-14">Recently Viewed</h1>
-    </div> -->
+        <div id = "rightContent" class = "w-full h-full">
+            <div id = "rightContent" class = "w-full">
+                <div id = "rightBlock" class = "p-4 cursor-pointer" *ngFor = "let game of listResults.slice().reverse()" (click)="getDetails(game.getID())">
+                    <img  id = "rightImg" class = "rounded-lg" [src] =  game.getimgUrl() >
+                    <h5  id = "rightNames" class = "text-base font-bold pl-2">{{game.getName()}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id = "wrapper">
         <div class="flex justify-center h-14">
             <div id = "search-tools">
@@ -37,9 +51,9 @@
         <!-- <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1> -->
         <div class = "mb-5" id = "content" >
             <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
-                <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-4 mt-5" *ngFor = "let game of show">
+                <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-2 mt-3 mb-14" *ngFor = "let game of show">
                     <img class = "board-game-image rounded-lg" (click)="getDetails(game.id)" [src] =  game.image >
-                    <h5 style="text-align:center" class = "text-base font-bold mt-3">{{game.name}} </h5>
+                    <h5 id = "names" style="text-align:center" class = "text-base font-medium pt-3 pb-3">{{game.name}} </h5>
                 </div>
             </div>
         </div>

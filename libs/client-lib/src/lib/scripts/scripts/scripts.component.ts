@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
@@ -14,11 +15,19 @@ export class ScriptsComponent implements OnInit {
   currentScript:script = empty;
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  searchValue = "";
+  page = 1;
+  hover = "";
+  items = [{ title: 'Profile' }, { title: 'Log out' }];
   
-  constructor(private readonly scriptService:ScriptService){}
+  constructor(private readonly scriptService:ScriptService,private readonly router:Router){}
 
   ngOnInit(): void {
     this.loadAllScripts();
+  }
+
+  test(): void{
+    console.log("test");
   }
 
   loadAllScripts(): void{
@@ -38,6 +47,7 @@ export class ScriptsComponent implements OnInit {
       }          
     });
   }
+  
 
   replaceBackSlash(input:string):string{
     let result = "";
@@ -62,6 +72,10 @@ export class ScriptsComponent implements OnInit {
     result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
 
     return result;
+  }
+
+  toggleView():void {
+    this.gridView = !this.gridView;
   }
 
   selected(value:script): void{
@@ -117,6 +131,39 @@ export class ScriptsComponent implements OnInit {
         console.log("complete")
       }
     });
+  }
+
+  insertScript(value:script){
+    this.scripts.push(value);
+  }
+
+  currentHover(value:script): void{
+    this.hover = value._id;
+  }
+
+  showInfo(value:script){
+    this.router.navigate(['script-detail'], { state: { value: value } });
+  }
+
+  showEditor(value:script){
+    this.router.navigate(['editor'],{ state: { value: value } });
+  }
+
+  convertBytes(value:number): string{
+    const decimals = 2;
+    const kilo = 1024;
+    const deci = decimals < 0 ? 0 : decimals;
+    const ranges = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    if(value === 0)
+      return '0 B';
+    const i = Math.floor(Math.log(value) / Math.log(kilo));
+
+    return parseFloat((value / Math.pow(kilo, i)).toFixed(deci)) + ' ' + ranges[i];
+  }
+
+  clearHover(): void{
+    this.hover = "";
   }
    
 }

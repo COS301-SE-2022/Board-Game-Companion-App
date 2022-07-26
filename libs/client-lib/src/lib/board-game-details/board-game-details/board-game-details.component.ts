@@ -27,8 +27,40 @@ export class BoardGameDetailsComponent implements OnInit {
   ngOnInit(): void {
     //get id
     this.id = this.route.snapshot.paramMap.get('my_object')||"";
-    //;
-
+    console.log(localStorage.getItem("recentlyVisited")?.length)
+    //check if recently visited exists
+    if (localStorage.getItem("recentlyVisited") === null) 
+    {
+      //there is no recently visited set, so we must set it then add
+      const visited = [this.id]
+      localStorage.setItem("recentlyVisited", JSON.stringify(visited));
+    }
+    else
+    {
+      let visited = JSON.parse(localStorage.getItem("recentlyVisited")||"");
+      console.log(visited.length)
+      if(visited.length === 4)
+      {
+        console.log(visited)
+        visited = visited.splice(1,3)
+        console.log(visited)
+        if(!visited.includes(this.id))
+        {
+          visited.push(this.id);
+          localStorage.setItem("recentlyVisited", JSON.stringify(visited));
+        }
+      }
+      else
+      {
+        
+        if(!visited.includes(this.id))
+        {
+          visited.push(this.id);
+          localStorage.setItem("recentlyVisited", JSON.stringify(visited));
+        }
+      }
+     
+    }
     
 
     

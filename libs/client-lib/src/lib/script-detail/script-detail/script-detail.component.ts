@@ -12,7 +12,6 @@ import { rating } from '../../shared/models/rating';
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  _id = "62cb40735524bf033e649a02";
   current: script = empty;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
@@ -22,35 +21,52 @@ export class ScriptDetailComponent implements OnInit {
   averageRating = 0;
   voterCount = 0;
 
+
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
     private readonly commentService:CommentService,
     private readonly router:Router,
     private route: ActivatedRoute) {
+      this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
+      
   }
 
   ngOnInit(): void {
 
-    if(this.route.snapshot.paramMap.get("id")!==null){
-      this._id = this.route.snapshot.paramMap.get("id")||"";
-    }
+    console.log(this.current);
+    // if(this.route.snapshot.paramMap.get("id")!==null){
+    //   this._id = this.route.snapshot.paramMap.get("id")||"";
+    // }
     
-    this.scriptService.getScriptById(this._id).subscribe({
-      next:(value)=>{
-        this.current = value;
-		    this.getBoardGameName();
-        this.countComments();
-        this.getRating();
-        this.getAverageRating();
-        this.getVoterCount();
-      },
-      error:(e)=>{
-        console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
-    }); 
+    // this.scriptService.getScriptById(this._id).subscribe({
+    //   next:(value)=>{
+    //     this.current = value;
+		//     this.getBoardGameName();
+    //     this.countComments();
+    //     this.getRating();
+    //     this.getAverageRating();
+    //     this.getVoterCount();
+    //   },
+    //   error:(e)=>{
+    //     console.log(e)
+    //   },
+    //   complete:()=>{
+    //     console.log("complete")
+    //   }          
+    // }); 
+  }
+
+  convertBytes(value:number): string{
+    const decimals = 2;
+    const kilo = 1024;
+    const deci = decimals < 0 ? 0 : decimals;
+    const ranges = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    if(value === 0)
+      return '0 B';
+    const i = Math.floor(Math.log(value) / Math.log(kilo));
+
+    return parseFloat((value / Math.pow(kilo, i)).toFixed(deci)) + ' ' + ranges[i];
   }
 
   toggleComments(){
@@ -118,7 +134,7 @@ export class ScriptDetailComponent implements OnInit {
 
   formatDate(date:Date):string{
     let result = "";
-
+    console.log(date);
     const val = new Date(date);
 
     result = val.getDate() + " ";
