@@ -28,17 +28,17 @@
 <div class="container" >
 <!-- search and sort functionality -->
     <div class = "row" >
-        <div class = "col-xs-12 col-sm-8" >
-            <input id = "textInput" [(ngModel)]="searchValue">
+        <div class = "col-xs-12 col-sm-12">
+            <input class = "w-11/12" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
             <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button>
         </div>
-        <div class = "col-xs-12 col-sm-4" >
+        <!-- <div class = "col-xs-12 col-sm-4" >
             <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="test()">
                 <option selected value="alphabetical">Alphabetical</option>
                 <option value="date">Date</option>
             </select>
             <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
-        </div>
+        </div> -->
     </div>
 <!-- a table and search functionality -->
 
@@ -50,21 +50,21 @@
                     <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                     <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
                     <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
-                    <img class="w-full h-full" [src]="value.icon" alt=""/>
+                    <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                     
                     <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
-                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                             </button>
-                            <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                            <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                                 <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                             </button>
                             <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
                                 <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                             </button>
                         
-                            <button (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button (click)="removeScript(value)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                             </button>
                         </div>
@@ -80,6 +80,9 @@
                 <tr>
                     <th>
                         Name
+                    </th>
+                    <th>
+                        Creator
                     </th>
                     <th>
                         Created
@@ -104,7 +107,7 @@
                     <td>
                         <div class = "flex flex-row">
                             <div class = "w-8 h-8">
-                                <img class="w-full h-full" [src]="value.icon" alt=""/>
+                                <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                             </div>
                             <div class = "ml-2">
                                 {{value.name}}
@@ -112,12 +115,15 @@
                         </div>
                     </td>
                     <td>
+                        {{value.author === value.owner ? "You" : value.owner}}
+                    </td>
+                    <td>
                         {{formatDate(value.created)}}
                     </td>
                     <td>
                         {{formatDate(value.lastupdate)}}
                     </td>
-                    <td>
+                    <td (click) = "toggleStatus(value)" class = "cursor-pointer hover:bg-green-800" data-toggle="tooltip" title="toggle status">
                         <span *ngIf = "value.status.value ===0" class = "mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                         <span *ngIf = "value.status.value ===1" class = " mr-2"><i class="fas fa-cogs" style="color:orange"></i></span>
                         <span *ngIf = "value.status.value ===2" class = " mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
@@ -127,23 +133,23 @@
                         {{convertBytes(value.size)}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
-                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
-                        <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                         </button>
-                        <button (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button (click)="removeScript(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <pagination-controls *ngIf = "scripts.length !== 0" class="mt-4 d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
+        <pagination-controls *ngIf = "scripts.length >= 8" class="mt-4 d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
     </div>
 </div>
 

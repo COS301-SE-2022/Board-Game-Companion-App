@@ -1,6 +1,8 @@
+import { user} from './user'
+
 export interface like{
     _id: string
     comment: string;
-    user: string;
-    like: string;
+    user: user;
+    like: boolean;
 }

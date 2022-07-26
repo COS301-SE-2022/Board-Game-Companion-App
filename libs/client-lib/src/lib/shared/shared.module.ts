@@ -9,12 +9,15 @@ import { GoogleAuthService } from '../google-login/GoogleAuth/google-auth.servic
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ModelsService } from './services/models/models.service';
 import { FormsModule } from '@angular/forms';
+import { NotificationComponent } from './components/notification/notification.component';
+import { NotificationUnitComponent } from './components/notification-unit/notification-unit.component'; 
 
 @NgModule({
   declarations: [
     FooterComponent,
-    FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    NotificationComponent,
+    NotificationUnitComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +34,8 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    NotificationComponent
   ]
 })
 export class SharedModule { }

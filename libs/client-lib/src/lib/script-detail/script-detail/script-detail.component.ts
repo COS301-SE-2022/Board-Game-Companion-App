@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { rating } from '../../shared/models/rating';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -17,10 +18,11 @@ export class ScriptDetailComponent implements OnInit {
   boardGameName = "";
   showComments = true;
   numberOfComments = 0;
-  rate:rating = {_id:"",user:"",script:"",value:0};
+  rate:rating = {_id:"",user:{name:"",email:""},script:"",value:0};
   averageRating = 0;
   voterCount = 0;
-
+  downloading = false;
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
@@ -33,27 +35,27 @@ export class ScriptDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.current);
-    // if(this.route.snapshot.paramMap.get("id")!==null){
-    //   this._id = this.route.snapshot.paramMap.get("id")||"";
-    // }
-    
-    // this.scriptService.getScriptById(this._id).subscribe({
-    //   next:(value)=>{
-    //     this.current = value;
-		//     this.getBoardGameName();
-    //     this.countComments();
-    //     this.getRating();
-    //     this.getAverageRating();
-    //     this.getVoterCount();
-    //   },
-    //   error:(e)=>{
-    //     console.log(e)
-    //   },
-    //   complete:()=>{
-    //     console.log("complete")
-    //   }          
-    // }); 
+    if(this.current !== null || this.current !== undefined){
+      this.getBoardGameName();
+      this.countComments();
+      this.getRating();
+      this.getAverageRating();
+      this.getVoterCount();
+    } 
+  }
+
+  download(): void{
+    this.downloading = true;
+    this.scriptService.download(this.current._id,{name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+      next:(val)=>{
+        this.downloading = false;
+        this.notifications.add({type:val.status,message:val.message});
+      },
+      error:(err)=>{     
+        this.downloading = false;
+        this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+      }      
+    });
   }
 
   convertBytes(value:number): string{
@@ -86,7 +88,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   getRating(): void{
-    this.scriptService.getRating("Joseph",this.current._id).subscribe({
+    this.scriptService.getRating({name:"Joseph",email:"u18166793@tuks.co.za"},this.current._id).subscribe({
       next:(val)=>{
         if(val !== null)
           this.rate = val;
@@ -120,7 +122,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   rateScript(val:number): void{
-    this.scriptService.rate("Joseph",this.current._id,val).subscribe({
+    this.scriptService.rate({name:"Joseph",email:"u18166793@tuks.co.za"},this.current._id,val).subscribe({
       next:(val)=>{
         this.getAverageRating();
         this.getVoterCount();
@@ -134,13 +136,13 @@ export class ScriptDetailComponent implements OnInit {
 
   formatDate(date:Date):string{
     let result = "";
-    console.log(date);
+    
     const val = new Date(date);
 
-    result = val.getDate() + " ";
+    result = (val.getDate() < 10 ? "0": "") + val.getDate() + " ";
     result += this.months[val.getMonth()] + " ";
     result += val.getFullYear() + ", ";
-    result += val.getHours() + ":" + val.getMinutes() + ":" + val.getSeconds();
+    result += (val.getHours() < 10 ? "0" : "") + val.getHours() + ":" + (val.getMinutes() < 10 ? "0" : "") + val.getMinutes() + ":" + (val.getSeconds() < 10 ? "0" : "") + val.getSeconds();
 
     return result;
   }

@@ -1,6 +1,8 @@
+import { user } from "./user";
+
 export interface comment{
     _id: string;
-    name: string;
+    user: user;
     image: string;
     created: Date;
     script: string;
@@ -10,7 +12,7 @@ export interface comment{
 
 export const empty:comment = {
     _id: "",
-    name:"",
+    user:{name:"",email:""},
     image:"",
     created: new Date(0),
     script: "",

@@ -5,7 +5,7 @@
         <img [src]="currentComment.image" class="h-full rounded-full" alt="">
       </div>
 
-      <h5 class = "text-base leading-tight font-medium mt-2 ml-2 h-full"><b>{{currentComment.name}}</b></h5>
+      <h5 class = "text-base leading-tight font-medium mt-2 ml-2 h-full"><b>{{currentComment.user.name}}</b></h5>
       
       <p class = "absolute right-0 text-xs h-full pt-2">
         {{getTime()}}
@@ -22,21 +22,21 @@
           <span class = "fa fa-thumbs-up fa-sm hover:text-lime-500" [ngClass] = "{'text-lime-500':likeStatus === 1}"></span>
         </button>
       </div>
-      <p class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2">{{likes.likes}}</p>
+      <p class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2">{{count.likes}}</p>
 
       <div class="flex ml-4">
         <button (click) = "like(0)" type="button" class="inline-block rounded-full  text-white leading-normal uppercase  focus:outline-none focus:ring-0 transition duration-150 ease-in-out w-9 h-9">
           <span class = "fa fa-thumbs-down fa-sm hover:text-lime-500" [ngClass] = "{'text-lime-500':likeStatus === 0}"></span>
         </button>
       </div>
-      <p class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2">{{likes.dislikes}}</p>
+      <p class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2">{{count.dislikes}}</p>
 
       <div class="flex ml-4" *ngIf = "depth !== 4">
           <button (click) = "toggleReplyForm()" type="button" class="inline-block rounded-full text-white leading-normal uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out w-9 h-9">
             <span class = "fa fa-comment fa-sm hover:text-lime-500"></span>
           </button>
       </div>
-      <p (click) = "toggleReplies()" class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2" *ngIf = "depth !== 4">{{ currentComment.replies.length}} {{currentComment.replies.length === 1 ? "reply" : "replies"}}</p>
+      <p (click) = "toggleReplies()" class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2" *ngIf = "depth !== 4">{{ count.replies}} {{count.replies === 1 ? "reply" : "replies"}}</p>
     </div>
   </div>
 </div>

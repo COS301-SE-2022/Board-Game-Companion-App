@@ -93,12 +93,6 @@ export class EditorComponent implements OnInit{
         },
         error:(e)=>{
           console.log(e);
-          
-        },
-        complete:()=>{
-          
-          console.log("complete")
-          
         }
       });
 
