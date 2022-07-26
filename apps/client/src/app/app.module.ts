@@ -8,12 +8,14 @@ import { ClientLibModule } from '@board-game-companion-app/client-lib';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment.prod';
 import { NbThemeModule,NbMenuModule } from '@nebular/theme';
+import { SharedModule } from '@board-game-companion-app/client-lib';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     NbThemeModule.forRoot(),
     BrowserModule,
+    SharedModule,
     HttpClientModule,
     AppRoutingModule,
     ClientLibModule,
