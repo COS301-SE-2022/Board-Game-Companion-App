@@ -16,11 +16,8 @@ describe('BoardGameDetailsComponent', () => {
   let httpTestingController: HttpTestingController;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule],
-      providers:[ BggSearchService,{ActivatedRoute,
-        useValue: {
-          params: of({my_object: 3454})
-        }}],
+      imports: [RouterTestingModule,HttpClientTestingModule,RouterTestingModule.withRoutes([])],
+      providers:[ BggSearchService],
       declarations: [BoardGameDetailsComponent],
     }).compileComponents();
   });
@@ -45,6 +42,9 @@ describe('BoardGameDetailsComponent', () => {
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
     httpTestingController = TestBed.inject(HttpTestingController);
+    const spyRoute = jest.spyOn(route.snapshot.paramMap, 'get');
+    // spyRoute.and.returnValue('3454');
+    spyRoute.mockReturnValue('3454');
     component = new BoardGameDetailsComponent(service, route, router);
     component.ngOnInit();
     const req = httpTestingController.expectOne('https://boardgamegeek.com/xmlapi2/thing?id=3454');

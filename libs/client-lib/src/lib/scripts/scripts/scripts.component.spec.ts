@@ -4,6 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ScriptsComponent } from './scripts.component';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 let mockScripts: script[] =[{
   _id: "1",
@@ -21,7 +23,8 @@ let mockScripts: script[] =[{
   size: 233,
   status: {value: 0, message: "flagged"},
   comments: [],
-  file: {name:"",location:"",awsKey:""},
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 },{
@@ -40,7 +43,8 @@ let mockScripts: script[] =[{
   size: 344,
   status: {value: 1, message: "Active and running"},
   comments: [],
-  file: {name:"",location:"",awsKey:""},
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 },{
@@ -59,7 +63,8 @@ let mockScripts: script[] =[{
   size: 320,
   status: {value: 2, message: "In progress"},
   comments: [],
-  file: {name:"",location:"",awsKey:""},
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 }];
@@ -67,14 +72,16 @@ let mockScripts: script[] =[{
 describe('ScriptsComponent',()=>{
   let component: ScriptsComponent;
   let service: ScriptService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ScriptsComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,RouterTestingModule],
       providers: [ScriptService]});
       service = TestBed.inject(ScriptService);
-      component = new ScriptsComponent(service);
+      router = TestBed.inject(Router);
+      component = new ScriptsComponent(service, router);
   });
 
   jest.mock('../../shared/services/scripts/script.service');
@@ -177,7 +184,8 @@ describe('ScriptsComponent',()=>{
       size: 514,
       status: {value: 1, message: "Active and running"},
       comments: [],
-      file: {name:"",location:"",awsKey:""},
+      source: {name:"",location:"",awsKey:""},
+      build: {name:"",location:"",awsKey:""},
       icon: "",
       __v: 0});
 

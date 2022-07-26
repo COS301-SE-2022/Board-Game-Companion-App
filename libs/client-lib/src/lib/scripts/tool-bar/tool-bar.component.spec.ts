@@ -38,11 +38,12 @@ const testScript: script = {
     message: "so"
   },
   comments: [],
-  file: {
+  source: {
       name: "",
       awsKey: "",
       location: ""
     },
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 };

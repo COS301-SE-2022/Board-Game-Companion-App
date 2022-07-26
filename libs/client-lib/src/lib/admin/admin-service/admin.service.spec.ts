@@ -19,7 +19,8 @@ const mockData: script[] = [{
   size: 344,
   status: {value: 1, message: "Active and running"},
   comments: [],
-  file: {name:"",location:"",awsKey:""},
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 },{
@@ -38,7 +39,8 @@ const mockData: script[] = [{
   size: 233,
   status: {value: 0, message: "flagged"},
   comments: [],
-  file: {name:"",location:"",awsKey:""},
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
   icon: "",
   __v: 0
 }];
