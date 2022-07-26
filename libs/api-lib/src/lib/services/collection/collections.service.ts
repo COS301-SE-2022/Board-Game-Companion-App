@@ -2,13 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { collection } from '../../schemas/collection';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class CollectionsService {
 
     async create(input:collection): Promise<string>{
 
-        if(input.owner === ""){
+        if(input.owner === null){
             return "owner of collection needs to be set";
         }
         else if(input.name === ""){
@@ -33,7 +34,7 @@ export class CollectionsService {
     constructor(@InjectModel('collection')private collectionModel: Model<collection>){
 
     }
-    async getCollectionByUser(owner: string): Promise<collection[]>{
+    async getCollectionByUser(owner: user): Promise<collection[]>{
         const result:collection[] = [];
         let data;
         try{
@@ -55,7 +56,7 @@ export class CollectionsService {
         return result;
     }
 
-    async addBoardGame(boardgame:string,name:string,owner:string): Promise<boolean>{
+    async addBoardGame(boardgame:string,name:string,owner:user): Promise<boolean>{
         const result = await this.collectionModel.findOne({owner:owner,name:name});
         if(!result){
             throw new NotFoundException("The collection owner does not exist.");
@@ -72,7 +73,7 @@ export class CollectionsService {
 
     }
 
-    async removeCollection(owner:string,name:string):Promise<boolean>{
+    async removeCollection(owner:user,name:string):Promise<boolean>{
 
         const result = await this.collectionModel.deleteOne({owner:owner,name:name});
         if(result.deletedCount>0){

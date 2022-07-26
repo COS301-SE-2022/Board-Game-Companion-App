@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { comment } from '../../models/comment';
 import { like } from '../../models/like';
 import { commentCount } from '../../models/commentCount';
+import { user } from '../../models/user';
 
 
 @Injectable()
@@ -23,7 +24,7 @@ export class CommentService {
 
   saveComment(formData:FormData):Observable<comment>{
     const data = {
-      name: formData.get("name"),
+      user: formData.get("user"),
       image: formData.get("image"),
       content: formData.get("content"),
       script: formData.get("script")
@@ -42,7 +43,7 @@ export class CommentService {
     return this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId});
   }
 
-  like(comment:string,user:string,like:boolean): Observable<like>{
+  like(comment:string,user:user,like:boolean): Observable<like>{
     return this.httpClient.post<like>(this.api + "comments/like",{comment:comment,user:user,like:like});
   }
 
@@ -53,10 +54,11 @@ export class CommentService {
     return this.httpClient.get<commentCount>(this.api + "comments/count-likes",{params:param});
   }
 
-  getLike(comment:string,user:string):Observable<like>{
+  getLike(comment:string,user:user):Observable<like>{
     let param = new HttpParams();
     param = param.set("comment",comment);
-    param = param.set("user",user);    
+    param = param.set("userName",user.name);    
+    param = param.set("userName",user.email);
 
     return this.httpClient.get<like>(this.api + "comments/retrieve-like",{params:param});
   }

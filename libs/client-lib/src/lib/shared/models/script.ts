@@ -1,11 +1,12 @@
 import { file } from "./file";
 import { status } from "./status";
+import { user} from './user'
 
 export interface script{
     _id: string;
     name: string;
-    author: string;
-    owner: string;
+    author: user;
+    owner: user;
     boardgame: string;
     description: string;
     created: Date;
@@ -27,8 +28,8 @@ export interface script{
 export const empty:script = {
     _id: "",
     name: "",
-    author: "",
-    owner: "",
+    author: {name:"",email:""},
+    owner: {name:"",email:""},
     boardgame: "",
     description: "",
     created: new Date(0),

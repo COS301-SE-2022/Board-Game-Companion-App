@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { awsUpload } from '../../models/general/awsUpload';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class ScriptService {
@@ -44,7 +45,7 @@ export class ScriptService {
         return {status:status,script:script};
     }
 
-    async create(user:string,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
+    async create(user:user,name:string,boardGameId:string,stat:status,description:string,icon:any): Promise<Script> {
         const dto:scriptDto = {
             name: name,
             author: user,
@@ -81,7 +82,7 @@ export class ScriptService {
         return result;
     }
 
-    async download(id:string,owner:string):Promise<{status:string,message:string,script:Script}>{
+    async download(id:string,owner:user):Promise<{status:string,message:string,script:Script}>{
         //warning
         //success
         //info
@@ -250,8 +251,16 @@ export class ScriptService {
         return this.scriptModel.find().exec();
     }
 
-    async getAllMyScripts(owner:string): Promise<Script[]>{
-        return this.scriptModel.find({"owner":owner}).exec();
+    async getScriptsCreatedByMe(owner:user): Promise<Script[]>{
+        return this.scriptModel.find({"owner.email":owner.email,"author.email":owner.email}).exec();
+    }
+
+    async getScriptsDownloadedByMe(owner:user):Promise<Script[]>{
+        return this.scriptModel.find({"owner.email":owner.email,"author.email":{$ne:owner.email}})
+    }
+
+    async getOtherScripts(owner:user):Promise<Script[]>{
+        return this.scriptModel.find({"owner.email":{$ne:owner.email},"author.email":{$ne:owner.email}});
     }
 
     async findById(id:number):Promise<Script>{

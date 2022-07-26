@@ -1,11 +1,11 @@
 import { file } from "../general/files";
 import { status } from "../general/status";
-import { commentDto  } from "./commentDto";
+import { user } from '../general/user';
 
 export interface scriptDto{
     name: string;
-    author: string;
-    owner: string;
+    author: user;
+    owner: user;
     boardgame: string;
     description: string;
     created: Date;

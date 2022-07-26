@@ -44,7 +44,7 @@ export class CommentComponent implements OnInit {
       }          
     });
 
-    this.commentService.getLike(this.currentComment._id,"Joseph").subscribe({
+    this.commentService.getLike(this.currentComment._id,{name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
       next:(value)=>{
         if(value !== null){
           this.likeStatus = value.like ? 1 : 0;
@@ -95,7 +95,7 @@ export class CommentComponent implements OnInit {
       this.getCount();
       this.likeStatus = -1;
     }else{
-      this.commentService.like(this.currentComment._id,"Joseph",value === 0 ? false : true).subscribe({
+      this.commentService.like(this.currentComment._id,{name:"Joseph",email:"u18166793@tuks.co.za"},value === 0 ? false : true).subscribe({
         next:(val)=>{
           this.likeStatus = val.like ? 1 : 0;
           this.currentLike = val;

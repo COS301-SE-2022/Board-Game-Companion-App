@@ -24,10 +24,18 @@ export class HeaderComponent implements OnInit {
   differ: KeyValueDiffer<string, any>;
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
     
-
-    gapi.UserSubject.subscribe(details=>{
-      this.UserDetails = details;
-      
+    gapi.UserSubject.subscribe({
+      next:(value)=>{
+        this.UserDetails = value;
+        console.log("constructor");
+        console.log(value);
+        sessionStorage.setItem("name",value?.details.name);
+        sessionStorage.setItem("email",value?.details.email);
+        sessionStorage.setItem("img",value?.details.img);
+      },
+      error:(err)=>{     
+        console.log(err);
+      }      
     })
     this.differ = this.differs.find({}).create();
   }
