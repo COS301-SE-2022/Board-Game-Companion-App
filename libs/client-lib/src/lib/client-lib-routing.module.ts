@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'board-game-details',
     loadChildren: () => import('./board-game-details/board-game-details.module').then(m=>m.BoardGameDetailsModule),
