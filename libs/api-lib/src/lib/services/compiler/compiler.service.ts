@@ -1,6 +1,7 @@
 import { TokenType } from '@angular/compiler';
 import { Injectable } from '@nestjs/common';
 import { dot } from '@tensorflow/tfjs-layers/dist/exports_layers';
+import { square } from '@tensorflow/tfjs-node';
 import * as chevrotain from 'chevrotain';
 import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
@@ -32,6 +33,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
         const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
         const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
+        const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
@@ -145,6 +147,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tCards,
     tTile,
     tPiece,
+    tAddToArr,
     tAddToBoard,
     tAddAdjacency,
     tAddPieceToTile,
@@ -726,10 +729,21 @@ class parser extends CstParser
                             }},
                             {ALT: () =>{
                                 this.SUBRULE(this.rAddPieceToTile )
+                            }},
+                            {ALT: () =>{
+                                this.SUBRULE(this.rAddToArr )
                             }}
-                            
                         ])
                  })
+                 private rAddToArr=this.RULE("rAddToArr", () => {
+                    this.CONSUME(tAddToArr )
+                    this.CONSUME(OpenBracket )
+                    this.CONSUME(tUserDefinedIdentifier )
+                    this.CONSUME(Comma )
+                    this.SUBRULE(this.Value)
+                    this.CONSUME(CloseBracket )
+                 })
+
                  private addTileToBoard=this.RULE("addTileToBoard", () => {
                     
                     this.CONSUME(tAddToBoard)
@@ -760,8 +774,12 @@ class parser extends CstParser
                  private Assignment=this.RULE("Assignment", () => {
                     
                     this.SUBRULE(this.LHS )
+                    
                     this.CONSUME(Assign)
                     this.SUBRULE(this.RHS )
+
+                            
+                        
                  });
 
                  private LHS=this.RULE("LHS", () => {
@@ -787,6 +805,11 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.CONSUME(tPiece)
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(OpenSquareBracket)
+                                this.CONSUME(ClosedSquareBracket)
                             }}
                     ])
                 });
@@ -1492,14 +1515,16 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rAddPieceToTile":
                     visitRAddPieceToTile(node, place)
                     break;
+                case "rAddToArr":
+                    visitRAddToArre(node, place)
+                    break;
             }
         }
     }
 }
-function visitRAddPieceToTile(cstOutput:CstNode, place:string)
+function visitRAddToArre(cstOutput:CstNode, place:string)
 {
-    
-    let code = ".pieces.push(";
+    let code = ".push(";
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
@@ -1538,6 +1563,53 @@ function visitRAddPieceToTile(cstOutput:CstNode, place:string)
 
     
     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code, jsScript.slice(jsScript.indexOf(place))].join('');
+     
+}
+function visitRAddPieceToTile(cstOutput:CstNode, place:string)
+{
+    
+    let code = ".pieces.push(";
+    let otherCode = ".Tile="
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                code = code+token.image+')\n'
+                otherCode = token.image+otherCode
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "Value")
+            {
+                let i: keyof typeof node.children;
+                for (i in node.children) {
+                    const child = node.children[i];
+                    const tokeni = child[0] as unknown as IToken;
+                    if(tokeni.tokenType)
+                    {
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            code = tokeni.image+code
+                            otherCode = otherCode+token.image+'\n'
+                        }
+                    }
+
+                }
+            }
+        }
+        }
+
+
+        
+
+    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code+otherCode, jsScript.slice(jsScript.indexOf(place))].join('');
      
 }
 
