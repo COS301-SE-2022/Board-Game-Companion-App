@@ -218,37 +218,83 @@
     flex-direction: column;
     height:fit-content;
     margin-bottom: 3px;
-    order:1;
+    // order:2;
     width:100%;
    }
 
    #left{
+    display:none;
+    // margin-top: 3em;
+   }
+
+   #search-tools{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    order:1;
+   }
+
+   #topGames{
     display:flex;
     float:left;
     flex-direction: column;
     order:2;
+    margin-top: 0px;
     margin-left:0px;
-    width:100%;
-    // margin-top: 3em;
-   }
+    margin-bottom: 2px;
+    // border-radius:45px;
+    height:fit-content;
+    width:100%; 
+    
+    border-bottom: 3px solid $Pcolour-2;
+    }
+
+    #leftHeader{
+        background-color: white;
+        font-size: xx-large;
+        color: $Pcolour-2;
+        // text-align: center;
+    }
 
    #leftContent{
-        display:flex;
+        display:grid;
+        grid-template-columns: auto auto;
         flex-direction: row;
+        height: fit-content;
    }
 
     #leftBlock{
         display:flex;
         float:left;
-        flex-direction: row;
+        flex-direction: column;
+        padding-left:6px;
+        align-items: center;
     }
 
-    img{
+    #leftNames{
+        display: inline-block;
+        //margin: 0 20px 0 20px;
+        padding-right:none;
+        padding-left: none;
+    }
+
+    #content{
+        vertical-align: top;
+        display: inline-block;
+        text-align: center;
+        order:3; 
+    }
+    #leftImg{
+        width: 55%;
+        height: 70px;
+        // height:fit-content;
         float:left;
+        // margin: 0 20px 0 20px;
     }
 
     h5{
         float:left;
+        padding-right: 0px;
     }
 
     #triangle1{
@@ -264,12 +310,49 @@
     }
 
     #search{
-        width:30%;
+        margin-left:16px;
+        margin-top: 13px;
+        padding-top: 4px;
+        padding-right: 0px;
+        width: 43%;
     }
 
-    // #sortingDiv{
-    //     start here 
+    // #content{
+    //     display:flex;
+    //     float:left;
+    //     flex-direction: column;
+    //     order:3;  
     // }
+
+    .pagination{
+        display:flex;
+        // float:left;
+        // flex-direction: column;
+        order:4; 
+    }
+
+    #sortingDiv{
+        display:flex;
+        float:right;
+        margin-right: 10px;
+        width:30%;
+        // margin-left: 2px;
+    }
+
+    #sort{
+        display:none;
+    }
+
+    #sorting{
+        // margin-right:
+        border-radius: 7px;
+        border: 1px solid $Pcolour-2;
+    }
+
+    #button-addon3{
+        margin-right: 2px;
+        width:10%;
+    }
  
 //    #wrapper{
 //     width:60%;
@@ -278,6 +361,10 @@
 
 @media(min-width:640px){
     #searchIcon{
+        display:none;
+    }
+
+    #topGames{
         display:none;
     }
 }

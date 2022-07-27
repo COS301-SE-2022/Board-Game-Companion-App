@@ -55,6 +55,15 @@ describe('TrainComponent', () => {
     expect(component.createModel).toHaveReturned;
   })
 
+  it('should change tab', () => {
+    // expect(component).toBeTruthy();
+    component.changeTab(1);
+    expect(component.tab).toEqual(1);
+
+    component.changeTab(0);
+    expect(component.tab).toEqual(0);
+  });
+
   // it('should load data', () => {
   //   expect(component.form.valid).toBeFalsy();
 
