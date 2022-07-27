@@ -15,10 +15,27 @@ const mockBggService = {
   getMostActive : jest.fn()
 };
 
+const mockStorage: any = {recentlyVisited:JSON.stringify("yes")};
 describe('AdminComponent', () => {
   let component: BoardGameSearchComponent;
   let fixture: ComponentFixture<BoardGameSearchComponent>;
   let service: BggSearchService;
+
+  let getItemSpy: any;
+  let setItemSpy: any;
+
+  beforeAll(() => {
+
+    setItemSpy = jest
+      .spyOn(global.Storage.prototype, 'setItem')
+      .mockImplementation((key, value) => {
+        mockStorage[key] = value;
+      });
+
+    getItemSpy = jest
+      .spyOn(global.Storage.prototype, 'getItem')
+      .mockImplementation((key) => mockStorage[key]);
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,6 +51,11 @@ describe('AdminComponent', () => {
     fixture.detectChanges();
   });
 
+  afterAll(() => {
+    // then, detach our spies to avoid breaking other test suites
+    getItemSpy.mockRestore()
+    setItemSpy.mockRestore()
+  });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -43,7 +65,7 @@ describe('AdminComponent', () => {
     expect(component.middle).toBe(2);
     expect(component.right).toBe(3);
     expect(component.size).toBe(0);
-    expect(component.boardsPerPage).toBe(10);
+    expect(component.boardsPerPage).toBe(14);
     expect(component.searchValue).toBe("");
     expect(component.exactMatch).toBe(false);
   });
