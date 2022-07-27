@@ -33,24 +33,54 @@ class pieces
 }
 class game_state
 {
-    
+    board = []
     constructor()
     {
         
 let t1 = new tile()
 
-t1 . Id = 2 
+t1 . Id = 1 
+let t2 = new tile()
+
 //State
 
 
-        board = [
-            t1,//tiles
+        
+        //tiles
 
-        ]
+        
+    }
+//state accessors
+    getTileByID(id)
+    {
+        for(let i = 0; i<board.length;i++)
+        {
+            if(board[i].Id == id)
+                return board[i]
+        }
+        return null
+    }
+
+    getTilesByType(type)
+    {
+        results = []
+        for(let i = 0; i<board.length;i++)
+        {
+            if(board[i].Type == type)
+                results.push(board[i])
+        }
+        return results
     }
 }
+
+
+
+
+
+
 class player
 {
+    State = new game_state();
     chooseAction()
     {
         //
@@ -60,11 +90,12 @@ class player
         //redefined in subclasses
     }
 }
-class p1 extends player { ;turn ( ){ let x =  'hey' 
-x = 1 
-let v = 3 
-console.log ( x ) 
-console.log ( v ) 
+class p1 extends player { x = 1 ;turn ( ){ let message =  'enternum' 
+this . x = console_Input( message ) 
+console.log ( this . x ) 
+let y = this.State.getTileByID(1)
+console.log ( y . Id ) 
+}} class p2 extends player { ;turn ( ){ console.log ( 2 ) 
 }} //players
 
 
@@ -88,15 +119,23 @@ class script
 {
     game = new game_state();
     players = [
-        new p1(),//add players
+        new p1(),new p2(),//add players
     ];
     
     
 
     play()
     {
+
+        
         console.log("script-execution begins");
         //
+        State = new game_state()
+        for(let i =0;i< this.players.length;i++)
+        {
+            this.players[i].State = State
+        }
+
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].turn();
