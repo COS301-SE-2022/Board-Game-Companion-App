@@ -19,6 +19,16 @@
     background-color: $Pcolour-3;
     padding: 16px;
     border-radius: 10px 10px 0 0;
+    display:flex;
+    justify-content: space-between;
+}
+
+#headingDiv{
+    order: 1;
+}
+
+#searchSortDiv{
+    order: 2;
 }
 
 input{
@@ -43,11 +53,22 @@ input:focus{
     float: right;
     margin-right: 64px;
     margin-top: 24px;
+    order:2;
+}
+
+#searchDiv{
+    display:flex;
+    justify-content: space-between;
+}
+
+#textInput{
+    order:1;
 }
 
 #searchIcon{
     color: $Pcolour-3;  
 }
+
 
 #sort{
     background-color: $Pcolour-2;
@@ -55,6 +76,7 @@ input:focus{
     font-size: 14px;
     margin-top: 24px;
     float: right;
+    height:100%;
 }
 #sorting{
     color: $Pcolour-2;
