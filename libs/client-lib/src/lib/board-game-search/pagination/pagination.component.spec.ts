@@ -49,9 +49,9 @@ describe('PaginationComponent', () => {
     expect(component.right).toEqual(2);
     expect(component.middle).toEqual(1);
     component.movePagination(false);
-    expect(component.left).toEqual(6);
-    expect(component.right).toEqual(4);
-    expect(component.middle).toEqual(3);
+    expect(component.left).toEqual(5);
+    expect(component.right).toEqual(3);
+    expect(component.middle).toEqual(2);
   });
 
 });
