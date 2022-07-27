@@ -22,7 +22,8 @@ const mockDetails: userDetails = {
 const testScript: script = {
   _id:"1",
   name: "chess",
-  author: "",
+  author:{name:"",email:""},
+  owner:{name:"",email:""},
   boardgame: "",
   description: "",
   created: new Date(0),
@@ -44,7 +45,7 @@ const testScript: script = {
       location: ""
     },
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 };
 describe('ToolBarComponent',()=>{

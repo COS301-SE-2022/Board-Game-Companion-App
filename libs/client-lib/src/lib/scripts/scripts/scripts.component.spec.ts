@@ -10,7 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 let mockScripts: script[] =[{
   _id: "1",
   name: "chess",
-  author: "PRO",
+  author: {name:"PRo",email:"pro@gmail.com"},
+  owner:{name:"wr",email:"wr@yahoo.co.za"},
   boardgame: "",
   description: "",
   created: new Date(0),
@@ -25,12 +26,13 @@ let mockScripts: script[] =[{
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 },{
   _id: "2",
   name: "tictactoe",
-  author: "Njabulo",
+  author: {name:"njabs",email:"njabs@yahoo.co.za"},
+  owner: {name:"yem",email:"yem@scripts.co.za"},
   boardgame: "",
   description: "",
   created: new Date("20-03-19"),
@@ -45,12 +47,13 @@ let mockScripts: script[] =[{
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 },{
   _id: "3",
   name: "root",
-  author: "Master",
+  author: {name:"Master",email:"Master@boards.co.za"},
+  owner: {name:"yem",email:"yem@scripts.co.za"},
   boardgame: "",
   description: "",
   created: new Date("01-04-20"),
@@ -65,9 +68,35 @@ let mockScripts: script[] =[{
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
+  __v: 0
+},{
+  _id: "4",
+  name: "monopoly",
+  author: {name:"gamer",email:"games@boards.co.za"},
+  owner: {name:"yemes",email:"best@scripts.co.za"},
+  boardgame: "",
+  description: "",
+  created: new Date("01-04-20"),
+  release: new Date("13-09-20"),
+  downloads: 0,
+  lastdownload: new Date("07-07-22"),
+  lastupdate: new Date("12-10-21"),
+  public: false,
+  export: false,
+  size: 432,
+  status: {value: 1, message: "Running"},
+  comments: [],
+  source: {name:"",location:"",awsKey:""},
+  build: {name:"",location:"",awsKey:""},
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 }];
+
+const createdScripts:script[]=[mockScripts[0]];
+const downloadedScripts:script[]=[mockScripts[1],mockScripts[2]];
+const otherScripts:script[]=[mockScripts[2],mockScripts[1]];
+
 
 describe('ScriptsComponent',()=>{
   let component: ScriptsComponent;
@@ -90,6 +119,18 @@ describe('ScriptsComponent',()=>{
     return of(mockScripts);
   }
 
+  ScriptService.prototype.getScriptsCreatedByMe = function(value){
+    return of(createdScripts);
+  }
+
+  ScriptService.prototype.getScriptsDownloadedByMe = function(value){
+    return of(downloadedScripts);
+  }
+
+  ScriptService.prototype.getOther = function(value){
+    return of(otherScripts);
+  }
+
   ScriptService.prototype.removeScript = function(value){
     mockScripts = mockScripts.filter(obj => {return obj._id !== value});
     return of();
@@ -106,15 +147,15 @@ describe('ScriptsComponent',()=>{
 
   it('should load all existing scripts',()=>{
     component.loadAllScripts();
-    expect(component.scripts.length).toBe(3);
-    expect(component.store).toBe(mockScripts);
-    expect(component.scripts).toBe(mockScripts);
-    expect(component.store.length).toBe(3);
+    expect(component.scripts.length).toBe(5);
+    expect(component.creationStore).toStrictEqual([mockScripts[0]]);
+    // expect(component.scripts).toBe(mockScripts);
+    expect(component.creationStore.length).toBe(1);
   });
 
   it('should have initialized variables',()=>{
     expect(component.scripts).toStrictEqual([]);
-    expect(component.store).toStrictEqual([]);
+    expect(component.creationStore).toStrictEqual([]);
     expect(component.currentScript).toBe(empty);
     expect(component.gridView).toBe(true);
     expect(component.months.length).toBe(12);
@@ -135,8 +176,8 @@ describe('ScriptsComponent',()=>{
 
   it('formatDate() should return formated-Date',()=>{
     component.loadAllScripts();
-    const date = component.formatDate(new Date("05-07-22"));
-    expect(date).toBe("7 May 2022, 0:0:0");
+    const date = component.formatDate(new Date('05-07-22'));
+    expect(date).toBe('07 May 2022, 00:00:00');
   });
 
   it('selected() should assign chosen script', ()=>{
@@ -148,16 +189,18 @@ describe('ScriptsComponent',()=>{
 
   it('search() should return script search by name',()=>{
     component.loadAllScripts();
-    component.search("chess");
+    component.searchValue = "chess";
+    component.search();
     expect(component.scripts.length).toBe(1);
     expect(component.scripts[0]).toBe(mockScripts[0]);
   });
 
   it('search() should return assign store if value is ""',()=>{
     component.loadAllScripts();
-    component.search("");
-    expect(component.scripts.length).toBe(3);
-    expect(component.scripts).toBe(mockScripts);
+    component.searchValue = "";
+    component.search();
+    expect(component.scripts.length).toBe(1);
+    expect(component.scripts[0]).toBe(mockScripts[0]);
   });
 
   it('changeView()',()=>{
@@ -171,7 +214,8 @@ describe('ScriptsComponent',()=>{
     component.newScript({
       _id: "4",
       name: "umrabaraba",
-      author: "Tshe",
+      author: {name:"PRo",email:"pro@gmail.com"},
+      owner: {name:"GWAN",email:"GWEN@creator.biz"},
       boardgame: "",
       description: "",
       created: new Date("20-03-19"),
@@ -186,11 +230,11 @@ describe('ScriptsComponent',()=>{
       comments: [],
       source: {name:"",location:"",awsKey:""},
       build: {name:"",location:"",awsKey:""},
-      icon: "",
+      icon: {name:"",location:"",awsKey:""},
       __v: 0});
 
-      expect(component.scripts.length).toBe(4);
-      expect(component.store.length).toBe(4);
+      expect(component.scripts.length).toBe(6);
+      expect(component.creationStore.length).toBe(1);
   });
 
   it('removeScript() should remove and re-assign',()=>{

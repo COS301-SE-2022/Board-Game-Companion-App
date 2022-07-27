@@ -9,7 +9,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 const mockScript:script = {
   _id: "2",
   name: "tictactoe",
-  author: "Njabulo",
+  author: {name:'NN',email: 'NN@zak.uk.co'},
+  owner:{name:'NN',email: 'NN@zak.uk.co'},
   boardgame: "",
   description: "",
   created: new Date("20-03-19"),
@@ -24,7 +25,7 @@ const mockScript:script = {
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 }
 describe('Test update script',()=>{

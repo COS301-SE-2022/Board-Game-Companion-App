@@ -6,7 +6,8 @@ import { AdminService } from './admin.service';
 const mockData: script[] = [{
   _id: "2",
   name: "tictactoe",
-  author: "Njabulo",
+  author: {name:"maEz",email:"doezit@maz.co.za"},
+  owner: {name:"",email:""},
   boardgame: "",
   description: "",
   created: new Date("05-03-19"),
@@ -21,12 +22,13 @@ const mockData: script[] = [{
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 },{
   _id: "1",
   name: "chess",
-  author: "PRO",
+  author: {name:"pro",email:"pro@sowe.co.za"},
+  owner: {name:"",email:""},
   boardgame: "",
   description: "",
   created: new Date(0),
@@ -41,7 +43,7 @@ const mockData: script[] = [{
   comments: [],
   source: {name:"",location:"",awsKey:""},
   build: {name:"",location:"",awsKey:""},
-  icon: "",
+  icon: {name:"",location:"",awsKey:""},
   __v: 0
 }];
 
