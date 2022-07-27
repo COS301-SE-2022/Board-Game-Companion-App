@@ -62,7 +62,56 @@ button{
 
 @media(max-width:639px){
     #container{
-        width:90%;
-        height:100%;
+        display:flex;
+        flex-direction: column;
+        width:80%;
+        margin-top: 32px;
+        // height:100%;
     }
+
+    #collect{
+        margin-top:14px;
+        margin-bottom: 24px;
+        border-radius: 25px;
+    }
+
+    #collectH{
+        font-size:x-large;
+        text-align:center;
+    }
+
+    #buttonLeft{
+        width:50%;
+        border-radius: 20px;
+        margin-top: 64px;
+    }
+
+    #Collections{
+        width:53%;
+        font-size: large;
+    }
+
+   
+    #newCollection{
+        margin-top:14px;
+        margin-bottom: 24px;
+        border-radius: 25px;
+    }
+
+    #newH{
+        font-size:x-large;
+        text-align:center;
+    }
+
+    #newSubmit{
+        width:50%;
+        border-radius: 20px;
+        margin-top: 64px;
+    }
+
+    #collectionName{
+        width:53%;
+        font-size: large;
+    }
+
 }
