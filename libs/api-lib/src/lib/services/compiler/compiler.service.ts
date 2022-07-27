@@ -43,6 +43,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         
         const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
         const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
+        const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
@@ -151,6 +152,7 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
     tAddPieceToTile,
     tGetTileByID,
     tGetTilesByType,
+    tGenerateChoices,
     tEndgame,
     tReturn,
     Comma,
@@ -573,10 +575,18 @@ class parser extends CstParser
                             ALT: () =>{ 
                                 this.SUBRULE(this.SpecialMethods) 
                         }},
-                        
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGenerateChoices) 
+                        }},
                     ])
                     
                 });
+                private rGenerateChoices=this.RULE("rGenerateChoices", () => {
+                    this.CONSUME(tGenerateChoices)
+                    this.CONSUME(OpenBracket )
+                    this.CONSUME(CloseBracket )
+                })
                 private rAddPieceToTile=this.RULE("rAddPieceToTile", () => {
                     this.CONSUME(tAddPieceToTile )
                                 this.CONSUME(OpenBracket )
@@ -675,18 +685,20 @@ class parser extends CstParser
 
                  });
                  private Alternative=this.RULE("Alternative", () => {
-                    this.OR([
-                        { 
-                            ALT: () =>{ 
-                            this.SUBRULE(this.Branch)
-                        }},
-                        { 
-                            ALT: () =>{ 
-                            this.CONSUME(OpenBrace )
-                            this.SUBRULE(this.statements)
-                            this.CONSUME(CloseBrace )
-                        }},
-                    ])
+                    this.OPTION(() => {
+                        this.OR([
+                            { 
+                                ALT: () =>{ 
+                                this.SUBRULE(this.Branch)
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(OpenBrace )
+                                this.SUBRULE(this.statements)
+                                this.CONSUME(CloseBrace )
+                            }},
+                        ])
+                    })
                  });
                  private Declarations=this.RULE("Declarations", () => {
                     this.OPTION(() => {
@@ -1433,12 +1445,12 @@ function visitPlayer(cstOutput:CstNode)
             {
                 visitPlayerActions(node,0);
                 //clean up
-                jsScript.replace('//actionnums', '');
-                jsScript.replace('//actions', '');
-                jsScript.replace('//actioncond', '');
-                jsScript.replace('//action cases', '');
-                jsScript.replace('//condition cases', '');
-                jsScript.replace('//considerations cases', '');
+                jsScript=jsScript.replace('//actionnums', '');
+                jsScript=jsScript.replace('//actions', '');
+                jsScript=jsScript.replace('//actioncond', '');
+                jsScript=jsScript.replace('//action cases', '');
+                jsScript=jsScript.replace('//condition cases', '');
+                jsScript=jsScript.replace('//considerations cases', '');
             }
             else
             {
@@ -1466,8 +1478,7 @@ function visitPlayerActions(cstOutput:CstNode, i:number)
         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ActionTemplate , jsScript.slice(jsScript.indexOf("//players"))].join('');
                 
     }
-    else
-    {
+    
         //
         let k: keyof typeof cstOutput.children;  // visit all children
         for (k in cstOutput.children) {
@@ -1493,7 +1504,7 @@ function visitPlayerActions(cstOutput:CstNode, i:number)
                 }
             }
         }
-    }
+    
 
 }
 function visitDefActions(cstOutput:CstNode, i:number)
@@ -1503,7 +1514,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
         const child = cstOutput.children[k];
         const node = child[0] as unknown as CstNode;
         const token = child[0] as unknown as IToken;
-
+        
         if(token.tokenType)
         {
             if(token.tokenType.name == "Action")
@@ -1517,13 +1528,13 @@ function visitDefActions(cstOutput:CstNode, i:number)
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return '+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\n'+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
                 
             }
             if(token.tokenType.name == "CloseBracket")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+')\nbreak\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),token.image+')\nbreak\n', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+'\nbreak\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),token.image+'\nbreak\n', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
                 
             }
             if(token.tokenType.name != "Action")
@@ -1536,16 +1547,20 @@ function visitDefActions(cstOutput:CstNode, i:number)
         {
             if(node.name == "FormalParameters")
             {
-                let i: keyof typeof cstOutput.children;  // visit all children
-                for (i in cstOutput.children) {
-                    const childi = cstOutput.children[i];
+                let i: keyof typeof node.children;  // visit all children
+                for (i in node.children) {
+                    const childi = node.children[i];
                     const tokeni = childi[0] as unknown as IToken;
-                    if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                    if(tokeni.tokenType)
                     {
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'p' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'p' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
-                
+                        console.log(tokeni)
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'p' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'p' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),token.image+'Cond ', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                        }
                     }
                 }
             }
@@ -1578,7 +1593,7 @@ function visitDefCondition(cstOutput:CstNode, i:number)
         {
             if(node.name != "Consideration")
             {
-                visitDefCondition(node, i)
+                visitPlayerStatements(node, "//actioncond")
             }
             else
             {
@@ -1698,10 +1713,30 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rAddToArr":
                     visitRAddToArre(node, place)
                     break;
+                case "rGenerateChoices":
+                    visitGenerateChoices(node, place)
+                    break;
             }
         }
     }
 }
+function visitGenerateChoices(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+
+    }
+}
+
+
+
 function visitRAddToArre(cstOutput:CstNode, place:string)
 {
     let code = ".push(";
