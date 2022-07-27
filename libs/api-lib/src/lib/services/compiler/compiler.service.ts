@@ -31,11 +31,17 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
         const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
         const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+        const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
         const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
+        const tAddPieceToTile =(chevrotain.createToken({name:"addPieceToTile",pattern:/addPieceToTile/,longer_alt:tUserDefinedIdentifier}));
         
+        const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
+        const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
+        
+
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
 
@@ -138,8 +144,12 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tPlayer,
     tCards,
     tTile,
+    tPiece,
     tAddToBoard,
     tAddAdjacency,
+    tAddPieceToTile,
+    tGetTileByID,
+    tGetTilesByType,
     tEndgame,
     tReturn,
     Comma,
@@ -539,10 +549,44 @@ class parser extends CstParser
                                 this.SUBRULE1(this.Arguments )
                                 this.CONSUME1(CloseBracket )
                         }},
-
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetTileByID)
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetTilesByType) 
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.SpecialMethods) 
+                        }},
+                        
                     ])
                     
                 });
+                private rAddPieceToTile=this.RULE("rAddPieceToTile", () => {
+                    this.CONSUME(tAddPieceToTile )
+                                this.CONSUME(OpenBracket )
+                                this.CONSUME(tUserDefinedIdentifier )
+                                this.CONSUME(Comma )
+                                this.SUBRULE(this.Value)
+                                this.CONSUME(CloseBracket )
+                })
+
+                private rGetTileByID=this.RULE("rGetTileByID", () => {
+                                this.CONSUME(tGetTileByID )
+                                this.CONSUME2(OpenBracket )
+                                this.SUBRULE(this.Expression)
+                                this.CONSUME2(CloseBracket )
+                })
+                private rGetTilesByType=this.RULE("rGetTilesByType", () => {
+                    this.CONSUME(tGetTilesByType )
+                                this.CONSUME3(OpenBracket )
+                                this.SUBRULE1(this.Expression)
+                                this.CONSUME3(CloseBracket )
+                    })
+
                 private Loop=this.RULE("Loop", () => {
             
                     this.OR([
@@ -659,6 +703,10 @@ class parser extends CstParser
                                         ALT: () =>{ 
                                         this.CONSUME(tTile)
                                     }},
+                                    { 
+                                        ALT: () =>{ 
+                                        this.CONSUME(tPiece)
+                                    }},
                                 ])
                             
 
@@ -675,6 +723,9 @@ class parser extends CstParser
                             {
                             ALT: () =>{
                                 this.SUBRULE(this.addAdj )
+                            }},
+                            {ALT: () =>{
+                                this.SUBRULE(this.rAddPieceToTile )
                             }}
                             
                         ])
@@ -732,6 +783,10 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.SUBRULE(this.IO )
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(tPiece)
                             }}
                     ])
                 });
@@ -1173,8 +1228,7 @@ function visitGameState(cstOutput:CstNode)
             //if it a token decide how to write
             if(token.image)
             {
-                console.log(token.image)
-                console.log(token.tokenType.name)
+                
 
                 
                 if(token.tokenType.name != "StringLiteral")
@@ -1369,6 +1423,7 @@ function visitPlayerStatements(cstOutput:CstNode)
             jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '\n' , jsScript.slice(jsScript.indexOf("//players"))].join('');
                     
         }
+
         if(token.tokenType)
         {
             
@@ -1385,6 +1440,9 @@ function visitPlayerStatements(cstOutput:CstNode)
                 case "ConsoleOutput":
                     jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'console.log ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                     break;
+                case "Piece":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'new piece() ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    break;
                 default:
                     jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image + ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                     break;
@@ -1395,7 +1453,132 @@ function visitPlayerStatements(cstOutput:CstNode)
                 
         
         }
-        visitPlayerStatements(node);
+       
+        if(node.name == "MethodCall")
+        {
+            
+            visitMethodCall(node, "//players")
+        }
+        else{
+            visitPlayerStatements(node);
+        }
+    }
+}
+function visitMethodCall(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+
+        if(node.name)
+        {
+            switch(node.name)
+            {
+                case "rGetTileByID":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+                    visitGetTileByID(node, place)
+                    break;
+                case "rGetTilesByType":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+                    visitGetTilesByType(node,place)
+                    break;
+                case "SpecialMethods":
+                    visitMethodCall(node,place)
+                    break;
+                case "rAddPieceToTile":
+                    visitRAddPieceToTile(node, place)
+                    break;
+            }
+        }
+    }
+}
+function visitRAddPieceToTile(cstOutput:CstNode, place:string)
+{
+    
+    let code = ".pieces.push(";
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                code = code+token.image+')\n'
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "Value")
+            {
+                let i: keyof typeof node.children;
+                for (i in node.children) {
+                    const child = node.children[i];
+                    const tokeni = child[0] as unknown as IToken;
+                    if(tokeni.tokenType)
+                    {
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            code = tokeni.image+code
+                        }
+                    }
+
+                }
+            }
+        }
+        }
+
+
+        
+
+    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code, jsScript.slice(jsScript.indexOf(place))].join('');
+     
+}
+
+
+function visitGetTileByID(cstOutput:CstNode, place:string)
+{
+            
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + '', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+        }
+        if(node.name)
+        {
+            visitGetTileByID(node, place)
+        }
+
+    }
+}
+function visitGetTilesByType(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + ' ', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+        }
+        if(node.name)
+        {
+            visitGetTilesByType(node, place)
+        }
 
     }
 }
