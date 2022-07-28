@@ -123,193 +123,33 @@ class player
 }
 class p1 extends player { 
     Actions = [
-        0,0,//actionnums
+        0,
     ]
 
-    placeCross ( undefined ( t ) { ans = false if ( t . pieces < 1 ) { ans = true } return ans } 
-placeNaughtCond( t ) { ans = false if ( t . pieces < 1 ) { ans = true } return ans } //actioncond
-    params = []
-    chooseAction(choice, p)
-    {
-        switch(choice)
-        {
-            case 0:
-placeCross(p)
-break
-case 0:
-placeNaught(p)
-break
-//action cases
-        }
-        
-        
-    }
-    isActionLegal(choice, p)
-    {
-        switch(choice)
-        {
-            case 0:
-return placeCrossCond(p)
-break
-case 0:
-return placeNaughtCond(p)
-break
-//condition cases
-            
-        }
-        
-        return false;
-    }
-
-    considerations(choice)
-    {
-        switch(choice)
-        {
-            case 0:
-this.State.board
-break
-case 0:
-this.State.board
-break
-//considerations cases
-        }
-        
-        return [];
-    }
-    generateChoices()
-    {
-        this.params = []
-        choices =[]
-        for(let i = 0;i<this.Actions;i++)
-        {
-            if(considerations(i) == [])
-            {
-                if(this.isActionLegal(i, []))
-                {
-                    choices.push(i)
-
-                }
-                else
-                {
-                    for(let j = 0;j<considerations(i);j++)
-                    {
-                        if(this.isActionLegal(i, considerations(i)[j]))
-                        {
-                            choices.push(i)
-
-                        }
-                    }
-                }
-            }
-            else
-            {
-
-            }
-        }
-        
-        
-    }x = new piece() ;turn ( ){ c = generateChoices ( ) 
-console.log ( c ) 
-}} class p2 extends player { 
-    Actions = [
-        //actionnums
-    ]
-
-    placeNaught ( undefined //actioncond
-    params = []
-    chooseAction(choice, p)
-    {
-        switch(choice)
-        {
-            case 0:
-            placeCross(p)
-            break
-            case 0:
-            placeNaught(p//action cases
-        }
-        
-        
-    }
-    isActionLegal(choice, p)
-    {
-        switch(choice)
-        {
-            case 0:
-return placeCrossCond(p)
-break
-case 0:
-return placeNaughtCond(p//condition cases
-            
-        }
-        
-        return false;
-    }
-
-    considerations(choice)
-    {
-        switch(choice)
-        {
-            case 0:
-this.State.board
-break
-//considerations cases
-        }
-        
-        return [];
-    }
-    generateChoices()
-    {
-        this.params = []
-        choices =[]
-        for(let i = 0;i<this.Actions;i++)
-        {
-            if(considerations(i) == [])
-            {
-                if(this.isActionLegal(i, []))
-                {
-                    choices.push(i)
-
-                }
-                else
-                {
-                    for(let j = 0;j<considerations(i);j++)
-                    {
-                        if(this.isActionLegal(i, considerations(i)[j]))
-                        {
-                            choices.push(i)
-
-                        }
-                    }
-                }
-            }
-            else
-            {
-
-            }
-        }
-        
-        
-    }x = new piece() ;turn ( ){ c = generateChoices ( ) 
-console.log ( c ) 
-}} class p2 extends player { 
-    Actions = [
-        //actionnums
-    ]
-
-    placeNaught ( ) { p = new piece() 
+    placeCross ( t ) { let p = new piece() 
 p . Id = -1 
 t.pieces.push(p)
-p.Tile=undefined
+p.Tile=t
 
-} //actions
+} 
 
-    //actioncond
+    
+placeCrossCond( t ) { let ans = false 
+if ( t . pieces . length < 1 ) { 
+ans = true 
+} 
+return ans } 
+
+
     params = []
     chooseAction(choice, p)
     {
         switch(choice)
         {
-            //action cases
+            case 0:
+this.placeCross(p)
+break
+
         }
         
         
@@ -318,7 +158,10 @@ p.Tile=undefined
     {
         switch(choice)
         {
-            //condition cases
+            case 0:
+return this.placeCrossCond(p)
+break
+
             
         }
         
@@ -327,9 +170,13 @@ p.Tile=undefined
 
     considerations(choice)
     {
+        
         switch(choice)
         {
-            //considerations cases
+            case 0:
+ return this.State.board
+break
+
         }
         
         return [];
@@ -337,46 +184,46 @@ p.Tile=undefined
     generateChoices()
     {
         this.params = []
-        choices =[]
-        for(let i = 0;i<this.Actions;i++)
+        let choices =[]
+        
+        for(let i = 0;i<this.Actions.length;i++)
         {
-            if(considerations(i) == [])
+            
+
+            if(this.considerations(i) == [])
             {
                 if(this.isActionLegal(i, []))
                 {
                     choices.push(i)
-
-                }
-                else
-                {
-                    for(let j = 0;j<considerations(i);j++)
-                    {
-                        if(this.isActionLegal(i, considerations(i)[j]))
-                        {
-                            choices.push(i)
-
-                        }
-                    }
+                    this.params.push([])
                 }
             }
             else
             {
+                
+                for(let j = 0;j<this.considerations(i).length;j++)
+                {
+                    
+                    
+                    if(this.isActionLegal(i, this.considerations(i)[j]))
+                    {
+                        choices.push(i)
+                        this.params.push(this.considerations(i)[j])
 
+                    }
+                }
             }
         }
         
-        
-    };turn ( ){ console.log ( 2 ) 
-}} //players
+        return choices
+    };turn ( ){ let x = new piece() 
+let c = this.generateChoices ( ) 
+console.log ( this . params [ 0 ] ) 
+let p = this . params [ 0 ] 
+this.chooseAction ( c [ 0 ] , p ) 
+}} }//players
 
 
-//functions
-function endgame()
-{
-    //end_game
-
-
-}
 
 function console_Input(message)
 {
@@ -388,9 +235,9 @@ function console_Input(message)
 //
 class script
 {
-    game = new game_state();
+    State = new game_state();
     players = [
-        new p1(),new p2(),//add players
+        new p1(),//add players
     ];
     
     
@@ -402,7 +249,7 @@ class script
         console.log("script-execution begins");
         for(let i =0;i< this.players.length;i++)
         {
-            this.players[i].State = this.game
+            this.players[i].State = this.State
         }
 
         for(let i =0;i< this.players.length;i++)
@@ -413,11 +260,18 @@ class script
 
 
     }
+
+
+    
+
+
 }
+function endgame(State, players)
+{
+    let ans = true 
+return ans //end_game
 
-(new script()).play()) { p = new piece() 
-p . Id = -1 
-t.pieces.push(p)
-p.Tile=undefined
 
-} ;
+    
+}
+(new script()).play();
