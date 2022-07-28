@@ -44,7 +44,7 @@ describe('AddToCollectionComponent', () => {
   });
 
   it('should create', ()=>{
-        fixture = TestBed.createComponent(AddToCollectionComponent);
+    fixture = TestBed.createComponent(AddToCollectionComponent);
     component =  fixture.componentInstance;
     expect(component).toBeTruthy();
   });
