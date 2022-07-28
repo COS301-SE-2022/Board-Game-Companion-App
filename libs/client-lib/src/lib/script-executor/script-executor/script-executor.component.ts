@@ -121,7 +121,7 @@ export class ScriptExecutorComponent implements OnInit {
     }
   }, 1000);
 
-    //get id
+    //get id for the script
     this.scriptID = this.route.snapshot.paramMap.get('my_object')||"";
     
     //get path
@@ -129,23 +129,7 @@ export class ScriptExecutorComponent implements OnInit {
     
     try
     {
-      //this.scriptService.getScriptById(this.scriptID).subscribe({
-        //next:async(value)=>{
-          
-          
-          //let path = value.files[0].location.replace(".module.ts","");
-          //path = path.replace("libs/uploads/src/lib/scripts/files/","")
-
-          //import(`libs/uploads/src/lib/scripts/files/${path}.module`).then(module=>
-            //{
-              
-              //module[Object.keys(module)[0]].play();
-            //});
-
-            
-            
-            
-        //}});
+      //
         
 
     }

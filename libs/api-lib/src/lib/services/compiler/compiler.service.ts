@@ -1,7 +1,7 @@
 import { TokenType } from '@angular/compiler';
 import { Injectable } from '@nestjs/common';
 import { dot } from '@tensorflow/tfjs-layers/dist/exports_layers';
-import { square } from '@tensorflow/tfjs-node';
+import { node, square } from '@tensorflow/tfjs-node';
 import * as chevrotain from 'chevrotain';
 import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
@@ -44,6 +44,8 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
         const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
         const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
+        const tChooseAction =(chevrotain.createToken({name:"chooseAction",pattern:/chooseAction/,longer_alt:tUserDefinedIdentifier}));
+        const tIsActionLegal =(chevrotain.createToken({name:"isActionLegal",pattern:/isActionLegal/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
@@ -75,7 +77,7 @@ const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1
 
 
 const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*") | ('[A-Za-z0-9 ]*')/ }));
 const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
 const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
 
@@ -89,8 +91,8 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
         const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
 
 //logical operators
-        const And=(chevrotain.createToken({name:"And",pattern:/and/,longer_alt:tUserDefinedIdentifier}));
-        const Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
+        const And=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
+        const Or=(chevrotain.createToken({name:"Or",pattern:/\|\|/,longer_alt:tUserDefinedIdentifier}));
         const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
 
 
@@ -153,6 +155,8 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
     tGetTileByID,
     tGetTilesByType,
     tGenerateChoices,
+    tChooseAction,
+    tIsActionLegal,
     tEndgame,
     tReturn,
     Comma,
@@ -437,12 +441,7 @@ class parser extends CstParser
             this.CONSUME(tEndgame)
             this.CONSUME(OpenBrace)
             this.SUBRULE(this.statements)
-            this.CONSUME(tReturn)
-
-            this.OR([
-                { ALT: () =>{ this.SUBRULE(this.Const )}}, 
-                { ALT: () =>{ this.SUBRULE(this.nVariable)}}
-            ])
+            
 
             this.CONSUME(CloseBrace)
         });
@@ -579,9 +578,37 @@ class parser extends CstParser
                             ALT: () =>{ 
                                 this.SUBRULE(this.rGenerateChoices) 
                         }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rChooseAction) 
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rIsActionLegal) 
+                        }},
                     ])
                     
                 });
+                private rChooseAction=this.RULE("rChooseAction", () => {
+                    this.CONSUME(tChooseAction)
+                    this.CONSUME(OpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME(Comma )
+                    this.SUBRULE(this.Value) 
+                    this.SUBRULE(this.dotContinuation) 
+                    this.CONSUME(CloseBracket )
+                })
+                private rIsActionLegal=this.RULE("rIsActionLegal", () => {
+                    this.CONSUME(tIsActionLegal)
+                    this.CONSUME(OpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME(Comma )
+                    this.SUBRULE(this.Value) 
+                    this.SUBRULE(this.dotContinuation) 
+                    this.CONSUME(CloseBracket )
+                })
+
+
                 private rGenerateChoices=this.RULE("rGenerateChoices", () => {
                     this.CONSUME(tGenerateChoices)
                     this.CONSUME(OpenBracket )
@@ -921,7 +948,7 @@ class parser extends CstParser
         private Binary=this.RULE("Binary", () => {
                         
             this.SUBRULE(this.BinaryOperator)
-            this.SUBRULE1(this.Value)
+            this.SUBRULE1(this.Expression)
     });
     private  Value = this.RULE("Value", () => {
         this.OR([
@@ -1010,10 +1037,6 @@ class parser extends CstParser
                     this.SUBRULE(this.nVariable)
                     this.OR1([
                         { ALT: () =>{ 
-                            this.SUBRULE(this.Logical_Operator )
-                            this.SUBRULE2(this.nCondition)
-                        }}, 
-                        { ALT: () =>{ 
                             this.SUBRULE(this.Relational_Operator  )
                             this.SUBRULE(this.Expression)
                         }}
@@ -1025,10 +1048,6 @@ class parser extends CstParser
                     this.SUBRULE(this.Const)
                     this.OR2([
                         { ALT: () =>{ 
-                            this.SUBRULE1(this.Logical_Operator )
-                            this.SUBRULE3(this.nCondition)
-                        }}, 
-                        { ALT: () =>{ 
                             this.SUBRULE1(this.Relational_Operator)
                             this.SUBRULE1(this.Expression)
                         }}
@@ -1037,6 +1056,11 @@ class parser extends CstParser
                     
             }}
     ])
+
+    this.OPTION(() => {
+        this.SUBRULE1(this.Logical_Operator )
+        this.SUBRULE3(this.nCondition)
+    })
 });
 
         
@@ -1526,8 +1550,8 @@ function visitDefActions(cstOutput:CstNode, i:number)
             }
             if(token.tokenType.name == "UserDefinedIdentifier")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return '+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'this.'+token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return this.'+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\n'+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
                 
             }
@@ -1553,13 +1577,13 @@ function visitDefActions(cstOutput:CstNode, i:number)
                     const tokeni = childi[0] as unknown as IToken;
                     if(tokeni.tokenType)
                     {
-                        console.log(tokeni)
+                        
                         if(tokeni.tokenType.name == "UserDefinedIdentifier")
                         {
+                            
                             jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'p' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
                             jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'p' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
-                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),token.image+'Cond ', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),tokeni.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
                         }
                     }
                 }
@@ -1598,7 +1622,7 @@ function visitDefCondition(cstOutput:CstNode, i:number)
             else
             {
                 //
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n return ', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
                 visitConsideration(node, i)
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'\nbreak\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
                 
@@ -1716,13 +1740,57 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rGenerateChoices":
                     visitGenerateChoices(node, place)
                     break;
+                case "rChooseAction":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitRChooseAction(node, place)
+                    break;
+                case "rIsActionLegal":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitRIsActionLegal(node, place)
+                    break;
+                
             }
         }
+    }
+}
+function visitRIsActionLegal(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+
+        if(token.tokenType)
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+        if(node.name)
+            visitRIsActionLegal(node, place)
+    }
+}
+function visitRChooseAction(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+        if(node.name)
+            visitRChooseAction(node, place)
     }
 }
 function visitGenerateChoices(cstOutput:CstNode, place:string)
 {
     
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+     
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
@@ -1811,7 +1879,7 @@ function visitRAddPieceToTile(cstOutput:CstNode, place:string)
                         if(tokeni.tokenType.name == "UserDefinedIdentifier")
                         {
                             code = tokeni.image+code
-                            otherCode = otherCode+token.image+'\n'
+                            otherCode = otherCode+tokeni.image+'\n'
                         }
                     }
 
@@ -1883,7 +1951,7 @@ function visitEnd(cstOutput:CstNode)
             {
                 switch(token.tokenType.name)
                 {
-                    case "tEndgame":
+                    case "Endgame":
                         break;
                     case "OpenBrace":
                         break; 
@@ -1898,7 +1966,7 @@ function visitEnd(cstOutput:CstNode)
             }
             if(node.name != "SpecialMethods")
             {
-                visitEndStatements(node);
+                visitPlayerStatements(node,"//end_game");
             }
             else
             {
@@ -1906,32 +1974,11 @@ function visitEnd(cstOutput:CstNode)
             }
             if(node.name == "statements")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '\n' , jsScript.slice(jsScript.indexOf("//end_game"))].join('');
                       
             }
 
         }
-}
-function visitEndStatements(cstOutput:CstNode)
-{
-    let k: keyof typeof cstOutput.children;  // visit all children
-    for (k in cstOutput.children) {
-        const child = cstOutput.children[k];
-        
-        const node = child[0] as unknown as CstNode;
-        const token = child[0] as unknown as IToken;
-        
-        if(token.tokenType)
-        {
-            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image + ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
-        }
-        visitEndStatements(node);
-        if(node.name == "statements")
-        {
-            jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '\n' , jsScript.slice(jsScript.indexOf("//end_game"))].join('');
-                    
-        }
-    }
 }
 
 

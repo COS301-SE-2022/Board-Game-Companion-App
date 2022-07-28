@@ -87,13 +87,6 @@ class player
 //players
 
 
-//functions
-function endgame()
-{
-    //end_game
-
-
-}
 
 function console_Input(message)
 {
@@ -105,7 +98,7 @@ function console_Input(message)
 //
 class script
 {
-    game = new game_state();
+    State = new game_state();
     players = [
         //add players
     ];
@@ -119,17 +112,64 @@ class script
         console.log("script-execution begins");
         for(let i =0;i< this.players.length;i++)
         {
-            this.players[i].State = this.game
+            this.players[i].State = this.State
         }
-
+        //get player turn order
+        let order = []
+        let inputElement = document.getElementById("inputMessageBox");
+        
         for(let i =0;i< this.players.length;i++)
         {
-            this.players[i].turn();
+            if(inputElement)
+            {
+                //ask using input and output methods
+            }
+            else
+            {
+                //use default order
+                order.push(i)
+            }
         }
+        //re order 
+        for(let i =0;i< this.players.length;i++)
+        {
+            for(let j =1;j< this.players.length;j++)
+            {
+                if(order[i]> order[j])
+                {
+                    let temp = order[i]
+                    let tempP = players[i]
 
+                    order[i] = order[j]
+                    players[i] = players[j]
+
+                    order[j] = temp
+                    order[j] = tempP
+                }
+            }
+        }
+        do
+        {
+            for(let i =0;i< this.players.length;i++)
+            {
+                this.players[i].turn();
+            }
+        }
+        while(!endgame(State, players))
 
 
     }
-}
 
+
+    
+
+
+}
+function endgame(State, players)
+{
+    //end_game
+
+
+    return false
+}
 (new script()).play();
