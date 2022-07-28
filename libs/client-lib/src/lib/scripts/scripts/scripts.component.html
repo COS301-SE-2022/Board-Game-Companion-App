@@ -54,7 +54,7 @@
                     
                     <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
-                            <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                             </button>
                             <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
@@ -133,7 +133,7 @@
                         {{convertBytes(value.size)}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
-                        <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
                         <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">

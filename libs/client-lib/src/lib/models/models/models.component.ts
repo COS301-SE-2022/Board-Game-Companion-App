@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { beginTraining } from '../../shared/models/beginTraining';
+
 
 @Component({
   selector: 'board-game-companion-app-models',
@@ -8,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModelsComponent implements OnInit {
   tab = 0;
+  beginTrainingModel!:beginTraining;
 
   ngOnInit(): void{
     console.log("models")
@@ -17,5 +20,8 @@ export class ModelsComponent implements OnInit {
     this.tab = value;
   }
 
-
+  beginTraining(value:beginTraining):void{
+    this.beginTrainingModel = value;
+    this.changeTab(0);
+  }
 }

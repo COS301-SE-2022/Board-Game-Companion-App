@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { script } from '../../models/script';
 import { rating } from '../../models/rating';
-import { string } from '@tensorflow/tfjs-node';
 import { user } from '../../models/user';
 import { User } from 'aws-sdk/clients/budgets';
 
