@@ -82,22 +82,37 @@ export class EditorComponent implements OnInit{
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      let model:tf.LayersModel;
+      const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
-        model = await tf.loadLayersModel('localstorage://' + name);
-        const prop = 'model';
-        // result = (input:number[])=>{
-        //   let result = "";
-
-        //   const inputTensor = tf.tensor2d(input,[1,input.length]);
-        //   const normalizedInput = inputTensor.sub(networks[count].min as number[]).div((networks[count].max as number[])).sub((networks[count].min as number[]));
-        //   const tensorResult = model.predict(normalizedInput) as tf.Tensor;
-        //   const maxIndex = Array.from(tensorResult.argMax().dataSync());
-        //   result = maxIndex.toString();
-        //   return result;
-        // }
+        models.push({
+          name: networks[count].name,
+          model: await tf.loadLayersModel('localstorage://' + networks[count].name),
+          min: networks[count].min as number[],
+          max: networks[count].max as number[],
+          labels: networks[count].labels as string[]
+        })
       }
+
+      return ((name:string,input:number[])=>{
+        let index = -1;
+
+        for(let count = 0; count < models.length && index === -1; count++){
+          if(models[count].name === name)
+            index = count;
+        }
+
+        if(index === -1)
+          return "";
+
+        //console.print(model("color-picker",[0,255,0]))
+        const inputTensor = tf.tensor2d(input,[1,input.length]);
+        const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
+        const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
+        index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+
+        return models[index].labels[index];
+      })
 
       
     }
@@ -115,28 +130,28 @@ export class EditorComponent implements OnInit{
   async execute(): Promise<void>{
     
     this.editorConsole.open();
-    try{
-      const console = this.editorConsole.defineConsole();
-      const model = await this.neuralnetworks();
-      this.editorConsole.clear();
+    // try{
+    const console = this.editorConsole.defineConsole();
+    const model = await this.neuralnetworks();
+    this.editorConsole.clear();
+    
+    const code = new Function("console","model",this.editorBody.getCode());
+    code(console,model); 
+    // this.scriptService.getFileData(this.currentScript.build.location).subscribe({
       
-      const code = new Function("console","model",this.editorBody.getCode());
-      code(console,model); 
-      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
-        
-        next:(value)=>{
-          //console.log(value)
-          const code = new Function("console",value);
-          code(console);    
-        },
-        error:(e)=>{
-          console.log(e);
-        }
-      });
+    //   next:(value)=>{
+    //     //console.log(value)
+    //     const code = new Function("console",value);
+    //     code(console);    
+    //   },
+    //   error:(e)=>{
+    //     console.log(e);
+    //   }
+    // });
 
-    }catch(err){
-      console.log(err);
-    }
+    // }catch(err){
+    //   console.log(err);
+    // }
 
   }
 

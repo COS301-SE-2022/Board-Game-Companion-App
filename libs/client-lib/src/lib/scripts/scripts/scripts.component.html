@@ -115,7 +115,7 @@
                         </div>
                     </td>
                     <td>
-                        {{value.author === value.owner ? "You" : value.owner}}
+                        {{value.author.email === value.owner.email ? "You" : value.owner.name}}
                     </td>
                     <td>
                         {{formatDate(value.created)}}
