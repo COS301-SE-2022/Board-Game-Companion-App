@@ -28,6 +28,10 @@ export class ScriptsComponent implements OnInit {
     this.loadAllScripts();
   }
 
+  play(value:script): void{
+    this.router.navigate(['script-exec'], { state: { value: value } });
+  }
+
   test(): void{
     console.log("test");
   }
