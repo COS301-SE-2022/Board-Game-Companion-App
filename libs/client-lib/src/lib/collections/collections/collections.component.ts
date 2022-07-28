@@ -130,7 +130,6 @@ export class CollectionsComponent implements OnInit {
         const numberA = resultA.imgUrls.length;
         const numberB = resultB.imgUrls.length;
 
-        console.log("====");
         if (numberA < numberB) 
         {
           return -1;
