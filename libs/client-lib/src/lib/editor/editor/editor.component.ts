@@ -73,45 +73,33 @@ export class EditorComponent implements OnInit{
     this.updateDimensions();
   }
 
-  async neuralnetwork(name:string):Promise<any>{
+  async neuralnetworks():Promise<any>{
+    console.log(name)
     const modelsInfo = localStorage.getItem("models");
-    let result:any = null;
+    const result = new Object();
 
     if(modelsInfo === null)
       return null;
     else{
-      const networks = JSON.parse(modelsInfo);
-      let index = -1;
+      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
+      let model:tf.LayersModel;
+      
+      for(let count = 0; count < networks.length; count++){
+        model = await tf.loadLayersModel('localstorage://' + name);
+        const prop = 'model';
+        // result = (input:number[])=>{
+        //   let result = "";
 
-      for(let count = 0; count < networks.length && index === -1; count++){
-        if(networks[count].name === name)
-          index = count;
+        //   const inputTensor = tf.tensor2d(input,[1,input.length]);
+        //   const normalizedInput = inputTensor.sub(networks[count].min as number[]).div((networks[count].max as number[])).sub((networks[count].min as number[]));
+        //   const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+        //   const maxIndex = Array.from(tensorResult.argMax().dataSync());
+        //   result = maxIndex.toString();
+        //   return result;
+        // }
       }
 
-      if(index === -1)
-        return null;
-      else{
-        const model = await tf.loadLayersModel('localstorage://' + name);
-
-        result = {
-          classifyOne: (input:number[])=>{
-            let result = "";
-
-            const inputTensor = tf.tensor2d(input,[1,input.length]);
-            const normalizedInput = inputTensor.sub(networks.min).div(networks.max.sub(networks.min));
-            const tensorResult = model.predict(normalizedInput) as tf.Tensor;
-            const maxIndex = Array.from(tensorResult.argMax().dataSync());
-            result = maxIndex.toString();
-            return result;
-          },
-          classifyMany:(input:number[][])=>{
-            const result = "";
-
-            const tensorInput = tf.tensor2d(input,)
-            return result;
-          }
-        }
-      }
+      
     }
 
     return result;
@@ -124,28 +112,31 @@ export class EditorComponent implements OnInit{
       this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
   }
 
-  execute(): void{
+  async execute(): Promise<void>{
     
     this.editorConsole.open();
-    try{
+    //try{
       const console = this.editorConsole.defineConsole();
+      const model = await this.neuralnetworks();
       this.editorConsole.clear();
-
-      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+      
+      const code = new Function("console","model",this.editorBody.getCode());
+      code(console,model); 
+      // this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         
-        next:(value)=>{
-          //console.log(value)
-          const code = new Function("console",value);
-          code(console);    
-        },
-        error:(e)=>{
-          console.log(e);
-        }
-      });
+      //   next:(value)=>{
+      //     //console.log(value)
+      //     const code = new Function("console",value);
+      //     code(console);    
+      //   },
+      //   error:(e)=>{
+      //     console.log(e);
+      //   }
+      // });
 
-    }catch(err){
-      console.log(err);
-    }
+    //}catch(err){
+      //console.log(err);
+    //}
   }
 
 

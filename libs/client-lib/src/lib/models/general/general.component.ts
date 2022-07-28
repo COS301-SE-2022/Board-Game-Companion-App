@@ -30,7 +30,7 @@ export class GeneralComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(): void {
-    if(this.beginTrainingModel.name !== ""){
+    if(this.beginTrainingModel!== undefined && this.beginTrainingModel.name !== ""){
       this.nn.unshift(this.beginTrainingModel);
       this.nn[0].progress = 0;
       this.train();
