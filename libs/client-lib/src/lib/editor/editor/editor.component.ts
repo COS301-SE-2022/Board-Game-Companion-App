@@ -87,7 +87,7 @@ export class EditorComponent implements OnInit{
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         
         next:(value)=>{
-          //console.log(value)
+          console.log(value)
           const code = new Function("console",value);
           code(console);    
         },

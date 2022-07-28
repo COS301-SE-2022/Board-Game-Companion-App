@@ -29,7 +29,7 @@ class piece
     Type; //grouping information for the piece “” by default
     Player; //the player this piece belongs to
     Tile; //the tile this piece is on
-
+    
 }
 class game_state
 {
