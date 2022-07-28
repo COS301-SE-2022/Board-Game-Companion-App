@@ -5,6 +5,48 @@
     margin-top: 1rem;
 }
 
+#outerDiv{
+    background-color: $Pcolour-2;
+}
+
+// #logo{
+//     margin:auto;
+// }
+
+#textInput{
+    width:75%;
+    height:50%;
+}
+
+#heading{
+    display:flex;
+    float:left;
+    color:white;
+   // font-size: xx-large;
+    font-weight: bold;
+    //margin-bottom: 0px;
+}
+
+#logo{
+    display:flex;
+    float:left; 
+}
+
+#searchSortDiv{
+    display:flex;  
+    flex-direction:column;
+}
+#sortingDiv{
+    display:flex;
+    // margin-right:10px;
+    // margin-left: 2px;
+    // float:right;
+    //order: 2;
+    width:100%;
+    height:50%;
+   
+}
+
 table{
     width: 100%;
     background-color: white;
@@ -16,13 +58,13 @@ h1{
     font-size: 64px;
     font-weight: bold;
     color: $Pcolour-2;
-    margin-top: 64px;
-    margin-bottom: 48px;
+    margin-top: 54px;
+    margin-bottom: 20px;
 }
 thead{
     width: 100%;
-    background-color: $Pcolour-2;
-    color: white;
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
 }
 th{
     font-size: 32px;
@@ -58,8 +100,8 @@ td{
     cursor: pointer;
 }
 #search{
-    background-color: $Pcolour-2;
-    color: $Pcolour-3;
+    background-color: $Pcolour-3;
+    color: white;
     font-size: 14px;
     float: left;
     // margin-right: 64px;
@@ -77,19 +119,34 @@ input{
 input:focus{
     outline: none;
 }
+
+#outerSortDiv{
+    display:flex;
+    float:right;
+    // margin-right: 10px !important;
+    width:100%;
+}
 #sort{
-    background-color: $Pcolour-2;
-    color: $Pcolour-3;
+    background-color: $Pcolour-3;
+    color: white;
     font-size: 14px;
     margin-top: 30px;
-    float:right;
+    width:15%;
+    margin-left: 12px !important;
+    border-radius: 10px 0px 0px 10px;
+    height:35%
+    //float:right;
 }
 #sorting{
     color: $Pcolour-2;
     font-size: 14px;
     margin-top: 30px;
+    width:35%;
+    height:35%;
+    border-radius: 0px 10px 10px 0px;
     margin-bottom: 12px;
-    float:right;
+    //float:left;
+    order:2;
     background-color: white;
 }
 

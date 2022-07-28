@@ -39,7 +39,7 @@
 
 #carousel2{
     height: 266px;
-    width: 1152px;
+    width: 100%;
     background-color: white;
 }
 
@@ -115,6 +115,12 @@ h1:hover{
         display: flex;
         flex-direction: column;
     }
+
+    tr {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
     #lastPlayed{
         // display:flex;
         // flex-direction: column;
@@ -124,6 +130,7 @@ h1:hover{
         order:1;
         width:100%;
     }
+
 
     #carousels{
         margin-left: 0px;
@@ -168,5 +175,7 @@ h1:hover{
         width:50%;;
         // padding-top: 5px;
     }
+
+    
 }
 
