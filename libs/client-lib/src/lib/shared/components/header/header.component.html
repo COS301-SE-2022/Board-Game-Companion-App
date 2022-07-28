@@ -15,26 +15,26 @@
                 <div  [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}" class="sm:flex h-full sm:mt-0 ml-auto mt-28" id="listDiv">
                     <ul class="flex list-none flex-col place-content-center sm:flex-row sm:h-full h-auto">
                         <li id="Collections" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block p-0" (click)="moveTo('collections')">Collections</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('collections')">Collections</a>
                         </li>
                         <li id="BoardGames" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Board Games</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Board Games</a>
                         </li>
                         <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block p-0" (click)="moveTo('scripts')">Scripts</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('scripts')">Scripts</a>
                         </li>
-                        <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer">
+                        <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer" *ngIf = "isLoggedIn()">
                             <a class="nav-link block p-0" (click)="moveTo('models')">Models</a>
                         </li>
                         <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block p-0" (click)="moveTo('admin')">Administration</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('admin')">Administration</a>
                         </li>
                         <li id="GameSession" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block p-0" (click)="moveTo('gameSessions')">Game Sessions</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('gameSessions')">Game Sessions</a>
                         </li>
                         <li id="Search" class="nav-item sm:px-4 pt-2.5 sm:hidden cursor-pointer">
 
-                            <a class="nav-link block p-0" (click)="moveTo('board-game-search')">Search</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Search</a>
                         </li>
                     </ul>
                 </div>
@@ -59,7 +59,7 @@
                                 class="btn px-2 font-bold">Search</button>
                             <span></span>
                             <li class="nav-item flex h-full pr-4 pt-2.5 cursor-pointer" id="logButton">
-                                <a id="l" class="nav-link block p-0" (click)="moveTo('login')">Login</a>
+                                <a id="l" class="nav-link block pt-1" (click)="moveTo('login')">Login</a>
                             </li>
                         </ul>
 
@@ -78,7 +78,6 @@
                     </svg>
                 </button>
             </div>
-
         </div>
     </nav>
 </header>

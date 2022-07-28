@@ -20,6 +20,11 @@
     background-color: white;
 }
 
+#content{
+    height: 23em;
+    overflow: hidden;
+}
+
 #left{
     width: 20%;
     float: left;
@@ -39,9 +44,9 @@
 #search{
     border-radius: 10px;
     height: 24px;
-    width: 400px;
+    width: 40%;
     color: black;
-    float: right;
+    float: left;
     margin-right: 16px;
     padding-left: 16px;
 }
@@ -113,6 +118,7 @@
     background-color: white;
     border-radius: 0 10px 10px 0;
     margin-top: 13px;
+    padding-top: 0.2em;
 }
 #sort{
     background-color: $Pcolour-3;
@@ -124,17 +130,17 @@
 }
 
 #triangle1{
-    border-right: 48px solid transparent;
-    border-bottom: 52.5px solid $Pcolour-3;
-    position: absolute;
+    border-right: 45px solid transparent;
+    border-bottom: 45px solid $Pcolour-3;
 }
 
 #triangle2{
-    border-left: 48px solid transparent;
-    border-bottom: 52.5px solid $Pcolour-3;
-    float: right;
-    right: 25%;
+    border-left: 45px solid transparent;
+    border-bottom: 45px solid $Pcolour-3;
     position: absolute;
+    top: 93%;
+    right: 25%;
+    
 }
 
 #leftHeader{
@@ -152,7 +158,7 @@
 }
 
 #leftContent{
-    height: 485px;
+    height: 30em;
 }
 
 #leftImg{
@@ -175,7 +181,7 @@
 }
 
 #rightContent{
-    height: 485px;
+    height: 30em;
 }
 
 #rightImg{

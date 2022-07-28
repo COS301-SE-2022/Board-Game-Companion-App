@@ -53,6 +53,7 @@ export class ScriptDetailComponent implements OnInit {
       },
       error:(err)=>{     
         this.downloading = false;
+        console.log(err);
         this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
       }      
     });

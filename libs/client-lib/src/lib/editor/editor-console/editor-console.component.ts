@@ -66,7 +66,6 @@ export class EditorConsoleComponent implements OnInit{
       return {
         log: function(text:string){
           windowConsole.log(text);
-          editorConsole.print({type:false,outputMessage:text});
         },
         info: function(strInfo:string){
           windowConsole.info(strInfo);

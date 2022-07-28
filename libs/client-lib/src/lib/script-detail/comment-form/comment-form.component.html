@@ -3,7 +3,7 @@
         <div class="flex justify-center">
             <div class="w-full">
               <textarea
-                class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-500 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="exampleFormControlTextarea1"
                 rows="3"
                 [placeholder]="'Add '+ formType"
@@ -13,7 +13,7 @@
         </div>
         
         <div class="flex mt-2">
-            <button (click) = "recordComment()" [disabled] = "content===''" type="button" [ngClass] = "{'hover:bg-green-800 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-zinc-800 active:shadow-lg':content !== '','opacity-80':content===''}" class="px-2 py-1 justify-center inline-block bg-green-700 text-white font-medium text-xs leading-normal uppercase rounded transition duration-150 ease-in-out flex align-center">
+            <button id = "but" (click) = "recordComment()" [disabled] = "content===''" type="button" [ngClass] = "{' focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg':content !== '','opacity-80':content===''}" class="cursor-pointer px-2 py-1 justify-center inline-block text-white font-medium text-xs leading-normal uppercase rounded transition duration-150 ease-in-out flex align-center">
                 <span class = "fa fa-comment mt-1"></span>
                 <p class = "ml-2 text-sm">{{formType}}</p>   
             </button>
