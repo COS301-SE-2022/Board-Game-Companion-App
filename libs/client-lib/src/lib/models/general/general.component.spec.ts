@@ -18,6 +18,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { ModelsService } from '../../shared/services/models/models.service';
 describe('GeneralComponent', () => {
   let component: GeneralComponent;
   let fixture: ComponentFixture<GeneralComponent>;
@@ -26,7 +27,7 @@ describe('GeneralComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
       declarations: [GeneralComponent],
-      // providers:[BggSearchService]
+      providers:[ModelsService]
     }).compileComponents(); 
     //check if component created
     fixture = TestBed.createComponent(GeneralComponent);

@@ -14,10 +14,10 @@ export class HeaderComponent implements OnInit {
   // @ViewChild('menu', {static: false, read: ElementRef}) 
   // burgerbtn: any; //similar to getElementById
   ShowMenu = false; 
-  UserDetails: userDetails | undefined;
+  UserDetails: any | undefined;
   log = "login";
   loggedIn = false;
-  admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com"];
+  admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com","u19062665@tuks.co.za"];
   searchValue = "";
   showHeader = true;
 
@@ -29,9 +29,9 @@ export class HeaderComponent implements OnInit {
         this.UserDetails = value;
         console.log("constructor");
         console.log(value);
-        sessionStorage.setItem("name",value?.details.name);
-        sessionStorage.setItem("email",value?.details.email);
-        sessionStorage.setItem("img",value?.details.img);
+        sessionStorage.setItem("name",value.info.name);
+        sessionStorage.setItem("email",value.info.email);
+        sessionStorage.setItem("img",value.info.picture);
       },
       error:(err)=>{     
         console.log(err);
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit {
 
     }else
 
-      this.router.navigate(['/scripts']);
+      this.router.navigate(['/home']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;
@@ -76,9 +76,9 @@ export class HeaderComponent implements OnInit {
 
   isAdmin():boolean{
     let result = false;
-
+    
     for(let count = 0; count < this.admin.length && !result; count++){
-     if(this.admin[count] === this.UserDetails?.details.email)
+     if(this.admin[count] === this.UserDetails?.info.email)
         result = true;
     }
 
