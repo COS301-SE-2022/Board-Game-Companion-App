@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
+import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import * as tf from '@tensorflow/tfjs'
+
 interface message{
   message: string;
   class: string;
@@ -68,6 +71,50 @@ export class EditorComponent implements OnInit{
   updateConsoleHeight(height:number):void{
     this.consoleHeight = height;
     this.updateDimensions();
+  }
+
+  async neuralnetwork(name:string):Promise<any>{
+    const modelsInfo = localStorage.getItem("models");
+    let result:any = null;
+
+    if(modelsInfo === null)
+      return null;
+    else{
+      const networks = JSON.parse(modelsInfo);
+      let index = -1;
+
+      for(let count = 0; count < networks.length && index === -1; count++){
+        if(networks[count].name === name)
+          index = count;
+      }
+
+      if(index === -1)
+        return null;
+      else{
+        const model = await tf.loadLayersModel('localstorage://' + name);
+
+        result = {
+          classifyOne: (input:number[])=>{
+            let result = "";
+
+            const inputTensor = tf.tensor2d(input,[1,input.length]);
+            const normalizedInput = inputTensor.sub(networks.min).div(networks.max.sub(networks.min));
+            const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+            const maxIndex = Array.from(tensorResult.argMax().dataSync());
+            result = maxIndex.toString();
+            return result;
+          },
+          classifyMany:(input:number[][])=>{
+            const result = "";
+
+            const tensorInput = tf.tensor2d(input,)
+            return result;
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   changeTheme():void{

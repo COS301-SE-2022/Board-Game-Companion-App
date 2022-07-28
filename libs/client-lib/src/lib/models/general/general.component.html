@@ -30,10 +30,10 @@
                 <button class="hover:scale-110 p-1" data-toggle="modal">
                     <i class="fas fa-sync" data-toggle="tooltip" title="sync"></i>
                 </button>
-                <button class="hover:scale-110 p-1" data-toggle="modal">
+                <button (click) = "remove(network)" class="hover:scale-110 p-1" data-toggle="modal">
                     <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                 </button>
-                <button class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "network.upload">
+                <button (click) = "upload(network)" class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "network.upload">
                     <i class="fas fa-upload" data-toggle="tooltip" title="upload"></i>
                 </button>
             </div>

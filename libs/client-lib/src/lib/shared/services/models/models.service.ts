@@ -30,9 +30,14 @@ export class ModelsService {
     this.api = "http://localhost:3333/api/"
   }
 
-  upload(name:string,model:tf.Sequential,created:Date,labels:any[],max:number[],min:number[]):void{
-
+  uploadModel(model:tf.Sequential):Promise<tf.io.SaveResult>{
+    return model.save(this.api + "models/save-files");
   }
+
+  uploadMetaData(name:string,created:Date,labels:any[],max:number[],min:number[]){
+      //return this.httpClient.post<>(this.api + "models/")
+  }
+
 
   setLayer(nodes:number,activation:string,inputshape?:number[]){
     

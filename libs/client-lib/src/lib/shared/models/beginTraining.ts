@@ -8,4 +8,7 @@ export interface beginTraining{
     optimizer: tf.Optimizer,
     epochs:number
     dataDivider:number[]
+    labels:any[],
+    min: number[],
+    max: number[]
 }

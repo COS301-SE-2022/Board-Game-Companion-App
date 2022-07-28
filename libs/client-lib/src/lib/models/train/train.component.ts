@@ -226,7 +226,7 @@ export class TrainComponent implements OnInit {
 
     if(this.name === ""){
       this.trainMessage.push("The name of the neural network is missing")
-      this.trainMessage.push("The name of the neural network is missing")
+      this.missing.push("The name of the neural network is missing")
     }
 
     if(this.learningRate !== "" && isNaN(parseFloat(this.learningRate)) === true ){
@@ -373,7 +373,10 @@ export class TrainComponent implements OnInit {
       ys: ys,
       optimizer: optimizer,
       epochs: this.epochs,
-      dataDivider: [trainingLength,this.data.length - trainingLength]
+      dataDivider: [trainingLength,this.data.length - trainingLength],
+      labels: tensorData.labels,
+      min: Array.from(tensorData.inputMin.dataSync()) ,
+      max: Array.from(tensorData.inputMax.dataSync())
     });
     //this.modelsService.train(model,xs,ys,optimizer);
     // const value = tf.tensor2d([123,5,17],[1,3]);

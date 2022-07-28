@@ -1,23 +1,8 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { beginTraining } from '../../shared/models/beginTraining';
 import * as tf from '@tensorflow/tfjs';
 import { ModelsService } from '../../shared/services/models/models.service';
-
-interface neuralnetwork{
-  name:string;
-  created?:Date;
-  size?:Date;
-  model?: tf.Sequential,
-  xs?: tf.Tensor,
-  ys?: tf.Tensor,
-  optimizer?: tf.Optimizer,
-  epochs?: number,
-  progress?: number,
-  loss?: number,
-  accuracy?: number
-  upload?:boolean
-}
-
+import { neuralnetwork } from '../../shared/models/neuralnetwork';
 
 @Component({
   selector: 'board-game-companion-app-general',
@@ -31,10 +16,17 @@ export class GeneralComponent implements OnInit,OnChanges {
   nn:neuralnetwork[] = [];
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-  constructor(private readonly modelService:ModelsService){}
+  constructor(private readonly modelService:ModelsService){
+    const modelsInfo = localStorage.getItem("models");
+    
+    if(modelsInfo !== null){
+      this.nn = JSON.parse(modelsInfo);
+    }
+  }
 
   ngOnInit(): void{
-    console.log("models")
+    console.log("models");
+
   }
 
   ngOnChanges(): void {
@@ -57,6 +49,7 @@ export class GeneralComponent implements OnInit,OnChanges {
 
       callbacks:{
         onTrainBegin:()=>{
+          console.log(this.nn[0]);
           this.nn[0].progress = 0;
         },
         onTrainEnd:()=>{
@@ -86,7 +79,30 @@ export class GeneralComponent implements OnInit,OnChanges {
     this.tab = value;
   }
 
-  upload(network:beginTraining): void{
+  upload(network:neuralnetwork): void{
+    network.model?.save('localstorage://' + network.name);
+    let modelsInfo = localStorage.getItem('models');
     
+    network.upload = false;
+
+    if(modelsInfo === null){
+      localStorage.setItem("models",JSON.stringify([network]));
+      modelsInfo = localStorage.getItem('models');
+    }else{
+      localStorage.setItem("models",JSON.stringify(this.nn));
+    }
+
+  }
+
+  remove(network:neuralnetwork): void{
+    const temp:neuralnetwork[] = [];
+
+    this.nn.forEach((value:neuralnetwork)=>{
+      if(value.name !== network.name)
+        temp.push(value);
+    })
+
+    this.nn = temp;
+    localStorage.setItem("models",JSON.stringify(this.nn));
   }
 }
