@@ -3,7 +3,7 @@
     <div id="info" class = "script-information bg-white">
       <h1 class = "script-title text-xl w-full p-2"><b>{{current.name}}</b></h1>
       <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author}}</p>
+        <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author.name}}</p>
       </div>
       
       <div class = "flex flex-row name-value-pair text-sm p-2">
@@ -59,14 +59,14 @@
     
     <div id="download" class = "script-download mb-4 bg-white text-center">
       <div class = "script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
-      <button (click)="download()" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+      <button *ngIf = "!downloading" (click)="download()" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
         <i id = "downIcon" class="fas fa-download fa-3x"></i>
         <p id = "down" class = "text-lg"><b>DOWNLOAD</b></p>
       </button>
       
       <button *ngIf = "downloading" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
-        <i class="fas fa-spinner fa-pulse"></i>
-        <p class = "text-lg"><b>DOWNLOADING</b></p>
+        <i id = "downIcon" class="fas fa-spinner fa-pulse fa-3x"></i>
+        <p id = "down" class = "text-lg"><b>DOWNLOADING</b></p>
       </button>
     </div>
 
