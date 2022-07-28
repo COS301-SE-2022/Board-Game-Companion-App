@@ -2,46 +2,88 @@
 
 
 
-.container{
-    width: 100%;
-    position: relative;
-}
-.result
-{
-    max-width: 80%;
-    position: relative;
+#container{
     margin: auto;
-    margin-top: 8em;
-    display: flex;
-    margin-bottom: 8em;
+    width: 60%;
+    height: 600px;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    background-color: $Pcolour-2;
+    border-radius: 10px;
 }
+
+h1{
+    font-size: 32px;
+    background-color: $Pcolour-3;
+    border-radius: 10px 10px 0 0;
+}
+
+img{
+    width: 400px;
+    height: 250px;
+}
+
 #imgDiv{
-    margin-right: 5em;
+    float: left;
 }
-#descr
-{
-    font-family: sans-serif;
-    text-align: center;
+
+#table{
+    float: right;
+}
+
+table{
+    margin: auto;
+    display: flex;
     
 }
-#title
-{
-    font-weight: bold;
-    font-size: xx-large;
-    font-family: sans-serif;
-    text-align: center;
-    margin-bottom: 1em;
+
+thead{
+    float: left;
 }
-#addGame
-{
-    font-family: sans-serif;
-    text-align: center;
+
+tbody{
+    display: flex;
+    flex-direction: row;
 }
-#center{
-    margin: 0;
-    margin-top: 2em;
-    position: absolute;
-    left: 50%;
+
+tr{
+    display: flex;
+    flex-direction: column;
+}
+
+th{
+    padding-top: 16px;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+td{
+    font-size: 16px;
+    padding-top: 16px;
+    padding-left: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#description{
+    float:left;
+}
+
+#descript{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    text-overflow: ellipsis;
+}
+
+#add{
+  float: left;  
+}
+
+button{
+    background-color: $Pcolour-3;
 }
 
 @media(max-width:639px){
