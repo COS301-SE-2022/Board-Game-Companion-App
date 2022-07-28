@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class FooterComponent implements OnInit {
-  showFooter = false;
+  showFooter = true;
 
   ngOnInit(): void {
     document.addEventListener('editor-page',(event)=>{
@@ -16,11 +16,6 @@ export class FooterComponent implements OnInit {
     document.addEventListener('editor-exit',(event)=>{
       this.showFooter = true;
     })
-
-
-
-    
-
   }
 }
   
