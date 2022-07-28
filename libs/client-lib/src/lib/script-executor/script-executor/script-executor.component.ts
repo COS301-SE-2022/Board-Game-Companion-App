@@ -75,6 +75,9 @@ export class ScriptExecutorComponent implements OnInit {
       session.push("Win")
       const now = new Date();
       session.push(now.toLocaleDateString())
+      const script = localStorage.getItem(this.scriptID)
+      if(script != null)
+      session.push(script[3])
       localStorage.setItem(name, JSON.stringify(session))
     }
     else
@@ -96,6 +99,9 @@ export class ScriptExecutorComponent implements OnInit {
       session.push("Win")
       const now = new Date();
       session.push(now.toLocaleDateString())
+      const script = localStorage.getItem(this.scriptID)
+      if(script != null)
+      session.push(script[3])
       localStorage.setItem(name, JSON.stringify(session))
     }
 
