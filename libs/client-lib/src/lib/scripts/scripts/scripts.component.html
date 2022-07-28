@@ -27,10 +27,39 @@
 </div>
 <div class="container" >
 <!-- search and sort functionality -->
-    <div class = "row" >
-        <div class = "col-xs-12 col-sm-12">
-            <input class = "w-11/12" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
-            <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button>
+    <div id="outerDiv" class = "row" >
+        <div id="titleScript">
+            <!--Heading-->
+            <h1 id="heading" class="w-1/3">Scripts</h1>
+            <!--logo-->
+            <div id="logo" class="w-1/3 flex items-center justify-center h-full">
+                <div class="mx-auto">
+
+                    <img id="logs" src="assets/images/logo.png" alt="logo" class="">
+                </div>
+
+            </div>
+            <!--Search and Sort-->
+            <!-- <input class = "w-11/12" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
+            <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button> -->
+
+            <div id="searchSortDiv" class="w-1/3 h-full">
+                <div id="sortingDiv" class="float-right">
+                    <div id="outerSortDiv" class="w-full float-right">
+                    <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selected"  (change)="onSort()">
+                        <!-- <option value="" disabled selected>Sort By..</option> -->
+                        <option value="alphabetical">Name</option>
+                        <option value="score">Creator</option>
+                        <option value="date">LastUpdate</option>
+                    </select>
+                    <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
+                </div>
+                </div>
+                <div id="searchDiv">
+                    <input class = "" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
+                    <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button>
+                </div>
+            </div>
         </div>
         <!-- <div class = "col-xs-12 col-sm-4" >
             <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="test()">
@@ -54,7 +83,7 @@
                     
                     <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
-                            <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                             </button>
                             <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
@@ -133,7 +162,7 @@
                         {{convertBytes(value.size)}}
                     </td>
                     <td class="text-center align-middle flex flex-row">
-                        <button *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
+                        <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
                         <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">

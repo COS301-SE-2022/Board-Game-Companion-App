@@ -16,11 +16,6 @@ export class FooterComponent implements OnInit {
     document.addEventListener('editor-exit',(event)=>{
       this.showFooter = true;
     })
-
-
-
-    
-
   }
 }
   

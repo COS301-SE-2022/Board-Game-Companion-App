@@ -61,7 +61,7 @@ export const routes: Routes = [
     loadChildren: () => import('./models/models.module').then(m=>m.ModelsModule)
   },
   {
-    path: 'executor',
+    path: 'script-exec',
     loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
   }
 ];

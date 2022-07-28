@@ -56,7 +56,8 @@ export class HeaderComponent implements OnInit {
       } 
 
     }else
-      this.router.navigate(['/home']);
+
+      this.router.navigate(['/scripts']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;
