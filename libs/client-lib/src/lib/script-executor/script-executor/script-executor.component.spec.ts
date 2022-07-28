@@ -26,7 +26,7 @@ describe('ScriptExecutorComponent',()=>{
     expect(service).toBeTruthy();
     expect(route).toBeTruthy();
     expect(router).toBeTruthy();
-    component = new ScriptExecutorComponent(route, service, router);
+    component = new ScriptExecutorComponent(service, router);
     expect(component).toBeTruthy();
   });
 
@@ -34,21 +34,15 @@ describe('ScriptExecutorComponent',()=>{
     service = TestBed.inject(ScriptService);
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    component = new ScriptExecutorComponent(route, service, router);
-    expect(component.min).toBe("min");
-    expect(component.m).toBe(0);
-    expect(component.s).toBe(0);
-    expect(component.sec).toBe("sec");
-    expect(component.hours).toBe("hours");
-    expect(component.file).toBe("test");
-    expect(component.scriptID).toBe("");
+    component = new ScriptExecutorComponent(service, router);
+    expect(component.replay).toBe(false);
   });
 
   it('should define functions',()=>{
     service = TestBed.inject(ScriptService);
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
-    component = new ScriptExecutorComponent(route, service, router);
-    expect(component.back).toBeDefined();
+    component = new ScriptExecutorComponent(service, router);
+    expect(component.code).toBeDefined();
   });
 });

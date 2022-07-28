@@ -41,6 +41,10 @@ describe('TrainComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should create a component', ()=>{
+    expect(component).toBeTruthy();
+  });
+
   it('should change tab', () => {
     // expect(component).toBeTruthy();
     component.changeTab(1);

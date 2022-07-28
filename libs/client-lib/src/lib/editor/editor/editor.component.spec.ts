@@ -5,6 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
+let mockStorage: any = {};
+
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let router: Router;
@@ -18,6 +20,25 @@ describe('EditorComponent', () => {
     }).compileComponents();
     service = TestBed.inject(ScriptService);
     router = TestBed.inject(Router);
+
+    const mockLocalStorage = {
+      getItem: (key: string): string => {
+      return key in mockStorage ? mockStorage[key] : null },
+
+      setItem: (key: string, value: string) => {
+        mockStorage[key] = `${value}`;},
+
+      removeItem: (key: string) => {
+      delete mockStorage[key];},
+
+      clear: () => {
+        mockStorage = {};
+      }
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage
+    })
   });
 
   it('should create', () => {
@@ -31,8 +52,19 @@ describe('EditorComponent', () => {
   });
 
   it('updateDimensions', ()=>{
+    component.ngOnInit();
     expect(component.updateDimensions).toBeDefined();
+    component.onScreenResize();
   });
 
+  // it('should change theme of editor', ()=>{
+  //   mockStorage ={'board-game-companion-script-editor-theme': JSON.stringify('dark')};
+  //   component.changeTheme();
+  // });
+
+  // it('should execute a script', ()=>{
+ 
+  // });
+  
 });
 

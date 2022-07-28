@@ -3,7 +3,7 @@
 #container{
     width: 80%;
     margin: auto;
-
+    margin-bottom: 5em;
     margin-top: 5rem;
 }
 table{
@@ -30,7 +30,6 @@ h1{
     color: $Pcolour-2;
     background-color: $Pcolour-3;
     padding: 0.5rem;
-    width: 6em;
     border-radius: 10px 10px 0 0;
 }
 img{
@@ -77,7 +76,7 @@ td{
 input{
     border-radius: 10px;
     height: 20px;
-    width: 400px;
+    width: 25%;
     color: black;
     float: right;
     margin-right: 16px;
