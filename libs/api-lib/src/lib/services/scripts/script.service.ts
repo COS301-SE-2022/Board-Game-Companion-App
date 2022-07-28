@@ -140,6 +140,8 @@ export class ScriptService {
                     let data = "";
 
                     newScript.build = await this.createBuildFile(newScript._id);
+                    console.log("build: " + console.log(newScript.build.location));
+
                     data = fs.readFileSync(script.build.location,"utf8");
                     
                     const temp = await this.updateBuild(newScript._id,data);
@@ -149,6 +151,9 @@ export class ScriptService {
                         result.message = "Failed to download script.";
                     }else{
                         const image = fs.readFileSync(script.icon.location,{});
+                        console.log("image-----");
+                        console.log(image)
+                        console.log("image-----")
                         const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image.buffer);
                         newScript.icon = {
                             name: script.icon.name,
@@ -201,7 +206,8 @@ export class ScriptService {
         fileUploadResult = await this.s3Service.upload("main.js",path,data);
         result.location = fileUploadResult.location;
         result.awsKey = fileUploadResult.key;
-
+        console.log(result);
+        
         return result;        
     }
 
