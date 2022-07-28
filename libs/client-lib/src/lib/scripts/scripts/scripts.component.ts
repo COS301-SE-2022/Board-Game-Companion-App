@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { fetchSessionResults } from '../../shared/models/fetch-session-results';
 
 @Component({
   selector: 'board-game-companion-app-scripts',
@@ -18,12 +19,14 @@ export class ScriptsComponent implements OnInit {
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   searchValue = "";
+  //selected = "";
   page = 1;
   hover = "";
   items = [{ title: 'Profile' }, { title: 'Log out' }];
   
   constructor(private readonly scriptService:ScriptService,private readonly router:Router){}
-
+  listResults: fetchSessionResults[] = new Array<fetchSessionResults>();
+  public selectedSort = "";
   ngOnInit(): void {
     this.loadAllScripts();
   }
@@ -222,6 +225,53 @@ export class ScriptsComponent implements OnInit {
 
   clearHover(): void{
     this.hover = "";
+  }
+
+  onSort(): void
+  {
+    
+    console.log(this.selected);
+    // this.listResults = new Array<fetchSessionResults>();
+    // this.ngOnInit();
+    // if(this.selectedSort ==="alphabetical")
+    // {
+    //   // sort game sessions alphabetically
+    //     console.log("alphabet sort");
+    //     this.listResults.sort(function(resultA, resultB) 
+    //     {
+    //       const gameA = resultA.getBoardGame().toUpperCase(); // ignore upper and lowercase
+    //       const gameB = resultB.getBoardGame().toUpperCase(); // ignore upper and lowercase
+
+    //       if (gameA < gameB) 
+    //       {
+    //         return -1;
+    //       }
+    //       if (gameA > gameB)
+    //       {
+    //         return 1;
+    //       }
+
+    //     return 0;
+    //   });
+    // }
+    // else if(this.selectedSort ==="score")
+    // {
+    //   console.log("score sort");
+    //   this.listResults.sort(function(resultA,resultB)
+    //   {
+    //     return +resultA.getScore() - +resultB.getScore(); 
+    //   });
+
+    // }
+    // else if(this.selectedSort==="date")
+    // {
+    //   console.log("date sort");
+    //   this.listResults.sort(function(resultA,resultB)
+    //   {
+    //     console.log(+new Date(resultB.getDate()) - +new Date(resultA.getDate()))
+    //     return +new Date(resultB.getDate()) - +new Date(resultA.getDate());
+    //   });
+    // }
   }
    
 }
