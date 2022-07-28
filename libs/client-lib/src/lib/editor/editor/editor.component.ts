@@ -115,30 +115,30 @@ export class EditorComponent implements OnInit{
   async execute(): Promise<void>{
     
     this.editorConsole.open();
-    //try{
+    try{
       const console = this.editorConsole.defineConsole();
       const model = await this.neuralnetworks();
       this.editorConsole.clear();
       
       const code = new Function("console","model",this.editorBody.getCode());
       code(console,model); 
-      // this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         
-      //   next:(value)=>{
-      //     //console.log(value)
-      //     const code = new Function("console",value);
-      //     code(console);    
-      //   },
-      //   error:(e)=>{
-      //     console.log(e);
-      //   }
-      // });
+        next:(value)=>{
+          //console.log(value)
+          const code = new Function("console",value);
+          code(console);    
+        },
+        error:(e)=>{
+          console.log(e);
+        }
+      });
 
-    //}catch(err){
-      //console.log(err);
-    //}
+    }catch(err){
+      console.log(err);
+    }
+
   }
-
 
   changesTracker(value:number): void{
     this.editorStatusBar.updateStatusOfChanges(value);

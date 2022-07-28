@@ -80,6 +80,7 @@
     "@nestjs/serve-static": "^2.2.2",
     "@ng-bootstrap/ng-bootstrap": "^12.1.2",
     "@tensorflow/tfjs": "^3.19.0",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "ace-builds": "^1.6.0",
     "angular-oauth2-oidc": "^13.0.1",
     "angularx-social-login": "^4.1.0",
