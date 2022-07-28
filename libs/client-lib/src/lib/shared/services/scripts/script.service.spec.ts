@@ -53,7 +53,8 @@ describe('Test script service',()=>{
   const exScript: script = {
     _id: '171',
     name: 'chess',
-    author: 'NN',
+    author: {name:'MasJay',email:'ZTS@gmail.com'},
+    owner:{name:'PRo',email:'pro@gmail.com'},
     boardgame: '',
     description: '',
     created: new Date(0),
@@ -66,8 +67,9 @@ describe('Test script service',()=>{
     status: {value:2,message:'The script is currently running'},
     size: 0,
     comments: [],
-    files: [],
-    icon: '',
+    source: {name:'',location:'',awsKey:''},
+    build: {name:'',location:'',awsKey:''},
+    icon: {name:'',location:'',awsKey:''},
     __v: 0,
   };
 
@@ -168,20 +170,20 @@ describe('Test script service',()=>{
   });
   const exRating: rating ={
     _id: '25',
-    user: 'NN',
+    user: {name:'NN',email: 'NN@zak.uk.co'},
     script: 'chessMaster',
     value: 4
   };
 
   it('should rate the script and return the rating',()=>{
-    service.rate('NN','chessMaster',4).subscribe((data)=>{
+    service.rate({name:'NN',email: 'NN@zak.uk.co'},'chessMaster',4).subscribe((data)=>{
       expect(data).toBe(exRating);
     });
 
     const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/rate');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toStrictEqual({
-      user:'NN',
+      user:{name:'NN',email: 'NN@zak.uk.co'},
       script:'chessMaster',
       value:4
     });
@@ -189,14 +191,15 @@ describe('Test script service',()=>{
   });
 
   it('should get script rating and return it',()=>{
-    service.getRating('NN','chessMaster').subscribe((data)=>{
+    service.getRating({name:'NN',email: 'NN@zak.uk.co'},'chessMaster').subscribe((data)=>{
       expect(data).toBe(exRating);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve-rating?user=NN&script=chessMaster');
+    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve-rating?userName=NN&userEmail=NN@zak.uk.co&script=chessMaster');
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
-    param = param.set('user','NN');
+    param = param.set('userName','NN');
+    param = param.set('userEmail','NN@zak.uk.co');
     param = param.set('script','chessMaster');
 
     // expect(req.request.params).toBe({params:param});

@@ -1,6 +1,7 @@
 import { TokenType } from '@angular/compiler';
 import { Injectable } from '@nestjs/common';
 import { dot } from '@tensorflow/tfjs-layers/dist/exports_layers';
+import { square } from '@tensorflow/tfjs-node';
 import * as chevrotain from 'chevrotain';
 import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
@@ -31,11 +32,20 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
         const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
         const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+        const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
+        const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
+        const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
         const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
+        const tAddPieceToTile =(chevrotain.createToken({name:"addPieceToTile",pattern:/addPieceToTile/,longer_alt:tUserDefinedIdentifier}));
         
+        const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
+        const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
+        const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
+        
+
         const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
         const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
 
@@ -60,16 +70,20 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
 
 //Assignment operators
         const Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
+//literals
+const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
 
-//increment
-        const tIncrement = chevrotain.createToken({name:"Increment",pattern:/\+\+/});
 
-//decrement
-        const tDecrement = chevrotain.createToken({name:"Decrement",pattern:/--/ });
+const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
+const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
+const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
+const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+
+
 
 //arithmetic operators
-        const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/,longer_alt:tIncrement}));
-        const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tDecrement}));
+        const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/}));
+        const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:IntegerLiteral}));
         const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
         const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
         const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
@@ -79,14 +93,6 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const Or=(chevrotain.createToken({name:"Or",pattern:/or/,longer_alt:tUserDefinedIdentifier}));
         const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
 
-//literals
-        const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
-
-
-        const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-        const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9]*") | ('[A-Za-z0-9]*')/ }));
-        const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
-        const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
 
 
 //input output
@@ -138,8 +144,15 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     tPlayer,
     tCards,
     tTile,
+    tPiece,
+    tAddToArr,
     tAddToBoard,
+    tConsider,
     tAddAdjacency,
+    tAddPieceToTile,
+    tGetTileByID,
+    tGetTilesByType,
+    tGenerateChoices,
     tEndgame,
     tReturn,
     Comma,
@@ -159,8 +172,6 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
     GreaterThan,
     LessThan,
     Assign,
-    tIncrement,
-    tDecrement,
     Plus,
     Minus,
     Multiply,
@@ -370,10 +381,20 @@ class parser extends CstParser
         });
 
         private Actions=this.RULE("Actions", () => {
-            this.MANY(() => {
+           
                 this.OPTION(() => {
                     
-                this.CONSUME(tAction)
+                    this.SUBRULE(this.DefAction)
+
+                    this.SUBRULE(this.DefCondition)
+
+                    this.SUBRULE(this.Actions)
+                });
+        
+        });
+        private DefAction=this.RULE("DefAction", () => {
+            //
+            this.CONSUME(tAction)
                 this.CONSUME(tUserDefinedIdentifier)
                 this.CONSUME(OpenBracket)
                 this.SUBRULE(this.FormalParameters)
@@ -381,22 +402,25 @@ class parser extends CstParser
                 this.CONSUME(OpenBrace)  
                 this.SUBRULE(this.statements )
                 this.CONSUME(CloseBrace)  
-                this.SUBRULE(this.nCondition )
-                this.CONSUME1(tUserDefinedIdentifier)
+        })
+        private DefCondition=this.RULE("DefCondition", () => {
+            //
+            this.CONSUME(tCondition)
                 this.CONSUME1(OpenBracket)
                 this.SUBRULE1(this.FormalParameters)
                 this.CONSUME1(CloseBracket)
                 this.CONSUME1(OpenBrace)
+                this.SUBRULE1(this.Consideration)
                 this.SUBRULE1(this.statements)
-                this.CONSUME(tReturn)
-                this.OR([
-                    { ALT: () =>{ this.SUBRULE(this.Const )}}, 
-                    { ALT: () =>{ this.SUBRULE(this.nVariable)}}
-                ])
                 this.CONSUME1(CloseBrace)
-                });
         })
-        });
+        private Consideration=this.RULE("Consideration", () => {
+            this.OPTION(() => {
+                this.CONSUME(tConsider)
+                this.CONSUME(Colon)
+                this.SUBRULE(this.nVariable)
+            })
+        })
         private FormalParameters=this.RULE("FormalParameters", () => {
             this.OPTION(() => {
                 this.CONSUME(tUserDefinedIdentifier)
@@ -539,10 +563,52 @@ class parser extends CstParser
                                 this.SUBRULE1(this.Arguments )
                                 this.CONSUME1(CloseBracket )
                         }},
-
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetTileByID)
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetTilesByType) 
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.SpecialMethods) 
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGenerateChoices) 
+                        }},
                     ])
                     
                 });
+                private rGenerateChoices=this.RULE("rGenerateChoices", () => {
+                    this.CONSUME(tGenerateChoices)
+                    this.CONSUME(OpenBracket )
+                    this.CONSUME(CloseBracket )
+                })
+                private rAddPieceToTile=this.RULE("rAddPieceToTile", () => {
+                    this.CONSUME(tAddPieceToTile )
+                                this.CONSUME(OpenBracket )
+                                this.CONSUME(tUserDefinedIdentifier )
+                                this.CONSUME(Comma )
+                                this.SUBRULE(this.Value)
+                                this.CONSUME(CloseBracket )
+                })
+
+                private rGetTileByID=this.RULE("rGetTileByID", () => {
+                                this.CONSUME(tGetTileByID )
+                                this.CONSUME2(OpenBracket )
+                                this.SUBRULE(this.Expression)
+                                this.CONSUME2(CloseBracket )
+                })
+                private rGetTilesByType=this.RULE("rGetTilesByType", () => {
+                    this.CONSUME(tGetTilesByType )
+                                this.CONSUME3(OpenBracket )
+                                this.SUBRULE1(this.Expression)
+                                this.CONSUME3(CloseBracket )
+                    })
+
                 private Loop=this.RULE("Loop", () => {
             
                     this.OR([
@@ -619,18 +685,20 @@ class parser extends CstParser
 
                  });
                  private Alternative=this.RULE("Alternative", () => {
-                    this.OR([
-                        { 
-                            ALT: () =>{ 
-                            this.SUBRULE(this.Branch)
-                        }},
-                        { 
-                            ALT: () =>{ 
-                            this.CONSUME(OpenBrace )
-                            this.SUBRULE(this.statements)
-                            this.CONSUME(CloseBrace )
-                        }},
-                    ])
+                    this.OPTION(() => {
+                        this.OR([
+                            { 
+                                ALT: () =>{ 
+                                this.SUBRULE(this.Branch)
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(OpenBrace )
+                                this.SUBRULE(this.statements)
+                                this.CONSUME(CloseBrace )
+                            }},
+                        ])
+                    })
                  });
                  private Declarations=this.RULE("Declarations", () => {
                     this.OPTION(() => {
@@ -659,6 +727,10 @@ class parser extends CstParser
                                         ALT: () =>{ 
                                         this.CONSUME(tTile)
                                     }},
+                                    { 
+                                        ALT: () =>{ 
+                                        this.CONSUME(tPiece)
+                                    }},
                                 ])
                             
 
@@ -675,10 +747,24 @@ class parser extends CstParser
                             {
                             ALT: () =>{
                                 this.SUBRULE(this.addAdj )
+                            }},
+                            {ALT: () =>{
+                                this.SUBRULE(this.rAddPieceToTile )
+                            }},
+                            {ALT: () =>{
+                                this.SUBRULE(this.rAddToArr )
                             }}
-                            
                         ])
                  })
+                 private rAddToArr=this.RULE("rAddToArr", () => {
+                    this.CONSUME(tAddToArr )
+                    this.CONSUME(OpenBracket )
+                    this.CONSUME(tUserDefinedIdentifier )
+                    this.CONSUME(Comma )
+                    this.SUBRULE(this.Value)
+                    this.CONSUME(CloseBracket )
+                 })
+
                  private addTileToBoard=this.RULE("addTileToBoard", () => {
                     
                     this.CONSUME(tAddToBoard)
@@ -709,8 +795,12 @@ class parser extends CstParser
                  private Assignment=this.RULE("Assignment", () => {
                     
                     this.SUBRULE(this.LHS )
+                    
                     this.CONSUME(Assign)
                     this.SUBRULE(this.RHS )
+
+                            
+                        
                  });
 
                  private LHS=this.RULE("LHS", () => {
@@ -732,6 +822,15 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.SUBRULE(this.IO )
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(tPiece)
+                            }},
+                            { 
+                                ALT: () =>{ 
+                                this.CONSUME(OpenSquareBracket)
+                                this.CONSUME(ClosedSquareBracket)
                             }}
                     ])
                 });
@@ -1173,8 +1272,7 @@ function visitGameState(cstOutput:CstNode)
             //if it a token decide how to write
             if(token.image)
             {
-                console.log(token.image)
-                console.log(token.tokenType.name)
+                
 
                 
                 if(token.tokenType.name != "StringLiteral")
@@ -1343,8 +1441,22 @@ function visitPlayer(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                 }
             }
+            if(node.name  == "Actions")
+            {
+                visitPlayerActions(node,0);
+                //clean up
+                jsScript=jsScript.replace('//actionnums', '');
+                jsScript=jsScript.replace('//actions', '');
+                jsScript=jsScript.replace('//actioncond', '');
+                jsScript=jsScript.replace('//action cases', '');
+                jsScript=jsScript.replace('//condition cases', '');
+                jsScript=jsScript.replace('//considerations cases', '');
+            }
+            else
+            {
+                visitPlayerStatements(node, "//player");
+            }
             
-            visitPlayerStatements(node);
             if(node.name == "statements")
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '}' , jsScript.slice(jsScript.indexOf("//players"))].join('');
@@ -1357,7 +1469,167 @@ function visitPlayer(cstOutput:CstNode)
             }
         }
 }
-function visitPlayerStatements(cstOutput:CstNode)
+function visitPlayerActions(cstOutput:CstNode, i:number)
+{
+    //here
+    if(i<1)
+    {
+        const ActionTemplate = fs.readFileSync("templates/ActionTemplate.js","utf8");
+        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ActionTemplate , jsScript.slice(jsScript.indexOf("//players"))].join('');
+                
+    }
+    
+        //
+        let k: keyof typeof cstOutput.children;  // visit all children
+        for (k in cstOutput.children) {
+            const child = cstOutput.children[k];
+            
+            const node = child[0] as unknown as CstNode;
+
+            if(node.name)
+            {
+                if(node.name == "DefAction")
+                {
+                    visitDefActions(node, i)
+                    
+                }
+                if(node.name == "DefCondition")
+                {
+                    visitDefCondition(node, i)
+                    
+                }
+                if(node.name  == "Actions")
+                {
+                    visitPlayerActions(node,i+1);
+                }
+            }
+        }
+    
+
+}
+function visitDefActions(cstOutput:CstNode, i:number)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "Action")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actionnums")), i+',' , jsScript.slice(jsScript.indexOf("//actionnums"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'case '+ i+':\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'case '+ i+':\n' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                
+            }
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return '+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\n'+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                
+            }
+            if(token.tokenType.name == "CloseBracket")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),token.image+'\nbreak\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),token.image+'\nbreak\n', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                
+            }
+            if(token.tokenType.name != "Action")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "FormalParameters")
+            {
+                let i: keyof typeof node.children;  // visit all children
+                for (i in node.children) {
+                    const childi = node.children[i];
+                    const tokeni = childi[0] as unknown as IToken;
+                    if(tokeni.tokenType)
+                    {
+                        console.log(tokeni)
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'p' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'p' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                            jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),token.image+'Cond ', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                        }
+                    }
+                }
+            }
+            if(node.name == "statements")
+            {
+                visitPlayerStatements(node, "//actions")
+            }
+        }
+    }
+}
+
+function visitDefCondition(cstOutput:CstNode, i:number)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+        {
+            if(token.tokenType.name != "Condition")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),token.image+' ', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                
+            }
+        }
+
+        if(node.name)
+        {
+            if(node.name != "Consideration")
+            {
+                visitPlayerStatements(node, "//actioncond")
+            }
+            else
+            {
+                //
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                visitConsideration(node, i)
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'\nbreak\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                
+            }
+        }
+    }
+}
+function visitConsideration(cstOutput:CstNode, i:number)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+        {
+            if(token.tokenType.name != "consider" && token.tokenType.name != "Colon")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),token.image+'', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                
+            }
+        }
+        if(node.name)
+        {
+            visitConsideration(node, i)
+        }
+    }
+}
+
+function visitPlayerStatements(cstOutput:CstNode, place:string)
 {
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
@@ -1366,9 +1638,10 @@ function visitPlayerStatements(cstOutput:CstNode)
         const token = child[0] as unknown as IToken;
         if(node.name == "statements")
         {
-            jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), '\n' , jsScript.slice(jsScript.indexOf("//players"))].join('');
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n' , jsScript.slice(jsScript.indexOf(place))].join('');
                     
         }
+
         if(token.tokenType)
         {
             
@@ -1380,13 +1653,16 @@ function visitPlayerStatements(cstOutput:CstNode)
                 case "Variable": 
                     break;
                 case "ConsoleInput":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'console_Input', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console_Input', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;    
                 case "ConsoleOutput":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'console.log ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console.log ', jsScript.slice(jsScript.indexOf(place))].join('');
+                    break;
+                case "Piece":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new piece() ', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
                 default:
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image + ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + ' ', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
 
             }
@@ -1395,7 +1671,201 @@ function visitPlayerStatements(cstOutput:CstNode)
                 
         
         }
-        visitPlayerStatements(node);
+       
+        if(node.name == "MethodCall")
+        {
+            
+            visitMethodCall(node, place)
+        }
+        else{
+            visitPlayerStatements(node,place);
+        }
+    }
+}
+function visitMethodCall(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+
+        if(node.name)
+        {
+            switch(node.name)
+            {
+                case "rGetTileByID":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+                    visitGetTileByID(node, place)
+                    break;
+                case "rGetTilesByType":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+                    visitGetTilesByType(node,place)
+                    break;
+                case "SpecialMethods":
+                    visitMethodCall(node,place)
+                    break;
+                case "rAddPieceToTile":
+                    visitRAddPieceToTile(node, place)
+                    break;
+                case "rAddToArr":
+                    visitRAddToArre(node, place)
+                    break;
+                case "rGenerateChoices":
+                    visitGenerateChoices(node, place)
+                    break;
+            }
+        }
+    }
+}
+function visitGenerateChoices(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
+
+    }
+}
+
+
+
+function visitRAddToArre(cstOutput:CstNode, place:string)
+{
+    let code = ".push(";
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                code = code+token.image+')\n'
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "Value")
+            {
+                let i: keyof typeof node.children;
+                for (i in node.children) {
+                    const child = node.children[i];
+                    const tokeni = child[0] as unknown as IToken;
+                    if(tokeni.tokenType)
+                    {
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            code = tokeni.image+code
+                        }
+                    }
+
+                }
+            }
+        }
+        }
+
+
+        
+
+    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code, jsScript.slice(jsScript.indexOf(place))].join('');
+     
+}
+function visitRAddPieceToTile(cstOutput:CstNode, place:string)
+{
+    
+    let code = ".pieces.push(";
+    let otherCode = ".Tile="
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                code = code+token.image+')\n'
+                otherCode = token.image+otherCode
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "Value")
+            {
+                let i: keyof typeof node.children;
+                for (i in node.children) {
+                    const child = node.children[i];
+                    const tokeni = child[0] as unknown as IToken;
+                    if(tokeni.tokenType)
+                    {
+                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
+                        {
+                            code = tokeni.image+code
+                            otherCode = otherCode+token.image+'\n'
+                        }
+                    }
+
+                }
+            }
+        }
+        }
+
+
+        
+
+    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code+otherCode, jsScript.slice(jsScript.indexOf(place))].join('');
+     
+}
+
+
+function visitGetTileByID(cstOutput:CstNode, place:string)
+{
+            
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + '', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+        }
+        if(node.name)
+        {
+            visitGetTileByID(node, place)
+        }
+
+    }
+}
+function visitGetTilesByType(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + ' ', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+        }
+        if(node.name)
+        {
+            visitGetTilesByType(node, place)
+        }
 
     }
 }

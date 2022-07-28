@@ -2,13 +2,18 @@
 <div id = "container">
     <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1>
     <div id = "left" class = "ml-16">
+        <!-- Top Games -->
         <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
         <div id = "leftContent" class = "w-full">
             <div id = "leftBlock" class = "p-4 cursor-pointer" *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
                 <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
                 <h5  id = "leftNames" class = "text-base font-bold pl-2">{{game.name}}</h5>
             </div>
+
+            
         </div>
+
+        
     </div>
     <div id = "right" class = "mr-16">
         <h1 id = "rightHeader" class = "p-3 pt-2.5 h-14">Recently Viewed</h1>
@@ -22,15 +27,16 @@
         </div>
     </div>
     <div id = "wrapper">
-        <div class="flex justify-center h-14">
+        <div id="outerDiv" class="flex justify-center h-14">
             <div id = "search-tools">
               <div class="mb-3">
                   <div class="input-group mb-4">
                       <input id = "search" class = "mt-3 ml-12 pl-4 focus:outline-none" [(ngModel)] = "searchValue" name = "searchValue" type="search" aria-label="Search" aria-describedby="button-addon3">
-                      <button (click)="search()" class="btn inline-block font-bold px-2 py-0.5" type="button" id="button-addon3">Search</button>
-                      <div id="sortingDiv">
+                      <button (click)="search()" class="btn inline-block font-bold px-2 py-0.5" type="button" id="button-addon3"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
+                      
+                        <div id="sortingDiv">
                         <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
-                            <option value=""></option>
+                            <option value="" disabled selected>Sort By..</option>
                             <option value="alphabetical">Alphabetical</option>
                             <!-- <option value="score">Score</option>
                             <option value="date">Date</option> -->
@@ -49,7 +55,19 @@
           </div>
         </div>
         <!-- <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1> -->
+        <div id = "topGames">
+            <!-- Top Games -->
+            <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
+            <div id = "leftContent" class = "w-full">
+                <div id = "leftBlock" class = "sm:p-4 cursor-pointer" *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
+                    <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
+                    <h5  id = "leftNames" class = "text-base font-bold sm:pl-2">{{game.name}}</h5>
+                </div>
+            </div>
+            
+        </div>
         <div class = "mb-5" id = "content" >
+            
             <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
                 <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-2 mt-3 mb-14" *ngFor = "let game of show">
                     <img class = "board-game-image rounded-lg" (click)="getDetails(game.id)" [src] =  game.image >
