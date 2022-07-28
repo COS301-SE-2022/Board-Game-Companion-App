@@ -31,7 +31,7 @@ export class Carousel1Component implements OnInit {
       //if id at j is defined
       if(this.ids[j]!=null)
       {
-        this.width = this.width + 164;
+        this.width = this.width + 50;
       this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.ids[j])
           .subscribe(
             
