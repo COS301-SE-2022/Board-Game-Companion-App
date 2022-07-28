@@ -50,10 +50,10 @@ describe('TrainComponent', () => {
     expect(component.tab).toEqual(0);
   });
 
-  it('should create a model', () =>{
-    component.createModel();
-    expect(component.createModel).toHaveReturned;
-  })
+  // it('should create a model', () =>{
+  //   component.createModel();
+  //   expect(component.createModel).toHaveReturned;
+  // })
 
   it('should change tab', () => {
     // expect(component).toBeTruthy();
