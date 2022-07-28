@@ -48,6 +48,12 @@ export class EditorToolBarComponent implements OnInit{
 
   exit(): void{
     document.dispatchEvent(new Event('editor-exit'));
+    this.router.navigate(['/scripts'])
+  }
+
+  viewModels(): void{
+    document.dispatchEvent(new Event('editor-exit'));
+    this.router.navigate(['/models'])   
   }
 
   toggleSideBar(): void{

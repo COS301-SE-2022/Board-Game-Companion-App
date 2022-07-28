@@ -109,8 +109,10 @@ export class EditorComponent implements OnInit{
         const inputTensor = tf.tensor2d(input,[1,input.length]);
         const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
         const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
+        tensorResult.print();
         index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-
+        console.log(index);
+        
         return models[index].labels[index];
       })
 
@@ -130,28 +132,25 @@ export class EditorComponent implements OnInit{
   async execute(): Promise<void>{
     
     this.editorConsole.open();
-    // try{
-    const console = this.editorConsole.defineConsole();
-    const model = await this.neuralnetworks();
-    this.editorConsole.clear();
-    
-    const code = new Function("console","model",this.editorBody.getCode());
-    code(console,model); 
-    // this.scriptService.getFileData(this.currentScript.build.location).subscribe({
-      
-    //   next:(value)=>{
-    //     //console.log(value)
-    //     const code = new Function("console",value);
-    //     code(console);    
-    //   },
-    //   error:(e)=>{
-    //     console.log(e);
-    //   }
-    // });
+    try{
+      const console = this.editorConsole.defineConsole();
+      const model = await this.neuralnetworks();
+      this.editorConsole.clear();
+      const code = new Function("console","model",this.editorBody.getCode());
+      code(console,model);  
 
-    // }catch(err){
-    //   console.log(err);
-    // }
+      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+        next:(value)=>{
+          const code = new Function("console","model",value);
+          code(console,model);  
+        },
+        error:(e)=>{
+          console.log(e);
+        }
+      });
+      }catch(err){
+      console.log(err);
+    }
 
   }
 
