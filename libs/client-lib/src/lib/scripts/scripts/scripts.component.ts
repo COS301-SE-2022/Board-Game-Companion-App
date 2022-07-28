@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { fetchSessionResults } from '../../shared/models/fetch-session-results';
+
 
 @Component({
   selector: 'board-game-companion-app-scripts',
@@ -25,8 +25,7 @@ export class ScriptsComponent implements OnInit {
   items = [{ title: 'Profile' }, { title: 'Log out' }];
   
   constructor(private readonly scriptService:ScriptService,private readonly router:Router){}
-  listResults: fetchSessionResults[] = new Array<fetchSessionResults>();
-  public selectedSort = "";
+  
   ngOnInit(): void {
     this.loadAllScripts();
   }
