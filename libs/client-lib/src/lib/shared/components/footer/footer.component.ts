@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class FooterComponent implements OnInit {
-  showFooter = true;
+  showFooter = false;
 
   ngOnInit(): void {
     document.addEventListener('editor-page',(event)=>{
