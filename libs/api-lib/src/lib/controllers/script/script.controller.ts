@@ -62,7 +62,7 @@ export class ApiScriptController {
     @Post('download')
     async download(@Body('id')id:string,@Body('owner')owner:user):Promise<{status:string,message:string,script:Script}>{
         return this.scriptService.download(id,owner);
-    }
+    } 
 
     @Put('update/status')
     async updateStatus(@Body('id')id:string,@Body('value')value:number,@Body('message')message:string):Promise<Script>{

@@ -84,6 +84,11 @@ export class HeaderComponent implements OnInit {
 
     return result;
   }
+
+  isLoggedIn():boolean{
+    return this.gapi.isLoggedIn();
+  }
+
   moveTo(path:string):void{
     if(path == "collection")
     {
