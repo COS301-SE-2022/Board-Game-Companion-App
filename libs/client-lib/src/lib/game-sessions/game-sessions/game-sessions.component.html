@@ -1,9 +1,8 @@
 <div id="container">
     <div id="headInput">
         <div id="searchSortDiv">
-            <div id="sortingDiv">
-                
-                <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected"  (change)="onSort()">
+            <div id="sortingDiv">   
+                <select id="sorting" class="btn px-2 py-0.5 font-bold" [(ngModel)]="selected"  (change)="onSort()">
                     <option value="" disabled selected>Sort By..</option>
                     <option value="alphabetical">Alphabet</option>
                     <option value="score">Score</option>
@@ -13,8 +12,7 @@
             </div>
             <div id="searchDiv">
                 <input id = "textInput" [(ngModel)] = "search">
-                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon"
-                        class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
+                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
             </div>
         </div>
 
@@ -56,7 +54,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class = "overflow-x-auto">
                 <tr *ngFor="let results of listResults">
                     <td>
                         {{results.getID()}}
