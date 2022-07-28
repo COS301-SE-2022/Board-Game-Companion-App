@@ -21,17 +21,18 @@ export class HomeComponent implements OnInit {
   }
 
   ids: string[] | undefined;
-  id:string = "";
-  game:string = "";
-  script:string = "";
-  num:string = "";
-  score:string = "";
-  time:string = "";
-  result:string = "";
-  date:string = "";
-  gameId:string = "";
-  img:string = "";
-  collection:string = "";
+  id = "";
+  game = "";
+  script = "";
+  num = "";
+  score = "";
+  time = "";
+  result = "";
+  date = "";
+  gameId = "";
+  img = "";
+  collection = "";
+  url = "";
 
   viewSession(n:string)
   {
@@ -101,7 +102,7 @@ export class HomeComponent implements OnInit {
         child = elem.lastElementChild
       }
 
-      let title = document.createElement("div");
+      const title = document.createElement("div");
       title.textContent = "No games played";
       title.setAttribute("id", "lpTitle")
       elem.appendChild(title);
@@ -121,6 +122,35 @@ export class HomeComponent implements OnInit {
       this.result = session[5];
       this.date = session[6];
       this.gameId = session[7];
+
+      if(this.gameId != null)
+      {
+        this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.gameId)
+                  .subscribe(
+                    
+                    data=>{
+                      
+                      
+                      const result:string = data.toString();
+
+                      const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+                    
+                      if (parseXml.querySelectorAll("image").length ==0)
+                      {
+                          
+                        this.url ='assets/images/No_image.png';
+                      }
+                      else
+                      {
+                        parseXml.querySelectorAll("image").forEach(imgUrl=>{
+                        this.url = imgUrl.innerHTML;
+                          
+                       });
+                      
+                      }
+
+                    })
+      }
     }
 
 

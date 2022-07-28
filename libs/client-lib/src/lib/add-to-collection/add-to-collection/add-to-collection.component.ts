@@ -9,9 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AddToCollectionComponent implements OnInit {
   constructor(private router:Router, private route: ActivatedRoute) {}
 
-  id = "1010";
-  options = [];
-  named = "";
+  id = "1010"
+  options = []
+  named = ""
   newCollection(): void{
     //get name of collection from the text box,
     const name = (<HTMLInputElement>document.getElementById('collectionName')).value ||"";
@@ -26,7 +26,6 @@ export class AddToCollectionComponent implements OnInit {
 
       localStorage.setItem("collections", JSON.stringify(collections));
       localStorage.setItem(name, JSON.stringify(collection));
-
 
     }
     else
@@ -63,8 +62,8 @@ export class AddToCollectionComponent implements OnInit {
 
   selected(event: any)
   {
-    console.log(event.target.value);
-    this.named = event.target.value;
+    console.log(event.target.value)
+    this.named = event.target.value
   }
 
   addtoCollection(): void{

@@ -1,12 +1,15 @@
-import { Controller, Post, Body  } from '@nestjs/common';
+import { Controller, Post, Body,Get, UseInterceptors, UploadedFiles  } from '@nestjs/common';
 import { ModelsService } from '../../services/models/models.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('models')
 export class ApiModelsController {
     constructor(private readonly modelsService:ModelsService){}
 
-    @Post('create')
-    create(@Body('data')data:any[],@Body('inputFeatures')inputFeatures:string[],@Body('outputLabels')outputLabels:string[]):any{
-        return this.modelsService.create(data,inputFeatures,outputLabels);
+    @Post('save-files')
+    @UseInterceptors(FilesInterceptor('files'))
+    uploadFile(@UploadedFiles() files:any){
+      console.log(files);
     }
+
 }

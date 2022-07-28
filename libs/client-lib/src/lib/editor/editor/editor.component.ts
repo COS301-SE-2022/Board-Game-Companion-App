@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
+import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import * as tf from '@tensorflow/tfjs'
+
 interface message{
   message: string;
   class: string;
@@ -70,6 +73,38 @@ export class EditorComponent implements OnInit{
     this.updateDimensions();
   }
 
+  async neuralnetworks():Promise<any>{
+    console.log(name)
+    const modelsInfo = localStorage.getItem("models");
+    const result = new Object();
+
+    if(modelsInfo === null)
+      return null;
+    else{
+      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
+      let model:tf.LayersModel;
+      
+      for(let count = 0; count < networks.length; count++){
+        model = await tf.loadLayersModel('localstorage://' + name);
+        const prop = 'model';
+        // result = (input:number[])=>{
+        //   let result = "";
+
+        //   const inputTensor = tf.tensor2d(input,[1,input.length]);
+        //   const normalizedInput = inputTensor.sub(networks[count].min as number[]).div((networks[count].max as number[])).sub((networks[count].min as number[]));
+        //   const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+        //   const maxIndex = Array.from(tensorResult.argMax().dataSync());
+        //   result = maxIndex.toString();
+        //   return result;
+        // }
+      }
+
+      
+    }
+
+    return result;
+  }
+
   changeTheme():void{
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
@@ -77,17 +112,20 @@ export class EditorComponent implements OnInit{
       this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
   }
 
-  execute(): void{
+  async execute(): Promise<void>{
     
     this.editorConsole.open();
     try{
       const console = this.editorConsole.defineConsole();
+      const model = await this.neuralnetworks();
       this.editorConsole.clear();
-
+      
+      const code = new Function("console","model",this.editorBody.getCode());
+      code(console,model); 
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         
         next:(value)=>{
-          console.log(value)
+          //console.log(value)
           const code = new Function("console",value);
           code(console);    
         },
@@ -99,8 +137,8 @@ export class EditorComponent implements OnInit{
     }catch(err){
       console.log(err);
     }
-  }
 
+  }
 
   changesTracker(value:number): void{
     this.editorStatusBar.updateStatusOfChanges(value);

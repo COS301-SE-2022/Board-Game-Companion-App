@@ -1,21 +1,25 @@
-<div id = "container">
-    <div id="board">
-     ___|___|___<br >
-     ___|___|___<br >
-    &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+<div class = "px-44 w-4/5 flex flex-row" style = "margin:40px auto">
+    <div class = "w-1/2 h-80 shadow-lg rounded-l-md overflow-hidden">
+        <img [src] = "current.icon.location" class = "w-full h-full">
     </div>
-    <div id="ReturnedMove">
+    <div class = "w-1/2 h-80 interface rounded-r-md text-white" >
+        <div class = "w-full mt-2 mb-4 text-center">
+            <label for="data-partition" class="form-label font-medium text-xl"><b>Data</b></label>
+        </div>
+        <div class = "w-full mb-4 px-4">
+            <label for="data-partition" class="form-label font-medium text-base"><b>Enter value</b></label>
+            <input type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="input" aria-label="input" aria-describedby="input">
+        </div>
+        <div class = "w-full mb-4 px-4">
+            <div class = "w-full display-panel bg-gray-200 h-24 shadow-sm overflow-y-scroll">
 
-    </div>
-    <div id="inputMessageBox">
+            </div>
+        </div>
         
-    </div>
-    <div>
-        <p id="instruction"></p>
-        <input type="text" id="enterMove" name="enter move">
-        <button type="button" id="action">Send Input</button>
-    </div>
-    <div id = "but">
-        <button (click) = "back()" type = "button" id = "exit">Exit</button>
+        <div class = "w-full mb-4 px-4 text-center">
+            <div *ngIf = "replay" class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium">
+                Replay
+            </div>
+        </div>
     </div>
 </div>
