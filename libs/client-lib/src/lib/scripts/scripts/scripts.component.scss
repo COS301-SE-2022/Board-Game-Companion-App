@@ -13,10 +13,7 @@
 //     margin:auto;
 // }
 
-#textInput{
-    width:75%;
-    height:50%;
-}
+
 
 #heading{
     display:flex;
@@ -33,11 +30,19 @@
 }
 
 #searchSortDiv{
-    display:flex;  
-    flex-direction:column;
+    //display:inline-block;  
+    //flex-direction:column;
+    float:right;
+    margin-bottom: 4px;
 }
+
+#searchDiv{
+    display:inline; 
+    //float:right;
+}
+
 #sortingDiv{
-    display:flex;
+    display:inline;
     // margin-right:10px;
     // margin-left: 2px;
     // float:right;
@@ -58,8 +63,8 @@ h1{
     font-size: 64px;
     font-weight: bold;
     color: $Pcolour-2;
-    margin-top: 54px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 thead{
     width: 100%;
@@ -100,21 +105,22 @@ td{
     cursor: pointer;
 }
 #search{
+    display:inline;
     background-color: $Pcolour-3;
     color: white;
     font-size: 14px;
-    float: left;
-    // margin-right: 64px;
-    margin-top: 30px;
+    //float: left;
+    margin-right: 64px;
+   // margin-top: 30px;
 }
 input{
     border-radius: 10px;
-    width: 400px;
+    width: 40%;
     color: black;
-    margin-right: 16px;
+   // margin-right: 16px;
     margin-top: 30px;
     border: solid 1px  $Pcolour-2;
-    float:left;
+   // float:left;
 }
 input:focus{
     outline: none;
@@ -124,29 +130,29 @@ input:focus{
     display:flex;
     float:right;
     // margin-right: 10px !important;
-    width:100%;
+    //width:100%;
 }
 #sort{
     background-color: $Pcolour-3;
     color: white;
     font-size: 14px;
-    margin-top: 30px;
-    width:15%;
-    margin-left: 12px !important;
+   // margin-top: 30px;
+   // width:15%;
+   // margin-left: 12px !important;
     border-radius: 10px 0px 0px 10px;
-    height:35%
+    //height:40%
     //float:right;
 }
 #sorting{
     color: $Pcolour-2;
     font-size: 14px;
-    margin-top: 30px;
-    width:35%;
-    height:35%;
+   // margin-top: 30px;
+    width:15%;
+    //height:40%;
     border-radius: 0px 10px 10px 0px;
-    margin-bottom: 12px;
+    //margin-bottom: 12px;
     //float:left;
-    order:2;
+   // order:2;
     background-color: white;
 }
 
