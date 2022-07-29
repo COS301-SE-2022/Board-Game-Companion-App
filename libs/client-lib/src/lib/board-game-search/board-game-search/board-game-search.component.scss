@@ -3,28 +3,69 @@
 
 #container{
     position: relative;
-    overflow: auto
+    width: 100%;
+    margin: auto;
+}
+
+#heading{
+    font-size: 48px;
+    color: $Pcolour-2;
 }
 
 #wrapper{
-    width:85%;
+    width:50%;
     margin: auto;
     margin-top: 3em;
     margin-bottom: 10em;
-    height:70%;
+    background-color: white;
+}
+
+#content{
+    height: 23em;
+    overflow: hidden;
+}
+
+#left{
+    width: 20%;
+    float: left;
+    margin-top: 3em;
+    margin-bottom: 10em;
+    background-color: white;
+}
+
+#right{
+    width: 20%;
+    float: right;
+    margin-top: 3em;
+    margin-bottom: 10em;
+    background-color: white;
 }
 
 #search{
-    border-color: $Pcolour-2;
+    border-radius: 10px;
+    height: 24px;
+    width: 40%;
+    color: black;
+    float: left;
+    margin-right: 16px;
+    padding-left: 16px;
+}
+
+#button-addon3{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 14px;
+    float: right;
+    margin-right: 64px;
+    border-radius: 10px;
+    margin-top: 13px;
 }
 
 #search-tools{
-    width:100%;
+    background-color: $Pcolour-2;
+    width: 100%;
 }
 
-hr.solid {
-    border-top: 3px solid #bbb;
-}
 
 #topic{
     text-align:center;
@@ -42,25 +83,295 @@ hr.solid {
 
 .board-game{ 
     transition: all .2s ease-in-out; 
-    width: 180px;
-    height: 250px;
-    max-width: 380px;
+    width: 100px;
+    height: 120px;
+    max-width: 120px;
     border-radius: 5px;
+}
+
+#names{
+    font-size: 14px;
+    text-align: center;
 }
 
 .board-game:hover { 
     transform: scale(1.025); 
 }
 
-#content
-{
-    border: 1px solid  $Pcolour-2;
-    padding: 1em;
-
-}
 
 .board-game-image{
     background-size:cover;
     width:100%;
     height:75%; 
+}
+
+#sortingDiv{
+    float: right;
+    margin: auto;
+    margin-right: 3rem;
+}
+
+#sorting{
+    color: $Pcolour-2;
+    font-size: 14px;
+    float: right;
+    background-color: white;
+    border-radius: 0 10px 10px 0;
+    margin-top: 13px;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+#sort{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 14px;
+    float: right;
+    border-radius: 10px 0 0 10px;
+    margin-top: 13px;
+}
+
+#triangle1{
+    border-right: 45px solid transparent;
+    border-bottom: 45px solid $Pcolour-3;
+}
+
+#triangle2{
+    border-left: 45px solid transparent;
+    border-bottom: 45px solid $Pcolour-3;
+    position: absolute;
+    top: 93%;
+    right: 25%;
+    
+}
+
+#leftHeader{
+    background-color: $Pcolour-2;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#rightHeader{
+    background-color: $Pcolour-3;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#leftContent{
+    height: 30em;
+}
+
+#leftImg{
+    height: 70px;
+    width: 70px;
+    display: inline;
+}
+
+#leftNames{
+    display: inline;
+    font-size: 14px;
+}
+
+#leftBlock{
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#rightContent{
+    height: 30em;
+}
+
+#rightImg{
+    height: 70px;
+    width: 70px;
+    display: inline;
+}
+
+#rightNames{
+    display: inline;
+    font-size: 14px;
+    
+}
+
+#rightBlock{
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media(max-width:639px){
+//    #left{
+//     width:20%;
+//     margin-left: 4px;
+//    }
+    #container{
+        display:flex;
+        flex-direction: column;
+    }
+
+   #right{
+    display:none;
+   }
+
+   #wrapper{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    height:fit-content;
+    margin-bottom: 3px;
+    // order:2;
+    width:100%;
+   }
+
+   #left{
+    display:none;
+    // margin-top: 3em;
+   }
+
+   #search-tools{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    order:1;
+   }
+
+   #topGames{
+    display:flex;
+    float:left;
+    flex-direction: column;
+    order:2;
+    margin-top: 0px;
+    margin-left:0px;
+    margin-bottom: 2px;
+    // border-radius:45px;
+    height:fit-content;
+    width:100%; 
+    
+    border-bottom: 3px solid $Pcolour-2;
+    }
+
+    #leftHeader{
+        background-color: white;
+        font-size: xx-large;
+        color: $Pcolour-2;
+        // text-align: center;
+    }
+
+   #leftContent{
+        display:grid;
+        grid-template-columns: auto auto;
+        flex-direction: row;
+        height: fit-content;
+   }
+
+    #leftBlock{
+        display:flex;
+        float:left;
+        flex-direction: column;
+        padding-left:6px;
+        align-items: center;
+    }
+
+    #leftNames{
+        display: inline-block;
+        //margin: 0 20px 0 20px;
+        padding-right:none;
+        padding-left: none;
+    }
+
+    #content{
+        vertical-align: top;
+        display: inline-block;
+        text-align: center;
+        order:3; 
+    }
+    #leftImg{
+        width: 55%;
+        height: 70px;
+        // height:fit-content;
+        float:left;
+        // margin: 0 20px 0 20px;
+    }
+
+    h5{
+        float:left;
+        padding-right: 0px;
+    }
+
+    #triangle1{
+        display:none;
+    }
+
+    #triangle2{
+        display:none; 
+    }
+
+    #word{
+        display:none;
+    }
+
+    #search{
+        margin-left:16px;
+        margin-top: 13px;
+        padding-top: 4px;
+        padding-right: 0px;
+        width: 43%;
+    }
+
+    // #content{
+    //     display:flex;
+    //     float:left;
+    //     flex-direction: column;
+    //     order:3;  
+    // }
+
+    .pagination{
+        display:flex;
+        // float:left;
+        // flex-direction: column;
+        order:4; 
+    }
+
+    #sortingDiv{
+        display:flex;
+        float:right;
+        margin-right: 10px;
+        width:30%;
+        // margin-left: 2px;
+    }
+
+    #sort{
+        display:none;
+    }
+
+    #sorting{
+        // margin-right:
+        border-radius: 7px;
+        border: 1px solid $Pcolour-2;
+    }
+
+    #button-addon3{
+        margin-right: 2px;
+        width:10%;
+    }
+ 
+//    #wrapper{
+//     width:60%;
+//    }
+}
+
+@media(min-width:640px){
+    #searchIcon{
+        display:none;
+    }
+
+    #topGames{
+        display:none;
+    }
 }

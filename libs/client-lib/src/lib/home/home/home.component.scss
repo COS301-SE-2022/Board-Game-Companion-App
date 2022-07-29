@@ -1,3 +1,181 @@
-div{
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+#container{
+    margin: auto;
+    margin-top: 8em;
     margin-bottom: 5em;
+    width: 90%;
+    height: 564px;
+    display: flex;
 }
+
+#lastPlayed{
+    height: 100%;
+    width: 353px;
+    background-color: $Pcolour-2;
+}
+
+#lpTitle{
+    color: white;
+    border-bottom: 1px solid white;
+    width: fit-content;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#carousels{
+    float: right;
+    height: 100%;
+    // width: 1152px;
+    width:100%;
+}
+
+#carousel1{
+    height: 266px;
+    // width: 1152px;
+    width:100%;
+    background-color: white;
+}
+
+#carousel2{
+    height: 266px;
+    width: 100%;
+    background-color: white;
+}
+
+.T{
+    color: white;
+    background-color: $Pcolour-3;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 12px;
+    width: fit-content;
+    border-radius: 0 0 10px 0;
+}
+
+img{
+    height: 160px;
+    width: 235px;
+    padding-top: 16px;
+}
+
+table{
+    margin: auto;
+    display: flex;
+    
+}
+
+thead{
+    float: left;
+}
+
+tbody{
+    display: flex;
+    flex-direction: row;
+}
+
+tr{
+    display: flex;
+    flex-direction: column;
+}
+
+th{
+    padding-top: 16px;
+    font-size: 16px;
+    color: white;
+    white-space: nowrap;
+}
+
+td{
+    font-size: 16px;
+    color: $Pcolour-3;
+    padding-top: 16px;
+    padding-left: 16px;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#explore{
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 5px;
+}
+h1:hover{
+    color: $Pcolour-2;
+}
+
+@media(max-width:639px){
+    #container{
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    tr {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #lastPlayed{
+        // display:flex;
+        // flex-direction: column;
+        margin-top:35px;
+        margin-bottom: 30px;
+        float:left;
+        order:1;
+        width:100%;
+    }
+
+
+    #carousels{
+        margin-left: 0px;
+        display:flex;
+        flex-direction: column;
+        float:left;
+        width:100%;
+        max-width:640px;
+        order:2;
+    }
+
+    #carousel1{
+        width:100%;
+        max-width:640px;
+    }
+
+    // #T1{
+    //     width:100%;
+    //     font-size: medium;
+    // }
+    #carousel2{
+        width:100%;
+        max-width:640px;
+    }
+    // #T2{
+    //     width:100%;
+    //     font-size: medium;
+    // }
+
+    .T{
+        width: 100%;
+        font-size: large; 
+    }
+
+    #btn1,
+    #btn2{
+        width:100% !important;
+    }
+
+    img{
+        // transform: scale(0);
+        width:50%;;
+        // padding-top: 5px;
+    }
+
+    
+}
+

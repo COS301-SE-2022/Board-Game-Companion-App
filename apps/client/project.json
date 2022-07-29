@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/client/src",
   "prefix": "board-game-companion-app",
@@ -13,12 +14,17 @@
         "polyfills": "apps/client/src/polyfills.ts",
         "tsConfig": "apps/client/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
+        "assets": [
+          "apps/client/src/favicon.ico",
+          "apps/client/src/assets",
+          "apps/client/src/manifest.webmanifest"
+        ],
         "styles": [
           "node_modules/bootstrap/dist/css/bootstrap.min.css",
-          "apps/client/src/styles.scss"
+          "apps/client/src/styles.scss",
+          "node_modules/@nebular/theme/styles/prebuilt/default.css"
         ],
-        "scripts": []
+        "scripts": ["apps/client/src/assets/js/ace-editor/src-min/ace.js"]
       },
       "configurations": {
         "production": {
@@ -40,7 +46,9 @@
               "with": "apps/client/src/environments/environment.prod.ts"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/client/ngsw-config.json"
         },
         "development": {
           "buildOptimizer": false,

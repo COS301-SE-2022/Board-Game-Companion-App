@@ -1,0 +1,22 @@
+.editor-body{
+    border:2px solid rgb(16, 112, 116);
+}
+
+.editor-tabs::-webkit-scrollbar {
+    height: 3px;
+    width: 2px;
+}
+  
+.editor-tabs::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.editor-tabs::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.editor-tabs::-webkit-scrollbar-thumb:hover {
+background: #555;
+}

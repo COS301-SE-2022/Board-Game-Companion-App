@@ -11,6 +11,7 @@
     }
   ],
   "compilerOptions": {
+    "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
@@ -19,6 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

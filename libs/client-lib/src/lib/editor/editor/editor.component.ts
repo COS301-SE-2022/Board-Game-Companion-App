@@ -1,11 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AsyncSubject, Subject } from 'rxjs';
-import tinymce from 'tinymce/tinymce';
-import { EditorService } from '../editor-service/editor.service';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { EditorBodyComponent } from '../editor-body/editor-body.component';
+import { EditorConsoleComponent } from '../editor-console/editor-console.component';
+import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
+import { empty, script } from '../../shared/models/script';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Body } from '@nestjs/common';
+import { find } from '../../shared/models/find';
+import { replace } from '../../shared/models/replace';
+import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
+import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import * as tf from '@tensorflow/tfjs'
 
+interface message{
+  message: string;
+  class: string;
+}
 
 @Component({
   selector: 'board-game-companion-app-editor',
@@ -13,109 +22,223 @@ import { Body } from '@nestjs/common';
   styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent implements OnInit{
-  title = 'angular-richtexteditor'
-  id = ""
-  texteditor : any;
-  lineCountCache = 0;
-  lineNum : any;
-  constructor(private edtservice: EditorService, private router:Router, private route: ActivatedRoute){
-    //this.router.getCurrentNavigation()?.currentState.extras.state?.author
-    const data = this.router.getCurrentNavigation()?.extras.state;
+  toolBarHeight = 35;
+  sideBarWidth = 180;
+  sideBarHeight = 0;
+  statusBarHeight = 25;
+  screenWidth = 0;
+  screenHeight = 0;
+  consoleWidth = 0;
+  consoleHeight = 150;
+  bodyHeight = 0;
+  bodyWidth = 0;
+  messages:message[] = [];
+  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
+  @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
+  @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
+  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
+  @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
+  currentScript:script = empty;
+  showInputModal = false;
+  inputPrompt = "";
+  inputValue = "";
 
-    if (data?.['id'] && data?.['filename']){
-      this.id = data?.['id']
-      this.getFile(data?.['id'], data?.['filename'])
-    }
-    console.log(data)
-
-    //this.router.getCurrentNavigation()?.extras.state?.filename
+  constructor(private readonly scriptService:ScriptService, private router: Router){
+    this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
-  
-  private formsbjct: Subject<any> = new AsyncSubject();
 
-  public editForm = new FormGroup({
-    //title: new FormControl("", Validators.required), 
-    body: new FormControl("", Validators.required),
-    FileName: new FormControl("", Validators.required)
-  })
-  
   ngOnInit(): void {
-    this.texteditor = document.getElementById('editorTextarea');
-    this.lineNum = document.getElementById('lineNumber');
-		
-
-
-    this.texteditor?.addEventListener('scroll', () => {
-      if (this.lineNum){
-        this.lineNum.scrollTop = this.texteditor.scrollTop;
-        this.lineNum.scrollLeft = this.texteditor.scrollLeft;
-      } 
-    });
+    console.log("editor");
     
-    throw new Error('Method not implemented.');
-  }
-  addTab(event:any): void{
-    console.log(this.texteditor);
-    event.preventDefault();
-    let val =  this.texteditor?.value;
-    const selectionStart =  this.texteditor?.selectionStart ;
-    const selectionEnd =  this.texteditor?.selectionEnd ;
-    //let val = this.editForm.get("body")?.value;
-    val = val?.slice(0, selectionStart) + '\t' + val?.slice(selectionEnd);
-    this.texteditor?.setSelectionRange(selectionStart+2, selectionStart+2)
-    this.editForm.get("body")?.setValue(val)
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+    this.updateDimensions();
+    
+    document.dispatchEvent(new Event('editor-page'));
   }
 
-  addLine(event:any): void{
-    const lineCount = this.texteditor.value.split('\n').length;
-      const outarr = [];
-      if (this.lineCountCache != lineCount) {
-         for (let x = 0; x < lineCount; x++) {
-            outarr[x] = (x + 1) + '.';
-         }
-         this.lineNum.value = outarr.join('\n');
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+    this.updateDimensions();
+  }
+
+  updateDimensions(): void{
+    this.sideBarHeight = this.screenHeight - this.toolBarHeight - this.statusBarHeight;
+    this.consoleWidth = this.screenWidth - this.sideBarWidth;
+    this.bodyHeight = this.screenHeight - this.toolBarHeight - this.statusBarHeight - this.consoleHeight;
+    this.bodyWidth = this.screenWidth - this.sideBarWidth;
+  }
+
+  updateConsoleHeight(height:number):void{
+    this.consoleHeight = height;
+    this.updateDimensions();
+  }
+
+  async neuralnetworks():Promise<any>{
+    
+    console.log(name)
+    const modelsInfo = localStorage.getItem("models");
+    const result = new Object();
+
+    if(modelsInfo === null)
+      return null;
+    else{
+      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
+      console.log(networks);
+      const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
+      
+      for(let count = 0; count < networks.length; count++){
+        models.push({
+          name: networks[count].name,
+          model: await tf.loadLayersModel('localstorage://' + networks[count].name),
+          min: networks[count].min as number[],
+          max: networks[count].max as number[],
+          labels: networks[count].labels as string[]
+        })
       }
-      this.lineCountCache = lineCount;
+
+      return ((name:string,input:number[])=>{
+        
+        console.log(name,input)
+        let index = -1;
+
+        for(let count = 0; count < models.length && index === -1; count++){
+          if(models[count].name === name)
+            index = count;
+        }
+
+        if(index === -1)
+          return "";
+
+        //console.print(model("color-picker",[0,255,0]))
+        const inputTensor = tf.tensor2d(input,[1,input.length]);
+        const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
+        const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
+        tensorResult.print();
+        index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+        console.log(index);
+        console.log(models[index])
+        return models[index].labels[index];
+      })
+
+      
+    }
+
+    return result;
   }
-  
-  onUpload(): void{
-    console.log('this Upload button works');
-    const content = this.editForm.get("body")?.value;
-    console.log(content);
 
+  changeTheme():void{
+    const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
-    const fname = this.editForm.get("FileName")?.value;
-    this.edtservice.postScript(this.id, fname, content).subscribe(data=>{console.log(data)});
+    if(theme !== null)
+      this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
+  }
+
+  checkBlock(){
+    if(this.showInputModal === true){
+      window.setTimeout(this.checkBlock, 100);
+    }
+  }
+
+  async execute(): Promise<void>{
     
-    
+    this.editorConsole.open();
+    try{
+      const console = this.editorConsole.defineConsole();
+      const model = await this.neuralnetworks();
+      
 
-    //setting the body
-    //this.editForm.get("body")?.patchValue("The dog is out of the house");
-    //const content = tinymce.get("editorTextarea").getContent();
-    //localStorage.setItem("content", content);
+      this.editorConsole.clear();
+      
+        
+      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+        next:(value)=>{
+          //console.log(value)
+          const code = new Function("console","model",value);
+          code(console,model);    
+        },
+        error:(e)=>{
+          console.log(e);
+        }
+      });
+      }catch(err){
+      console.log(err);
+    }
+
   }
 
-  onCreate(): void{
-    console.log("This is the button to push script content to script");
-   
-    const content = this.editForm.get("body")?.value;
-
-    console.log(content);
+  changesTracker(value:number): void{
+    this.editorStatusBar.updateStatusOfChanges(value);
   }
 
-  onExecute():void{
-    this.router.navigate(['scriptExecutor', {my_object: this.id}]);
+  undo(): void{
+    this.editorBody.undo();
   }
-  
-  //recieve JSONvar 
-  getFile(id:string, filename:string):void{
-    
-    this.editForm.get("FileName")?.patchValue(filename);
-    this.edtservice.getScript(id,filename).subscribe((data: any)=>{this.editForm.get("body")?.patchValue(data.content)});
-    //
-  }
-  
 
-  
+  redo(): void{
+    this.editorBody.redo();
+  }
+
+  copy(): void{
+    this.editorBody.copy();
+  }
+
+  paste(): void{
+    this.editorBody.paste();
+  }
+
+  cut(): void{
+    this.editorBody.cut();
+  }
+
+  find(value:find): void{
+    this.editorBody.find(value);
+  }
+
+  findNext(): void{
+    this.editorBody.findNext();
+  }
+
+  findPrevious(): void{
+    this.editorBody.findPrevious(); 
+  }
+
+  replace(value:replace): void{
+    this.editorBody.replace(value);
+  }
+
+  replaceAll(value:replace): void{
+    this.editorBody.replaceAll(value);
+  }
+
+  sideBarResize(value:number): void{
+    if(value <= this.editorSideBar.getMaxWidth()){
+      this.sideBarWidth = value;
+      this.updateDimensions();
+    }
+  }
+
+  toggleSideBar(value:boolean): void{
+    if(value){
+      this.editorSideBar.open();
+    }else{
+      this.editorSideBar.close();
+    }
+  }
+
+  toggleConsole(value:boolean): void{
+    if(value){
+      this.editorConsole.open();
+    }else{
+      this.editorConsole.close();
+    }
+  }
+
+  newMessage(message:string): void{
+    this.editorConsole.clear();
+    this.editorConsole.print({type:false,outputMessage:message});
+  }
 
 }

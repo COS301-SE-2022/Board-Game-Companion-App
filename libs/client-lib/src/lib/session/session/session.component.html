@@ -1,81 +1,114 @@
 <div id = "container">
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th>
-                    Field
-                </th>
-                <th>
-                   Value 
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>
-                    Session ID
-                </th>
-                <th>
-                    {{id}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Board Game
-                </th>
-                <th>
-                    {{game}}
-                    <img [src] = 'img'>
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Script Used
-                </th>
-                <th>
-                    {{script}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Number of Opponents
-                </th>
-                <th>
-                    {{num}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Score
-                </th>
-                <th>
-                    {{score}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Time Played
-                </th>
-                <th>
-                    {{time}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Result
-                </th>
-                <th>
-                    {{result}}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    {{date}}
-                </th>
-            </tr>
-        </tbody>
-    </table>
+    <h1 class = "mb-4" id = "sessionName">Session: {{name}}</h1>
+    <div id = "image" class = "float-right">
+        <img [src] = 'img'>
+    </div>
+    <div id = "details">
+        <h1 id = "d">Details</h1>
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Game:
+                    </th>
+                    <th>
+                        Date:
+                    </th>
+                    <th>
+                        Play Time:
+                    </th>
+                    <th>
+                        Score:
+                    </th>
+                    <th>
+                        Script:
+                    </th>
+                    <th>
+                        Players:
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        {{game}}
+                    </td>
+                    <td>
+                        {{date}}
+                    </td>
+                    <td>
+                        {{time}}
+                    </td>
+                    <td>
+                        {{score}}
+                    </td>
+                    <td>
+                        {{script}}
+                    </td>
+                    <td>
+                        {{num}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class = "mt-8 mb-8" id = "sessionDetails">
+        <h1 id = "ss">Session Specifics</h1>
+        <table id = "first" class = "table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Turns Played:
+                    </th>
+                    <th>
+                        Pieces Taken:
+                    </th>
+                    <th>
+                        Time Per Turn:
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id = "second" class = "table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Player Scores:
+                    </th>
+                    <th>
+                        Pieces Lost:
+                    </th>
+                    <th>
+                        Moves Made:
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

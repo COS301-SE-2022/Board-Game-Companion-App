@@ -1,0 +1,21 @@
+<div *ngIf = "show" class = "editor-console bg-zinc-900 fixed p-2" [style.bottom.px] = "bottom" [style.margin-left.px] = "margin" [style.height.px] = "height" [style.width.px] = "width">
+    <div class = "editor-console__header relative w-full">
+        <div class = "px-2 text-white ml-1 rounded-xs w-8 text-center text-xs"><b>OUTPUT</b></div>
+        <div class = "absolute right-0 top-0 flex flex-row">
+            <div (click) = "reduceHeight()" class = "editor-console__reduce cursor-pointer bg-inherit hover:bg-gray-500 text-white ml-1 w-6 text-center text-xs"><b><strong>-</strong></b></div>
+            <div (click) = "increaseHeight()" class = "editor-console__increase cursor-pointer bg-inherit hover:bg-gray-500 text-white ml-1 w-6 text-center text-xs"><b><strong>+</strong></b></div>
+            <div (click) = "close()" class = "editor-console__close cursor-pointer bg-inherit hover:bg-gray-500 text-white ml-1 w-6 text-center text-xs"><b><strong>x</strong></b></div>
+        </div>    
+    </div>
+    <div class = "console-messages overflow-auto text-xs mt-2 h-4/5">
+        <div *ngFor = "let message of messages" class = "console-message text-white">
+            <div *ngIf = "message.type === false">
+                <strong>:> {{message.outputMessage}}</strong>
+            </div>
+
+            <div *ngIf = "message.type === true">
+                <input type = "text">
+            </div>
+        </div>
+    </div>
+</div>

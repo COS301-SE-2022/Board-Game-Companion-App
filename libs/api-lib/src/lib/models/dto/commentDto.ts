@@ -1,9 +1,10 @@
+import { user } from '../general/user';
+
 export interface commentDto{
-    user: string;
-    time: number;
-    published: Date;
-    likes: number;
-    dislikes: number;
+    user: user;
+    image: string;
+    created: Date;
+    script: string;
     content: string;
-    replies: Comment[];     
+    replies: string[];     
 };

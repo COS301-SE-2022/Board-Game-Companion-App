@@ -3,9 +3,6 @@
   "affected": {
     "defaultBase": "master"
   },
-  "cli": {
-    "defaultCollection": "@nrwl/nest"
-  },
   "implicitDependencies": {
     "package.json": {
       "dependencies": "*",
@@ -21,14 +18,6 @@
       }
     }
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "defaultProject": "client",
   "generators": {
     "@nrwl/angular:application": {
@@ -43,6 +32,12 @@
     },
     "@nrwl/angular:component": {
       "style": "scss"
+    }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
     }
   }
 }

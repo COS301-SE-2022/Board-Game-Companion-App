@@ -19,7 +19,6 @@ jobs:
       with:
         node-version: '16'
 
-    - name: run test suite  
-      run: npm install yarn -g
-      run: yarn install
-      run: nx run-many --target=test --all --parallel
+    - run: npm install yarn -g
+    - run: yarn install
+    - run: yarn run test-all

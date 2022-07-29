@@ -1,66 +1,90 @@
 <div id="container">
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th>
-                    Session ID
-                </th>
-                <th>
-                    Board Game
-                </th>
-                <th>
-                    Script Used
-                </th>
-                <th>
-                    Number of Opponents
-                </th>
-                <th>
-                    Score
-                </th>
-                <th>
-                    Time Played
-                </th>
-                <th>
-                    Result
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    View
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let results of listResults">
-                <th>
-                    {{results.getID()}}
-                </th>
-                <th>
-                    {{results.getBoardGame()}}
-                </th>
-                <th>
-                    {{results.getScript()}}
-                </th>
-                <th>
-                    {{results.getNumOpponents()}}
-                </th>
-                <th>
-                    {{results.getScore()}}
-                </th>
-                <th>
-                    {{results.getTimePlayed()}}
-                </th>
-                <th>
-                    {{results.getResult()}}
-                </th>
-                <th>
-                    {{results.getDate()}}
-                </th>
-                <th>
-                    <button (click) = "viewSession(results.getID())">...</button>
-                </th>
-            </tr>
-        </tbody>
-    </table>
+    <div id="headInput">
+        <div id="searchSortDiv">
+            <div id="sortingDiv">   
+                <select id="sorting" class="btn px-2 py-0.5 font-bold" [(ngModel)]="selected"  (change)="onSort()">
+                    <option value="" disabled selected>Sort By..</option>
+                    <option value="alphabetical">Alphabet</option>
+                    <option value="score">Score</option>
+                    <option value="date">Date</option>
+                </select>
+                <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
+            </div>
+            <div id="searchDiv">
+                <input id = "textInput" [(ngModel)] = "search">
+                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
+            </div>
+        </div>
+
+        <div id="headingDiv">
+            <h1 id="heading">Your Game Sessions</h1>
+        </div>
+
+    </div>
+    <div id="content">
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Session:
+                    </th>
+                    <th>
+                        Game:
+                    </th>
+                    <th>
+                        Script:
+                    </th>
+                    <th>
+                        Score:
+                    </th>
+                    <th>
+                        Play Time:
+                    </th>
+                    <th>
+                        Players
+                    </th>
+                    <th>
+                        Result:
+                    </th>
+                    <th>
+                        Date:
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody class = "overflow-x-auto">
+                <tr *ngFor="let results of listResults">
+                    <td>
+                        {{results.getID()}}
+                    </td>
+                    <td>
+                        {{results.getBoardGame()}}
+                    </td>
+                    <td>
+                        {{results.getScript()}}
+                    </td>
+                    <td>
+                        {{results.getScore()}}
+                    </td>
+                    <td>
+                        {{results.getTimePlayed()}}
+                    </td>
+                    <td>
+                        {{results.getNumOpponents()}}
+                    </td>
+                    <td>
+                        {{results.getResult()}}
+                    </td>
+                    <td>
+                        {{results.getDate()}}
+                    </td>
+                    <td>
+                        <button (click)="viewSession(results.getID())" id="explore">Explore</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

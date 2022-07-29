@@ -1,34 +1,13 @@
-<head>
-    <script src="https://kit.fontawesome.com/8c29b68138.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <form [formGroup]="editForm"> 
-        <label class="form__label">File Name:</label><input type="text" formControlName="FileName" /><br>
-        <p><textarea id='lineNumber' class="lineNum" wrap='off' readonly>1.</textarea>
-        <textarea  id="editorTextarea" class="form__textarea" formControlName = "body" (keydown.tab)="addTab($event)" (keydown.enter)="addLine($event)"></textarea><br>
-        <!-- <editor
-            apiKey = "8ym28lgtxu9g2kpoqu1ijr1qb8h4eivbddtrbsyiclpjklkp"
-            formControlName = "body"
-            [init] = "{
-                icons: 'material',
-                selector: '#editorTextarea',
-                skin: 'borderless',
-                plugins: 'code save',
-                toolbar: false,
-                menu: {
-                    file: { title:'File', items: 'save | newdocument'},  
-                    edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
-                    view: {title: 'View', items:'visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments' },
-                    tools: {title: 'Tools', items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' }
-                }, 
-                removed_menuitems: 'format, insert, bold, italic, underline, strikethrough, superscript, subscript, horizontal line ',
-                min_height: 150
-            }">
-        </editor> -->
-        <button (click)="onUpload()" class="form__button">Upload <i class="fa-solid fa-angles-up"></i></button>
-        <button (click)="onCreate()" class="form__button"> Create <i class="fa-solid fa-circle-plus"></i></button>
-        <button (click)="onExecute()" class="form__button"> Run <i class="fa-solid fa-play"></i></button>
-    </form> 
-</body>
+<board-game-companion-app-editor-tool-bar (toggleConsoleEvent)="toggleConsole($event)" (toggleSideBarEvent)="toggleSideBar($event)" (replaceAllEvent)="replaceAll($event)" (findPreviousEvent)="findPrevious()" (findNextEvent)="findNext()" (findEvent)="find($event)" (replaceEvent)="replace($event)" (copyEvent)="copy()" (cutEvent)="cut()" (pasteEvent)="paste()" (redoEvent)="redo()" (undoEvent)="undo()" (themeEvent)="changeTheme()" (executeEvent)="execute()" [height] = "toolBarHeight"></board-game-companion-app-editor-tool-bar>
+<board-game-companion-app-editor-side-bar (resizeEvent)="sideBarResize($event)" [width]="sideBarWidth" [height] = "sideBarHeight"></board-game-companion-app-editor-side-bar>
+<board-game-companion-app-editor-body (newMessageEvent)="newMessage($event)" (changesTracker)="changesTracker($event)" [fileLocation]="currentScript.source.location" [scriptId]="currentScript._id" [top] = "toolBarHeight" [width] = "bodyWidth" [height] = "bodyHeight" [margin] = "sideBarWidth"></board-game-companion-app-editor-body>
+<board-game-companion-app-editor-console (changeHeightEvent)="updateConsoleHeight($event)" class = "console" [height]="consoleHeight" [width] = "consoleWidth" [margin] = "sideBarWidth" [bottom] = "statusBarHeight"></board-game-companion-app-editor-console>
+<board-game-companion-app-editor-status-bar [height] = "statusBarHeight"></board-game-companion-app-editor-status-bar>
 
-<!-- Adapted from https://www.tiny.cloud/blog/angular-rich-text-editor/ [accessed 28 May 2022] -->
+<div id="inputModal" class="inputModal fixed z-30left-0 top-0 text-center"  *ngIf = "showInputModal">
+    <div class="inputBox rounded-sm p-2 text-left">
+            <label for="exampleFormControlInput1" class="form-label font-medium text-white ">{{inputPrompt}}</label>
+            <input type="text" class="form-control p-1 border-2 w-full text-sm" [(ngModel)]="inputValue" name = "inputValue" id="rho" placeholder="value">
+            <button type="button" class="inline-block mt-2 w-full px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">enter</button>
+    </div>
+</div>

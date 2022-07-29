@@ -2,20 +2,28 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
 import { status as stat} from '../models/general/status';
+import { user } from '../models/general/user';
 import { Comment } from './comment.schema';
 
 export type ScriptDocument = Script & Document;
 
 @Schema()
 export class Script{
+
     @Prop({required: true})
     name: string;
 
-    @Prop({required:true})
-    author: string;
+    @Prop({required:true,type:{name:"",email:""}})
+    author: user;
+
+    @Prop({required:true,type:{name:"",email:""}})
+    owner: user;
 
     @Prop({required:true})
     boardgame: string;
+
+    @Prop({required:true})
+    description: string;
 
     @Prop({required:true})
     created: string;
@@ -27,7 +35,7 @@ export class Script{
     status:stat;
 
     @Prop()
-    published: Date;
+    release: Date;
 
     @Prop()
     downloads: number;
@@ -45,13 +53,16 @@ export class Script{
     size: number;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
-    comments: Comment[];
+    comments: string[];
 
-    @Prop({required:true})
-    files: file[];
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    source: file;
 
-    @Prop()
-    icon: string; 
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    build: file;
+
+    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    icon: file; 
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);

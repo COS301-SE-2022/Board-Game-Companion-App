@@ -9,8 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AddToCollectionComponent implements OnInit {
   constructor(private router:Router, private route: ActivatedRoute) {}
 
-  id = "1010";
-  options = [];
+  id = "1010"
+  options = []
+  named = ""
   newCollection(): void{
     //get name of collection from the text box,
     const name = (<HTMLInputElement>document.getElementById('collectionName')).value ||"";
@@ -25,7 +26,6 @@ export class AddToCollectionComponent implements OnInit {
 
       localStorage.setItem("collections", JSON.stringify(collections));
       localStorage.setItem(name, JSON.stringify(collection));
-
 
     }
     else
@@ -59,21 +59,32 @@ export class AddToCollectionComponent implements OnInit {
     }
     this.router.navigate(['home']);
   }
+
+  selected(event: any)
+  {
+    console.log(event.target.value)
+    this.named = event.target.value
+  }
+
   addtoCollection(): void{
     //get the list value from the select form
-    const name = (<HTMLInputElement>document.getElementById('Collections')).value ||"";
     
-    //collection exists, so just add to it
-    const collection = JSON.parse(localStorage.getItem(name)||"");
-    if(!collection.includes(this.id))
+    if(this.named != null)
     {
-      collection.push(this.id);
-    }
+      console.log(this.named);
+      //collection exists, so just add to it
+      const collection = JSON.parse(localStorage.getItem(this.named)||"");
+      if(!collection.includes(this.id))
+      {
+        collection.push(this.id);
+      }
 
+      
+      localStorage.setItem(this.named, JSON.stringify(collection));
+      
+      this.router.navigate(['home']);
+      }
     
-    localStorage.setItem(name, JSON.stringify(collection));
-    
-    this.router.navigate(['home']);
   }
   ngOnInit(): void {
     //set id

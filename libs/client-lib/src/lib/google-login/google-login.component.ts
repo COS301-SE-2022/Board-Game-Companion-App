@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { GoogleAuthService } from 'libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
+import { GoogleAuthService } from './GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-google-login',
   templateUrl: './google-login.component.html',
   styleUrls: ['./google-login.component.scss'],
 })
-export class GoogleLoginComponent implements OnInit {
+export class GoogleLoginComponent implements OnInit{
   constructor(private readonly gapi: GoogleAuthService) {}
 
   ngOnInit(): void {}

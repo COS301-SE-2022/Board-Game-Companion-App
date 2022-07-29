@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CollectionsController } from './controllers/board-collection/collections.controller';
 import { ApiScriptController } from './controllers/script/script.controller';
-import { ScriptEditorController } from './controllers/script-editor/script-editor.controller';
+import { ApiCommentController } from './controllers/comments/comment.controller';
 import { CollectionsService } from './services/collection/collections.service';
 import { ScriptService } from './services/scripts/script.service';
 import { ScriptEditorService } from './services/editor/script-editor.service';
@@ -12,7 +12,12 @@ import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
-
+import { Like, LikeSchema } from './schemas/like.schema';
+import { S3Service } from './services/aws/s3.service';
+import { CompilerService } from './services/compiler/compiler.service';
+import { ApiModelsController } from './controllers/models/models.controller';
+import { ModelsService } from './services/models/models.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports:[
@@ -20,19 +25,25 @@ import { Rating, RatingSchema } from './schemas/rating.schema';
                                 {name:Script.name,schema: ScriptSchema},
                                 {name:Comment.name,schema:CommentSchema},
                                 {name:Rating.name,schema:RatingSchema},
-                              ])
+                                {name:Like.name,schema:LikeSchema}
+                              ]),
+                              HttpModule
   ],
   controllers: [
     CollectionsController,
     ApiScriptController,
-    ScriptEditorController
+    ApiCommentController,
+    ApiModelsController
   ],
   providers: [
     CollectionsService,
     ScriptEditorService,
     ScriptService,
     RatingService,
-    CommentService
+    CommentService,
+    S3Service,
+    CompilerService,
+    ModelsService
   ],
   exports: [],
 })

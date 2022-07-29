@@ -1,21 +1,24 @@
 import { file } from "../general/files";
 import { status } from "../general/status";
-import { commentDto  } from "./commentDto";
+import { user } from '../general/user';
 
 export interface scriptDto{
     name: string;
-    author: string;
+    author: user;
+    owner: user;
     boardgame: string;
+    description: string;
     created: Date;
     lastupdate: Date;
-    published: Date;
+    release: Date;
     downloads: number;
     lastdownload: Date;
     status: status;
     public: boolean;
     export: boolean;
     size: number;
-    comments: commentDto[];
-    files: file[];
-    icon: string;
+    comments: string[];
+    source: file;
+    build: file;
+    icon: file;
 };

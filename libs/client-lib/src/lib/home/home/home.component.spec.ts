@@ -1,29 +1,42 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BggSearchService } from '../bgg-search-service/bgg-search.service';
-import {HomeComponent }from './home.component';
+import { ClientLibRoutingModule } from '../../client-lib-routing.module';
+import { HomeComponent } from './home.component';
+import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { Router } from '@angular/router';
 
-
-describe('BoardGameDetailsComponent', () => {
+describe('HomeComponent', () => {
   let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+  let service: BggSearchService;
+
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule],
-      providers:[ BggSearchService],
       declarations: [HomeComponent],
+      imports: [HttpClientTestingModule,ClientLibRoutingModule,RouterTestingModule.withRoutes([])],
+      providers: [BggSearchService]
     }).compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
+  it('should create component', () => {
+    service = TestBed.inject(BggSearchService);
+    router = TestBed.inject(Router);
+    component = new HomeComponent(service,router);
     expect(component).toBeTruthy();
   });
+  it('should create service', ()=>{
+    service = TestBed.inject(BggSearchService);
+    router = TestBed.inject(Router);
+    component = new HomeComponent(service,router);
+    expect(service).toBeTruthy();
+  });
+  it('should be undefined ids!', ()=>{
+    service = TestBed.inject(BggSearchService);
+    router = TestBed.inject(Router);
+    component = new HomeComponent(service,router);
+    expect(component.ids).toStrictEqual(undefined);
+  });
+
 });

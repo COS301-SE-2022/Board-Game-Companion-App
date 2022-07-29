@@ -1,44 +1,31 @@
-import { Controller, Body,  Get, Query, Post, Put, Delete, StreamableFile,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Body,  Get, Query, Post, Put, Delete, Req ,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { ScriptService } from '../../services/scripts/script.service';
 import { Script } from '../../schemas/script.schema';
-import { createReadStream } from 'fs';
-import { join } from 'path';
+import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
-import { resourceLimits } from 'worker_threads';
 import { status } from '../../models/general/status';
-
-let id = uuidv4();
+import { RatingService } from '../../services/ratings/rating.service';
+import { Rating } from '../../schemas/rating.schema';
+import { CompilerService } from '../../services/compiler/compiler.service';
+import * as chevrotain from 'chevrotain';
+import { lexerResult } from '../../models/general/lexerResult';
+import { user } from '../../models/general/user';
 
 @Controller('scripts')
 export class ApiScriptController {
-    private id:string;
-    constructor(private readonly scriptService:ScriptService){}
+    constructor(private readonly scriptService:ScriptService,
+        private readonly ratingService:RatingService,
+        private readonly compiler:CompilerService){}
     
-    //script functions
-    updateId():void{
-        id = uuidv4();
-    }
-
     @Post('create-script')
-    @UseInterceptors(FileInterceptor('icon',{
-        storage: diskStorage({
-            destination:"./libs/uploads/src/lib/scripts/icons/"+id+"/",
-                filename: (req, file, cb) => {
-                    const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
-                    const extension: string = path.parse(file.originalname).ext;
-      
-                    cb(null, `${filename}${extension}`) 
-                }
-          })
-        }))
-    async createScript(@Body('user')user:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('files')files:string,@UploadedFile()icon): Promise<Script>{ 
-        const tempId = id;
-        this.updateId();
+    @UseInterceptors(FileInterceptor('icon'))
+    async createScript(@Body('userName')userName:string,@Body('userEmail')userEmail:string,@Body('name')name:string,@Body('boardGameId')boardGameId:string,@Body('description')description:string,@UploadedFile()icon): Promise<Script>{ 
         const stat:status = {value : 1, message:  name + " has been in progress since " +this.scriptService.formatDate(new Date()) + "."}
-        return this.scriptService.create(user,name,boardGameId,stat,JSON.parse(files),icon.path,tempId);
+
+        return this.scriptService.create({name:userName,email:userEmail},name,boardGameId,stat,description,icon);
     }
 
     @Get('retrieve/byid')
@@ -51,21 +38,35 @@ export class ApiScriptController {
         return await this.scriptService.findAll();
     }
 
-        // @UseInterceptors(FileInterceptor('icon',{
-    //     storage: diskStorage({
-    //         destination:"./uploads/scripts/icons/"+id+"/",
-    //             filename: (req, file, cb) => {
-    //                 const filename: string = path.parse(file.originalname).name.replace(/\s/g, '');
-    //                 const extension: string = path.parse(file.originalname).ext;
-      
-    //                 cb(null, `${filename}${extension}`) 
-    //             }
-    //       })
-    //     }))
+    @Get('retrieve/createdByMe')
+    async getScriptsCreatedByMe(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getScriptsCreatedByMe({name:ownerName,email:ownerEmail});
+    }
+
+    @Get('retrieve/downloadedByMe')
+    async getScriptsDownloadedByMe(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getScriptsDownloadedByMe({name:ownerName,email:ownerEmail});
+    }
+
+    @Get('retrieve/other')
+    async getOtherScripts(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
+        return await this.scriptService.getOtherScripts({name:ownerName,email:ownerEmail});
+    }
+
 
     @Post('update')
     async updateScriptInfo(@Body('id')id:string,@Body('name')name:string,@Body('public')pub:boolean,@Body('export')exp:boolean,@Body('status')stat:status){
         return await this.scriptService.updateInfo(id,name,pub,exp,stat); 
+    }
+
+    @Post('download')
+    async download(@Body('id')id:string,@Body('owner')owner:user):Promise<{status:string,message:string,script:Script}>{
+        return this.scriptService.download(id,owner);
+    } 
+
+    @Put('update/status')
+    async updateStatus(@Body('id')id:string,@Body('value')value:number,@Body('message')message:string):Promise<Script>{
+        return await this.scriptService.updateStatus(id,value,message);
     }
 
     @Delete('remove/:id')
@@ -75,55 +76,39 @@ export class ApiScriptController {
 
     //rating functions
     
-    @Post('create-rating')
-    async createUserRating(@Body('user')user:number,@Body('script')scriptId:string,@Body('value')value:number){
-        console.log('createUserRating');
+    @Post('rate')
+    async createUserRating(@Body('user')user:user,@Body('script')script:string,@Body('value')value:number):Promise<Rating>{
+        return this.ratingService.rate(user,script,value);
     }
 
     @Get('retrieve-rating')
-    async retrieveUserRating(@Query('id')user:number): Promise<Script>{
-        return await this.scriptService.findById(user);
+    async retrieveUserRating(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('script')script:string): Promise<Rating>{
+        return this.ratingService.getRating({name:userName,email:userEmail},script);
     }
 
-    @Put('update-rating')
-    async updateUserRating(@Body('id')ratingId:string,@Body('value')value:number){
-        console.log('updateRating');
+    @Get('count-rating')
+    async countRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.countRating(script);
+    }
+
+    @Get('average-rating')
+    async averateRating(@Query('script')script:string): Promise<number>{
+        return this.ratingService.average(script);
     }
 
     //comment functions
+    @Put('add-comment')
+    async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
+        this.scriptService.addComment(scriptId,commentId);
+    }    
 
-    @Post('create-comment')
-    async createComment(@Body('user')user:string,@Body('content')content:string){
-        console.log('createComment');
+    @Put("update-file")
+    async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<any>{
+        return this.scriptService.updateFile(id,content);
     }
 
-    @Post('reply-to-comment')
-    async createReplyToComment(@Body('comment')commentId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createToComment');
-    }
-
-    @Post('reply-to-reply')
-    async createReplyToReply(@Body('comment')replyId:string,@Body('user')user:string,@Body('content')content:string){
-        console.log('createReplyToReply');
-    }
-
-    @Get('retrieve-comments')
-    async retrieveComments(@Query('comments')comments:string[]){
-        console.log('retrieveComments');
-    }
-
-    @Put('update-comment-content')
-    async updateCommentContent(@Body('comment')commentId:string,@Body('content')content:string){
-        console.log('updateCommentContent');
-    }
-
-    @Put('update-comment-likes')
-    async updateCommentLikes(@Body('comment')commentId:string,@Body('likeCount')likeCount:number){
-        console.log('updateCommentLikes');
-    }
-
-    @Put('update-comment-dislikes')
-    async updateCommentDisLikes(@Body('comment')commentId:string,@Body('disLikeCount')DisLikeCount:number){
-        console.log('updateCommentDisLikes');
+    @Post('compile')
+    compile(@Body('input')input:string):lexerResult{
+        return this.compiler.scan(input);
     }
 }

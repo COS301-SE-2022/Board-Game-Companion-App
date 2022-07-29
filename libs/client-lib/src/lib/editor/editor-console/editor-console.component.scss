@@ -1,0 +1,21 @@
+.console-message{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.console-messages::-webkit-scrollbar {
+    width: 10px;
+}
+  
+.console-messages::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.console-messages::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.console-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -1,41 +1,81 @@
 
-<div id = "container">    
+<div id = "container">
+    <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1>
+    <div id = "left" class = "ml-16">
+        <!-- Top Games -->
+        <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
+        <div id = "leftContent" class = "w-full">
+            <div id = "leftBlock" class = "p-4 cursor-pointer" *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
+                <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
+                <h5  id = "leftNames" class = "text-base font-bold pl-2">{{game.name}}</h5>
+            </div>
+
+            
+        </div>
+
+        
+    </div>
+    <div id = "right" class = "mr-16">
+        <h1 id = "rightHeader" class = "p-3 pt-2.5 h-14">Recently Viewed</h1>
+        <div id = "rightContent" class = "w-full h-full">
+            <div id = "rightContent" class = "w-full">
+                <div id = "rightBlock" class = "p-4 cursor-pointer" *ngFor = "let game of listResults.slice().reverse()" (click)="getDetails(game.getID())">
+                    <img  id = "rightImg" class = "rounded-lg" [src] =  game.getimgUrl() >
+                    <h5  id = "rightNames" class = "text-base font-bold pl-2">{{game.getName()}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id = "wrapper">
-        <div class="flex justify-center">
+        <div id="outerDiv" class="flex justify-center h-14">
             <div id = "search-tools">
-              <div class="mb-3" style="width:100%;">
-                  <div class="input-group relative flex flex-wrap items-stretch w-full mb-4">
-                      <input id = "search" [(ngModel)] = "searchValue" name = "searchValue" type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon3">
-                      <button (click)="search()" class="btn inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-bold text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" type="button" id="button-addon3">Search</button>
+              <div class="mb-3">
+                  <div class="input-group mb-4">
+                      <input id = "search" class = "mt-3 ml-12 pl-4 focus:outline-none" [(ngModel)] = "searchValue" name = "searchValue" type="search" aria-label="Search" aria-describedby="button-addon3">
+                      <button (click)="search()" class="btn inline-block font-bold px-2 py-1" type="button" id="button-addon3"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
+                      
+                    <div id="sortingDiv">
+                        <select id="sorting" class="btn font-bold" [(ngModel)]="selected">
+                            <option value="" disabled selected>Sort By..</option>
+                            <option value="alphabetical">Alphabetical</option>
+                            <!-- <option value="score">Score</option>
+                            <option value="date">Date</option> -->
+                        </select>
+                        <button id ="sort" class="btn px-2 py-1  font-bold"  (click)="onSort()">Sort</button>
+                    </div>
                   </div>
               </div>
               
-              <div class="flex justify-left">
+              <!-- <div class="flex justify-left">
                 <div style="width:150px">
                   <input type="checkbox" id="exact-match" name="exactMatch" [(ngModel)]="exactMatch">
                   <label class = "ml-5" for="exact-match">Exact Match</label><br>
                 </div>
-              </div>
+              </div> -->
           </div>
-
-
         </div>
-
-
-    
-        <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1>
-        <div class = "shadow-xl mb-5" id = "content" >
-            <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
-                <div fxFlex = "1 1 auto" class = "board-game" *ngFor = "let game of show">
-                    <img class = "board-game-image rounded-lg shadow-lg" (click)="getDetails(game.id)" [src] =  game.image >
-                
-                    <h5 style="text-align:center" class = "text-gray-900 text-xl font-medium mt-3">{{game.name}} </h5>
+        <!-- <h1 id = "topic" class="text-gray-900 text-xl font-medium">{{contentType}}</h1> -->
+        <div id = "topGames">
+            <!-- Top Games -->
+            <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
+            <div id = "leftContent" class = "w-full">
+                <div id = "leftBlock" class = "sm:p-4 cursor-pointer" *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
+                    <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
+                    <h5  id = "leftNames" class = "text-base font-bold sm:pl-2">{{game.name}}</h5>
                 </div>
             </div>
-
+            
         </div>
+        <div class = "mb-5" id = "content" > 
+            <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
+                <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-2 mt-3 mb-14" *ngFor = "let game of show">
+                    <img class = "board-game-image rounded-lg" (click)="getDetails(game.id)" [src] =  game.image >
+                    <h5 id = "names" style="text-align:center" class = "text-base font-medium pt-3 pb-3">{{game.name}} </h5>
+                </div>
+            </div>
+        </div>
+        <span class = "p-0 m-0" id = "triangle1"></span>
+        <span class = "p-0 m-0" id = "triangle2"></span>
         <board-game-companion-app-board-game-search-pagination class = "pagination justify-center" [boardsPerPage] = boardsPerPage [numberOfBoardGames] = size (newPageEvent)="changePage($event)"></board-game-companion-app-board-game-search-pagination>
     </div>
-
-    
 </div>

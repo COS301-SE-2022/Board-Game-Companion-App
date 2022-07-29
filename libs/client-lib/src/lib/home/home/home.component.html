@@ -1,5 +1,75 @@
-
-
-<div *ngIf="ids">
-    <board-game-companion-app-carousel [ids]="ids"></board-game-companion-app-carousel>
+<div id = "container">
+    <div class = "p-4 pr-0 pt-4"  id = "lastPlayed">
+        <h1 id = "lpTitle">Last game you played</h1>
+        <img [src] =  'url'>
+        <table class = "table-auto">
+            <thead>
+                <tr>
+                    <th>
+                        Session ID:
+                    </th>
+                    <th>
+                        Game:
+                    </th>
+                    <th>
+                        Score:
+                    </th>
+                    <th>
+                        Script:
+                    </th>
+                    <th>
+                        Play Time:
+                    </th>
+                    <th>
+                        Number of Players:
+                    </th>
+                    <th>
+                        Result:
+                    </th>
+                    <th >
+                        <button (click) = "viewSession(id)" id = "explore">Explore</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        {{id}}
+                    </td>
+                    <td>
+                        {{game}}
+                    </td>
+                    <td>
+                        {{score}}
+                    </td>
+                    <td>
+                        {{script}}
+                    </td>
+                    <td>
+                        {{time}}
+                    </td>
+                    <td>
+                        {{num}}
+                    </td>
+                    <td>
+                        {{result}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class = "ml-8" id = "carousels">
+        <div class = "mb-8" id = "carousel1">
+            <button id="btn1" (click) = "viewCollection(collection)"><h1 class = "T" id = "T1">Some games from your collection</h1></button>
+            <board-game-companion-app-carousel1></board-game-companion-app-carousel1>
+        </div>
+        <div id = "carousel2">
+            <button id="btn2" (click) = "boardGames()"><h1 class = "T" id = "T2">Recommended</h1></button>
+            <board-game-companion-app-carousel2></board-game-companion-app-carousel2>
+        </div>
+    </div>
 </div>
+
+<!-- <div *ngIf="ids">
+    <board-game-companion-app-carousel [ids]="ids"></board-game-companion-app-carousel>
+</div> -->

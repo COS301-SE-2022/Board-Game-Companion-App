@@ -25,7 +25,7 @@ export interface userDetails
 })
 export class GoogleAuthService {
 
-  UserSubject = new Subject<userDetails>();
+  UserSubject = new Subject<any>();
   constructor(private readonly oAuth: OAuthService) {
     oAuth.configure(oAuthConfig);
     oAuth.loadDiscoveryDocument().then(()=>{
@@ -38,7 +38,7 @@ export class GoogleAuthService {
         {
           oAuth.loadUserProfile().then((userProfile)=>
           {
-            this.UserSubject.next(userProfile as userDetails)
+            this.UserSubject.next(userProfile)
           })
         }
       })

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
+import { script } from '../../shared/models/script';
+import { comment, empty } from '../../shared/models/comment';
+import { CommentService } from '../../shared/services/comments/comment.service';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-comment-section',
@@ -7,7 +11,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentSectionComponent implements OnInit {
   showComments = false;
-  constructor() {}
+  comments:comment[] = [];
+  @Input()currentScript!:script;
+  @Output()incrementCommentCounter = new EventEmitter();
+  constructor(private readonly commentService:CommentService,private readonly scriptService:ScriptService){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("comment-section");
+    console.log(this.currentScript);
+  }
+
+  ngOnChanges(){
+    this.commentService.getComments(this.currentScript.comments).subscribe({
+      next:(value)=>{
+        console.log(value); 
+        this.comments = value;
+      },
+      error:(e)=>{
+        console.log(e)
+      },
+      complete:()=>{
+        console.log("complete")
+      }          
+    })
+  }
+
+  addNewComment(value:comment): void{
+    this.scriptService.addComment(this.currentScript._id,value._id)
+    this.comments.unshift(value);
+    document.getElementById(value._id)?.focus();
+    this.incrementCommentCounter.emit();
+  }
 }

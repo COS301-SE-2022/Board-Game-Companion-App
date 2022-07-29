@@ -1,30 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { user } from '../models/general/user';
 
 export type CommentDocument = Comment & Document;
 
 @Schema()
 export class Comment{
+    @Prop({required:true,type:{name:"",email:""}})
+    user: user;
+
     @Prop({required: true})
-    user: string;
+    image: string;
 
-    @Prop()
-    time: number;
+    @Prop({required: true})
+    created: Date;
 
-    @Prop()
-    published: Date;
-
-    @Prop({required:true})
-    likes: number;
-
-    @Prop({required:true})
-    dislikes: number;
+    @Prop({required: true})
+    script: string;
 
     @Prop({required:true})
     content: string;
 
     @Prop({type: [{type:mongoose.Schema.Types.ObjectId,ref:'Comment'}]})
-    replies: Comment[]; 
+    replies: string[]; 
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

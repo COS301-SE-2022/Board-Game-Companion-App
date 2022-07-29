@@ -1,4 +1,5 @@
 export interface file{
     name: string;
-    path: string;
+    awsKey: string;
+    location: string;
 }

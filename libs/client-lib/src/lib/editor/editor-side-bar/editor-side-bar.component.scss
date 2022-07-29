@@ -1,0 +1,10 @@
+.editor-side-bar{
+    position: fixed;
+    width: 50px;
+    left: 0;
+    right: 0;
+    resize: horizontal;
+    overflow: auto;
+    max-width: 250px;
+    min-width: 120px;
+}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'board-game-details',
     loadChildren: () => import('./board-game-details/board-game-details.module').then(m=>m.BoardGameDetailsModule),
@@ -48,11 +48,6 @@ const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(m=>m.AdminModule)
   },
   {
-
-    path:'scriptExecutor',
-    loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
-  },
-  {
     path: 'gameSessions',
     loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
   },
@@ -60,6 +55,14 @@ const routes: Routes = [
     path: 'session',
     loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
 
+  },
+  {
+    path: 'models',
+    loadChildren: () => import('./models/models.module').then(m=>m.ModelsModule)
+  },
+  {
+    path: 'script-exec',
+    loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
   }
 ];
 
