@@ -66,7 +66,8 @@ The following are the presentation videos for the respectives demonstrations.
 ## Demo 2 Documentation: 
 ### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
 
-### User Manual: [User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215703/FrontendForerunners.User.Manual.pdf)
+### User Manual: [User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
+
 
 
 
