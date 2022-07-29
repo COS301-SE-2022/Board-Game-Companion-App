@@ -14,9 +14,9 @@ class cards
 
 class tile
 {
-    Name;//name for the tile identifier as string by default
-    Id; //unique identifier for the tile 0 by default
-    Type; //allows grouping of tyles by a type “” by default
+    Name = "";//name for the tile identifier as string by default
+    Id = 0; //unique identifier for the tile 0 by default
+    Type = ""; //allows grouping of tyles by a type “” by default
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
@@ -37,13 +37,16 @@ class game_state
     constructor()
     {
         //State
-
+        
 
         
         //tiles
 
         
     }
+
+    
+
 //state accessors
     getTileByID(id)
     {
@@ -88,38 +91,15 @@ class player
 
 function output(message)
 {
-    let el = document.getElementById("TextOutput");
-    if(el)
-    {
-        el.innerHTML+= '<div>'+message+'</div>'
-    }
-    else
-    {
-        console.log(message)
-    }
+    console_Input(message)
     
 }
 
 function input(message)
 {
     
-    output(message)
-	hiddenValue = false;
-
-    let inputElement = document.getElementById("inputBox");
-    let button = document.getElementById("EnterButton");
-
-    if(inputElement)
-    {
-        
-        
-        return hiddenInputValue
-
-    }
-    else
-    {
-        return console_Input(message)
-    }
+    return console_Input(message)
+    
     
 }
 function console_Input(message)
@@ -157,6 +137,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
+                order.push(input("when will player "+this.players[i].constructor.name + " move"))
             }
             else
             {
@@ -172,13 +153,13 @@ class script
                 if(order[i]> order[j])
                 {
                     let temp = order[i]
-                    let tempP = players[i]
+                    let tempP = this.players[i]
 
                     order[i] = order[j]
-                    players[i] = players[j]
+                    this.players[i] = this.players[j]
 
                     order[j] = temp
-                    order[j] = tempP
+                    this.players[j] = tempP
                 }
             }
         }
