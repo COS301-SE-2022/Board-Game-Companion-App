@@ -39,6 +39,9 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   currentScript:script = empty;
+  showInputModal = false;
+  inputPrompt = "";
+  inputValue = "";
 
   constructor(private readonly scriptService:ScriptService, private router: Router){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
@@ -129,20 +132,27 @@ export class EditorComponent implements OnInit{
       this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
   }
 
+  checkBlock(){
+    if(this.showInputModal === true){
+      window.setTimeout(this.checkBlock, 100);
+    }
+  }
+
   async execute(): Promise<void>{
     
     this.editorConsole.open();
     try{
       const console = this.editorConsole.defineConsole();
       const model = await this.neuralnetworks();
-      this.editorConsole.clear();
-      const code = new Function("console","model",this.editorBody.getCode());
-      code(console,model);  
+      
 
+      this.editorConsole.clear();
+      
+      this.editorConsole.clear();
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
           const code = new Function("console","model",value);
-          code(console,model);  
+          code(console,model);    
         },
         error:(e)=>{
           console.log(e);

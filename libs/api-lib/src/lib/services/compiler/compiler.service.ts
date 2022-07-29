@@ -87,21 +87,25 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
         const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:IntegerLiteral}));
         const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
         const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
-        const Mod=(chevrotain.createToken({name:"Mod",pattern:/mod/,longer_alt:tUserDefinedIdentifier}));
+        const Mod=(chevrotain.createToken({name:"Mod",pattern:/%/,longer_alt:tUserDefinedIdentifier}));
 
 //logical operators
         const And=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
         const Or=(chevrotain.createToken({name:"Or",pattern:/\|\|/,longer_alt:tUserDefinedIdentifier}));
-        const Not=(chevrotain.createToken({name:"Not",pattern:/not/,longer_alt:tUserDefinedIdentifier}));
+        const Not=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tUserDefinedIdentifier}));
 
 
 
 //input output
         const Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
-        const Print=(chevrotain.createToken({name:"Print",pattern:/print/,longer_alt:tUserDefinedIdentifier}));
+        const Print=(chevrotain.createToken({name:"Print",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
         const Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
         const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
         const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
+
+
+
+
 
 //loops
         const While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
@@ -118,7 +122,7 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
 
 //presets
         const Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
-        const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/neuralnetwork/}));
+        const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/model/,longer_alt:tUserDefinedIdentifier}));
 
 //variable
         const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
@@ -480,10 +484,6 @@ class parser extends CstParser
                         { ALT: () =>{ this.CONSUME(Input )
                             this.CONSUME(OpenBracket )
                             this.SUBRULE(this.Expression)
-                            this.OPTION(() => {
-                                this.CONSUME(Comma )
-                            this.SUBRULE(this.nVariable )}
-                              );
                             this.CONSUME(CloseBracket )
                         }},
 
@@ -491,10 +491,6 @@ class parser extends CstParser
                             this.CONSUME(ConsoleInput )
                             this.CONSUME2(OpenBracket )
                             this.SUBRULE2(this.Expression)
-                        this.OPTION1(() => {
-                            this.CONSUME1(Comma )
-                            this.SUBRULE1(this.nVariable )}
-                          );
                         this.CONSUME2(CloseBracket )
                     }},
 
@@ -535,13 +531,18 @@ class parser extends CstParser
                         ALT: () =>{ 
                         this.CONSUME(NeuralNetwork )
                         this.CONSUME1(OpenBracket )
-                        this.CONSUME(StringLiteral )
+                        this.SUBRULE(this.Expression)
+                        this.SUBRULE(this.Continuation)
                         this.CONSUME1(CloseBracket )
                     }},
                     ])
                     
                 });
-
+                private Continuation=this.RULE("Continuation", () => {
+                    //
+                    this.CONSUME1(Comma )
+                    this.SUBRULE(this.Expression)
+                })
 
                 private MethodCall=this.RULE("MethodCall", () => {
             
@@ -712,6 +713,8 @@ class parser extends CstParser
                  });
                  private Alternative=this.RULE("Alternative", () => {
                     this.OPTION(() => {
+                        this.CONSUME(Else)
+                    
                         this.OR([
                             { 
                                 ALT: () =>{ 
@@ -874,15 +877,14 @@ class parser extends CstParser
                 ])
             });
             private Expression=this.RULE("Expression", () => {
+                this.OPTION(() => {
+                    this.SUBRULE1(this.Unary_Operator)
+                })
                 this.SUBRULE(this.Value) 
                 this.SUBRULE(this.dotContinuation)    
-                this.OPTION(() => {
+                this.OPTION1(() => {
                             this.OR1([
-                            {
-                                ALT: () =>{ 
-                                    this.SUBRULE1(this.Unary_Operator)
-                                }
-                            },
+                            
                             {
                                 ALT: () =>{ 
                                     this.SUBRULE(this.Binary)
@@ -890,11 +892,11 @@ class parser extends CstParser
                             },
                             { 
                                 ALT: () =>{ 
-                                    this.OPTION1(() => {
+                                    this.OPTION2(() => {
                                     this.SUBRULE(this.Relational_Operator)
                                     this.SUBRULE2(this.Value)
                                     })
-                                    this.OPTION2(() => {
+                                    this.OPTION3(() => {
                                         this.SUBRULE(this.Ternary)
                                     })
                                     
@@ -914,19 +916,9 @@ class parser extends CstParser
 
 
         private Unary=this.RULE("Unary", () => {
-                        
-            this.OR([
-                { 
-                    ALT: () =>{ 
-                        this.SUBRULE(this.nVariable)
-                        this.SUBRULE(this.Unary_Operator)
-                }},
-                { 
-                    ALT: () =>{ 
-                        this.SUBRULE1(this.Unary_Operator)
-                        this.SUBRULE1(this.nVariable)
-                }}
-        ])
+            this.SUBRULE(this.Unary_Operator)
+          
+        
     });
             private Unary_Operator=this.RULE("Unary_Operator", () => {
                                 
@@ -1034,29 +1026,26 @@ class parser extends CstParser
             { 
                 ALT: () =>{ 
                     this.SUBRULE(this.nVariable)
-                    this.OR1([
-                        { ALT: () =>{ 
+                    this.OPTION(() => {
                             this.SUBRULE(this.Relational_Operator  )
                             this.SUBRULE(this.Expression)
-                        }}
-                    ])
+                    })
+                    
                     
             }},
             { 
                 ALT: () =>{ 
                     this.SUBRULE(this.Const)
-                    this.OR2([
-                        { ALT: () =>{ 
+                    this.OPTION1(() => {
                             this.SUBRULE1(this.Relational_Operator)
                             this.SUBRULE1(this.Expression)
-                        }}
-                    ])
+                    })
                     
                     
             }}
     ])
 
-    this.OPTION(() => {
+    this.OPTION2(() => {
         this.SUBRULE1(this.Logical_Operator )
         this.SUBRULE3(this.nCondition)
     })
