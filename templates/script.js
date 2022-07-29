@@ -86,13 +86,47 @@ class player
 }
 //players
 
+function output(message)
+{
+    let el = document.getElementById("TextOutput");
+    if(el)
+    {
+        el.innerHTML+= '<div>'+message+'</div>'
+    }
+    else
+    {
+        console.log(message)
+    }
+    
+}
 
+function input(message)
+{
+    
+    output(message)
+	hiddenValue = false;
 
+    let inputElement = document.getElementById("inputBox");
+    let button = document.getElementById("EnterButton");
+
+    if(inputElement)
+    {
+        
+        
+        return hiddenInputValue
+
+    }
+    else
+    {
+        return console_Input(message)
+    }
+    
+}
 function console_Input(message)
 {
     
-    input = prompt(message);
-    return input;
+    i = prompt(message);
+    return i;
 }
 
 //
@@ -116,7 +150,7 @@ class script
         }
         //get player turn order
         let order = []
-        let inputElement = document.getElementById("inputMessageBox");
+        let inputElement = document.getElementById("TextOutput");
         
         for(let i =0;i< this.players.length;i++)
         {
@@ -150,26 +184,26 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length;i++)
+            for(let i =0;i< this.players.length && !this.endgame();i++)
             {
                 this.players[i].turn();
             }
         }
-        while(!endgame(State, players))
+        while(!this.endgame())
 
 
     }
 
-
+    endgame()
+    {
+        //end_game
+    
+    
+        return false
+    }
     
 
 
 }
-function endgame(State, players)
-{
-    //end_game
 
-
-    return false
-}
 (new script()).play();
