@@ -122,10 +122,10 @@ describe('Router: Module', () => {
     expect(location.path()).toBe('/models');
   }));
 
-  it('navigate to "executor" redirects you to /executor',fakeAsync(() => {
-    router.navigate(['executor']);
-    tick();
-    expect(location.path()).toBe('/executor');
-  }));
+  // it('navigate to "executor" redirects you to /executor',fakeAsync(() => {
+  //   router.navigate(['executor']);
+  //   tick();
+  //   expect(location.path()).toBe('/executor');
+  // }));
 
 });

@@ -19,7 +19,7 @@ export class ScriptsComponent implements OnInit {
   gridView = true;
   months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   searchValue = "";
-  //selected = "";
+  selectedSort = "";
   page = 1;
   hover = "";
   items = [{ title: 'Profile' }, { title: 'Log out' }];
@@ -233,48 +233,40 @@ export class ScriptsComponent implements OnInit {
   onSort(): void
   {
     
-    console.log(this.selected);
+    console.log(this.selectedSort);
     // this.listResults = new Array<fetchSessionResults>();
     // this.ngOnInit();
-    // if(this.selectedSort ==="alphabetical")
-    // {
-    //   // sort game sessions alphabetically
-    //     console.log("alphabet sort");
-    //     this.listResults.sort(function(resultA, resultB) 
-    //     {
-    //       const gameA = resultA.getBoardGame().toUpperCase(); // ignore upper and lowercase
-    //       const gameB = resultB.getBoardGame().toUpperCase(); // ignore upper and lowercase
+    if(this.selectedSort ==="alphabetical")
+    {
+      // sort game sessions alphabetically
+        console.log("alphabet sort");
+        this.scripts.sort(function(resultA, resultB) 
+        {
+          const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
+          const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
 
-    //       if (gameA < gameB) 
-    //       {
-    //         return -1;
-    //       }
-    //       if (gameA > gameB)
-    //       {
-    //         return 1;
-    //       }
+          if (nameA < nameB) 
+          {
+            return -1;
+          }
+          if (nameA > nameB)
+          {
+            return 1;
+          }
 
-    //     return 0;
-    //   });
-    // }
-    // else if(this.selectedSort ==="score")
-    // {
-    //   console.log("score sort");
-    //   this.listResults.sort(function(resultA,resultB)
-    //   {
-    //     return +resultA.getScore() - +resultB.getScore(); 
-    //   });
-
-    // }
-    // else if(this.selectedSort==="date")
-    // {
-    //   console.log("date sort");
-    //   this.listResults.sort(function(resultA,resultB)
-    //   {
-    //     console.log(+new Date(resultB.getDate()) - +new Date(resultA.getDate()))
-    //     return +new Date(resultB.getDate()) - +new Date(resultA.getDate());
-    //   });
-    // }
+        return 0;
+      });
+    }
+    else if(this.selectedSort==="date")
+    {
+      // console.log("date sort");
+      this.scripts.sort(function(resultA,resultB)
+      {
+        // console.log(resultB.lastupdate > resultA.lastupdate);
+        console.log(new Date(resultB.lastupdate),new Date(resultA.lastupdate));
+        return +new Date(resultB.lastupdate) - +new Date(resultA.lastupdate);
+      });
+    }
   }
    
 }

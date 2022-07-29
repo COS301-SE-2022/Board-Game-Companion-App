@@ -27,8 +27,8 @@
 </div>
 <div class="container" >
 <!-- search and sort functionality -->
-    <div id="outerDiv" class = "row" >
-        <div id="titleScript">
+    <div id="outerDiv" class = "row h-24" >
+        <div id="titleScript" class="py-0 h-full">
             <!--Heading-->
             <h1 id="heading" class="w-1/3">Scripts</h1>
             <!--logo-->
@@ -44,21 +44,22 @@
             <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button> -->
 
             <div id="searchSortDiv" class="w-1/3 h-full">
-                <div id="sortingDiv" class="float-right">
-                    <div id="outerSortDiv" class="w-full float-right">
-                    <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selected"  (change)="onSort()">
+                <span id="sortingDiv" class="">
+
+                    <button id ="sort" class="btn px-2 py-1 pb-2 font-bold">Sort</button>
+                    <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selectedSort"  (change)="onSort()">
                         <!-- <option value="" disabled selected>Sort By..</option> -->
                         <option value="alphabetical">Name</option>
-                        <option value="score">Creator</option>
+                        <!-- <option value="score">Creator</option> -->
                         <option value="date">LastUpdate</option>
                     </select>
-                    <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
-                </div>
-                </div>
-                <div id="searchDiv">
+                   
+                
+                </span>
+                <span id="searchDiv" class="ml-8">
                     <input class = "" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
                     <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button>
-                </div>
+                </span>
             </div>
         </div>
         <!-- <div class = "col-xs-12 col-sm-4" >
@@ -71,7 +72,7 @@
     </div>
 <!-- a table and search functionality -->
 
-    <div class = "row p-2">
+    <div class = "row">
         
         <div class = "flex flex-row" *ngIf="gridView===true">
             <div (click) = "containerClick($event)" id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
