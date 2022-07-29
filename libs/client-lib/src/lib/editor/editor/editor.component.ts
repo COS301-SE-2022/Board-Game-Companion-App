@@ -152,8 +152,7 @@ export class EditorComponent implements OnInit{
 
       this.editorConsole.clear();
       
-      const code = new Function("console","model",this.editorBody.getCode());
-      code(console,model);   
+        
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
           //console.log(value)
