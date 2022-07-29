@@ -134,15 +134,17 @@ export class EditorComponent implements OnInit{
     this.editorConsole.open();
     try{
       const console = this.editorConsole.defineConsole();
-      const model = await this.neuralnetworks();
+      
       this.editorConsole.clear();
-      const code = new Function("console","model",this.editorBody.getCode());
-      code(console,model);  
-
+      
+      
+      
+      
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
-          const code = new Function("console","model",value);
-          code(console,model);  
+          //console.log(value)
+          const code = new Function("console",value);
+          code(console);    
         },
         error:(e)=>{
           console.log(e);
