@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { GoogleAuthService, userDetails } from '../../google-login/GoogleAuth/google-auth.service';
 
 
 @Component({
@@ -23,10 +24,23 @@ export class ScriptsComponent implements OnInit {
   page = 1;
   hover = "";
   items = [{ title: 'Profile' }, { title: 'Log out' }];
+  UserDetails: any | undefined;
+  loggedIn = false;
   
-  constructor(private readonly scriptService:ScriptService,private readonly router:Router){}
+  constructor(private readonly scriptService:ScriptService,private readonly router:Router,private readonly gapi: GoogleAuthService)
+  {
+    gapi.UserSubject.subscribe({
+      next:(value)=>{
+        this.UserDetails = value;
+      }
+    })
+  }
   
   ngOnInit(): void {
+    if(this.gapi.isLoggedIn())
+    {
+      this.loggedIn = true;
+    }
     this.loadAllScripts();
   }
 
