@@ -17,6 +17,7 @@ import { S3Service } from './services/aws/s3.service';
 import { CompilerService } from './services/compiler/compiler.service';
 import { ApiModelsController } from './controllers/models/models.controller';
 import { ModelsService } from './services/models/models.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports:[
@@ -25,7 +26,8 @@ import { ModelsService } from './services/models/models.service';
                                 {name:Comment.name,schema:CommentSchema},
                                 {name:Rating.name,schema:RatingSchema},
                                 {name:Like.name,schema:LikeSchema}
-                              ])
+                              ]),
+                              HttpModule
   ],
   controllers: [
     CollectionsController,
