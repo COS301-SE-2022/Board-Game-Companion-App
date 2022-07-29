@@ -85,7 +85,8 @@ The following are the presentation videos for the respectives demonstrations.
 ### Technical User Manual: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
 
 
-### SRS Documentation:[SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9218252/SRS_V3.pdf)
+### SRS Documentation:[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
+
 
 
 
