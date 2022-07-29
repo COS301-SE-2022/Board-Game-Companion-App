@@ -24,7 +24,7 @@
                             <a class="nav-link block pt-1" (click)="moveTo('scripts')">Scripts</a>
                         </li>
                         <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer" *ngIf = "isLoggedIn()">
-                            <a class="nav-link block p-0" (click)="moveTo('models')">Models</a>
+                            <a class="nav-link block p-0 pt-1" (click)="moveTo('models')">Models</a>
                         </li>
                         <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block pt-1" (click)="moveTo('admin')">Administration</a>
