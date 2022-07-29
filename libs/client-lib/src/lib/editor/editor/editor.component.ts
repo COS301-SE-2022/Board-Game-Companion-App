@@ -77,6 +77,7 @@ export class EditorComponent implements OnInit{
   }
 
   async neuralnetworks():Promise<any>{
+    
     console.log(name)
     const modelsInfo = localStorage.getItem("models");
     const result = new Object();
@@ -85,6 +86,7 @@ export class EditorComponent implements OnInit{
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
+      console.log(networks);
       const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
@@ -98,6 +100,8 @@ export class EditorComponent implements OnInit{
       }
 
       return ((name:string,input:number[])=>{
+        
+        console.log(name,input)
         let index = -1;
 
         for(let count = 0; count < models.length && index === -1; count++){
@@ -115,7 +119,7 @@ export class EditorComponent implements OnInit{
         tensorResult.print();
         index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
         console.log(index);
-        
+        console.log(models[index])
         return models[index].labels[index];
       })
 
@@ -148,9 +152,11 @@ export class EditorComponent implements OnInit{
 
       this.editorConsole.clear();
       
-      this.editorConsole.clear();
+      const code = new Function("console","model",this.editorBody.getCode());
+      code(console,model);   
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
+          //console.log(value)
           const code = new Function("console","model",value);
           code(console,model);    
         },

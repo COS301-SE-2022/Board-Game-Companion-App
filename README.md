@@ -69,14 +69,17 @@ The following are the presentation videos for the respectives demonstrations.
 ### User Manual: [User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
 
 
-
-
 ### SRS: [Capstone_SRS.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
 
 ### Architectural Design: [Capstone_Architectural_Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
 
 ### Burndown Chart (Planning): [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
 
+## Demo 3 Documentation:
+### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
+
+
+### User Manual: [FrontendForerunners User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
 
 
 

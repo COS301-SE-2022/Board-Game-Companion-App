@@ -71,7 +71,7 @@ export class CreateScriptComponent implements OnInit {
     const fileinput:HTMLInputElement = <HTMLInputElement>document.getElementById("image-input") || new HTMLInputElement;
     const files = fileinput.files || [];
 
-    formData.append("userName",sessionStorage.getItem("user") || "Joseph");
+    formData.append("userName",sessionStorage.getItem("name") || "Joseph");
     formData.append("userEmail",sessionStorage.getItem("email") || "u18166793@tuks.co.za");
     formData.append("name",this.scriptname);
     formData.append("boardGameId",boardGameId);

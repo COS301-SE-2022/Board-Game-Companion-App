@@ -37,5 +37,13 @@ export class S3Service {
         };
 
         await this.s3.upload(params).promise();
-    }    
+    }
+    
+    // async duplicate(name:string,sourcePath:string,destinationPath:string):{
+    //     s3.copyObject({
+    //         Bucket : this.bucket,
+    //         CopySource : this.bucket + (process.env.PROJECT_STATUS == "production" ? "production/" : "development/") + sourcePath + name, 
+    //         Key : (process.env.PROJECT_STATUS == "production" ? "production/" : "development/") + destinationPath},
+    //     });
+    // }
 }
