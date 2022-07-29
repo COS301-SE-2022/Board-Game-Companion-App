@@ -34,6 +34,7 @@ const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifi
         const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
         const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
         const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
+        const tCopy=(chevrotain.createToken({name:"copy",pattern:/copy/,longer_alt:tUserDefinedIdentifier}));
         
 
         const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
@@ -103,7 +104,8 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
         const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
         const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
-
+        
+        const Await=(chevrotain.createToken({name:"await",pattern:/await/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -150,9 +152,11 @@ const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserD
     tCards,
     tTile,
     tPiece,
+    Await,
     tAddToArr,
     tAddToBoard,
     tConsider,
+    tCopy,
     tAddAdjacency,
     tAddPieceToTile,
     tGetTileByID,
@@ -481,7 +485,10 @@ class parser extends CstParser
             
                 this.OR([
                      
-                        { ALT: () =>{ this.CONSUME(Input )
+                        { ALT: () =>{ 
+                            
+                            
+                            this.CONSUME(Input )
                             this.CONSUME(OpenBracket )
                             this.SUBRULE(this.Expression)
                             this.CONSUME(CloseBracket )
@@ -585,10 +592,24 @@ class parser extends CstParser
                         { 
                             ALT: () =>{ 
                                 this.SUBRULE(this.rIsActionLegal) 
+                            
+                        }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rCopy) 
+                            
                         }},
                     ])
                     
                 });
+                private rCopy=this.RULE("rCopy", () => {
+                    this.CONSUME(tCopy )
+                    this.CONSUME2(OpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME2(CloseBracket )
+                })
+
+
                 private rChooseAction=this.RULE("rChooseAction", () => {
                     this.CONSUME(tChooseAction)
                     this.CONSUME(OpenBracket )
@@ -828,7 +849,7 @@ class parser extends CstParser
                     this.CONSUME(Assign)
                     this.SUBRULE(this.RHS )
 
-                            
+                    
                         
                  });
 
@@ -1445,10 +1466,16 @@ function visitPlayer(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
                         
                         break; 
+
+                        
                     case "CloseBracket":
                         //
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ '{ ', jsScript.slice(jsScript.indexOf("//players"))].join('');
-                        break;     
+                        break;
+                        
+                    case "Turn":
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ''+token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        break;
                     default:
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                 }
@@ -1480,6 +1507,8 @@ function visitPlayer(cstOutput:CstNode)
                         
             }
         }
+        
+                            
 }
 function visitPlayerActions(cstOutput:CstNode, i:number)
 {
@@ -1736,11 +1765,29 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
                     visitRIsActionLegal(node, place)
                     break;
+                case "rCopy":
+                    visitRCopy(node, place)
+                    break;
                 
             }
         }
     }
 }
+function visitRCopy(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+
+    }
+}
+
+
+
 function visitRIsActionLegal(cstOutput:CstNode, place:string)
 {
     
