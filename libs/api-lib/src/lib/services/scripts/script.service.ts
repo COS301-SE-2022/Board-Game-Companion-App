@@ -105,11 +105,11 @@ export class ScriptService {
             script = await this.scriptModel.findById(id);  
             
             if(script === null){
-                result.status = "failed";
+                result.status = "danger";
                 result.message = "The script you are trying to download does not exist.";
             }else{
                 if(script.status.value !== 2){
-                    result.status = "failed";
+                    result.status = "danger";
                     
                     if(script.status.value === 0)
                         result.message = "The script you are trying to download has been flagged.";
@@ -140,36 +140,30 @@ export class ScriptService {
 
                     const createdScript = new this.scriptModel(dto);
                     const newScript:ScriptDocument = await createdScript.save();
-                    let data = "";
+                    const data  = (await this.httpService.axiosRef.get(script.build.location,{
+                        responseType:'text'
+                    })).data;
 
-                    newScript.build = await this.createBuildFile(newScript._id);
+                    const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
+                    //console.log(buildResponse)
+                    newScript.build.name = script.build.name;
+                    newScript.build.awsKey = buildResponse.key;
+                    newScript.build.location = buildResponse.location;
 
-                    data = fs.readFileSync(script.build.location,"utf8");
                     
-                    this.httpService.get('http://localhost:3000/cats')
-
-
-                    const temp = await this.updateBuild(newScript._id,data);
-
-                    if(temp.status === false){
-                        result.status = "failed";
-                        result.message = "Failed to download script.";
-                    }else{
-                        const image = fs.readFileSync(script.icon.location,{});
-                        console.log("image-----");
-                        console.log(image)
-                        console.log("image-----")
-                        const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image.buffer);
-                        newScript.icon = {
-                            name: script.icon.name,
-                            location: savedIcon.location,
-                            awsKey: savedIcon.key
-                        }
-
-                        newScript.save();
-                        result.script = newScript;
+                    const image = (await this.httpService.axiosRef.get(script.icon.location));
+                    console.log(image)
+                    const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
+                    
+                    newScript.icon = {
+                        name: script.icon.name,
+                        location: savedIcon.location,
+                        awsKey: savedIcon.key
                     }
 
+                    newScript.save();
+                    result.script = newScript;
+                    
                 }
             }
         }

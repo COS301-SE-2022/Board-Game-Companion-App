@@ -46,7 +46,7 @@ export class ScriptDetailComponent implements OnInit {
 
   download(): void{
     this.downloading = true;
-    this.scriptService.download(this.current._id,{name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+    this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(val)=>{
         this.downloading = false;
         this.notifications.add({type:val.status,message:val.message});
@@ -89,7 +89,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   getRating(): void{
-    this.scriptService.getRating({name:"Joseph",email:"u18166793@tuks.co.za"},this.current._id).subscribe({
+    this.scriptService.getRating({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id).subscribe({
       next:(val)=>{
         if(val !== null)
           this.rate = val;
@@ -123,7 +123,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   rateScript(val:number): void{
-    this.scriptService.rate({name:"Joseph",email:"u18166793@tuks.co.za"},this.current._id,val).subscribe({
+    this.scriptService.rate({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id,val).subscribe({
       next:(val)=>{
         this.getAverageRating();
         this.getVoterCount();
