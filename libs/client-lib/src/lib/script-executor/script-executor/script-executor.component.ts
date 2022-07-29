@@ -3,6 +3,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
 import { script } from '../../shared/models/script';
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
 import * as tf from '@tensorflow/tfjs'
 @Component({
   selector: 'board-game-companion-app-script-executor',
@@ -20,11 +21,28 @@ export class ScriptExecutorComponent implements OnInit {
   m = 0;
   s = 0;
   sec = "sec";
+  gameName = ""
 
-  constructor(private readonly scriptService:ScriptService, private router:Router) {
+  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
+    this.searchService.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.current.boardgame)
+            .subscribe(
+              
+              data=>{
+                
+                
+                const result:string = data.toString();
+
+                const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+                parseXml.querySelectorAll("name").forEach(n=>{
+                    
+                    this.gameName = n.getAttribute("value") || "";
+                 
+                });
+              })
   }
 
+  
   back()
   {
     //Timer
@@ -35,8 +53,8 @@ export class ScriptExecutorComponent implements OnInit {
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
       let session = []
-      session.push("tictactoe10")
-      session.push(this.current._id)
+      session.push(this.gameName)
+      session.push(this.current.name)
       session.push("2")
       session.push("N/A")
       this.hours = this.h + this.hours + " "
@@ -46,9 +64,7 @@ export class ScriptExecutorComponent implements OnInit {
       session.push("Win")
       const now = new Date();
       session.push(now.toLocaleDateString())
-      const script = localStorage.getItem(this.current._id)
-      if(script != null)
-      session.push(script[3])
+      session.push(this.current.boardgame)
       localStorage.setItem(name, JSON.stringify(session))
     }
     else
@@ -58,8 +74,8 @@ export class ScriptExecutorComponent implements OnInit {
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
       let session = []
-      session.push("tictactoe10")
-      session.push(this.current._id)
+      session.push(this.gameName)
+      session.push(this.current.name)
       session.push("2")
       session.push("N/A")
       this.hours = this.h + this.hours + " "
@@ -69,9 +85,7 @@ export class ScriptExecutorComponent implements OnInit {
       session.push("Win")
       const now = new Date();
       session.push(now.toLocaleDateString())
-      const script = localStorage.getItem(this.current._id)
-      if(script != null)
-      session.push(script[3])
+      session.push(this.current.boardgame)
       localStorage.setItem(name, JSON.stringify(session))
     }
 
@@ -103,6 +117,7 @@ export class ScriptExecutorComponent implements OnInit {
         },
         complete:()=>{
           console.log("complete")
+          this.back()
         }  
       })
   }
