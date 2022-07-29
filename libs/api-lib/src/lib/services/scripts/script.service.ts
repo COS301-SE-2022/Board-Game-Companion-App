@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Script, ScriptDocument } from '../../schemas/script.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
 import fs = require('fs');
+import http = require('http');
 import { status } from '../../models/general/status';
 import { S3Service } from '../aws/s3.service'
 import { file } from '../../models/general/files';
@@ -12,12 +13,14 @@ import { awsUpload } from '../../models/general/awsUpload';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
-
+import { HttpService } from '@nestjs/axios';
 @Injectable()
 export class ScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
-    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,private readonly s3Service:S3Service,private readonly compilerService:CompilerService){
+    constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,
+    private readonly s3Service:S3Service,private readonly compilerService:CompilerService,
+    private readonly httpService: HttpService){
         
     }
 
@@ -136,14 +139,16 @@ export class ScriptService {
                     };
 
                     const createdScript = new this.scriptModel(dto);
-                    const newScript:ScriptDocument =  await createdScript.save();
+                    const newScript:ScriptDocument = await createdScript.save();
                     let data = "";
 
                     newScript.build = await this.createBuildFile(newScript._id);
-                    console.log("build: " + console.log(newScript.build.location));
 
                     data = fs.readFileSync(script.build.location,"utf8");
                     
+                    this.httpService.get('http://localhost:3000/cats')
+
+
                     const temp = await this.updateBuild(newScript._id,data);
 
                     if(temp.status === false){
