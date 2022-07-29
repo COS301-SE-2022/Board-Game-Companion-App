@@ -39,7 +39,7 @@ export class ScriptsComponent implements OnInit {
   }
 
   loadAllScripts(): void{
-    this.scriptService.getScriptsCreatedByMe({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+    this.scriptService.getScriptsCreatedByMe({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(value)=>{
         this.creationStore = value;
         this.scripts = this.scripts.concat(value);
@@ -65,7 +65,7 @@ export class ScriptsComponent implements OnInit {
       }          
     });
 
-    this.scriptService.getOther({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+    this.scriptService.getOther({name:sessionStorage.getItem("name") as string,email: sessionStorage.getItem('email') as string}).subscribe({
       next:(value)=>{
         this.downloadStore = value;
         this.scripts = this.scripts.concat(value);
@@ -151,7 +151,7 @@ export class ScriptsComponent implements OnInit {
     }
 
     if(value.toLowerCase() === "you")
-      value = "Joseph";
+      value = sessionStorage.getItem("name") as string;
 
     for(let count = 0; count < this.creationStore.length; count++){
       if(this.creationStore[count].name.toLowerCase().indexOf(value.toLowerCase()) !== -1 || 

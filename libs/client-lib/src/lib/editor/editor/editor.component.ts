@@ -85,6 +85,7 @@ export class EditorComponent implements OnInit{
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
+      console.log(networks);
       const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
@@ -148,7 +149,8 @@ export class EditorComponent implements OnInit{
 
       this.editorConsole.clear();
       
-      this.editorConsole.clear();
+      const code = new Function("console","model",this.editorBody.getCode());
+      code(console,model);   
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
           const code = new Function("console","model",value);
