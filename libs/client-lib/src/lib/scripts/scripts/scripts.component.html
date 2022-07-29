@@ -47,10 +47,10 @@
                 <span id="sortingDiv" class="">
 
                     <button id ="sort" class="btn px-2 py-1 pb-2 font-bold">Sort</button>
-                    <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selected"  (change)="onSort()">
+                    <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selectedSort"  (change)="onSort()">
                         <!-- <option value="" disabled selected>Sort By..</option> -->
                         <option value="alphabetical">Name</option>
-                        <option value="score">Creator</option>
+                        <!-- <option value="score">Creator</option> -->
                         <option value="date">LastUpdate</option>
                     </select>
                    
