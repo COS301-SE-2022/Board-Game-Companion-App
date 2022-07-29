@@ -57,7 +57,8 @@ describe('AdminComponent', () => {
     return of([{
       _id: "2",
       name: "tictactoe",
-      author: "Njabulo",
+      author: {name:"Njabulo",email:"jsjs@gmail.com"},
+      owner: {name:"",email:""},
       boardgame: "",
       description: "",
       created: new Date("05-03-19"),
@@ -70,13 +71,15 @@ describe('AdminComponent', () => {
       size: 344,
       status: {value: 1, message: "Active and running"},
       comments: [],
-      file: {name:"",location:"",awsKey:""},
-      icon: "",
+      source: {name:"",location:"",awsKey:""},
+      build: {name:"",location:"",awsKey:""},
+      icon: {name:"",location:"",awsKey:""},
       __v: 0
     },{
       _id: "1",
       name: "chess",
-      author: "PRO",
+      author: {name:"PRO",email:"kid@yahoo.com"},
+      owner: {name:"",email:""},
       boardgame: "",
       description: "",
       created: new Date(0),
@@ -89,13 +92,15 @@ describe('AdminComponent', () => {
       size: 233,
       status: {value: 0, message: "flagged"},
       comments: [],
-      file: {name:"",location:"",awsKey:""},
-      icon: "",
+      source: {name:"",location:"",awsKey:""},
+      build: {name:"",location:"",awsKey:""},
+      icon: {name:"",location:"",awsKey:""},
       __v: 0
     },{
       _id: "3",
       name: "root",
-      author: "Master",
+      author: {name:"Master",email:"masterInd@gmail.com"},
+      owner: {name:"",email:""},
       boardgame: "",
       description: "",
       created: new Date("01-04-20"),
@@ -108,8 +113,9 @@ describe('AdminComponent', () => {
       size: 320,
       status: {value: 2, message: "In progress"},
       comments: [],
-      file: {name:"",location:"",awsKey:""},
-      icon: "",
+      source: {name:"",location:"",awsKey:""},
+      build: {name:"",location:"",awsKey:""},
+      icon: {name:"",location:"",awsKey:""},
       __v: 0
     }]);
   }

@@ -6,6 +6,8 @@ import { ScriptsComponent } from './scripts.component';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { OAuthService, UrlHelperService, OAuthLogger, DateTimeProvider } from 'angular-oauth2-oidc';
 
 let mockScripts: script[] =[{
   _id: "1",
@@ -100,17 +102,19 @@ const otherScripts:script[]=[mockScripts[2],mockScripts[1]];
 
 describe('ScriptsComponent',()=>{
   let component: ScriptsComponent;
-  let service: ScriptService;
+  let scriptService: ScriptService;
+  let googleService: GoogleAuthService;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ScriptsComponent],
-      imports: [HttpClientTestingModule,RouterTestingModule],
-      providers: [ScriptService]});
-      service = TestBed.inject(ScriptService);
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [ScriptService, GoogleAuthService, OAuthService, UrlHelperService, OAuthLogger, DateTimeProvider]});
+      scriptService = TestBed.inject(ScriptService);
+      googleService = TestBed.inject(GoogleAuthService);
       router = TestBed.inject(Router);
-      component = new ScriptsComponent(service, router);
+      component = new ScriptsComponent(scriptService, router, googleService);
   });
 
   jest.mock('../../shared/services/scripts/script.service');
@@ -142,7 +146,8 @@ describe('ScriptsComponent',()=>{
   }
   it('should create a Scripts component',()=>{
     expect(component).toBeDefined();
-    expect(service).toBeDefined();
+    expect(scriptService).toBeDefined();
+    expect(googleService).toBeDefined();
   });
 
   it('should load all existing scripts',()=>{

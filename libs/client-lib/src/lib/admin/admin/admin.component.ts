@@ -150,7 +150,7 @@ export class AdminComponent implements OnInit {
   onSearch(): void{
     this.scripts = [];
     this.adminService.getScripts().subscribe(data=>{
-      this.scripts = data.filter( (res: {author: user;}) => res.author.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
+      this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
       for(let i=0; i < this.scripts.length; i++){
         const date = this.scripts[i].created.split(" ");
@@ -164,10 +164,10 @@ export class AdminComponent implements OnInit {
   onSort(): void{
     if(this.selected==="alphabetical" && this.scripts.length!==0){
 
-      this.scripts.sort(function(resultA: { author: user; }, resultB: { author: user; })
+      this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
       {
-        const nameA = resultA.author.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = resultB.author.name.toUpperCase(); // ignore upper and lowercase
+        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
 
         if (nameA < nameB) 
         {
