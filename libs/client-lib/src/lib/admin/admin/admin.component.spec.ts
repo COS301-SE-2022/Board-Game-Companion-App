@@ -125,18 +125,7 @@ describe('AdminComponent', () => {
 
       const Scripts = fixture.nativeElement.querySelectorAll('tr');
       expect(Scripts.length-1).toEqual(3); //minus first row
-
-      const onSearch = fixture.nativeElement.querySelector('#search'); // get search button
-      const inputText = fixture.nativeElement.querySelector('#textInput'); // input search
-      inputText.innerText = 'tictactoe'; 
-      onSearch.click();
-
-      expect(service.getScripts).toBeCalled();
-
-      expect(req[1].request.method).toBe('GET');
-      req[1].flush(Response);
       
-      expect(component.scripts).toEqual(1);
     });
 
 });

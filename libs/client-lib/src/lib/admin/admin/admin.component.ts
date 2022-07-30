@@ -149,7 +149,9 @@ export class AdminComponent implements OnInit {
 
   onSearch(): void{
     this.scripts = [];
+    console.log(this.searchedValue);
     this.adminService.getScripts().subscribe(data=>{
+      console.log(this.searchedValue);
       this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
       for(let i=0; i < this.scripts.length; i++){
