@@ -13,6 +13,7 @@ import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service
 // import { Observable } from 'rxjs';
 import { ScriptService } from './shared/services/scripts/script.service';
 import { ModelsService } from './shared/services/models/models.service';
+import { FormsModule } from '@angular/forms';
 // import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service';
 // class TestHttpRequestInterceptor implements HttpInterceptor {
 //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -40,7 +41,7 @@ describe('Router: Module', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule],
+        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule],
         providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider,ScriptService,ModelsService],
         declarations: [AppComponent]
     });

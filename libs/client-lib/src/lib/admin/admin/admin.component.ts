@@ -41,7 +41,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
  
-    if(this.scripts==null){
+    if(this.scripts.length===0){
       
       this.adminService.getScripts().subscribe(data=>{
         const date = new Date();

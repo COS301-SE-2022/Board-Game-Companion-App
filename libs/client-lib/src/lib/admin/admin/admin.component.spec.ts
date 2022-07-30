@@ -1,25 +1,27 @@
 import { NgxPaginationModule } from 'ngx-pagination';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AdminComponent } from './admin.component';
 import { AdminService } from '../admin-service/admin.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+// import { ActivatedRoute, Router } from '@angular/router';
+// import { of } from 'rxjs';
+import { script } from '../../shared/models/script';
+import { FormsModule } from '@angular/forms';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
   let service: AdminService;
-  let router: Router;
-  let route: ActivatedRoute;
-
+  // let router: Router;
+  // let route: ActivatedRoute;
+  let httpTestingController: HttpTestingController;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminComponent],
       providers: [AdminService],
-      imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule]
+      imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule,FormsModule]
     }).compileComponents();
   });
 
@@ -29,32 +31,15 @@ describe('AdminComponent', () => {
     component.scripts = [];
     fixture.detectChanges();
     service = TestBed.inject(AdminService);
-    router = TestBed.inject(Router);
+    // router = TestBed.inject(Router);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to the editor', () =>{
-    component = new AdminComponent(service,router,route);
-    // component.scripts = [];
-    const navigateSpy = jest.spyOn(router,'navigate');
-    component.onEdit('chess_script','12345');
-    expect(navigateSpy).toHaveBeenCalledWith(['editor',{id:'12345',filename:'chess_script'}]);
-  });
-
-  it('should navigate to the comment section', () =>{
-    component = new AdminComponent(service,router,route);
-    // component.scripts = [];
-    const navigateSpy =  jest.spyOn(router,'navigate');
-    component.onComment('chess_script', '12345');
-    expect(navigateSpy).toHaveBeenCalledWith(['script-detail',{id:'12345',filename:'chess_script'}]);
-  });
-
-  jest.mock('../admin-service/admin.service');
-  AdminService.prototype.getScripts = function(){
-    return of([{
+  const Response: script[] = [{
       _id: "2",
       name: "tictactoe",
       author: {name:"Njabulo",email:"jsjs@gmail.com"},
@@ -117,56 +102,41 @@ describe('AdminComponent', () => {
       build: {name:"",location:"",awsKey:""},
       icon: {name:"",location:"",awsKey:""},
       __v: 0
-    }]);
-  }
+    }];
 
-  it('should have array of length 3', ()=>{
-    component.findAll();
-    expect(component.scripts.length).toBe(3);
-  });
+    it('should load all scripts when ngOnInit()', ()=>{
+      jest.spyOn(service,'getScripts'); //Spy when it's called
+      
+      expect(component.scripts).toStrictEqual([]);
 
-  it('should return current month', ()=>{
-    component.currentMonth();
-    expect(component.scripts.length).toBe(0);
-    component.findAll();
-    expect(component.scripts.length).toBe(3);
-  });
+      component.ngOnInit();
 
-  it('should return running scripts', ()=>{
-    component.runningScripts();
-    expect(component.scripts.length).toBe(1);
-  });
+      expect(service.getScripts).toBeCalledTimes(1);
+     
+      expect(component.scripts).toBeTruthy();
 
-  it('should return flagged scripts', ()=>{
-    component.flaggedScripts();
-    expect(component.scripts.length).toBe(1);
-  });
+      fixture.detectChanges();
 
-  it('should return progressing scripts', ()=>{
-    component.ProgressScripts();
-    expect(component.scripts.length).toBe(1);
-  });
+      const req = httpTestingController.match('http://localhost:3333/api/scripts/retrieve/all');
+      expect(req[0].request.method).toBe('GET');
+      req[0].flush(Response);
 
-  it('should search script by name', ()=>{
-    component.findAll();
-    component.searchedValue = 'root';
-    component.onSearch();
-    expect(component.scripts.length).toBe(1);
-    component.searchedValue = 'z';
-    component.onSearch();
-    expect(component.scripts.length).toBe(0);
-  });
+      fixture.detectChanges();
 
-  it('should sort by date and alphabet', ()=>{
-    component.findAll();
-    component.selected = 'alphabetical';
-    component.onSort();
-    expect(component.scripts[1].name).toBe('root');
-    component.selected = 'date';
-    component.onSort();
-    expect(component.scripts[0].name).toBe('chess');
-    expect(component.scripts[1].name).toBe('tictactoe');
-    expect(component.scripts[2].name).toBe('root');
-  });
+      const Scripts = fixture.nativeElement.querySelectorAll('tr');
+      expect(Scripts.length-1).toEqual(3); //minus first row
+
+      const onSearch = fixture.nativeElement.querySelector('#search'); // get search button
+      const inputText = fixture.nativeElement.querySelector('#textInput'); // input search
+      inputText.innerText = 'tictactoe'; 
+      onSearch.click();
+
+      expect(service.getScripts).toBeCalled();
+
+      expect(req[1].request.method).toBe('GET');
+      req[1].flush(Response);
+      
+      expect(component.scripts).toEqual(1);
+    });
 
 });
