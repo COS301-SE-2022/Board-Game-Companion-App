@@ -28,6 +28,8 @@ const mockScript:script = {
   icon: {name:"",location:"",awsKey:""},
   __v: 0
 }
+
+
 describe('Test update script',()=>{
 
   let component: UpdateScriptComponent;
@@ -47,12 +49,17 @@ describe('Test update script',()=>{
   });
 
   it('should create components and services',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component).toBeDefined();
     expect(scriptService).toBeDefined();
     expect(searchService).toBeDefined();
+    window.alert = jsdomAlert;
   });
 
   it('should have variables initialized',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.current).toBe(empty);
     expect(component.updateScriptEvent).toBeDefined();
     expect(component.scriptFiles.length).toBe(1);
@@ -65,6 +72,7 @@ describe('Test update script',()=>{
     expect(component.boardgame).toBe("");
     expect(component.scriptname).toBe("");
     expect(component.months.length).toEqual(12);
+    window.alert = jsdomAlert;
   });
 
   jest.mock('../../shared/services/scripts/script.service');
@@ -80,47 +88,71 @@ describe('Test update script',()=>{
   }
 
   it('should ngOnInit() log',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     component.ngOnInit();
+    window.alert = jsdomAlert;
   });
 
   it('should display(:number)',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.display).toBeDefined();
     component.display(200);
+    window.alert = jsdomAlert;
   });
 
   it('should setStatus(:number) to published',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.setStatus).toBeDefined();
     component.setStatus(2);
     expect(component.current.status.value).toBe(2);
+    window.alert = jsdomAlert;
   });
 
   it('should formatDate(:Date) when passed',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     const date = component.formatDate(new Date("05-07-22"));
     expect(date).toBe("7 May 2022, 0:0:0");
+    window.alert = jsdomAlert;
   });
 
   it('should replaceBackSlash(:string)',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.replaceBackSlash).toBeDefined();
     const result = component.replaceBackSlash("https:\\\\njabulo.com\\uy");
     expect(result).toBe("https://njabulo.com/uy");
+    window.alert = jsdomAlert;
   });
 
   it('should validateAndSave() script',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.validateAndSave).toBeDefined();
     component.validateAndSave();
+    window.alert = jsdomAlert;
   });
 
   it('should save() and update script', ()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.save).toBeDefined();
     component.current = mockScript;
     // component.save();
     // expect(component.current.name).toBe(mockScript.name);
+    window.alert = jsdomAlert;
   });
 
   it('should warnOccurrence(message)',()=>{
+    const jsdomAlert = window.alert;  // remember the jsdom alert
+    window.alert = jest.fn();
     expect(component.warningOccured).toBeDefined();
     component.warningOccured("The script might be malicious");
     expect(component.warningMessage).toBe("The script might be malicious");
+    window.alert = jsdomAlert;
   });
 
 });

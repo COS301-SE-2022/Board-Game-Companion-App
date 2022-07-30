@@ -1,9 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
+import { routes } from '../../client-lib-routing.module';
 import { MostActive, BggSearchService } from '../bgg-search-service/bgg-search.service';
+import { PaginationComponent } from '../pagination/pagination.component';
 import { BoardGameSearchComponent } from './board-game-search.component';
 
 export const mockMostActive : MostActive[]  = [{
@@ -12,10 +15,6 @@ export const mockMostActive : MostActive[]  = [{
   image:"https://cf.geekdo-images.com/jQ9g8pqZZuchIX_Pv3bHRQ__thumb/img/jIVtfyieZGB3j6WkwZEo8yteeok=/fit-in/200x150/filters:strip_icc()/pic6972881.jpg",
 }];
 
-// const mockBggService = {
-//   getMostActive : jest.fn(),
-//   getComments : jest.fn()
-// };
 
 const mockStorage: any = {recentlyVisited:JSON.stringify(['367498'])};
 describe('AdminComponent', () => {
@@ -24,6 +23,7 @@ describe('AdminComponent', () => {
   let service: BggSearchService;
   let router: Router;
 
+  // afterEach(cleanup)
   let getItemSpy: any;
   let setItemSpy: any;
 
@@ -42,8 +42,8 @@ describe('AdminComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BoardGameSearchComponent],
-      imports: [RouterTestingModule,HttpClientTestingModule],
+      declarations: [BoardGameSearchComponent,PaginationComponent],
+      imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule],
       providers: [BggSearchService/*, useValue:mockBggService}*/,{provide: ActivatedRoute, useValue:
         { snapshot: { paramMap: convertToParamMap( { 'value': 'chess' } ) } } }]
     }).compileComponents();
@@ -141,7 +141,7 @@ describe('AdminComponent', () => {
     router = TestBed.inject(Router);
     const navigateSpy = jest.spyOn(router,'navigate');
     component.getDetails('12345');
-    expect(navigateSpy).toBeCalledWith(['board-game-details', {my_object: '12345'}]); 
+    expect(navigateSpy).toBeCalledWith(['board-game-details'],{queryParams: {my_object: '12345'}}); 
   });
 
   it('should change Search Mode', ()=>{

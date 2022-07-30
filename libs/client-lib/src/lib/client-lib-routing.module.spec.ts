@@ -14,6 +14,8 @@ import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service
 import { ScriptService } from './shared/services/scripts/script.service';
 import { ModelsService } from './shared/services/models/models.service';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
+
 // import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service';
 // class TestHttpRequestInterceptor implements HttpInterceptor {
 //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -41,7 +43,7 @@ describe('Router: Module', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule],
+        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule],
         providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider,ScriptService,ModelsService],
         declarations: [AppComponent]
     });
@@ -66,7 +68,7 @@ describe('Router: Module', () => {
   }));
   it('navigate to "login" redirects you to /login',() => {
     router.navigate(['login']);
-    expect(location.path()).toBe('/');
+    expect(location.path()).toBe('/home');
   });
 
   it('navigate to "collections" redirects you to /collections',fakeAsync(() => {
