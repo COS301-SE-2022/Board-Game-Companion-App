@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AdminComponent } from './admin.component';
 import { AdminService } from '../admin-service/admin.service';
-// import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { of } from 'rxjs';
 import { script } from '../../shared/models/script';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
   let service: AdminService;
-  // let router: Router;
+  let router: Router;
   // let route: ActivatedRoute;
   let httpTestingController: HttpTestingController;
   beforeEach(async () => {
@@ -31,7 +31,7 @@ describe('AdminComponent', () => {
     component.scripts = [];
     fixture.detectChanges();
     service = TestBed.inject(AdminService);
-    // router = TestBed.inject(Router);
+    router = TestBed.inject(Router);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -124,8 +124,14 @@ describe('AdminComponent', () => {
       fixture.detectChanges();
 
       const Scripts = fixture.nativeElement.querySelectorAll('tr');
-      expect(Scripts.length-1).toEqual(Response.length); //minus first row 
+      expect(Scripts.length-1).toEqual(Response.length); //minus first row
+
+      const navigateSpy = jest.spyOn(router,'navigate');
+
+      const btnEdit = fixture.nativeElement.querySelector('.btn-success');
+      btnEdit.click();
       
+      expect(navigateSpy).toBeCalled();
     });
 
 });
