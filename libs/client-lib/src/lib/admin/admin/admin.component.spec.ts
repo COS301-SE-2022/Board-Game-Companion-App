@@ -124,7 +124,7 @@ describe('AdminComponent', () => {
       fixture.detectChanges();
 
       const Scripts = fixture.nativeElement.querySelectorAll('tr');
-      expect(Scripts.length-1).toEqual(3); //minus first row
+      expect(Scripts.length-1).toEqual(Response.length); //minus first row 
       
     });
 
