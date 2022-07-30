@@ -133,7 +133,7 @@ export class BoardGameSearchComponent implements OnInit {
   }
 
   getDetails(id:string): void{
-    this.router.navigate(['board-game-details', {my_object: id}] )
+    this.router.navigate(['board-game-details'], {queryParams: {my_object: id}} )
   }
 
   changeSearchMode(value:string):void{

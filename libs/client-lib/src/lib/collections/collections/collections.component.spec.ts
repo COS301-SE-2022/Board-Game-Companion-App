@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { routes } from '../../client-lib-routing.module';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 
 import { CollectionsComponent } from './collections.component';
@@ -13,12 +14,25 @@ describe('CollectionsComponent', () => {
   let fixture: ComponentFixture<CollectionsComponent>;
   let router: Router;
 
+  const original = window.location;
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CollectionsComponent],
-      imports: [HttpClientTestingModule,RouterTestingModule],
-      providers: [BggSearchService],
+      imports: [HttpClientTestingModule,RouterTestingModule.withRoutes(routes)],
+      providers: [BggSearchService]
     }).compileComponents();
+  });
+
+  beforeEach(()=>{
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: {reload: jest.fn()}
+    })
+  });
+
+  afterAll(() => {
+    Object.defineProperty(window, 'location', { configurable: true, value: original });
   });
 
   beforeEach(() => {
@@ -54,7 +68,7 @@ describe('CollectionsComponent', () => {
     fixture = TestBed.createComponent(CollectionsComponent);
     component =  fixture.componentInstance;
     component.viewCollection('second best');
-    expect(navigateSpy).toBeCalledWith(['viewCollection', {my_object: 'second best'}]);
+    expect(navigateSpy).toBeCalledWith(['viewCollection'], {queryParams: {my_object: 'second best'}});
   });
 
   it('should deleted a collection when passed string', ()=>{

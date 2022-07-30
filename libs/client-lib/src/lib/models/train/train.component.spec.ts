@@ -19,6 +19,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { FormsModule } from '@angular/forms';
 describe('TrainComponent', () => {
   let component: TrainComponent;
   //let modService: ModelsService;
@@ -26,7 +27,7 @@ describe('TrainComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
       declarations: [TrainComponent],
       providers:[ModelsService]
     }).compileComponents(); 
