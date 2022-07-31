@@ -21,7 +21,7 @@ export class CollectionsComponent implements OnInit {
   viewCollection(n:String)
   {
     //
-    this.router.navigate(['viewCollection', {my_object: n}] )
+    this.router.navigate(['viewCollection'],{queryParams: {my_object: n}})
   }
 
   //delete a selected collection

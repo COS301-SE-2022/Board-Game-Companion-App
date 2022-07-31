@@ -3,7 +3,7 @@ import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 // import { script } from '../../shared/models/script';
-
+import { user } from '../../shared/models/user';
 // import { TestPassService } from '../../test-pass.service';
 // import { Router } from '@angular/router';
 
@@ -41,7 +41,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
  
-    if(this.scripts==null){
+    if(this.scripts.length===0){
       
       this.adminService.getScripts().subscribe(data=>{
         const date = new Date();
@@ -149,7 +149,9 @@ export class AdminComponent implements OnInit {
 
   onSearch(): void{
     this.scripts = [];
+    console.log(this.searchedValue);
     this.adminService.getScripts().subscribe(data=>{
+      console.log(this.searchedValue);
       this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
       for(let i=0; i < this.scripts.length; i++){

@@ -1,6 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { routes } from '../../client-lib-routing.module';
 import { AddToCollectionComponent } from './add-to-collection.component';
 
 let store: any = {};
@@ -10,7 +11,7 @@ describe('AddToCollectionComponent', () => {
 
   beforeEach(async ()=> {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes(routes)],
       providers: [{provide: ActivatedRoute, useValue:
         { snapshot: { paramMap: convertToParamMap( { 'id': '998877' } ) } } }],
       declarations: [AddToCollectionComponent]

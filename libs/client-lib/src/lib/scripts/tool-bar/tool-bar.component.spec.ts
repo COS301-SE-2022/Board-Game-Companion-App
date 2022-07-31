@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { GoogleAuthService, userDetails } from '../../google-login/GoogleAuth/google-auth.service';
 import { ToolBarComponent } from './tool-bar.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { EventEmitter } from 'stream';
-import { of, Subject } from 'rxjs';
-import { file } from '../../shared/models/file';
+// import { EventEmitter } from 'stream';
+import { Subject } from 'rxjs';
+// import { file } from '../../shared/models/file';
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { routes } from '../../client-lib-routing.module';
 
 const mockDetails: userDetails = {
   details:
@@ -56,7 +57,7 @@ describe('ToolBarComponent',()=>{
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ToolBarComponent],
-      imports: [HttpClientTestingModule,RouterTestingModule],
+      imports: [HttpClientTestingModule,RouterTestingModule.withRoutes(routes)],
       providers: [GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider]});
       service = TestBed.inject(GoogleAuthService);
       router = TestBed.inject(Router);
@@ -150,7 +151,7 @@ describe('ToolBarComponent',()=>{
   it('navigate to scriptExecutor',()=>{
     const navigateSpy = jest.spyOn(router, 'navigate');
     component.play();
-    expect(navigateSpy).toHaveBeenCalledWith(['scriptExecutor',{my_object: ''}]);
+    expect(navigateSpy).toHaveBeenCalledWith(['script-exec'],{queryParams:{my_object: ''}});
   });
 
 });

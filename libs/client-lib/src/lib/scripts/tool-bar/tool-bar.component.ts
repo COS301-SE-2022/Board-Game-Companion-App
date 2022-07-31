@@ -79,6 +79,6 @@ export class ToolBarComponent implements OnInit {
   play()
   {
     const id = this.current._id
-    this.router.navigate(['scriptExecutor', {my_object: id}]);
+    this.router.navigate(['script-exec'], {queryParams: {my_object: id}});
   }
 }

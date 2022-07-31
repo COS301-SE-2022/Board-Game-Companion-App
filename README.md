@@ -56,6 +56,7 @@ The following are the presentation videos for the respectives demonstrations.
 
 - Demo 1: `video presentation link`
 - Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
+- Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
 
 ## Documentation
 
@@ -80,6 +81,18 @@ The following are the presentation videos for the respectives demonstrations.
 
 
 ### User Manual: [FrontendForerunners User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
+
+
+### Technical User Manual: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+
+
+### SRS Documentation:[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
+
+
+
+
+### Architectural Design: [Frontend Forerunners Architectural Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+
 
 
 

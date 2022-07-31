@@ -3,6 +3,7 @@ import { CommentComponent } from './comment.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
 // import { comment,empty } from '../../shared/models/comment';
 
 describe('CommentComponent', () => {
@@ -14,7 +15,7 @@ describe('CommentComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CommentComponent],
       providers: [CommentService],
-      imports: [HttpClientTestingModule,RouterTestingModule]
+      imports: [HttpClientTestingModule,RouterTestingModule,FormsModule]
     }).compileComponents();
   });
 
