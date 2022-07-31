@@ -17,12 +17,12 @@ export class NotificationUnitComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void { 
     this.timer = window.setInterval(()=>{
-      this.opacity -= 0.2;
+      this.opacity -= 0.05;
       
-      if(this.opacity === 0.4)
+      if(this.opacity === 0.6)
         this.removeEvent.emit();
 
-    },2000);
+    },500);
   }
 
   ngOnDestroy(): void {
