@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import * as ace from "ace-builds";
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 
@@ -15,7 +14,6 @@ export class EditorToolBarComponent implements OnInit{
   }
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
-  @Output() themeEvent = new EventEmitter();
   @Output() undoEvent = new EventEmitter();
   @Output() redoEvent = new EventEmitter();
   @Output() copyEvent = new EventEmitter();
@@ -28,6 +26,7 @@ export class EditorToolBarComponent implements OnInit{
   @Output() replaceAllEvent = new EventEmitter<replace>();
   @Output() toggleSideBarEvent = new EventEmitter<boolean>();
   @Output() toggleConsoleEvent = new EventEmitter<boolean>();
+  @Output() themeEvent = new EventEmitter();
   showReplace = false;
   caseSensitive = false;
   wrap = true;
@@ -35,8 +34,6 @@ export class EditorToolBarComponent implements OnInit{
   wholeWord = false;
   findText = "";
   replaceWithText = "";
-  themes:string[] = ["Ambiance","Chaos","Clouds_Midnight","Chrome","Clouds","Cobalt","Crimson_Editor","Dawn","Dracula","Dreamweaver","Eclipse","GitHub","GOB","Gruvbox","idle_Fingers","IPlastic","KatzenMilch","kr_Theme","Kuroir","Merbivore","Merbivore_Soft","Mono_Industrial","Monokai","Nord_Dark","One_Dark","Pastel_on_dark","Solarized_Dark","Solarized_Light","SQLServer","Terminal","TextMate","Tomorrow","Tomorrow_Night","Tomorrow_Night_Blue","Tomorrow_Night_Bright","Tomorrow_Night_Eighties","Twilight","Vibrant_Ink","XCode"];
-  selection = "";
   sideBar = true;
   console = true;
 
@@ -44,6 +41,10 @@ export class EditorToolBarComponent implements OnInit{
 
   ngOnInit(): void {
     this.console = true;
+  }
+
+  themeChange(): void{
+    this.themeEvent.emit();
   }
 
   exit(): void{
@@ -70,9 +71,6 @@ export class EditorToolBarComponent implements OnInit{
     this.executeEvent.emit();
   };
 
-  select(val:string) {
-    this.selection = val;
-  }
 
   moveTo(path:string):void{
     if(path == "home")
@@ -80,12 +78,6 @@ export class EditorToolBarComponent implements OnInit{
       this.router.navigate(['/script-detail']);
     }
     
-  }
-
-  apply(): void {
-    localStorage.setItem("board-game-companion-script-editor-theme",this.selection);
-    this.themeEvent.emit();
-    document.getElementById("cancel-save-theme")?.click();
   }
 
   undo(): void{
@@ -163,27 +155,6 @@ export class EditorToolBarComponent implements OnInit{
       replace: this.replaceWithText
     }
     this.replaceAllEvent.emit(replace);
-  }
-
-  initialiseThemes():void{
-    let editor:any;
-    const theme = localStorage.getItem("board-game-companion-script-editor-theme");
-    const value = "function print(){\n\tconsole.log('Hello World');\n}\n\nprint();\n";
-    
-    this.selection = theme == null ? "Dracula" : theme;
-
-    for(let count = 0; count < this.themes.length; count++){
-      editor = ace.edit(this.themes[count]); 
-      editor.setTheme("ace/theme/" + this.themes[count].toLowerCase());
-      editor.resize();
-      editor.setValue(value, -1);
-      editor.session.setMode("ace/mode/javascript");
-      editor.setOptions({
-        fontFamily: 'monospace',
-        fontSize: '8pt',
-        enableLiveAutocompletion: true
-      });
-    }
   }
 
 }

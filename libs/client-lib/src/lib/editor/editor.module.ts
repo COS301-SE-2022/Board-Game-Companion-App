@@ -11,6 +11,7 @@ import { EditorConsoleComponent } from './editor-console/editor-console.componen
 import { EditorBodyComponent } from './editor-body/editor-body.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditorHelpComponent } from './editor-help/editor-help.component';
+import { EditorThemeComponent  } from './editor-theme/editor-theme.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EditorHelpComponent } from './editor-help/editor-help.component';
     EditorStatusBarComponent,
     EditorConsoleComponent,
     EditorBodyComponent,
-    EditorHelpComponent
+    EditorHelpComponent,
+    EditorThemeComponent
   ],
   imports: [
     CommonModule,
