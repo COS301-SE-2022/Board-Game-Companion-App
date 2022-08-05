@@ -12,6 +12,7 @@ import { EditorBodyComponent } from './editor-body/editor-body.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditorHelpComponent } from './editor-help/editor-help.component';
 import { EditorThemeComponent  } from './editor-theme/editor-theme.component';
+import { EditorEditFeaturesComponent } from './editor-edit-features/editor-edit-features.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { EditorThemeComponent  } from './editor-theme/editor-theme.component';
     EditorConsoleComponent,
     EditorBodyComponent,
     EditorHelpComponent,
-    EditorThemeComponent
+    EditorThemeComponent,
+    EditorEditFeaturesComponent
   ],
   imports: [
     CommonModule,

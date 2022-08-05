@@ -27,16 +27,9 @@ export class EditorToolBarComponent implements OnInit{
   @Output() toggleSideBarEvent = new EventEmitter<boolean>();
   @Output() toggleConsoleEvent = new EventEmitter<boolean>();
   @Output() themeEvent = new EventEmitter();
-  showReplace = false;
-  caseSensitive = false;
-  wrap = true;
-  regEx = false;
-  wholeWord = false;
-  findText = "";
-  replaceWithText = "";
   sideBar = true;
   console = true;
-
+  showReplace = false;
   
 
   ngOnInit(): void {
@@ -100,28 +93,8 @@ export class EditorToolBarComponent implements OnInit{
     this.pasteEvent.emit();
   }
 
-  findClick(): void{
-    this.findText = "";
-    this.showReplace = false;
-  }
-
-  replaceClick(): void{
-    this.findText = "";
-    this.replaceWithText = "";
-    this.showReplace = true;
-    //alert(this.showReplace);
-  }
-
-  find(): void{
-    const find:find = {
-      caseSensitive: this.caseSensitive,
-      regularExpression: this.regEx,
-      wholeWord: this.wholeWord,
-      wrap: this.wrap,
-      text: this.findText
-    }
-
-    this.findEvent.emit(find);
+  find(value:find): void{
+    this.findEvent.emit(value);
   }
 
   findNext(): void{
@@ -132,29 +105,12 @@ export class EditorToolBarComponent implements OnInit{
     this.findPreviousEvent.emit();
   }
 
-  replace(): void{
-    const replace:replace = {
-      caseSensitive: this.caseSensitive,
-      regularExpression: this.regEx,
-      wholeWord: this.wholeWord,
-      wrap: this.wrap,
-      text: this.findText,
-      replace: this.replaceWithText
-    }
-
-    this.replaceEvent.emit(replace);
+  replace(value:replace): void{
+    this.replaceEvent.emit(value);
   }
 
-  replaceAll(): void{
-    const replace:replace = {
-      caseSensitive: this.caseSensitive,
-      regularExpression: this.regEx,
-      wholeWord: this.wholeWord,
-      wrap: this.wrap,
-      text: this.findText,
-      replace: this.replaceWithText
-    }
-    this.replaceAllEvent.emit(replace);
+  replaceAll(value:replace): void{
+    this.replaceAllEvent.emit(value);
   }
 
 }
