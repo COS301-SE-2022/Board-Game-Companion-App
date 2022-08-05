@@ -58,8 +58,8 @@
             Help
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "execute()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
-                Language
+            <a data-bs-toggle="modal" data-bs-target="#helpModal" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
+                language Docs
             </a>
         </div>
     </div>
@@ -69,3 +69,4 @@
 
 <board-game-companion-app-editor-theme (themeEvent)="themeChange()"></board-game-companion-app-editor-theme>
 <board-game-companion-app-editor-edit-features (findEvent)="find($event)" (findNextEvent)="findNext()" (findPreviousEvent)="findPrevious()" (replaceEvent)="replace($event)" (replaceAllEvent)="replace($event)" [showReplace]="showReplace"></board-game-companion-app-editor-edit-features>
+<board-game-companion-app-editor-help></board-game-companion-app-editor-help>
