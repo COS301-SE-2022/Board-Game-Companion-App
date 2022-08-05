@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter,ViewChild } from '@angular/core';
 import { script } from '../../shared/models/script';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+
 
 @Component({
   selector: 'board-game-companion-app-create-scripts',
@@ -21,21 +23,21 @@ export class CreateScriptComponent implements OnInit {
   boardgame = "";
   scriptname = "";
   description = "";
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly searchService:BggSearchService,private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
-
     console.log("create script");      
   }
 
   validateAndSave(): void{
     if(this.scriptname === "")
-      this.errorOccured("Script name missing.");
+      this.notifications.add({type:"danger",message:"Script name is missing."});
     else if(this.boardgame === "")
-      this.errorOccured("Board game missing.");
+      this.notifications.add({type:"danger",message:"Board game missing."});
     else if(this.description === "")
-      this.errorOccured("Description missing.");
+      this.notifications.add({type:"danger",message:"Script description missing."});
     else{
       const temp = this.getboardGameId();
     
@@ -47,7 +49,7 @@ export class CreateScriptComponent implements OnInit {
             const response:MostActive[] = this.searchService.parseGetBoardGameByName(value.toString());
             
             if(response.length !== 1)
-              this.errorOccured("Could not find board game '" + this.boardgame + "'.");
+              this.notifications.add({type:"danger",message:"Could not find board game '" + this.boardgame + "'."});
             else{
               this.save(response[0].id);
             }
@@ -83,10 +85,11 @@ export class CreateScriptComponent implements OnInit {
         console.log(value.toString());
         document.getElementById('cancel-save-script')?.click();
         this.newScript.emit(value);
+        this.notifications.add({type:"primary",message:"Created new script " + value.name + "."});
       },
       error:(e)=>{
         console.log(e);
-        this.errorOccured(e.message);
+        this.notifications.add({type:"danger",message:"Could not save script, error on the server."})
       },
       complete:()=>{
         console.log("complete")
@@ -135,26 +138,6 @@ export class CreateScriptComponent implements OnInit {
     }
 
     console.log(this.boardgames);
-  }
-
-  errorOccured(message:string): void{
-    this.errorMessage = message;
-    this.error = true;
-
-    setInterval(()=>{
-      this.error = false;
-    },5000);
-  
-  }
-
-  warningOccured(message:string): void{
-    this.warningMessage = message;
-    this.warning = true;
-
-    setInterval(()=>{
-      this.warning = false;
-    },5000);
-  
   }
 
   loadImage(event:any): void{

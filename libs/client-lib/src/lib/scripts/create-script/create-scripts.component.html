@@ -27,14 +27,6 @@
             </div>
         </div>
 
-        <div *ngIf="error===true" class="bg-red-100 rounded-lg py-2 px-6 mb-4 shadow-md text-base text-red-700 mb-3" role="alert">
-            {{errorMessage}}
-        </div>
-
-        <div *ngIf="warning===true" class="bg-yellow-100 rounded-lg py-2 px-6 mb-4 shadow-md text-base text-yellow-700 mb-3" role="alert">
-            {{warningMessage}}
-        </div>
-
         <div id = "script-actions" class = "modal-footer items-center justify-end p-0">
             <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-script" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
                 <i class="fa-solid fa-rectangle-xmark fa-2x text-green-800"></i>
@@ -46,3 +38,5 @@
     </div>
   </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { UpdateScriptComponent } from './update-script/update-scripts.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NbContextMenuModule } from '@nebular/theme';
+import { SharedModule } from '../shared/shared.module'
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NbContextMenuModule } from '@nebular/theme';
     PopoverModule,
     FormsModule,
     NgxPaginationModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:ScriptsComponent}])
   ]
 })

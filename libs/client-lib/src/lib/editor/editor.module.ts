@@ -9,7 +9,8 @@ import { EditorSideBarComponent } from './editor-side-bar/editor-side-bar.compon
 import { EditorStatusBarComponent } from './editor-status-bar/editor-status-bar.component';
 import { EditorConsoleComponent } from './editor-console/editor-console.component';
 import { EditorBodyComponent } from './editor-body/editor-body.component';
-//import { IgxStepperModule } from 'igniteui-angular';
+import { SharedModule } from '../shared/shared.module';
+import { EditorHelpComponent } from './editor-help/editor-help.component';
 
 @NgModule({
   declarations: [
@@ -18,12 +19,14 @@ import { EditorBodyComponent } from './editor-body/editor-body.component';
     EditorSideBarComponent,
     EditorStatusBarComponent,
     EditorConsoleComponent,
-    EditorBodyComponent
+    EditorBodyComponent,
+    EditorHelpComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:EditorComponent}])
   ]
 })

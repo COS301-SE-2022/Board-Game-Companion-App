@@ -10,8 +10,8 @@
             File
         </button>
         <div class = "menu-content absolute">
-            <a class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Model</a>
-            <a (click) = "exit()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Exit</a>
+            <a class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Model</a>
+            <a (click) = "exit()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Exit</a>
         </div>
     </div>
 
@@ -20,13 +20,13 @@
             Edit
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "undo()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Undo</a>
-            <a (click) = "redo()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Redo</a>
-            <a (click) = "cut()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Cut</a>
-            <a (click) = "copy()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Copy</a>
-            <a (click) = "paste()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Paste</a>
-            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "findClick()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Find</a>
-            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "replaceClick()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Replace</a>
+            <a (click) = "undo()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Undo</a>
+            <a (click) = "redo()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Redo</a>
+            <a (click) = "cut()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Cut</a>
+            <a (click) = "copy()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Copy</a>
+            <a (click) = "paste()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Paste</a>
+            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "findClick()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Find</a>
+            <a data-bs-toggle="modal" data-bs-target="#findReplace" (click) = "replaceClick()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Replace</a>
         </div>
     </div>
 
@@ -35,9 +35,9 @@
             View
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "initialiseThemes()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Theme</a>
-            <a (click) = "toggleSideBar()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "hide" : "show"}} side bar</a>
-            <a (click) = "toggleConsole()"  class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "hide" : "show"}} console</a>
+            <a (click) = "initialiseThemes()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Theme</a>
+            <a (click) = "toggleSideBar()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "hide" : "show"}} side bar</a>
+            <a (click) = "toggleConsole()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "hide" : "show"}} console</a>
             
         </div>
     </div>
@@ -47,8 +47,19 @@
             Run
         </button>
         <div class = "menu-content absolute">
-            <a (click) = "execute()" class = "bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
+            <a (click) = "execute()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
                 Execute
+            </a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            Help
+        </button>
+        <div class = "menu-content absolute">
+            <a (click) = "execute()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
+                Language
             </a>
         </div>
     </div>

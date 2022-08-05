@@ -11,19 +11,20 @@ import { ModelsService } from './services/models/models.service';
 import { FormsModule } from '@angular/forms';
 import { NotificationComponent } from './components/notification/notification.component';
 import { NotificationUnitComponent } from './components/notification-unit/notification-unit.component'; 
+import { InputInterfaceComponent } from './components/input-interface/input-interface.component';
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
     NotificationComponent,
-    NotificationUnitComponent
+    NotificationUnitComponent,
+    InputInterfaceComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    OAuthModule.forRoot(),
-    
+    OAuthModule.forRoot(),  
   ],
   providers: [
     BggSearchService,
@@ -35,7 +36,8 @@ import { NotificationUnitComponent } from './components/notification-unit/notifi
   exports: [
     HeaderComponent,
     FooterComponent,
-    NotificationComponent
+    NotificationComponent,
+    InputInterfaceComponent
   ]
 })
 export class SharedModule { }

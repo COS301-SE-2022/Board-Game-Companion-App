@@ -43,7 +43,7 @@ export class EditorToolBarComponent implements OnInit{
   
 
   ngOnInit(): void {
-    console.log("edit-tool-bar");
+    this.console = true;
   }
 
   exit(): void{
