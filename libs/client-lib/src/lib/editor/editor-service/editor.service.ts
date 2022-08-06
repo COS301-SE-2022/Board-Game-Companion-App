@@ -13,7 +13,6 @@ export class EditorService {
 
   //:Observable<any>
   postScript(id:string, fname:string, content:any):Observable<any>{
-    console.log(fname);
     return this.httpClient.post(this.url+'/upload',{id:id, filename:fname, content:content});
   }
 

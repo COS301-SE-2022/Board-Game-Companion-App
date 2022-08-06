@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
@@ -10,6 +10,7 @@ import { replace } from '../../shared/models/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
+import { inputParameters } from '../../shared/models/inputParameters';
 
 interface message{
   message: string;
@@ -39,23 +40,44 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   currentScript:script = empty;
-  showInputModal = false;
-  inputPrompt = "";
-  inputValue = "";
-
+  location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
+  showInput = false;
+  inputBlock = false;
+  inputResult:any[] = [];
+  parameters:inputParameters[] = [];
+  statusMessages:string[] = [];
+  
   constructor(private readonly scriptService:ScriptService, private router: Router){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
 
   ngOnInit(): void {
-    console.log("editor");
     
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.updateDimensions();
+
+    this.parameters.push({
+      prompt:"Enter name",
+      type:"text"
+    })
     
+    this.parameters.push({
+      prompt:"Enter position",
+      type:"number"
+    })
+
+    this.parameters.push({
+      prompt:"choose",
+      type:"option",
+      options:["left","middle","right","top","bottom"]
+    })
+
+    
+
     document.dispatchEvent(new Event('editor-page'));
   }
+
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
@@ -76,9 +98,10 @@ export class EditorComponent implements OnInit{
     this.updateDimensions();
   }
 
+
+
   async neuralnetworks():Promise<any>{
     
-    console.log(name)
     const modelsInfo = localStorage.getItem("models");
     const result = new Object();
 
@@ -86,7 +109,6 @@ export class EditorComponent implements OnInit{
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      console.log(networks);
       const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
@@ -101,7 +123,6 @@ export class EditorComponent implements OnInit{
 
       return ((name:string,input:number[])=>{
         
-        console.log(name,input)
         let index = -1;
 
         for(let count = 0; count < models.length && index === -1; count++){
@@ -112,14 +133,12 @@ export class EditorComponent implements OnInit{
         if(index === -1)
           return "";
 
-        //console.print(model("color-picker",[0,255,0]))
+        
         const inputTensor = tf.tensor2d(input,[1,input.length]);
         const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
         const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
         tensorResult.print();
         index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-        console.log(index);
-        console.log(models[index])
         return models[index].labels[index];
       })
 
@@ -136,35 +155,86 @@ export class EditorComponent implements OnInit{
       this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
   }
 
-  checkBlock(){
-    if(this.showInputModal === true){
-      window.setTimeout(this.checkBlock, 100);
-    }
+  input(){
+    return (async(prompt:string,type:string,options?:string[])=>{
+      this.inputBlock = true;
+      this.showInput = true;
+      this.parameters = [{
+        prompt:prompt,
+        type:type,
+        options:options
+      }]
+  
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult[0];
+    })
   }
+
+
+  inputGroup(){
+    return (async(parameters:inputParameters[])=>{
+      console.log(parameters);
+      
+      this.inputBlock = true;
+      this.showInput = true;
+      this.parameters = parameters;
+  
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult;
+    })
+  }
+
+  submitInput(value:any[]): void{
+    this.inputResult = value;
+    this.showInput = false;
+    this.inputBlock = false;
+  }
+
 
   async execute(): Promise<void>{
     
     this.editorConsole.open();
+
     try{
       const console = this.editorConsole.defineConsole();
       const model = await this.neuralnetworks();
-      
-
+      const input = this.input();
+      const inputGroup = this.inputGroup();
       this.editorConsole.clear();
-      
-        
+      // const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
+      // code(console,model,input,inputGroup);
+
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
-          //console.log(value)
-          const code = new Function("console","model",value);
-          code(console,model);    
+          const code = new Function("console","model","input","inputGroup",value);
+          code(console,model,input,inputGroup);
         },
         error:(e)=>{
           console.log(e);
         }
       });
-      }catch(err){
-      console.log(err);
+    }catch(err){
+      //console.log(err);
     }
 
   }
@@ -237,8 +307,13 @@ export class EditorComponent implements OnInit{
   }
 
   newMessage(message:string): void{
-    this.editorConsole.clear();
-    this.editorConsole.print({type:false,outputMessage:message});
+    this.statusMessages = [];
+    this.statusMessages.push(message);
+  }
+
+  printStatusMessages(): void{
+    for(let count = 0; count < this.statusMessages.length; count++)
+      this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
   }
 
 }

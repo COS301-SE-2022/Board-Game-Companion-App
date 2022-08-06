@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges ,Output } from '@angular/core';
+import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
@@ -58,9 +59,6 @@ export class EditorBodyComponent implements OnInit{
         },
         error:(e)=>{
           console.log(e);
-        },
-        complete:()=>{
-          console.log("complete")
         }
       })
     }
@@ -70,7 +68,7 @@ export class EditorBodyComponent implements OnInit{
     this.codeEditor =  ace.edit("editor-content"); 
     this.codeEditor.setTheme("ace/theme/" + this.themeEditor.toLowerCase());
     this.codeEditor.resize();
-    this.codeEditor.session.setMode("ace/mode/javascript");
+    this.codeEditor.session.setMode("ace/mode/automatascript");
     this.codeEditor.setOptions({
       fontFamily: 'monospace',
       fontSize: '12pt',
@@ -120,7 +118,6 @@ export class EditorBodyComponent implements OnInit{
   }
 
   find(value:find): void{
-    console.log(value);
 
     this.codeEditor.find(value.text,{
       backwards: false,
@@ -164,19 +161,16 @@ export class EditorBodyComponent implements OnInit{
       this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
           
-          if(value.status === "success")
+          if(value.status === "success"){
             this.changesTracker.emit(2);
-          else
+          }else{
             this.changesTracker.emit(0);
-
+          }
           this.newMessageEvent.emit(value.message);
         },
         error:(e)=>{
-          console.log(e);
+          //console.log(e);
           this.changesTracker.emit(0);
-        },
-        complete:()=>{
-          console.log("complete")
         }
       })
     },3000);
