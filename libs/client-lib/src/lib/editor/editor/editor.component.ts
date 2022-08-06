@@ -183,6 +183,8 @@ export class EditorComponent implements OnInit{
 
   inputGroup(){
     return (async(parameters:inputParameters[])=>{
+      console.log(parameters);
+      
       this.inputBlock = true;
       this.showInput = true;
       this.parameters = parameters;
@@ -218,23 +220,19 @@ export class EditorComponent implements OnInit{
       const model = await this.neuralnetworks();
       const input = this.input();
       const inputGroup = this.inputGroup();
-      const url = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
-      //this.currentScript.build.location
       this.editorConsole.clear();
+      // const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
+      // code(console,model,input,inputGroup);
 
-      //this.loadScript(url);
-      const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
-      code(console,model,input,inputGroup);
-
-      // this.scriptService.getFileData(url).subscribe({
-      //   next:(value)=>{
-      //     const code = new Function("console","model",value);
-      //     code(console,model);
-      //   },
-      //   error:(e)=>{
-      //     console.log(e);
-      //   }
-      // });
+      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+        next:(value)=>{
+          const code = new Function("console","model","input","inputGroup",value);
+          code(console,model,input,inputGroup);
+        },
+        error:(e)=>{
+          console.log(e);
+        }
+      });
     }catch(err){
       //console.log(err);
     }

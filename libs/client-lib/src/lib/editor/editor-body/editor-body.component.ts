@@ -58,7 +58,7 @@ export class EditorBodyComponent implements OnInit{
           });
         },
         error:(e)=>{
-          //console.log(e);
+          console.log(e);
         }
       })
     }
@@ -68,7 +68,7 @@ export class EditorBodyComponent implements OnInit{
     this.codeEditor =  ace.edit("editor-content"); 
     this.codeEditor.setTheme("ace/theme/" + this.themeEditor.toLowerCase());
     this.codeEditor.resize();
-    this.codeEditor.session.setMode("ace/mode/javascript");
+    this.codeEditor.session.setMode("ace/mode/automatascript");
     this.codeEditor.setOptions({
       fontFamily: 'monospace',
       fontSize: '12pt',
