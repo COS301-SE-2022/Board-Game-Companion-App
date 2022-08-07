@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 
 interface message{
-  type: boolean;
+  output: boolean;
   outputMessage: string;
 }
 
@@ -18,11 +18,16 @@ export class EditorConsoleComponent implements OnInit{
   @Input() bottom = 0;
   @Output() changeHeightEvent = new EventEmitter<number>();
   show = true;
+  inputBlock = false;
+  inputCounter = 0;
+  beep = false;
+  beepInterval = 0;
+  inputId = "";
 
   messages:message[] = [];
   
   ngOnInit(): void {
-    console.log("editor-tool-bar");   
+    this.inputId = ""   
   }
 
   reduceHeight(): void{
@@ -61,26 +66,60 @@ export class EditorConsoleComponent implements OnInit{
     this.messages = [];
   }
 
+  saveInput(value:any){
+
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.inputBlock = false;
+      const input:HTMLInputElement = document.getElementById(this.inputId) as HTMLInputElement;
+      input.disabled = true;
+      clearInterval(this.beepInterval);
+      this.beep = false;
+    }
+  }
+
   defineConsole(): any{
     const console = (function (windowConsole:any,editorConsole:EditorConsoleComponent){
       return {
-        log: function(text:string){
+        log: (text:string)=>{
+          alert(text);
           windowConsole.log(text);
         },
-        info: function(strInfo:string){
+        info: (strInfo:string)=>{
           windowConsole.info(strInfo);
         },
-        warn: function(strWarn:string){
+        warn: (strWarn:string)=>{
           windowConsole.warn(strWarn);
         },
-        error: function(strError:string){
+        error: (strError:string)=>{
           windowConsole.error(strError);
         },
-        print: function(text:string){
-          editorConsole.print({type:false,outputMessage:text});      
+        print: (text:string)=>{
+          editorConsole.print({output:true,outputMessage:text});      
         },
-        input: function(){
-          editorConsole.print({type:true,outputMessage:""});
+        input: async ()=>{
+          editorConsole.inputId = "console-input-box-" + editorConsole.inputCounter.toString();
+          editorConsole.print({output:false,outputMessage:editorConsole.inputId});
+          
+          editorConsole.inputCounter++;
+          editorConsole.beepInterval = window.setInterval(()=>{
+            editorConsole.beep = !editorConsole.beep;
+          },500);
+          editorConsole.inputBlock = true;
+          
+          const pause = new Promise((resolve)=>{
+            const interval = setInterval(()=>{
+                if(!editorConsole.inputBlock){
+                    clearInterval(interval);
+                    resolve("Okay");
+                }
+            },10);
+          });
+
+          await pause;
+          
+          const input:HTMLInputElement = document.getElementById(editorConsole.inputId) as HTMLInputElement;
+          return input.value;
         },
         clear: function(){
           editorConsole.clear();

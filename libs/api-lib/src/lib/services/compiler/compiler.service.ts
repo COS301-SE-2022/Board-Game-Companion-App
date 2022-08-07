@@ -5,7 +5,7 @@ import * as chevrotain from 'chevrotain';
 import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
-
+import * as tokensStore from '../../models/general/tokens';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
 
@@ -20,202 +20,7 @@ scriptTemplate = fs.readFileSync("templates/script.js","utf8");
 let jsScript = scriptTemplate;
 
 //user defined identifier
-const tUserDefinedIdentifier = chevrotain.createToken({name:"UserDefinedIdentifier",pattern:/[a-zA-Z_]+[a-zA-Z0-9]*/});
-// class and function declaration
-        const tAction =(chevrotain.createToken({name:"Action",pattern:/action/,longer_alt:tUserDefinedIdentifier}));
-        const tParameters =(chevrotain.createToken({name:"Parameters",pattern:/parameters/,longer_alt:tUserDefinedIdentifier}));
-        const tCondition=(chevrotain.createToken({name:"Condition",pattern:/condition/,longer_alt:tUserDefinedIdentifier}));
-        const tEffect=(chevrotain.createToken({name:"Effect",pattern:/effect/,longer_alt:tUserDefinedIdentifier}));
-        const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer_alt:tUserDefinedIdentifier}));
-        const Turn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
-        const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
-        const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
-        const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
-        const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
-        const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
-        const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
-        const tCopy=(chevrotain.createToken({name:"copy",pattern:/copy/,longer_alt:tUserDefinedIdentifier}));
-        
 
-        const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
-        const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
-        const tAddPieceToTile =(chevrotain.createToken({name:"addPieceToTile",pattern:/addPieceToTile/,longer_alt:tUserDefinedIdentifier}));
-        
-        const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
-        const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
-        const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
-        const tChooseAction =(chevrotain.createToken({name:"chooseAction",pattern:/chooseAction/,longer_alt:tUserDefinedIdentifier}));
-        const tIsActionLegal =(chevrotain.createToken({name:"isActionLegal",pattern:/isActionLegal/,longer_alt:tUserDefinedIdentifier}));
-        
-
-        const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
-        const tReturn=(chevrotain.createToken({name:"Return",pattern:/return/,longer_alt:tUserDefinedIdentifier}));
-
-//punctuation
-        const Comma=(chevrotain.createToken({name:"Comma",pattern:/,/}));
-        const OpenBracket=(chevrotain.createToken({name:"OpenBracket",pattern:/\(/ }));
-        const CloseBracket=(chevrotain.createToken({name:"CloseBracket",pattern:/\)/}));
-        const OpenBrace=(chevrotain.createToken({name:"OpenBrace",pattern:/{/}));
-        const CloseBrace=(chevrotain.createToken({name:"CloseBrace",pattern:/}/}));
-        const Colon=(chevrotain.createToken({name:"Colon",pattern:/:/}));
-        const OpenSquareBracket=(chevrotain.createToken({name:"OpenSquareBracket",pattern:/\[/}));
-        const ClosedSquareBracket=(chevrotain.createToken({name:"ClosedSquareBracket",pattern:/\]/}));
-        const QuestionMark=(chevrotain.createToken({name:"QuestionMark",pattern:/\?/}));
-        const SemiColon=(chevrotain.createToken({name:"SemiColon",pattern:/;/}));
-        const Dot = chevrotain.createToken({name:"Dot",pattern:/\./})
-//relational operators
-        const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
-        const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
-        const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
-        const GreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
-        const LessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
-
-//Assignment operators
-        const Assign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_alt:tEqual}));
-//literals
-const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
-
-
-const IntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-const StringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*") | ('[A-Za-z0-9 ]*')/ }));
-const False=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
-const True=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
-
-
-
-//arithmetic operators
-        const Plus=(chevrotain.createToken({name:"Plus",pattern:/\+/}));
-        const Minus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:IntegerLiteral}));
-        const Multiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
-        const Divide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
-        const Mod=(chevrotain.createToken({name:"Mod",pattern:/%/,longer_alt:tUserDefinedIdentifier}));
-
-//logical operators
-        const And=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
-        const Or=(chevrotain.createToken({name:"Or",pattern:/\|\|/,longer_alt:tUserDefinedIdentifier}));
-        const Not=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tUserDefinedIdentifier}));
-
-
-
-//input output
-        const Input=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
-        const Print=(chevrotain.createToken({name:"Print",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
-        const Read=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
-        const ConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
-        const ConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
-
-        
-        const Await=(chevrotain.createToken({name:"await",pattern:/await/,longer_alt:tUserDefinedIdentifier}));
-
-
-
-//loops
-        const While=(chevrotain.createToken({name:"While",pattern:/while/,longer_alt:tUserDefinedIdentifier}));
-        const For=(chevrotain.createToken({name:"For",pattern:/for/,longer_alt:tUserDefinedIdentifier}));
-        const Do=(chevrotain.createToken({name:"do",pattern:/do/,longer_alt:tUserDefinedIdentifier}));
-
-//branch
-        const If=(chevrotain.createToken({name:"If",pattern:/if/,longer_alt:tUserDefinedIdentifier}));
-        const Else=(chevrotain.createToken({name:"Else",pattern:/else/,longer_alt:tUserDefinedIdentifier}));
-
-//flow control
-        const Break=(chevrotain.createToken({name:"Break",pattern:/break/,longer_alt:tUserDefinedIdentifier}));
-        const Continue=(chevrotain.createToken({name:"Continue",pattern:/continue/,longer_alt:tUserDefinedIdentifier}));
-
-//presets
-        const Minmax=(chevrotain.createToken({name:"Minmax",pattern:/minmax/,longer_alt:tUserDefinedIdentifier}));
-        const NeuralNetwork=(chevrotain.createToken({name:"NeuralNetwork",pattern:/model/,longer_alt:tUserDefinedIdentifier}));
-
-//variable
-        const tVariable=(chevrotain.createToken({name:"Variable",pattern:/var/,longer_alt:tUserDefinedIdentifier}));
-        const tLet=(chevrotain.createToken({name:"Let",pattern:/let/,longer_alt:tUserDefinedIdentifier}));
-
-//whitespace
-        const WhiteSpace=(chevrotain.createToken({name:"WhiteSpace",pattern:/\s+/,group: chevrotain.Lexer.SKIPPED}));
-
-//comments
-        const Coment=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-zA-Z0-9]*\*\//,group: chevrotain.Lexer.SKIPPED}));
-
-
-
-
-
- const AllTokens = [
-    
-    tAction,
-    tParameters,
-    tCondition,
-    tEffect,
-    tState,
-    Turn,
-    tPlayer,
-    tCards,
-    tTile,
-    tPiece,
-    Await,
-    tAddToArr,
-    tAddToBoard,
-    tConsider,
-    tCopy,
-    tAddAdjacency,
-    tAddPieceToTile,
-    tGetTileByID,
-    tGetTilesByType,
-    tGenerateChoices,
-    tChooseAction,
-    tIsActionLegal,
-    tEndgame,
-    tReturn,
-    Comma,
-    OpenBracket,
-    CloseBracket,
-    OpenBrace,
-    CloseBrace,
-    Colon,
-    OpenSquareBracket,
-    ClosedSquareBracket,
-    QuestionMark,
-    SemiColon,
-    Dot,
-    tLessThanOrEqual,
-    tGreaterThanOrEqual,
-    tEqual,
-    GreaterThan,
-    LessThan,
-    Assign,
-    Plus,
-    Minus,
-    Multiply,
-    Divide,
-    Mod,
-    And,
-    Or,
-    Not,
-    tFloatLiteral,
-    IntegerLiteral,
-    StringLiteral,
-    False,
-    True,
-    Input,
-    Print,
-    Read,
-    ConsoleInput,
-    ConsoleOutput,
-    While,
-    For,
-    Do,
-    If,
-    Else,
-    Break,
-    Continue,
-    Minmax,
-    NeuralNetwork,
-    tVariable,
-    tLet,
-    WhiteSpace,
-    Coment,
-    tUserDefinedIdentifier,
-];
 
 
 @Injectable()
@@ -231,7 +36,7 @@ export class CompilerService {
      
 
     scanHelper(input:string):chevrotain.ILexingResult{
-         const tokens:chevrotain.TokenType[] = AllTokens; 
+         const tokens:chevrotain.TokenType[] = tokensStore.AllTokens; 
          const lexer = new chevrotain.Lexer(tokens);
         
         return lexer.tokenize(input);
@@ -298,7 +103,7 @@ class parser extends CstParser
         
 
         
-        super(AllTokens) //should allTokens
+        super(tokensStore.AllTokens) //should allTokens
 
         this.performSelfAnalysis();
     }
@@ -329,66 +134,66 @@ class parser extends CstParser
         });
         
         private Cards = this.RULE("Cards", () => {
-            this.CONSUME(tCards)
-            this.CONSUME(tUserDefinedIdentifier)
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tCards)
+            this.CONSUME(tokensStore.tUserDefinedIdentifier)
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.nParameters),
             this.SUBRULE(this.CardEffect )
             this.SUBRULE(this.CardCondition)
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
         private nParameters =this.RULE("nParameters", () => {
-            this.CONSUME(tParameters )
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tParameters )
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.TypeList)
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
 
         private TypeList=this.RULE("TypeList", () => {
                 this.MANY(() => {
                 this.OPTION(() => {
                     this.SUBRULE(this.Type)
-                    this.CONSUME(tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier)
                 });
             })
         });
         private CardCondition= this.RULE("CardCondition", () => {
-            this.CONSUME(tCondition )
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tCondition )
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements)
-            this.CONSUME(tReturn)
+            this.CONSUME(tokensStore.tReturn)
             this.OR([
                 { ALT: () =>{ this.SUBRULE(this.Const )}}, 
                 { ALT: () =>{ this.SUBRULE(this.nVariable)}}
             ])
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
         private CardEffect=this.RULE("CardEffect", () => {
-            this.CONSUME(tEffect )
+            this.CONSUME(tokensStore.tEffect )
 
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements)
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
         private GameState=this.RULE("GameState", () => {
-            this.CONSUME(tState )
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tState )
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.Declarations )
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
         private Players=this.RULE("Players", () => {
-            this.CONSUME(tPlayer)
-            this.CONSUME(tUserDefinedIdentifier)
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tPlayer)
+            this.CONSUME(tokensStore.tUserDefinedIdentifier)
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.Actions )
             this.SUBRULE(this.Declarations )
-            this.CONSUME( Turn)
-            this.CONSUME( OpenBracket)
-            this.CONSUME( CloseBracket)
-            this.CONSUME2( OpenBrace)
+            this.CONSUME(tokensStore.tTurn)
+            this.CONSUME(tokensStore.tOpenBracket)
+            this.CONSUME(tokensStore.tCloseBracket)
+            this.CONSUME2(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements )
-            this.CONSUME2( CloseBrace)
-            this.CONSUME(CloseBrace)
+            this.CONSUME2(tokensStore.tCloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
 
         private Actions=this.RULE("Actions", () => {
@@ -405,52 +210,52 @@ class parser extends CstParser
         });
         private DefAction=this.RULE("DefAction", () => {
             //
-            this.CONSUME(tAction)
-                this.CONSUME(tUserDefinedIdentifier)
-                this.CONSUME(OpenBracket)
+            this.CONSUME(tokensStore.tAction)
+                this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                this.CONSUME(tokensStore.tOpenBracket)
                 this.SUBRULE(this.FormalParameters)
-                this.CONSUME(CloseBracket)
-                this.CONSUME(OpenBrace)  
+                this.CONSUME(tokensStore.tCloseBracket)
+                this.CONSUME(tokensStore.tOpenBrace)  
                 this.SUBRULE(this.statements )
-                this.CONSUME(CloseBrace)  
+                this.CONSUME(tokensStore.tCloseBrace)  
         })
         private DefCondition=this.RULE("DefCondition", () => {
             //
-            this.CONSUME(tCondition)
-                this.CONSUME1(OpenBracket)
+            this.CONSUME(tokensStore.tCondition)
+                this.CONSUME1(tokensStore.tOpenBracket)
                 this.SUBRULE1(this.FormalParameters)
-                this.CONSUME1(CloseBracket)
-                this.CONSUME1(OpenBrace)
+                this.CONSUME1(tokensStore.tCloseBracket)
+                this.CONSUME1(tokensStore.tOpenBrace)
                 this.SUBRULE1(this.Consideration)
                 this.SUBRULE1(this.statements)
-                this.CONSUME1(CloseBrace)
+                this.CONSUME1(tokensStore.tCloseBrace)
         })
         private Consideration=this.RULE("Consideration", () => {
             this.OPTION(() => {
-                this.CONSUME(tConsider)
-                this.CONSUME(Colon)
+                this.CONSUME(tokensStore.tConsider)
+                this.CONSUME(tokensStore.tColon)
                 this.SUBRULE(this.nVariable)
             })
         })
         private FormalParameters=this.RULE("FormalParameters", () => {
             this.OPTION(() => {
-                this.CONSUME(tUserDefinedIdentifier)
+                this.CONSUME(tokensStore.tUserDefinedIdentifier)
                 this.SUBRULE(this.OtherFormalParameters);
             });
         });
         private OtherFormalParameters=this.RULE("OtherFormalParameters", () => {
             this.OPTION(() => {
-                this.CONSUME(tUserDefinedIdentifier)
+                this.CONSUME(tokensStore.tUserDefinedIdentifier)
                 this.SUBRULE(this.OtherFormalParameters);
             });
         });
         private End_Game=this.RULE("End_Game", () => {
-            this.CONSUME(tEndgame)
-            this.CONSUME(OpenBrace)
+            this.CONSUME(tokensStore.tEndgame)
+            this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements)
             
 
-            this.CONSUME(CloseBrace)
+            this.CONSUME(tokensStore.tCloseBrace)
         });
 
 
@@ -476,7 +281,7 @@ class parser extends CstParser
                     { ALT: () =>{ this.SUBRULE(this.FlowControl )
                             this.SUBRULE6(this.statements)}},
 
-                    { ALT: () =>{ this.CONSUME(tReturn )
+                    { ALT: () =>{ this.CONSUME(tokensStore.tReturn )
                             this.SUBRULE(this.nVariable )}},
                 ])
             });
@@ -488,31 +293,31 @@ class parser extends CstParser
                         { ALT: () =>{ 
                             
                             
-                            this.CONSUME(Input )
-                            this.CONSUME(OpenBracket )
+                            this.CONSUME(tokensStore.tInput )
+                            this.CONSUME(tokensStore.tOpenBracket )
                             this.SUBRULE(this.Expression)
-                            this.CONSUME(CloseBracket )
+                            this.CONSUME(tokensStore.tCloseBracket )
                         }},
 
                         { ALT: () =>{ 
-                            this.CONSUME(ConsoleInput )
-                            this.CONSUME2(OpenBracket )
+                            this.CONSUME(tokensStore.tConsoleInput )
+                            this.CONSUME2(tokensStore.tOpenBracket )
                             this.SUBRULE2(this.Expression)
-                        this.CONSUME2(CloseBracket )
+                        this.CONSUME2(tokensStore.tCloseBracket )
                     }},
 
                         
 
-                        { ALT: () =>{ this.CONSUME(Print )
-                            this.CONSUME3(OpenBracket )
+                        { ALT: () =>{ this.CONSUME(tokensStore.tPrint )
+                            this.CONSUME3(tokensStore.tOpenBracket )
                             this.SUBRULE3(this.Expression)
-                        this.CONSUME3(CloseBracket )
+                        this.CONSUME3(tokensStore.tCloseBracket )
                         }},
 
-                        { ALT: () =>{ this.CONSUME(ConsoleOutput )
-                            this.CONSUME5(OpenBracket )
+                        { ALT: () =>{ this.CONSUME(tokensStore.tConsoleOutput )
+                            this.CONSUME5(tokensStore.tOpenBracket )
                             this.SUBRULE4(this.Expression)
-                        this.CONSUME5(CloseBracket )
+                        this.CONSUME5(tokensStore.tCloseBracket )
                         }},
                     ])
                     
@@ -527,27 +332,27 @@ class parser extends CstParser
                     }},
                     { 
                         ALT: () =>{ 
-                        this.CONSUME(Minmax )
-                        this.CONSUME(OpenBracket )
-                        this.CONSUME(OpenBrace )
+                        this.CONSUME(tokensStore.tMinmax )
+                        this.CONSUME(tokensStore.tOpenBracket )
+                        this.CONSUME(tokensStore.tOpenBrace )
                         this.SUBRULE(this.statements)
-                        this.CONSUME(CloseBrace )
-                        this.CONSUME(CloseBracket )
+                        this.CONSUME(tokensStore.tCloseBrace )
+                        this.CONSUME(tokensStore.tCloseBracket )
                     }},
                     { 
                         ALT: () =>{ 
-                        this.CONSUME(NeuralNetwork )
-                        this.CONSUME1(OpenBracket )
+                        this.CONSUME(tokensStore.tNeuralNetwork )
+                        this.CONSUME1(tokensStore.tOpenBracket )
                         this.SUBRULE(this.Expression)
                         this.SUBRULE(this.Continuation)
-                        this.CONSUME1(CloseBracket )
+                        this.CONSUME1(tokensStore.tCloseBracket )
                     }},
                     ])
                     
                 });
                 private Continuation=this.RULE("Continuation", () => {
                     //
-                    this.CONSUME1(Comma )
+                    this.CONSUME1(tokensStore.tComma )
                     this.SUBRULE(this.Expression)
                 })
 
@@ -557,17 +362,17 @@ class parser extends CstParser
 
                         { 
                             ALT: () =>{ 
-                            this.CONSUME(tEffect )
-                            this.CONSUME(OpenBracket )
+                            this.CONSUME(tokensStore.tEffect )
+                            this.CONSUME(tokensStore.tOpenBracket )
                             this.SUBRULE(this.Arguments )
-                            this.CONSUME(CloseBracket )
+                            this.CONSUME(tokensStore.tCloseBracket )
                         }},
                         { 
                             ALT: () =>{ 
-                                this.CONSUME(tCondition )
-                                this.CONSUME1(OpenBracket )
+                                this.CONSUME(tokensStore.tCondition )
+                                this.CONSUME1(tokensStore.tOpenBracket )
                                 this.SUBRULE1(this.Arguments )
-                                this.CONSUME1(CloseBracket )
+                                this.CONSUME1(tokensStore.tCloseBracket )
                         }},
                         { 
                             ALT: () =>{ 
@@ -603,58 +408,58 @@ class parser extends CstParser
                     
                 });
                 private rCopy=this.RULE("rCopy", () => {
-                    this.CONSUME(tCopy )
-                    this.CONSUME2(OpenBracket )
+                    this.CONSUME(tokensStore.tCopy )
+                    this.CONSUME2(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME2(CloseBracket )
+                    this.CONSUME2(tokensStore.tCloseBracket )
                 })
 
 
                 private rChooseAction=this.RULE("rChooseAction", () => {
-                    this.CONSUME(tChooseAction)
-                    this.CONSUME(OpenBracket )
+                    this.CONSUME(tokensStore.tChooseAction)
+                    this.CONSUME(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME(Comma )
+                    this.CONSUME(tokensStore.tComma )
                     this.SUBRULE(this.Value) 
                     this.SUBRULE(this.dotContinuation) 
-                    this.CONSUME(CloseBracket )
+                    this.CONSUME(tokensStore.tCloseBracket )
                 })
                 private rIsActionLegal=this.RULE("rIsActionLegal", () => {
-                    this.CONSUME(tIsActionLegal)
-                    this.CONSUME(OpenBracket )
+                    this.CONSUME(tokensStore.tIsActionLegal)
+                    this.CONSUME(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME(Comma )
+                    this.CONSUME(tokensStore.tComma )
                     this.SUBRULE(this.Value) 
                     this.SUBRULE(this.dotContinuation) 
-                    this.CONSUME(CloseBracket )
+                    this.CONSUME(tokensStore.tCloseBracket )
                 })
 
 
                 private rGenerateChoices=this.RULE("rGenerateChoices", () => {
-                    this.CONSUME(tGenerateChoices)
-                    this.CONSUME(OpenBracket )
-                    this.CONSUME(CloseBracket )
+                    this.CONSUME(tokensStore.tGenerateChoices)
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tCloseBracket )
                 })
                 private rAddPieceToTile=this.RULE("rAddPieceToTile", () => {
-                    this.CONSUME(tAddPieceToTile )
-                                this.CONSUME(OpenBracket )
-                                this.CONSUME(tUserDefinedIdentifier )
-                                this.CONSUME(Comma )
+                    this.CONSUME(tokensStore.tAddPieceToTile )
+                                this.CONSUME(tokensStore.tOpenBracket )
+                                this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                                this.CONSUME(tokensStore.tComma )
                                 this.SUBRULE(this.Value)
-                                this.CONSUME(CloseBracket )
+                                this.CONSUME(tokensStore.tCloseBracket )
                 })
 
                 private rGetTileByID=this.RULE("rGetTileByID", () => {
-                                this.CONSUME(tGetTileByID )
-                                this.CONSUME2(OpenBracket )
+                                this.CONSUME(tokensStore.tGetTileByID )
+                                this.CONSUME2(tokensStore.tOpenBracket )
                                 this.SUBRULE(this.Expression)
-                                this.CONSUME2(CloseBracket )
+                                this.CONSUME2(tokensStore.tCloseBracket )
                 })
                 private rGetTilesByType=this.RULE("rGetTilesByType", () => {
-                    this.CONSUME(tGetTilesByType )
-                                this.CONSUME3(OpenBracket )
+                    this.CONSUME(tokensStore.tGetTilesByType )
+                                this.CONSUME3(tokensStore.tOpenBracket )
                                 this.SUBRULE1(this.Expression)
-                                this.CONSUME3(CloseBracket )
+                                this.CONSUME3(tokensStore.tCloseBracket )
                     })
 
                 private Loop=this.RULE("Loop", () => {
@@ -663,38 +468,38 @@ class parser extends CstParser
 
                         { 
                             ALT: () =>{ 
-                            this.CONSUME(While )
-                            this.CONSUME(OpenBracket )
+                            this.CONSUME(tokensStore.tWhile )
+                            this.CONSUME(tokensStore.tOpenBracket )
                             this.SUBRULE(this.nCondition)
-                            this.CONSUME(CloseBracket )
-                            this.CONSUME(OpenBrace )
+                            this.CONSUME(tokensStore.tCloseBracket )
+                            this.CONSUME(tokensStore.tOpenBrace )
                             this.SUBRULE(this.statements)
-                            this.CONSUME(CloseBrace )
+                            this.CONSUME(tokensStore.tCloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                this.CONSUME(For )
-                                this.CONSUME1(OpenBracket )
+                                this.CONSUME(tokensStore.tFor )
+                                this.CONSUME1(tokensStore.tOpenBracket )
                                 this.SUBRULE(this.ForLoopInitialiser )
-                                this.CONSUME(SemiColon )
+                                this.CONSUME(tokensStore.tSemiColon )
                                 this.SUBRULE(this.ForLoopCondition )
-                                this.CONSUME1(SemiColon )
+                                this.CONSUME1(tokensStore.tSemiColon )
                                 this.SUBRULE(this.ForLoopStep )
-                                this.CONSUME1(CloseBracket )
-                                this.CONSUME1(OpenBrace )
+                                this.CONSUME1(tokensStore.tCloseBracket )
+                                this.CONSUME1(tokensStore.tOpenBrace )
                                 this.SUBRULE1(this.statements)
-                                this.CONSUME1(CloseBrace )
+                                this.CONSUME1(tokensStore.tCloseBrace )
                         }},
                         { 
                             ALT: () =>{ 
-                                this.CONSUME(Do )
-                                this.CONSUME2(OpenBrace )
+                                this.CONSUME(tokensStore.tDo )
+                                this.CONSUME2(tokensStore.tOpenBrace )
                                 this.SUBRULE2(this.statements )
-                                this.CONSUME2(CloseBrace )
-                                this.CONSUME1(While )
-                                this.CONSUME2(OpenBracket )
+                                this.CONSUME2(tokensStore.tCloseBrace )
+                                this.CONSUME1(tokensStore.tWhile )
+                                this.CONSUME2(tokensStore.tOpenBracket )
                                 this.SUBRULE1(this.nCondition )
-                                this.CONSUME2(CloseBracket )
+                                this.CONSUME2(tokensStore.tCloseBracket )
                         }},
                     ])
                     
@@ -703,7 +508,7 @@ class parser extends CstParser
                 private ForLoopInitialiser=this.RULE("ForLoopInitialiser", () => {
                     this.OPTION(() => {
                         this.SUBRULE(this.nVariable)
-                        this.this.CONSUME(Assign)
+                        this.this.CONSUME(tokensStore.tAssign)
                         this.SUBRULE(this.Value)
                     })
                 });
@@ -721,20 +526,20 @@ class parser extends CstParser
                      
                  });
                  private Branch=this.RULE("Branch", () => {
-                    this.CONSUME(If )
-                    this.CONSUME(OpenBracket )
+                    this.CONSUME(tokensStore.tIf )
+                    this.CONSUME(tokensStore.tOpenBracket )
                     this.SUBRULE(this.nCondition)
-                    this.CONSUME(CloseBracket )
-                    this.CONSUME(OpenBrace )
+                    this.CONSUME(tokensStore.tCloseBracket )
+                    this.CONSUME(tokensStore.tOpenBrace )
                     this.SUBRULE(this.statements)
-                    this.CONSUME(CloseBrace )
+                    this.CONSUME(tokensStore.tCloseBrace )
                     this.SUBRULE(this.Alternative)
 
 
                  });
                  private Alternative=this.RULE("Alternative", () => {
                     this.OPTION(() => {
-                        this.CONSUME(Else)
+                        this.CONSUME(tokensStore.tElse)
                     
                         this.OR([
                             { 
@@ -743,9 +548,9 @@ class parser extends CstParser
                             }},
                             { 
                                 ALT: () =>{ 
-                                this.CONSUME(OpenBrace )
+                                this.CONSUME(tokensStore.tOpenBrace )
                                 this.SUBRULE(this.statements)
-                                this.CONSUME(CloseBrace )
+                                this.CONSUME(tokensStore.tCloseBrace )
                             }},
                         ])
                     })
@@ -763,7 +568,7 @@ class parser extends CstParser
                                 })
 
 
-                                this.CONSUME(Assign)
+                                this.CONSUME(tokensStore.tAssign)
                                 this.OR2([
                                     { 
                                         ALT: () =>{ 
@@ -775,11 +580,11 @@ class parser extends CstParser
                                     }},
                                     { 
                                         ALT: () =>{ 
-                                        this.CONSUME(tTile)
+                                        this.CONSUME(tokensStore.tTile)
                                     }},
                                     { 
                                         ALT: () =>{ 
-                                        this.CONSUME(tPiece)
+                                        this.CONSUME(tokensStore.tPiece)
                                     }},
                                 ])
                             
@@ -807,37 +612,37 @@ class parser extends CstParser
                         ])
                  })
                  private rAddToArr=this.RULE("rAddToArr", () => {
-                    this.CONSUME(tAddToArr )
-                    this.CONSUME(OpenBracket )
-                    this.CONSUME(tUserDefinedIdentifier )
-                    this.CONSUME(Comma )
+                    this.CONSUME(tokensStore.tAddToArr )
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                    this.CONSUME(tokensStore.tComma )
                     this.SUBRULE(this.Value)
-                    this.CONSUME(CloseBracket )
+                    this.CONSUME(tokensStore.tCloseBracket )
                  })
 
                  private addTileToBoard=this.RULE("addTileToBoard", () => {
                     
-                    this.CONSUME(tAddToBoard)
-                    this.CONSUME(OpenBracket)
-                    this.CONSUME(tUserDefinedIdentifier)
-                    this.CONSUME(CloseBracket)    
+                    this.CONSUME(tokensStore.tAddToBoard)
+                    this.CONSUME(tokensStore.tOpenBracket)
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tCloseBracket)    
                  })
                  private addAdj=this.RULE("addAdj", () => {
                     
-                    this.CONSUME(tAddAdjacency)
-                    this.CONSUME(OpenBracket)
-                    this.CONSUME(tUserDefinedIdentifier)
-                    this.CONSUME(Comma)
-                    this.CONSUME2(tUserDefinedIdentifier)
-                    this.CONSUME(CloseBracket)    
+                    this.CONSUME(tokensStore.tAddAdjacency)
+                    this.CONSUME(tokensStore.tOpenBracket)
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tComma)
+                    this.CONSUME2(tokensStore.tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tCloseBracket)    
                  })
 
 
                  private Declaration=this.RULE("Declaration", () => {
                                 
             
-                    this.CONSUME(tVariable)
-                    this.CONSUME(tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tVariable)
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier)
                     this.SUBRULE(this.Field)
                 });
 
@@ -846,7 +651,7 @@ class parser extends CstParser
                     
                     this.SUBRULE(this.LHS )
                     
-                    this.CONSUME(Assign)
+                    this.CONSUME(tokensStore.tAssign)
                     this.SUBRULE(this.RHS )
 
                     
@@ -875,12 +680,12 @@ class parser extends CstParser
                             }},
                             { 
                                 ALT: () =>{ 
-                                this.CONSUME(tPiece)
+                                this.CONSUME(tokensStore.tPiece)
                             }},
                             { 
                                 ALT: () =>{ 
-                                this.CONSUME(OpenSquareBracket)
-                                this.CONSUME(ClosedSquareBracket)
+                                this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.CONSUME(tokensStore.tClosedSquareBracket)
                             }}
                     ])
                 });
@@ -889,11 +694,11 @@ class parser extends CstParser
                     this.OR([
                         { 
                             ALT: () =>{ 
-                            this.CONSUME(Break)
+                            this.CONSUME(tokensStore.tBreak)
                         }},
                         { 
                             ALT: () =>{ 
-                            this.CONSUME(Continue )
+                            this.CONSUME(tokensStore.tContinue )
                         }}
                 ])
             });
@@ -929,7 +734,7 @@ class parser extends CstParser
         private dotContinuation=this.RULE("dotContinuation", () => {
             //
             this.OPTION(() => {
-                this.CONSUME(Dot)
+                this.CONSUME(tokensStore.tDot)
                 this.SUBRULE(this.Value) 
                 this.SUBRULE(this.dotContinuation) 
             })
@@ -946,13 +751,13 @@ class parser extends CstParser
                 this.OR([
                     { 
                         ALT: () =>{ 
-                            this.CONSUME(Minus)
-                            this.CONSUME1(Minus)
+                            this.CONSUME(tokensStore.tMinus)
+                            this.CONSUME1(tokensStore.tMinus)
                     }},
                     { 
                         ALT: () =>{ 
-                            this.CONSUME(Plus)
-                            this.CONSUME1(Plus)
+                            this.CONSUME(tokensStore.tPlus)
+                            this.CONSUME1(tokensStore.tPlus)
                     }}
             ])
         });
@@ -970,7 +775,7 @@ class parser extends CstParser
             }},
             { 
                 ALT: () =>{ 
-                    this.CONSUME(tUserDefinedIdentifier)
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier)
                     this.OPTION(() => {
                         this.SUBRULE(this.Field )
                     })
@@ -982,23 +787,23 @@ class parser extends CstParser
         this.OR([
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Minus)
+                        this.CONSUME(tokensStore.tMinus)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Plus)
+                        this.CONSUME(tokensStore.tPlus)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Multiply)
+                        this.CONSUME(tokensStore.tMultiply)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Divide)
+                        this.CONSUME(tokensStore.tDivide)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Mod)
+                        this.CONSUME(tokensStore.tMod)
                 }}
             ])
 });
@@ -1007,9 +812,9 @@ class parser extends CstParser
         private Ternary=this.RULE("Ternary", () => {
                                 
             
-            this.CONSUME(QuestionMark)
+            this.CONSUME(tokensStore.tQuestionMark)
             this.SUBRULE(this.Ternary_Instr )
-            this.CONSUME(Colon)
+            this.CONSUME(tokensStore.tColon)
             this.SUBRULE1(this.Ternary_Instr)
         });
 
@@ -1033,16 +838,16 @@ class parser extends CstParser
         this.OR([
             { 
                 ALT: () =>{ 
-                    this.CONSUME(OpenBracket)
+                    this.CONSUME(tokensStore.tOpenBracket)
                     this.SUBRULE(this.nCondition)
-                    this.CONSUME(CloseBracket)
+                    this.CONSUME(tokensStore.tCloseBracket)
             }},
             { 
                 ALT: () =>{ 
-                    this.CONSUME(Not)
-                    this.CONSUME1(OpenBracket)
+                    this.CONSUME(tokensStore.tNot)
+                    this.CONSUME1(tokensStore.tOpenBracket)
                     this.SUBRULE1(this.nCondition)
-                    this.CONSUME1(CloseBracket)
+                    this.CONSUME1(tokensStore.tCloseBracket)
             }},
             { 
                 ALT: () =>{ 
@@ -1079,11 +884,11 @@ class parser extends CstParser
             this.OR([
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(And)
+                        this.CONSUME(tokensStore.tAnd)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(Or)
+                        this.CONSUME(tokensStore.tOr)
                 }}
         ])
         });
@@ -1093,23 +898,23 @@ class parser extends CstParser
             this.OR([
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(LessThan)
+                        this.CONSUME(tokensStore.tLessThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(GreaterThan)
+                        this.CONSUME(tokensStore.tGreaterThan)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(tLessThanOrEqual)
+                        this.CONSUME(tokensStore.tLessThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(tGreaterThanOrEqual)
+                        this.CONSUME(tokensStore.tGreaterThanOrEqual)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(tEqual)
+                        this.CONSUME(tokensStore.tEqual)
                 }}
         ])
         });
@@ -1120,9 +925,9 @@ class parser extends CstParser
         private Field=this.RULE("Field", () => {
                                 
             this.OPTION(() => {
-                this.CONSUME(OpenSquareBracket)
+                this.CONSUME(tokensStore.tOpenSquareBracket)
                 this.SUBRULE(this.Index)
-                this.CONSUME(ClosedSquareBracket)
+                this.CONSUME(tokensStore.tClosedSquareBracket)
             })
         });
 
@@ -1149,24 +954,24 @@ class parser extends CstParser
             this.OR([
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(tFloatLiteral)
+                        this.CONSUME(tokensStore.tFloatLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(StringLiteral)
+                        this.CONSUME(tokensStore.tStringLiteral)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(True)
+                        this.CONSUME(tokensStore.tTrue)
                 }},
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(False)
+                        this.CONSUME(tokensStore.tFalse)
                 }}
                 ,
                 { 
                     ALT: () =>{ 
-                        this.CONSUME(IntegerLiteral)
+                        this.CONSUME(tokensStore.tIntegerLiteral)
                 }}
         ])
         });
@@ -1177,22 +982,22 @@ class parser extends CstParser
             this.OR([
                 {
                     ALT: () =>{ 
-                    this.CONSUME(tVariable)
+                    this.CONSUME(tokensStore.tVariable)
                     }
                 },
                 {
                     ALT: () =>{ 
-                    this.CONSUME(tLet)
+                    this.CONSUME(tokensStore.tLet)
                     }
                 }
             ])
         })
-            this.CONSUME(tUserDefinedIdentifier)
+            this.CONSUME(tokensStore.tUserDefinedIdentifier)
             this.OPTION2(() => {
                 this.SUBRULE(this.Field)
             })
             this.OPTION3(() => {
-                this.CONSUME(Dot)
+                this.CONSUME(tokensStore.tDot)
                 this.SUBRULE(this.nVariable)
                 
             })
@@ -1202,7 +1007,7 @@ class parser extends CstParser
         private Type=this.RULE("Type", () => {
                                         
             
-            this.CONSUME(tPlayer)
+            this.CONSUME(tokensStore.tPlayer)
                 
         
         });
@@ -1212,7 +1017,7 @@ class parser extends CstParser
                 this.OR([
                     { 
                         ALT: () =>{ 
-                            this.CONSUME(tUserDefinedIdentifier)
+                            this.CONSUME(tokensStore.tUserDefinedIdentifier)
                             this.SUBRULE(this.otherArgs)
                     }},
                     { 
@@ -1231,7 +1036,7 @@ class parser extends CstParser
                     this.OR([
                         { 
                             ALT: () =>{ 
-                                this.CONSUME(tUserDefinedIdentifier)
+                                this.CONSUME(tokensStore.tUserDefinedIdentifier)
                                 this.SUBRULE(this.otherArgs)
                         }},
                         { 

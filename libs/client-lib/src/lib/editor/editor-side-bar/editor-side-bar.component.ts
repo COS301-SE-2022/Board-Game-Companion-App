@@ -12,7 +12,6 @@ export class EditorSideBarComponent implements OnInit{
   @Output() resizeEvent = new EventEmitter<number>();
   
   ngOnInit(): void {
-    console.log("editor");
     setInterval(()=>{
       const temp = document.getElementById("editor-side-bar")?.style.width;
       const value = parseInt(temp == undefined ? "" : temp);

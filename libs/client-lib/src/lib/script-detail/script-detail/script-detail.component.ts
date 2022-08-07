@@ -49,7 +49,8 @@ export class ScriptDetailComponent implements OnInit {
     this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(val)=>{
         this.downloading = false;
-        this.notifications.add({type:val.status,message:val.message});
+        this.notifications.add({type:"primary",message:val.message});
+
       },
       error:(err)=>{     
         this.downloading = false;

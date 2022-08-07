@@ -7,14 +7,14 @@
             <div (click) = "close()" class = "editor-console__close cursor-pointer bg-inherit hover:bg-gray-500 text-white ml-1 w-6 text-center text-xs"><b><strong>x</strong></b></div>
         </div>    
     </div>
-    <div class = "console-messages overflow-auto text-xs mt-2 h-4/5">
-        <div *ngFor = "let message of messages" class = "console-message text-white">
-            <div *ngIf = "message.type === false">
+    <div class = "console-messages overflow-auto w-full text-xs mt-2 h-4/5">
+        <div *ngFor = "let message of messages" class = "console-message text-white w-full">
+            <div *ngIf = "message.output === true" class = "w-full">
                 <strong>:> {{message.outputMessage}}</strong>
             </div>
 
-            <div *ngIf = "message.type === true">
-                <input type = "text">
+            <div *ngIf = "message.output === false" class = "w-full flex">
+                <strong *ngIf = "inputId!==message.outputMessage">:> </strong><strong *ngIf = "beep===false && inputId===message.outputMessage">:> </strong> <p *ngIf = "beep === true && message.outputMessage === inputId">:> </p><input spellcheck="false" autocomplete="off" [id] = "message.outputMessage" (keypress)="saveInput($event)" name = "inputValue" type = "text" class = "ml-1 grow font-medium console-input">
             </div>
         </div>
     </div>
