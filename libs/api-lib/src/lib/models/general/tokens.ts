@@ -88,7 +88,6 @@ export const tConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:
 export const tConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
 
-export const tAwait=(chevrotain.createToken({name:"await",pattern:/await/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -134,7 +133,6 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tCards,
     tTile,
     tPiece,
-    tAwait,
     tAddToArr,
     tAddToBoard,
     tConsider,

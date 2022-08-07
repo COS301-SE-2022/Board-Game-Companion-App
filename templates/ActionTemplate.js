@@ -9,7 +9,7 @@
 
 
     params = []
-    chooseAction(choice, p)
+    async chooseAction(choice, p)
     {
         switch(choice)
         {
@@ -18,7 +18,7 @@
         
         
     }
-    isActionLegal(choice, p)
+    async isActionLegal(choice, p)
     {
         switch(choice)
         {
@@ -29,7 +29,7 @@
         return false;
     }
 
-    considerations(choice)
+    async considerations(choice)
     {
         
         switch(choice)
@@ -39,7 +39,7 @@
         
         return [];
     }
-    generateChoices()
+    async generateChoices()
     {
         this.params = []
         let choices =[]
@@ -48,9 +48,9 @@
         {
             
 
-            if(this.considerations(i) == [])
+            if(await this.considerations(i) == [])
             {
-                if(this.isActionLegal(i, []))
+                if(await this.isActionLegal(i, []))
                 {
                     choices.push(i)
                     this.params.push([])
@@ -59,14 +59,14 @@
             else
             {
                 
-                for(let j = 0;j<this.considerations(i).length;j++)
+                for(let j = 0;j<await this.considerations(i).length;j++)
                 {
                     
                     
-                    if(this.isActionLegal(i, this.considerations(i)[j]))
+                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
                     {
                         choices.push(i)
-                        this.params.push(this.considerations(i)[j])
+                        this.params.push(await this.considerations(i)[j])
 
                     }
                 }

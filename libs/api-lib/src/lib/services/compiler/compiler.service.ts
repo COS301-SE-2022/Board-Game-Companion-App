@@ -296,6 +296,14 @@ class parser extends CstParser
                             this.CONSUME(tokensStore.tInput )
                             this.CONSUME(tokensStore.tOpenBracket )
                             this.SUBRULE(this.Expression)
+                            this.CONSUME(tokensStore.tComma)
+                            this.SUBRULE(this.Const)
+                            this.OPTION(() => {
+                                this.CONSUME1(tokensStore.tComma)
+                                this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.SUBRULE(this.Array)
+                                this.CONSUME(tokensStore.tClosedSquareBracket)
+                            })
                             this.CONSUME(tokensStore.tCloseBracket )
                         }},
 
@@ -322,7 +330,27 @@ class parser extends CstParser
                     ])
                     
                 });
+                private Array=this.RULE("Array", () => {
+                    //
+                    this.OPTION(() => {
+                        this.OPTION1(() => {
+                            this.CONSUME1(tokensStore.tComma)
+                        })
+                        this.OR([
+                     
+                            { ALT: () =>{ 
+                                this.SUBRULE(this.Const)
+                            }},
+                            { ALT: () =>{ 
+                                this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                            }}
 
+                        ])
+
+                        this.SUBRULE(this.Array)
+
+                    })
+                })
                 private Call=this.RULE("Call", () => {
             
                     this.OR([
@@ -1279,7 +1307,7 @@ function visitPlayer(cstOutput:CstNode)
                         break;
                         
                     case "Turn":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ''+token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'async '+token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                         break;
                     default:
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
@@ -1374,7 +1402,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'this.'+token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return this.'+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\n'+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\nasync '+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
                 
             }
             if(token.tokenType.name == "CloseBracket")
@@ -1385,7 +1413,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
             }
             if(token.tokenType.name != "Action")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),'async '+token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
                 
             }
         }
@@ -1498,8 +1526,8 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                 
                 case "Variable": 
                     break;
-                case "ConsoleInput":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console_Input', jsScript.slice(jsScript.indexOf(place))].join('');
+                case "Input":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await Input', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;    
                 case "ConsoleOutput":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console.log ', jsScript.slice(jsScript.indexOf(place))].join('');

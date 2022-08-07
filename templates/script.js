@@ -1,11 +1,11 @@
 class cards
 {
     parameters;
-    activate()
+    async activate()
     {
         //
     }
-    canUse()
+    async canUse()
     {
         return true;
     }
@@ -48,7 +48,7 @@ class game_state
     
 
 //state accessors
-    getTileByID(id)
+    async getTileByID(id)
     {
         for(let i = 0; i<this.board.length;i++)
         {
@@ -58,7 +58,7 @@ class game_state
         return null
     }
 
-    getTilesByType(type)
+    async getTilesByType(type)
     {
         results = []
         for(let i = 0; i<this.board.length;i++)
@@ -78,36 +78,18 @@ class game_state
 class player
 {
     State = new game_state();
-    chooseAction()
+    async chooseAction()
     {
         //
     }
-    turn()
+    async turn()
     {
         //redefined in subclasses
     }
 }
 //players
 
-function output(message)
-{
-    console_Input(message)
-    
-}
 
-function input(message)
-{
-    
-    return console_Input(message)
-    
-    
-}
-function console_Input(message)
-{
-    
-    i = prompt(message);
-    return i;
-}
 
 //
 class script
@@ -117,9 +99,9 @@ class script
         //add players
     ];
     
-    
 
-    play()
+
+    async play()
     {
 
         
@@ -175,7 +157,7 @@ class script
 
     }
 
-    endgame()
+    async endgame()
     {
         //end_game
     
