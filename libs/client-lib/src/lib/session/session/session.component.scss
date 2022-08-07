@@ -89,3 +89,15 @@ td{
     font-weight: bold;
     text-align: center;
 }
+
+@media(max-width: 639px){
+    #container{
+        margin-left: 24px;
+        margin-right:24px;
+        width:100%;
+    }
+
+    #sessionDetails{
+        width:100%;
+    }
+}

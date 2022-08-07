@@ -6,6 +6,7 @@
     margin: auto;
     width: 60%;
     height: 40em;
+   // height:100%;
     margin-top: 5em;
     margin-bottom: 5em;
     background-color: $Pcolour-2;
@@ -83,6 +84,20 @@ button{
 }
 
 @media(max-width:639px){
+    #container{
+        // margin-left: 20px;
+        // margin-right: 20px;
+        // margin-top: 10px;
+        // margin-bottom: 0px;
+        margin:auto;
+        width:90%;
+        //height:60em;
+        //height:65em;
+        background-color: $Pcolour-2;
+    }
+    #table{
+        margin-top: 54px;
+    }
     .result{
         display:flex;
         flex-direction: column;
@@ -114,7 +129,7 @@ button{
         margin-top: 34px;
     }
 
-    #descr{
+    #description{
         display:none;
     }
 }

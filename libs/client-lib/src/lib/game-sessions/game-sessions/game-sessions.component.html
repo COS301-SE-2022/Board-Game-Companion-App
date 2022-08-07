@@ -25,62 +25,62 @@
         <table class="table-auto">
             <thead>
                 <tr>
-                    <th>
+                    <th scope="col">
                         Session:
                     </th>
-                    <th>
+                    <th scope="col">
                         Game:
                     </th>
-                    <th>
+                    <th scope="col">
                         Script:
                     </th>
-                    <th>
+                    <th scope="col">
                         Score:
                     </th>
-                    <th>
+                    <th scope="col">
                         Play Time:
                     </th>
-                    <th>
+                    <th scope="col">
                         Players
                     </th>
-                    <th>
+                    <th scope="col">
                         Result:
                     </th>
-                    <th>
+                    <th scope="col">
                         Date:
                     </th>
-                    <th>
+                    <th scope="col">
 
                     </th>
                 </tr>
             </thead>
             <tbody class = "overflow-x-auto">
                 <tr *ngFor="let results of listResults">
-                    <td>
+                    <td scope="row" data-label="Session">
                         {{results.getID()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Game">
                         {{results.getBoardGame()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Script">
                         {{results.getScript()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Score">
                         {{results.getScore()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Play Time">
                         {{results.getTimePlayed()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Players">
                         {{results.getNumOpponents()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Result">
                         {{results.getResult()}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Date">
                         {{results.getDate()}}
                     </td>
-                    <td>
+                    <td scope="row">
                         <button (click)="viewSession(results.getID())" id="explore">Explore</button>
                     </td>
                 </tr>
