@@ -35,8 +35,7 @@ export class ScriptService {
         
         try{
             //const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode);
-            const fileUploadResult = await this.localStorage.upload("main.js",path,compiledCode);
-            
+            const fileUploadResult = await this.localStorage.upload("main.js",path,compiledCode)
             script.build = {
                 name:"main.js",
                 location:fileUploadResult.location,
@@ -150,7 +149,8 @@ export class ScriptService {
                         responseType:'text'
                     })).data;
 
-                    const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
+                    //const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
+                    const buildResponse = await this.localStorage.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
                     //console.log(buildResponse)
                     newScript.build.name = script.build.name;
                     newScript.build.awsKey = buildResponse.key;
@@ -159,8 +159,8 @@ export class ScriptService {
                     
                     const image = (await this.httpService.axiosRef.get(script.icon.location));
                     console.log(image)
-                    const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
-                    
+                    //const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
+                    const savedIcon = await this.localStorage.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image)
                     newScript.icon = {
                         name: script.icon.name,
                         location: savedIcon.location,
@@ -298,7 +298,8 @@ export class ScriptService {
                 result = {status:"success",message:compiledCode.programStructure};
                 
                 await this.updateBuild(id,compiledCode.build);
-                this.s3Service.update(script.source.awsKey,content);
+                //this.s3Service.update(script.source.awsKey,content);
+                await this.localStorage.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
             
