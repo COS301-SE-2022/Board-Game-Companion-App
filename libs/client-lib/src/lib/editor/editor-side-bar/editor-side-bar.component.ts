@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { entity } from '../../shared/models/entity';
+import { script } from '../../shared/models/script';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -9,6 +11,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class EditorSideBarComponent implements OnInit{
   @Input() height = 0;
   @Input() width = 0;
+  @Input() current!:script;
   @Output() resizeEvent = new EventEmitter<number>();
   
   ngOnInit(): void {

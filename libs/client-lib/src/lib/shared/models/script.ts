@@ -1,3 +1,4 @@
+import { entity } from "./entity";
 import { file } from "./file";
 import { status } from "./status";
 import { user} from './user'
@@ -19,6 +20,7 @@ export interface script{
     size: number;
     status: status;
     comments: string[];
+    programStructure:entity;
     source: file;
     build: file;
     icon: file;
@@ -42,6 +44,7 @@ export const empty:script = {
     status: {value:0,message:"script has been flagged by the system"},
     size: 0,
     comments: [],
+    programStructure: {type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
     source: {name:"",location:"",awsKey:""},
     build: {name:"",location:"",awsKey:""},
     icon: {name:"",location:"",awsKey:""},

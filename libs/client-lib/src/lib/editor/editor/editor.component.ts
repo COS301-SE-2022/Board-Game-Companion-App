@@ -11,6 +11,7 @@ import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.compo
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
 import { inputParameters } from '../../shared/models/inputParameters';
+import { entity } from '../../shared/models/entity';
 
 interface message{
   message: string;
@@ -46,7 +47,8 @@ export class EditorComponent implements OnInit{
   inputResult:any[] = [];
   parameters:inputParameters[] = [];
   statusMessages:string[] = [];
-  
+  programStructure!:entity;
+
   constructor(private readonly scriptService:ScriptService, private router: Router){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
@@ -241,6 +243,11 @@ export class EditorComponent implements OnInit{
 
   changesTracker(value:number): void{
     this.editorStatusBar.updateStatusOfChanges(value);
+  }
+
+  setProgramStructure(value:entity): void{
+    this.programStructure = value;
+    this.currentScript.programStructure = value;
   }
 
   undo(): void{

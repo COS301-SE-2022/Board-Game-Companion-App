@@ -135,20 +135,9 @@ export class CompilerService {
                                 type: "player",
                                 name: "player",
                                 startLine: 0,
-                                endLine: -1,
+                                endLine: Number.MIN_VALUE,
                                 startPosition: 0,
-                                endPosition: -1,
-                                children: [],
-                                properties: []
-                            }
-
-                            const turn:entity = {
-                                type: "turn",
-                                name: "turn",
-                                startLine: 0,
-                                endLine: 0,
-                                startPosition: 0,
-                                endPosition: 0,
+                                endPosition: Number.MIN_VALUE,
                                 children: [],
                                 properties: []
                             }
@@ -156,16 +145,46 @@ export class CompilerService {
                             parent.children.push(current);
 
                             for(sub in child.children){
+                                //console.log(child.children[sub][0])
                                 const node = child.children[sub][0] as chevrotain.CstNode;
                                 const token = child.children[sub][0] as IToken;
 
                                 if(node.name){
-                                    if(node.name === "statements")
-                                        treeTraversal(node,turn);
-                                    else
+                                    if(node.name === "PlayerTurn"){
+                                        const turn:entity = {
+                                            type: "turn",
+                                            name: "turn",
+                                            startLine: 0,
+                                            endLine: 0,
+                                            startPosition: 0,
+                                            endPosition: 0,
+                                            children: [],
+                                            properties: []
+                                        }
+            
+                                        current.children.push(turn);
+            
+                                        for(sub in node.children){
+                                            const turnNode = node.children[sub][0] as chevrotain.CstNode;
+                                            const token = node.children[sub][0] as IToken;
+            
+                                            if(turnNode.name){
+                                                treeTraversal(turnNode,turn);
+                                            }else if(token.tokenType){
+                                                switch(token.image){
+                                                    case "turn":{
+                                                        turn.startLine = token.startLine;
+                                                        turn.startPosition = token.startColumn;
+                                                    }break;
+                                                    case "}":{
+                                                        turn.endLine = token.endLine;
+                                                        turn.endPosition = token.endColumn;
+                                                    }break;
+                                                }
+                                            }
+                                        }         
+                                    }else
                                         treeTraversal(node,current);
-                                    
-                                    current.children.push(turn);
                                 }else if(token.tokenType){
                                     if(token.tokenType.name === "UserDefinedIdentifier")
                                         current.name = token.image;
@@ -176,20 +195,9 @@ export class CompilerService {
                                             current.startPosition = token.startColumn;
                                         }break;
                                         case "}":{
-                                            if(token.endLine <= turn.endLine){
-                                               turn.endLine = token.endLine;
-
-                                               if(token.endColumn < turn.endPosition) 
-                                                    turn.endLine = token.endColumn;
-                                            }
-                                            
-                                            if(token.endLine >= current.endLine){
-                                                current.endLine = token.endLine;
-
-                                                if(token.endColumn > current.endPosition)
-                                                    current.endPosition = token.endColumn;
-                                            }
-                                        }
+                                            current.endLine = token.endLine;
+                                            current.endPosition = token.endColumn;
+                                        }break;
                                     }
                                 }
                             }
@@ -387,9 +395,9 @@ export class CompilerService {
         //begin transpilation
         visit(cstOutput)
         
-        fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
-
-        return {build:jsScript,programStructure:this.getProgramStructure(cstOutput)};
+        //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
+        const programStructure = this.getProgramStructure(cstOutput)
+        return {build:jsScript,programStructure:programStructure};
     }
 }
 
@@ -489,15 +497,17 @@ class parser extends CstParser
             this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.Actions )
             this.SUBRULE(this.Declarations )
+            this.SUBRULE(this.PlayerTurn)
+            this.CONSUME(tokensStore.tCloseBrace)
+        });
+        private PlayerTurn=this.RULE("PlayerTurn",()=>{
             this.CONSUME(tokensStore.tTurn)
             this.CONSUME(tokensStore.tOpenBracket)
             this.CONSUME(tokensStore.tCloseBracket)
             this.CONSUME2(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements )
-            this.CONSUME2(tokensStore.tCloseBrace)
             this.CONSUME(tokensStore.tCloseBrace)
-        });
-
+        })
         private Actions=this.RULE("Actions", () => {
            
                 this.OPTION(() => {

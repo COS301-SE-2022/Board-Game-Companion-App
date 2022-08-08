@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges ,Output } from '@angular/core';
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
+import { entity } from '../../shared/models/entity';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { ScriptService } from '../../shared/services/scripts/script.service';
@@ -22,6 +23,7 @@ export class EditorBodyComponent implements OnInit{
   @Input() top = 0;
   @Output() changesTracker = new EventEmitter<number>();
   @Output() newMessageEvent = new EventEmitter<string>();
+  @Output() newProgramStructureEvent = new EventEmitter<entity>();
   codeEditor:any;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -163,6 +165,7 @@ export class EditorBodyComponent implements OnInit{
           console.log(value)
           if(value.status === "success"){
             this.changesTracker.emit(2);
+            this.newProgramStructureEvent.emit(value.programStructure);
           }else{
             this.changesTracker.emit(0);
           }
