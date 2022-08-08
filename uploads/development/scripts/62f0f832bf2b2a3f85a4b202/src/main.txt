@@ -1,0 +1,9 @@
+state{
+    
+}
+
+player Joseph{
+    turn(){
+        
+    }
+}
