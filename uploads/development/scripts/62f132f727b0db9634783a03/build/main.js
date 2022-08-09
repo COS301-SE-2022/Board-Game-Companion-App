@@ -88,14 +88,15 @@ class player
         //redefined in subclasses
     }
 }
-class Joseph extends player { 
+class cross extends player { 
     Actions = [
-        
+        0,
     ]
 
-    
+    jump ( ) { } 
 
     
+jumpCond( ) { } 
 
 
     params = []
@@ -103,7 +104,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+this.jump()
+break
+
         }
         
         
@@ -112,7 +116,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+return this.jumpCond()
+break
+
             
         }
         
@@ -124,7 +131,97 @@ class Joseph extends player {
         
         switch(choice)
         {
+            case 0:
+ return 
+break
+
+        }
+        
+        return [];
+    }
+    generateChoices()
+    {
+        this.params = []
+        let choices =[]
+        
+        for(let i = 0;i<this.Actions.length;i++)
+        {
             
+
+            if(this.considerations(i) == [])
+            {
+                if(this.isActionLegal(i, []))
+                {
+                    choices.push(i)
+                    this.params.push([])
+                }
+            }
+            else
+            {
+                
+                for(let j = 0;j<this.considerations(i).length;j++)
+                {
+                    
+                    
+                    if(this.isActionLegal(i, this.considerations(i)[j]))
+                    {
+                        choices.push(i)
+                        this.params.push(this.considerations(i)[j])
+
+                    }
+                }
+            }
+        }
+        
+        return choices
+    };turn ( ) { 
+} } class agent extends player { 
+    Actions = [
+        0,
+    ]
+
+    shoot ( ) { } 
+
+    
+shootCond( ) { } 
+
+
+    params = []
+    chooseAction(choice, p)
+    {
+        switch(choice)
+        {
+            case 0:
+this.shoot()
+break
+
+        }
+        
+        
+    }
+    isActionLegal(choice, p)
+    {
+        switch(choice)
+        {
+            case 0:
+return this.shootCond()
+break
+
+            
+        }
+        
+        return false;
+    }
+
+    considerations(choice)
+    {
+        
+        switch(choice)
+        {
+            case 0:
+ return 
+break
+
         }
         
         return [];
@@ -192,7 +289,7 @@ class script
 {
     State = new game_state();
     players = [
-        new Joseph(),//add players
+        new cross(),new agent(),//add players
     ];
     
     
@@ -255,7 +352,8 @@ class script
 
     endgame()
     {
-        //end_game
+        
+//end_game
     
     
         return false

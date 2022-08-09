@@ -1,3 +1,5 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
 .editor-side-bar{
     position: fixed;
     width: 50px;
@@ -7,4 +9,9 @@
     overflow: auto;
     max-width: 250px;
     min-width: 120px;
+}
+
+.bar-header{
+    text-transform: uppercase;
+    min-width: 150px;
 }
