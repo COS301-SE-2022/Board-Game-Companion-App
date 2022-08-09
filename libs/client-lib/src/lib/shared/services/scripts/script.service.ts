@@ -5,6 +5,7 @@ import { script } from '../../models/script';
 import { rating } from '../../models/rating';
 import { user } from '../../models/user';
 import { User } from 'aws-sdk/clients/budgets';
+import { entity } from '../../models/entity';
 
 
 @Injectable()
@@ -96,8 +97,8 @@ export class ScriptService {
     return this.httpClient.get(file,{responseType:'text'});
   }
 
-  updateFile(id:string,content:string):Observable<{status:string,message:string}>{
-    return this.httpClient.put<{status:string,message:string}>(this.api + "scripts/update-file",{id:id,name:name,content:content});
+  updateFile(id:string,content:string):Observable<{status:string,message:string,programStructure:entity}>{
+    return this.httpClient.put<{status:string,message:string,programStructure:entity}>(this.api + "scripts/update-file",{id:id,content:content});
   }
 
   rate(user:user,script:string,value:number):Observable<rating>{

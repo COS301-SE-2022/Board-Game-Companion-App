@@ -19,14 +19,3 @@ export interface entity{
     children: entity[];
 
 }
-
-export const emptyEntity:entity = {
-    type: "",
-    name: "",
-    startLine: 0,
-    endLine: 0,
-    startPosition: 0,
-    endPosition: 0,
-    properties: [],
-    children: []
-}
