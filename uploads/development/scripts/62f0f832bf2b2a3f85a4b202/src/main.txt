@@ -1,9 +1,23 @@
 state{
-    
+    let b = tile
+    addToBoard(b)
 }
 
 player Joseph{
     turn(){
+        let x = 'text'
+        input(x, 'text')
+        
+        
+        
         
     }
+}
+
+
+endgame{
+    let x = false
+    
+    
+    return x
 }

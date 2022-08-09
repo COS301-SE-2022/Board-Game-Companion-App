@@ -106,6 +106,7 @@ class script
 
         
         console.log("script-execution begins");
+            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
@@ -119,7 +120,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
-                order.push(input("when will player "+this.players[i].constructor.name + " move"))
+                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
             }
             else
             {
@@ -147,16 +148,16 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
-                this.players[i].turn();
+                await this.players[i].turn();
             }
         }
-        while(!this.endgame())
+        while(!await this.endgame())
 
-
+        
     }
-
+    
     async endgame()
     {
         //end_game
