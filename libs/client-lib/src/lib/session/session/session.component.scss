@@ -92,12 +92,37 @@ td{
 
 @media(max-width: 639px){
     #container{
-        margin-left: 24px;
-        margin-right:24px;
-        width:100%;
+        margin-left: 8px;
+        //margin-right:14px;
+        width:99%;
     }
 
     #sessionDetails{
-        width:100%;
+        width:95%;
+        height:100%;
+    }
+    #details{
+        width:95%;
+    }
+
+    thead{
+        width:35%;
+    }
+
+    tbody{
+        display:initial;
+        width:70%;
+    }
+
+    #image{
+        width:30%;
+        height:20%;
+        margin-right: 20px;
+    }
+
+    img{
+        width: 100%;
+        height: 50%;
+        float: right;
     }
 }
