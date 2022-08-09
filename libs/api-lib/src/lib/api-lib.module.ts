@@ -18,6 +18,7 @@ import { CompilerService } from './services/compiler/compiler.service';
 import { ApiModelsController } from './controllers/models/models.controller';
 import { ModelsService } from './services/models/models.service';
 import { HttpModule } from '@nestjs/axios';
+import { LocalStorageService } from './services/local-storage/local-storage.service';
 
 @Module({
   imports:[
@@ -43,7 +44,8 @@ import { HttpModule } from '@nestjs/axios';
     CommentService,
     S3Service,
     CompilerService,
-    ModelsService
+    ModelsService,
+    LocalStorageService
   ],
   exports: [],
 })
