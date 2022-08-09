@@ -6,6 +6,7 @@ import {  CstNode, CstParser, IToken, tokenLabel } from 'chevrotain';
 import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
 import * as tokensStore from '../../models/general/tokens';
+import { entity } from '../../models/general/entity';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
 
@@ -29,11 +30,309 @@ export class CompilerService {
     
 
     DSLparser = new parser();
-    compile(input:string):string
-    {
-        return "compile " + input;
+
+    getProgramStructure(program:chevrotain.CstNode): entity{
+
+        const result = {
+            type: "root",
+            name: "root",
+            startLine: 0,
+            endLine: 0,
+            startPosition: 0,
+            endPosition: 0,
+            children: [],
+            properties: []
+        };
+        
+        const treeTraversal = (node:CstNode,parent:entity)=>{
+            let k:string | null;
+            let sub:string | null;
+
+            for(k in node.children){
+                const child = node.children[k][0] as chevrotain.CstNode;
+
+                if(child.name){
+                    switch(child.name){
+                        case "GameState":{
+                                const current:entity = {
+                                    type: "state",
+                                    name: "state",
+                                    startLine: 0,
+                                    endLine: 0,
+                                    startPosition: 0,
+                                    endPosition: 0,
+                                    children: [],
+                                    properties: []
+                                }
+
+                                parent.children.push(current);
+
+                                for(sub in child.children){
+                                    const node = child.children[sub][0] as chevrotain.CstNode;
+                                    const token = child.children[sub][0] as IToken;
+
+                                    if(node.name){
+                                        treeTraversal(node,current)
+                                    }else if(token.tokenType){
+                                        switch(token.image){
+                                            case "state":{
+                                                current.startLine = token.startLine;
+                                                current.startPosition = token.startColumn;
+                                            }break;
+                                            case "}":{
+                                                current.endLine = token.endLine;
+                                                current.endPosition = token.endColumn;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case "Definition":{
+                            treeTraversal(child,parent);
+                        }break;
+                        case "Cards":
+                            {
+                                const current:entity = {
+                                    type: "card",
+                                    name: "card",
+                                    startLine: 0,
+                                    endLine: 0,
+                                    startPosition: 0,
+                                    endPosition: 0,
+                                    children: [],
+                                    properties: []
+                                }
+
+                                parent.children.push(current);
+
+                                for(sub in child.children){
+                                    const node = child.children[sub][0] as chevrotain.CstNode;
+                                    const token = child.children[sub][0] as IToken;
+
+                                    if(node.name){
+                                        treeTraversal(node,current)
+                                    }else if(token.tokenType){
+                                        if(token.tokenType.name === "UserDefinedIdentifier")
+                                            current.name = token.image;
+
+                                        switch(token.image){
+                                            case "card":{
+                                                current.startLine = token.startLine;
+                                                current.startPosition = token.startColumn;
+                                            }break;
+                                            case "}":{
+                                                current.endLine = token.endLine;
+                                                current.endPosition = token.endColumn;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case "Players":{
+                            const current:entity = {
+                                type: "player",
+                                name: "player",
+                                startLine: 0,
+                                endLine: -1,
+                                startPosition: 0,
+                                endPosition: -1,
+                                children: [],
+                                properties: []
+                            }
+
+                            const turn:entity = {
+                                type: "turn",
+                                name: "turn",
+                                startLine: 0,
+                                endLine: 0,
+                                startPosition: 0,
+                                endPosition: 0,
+                                children: [],
+                                properties: []
+                            }
+
+                            parent.children.push(current);
+
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                const token = child.children[sub][0] as IToken;
+
+                                if(node.name){
+                                    if(node.name === "statements")
+                                        treeTraversal(node,turn);
+                                    else
+                                        treeTraversal(node,current);
+                                    
+                                    current.children.push(turn);
+                                }else if(token.tokenType){
+                                    if(token.tokenType.name === "UserDefinedIdentifier")
+                                        current.name = token.image;
+
+                                    switch(token.image){
+                                        case "player":{
+                                            current.startLine = token.startLine;
+                                            current.startPosition = token.startColumn;
+                                        }break;
+                                        case "}":{
+                                            if(token.endLine <= turn.endLine){
+                                               turn.endLine = token.endLine;
+
+                                               if(token.endColumn < turn.endPosition) 
+                                                    turn.endLine = token.endColumn;
+                                            }
+                                            
+                                            if(token.endLine >= current.endLine){
+                                                current.endLine = token.endLine;
+
+                                                if(token.endColumn > current.endPosition)
+                                                    current.endPosition = token.endColumn;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }break;
+                        case "End_Game":{
+                            const current:entity = {
+                                type: "endgame",
+                                name: "endgame",
+                                startLine: 0,
+                                endLine: 0,
+                                startPosition: 0,
+                                endPosition: 0,
+                                children: [],
+                                properties: []
+                            }
+
+                            parent.children.push(current);
+
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                const token = child.children[sub][0] as IToken;
+
+                                if(node.name){
+                                    treeTraversal(node,current)
+                                }else if(token.tokenType){
+
+                                    switch(token.image){
+                                        case "endgame":{
+                                            current.startLine = token.startLine;
+                                            current.startPosition = token.startColumn;
+                                        }break;
+                                        case "}":{
+                                            current.endLine = token.endLine;
+                                            current.endPosition = token.endColumn;
+                                        }
+                                    }
+                                }
+                            }
+                        }break;
+                        case "Actions":{
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                treeTraversal(node,parent);
+                            }
+                        }break;
+                        case "DefAction":{
+                            // this.CONSUME(tokensStore.tAction)
+                            // this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                            // this.CONSUME(tokensStore.tOpenBracket)
+                            // this.SUBRULE(this.FormalParameters)
+                            // this.CONSUME(tokensStore.tCloseBracket)
+                            // this.CONSUME(tokensStore.tOpenBrace)  
+                            // this.SUBRULE(this.statements )
+                            // this.CONSUME(tokensStore.tCloseBrace)  
+                            
+                            const current:entity = {
+                                type: "action",
+                                name: "action",
+                                startLine: 0,
+                                endLine: 0,
+                                startPosition: 0,
+                                endPosition: 0,
+                                children: [],
+                                properties: []
+                            }
+
+                            parent.children.push(current);
+
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                const token = child.children[sub][0] as IToken;
+
+                                if(node.name){
+                                    treeTraversal(node,current)
+                                }else if(token.tokenType){
+                                    if(token.tokenType.name === "UserDefinedIdentifier")
+                                        current.name = token.image;
+
+                                    switch(token.image){
+                                        case "action":{
+                                            current.startLine = token.startLine;
+                                            current.startPosition = token.startColumn;
+                                        }break;
+                                        case "}":{
+                                            current.endLine = token.endLine;
+                                            current.endPosition = token.endColumn;
+                                        }
+                                    }
+                                }
+                            } 
+                        }break;
+                        case "DefCondition":{
+                            // this.CONSUME(tokensStore.tCondition)
+                            // this.CONSUME1(tokensStore.tOpenBracket)
+                            // this.SUBRULE1(this.FormalParameters)
+                            // this.CONSUME1(tokensStore.tCloseBracket)
+                            // this.CONSUME1(tokensStore.tOpenBrace)
+                            // this.SUBRULE1(this.Consideration)
+                            // this.SUBRULE1(this.statements)
+                            // this.CONSUME1(tokensStore.tCloseBrace)
+                            const current:entity = {
+                                type: "condition",
+                                name: "condition",
+                                startLine: 0,
+                                endLine: 0,
+                                startPosition: 0,
+                                endPosition: 0,
+                                children: [],
+                                properties: []
+                            }
+
+                            current.name = parent.children[parent.children.length - 1].name;
+                            parent.children.push(current);
+
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                const token = child.children[sub][0] as IToken;
+
+                                if(node.name){
+                                    treeTraversal(node,current)
+                                }else if(token.tokenType){
+
+                                    switch(token.image){
+                                        case "condition":{
+                                            current.startLine = token.startLine;
+                                            current.startPosition = token.startColumn;
+                                        }break;
+                                        case "}":{
+                                            current.endLine = token.endLine;
+                                            current.endPosition = token.endColumn;
+                                        }
+                                    }
+                                }
+                            }
+                        }break;
+                    }
+                }
+            }
+        }
+
+        treeTraversal(program,result);
+        return result;
     }
-     
 
     scanHelper(input:string):chevrotain.ILexingResult{
          const tokens:chevrotain.TokenType[] = tokensStore.AllTokens; 
@@ -46,7 +345,7 @@ export class CompilerService {
          const tokens:chevrotain.ILexingResult = this.scanHelper(input);
          const result:lexerResult = {
             success: true,
-            errors: []
+            errors: [],
         }
 
         if(tokens.errors.length !== 0){
@@ -76,6 +375,7 @@ export class CompilerService {
 
     transpile(input:string)
     {
+        
         this.DSLparser.input = this.scanHelper(input).tokens;
         const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
@@ -86,8 +386,10 @@ export class CompilerService {
         jsScript = scriptTemplate;
         //begin transpilation
         visit(cstOutput)
+        
+        fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
 
-        return jsScript;
+        return {build:jsScript,programStructure:this.getProgramStructure(cstOutput)};
     }
 }
 

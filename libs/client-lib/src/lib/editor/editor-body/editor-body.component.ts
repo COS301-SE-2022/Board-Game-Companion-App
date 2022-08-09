@@ -160,7 +160,7 @@ export class EditorBodyComponent implements OnInit{
     this.sendChangesTimer = window.setTimeout(()=>{
       this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
-          
+          console.log(value)
           if(value.status === "success"){
             this.changesTracker.emit(2);
           }else{

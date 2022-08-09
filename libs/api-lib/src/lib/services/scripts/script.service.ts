@@ -14,13 +14,17 @@ import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
 import { HttpService } from '@nestjs/axios';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+
 @Injectable()
 export class ScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
     constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,
-    private readonly s3Service:S3Service,private readonly compilerService:CompilerService,
-    private readonly httpService: HttpService){
+    private readonly s3Service:S3Service,
+    private readonly compilerService:CompilerService,
+    private readonly httpService: HttpService,
+    private readonly localStorage: LocalStorageService){
         
     }
 
@@ -30,7 +34,8 @@ export class ScriptService {
         const script:ScriptDocument = await this.scriptModel.findById(id).exec();
         
         try{
-            const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode);
+            //const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode);
+            const fileUploadResult = await this.localStorage.upload("main.js",path,compiledCode)
             script.build = {
                 name:"main.js",
                 location:fileUploadResult.location,
@@ -144,7 +149,8 @@ export class ScriptService {
                         responseType:'text'
                     })).data;
 
-                    const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
+                    //const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
+                    const buildResponse = await this.localStorage.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
                     //console.log(buildResponse)
                     newScript.build.name = script.build.name;
                     newScript.build.awsKey = buildResponse.key;
@@ -153,8 +159,8 @@ export class ScriptService {
                     
                     const image = (await this.httpService.axiosRef.get(script.icon.location));
                     console.log(image)
-                    const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
-                    
+                    //const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
+                    const savedIcon = await this.localStorage.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image)
                     newScript.icon = {
                         name: script.icon.name,
                         location: savedIcon.location,
@@ -183,7 +189,8 @@ export class ScriptService {
             console.log(err);
         }
 
-        fileUploadResult = await this.s3Service.upload("main.txt",path,data);
+        //fileUploadResult = await this.s3Service.upload("main.txt",path,data);
+        fileUploadResult = await this.localStorage.upload("main.txt",path,data);
         result.location = fileUploadResult.location;
         result.awsKey = fileUploadResult.key;
 
@@ -202,7 +209,8 @@ export class ScriptService {
             console.log(err);
         }
 
-        fileUploadResult = await this.s3Service.upload("main.js",path,data);
+        //fileUploadResult = await this.s3Service.upload("main.js",path,data);
+        fileUploadResult = await this.localStorage.upload("main.js",path,data);
         result.location = fileUploadResult.location;
         result.awsKey = fileUploadResult.key;
         console.log(result);
@@ -230,8 +238,8 @@ export class ScriptService {
     async storeIcon(id:string,icon:any):Promise<awsUpload>{
         const path = "scripts/" + id + "/icons/";
         
-        const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
-
+        //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
+        const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
         return result;
     }
 
@@ -287,10 +295,11 @@ export class ScriptService {
             try{
                 const compiledCode = this.compilerService.transpile(content);
                 
-                result = {status:"success",compiledCode};
+                result = {status:"success",message:compiledCode.programStructure};
                 
-                await this.updateBuild(id,compiledCode);
-                this.s3Service.update(script.source.awsKey,content);
+                await this.updateBuild(id,compiledCode.build);
+                //this.s3Service.update(script.source.awsKey,content);
+                await this.localStorage.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
                 script.save();
             
