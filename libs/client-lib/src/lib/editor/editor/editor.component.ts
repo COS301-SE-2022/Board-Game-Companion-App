@@ -100,6 +100,9 @@ export class EditorComponent implements OnInit{
   updateConsoleHeight(height:number):void{
     this.consoleHeight = height;
     this.updateDimensions();
+    window.setTimeout(()=>{
+      this.editorBody.ngOnInit();
+    },250);
   }
 
 

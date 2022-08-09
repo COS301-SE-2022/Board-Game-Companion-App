@@ -47,6 +47,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       this.themeEditor = theme;
 
     this.createEditor();
+    clearInterval(this.cursorCheckerTimer);
+    this.codeEditor.navigateTo(0,0);
 
     this.cursorCheckerTimer = window.setInterval(()=>{
       const value = this.codeEditor.getCursorPosition();
@@ -69,7 +71,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       this.scriptService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
           this.codeEditor.setValue(value);
-
+          this.codeEditor.navigateTo(0,0);
+          
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
             this.sendChanges();
@@ -204,6 +207,5 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.highlight(value);
     this.cut();
   }
-
 
 }
