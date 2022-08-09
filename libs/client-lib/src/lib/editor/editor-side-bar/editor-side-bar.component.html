@@ -1,3 +1,8 @@
 <div id = "editor-side-bar" class = "editor-side-bar bg-zinc-500 relative" [style.width.px] = "width" [style.height.px] = "height">
-
+    <div class = "w-full h-6 mb-2 shadow-md text-center bar-header text-white font-medium bg-green-700">
+        {{current.name}}
+    </div>
+    <div class = "w-full">
+        <board-game-companion-app-editor-entity (removeEvent)="remove($event)" (selectionEvent)="highlight($event)" [current]="value" *ngFor= "let value of current.programStructure.children"></board-game-companion-app-editor-entity>
+    </div>
 </div>

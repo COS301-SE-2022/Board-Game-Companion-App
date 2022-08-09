@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { EditorHelpComponent } from './editor-help/editor-help.component';
 import { EditorThemeComponent  } from './editor-theme/editor-theme.component';
 import { EditorEditFeaturesComponent } from './editor-edit-features/editor-edit-features.component';
+import { EditorEntityComponent } from './editor-entity/editor-entity.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EditorEditFeaturesComponent } from './editor-edit-features/editor-edit-
     EditorBodyComponent,
     EditorHelpComponent,
     EditorThemeComponent,
-    EditorEditFeaturesComponent
+    EditorEditFeaturesComponent,
+    EditorEntityComponent
   ],
   imports: [
     CommonModule,

@@ -2,8 +2,34 @@ state{
     
 }
 
-player Joseph{
+player cross{
+    action jump(){
+        
+    }
+    
+    condition(){
+        
+    }
+    
     turn(){
         
     }
+}
+
+player agent{
+    action shoot(){
+        
+    }
+    
+    condition(){
+        
+    }
+    
+    turn(){
+        
+    }
+}
+
+endgame{
+    
 }

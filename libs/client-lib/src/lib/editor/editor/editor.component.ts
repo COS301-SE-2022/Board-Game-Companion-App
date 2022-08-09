@@ -12,6 +12,8 @@ import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
 import { inputParameters } from '../../shared/models/inputParameters';
 import { entity } from '../../shared/models/entity';
+import { selection } from '../../shared/models/selection';
+import { Ace } from 'ace-builds';
 
 interface message{
   message: string;
@@ -321,6 +323,18 @@ export class EditorComponent implements OnInit{
   printStatusMessages(): void{
     for(let count = 0; count < this.statusMessages.length; count++)
       this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
+  }
+
+  highlight(value:selection): void{
+    this.editorBody.highlight(value);
+  }
+
+  remove(value:selection): void{
+    this.editorBody.remove(value);
+  }
+
+  cursorChange(value:Ace.Point): void{
+    this.editorSideBar.cursorChange(value);
   }
 
 }

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, OnChanges ,Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy } from '@angular/core';
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
 import { entity } from '../../shared/models/entity';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
+import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
 interface file{
@@ -16,7 +17,7 @@ interface file{
   templateUrl: './editor-body.component.html',
   styleUrls: ['./editor-body.component.scss'],
 })
-export class EditorBodyComponent implements OnInit{
+export class EditorBodyComponent implements OnInit,OnDestroy{
   @Input() height = 0;
   @Input() width = 0;
   @Input() margin = 0;
@@ -24,13 +25,17 @@ export class EditorBodyComponent implements OnInit{
   @Output() changesTracker = new EventEmitter<number>();
   @Output() newMessageEvent = new EventEmitter<string>();
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
-  codeEditor:any;
+  @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
+  codeEditor!:ace.Ace.Editor;
   themeEditor = "Dracula";
   @Input()scriptId = "";
   @Input()fileLocation = "";
   sendChangesTimer = 0;
   showFindCheck = true;
   showReplaceCheck = true;
+  cursorCheckerTimer = 0;
+  cursorPosition:ace.Ace.Point = {row:1,column:1};
+
   constructor(private readonly scriptService:ScriptService){
     
   }
@@ -42,7 +47,19 @@ export class EditorBodyComponent implements OnInit{
       this.themeEditor = theme;
 
     this.createEditor();
-  
+
+    this.cursorCheckerTimer = window.setInterval(()=>{
+      const value = this.codeEditor.getCursorPosition();
+      
+      if(value.row != this.cursorPosition.row || value.column != this.cursorPosition.column){
+        this.cursorChangeEvent.emit({row:value.row + 1,column:value.column + 1});
+        this.cursorPosition = value;
+      }
+    },500);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.cursorCheckerTimer);    
   }
 
   ngOnChanges(): void{
@@ -53,7 +70,7 @@ export class EditorBodyComponent implements OnInit{
         next:(value)=>{
           this.codeEditor.setValue(value);
 
-          this.codeEditor.session.on('change', (delta:any)=>{
+          this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
             this.sendChanges();
         
@@ -125,8 +142,7 @@ export class EditorBodyComponent implements OnInit{
       backwards: false,
       wrap: value.wrap,
       caseSensitive: value.caseSensitive,
-      wholeWord: value.wholeWord,
-      regExp: value.regularExpression
+      wholeWord: value.wholeWord
     })
   }
 
@@ -143,8 +159,7 @@ export class EditorBodyComponent implements OnInit{
       backwards: false,
       wrap: value.wrap,
       caseSensitive: value.caseSensitive,
-      wholeWord: value.wholeWord,
-      regExp: value.regularExpression
+      wholeWord: value.wholeWord
     })
 
     this.codeEditor.replace(value.replace);
@@ -162,7 +177,6 @@ export class EditorBodyComponent implements OnInit{
     this.sendChangesTimer = window.setTimeout(()=>{
       this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
-          console.log(value)
           if(value.status === "success"){
             this.changesTracker.emit(2);
             this.newProgramStructureEvent.emit(value.programStructure);
@@ -178,5 +192,18 @@ export class EditorBodyComponent implements OnInit{
       })
     },3000);
   }
+
+  highlight(value:selection): void{
+    
+    this.codeEditor.scrollToRow(value.startLine - 1)
+
+    this.codeEditor.selection.setRange(new ace.Range(value.startLine - 1,value.startPosition - 1,value.endLine - 1,value.endPosition));
+  }
+
+  remove(value:selection): void{
+    this.highlight(value);
+    this.cut();
+  }
+
 
 }
