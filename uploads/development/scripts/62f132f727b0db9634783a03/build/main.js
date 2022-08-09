@@ -1,11 +1,11 @@
 class cards
 {
     parameters;
-    async activate()
+    activate()
     {
         //
     }
-    async canUse()
+    canUse()
     {
         return true;
     }
@@ -37,14 +37,11 @@ class game_state
     constructor()
     {
         
-let b = new tile()
-
 //State
         
 
         
-        this.board.push(b)
-//tiles
+        //tiles
 
         
     }
@@ -52,7 +49,7 @@ let b = new tile()
     
 
 //state accessors
-    async getTileByID(id)
+    getTileByID(id)
     {
         for(let i = 0; i<this.board.length;i++)
         {
@@ -62,7 +59,7 @@ let b = new tile()
         return null
     }
 
-    async getTilesByType(type)
+    getTilesByType(type)
     {
         results = []
         for(let i = 0; i<this.board.length;i++)
@@ -82,57 +79,67 @@ let b = new tile()
 class player
 {
     State = new game_state();
-    async chooseAction()
+    chooseAction()
     {
         //
     }
-    async turn()
+    turn()
     {
         //redefined in subclasses
     }
 }
-class Joseph extends player { 
+class cross extends player { 
     Actions = [
-        
+        0,
     ]
 
-    
+    jump ( ) { } 
 
     
+jumpCond( ) { } 
 
 
     params = []
-    async chooseAction(choice, p)
+    chooseAction(choice, p)
     {
         switch(choice)
         {
-            
+            case 0:
+this.jump()
+break
+
         }
         
         
     }
-    async isActionLegal(choice, p)
+    isActionLegal(choice, p)
     {
         switch(choice)
         {
-            
+            case 0:
+return this.jumpCond()
+break
+
             
         }
         
         return false;
     }
 
-    async considerations(choice)
+    considerations(choice)
     {
         
         switch(choice)
         {
-            
+            case 0:
+ return 
+break
+
         }
         
         return [];
     }
-    async generateChoices()
+    generateChoices()
     {
         this.params = []
         let choices =[]
@@ -141,9 +148,9 @@ class Joseph extends player {
         {
             
 
-            if(await this.considerations(i) == [])
+            if(this.considerations(i) == [])
             {
-                if(await this.isActionLegal(i, []))
+                if(this.isActionLegal(i, []))
                 {
                     choices.push(i)
                     this.params.push([])
@@ -152,14 +159,14 @@ class Joseph extends player {
             else
             {
                 
-                for(let j = 0;j<await this.considerations(i).length;j++)
+                for(let j = 0;j<this.considerations(i).length;j++)
                 {
                     
                     
-                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
+                    if(this.isActionLegal(i, this.considerations(i)[j]))
                     {
                         choices.push(i)
-                        this.params.push(await this.considerations(i)[j])
+                        this.params.push(this.considerations(i)[j])
 
                     }
                 }
@@ -167,30 +174,131 @@ class Joseph extends player {
         }
         
         return choices
+    };turn ( ) { 
+} } class agent extends player { 
+    Actions = [
+        0,
+    ]
 
-    };async turn ( ){ let x =  'text' 
-await input( x ,  'text' ) 
-}} //players
+    shoot ( ) { } 
+
+    
+shootCond( ) { } 
 
 
+    params = []
+    chooseAction(choice, p)
+    {
+        switch(choice)
+        {
+            case 0:
+this.shoot()
+break
 
+        }
+        
+        
+    }
+    isActionLegal(choice, p)
+    {
+        switch(choice)
+        {
+            case 0:
+return this.shootCond()
+break
+
+            
+        }
+        
+        return false;
+    }
+
+    considerations(choice)
+    {
+        
+        switch(choice)
+        {
+            case 0:
+ return 
+break
+
+        }
+        
+        return [];
+    }
+    generateChoices()
+    {
+        this.params = []
+        let choices =[]
+        
+        for(let i = 0;i<this.Actions.length;i++)
+        {
+            
+
+            if(this.considerations(i) == [])
+            {
+                if(this.isActionLegal(i, []))
+                {
+                    choices.push(i)
+                    this.params.push([])
+                }
+            }
+            else
+            {
+                
+                for(let j = 0;j<this.considerations(i).length;j++)
+                {
+                    
+                    
+                    if(this.isActionLegal(i, this.considerations(i)[j]))
+                    {
+                        choices.push(i)
+                        this.params.push(this.considerations(i)[j])
+
+                    }
+                }
+            }
+        }
+        
+        return choices
+    };turn ( ) { 
+} } //players
+
+function output(message)
+{
+    console_Input(message)
+    
+}
+
+function input(message)
+{
+    
+    return console_Input(message)
+    
+    
+}
+function console_Input(message)
+{
+    
+    i = prompt(message);
+    return i;
+}
 
 //
 class script
 {
     State = new game_state();
     players = [
-        new Joseph(),//add players
+        new cross(),new agent(),//add players
     ];
     
+    
 
-
-    async play()
+    play()
     {
 
         
         console.log("script-execution begins");
-            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
@@ -204,7 +312,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
-                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
+                order.push(input("when will player "+this.players[i].constructor.name + " move"))
             }
             else
             {
@@ -232,20 +340,19 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !await this.endgame();i++)
+            for(let i =0;i< this.players.length && !this.endgame();i++)
             {
-                await this.players[i].turn();
+                this.players[i].turn();
             }
         }
-        while(!await this.endgame())
+        while(!this.endgame())
 
-        
+
     }
-    
-    async endgame()
+
+    endgame()
     {
-        let x = false 
-return x 
+        
 //end_game
     
     

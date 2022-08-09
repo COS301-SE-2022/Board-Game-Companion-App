@@ -163,3 +163,148 @@ input:focus{
 .parent:hover .child{
     display: block
 }
+
+@media (max-width:639px) {
+    #outerDiv{
+        height:50%;
+    }
+
+    #titleScript{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #heading{
+        order:1;
+        font-size:xx-large;
+    }
+    #logo{
+        display:none;
+    }
+
+    #searchSortDiv{
+        order:2;
+        width: 100%;
+        display: flex;
+        flex-direction: row;  
+    }
+
+    #word{
+        display:none;
+    }
+
+    #searchDiv{
+        order:1;
+        width:60%;
+        margin-left: 0px;
+    }
+
+    #textInput{
+        margin-top: 14px;
+        width:80%;
+        margin-bottom: 10px;
+    }
+
+    #sortingDiv{
+        order:2; 
+        width:40%;
+    }
+
+    #sort{
+        display:none;
+    }
+
+    #sorting{
+        margin-left:16px;
+        margin-top: 14px;
+        margin-bottom: 14px;
+        width:78%;
+        height:15%;
+        border-radius : 10px;
+        border: 3px solid $Pcolour-2;
+        padding:0px;
+        font-weight: bold;
+    }
+
+    #card-2{
+        height: 50px;
+        width:25%;
+    }
+
+    #display{
+        padding-top:6px;
+        padding-bottom: 6px;
+        padding-right: 0px;
+        padding-left:0px;
+        border-radius: 8px;
+    }
+
+    #ScriptName{
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #gridscripts{
+        display:flex;
+        flex-direction:row;
+    }
+
+    #wrapper{
+        width:50%;
+        display: grid;
+        grid-template-columns: 150px 150px;
+        grid-template-rows:150px 150px;
+        gap: 10px;
+       // grid-auto-rows: minmax(90px, auto);
+    }
+
+    #picArt{
+        width:100%;
+        height:100%;
+    }
+
+    // img{
+    //     width:50%;
+    //     height:50%;
+    // }
+    //Start Here
+    
+    table thead{
+        clip: rect(0 0 0 0);
+        overflow: hidden;
+        padding:0;
+        position: absolute;
+    }
+    
+    table tr{
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: 30px;
+    }
+    
+    table td {
+        border-bottom: 2px solid $Pcolour-3;
+        display: block;
+        font-size: 14px;
+        text-align: right;
+    }
+    
+    table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        font-size:14px;
+        text-transform: uppercase;
+    }
+          
+    table td:last-child {
+        border-bottom: 0;
+    }
+
+}
+
+@media (min-width:640px){
+    #searchIcon{
+        display: none;
+    }
+}

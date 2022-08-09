@@ -70,6 +70,7 @@ export class ScriptService {
             status: stat,
             size: 0,
             comments: [],
+            programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
             source: {name:"",location:"",awsKey:""},
             build:{name:"",location:"",awsKey:""},
             icon: {name:"",location:"",awsKey:""}
@@ -138,6 +139,7 @@ export class ScriptService {
                         status: script.status,
                         size: script.size,
                         comments: script.comments,
+                        programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
                         source: {name:"",location:"",awsKey:""},
                         build:{name:"",location:"",awsKey:""},
                         icon: {name:"",location:"",awsKey:""}
@@ -295,12 +297,13 @@ export class ScriptService {
             try{
                 const compiledCode = this.compilerService.transpile(content);
                 
-                result = {status:"success",message:compiledCode.programStructure};
+                result = {status:"success",message:"successfully updated script on " + (new Date()).toString(),programStructure:compiledCode.programStructure};
                 
                 await this.updateBuild(id,compiledCode.build);
                 //this.s3Service.update(script.source.awsKey,content);
                 await this.localStorage.update(script.source.awsKey,content);
                 script.lastupdate = new Date();
+                script.programStructure = compiledCode.programStructure;
                 script.save();
             
             }catch(e){

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { emptyEntity, entity } from '../models/general/entity';
 import { file } from '../models/general/files';
 import { status as stat} from '../models/general/status';
 import { user } from '../models/general/user';
@@ -54,6 +55,9 @@ export class Script{
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
     comments: string[];
+
+    @Prop({required:true,type:emptyEntity})
+    programStructure:entity;
 
     @Prop({required:true,type:{name:"",awsKey:"",location:""}})
     source: file;

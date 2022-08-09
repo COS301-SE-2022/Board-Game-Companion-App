@@ -11,6 +11,9 @@ import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.compo
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
 import { inputParameters } from '../../shared/models/inputParameters';
+import { entity } from '../../shared/models/entity';
+import { selection } from '../../shared/models/selection';
+import { Ace } from 'ace-builds';
 
 interface message{
   message: string;
@@ -46,7 +49,8 @@ export class EditorComponent implements OnInit{
   inputResult:any[] = [];
   parameters:inputParameters[] = [];
   statusMessages:string[] = [];
-  
+  programStructure!:entity;
+
   constructor(private readonly scriptService:ScriptService, private router: Router){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
@@ -96,6 +100,9 @@ export class EditorComponent implements OnInit{
   updateConsoleHeight(height:number):void{
     this.consoleHeight = height;
     this.updateDimensions();
+    window.setTimeout(()=>{
+      this.editorBody.ngOnInit();
+    },250);
   }
 
 
@@ -244,6 +251,11 @@ export class EditorComponent implements OnInit{
     this.editorStatusBar.updateStatusOfChanges(value);
   }
 
+  setProgramStructure(value:entity): void{
+    this.programStructure = value;
+    this.currentScript.programStructure = value;
+  }
+
   undo(): void{
     this.editorBody.undo();
   }
@@ -315,6 +327,18 @@ export class EditorComponent implements OnInit{
   printStatusMessages(): void{
     for(let count = 0; count < this.statusMessages.length; count++)
       this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
+  }
+
+  highlight(value:selection): void{
+    this.editorBody.highlight(value);
+  }
+
+  remove(value:selection): void{
+    this.editorBody.remove(value);
+  }
+
+  cursorChange(value:Ace.Point): void{
+    this.editorSideBar.cursorChange(value);
   }
 
 }

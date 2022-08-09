@@ -12,8 +12,8 @@
                 </div>
             </div>
             <div class="col-xl-1 col-md-3 mb-4">
-                <div class="action card border-left-primary shadow w-20 h-100 py-1" id="card-2">
-                    <div class="card-body" (click)="toggleView()" data-toggle="tooltip" [title]="gridView===false ? 'grid' : 'list'">
+                <div class="action card border-left-primary shadow sm:w-20 sm:h-100 py-1" id="card-2">
+                    <div id="display" class="card-body" (click)="toggleView()" data-toggle="tooltip" [title]="gridView===false ? 'grid' : 'list'">
                         <div class="text-center">
                             <i *ngIf="gridView === false" class="fas fa-th-large fa-2x"></i>
                             <i *ngIf="gridView === true" class="fas fa-th-list fa-2x"></i>
@@ -48,7 +48,7 @@
 
                     <button id ="sort" class="btn px-2 py-1 pb-2 font-bold">Sort</button>
                     <select id="sorting" class="btn px-2 py-1" [(ngModel)]="selectedSort"  (change)="onSort()">
-                        <!-- <option value="" disabled selected>Sort By..</option> -->
+                        <option value="" disabled selected>Sort By..</option>
                         <option value="alphabetical">Name</option>
                         <!-- <option value="score">Creator</option> -->
                         <option value="date">LastUpdate</option>
@@ -58,7 +58,7 @@
                 </span>
                 <span id="searchDiv" class="ml-8">
                     <input class = "" id = "textInput" [(ngModel)]="searchValue" name = "searchValue" (input) = "search()">
-                    <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()">Search</button>
+                    <button id = "search" class="btn px-2 py-1 font-bold" (click)="test()"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
                 </span>
             </div>
         </div>
@@ -72,17 +72,17 @@
     </div>
 <!-- a table and search functionality -->
 
-    <div class = "row">
+    <div id="gridscripts" class = "row">
         
         <div class = "flex flex-row mt-4" *ngIf="gridView===true">
-            <div (click) = "containerClick($event)" id = "wrapper" class = "grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                <div (mouseover)="currentHover(value)" (mouseout) = "clearHover()" [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor="let value of scripts | paginate: { itemsPerPage: 8, currentPage: page }" [id] = "value._id" class="parent relative rounded-lg w-56 h-52 overflow-hidden" (click)="selected(value)">
+            <div (click) = "containerClick($event)" id = "wrapper" class = "grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                <div id="picArt" (mouseover)="currentHover(value)" (mouseout) = "clearHover()" [ngClass]="{'hover:border-zinc-800 hover:border-4':currentScript._id !== value._id,'border-green-800 border-4 hover:border-0':currentScript._id === value._id}" *ngFor="let value of scripts | paginate: { itemsPerPage: 8, currentPage: page }" [id] = "value._id" class="parent relative rounded-lg sm:w-56 sm:h-52 overflow-hidden" (click)="selected(value)">
                     <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                     <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
                     <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
                     <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                     
-                    <div class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                    <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                         <div class = "w-full absolute bottom-20 content-center space-x-4">
                             <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                                 <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
@@ -108,25 +108,25 @@
         <table class="table-auto" data-toggle="table" *ngIf="gridView===false">
             <thead>
                 <tr>
-                    <th>
+                    <th scope="col">
                         Name
                     </th>
-                    <th>
+                    <th scope="col">
                         Creator
                     </th>
-                    <th>
+                    <th scope="col">
                         Created
                     </th>
-                    <th>
+                    <th scope="col">
                         Last Update
                     </th>
-                    <th>
+                    <th scope="col">
                         Status
                     </th>
-                    <th>
+                    <th scope="col">
                         Size
                     </th>
-                    <th>
+                    <th scope="col">
                         Actions
                     </th>
                 </tr>
@@ -134,35 +134,35 @@
 
             <tbody >
                 <tr (click)="selected(value)" [ngClass]="{'bg-slate-700 text-white':currentScript._id === value._id}" [id] = "value._id" *ngFor="let value of scripts | paginate: { itemsPerPage: 8, currentPage: page }" class = "hover:bg-slate-500 hover:text-white">
-                    <td>
+                    <td scope="row">
                         <div class = "flex flex-row">
                             <div class = "w-8 h-8">
                                 <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                             </div>
-                            <div class = "ml-2">
+                            <div id="ScriptName" class = "ml-2">
                                 {{value.name}}
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td scope="row" data-label="Creator">
                         {{value.author.email === value.owner.email ? "You" : value.owner.name}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Creator">
                         {{formatDate(value.created)}}
                     </td>
-                    <td>
+                    <td scope="row" data-label="Last Updated">
                         {{formatDate(value.lastupdate)}}
                     </td>
-                    <td (click) = "toggleStatus(value)" class = "cursor-pointer hover:bg-green-800" data-toggle="tooltip" title="toggle status">
+                    <td (click) = "toggleStatus(value)" class = "cursor-pointer hover:bg-green-800" data-toggle="tooltip" title="toggle status" scope="row" data-label="Status">
                         <span *ngIf = "value.status.value ===0" class = "mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
                         <span *ngIf = "value.status.value ===1" class = " mr-2"><i class="fas fa-cogs" style="color:orange"></i></span>
                         <span *ngIf = "value.status.value ===2" class = " mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>
                         {{value.status.value === 0 ? "Flagged" : (value.status.value === 1 ? "In Progress" : "Published")}}
                     </td>
-                    <td>
+                    <td scope="row">
                         {{convertBytes(value.size)}}
                     </td>
-                    <td class="text-center align-middle flex flex-row">
+                    <td class="text-center align-middle flex flex-row" scope="row">
                         <button (click) = "play(value)" *ngIf = "value.status.value === 2" (click)="test()" class="hover:scale-110 p-1 text-green-800" data-toggle="modal">
                             <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
                         </button>
