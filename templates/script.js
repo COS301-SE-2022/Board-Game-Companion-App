@@ -1,11 +1,11 @@
 class cards
 {
     parameters;
-    activate()
+    async activate()
     {
         //
     }
-    canUse()
+    async canUse()
     {
         return true;
     }
@@ -48,7 +48,7 @@ class game_state
     
 
 //state accessors
-    getTileByID(id)
+    async getTileByID(id)
     {
         for(let i = 0; i<this.board.length;i++)
         {
@@ -58,7 +58,7 @@ class game_state
         return null
     }
 
-    getTilesByType(type)
+    async getTilesByType(type)
     {
         results = []
         for(let i = 0; i<this.board.length;i++)
@@ -78,36 +78,18 @@ class game_state
 class player
 {
     State = new game_state();
-    chooseAction()
+    async chooseAction()
     {
         //
     }
-    turn()
+    async turn()
     {
         //redefined in subclasses
     }
 }
 //players
 
-function output(message)
-{
-    console_Input(message)
-    
-}
 
-function input(message)
-{
-    
-    return console_Input(message)
-    
-    
-}
-function console_Input(message)
-{
-    
-    i = prompt(message);
-    return i;
-}
 
 //
 class script
@@ -117,13 +99,14 @@ class script
         //add players
     ];
     
-    
 
-    play()
+
+    async play()
     {
 
         
         console.log("script-execution begins");
+            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
@@ -137,7 +120,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
-                order.push(input("when will player "+this.players[i].constructor.name + " move"))
+                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
             }
             else
             {
@@ -165,17 +148,17 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
-                this.players[i].turn();
+                await this.players[i].turn();
             }
         }
-        while(!this.endgame())
+        while(!await this.endgame())
 
-
+        
     }
-
-    endgame()
+    
+    async endgame()
     {
         //end_game
     

@@ -230,9 +230,10 @@ export class EditorComponent implements OnInit{
       this.editorConsole.clear();
       // const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
       // code(console,model,input,inputGroup);
-
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
+          console.log(value)
+
           const code = new Function("console","model","input","inputGroup",value);
           code(console,model,input,inputGroup);
         },
