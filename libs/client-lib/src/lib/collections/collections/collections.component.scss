@@ -170,6 +170,27 @@ i{
         padding-left: 0px; 
         margin-left:0px;  
     }
+
+    #imgButton{
+        width:100%;
+        height:100%;
+
+        padding-top: 14px;
+    }
+
+    #specific{
+        width:100%;
+        height:100%;
+    }
+    #imgPoster{
+        width:100%;
+        height:100%;
+    }
+    #posters{
+        display:grid;
+        grid-template-rows: 100px 100px;
+        grid-template-columns: 150px 150px;
+    }
     // #sortingPortion{
     //     width:
     // }
