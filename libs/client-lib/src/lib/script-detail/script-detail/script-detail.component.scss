@@ -1,12 +1,12 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-.script-detail__column-0,.script-detail__column-1{
+// .script-detail__column-0,.script-detail__column-1{
     
-}
+// }
 
-.script-information{
+// .script-information{
     
-}
+// }
 
 .script-comments{
     background-color: $Pcolour-2;
@@ -114,11 +114,19 @@ img{
     }
 
     #outerStar{
-        height:82%;
+        height:100%;
+        width:60%;
+        //align-items: center;
+        //border: 3px solid yellow;
+        display: flex;
+        //margin-left: auto;
+        //margin-right: auto;
         align-items: center;
     }
+
+   
+   
     #stars{
-      
       width:100%;
       height:100%;
       display: flex;
