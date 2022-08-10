@@ -217,6 +217,39 @@ td{
         // margin-top:0px;
     }
 
+    
+    table thead{
+        clip: rect(0 0 0 0);
+        overflow: hidden;
+        padding:0;
+        position: absolute;
+    }
+    
+    table tr{
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: 30px;
+    }
+    
+    table td {
+        border-bottom: 2px solid $Pcolour-3;
+        display: block;
+        font-size: 14px;
+        text-align: right;
+    }
+    
+    table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        font-size:14px;
+        text-transform: uppercase;
+    }
+          
+    table td:last-child {
+        border-bottom: 0;
+    }
+
     // th{
     //     font-size: 24px;
     // }

@@ -1,11 +1,11 @@
 class cards
 {
     parameters;
-    activate()
+    async activate()
     {
         //
     }
-    canUse()
+    async canUse()
     {
         return true;
     }
@@ -37,11 +37,14 @@ class game_state
     constructor()
     {
         
+let b = new tile()
+
 //State
         
 
         
-        //tiles
+        this.board.push(b)
+//tiles
 
         
     }
@@ -49,7 +52,7 @@ class game_state
     
 
 //state accessors
-    getTileByID(id)
+    async getTileByID(id)
     {
         for(let i = 0; i<this.board.length;i++)
         {
@@ -59,7 +62,7 @@ class game_state
         return null
     }
 
-    getTilesByType(type)
+    async getTilesByType(type)
     {
         results = []
         for(let i = 0; i<this.board.length;i++)
@@ -79,11 +82,11 @@ class game_state
 class player
 {
     State = new game_state();
-    chooseAction()
+    async chooseAction()
     {
         //
     }
-    turn()
+    async turn()
     {
         //redefined in subclasses
     }
@@ -99,7 +102,7 @@ class Joseph extends player {
 
 
     params = []
-    chooseAction(choice, p)
+    async chooseAction(choice, p)
     {
         switch(choice)
         {
@@ -108,7 +111,7 @@ class Joseph extends player {
         
         
     }
-    isActionLegal(choice, p)
+    async isActionLegal(choice, p)
     {
         switch(choice)
         {
@@ -119,7 +122,7 @@ class Joseph extends player {
         return false;
     }
 
-    considerations(choice)
+    async considerations(choice)
     {
         
         switch(choice)
@@ -129,7 +132,7 @@ class Joseph extends player {
         
         return [];
     }
-    generateChoices()
+    async generateChoices()
     {
         this.params = []
         let choices =[]
@@ -138,9 +141,9 @@ class Joseph extends player {
         {
             
 
-            if(this.considerations(i) == [])
+            if(await this.considerations(i) == [])
             {
-                if(this.isActionLegal(i, []))
+                if(await this.isActionLegal(i, []))
                 {
                     choices.push(i)
                     this.params.push([])
@@ -149,14 +152,14 @@ class Joseph extends player {
             else
             {
                 
-                for(let j = 0;j<this.considerations(i).length;j++)
+                for(let j = 0;j<await this.considerations(i).length;j++)
                 {
                     
                     
-                    if(this.isActionLegal(i, this.considerations(i)[j]))
+                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
                     {
                         choices.push(i)
-                        this.params.push(this.considerations(i)[j])
+                        this.params.push(await this.considerations(i)[j])
 
                     }
                 }
@@ -164,28 +167,13 @@ class Joseph extends player {
         }
         
         return choices
-    };turn ( ) { 
-} } //players
 
-function output(message)
-{
-    console_Input(message)
-    
-}
+    };async turn ( ){ let x =  'text' 
+await input( x ,  'text' ) 
+}} //players
 
-function input(message)
-{
-    
-    return console_Input(message)
-    
-    
-}
-function console_Input(message)
-{
-    
-    i = prompt(message);
-    return i;
-}
+
+
 
 //
 class script
@@ -195,13 +183,14 @@ class script
         new Joseph(),//add players
     ];
     
-    
 
-    play()
+
+    async play()
     {
 
         
         console.log("script-execution begins");
+            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
@@ -215,7 +204,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
-                order.push(input("when will player "+this.players[i].constructor.name + " move"))
+                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
             }
             else
             {
@@ -243,19 +232,21 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
-                this.players[i].turn();
+                await this.players[i].turn();
             }
         }
-        while(!this.endgame())
+        while(!await this.endgame())
 
-
+        
     }
-
-    endgame()
+    
+    async endgame()
     {
-        //end_game
+        let x = false 
+return x 
+//end_game
     
     
         return false

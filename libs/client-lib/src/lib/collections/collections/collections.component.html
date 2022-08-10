@@ -38,9 +38,9 @@
                 </div>
 
                 <!--Poster(s)-->
-                <div class="">
-                    <span *ngFor="let url of collection.imgUrls" class="imgSpan sm:float:left pr-2">
-                        <button (click)="viewCollection(collection.name)"><img [src]='url' class="object-scale-down"></button>
+                <div id="posters" class="">
+                    <span id="specific" *ngFor="let url of collection.imgUrls" class="imgSpan sm:float:left pr-2">
+                        <button id="imgButton" (click)="viewCollection(collection.name)" clas="grid-container"><img id="imgPoster" [src]='url' class="object-scale-down grid-item"></button>
                     </span>
                     <!-- <div class="imgSpan h-48 w-48 border-8 bg-yellow-500 sm:float-left pr-2"></div> -->
                 </div>

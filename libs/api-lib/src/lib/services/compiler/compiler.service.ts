@@ -608,6 +608,14 @@ class parser extends CstParser
                             this.CONSUME(tokensStore.tInput )
                             this.CONSUME(tokensStore.tOpenBracket )
                             this.SUBRULE(this.Expression)
+                            this.CONSUME(tokensStore.tComma)
+                            this.CONSUME(tokensStore.tStringLiteral)
+                            this.OPTION(() => {
+                                this.CONSUME1(tokensStore.tComma)
+                                this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.SUBRULE(this.Array)
+                                this.CONSUME(tokensStore.tClosedSquareBracket)
+                            })
                             this.CONSUME(tokensStore.tCloseBracket )
                         }},
 
@@ -631,10 +639,60 @@ class parser extends CstParser
                             this.SUBRULE4(this.Expression)
                         this.CONSUME5(tokensStore.tCloseBracket )
                         }},
+                        { ALT: () =>{ this.CONSUME(tokensStore.tInputGroup )
+                            this.CONSUME6(tokensStore.tOpenBracket )
+                            this.SUBRULE5(this.Object)
+                        this.CONSUME6(tokensStore.tCloseBracket )
+                        }}
                     ])
                     
                 });
+                private Object=this.RULE("Object", () => {
+                    //
+                    this.OPTION(() => {
+                        this.CONSUME(tokensStore.tOpenBracket )
+                            this.SUBRULE(this.Expression)
+                            this.CONSUME(tokensStore.tComma)
+                            this.SUBRULE(this.Const)
+                            this.OPTION1(() => {
+                                this.CONSUME1(tokensStore.tComma)
+                                this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.SUBRULE(this.Array)
+                                this.CONSUME(tokensStore.tClosedSquareBracket)
+                            })
+                            this.CONSUME(tokensStore.tCloseBracket )
+                            this.SUBRULE(this.AnotherObject)
+                        })
+                })
+                private AnotherObject=this.RULE("AnotherObject", () => {
+                    //
+                    this.OPTION(() => {
+                        this.CONSUME(tokensStore.tComma )
+                        this.SUBRULE(this.Object)
+                    })
+                })
 
+                private Array=this.RULE("Array", () => {
+                    //
+                    this.OPTION(() => {
+                        this.OPTION1(() => {
+                            this.CONSUME1(tokensStore.tComma)
+                        })
+                        this.OR([
+                     
+                            { ALT: () =>{ 
+                                this.SUBRULE(this.Const)
+                            }},
+                            { ALT: () =>{ 
+                                this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                            }}
+
+                        ])
+
+                        this.SUBRULE(this.Array)
+
+                    })
+                })
                 private Call=this.RULE("Call", () => {
             
                     this.OR([
@@ -1591,7 +1649,7 @@ function visitPlayer(cstOutput:CstNode)
                         break;
                         
                     case "Turn":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), ''+token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), 'async '+token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
                         break;
                     default:
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//players"))].join('');
@@ -1686,7 +1744,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'this.'+token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return this.'+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\n'+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\nasync '+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
                 
             }
             if(token.tokenType.name == "CloseBracket")
@@ -1697,7 +1755,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
             }
             if(token.tokenType.name != "Action")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),'async '+token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
                 
             }
         }
@@ -1810,8 +1868,8 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                 
                 case "Variable": 
                     break;
-                case "ConsoleInput":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console_Input', jsScript.slice(jsScript.indexOf(place))].join('');
+                case "Input":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await input', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;    
                 case "ConsoleOutput":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console.log ', jsScript.slice(jsScript.indexOf(place))].join('');
@@ -1835,8 +1893,50 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
             
             visitMethodCall(node, place)
         }
+        else if(node.name == "Object")
+        {
+            //we take in an array of objects so write the square brackets
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '[', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            visitObject(node, place)
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ']', jsScript.slice(jsScript.indexOf(place))].join('');
+
+        }
         else{
             visitPlayerStatements(node,place);
+        }
+    }
+}
+function visitObject(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "OpenSquareBracket")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '{', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            else if(token.tokenType.name == "CloseSquareBracket")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '}', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            else
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ' '+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+        }
+        if(node.name)
+        {
+            visitObject(node, place)
         }
     }
 }
@@ -1908,7 +2008,8 @@ function visitRCopy(cstOutput:CstNode, place:string)
 function visitRIsActionLegal(cstOutput:CstNode, place:string)
 {
     
-    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
@@ -1924,7 +2025,8 @@ function visitRIsActionLegal(cstOutput:CstNode, place:string)
 }
 function visitRChooseAction(cstOutput:CstNode, place:string)
 {
-    
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await ', jsScript.slice(jsScript.indexOf(place))].join('');
+     
     
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
@@ -1941,7 +2043,7 @@ function visitRChooseAction(cstOutput:CstNode, place:string)
 function visitGenerateChoices(cstOutput:CstNode, place:string)
 {
     
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.', jsScript.slice(jsScript.indexOf(place))].join('');
      
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {

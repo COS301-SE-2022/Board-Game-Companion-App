@@ -81,14 +81,15 @@ export const tNot=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tUs
 
 
 //input output
-export const tInput=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tUserDefinedIdentifier}));
+
+export const tInputGroup=(chevrotain.createToken({name:"InputGroup",pattern:/inputGroup/,longer_alt:tUserDefinedIdentifier}));
+export const tInput=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tInputGroup}));
 export const tPrint=(chevrotain.createToken({name:"Print",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
 export const tRead=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
 export const tConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
 export const tConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
 
-export const tAwait=(chevrotain.createToken({name:"await",pattern:/await/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -134,7 +135,6 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tCards,
     tTile,
     tPiece,
-    tAwait,
     tAddToArr,
     tAddToBoard,
     tConsider,
@@ -178,6 +178,8 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tStringLiteral,
     tFalse,
     tTrue,
+    tInputGroup,
+
     tInput,
     tPrint,
     tRead,
@@ -189,6 +191,8 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tIf,
     tElse,
     tBreak,
+
+
     tContinue,
     tMinmax,
     tNeuralNetwork,
