@@ -17,14 +17,6 @@ player cross{
 }
 
 player agent{
-    action shoot(){
-        
-    }
-    
-    condition(){
-        
-    }
-    
     turn(){
         
     }
