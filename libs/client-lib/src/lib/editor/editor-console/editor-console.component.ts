@@ -82,7 +82,6 @@ export class EditorConsoleComponent implements OnInit{
     const console = (function (windowConsole:any,editorConsole:EditorConsoleComponent){
       return {
         log: (text:string)=>{
-          alert(text);
           windowConsole.log(text);
         },
         info: (strInfo:string)=>{
@@ -92,6 +91,7 @@ export class EditorConsoleComponent implements OnInit{
           windowConsole.warn(strWarn);
         },
         error: (strError:string)=>{
+        
           windowConsole.error(strError);
         },
         print: (text:string)=>{

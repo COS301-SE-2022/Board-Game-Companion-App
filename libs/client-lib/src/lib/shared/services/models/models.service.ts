@@ -2,6 +2,7 @@ import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as tf from '@tensorflow/tfjs';
+import { layer } from '../../models/layer';
 
 export interface args{
     learningRate?:number;
@@ -14,12 +15,6 @@ export interface args{
     momentum?:number;
     useNesterov?:boolean;
     centered?:boolean;
-}
-
-export interface layer{
-    index: number;
-    activation: string;
-    nodes: number;
 }
 
 @Injectable()
