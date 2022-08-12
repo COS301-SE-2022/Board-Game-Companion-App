@@ -17,7 +17,7 @@ export class LoadDataComponent implements OnInit {
   analysis:string[] = [];
 
   ngOnInit(): void{
-    console.log("models")
+    this.trainingData = 80;
   }
 
   getDataStore(): any{
@@ -42,7 +42,11 @@ export class LoadDataComponent implements OnInit {
 
   loadData(value:any): void{
     const reader = new FileReader();
-    reader.readAsText(value.target.files[0]);
+    
+    if(value.target !== null)
+      reader.readAsText(value.target.files[0]);
+
+    console.log(value);
 
     reader.onload = (event)=>{
       if(event.target !== null){

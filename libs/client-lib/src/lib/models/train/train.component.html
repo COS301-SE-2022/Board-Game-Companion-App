@@ -2,24 +2,24 @@
 
 
 <div class = "training-stepper container w-full">
-    <div class = "training-stepper-header row h-10">
-        <div (click)="changeStep(0)" class = "training-stepper-step-header col-sm-2 py-1 h-full hover:bg-gray-400">
-            <span [ngClass] = "{'active-step':step===0}" class = "number-icon text-white text-lg rounded-full w-full h-4 px-2 py-1">1</span>
-            <span class = "text-lg ml-2 h-4 w-4">Load Data</span>
+    <div class = "training-stepper-header row h-8 border">
+        <div (click)="changeStep(0)" class = "training-stepper-step-header col-sm-3 py-1 h-full hover:bg-gray-400 hover:text-white">
+            <span [ngClass] = "{'active-step':step===0}" class = "number-icon text-white text-sm rounded-full w-full h-2 px-1.5 py-0.5">1</span>
+            <span class = "text-sm ml-2 h-4 w-4">Load Data</span>
         </div>
-        <div class = "separator col-sm-3 py-3 px-0 h-full">
+        <div class = "separator col-sm-2 py-2.5 px-0 h-full border">
             <div class = "border border-2 w-full"></div>
         </div>
-        <div (click)="changeStep(1)" class = "training-stepper-step-header col-sm-2 py-1 h-full" [ngClass]="{'hover:bg-gray-400':enableArchitecture}">
-            <span  class = "text-white text-lg rounded-full w-full h-4 px-2 py-1" [ngClass]="{'bg-gray-400':!enableArchitecture,'number-icon':enableArchitecture,'active-step':step===1}">2</span>
-            <span [ngClass]="{'text-gray-600':!enableArchitecture}" class = "text-lg ml-2 h-4 w-4">Architecture</span>
+        <div (click)="changeStep(1)" class = "training-stepper-step-header col-sm-3 py-1 h-full" [ngClass]="{'hover:bg-gray-400':enableArchitecture}">
+            <span  class = "text-white text-sm rounded-full w-full h-2 px-1.5 py-0.5" [ngClass]="{'bg-gray-400':!enableArchitecture,'number-icon':enableArchitecture,'active-step':step===1}">2</span>
+            <span [ngClass]="{'text-gray-600':!enableArchitecture}" class = "text-sm ml-2 h-4 w-4">Architecture</span>
         </div>
-        <div class = "separator col-sm-3 py-3 px-0 h-full" >
+        <div class = "separator col-sm-2 py-2.5 px-0 h-full border">
             <div class = "border border-2 w-full"></div>
         </div>
         <div (click)="changeStep(2)" class = "training-stepper-step-header col-sm-2 py-1 h-full hover:bg-gray-400" [ngClass]="{'hover:bg-gray-400':enableConfigure}">
-            <span class = "text-white text-lg rounded-full w-full h-4 px-2 py-1" [ngClass]="{'bg-gray-400':!enableConfigure,'number-icon':enableConfigure,'active-step':step===2}">3</span>
-            <span class = "text-lg ml-2 h-4 w-4" [ngClass]="{'text-gray-600':!enableConfigure}">Configure</span>
+            <span class = "text-white text-sm rounded-full w-full h-4 px-1.5 py-0.5" [ngClass]="{'bg-gray-400':!enableConfigure,'number-icon':enableConfigure,'active-step':step===2}">3</span>
+            <span class = "text-sm ml-2 h-4 w-4" [ngClass]="{'text-gray-600':!enableConfigure}">Configure</span>
         </div>
     </div>
     <div *ngIf = "step === 0" class = "training-stepper-content row">
