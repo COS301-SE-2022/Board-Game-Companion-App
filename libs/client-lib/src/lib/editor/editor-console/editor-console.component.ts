@@ -79,21 +79,8 @@ export class EditorConsoleComponent implements OnInit{
   }
 
   defineConsole(): any{
-    const console = (function (windowConsole:any,editorConsole:EditorConsoleComponent){
+    const console = (function (editorConsole:EditorConsoleComponent){
       return {
-        log: (text:string)=>{
-          windowConsole.log(text);
-        },
-        info: (strInfo:string)=>{
-          windowConsole.info(strInfo);
-        },
-        warn: (strWarn:string)=>{
-          windowConsole.warn(strWarn);
-        },
-        error: (strError:string)=>{
-        
-          windowConsole.error(strError);
-        },
         print: (text:string)=>{
           editorConsole.print({output:true,outputMessage:text});      
         },
@@ -125,7 +112,7 @@ export class EditorConsoleComponent implements OnInit{
           editorConsole.clear();
         }
       }
-    })(window.console,this);
+    })(this);
 
     return console;
   }

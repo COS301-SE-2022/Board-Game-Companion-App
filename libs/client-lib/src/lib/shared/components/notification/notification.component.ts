@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { notification } from '../../models/notification';
+import { NotificationUnitComponent } from '../notification-unit/notification-unit.component';
 
 @Component({
   selector: 'board-game-companion-app-notification',
@@ -19,7 +20,9 @@ export class NotificationComponent implements OnInit {
   }
 
   pop(): void{
+    console.log("clear");
     this.notifications.pop();
+    console.log(this.notifications.length)
   }
 }
 

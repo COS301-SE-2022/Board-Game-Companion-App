@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { LoadDataComponent } from './load-data/load-data.component';
 import { ArchitectureComponent } from './architecture/architecture.component';
 import { ConfigureComponent } from './configure/configure.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ConfigureComponent } from './configure/configure.component';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     RouterModule.forChild([{ path: '', component: ModelsComponent }]),
   ],
 })

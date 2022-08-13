@@ -50,6 +50,7 @@ export class EditorComponent implements OnInit{
   parameters:inputParameters[] = [];
   statusMessages:string[] = [];
   programStructure!:entity;
+  proxies = new WeakMap();
 
   constructor(private readonly scriptService:ScriptService, private router: Router){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
@@ -217,30 +218,58 @@ export class EditorComponent implements OnInit{
     this.inputBlock = false;
   }
 
+  interpreter(source:string){
+    const strCode = 'with (sandbox) {' + source + '}';
+    const code = new Function('sandbox', strCode);
+  
+    return (sandbox:any)=>{
+      if (!this.proxies.has(sandbox)) {
+        const proxy = new Proxy(sandbox,{
+          has:(target:any,key:any)=>{
+            return true;
+          },
+          get:(target:any,key:any)=>{
+            if(key === Symbol.unscopables)
+              return undefined;
+          
+            return target[key];            
+          }
+        })
+        this.proxies.set(sandbox,proxy);
+      }
+      return code(this.proxies.get(sandbox))
+    }
+  }
+
+
 
   async execute(): Promise<void>{
     
     this.editorConsole.open();
 
     try{
-      const console = this.editorConsole.defineConsole();
-      const model = await this.neuralnetworks();
-      const input = this.input();
-      const inputGroup = this.inputGroup();
+
+      const interpeter = this.interpreter(this.editorBody.getCode());
+      interpeter({
+        console: this.editorConsole.defineConsole(),
+        model: await this.neuralnetworks(),
+        input: this.input(),
+        inputGroup: this.inputGroup()
+      });
       this.editorConsole.clear();
       // const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
       // code(console,model,input,inputGroup);
-      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
-        next:(value)=>{
-          console.log(value)
+      // this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+      //   next:(value)=>{
+      //     console.log(value)
 
-          const code = new Function("console","model","input","inputGroup",value);
-          code(console,model,input,inputGroup);
-        },
-        error:(e)=>{
-          console.log(e);
-        }
-      });
+      //     const code = new Function("console","model","input","inputGroup",value);
+      //     code(console,model,input,inputGroup);
+      //   },
+      //   error:(e)=>{
+      //     console.log(e);
+      //   }
+      // });
     }catch(err){
       //console.log(err);
     }
