@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
@@ -17,6 +17,7 @@ export class LoadDataComponent implements OnInit {
   outputs:string[] = []
   analysis:string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
+  @Output()checkEvent = new EventEmitter();
 
   ngOnInit(): void{
     this.trainingData = 80;
@@ -59,7 +60,6 @@ export class LoadDataComponent implements OnInit {
       this.outputs = [];
     }
 
-    console.log(value.target.files[0]);
 
     if(this.fileType === undefined)
       this.notifications.add({type:"danger",message:"Unsupported file type."});
@@ -69,6 +69,7 @@ export class LoadDataComponent implements OnInit {
           if(typeof(event.target.result) == "string"){
             try{
               this.dataStore = this.data = JSON.parse(event.target.result);
+              this.checkEvent.emit();
             }catch(error){
               this.notifications.add({type:"danger",message:"Error parsing json file " + value.target.files[0].name});
             }
@@ -77,7 +78,6 @@ export class LoadDataComponent implements OnInit {
         }else
           this.notifications.add({type:"danger",message:"Something went wrong when loading json file"});
         
-        console.log(this.data);
       }
     }else if(this.fileType === "text/csv"){
       reader.onload = (event)=>{
@@ -102,11 +102,13 @@ export class LoadDataComponent implements OnInit {
 
               return result;
             })
+
+            this.checkEvent.emit();
           }else
-          this.notifications.add({type:"danger",message:"Expecting " + value.target.files[0].name + " to contain string data but contains " + typeof(event.target.result)});
+            this.notifications.add({type:"danger",message:"Expecting " + value.target.files[0].name + " to contain string data but contains " + typeof(event.target.result)});
         }else
-        this.notifications.add({type:"danger",message:"Something went wrong when loading csv file"});
-        console.log(this.data);
+          this.notifications.add({type:"danger",message:"Something went wrong when loading csv file"});
+
       }
     }else
       this.notifications.add({type:"danger",message:"Unsupported file type."});
@@ -121,7 +123,6 @@ export class LoadDataComponent implements OnInit {
   }
 
   checkInputOnEnter(value:any): void{
-    console.log(value);
 
     if(value.key === "Enter"){
       value?.preventDefault();
@@ -130,7 +131,6 @@ export class LoadDataComponent implements OnInit {
   }
 
   checkOutputOnEnter(value:any): void{
-    console.log(value);
     
     if(value.key === "Enter"){
       value?.preventDefault();
@@ -140,9 +140,10 @@ export class LoadDataComponent implements OnInit {
 
   addInputFeature(): void{
     if(this.inputFeature !== ""){
-      if(!this.alreadyExists(this.inputFeature))
+      if(!this.alreadyExists(this.inputFeature)){
         this.inputs.push(this.inputFeature);
-      else
+        this.checkEvent.emit();
+      }else
         this.notifications.add({type:'warning',message:'Duplicate features not allowed.'});
       this.inputFeature = "";
     }else
@@ -167,9 +168,11 @@ export class LoadDataComponent implements OnInit {
 
   addOutputFeature(): void{
     if(this.outputLabel !== ""){
-      if(!this.alreadyExists(this.outputLabel))
+      if(!this.alreadyExists(this.outputLabel)){
+        this.outputs = [];
         this.outputs.push(this.outputLabel);
-      else
+        this.checkEvent.emit();
+      }else
         this.notifications.add({type:'warning',message:'Duplicate labels not allowed.'});
 
       this.outputLabel = "";
@@ -186,7 +189,8 @@ export class LoadDataComponent implements OnInit {
         temp.push(this.inputs[count]);
     }
 
-    this.inputs = temp;    
+    this.inputs = temp;
+    this.checkEvent.emit();    
   }
 
   removeLabel(value:string): void{
@@ -198,6 +202,7 @@ export class LoadDataComponent implements OnInit {
     }
 
     this.outputs = temp;
+    this.checkEvent.emit();
   }
 
   preCheckData(): boolean{
@@ -250,6 +255,13 @@ export class LoadDataComponent implements OnInit {
       if(this.dataStore[count].length > max)
         this.data.push(this.dataStore[count]);
     }
+  }
+
+  cleanData(): void{
+    if(this.fileType === "application/json")
+      this.cleanJsonData();
+    else if(this.fileType === "text/csv")
+      this.cleanCsvData();
   }
 
   analyse():void{

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { layer } from '../../shared/models/layer';
 
 @Component({
@@ -9,8 +9,9 @@ import { layer } from '../../shared/models/layer';
 })
 export class ArchitectureComponent implements OnInit {
   hiddenLayers:layer[] = []
-  activation = "activation function";
+  activation = "none";
   nodes = 1;  
+  @Output()checkEvent = new EventEmitter();
 
   ngOnInit(): void{
     console.log("models")
@@ -29,6 +30,7 @@ export class ArchitectureComponent implements OnInit {
     })
 
     this.hiddenLayers = temp;
+    this.checkEvent.emit();
   }
 
   setActivation(value:string): void{
@@ -43,7 +45,9 @@ export class ArchitectureComponent implements OnInit {
     this.hiddenLayers.push({
       index: this.hiddenLayers.length + 1,
       nodes: this.nodes,
-      activation: (this.activation == "activation function" ? "none" : this.activation)
+      activation: this.activation
     })
+
+    this.checkEvent.emit();
   }
 }

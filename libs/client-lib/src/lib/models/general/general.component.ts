@@ -1,8 +1,14 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
-import { beginTraining } from '../../shared/models/beginTraining';
+import { modelData } from '../../shared/models/modelData';
 import * as tf from '@tensorflow/tfjs';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
+
+interface progressTracker{
+  name: string;
+  trainProgress: number;
+  testProgress: number;
+}
 
 @Component({
   selector: 'board-game-companion-app-general',
@@ -10,61 +16,68 @@ import { neuralnetwork } from '../../shared/models/neuralnetwork';
   styleUrls: ['./general.component.scss'],
   
 })
-export class GeneralComponent implements OnInit,OnChanges {
-  tab = 0;
-  @Input()beginTrainingModel!:beginTraining;
-  nn:neuralnetwork[] = [];
-  months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+export class GeneralComponent implements OnInit {
+  networks:neuralnetwork[] = [];
+  progress:progressTracker[] = [];
+  months: string[] = []
 
   constructor(private readonly modelService:ModelsService){
     const modelsInfo = localStorage.getItem("models");
     
     if(modelsInfo !== null){
-      this.nn = JSON.parse(modelsInfo);
+      this.networks = JSON.parse(modelsInfo);
     }
   }
 
   ngOnInit(): void{
-    console.log("models");
-
+    this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   }
 
-  ngOnChanges(): void {
-    if(this.beginTrainingModel!== undefined && this.beginTrainingModel.name !== ""){
-      this.nn.unshift(this.beginTrainingModel);
-      this.nn[0].progress = 0;
-      this.train();
-    }
-  }
+  async train(setup:modelData){
+    this.networks.unshift({setup:setup});
+    this.progress.unshift({
+      name: setup.name,
+      trainProgress: 0,
+      testProgress: 0
+    })
 
-
-
-  async train(){
-    const [trainingXs, testingXs] = tf.split(this.beginTrainingModel.xs,this.beginTrainingModel.dataDivider);
-    const [trainingYs, testingYs] = tf.split(this.beginTrainingModel.ys,this.beginTrainingModel.dataDivider);
-
-    return await this.modelService.train(this.beginTrainingModel.model,trainingXs,trainingYs,this.beginTrainingModel.optimizer,{
-      epochs: this.beginTrainingModel.epochs,
+    return await this.modelService.train(setup.model,setup.trainXs,setup.trainYs,setup.optimizer,{
+      epochs: setup.epochs,
       shuffle: true,
 
       callbacks:{
-        onTrainBegin:()=>{
-          console.log(this.nn[0]);
-          this.nn[0].progress = 0;
-        },
         onTrainEnd:()=>{
-          this.nn[0].created = new Date();
-          this.nn[0].progress = 100;
-          this.nn[0].upload = true;
+          for(let count = 0; count < this.networks.length; count++){
+            if(this.networks[count].setup.name === setup.name){
+              this.networks[count].created = new Date();
+              this.networks[count].upload = true;
+              break;
+            }
+          }
 
+          // for(let count = 0; count < this.progress.length; count++){
+          //   if(this.progress[count].name === setup.name){
+          //     this.progress 
+          //   }
+          // }
         },
         onEpochEnd:(epochs,logs)=>{
-          const max = this.nn[0].epochs as number;
-        
-          this.nn[0].progress = Math.floor((epochs / max) * 100);
+          for(let count = 0; count < this.progress.length; count++){
+            if(this.progress[count].name === setup.name){
+              const max = setup.epochs;
+              this.progress[count].trainProgress = Math.ceil((epochs / max) * 100);
+              break;
+            }
+          }
 
-          if(logs !== undefined)
-            this.nn[0].loss = logs['loss'];
+          for(let count = 0; count < this.networks.length; count++){
+            if(this.networks[count].setup.name === setup.name){
+              if(logs !== undefined)
+                this.networks[count].loss = logs['loss'];
+              
+              break;
+            }
+          }
         }
       }
     })
@@ -75,34 +88,15 @@ export class GeneralComponent implements OnInit,OnChanges {
     return date.getDate() + " " + this.months[date.getMonth()] + " " + date.getFullYear();
   }
 
-  changeTab(value:number): void{
-    this.tab = value;
-  }
+  getProgress(name:string,sub:string):number{
+    let result = 0;
 
-  upload(network:neuralnetwork): void{
-    network.model?.save('localstorage://' + network.name);
-    let modelsInfo = localStorage.getItem('models');
-    
-    network.upload = false;
-
-    if(modelsInfo === null){
-      localStorage.setItem("models",JSON.stringify([network]));
-      modelsInfo = localStorage.getItem('models');
-    }else{
-      localStorage.setItem("models",JSON.stringify(this.nn));
+    for(let count = 0; count < this.progress.length; count++){
+      if(this.progress[count].name === name){
+        result = this.progress[count][(sub === "train" ? "trainProgress":"testProgress")];
+      }
     }
-
-  }
-
-  remove(network:neuralnetwork): void{
-    const temp:neuralnetwork[] = [];
-
-    this.nn.forEach((value:neuralnetwork)=>{
-      if(value.name !== network.name)
-        temp.push(value);
-    })
-
-    this.nn = temp;
-    localStorage.setItem("models",JSON.stringify(this.nn));
+    
+    return result;
   }
 }

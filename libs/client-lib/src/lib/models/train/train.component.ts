@@ -6,6 +6,8 @@ import { beginTraining } from '../../shared/models/beginTraining';
 import { LoadDataComponent } from '../load-data/load-data.component';
 import { ArchitectureComponent } from '../architecture/architecture.component';
 import { ConfigureComponent } from '../configure/configure.component';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { modelData } from '../../shared/models/modelData';
 
 @Component({
   selector: 'board-game-companion-app-train',
@@ -13,24 +15,22 @@ import { ConfigureComponent } from '../configure/configure.component';
   styleUrls: ['./train.component.scss'],
   
 })
-export class TrainComponent implements OnInit {
-  @Output() beginTrainingEvent = new EventEmitter<beginTraining>();
-  @ViewChild(LoadDataComponent,{static:true}) dataLoader: LoadDataComponent = new LoadDataComponent();
-  @ViewChild(ArchitectureComponent,{static:true}) architectureSetup: ArchitectureComponent = new ArchitectureComponent();
-  @ViewChild(ConfigureComponent,{static:true}) configuration: ConfigureComponent = new ConfigureComponent();
-
+export class TrainComponent implements OnInit{
+  @Output()trainEvent = new EventEmitter<modelData>();
+  @ViewChild(LoadDataComponent,{static:false}) dataLoader: LoadDataComponent = new LoadDataComponent();
+  @ViewChild(ArchitectureComponent,{static:false}) architectureSetup: ArchitectureComponent = new ArchitectureComponent();
+  @ViewChild(ConfigureComponent,{static:false}) configuration: ConfigureComponent = new ConfigureComponent();
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   enableArchitecture = false;
   enableConfigure = false;
   tab = 0;
   step = 0;
-  missing:string[] = []
-  trainMessage:string[] = []
-  
+  timer = 0;
 
   constructor(private readonly modelsService:ModelsService){}
 
   ngOnInit(): void{
-    console.log("models")
+    this.step = 0;
   }
 
   changeStep(value:number){
@@ -46,143 +46,56 @@ export class TrainComponent implements OnInit {
     this.tab = value;
   }
 
+
+  check(value:number): void{
+    if(value === 0){
+      this.enableArchitecture = (()=>{
+        if(this.dataLoader.getData() === null)
+          return false;
+
+        if(this.dataLoader.getInputs().length === 0)
+          return false;
+
+        if(this.dataLoader.getOutputs().length === 0)
+          return false;
+
+        return true;
+      })()
+    }
+
+    if(value === 1){
+      this.enableConfigure = (()=>{
+        if(!this.enableArchitecture)
+          return false;
+
+        if(this.architectureSetup.getHiddenLayers().length === 0)
+          return false;
+        
+        return true;
+      })()
+    }
+  }
+
   train(): void{
-    let optimizer:tf.Optimizer = tf.train.sgd(0.2);
-    this.trainMessage = [];
-    this.missing = [];
+    const optimizer:tf.Optimizer  = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
+      learningRate: (parseFloat(this.configuration.getLearningRate())),
+      decay: (parseFloat(this.configuration.getDecay())),
+      epsilon: (parseFloat(this.configuration.getEpsilon())),
+      beta1: (parseFloat(this.configuration.getBeta1())),
+      beta2: (parseFloat(this.configuration.getBeta2())),
+      momentum: (parseFloat(this.configuration.getMomentum())),
+      useNesterov: this.configuration.getUseNesterov(),
+      centered: this.configuration.getCentered()
+    });
 
-    if(this.configuration.getName() === ""){
-      this.trainMessage.push("The name of the neural network is missing")
-      this.missing.push("The name of the neural network is missing")
-    }
+    if(!this.dataLoader.preCheckData())
+      return;
 
-    if(this.configuration.getLearningRate() !== "" && isNaN(parseFloat(this.configuration.getLearningRate())) === true ){
-      this.trainMessage.push("Learning rate must be a number");
-      this.missing.push("learningRate");
-    }
-
-    if(this.configuration.getRho() !== "" && isNaN(parseFloat(this.configuration.getRho())) === true ){
-      this.trainMessage.push("Decay rate must be a number");
-      this.missing.push("rho");
-    }
-
-    if(this.configuration.getDecay() !== "" && isNaN(parseFloat(this.configuration.getDecay())) === true ){
-      this.trainMessage.push("Decat rate must be a number");
-      this.missing.push("decay");
-    }
-
-    if(this.configuration.getEpsilon() !== "" && isNaN(parseFloat(this.configuration.getEpsilon())) === true ){
-      this.trainMessage.push("Epsilon must be a number");
-      this.missing.push("epsilon");
-    }
-
-    if(this.configuration.getBeta1() !== "" && isNaN(parseFloat(this.configuration.getBeta1())) === true ){
-      this.trainMessage.push("Beta1 must be a number");
-      this.missing.push("beta1");
-    }
-
-    if(this.configuration.getBeta2() !== "" && isNaN(parseFloat(this.configuration.getBeta2())) === true ){
-      this.trainMessage.push("beta2 must be a number");
-      this.missing.push("beta2");
-    }
-
-    if(this.configuration.getInitialAccumulatorValue() !== "" && isNaN(parseFloat(this.configuration.getInitialAccumulatorValue())) === true ){
-      this.trainMessage.push("Initial accumulator value must be a number");
-      this.missing.push("initialAccumulatorValue");
-    }
-
-    if(this.configuration.getMomentum() !== "" && isNaN(parseFloat(this.configuration.getMomentum())) === true ){
-      this.trainMessage.push("Momentum must be a number");
-      this.missing.push("momentum");
-    }
-
-    if(this.missing.length !== 0)
-      return
-
+    this.dataLoader.cleanData();
     
-
-    if(this.configuration.getOptimizer() === 0){
-        optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-          learningRate:(this.configuration.getLearningRate() === "" ? undefined : parseFloat(this.configuration.getLearningRate())),
-          rho:(this.configuration.getLearningRate() === "" ? undefined : parseFloat(this.configuration.getLearningRate()))
-        });
-
-    }else if(this.configuration.getOptimizer() === 1){
-      if(this.configuration.getLearningRate() === ""){
-        this.trainMessage.push("Learning rate is required.");
-        this.missing.push("learningRate");
-        return;
-      }
-          
-      optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-        learningRate:parseFloat(this.configuration.getLearningRate()),
-        initialAccumulatorValue:(this.configuration.getInitialAccumulatorValue() === "" ? undefined : parseFloat(this.configuration.getInitialAccumulatorValue()))
-      });
-       
-    }else if(this.configuration.getOptimizer() === 2){
-      optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-        learningRate:(this.configuration.getLearningRate() === "" ? undefined : parseFloat(this.configuration.getLearningRate())),
-        decay:(this.configuration.getDecay() === "" ? undefined : parseFloat(this.configuration.getDecay())),
-        epsilon:(this.configuration.getEpsilon() === "" ? undefined : parseFloat(this.configuration.getEpsilon())),
-        beta1:(this.configuration.getBeta1() === "" ? undefined : parseFloat(this.configuration.getBeta1())),
-        beta2:(this.configuration.getEpsilon() === "" ? undefined : parseFloat(this.configuration.getEpsilon()))
-      });
-    }else if(this.configuration.getOptimizer() === 3){
-      optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-        learningRate:(this.configuration.getLearningRate() === "" ? undefined : parseFloat(this.configuration.getLearningRate())),
-        decay:(this.configuration.getDecay() === "" ? undefined : parseFloat(this.configuration.getDecay())),
-        epsilon:(this.configuration.getEpsilon() === "" ? undefined : parseFloat(this.configuration.getEpsilon())),
-        beta1:(this.configuration.getBeta1() === "" ? undefined : parseFloat(this.configuration.getBeta1())),
-        beta2:(this.configuration.getEpsilon() === "" ? undefined : parseFloat(this.configuration.getEpsilon()))
-      });
-    }else if(this.configuration.getOptimizer() === 4){
-      if(this.configuration.getLearningRate() === ""){
-        this.trainMessage.push("Learning rate is required.");
-        this.missing.push("learningRate");
-      }
-
-      if(this.configuration.getMomentum() === ""){
-        this.trainMessage.push("Momentum value is required.");
-        this.missing.push("momentum");
-      }
-
-      if(this.missing.length > 0)
-        return;
-
-      optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-        learningRate:(this.configuration.getLearningRate() === "" ? undefined : parseFloat(this.configuration.getLearningRate())),
-        momentum:(this.configuration.getMomentum() === "" ? undefined : parseFloat(this.configuration.getMomentum())),
-        useNesterov:this.configuration.getUseNesterov()
-      });
-    }else if(this.configuration.getOptimizer() === 5){
-      if(this.configuration.getLearningRate() === ""){
-        this.trainMessage.push("Learning rate is required.");
-        this.missing.push("learningRate");
-      }
-
-      if(this.missing.length > 0)
-        return;
-
-        optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-          learningRate:(parseFloat(this.configuration.getLearningRate())),
-          momentum:(this.configuration.getMomentum() === "" ? undefined : parseFloat(this.configuration.getMomentum())),
-          decay:(this.configuration.getDecay() === "" ? undefined : parseFloat(this.configuration.getDecay())),
-          epsilon:(this.configuration.getEpsilon() === "" ? undefined : parseFloat(this.configuration.getEpsilon())),
-          centered:this.configuration.getCentered()
-        });
-      
-    }else if(this.configuration.getOptimizer() === 6){
-      if(this.configuration.getLearningRate() === ""){
-        this.trainMessage.push("Learning rate is required.");
-        this.missing.push("learningRate");
-      }
-
-      if(this.missing.length > 0)
-        return;
-
-        optimizer = this.modelsService.getOptimizationFunction(this.configuration.getOptimizer(),{
-          learningRate:(parseFloat(this.configuration.getLearningRate()))
-        });
+    if(this.dataLoader.getData().length === ""){
+      this.notifications.add({type:"warning",message:"No valid training data found."})
+      return;
     }
 
     const tensorData = this.modelsService.convertToTensors(this.dataLoader.getData(),this.dataLoader.getInputs(),this.dataLoader.getOutputs()[0]);
@@ -191,26 +104,23 @@ export class TrainComponent implements OnInit {
     
     tensorData.outputs.print();
     const ys = tf.oneHot(tensorData.outputs,tensorData.labels.length);
-    const trainingLength = Math.floor((this.dataLoader.getTrainingPercentage() / 100) * this.dataLoader.getData().length);
+    const dataDivider = [Math.ceil((this.dataLoader.getTrainingPercentage() / 100) * this.dataLoader.getData().length)];
+    const [trainXs, testXs] = tf.split(xs,dataDivider);
+    const [trainYs, testYs] = tf.split(ys,dataDivider);
 
-    this.beginTrainingEvent.emit({
+    this.trainEvent.emit({
       name: this.configuration.getName(),
       model: model,
-      xs: xs,
-      ys: ys,
+      type: this.configuration.getType(),
       optimizer: optimizer,
       epochs: this.configuration.getEpoch(),
-      dataDivider: [trainingLength,this.dataLoader.getData().length - trainingLength],
+      trainXs: trainXs,
+      trainYs: trainYs,
+      testXs: testXs,
+      testYs: testYs,
       labels: tensorData.labels,
-      min: Array.from(tensorData.inputMin.dataSync()) ,
-      max: Array.from(tensorData.inputMax.dataSync())
+      min: tensorData.inputMin,
+      max: tensorData.inputMax
     });
-    //this.modelsService.train(model,xs,ys,optimizer);
-    // const value = tf.tensor2d([123,5,17],[1,3]);
-    // value.sub(tensorData.inputMin).div(tensorData.inputMax.sub(tensorData.inputMin));
-    // const result = model.predict(value) as tf.Tensor;
-
-    // result.print();
-
   }
 }

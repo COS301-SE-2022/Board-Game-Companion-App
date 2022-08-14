@@ -5,35 +5,32 @@
         <label for="neural-network" class="form-label font-medium"><b>Neural Networks</b></label>
     </div>
     
-    <div class = " border-2 p-2 mb-4" *ngFor = "let network of nn">
+    <div class = " border-2 p-2 mb-4" *ngFor = "let network of networks">
         <div class = "row">
             <div class = "col-sm-4">
-                {{network.name}}
+                {{network.setup.name}}
             </div>
             <div class = "col-sm-3">
                 <div *ngIf = "network.created !== undefined" >
                     {{formatDate(network.created)}}
                 </div>
-                <div class="w-full bg-gray-200 rounded-full" *ngIf = "network.progress !== undefined && network.progress !== 100">
-                    <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "network.progress"> {{network.progress}}%</div>
+                <div class="w-full bg-gray-200 rounded-full" *ngIf = "getProgress(network.setup.name,'train') < 100">
+                    <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "getProgress(network.setup.name,'train')"> {{getProgress(network.setup.name,'train')}}%</div>
                 </div>
             </div>
             <div class = "col-sm-3">
-                <div *ngIf = "network.size !== undefined">
-                    {{network.size}}
-                </div>
-                <div *ngIf = "network.progress !== undefined && network.loss !== undefined && network.progress !== 100">
-                    loss: {{network.loss.toFixed(4)}}
+                <div>
+                    loss: {{network.loss?.toFixed(4)}}
                 </div>
             </div>
             <div class = "col-sm-2 text-center flex flex-row gap-4">
                 <button class="hover:scale-110 p-1" data-toggle="modal">
                     <i class="fas fa-sync" data-toggle="tooltip" title="sync"></i>
                 </button>
-                <button (click) = "remove(network)" class="hover:scale-110 p-1" data-toggle="modal">
+                <button class="hover:scale-110 p-1" data-toggle="modal">
                     <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                 </button>
-                <button (click) = "upload(network)" class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "network.upload">
+                <button class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "network.upload">
                     <i class="fas fa-upload" data-toggle="tooltip" title="upload"></i>
                 </button>
             </div>

@@ -3,19 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as tf from '@tensorflow/tfjs';
 import { layer } from '../../models/layer';
+import { optimizerArgs } from '../../models/optimizerArgs';
 
-export interface args{
-    learningRate?:number;
-    rho?:number;
-    initialAccumulatorValue?:number;
-    beta1?:number;
-    beta2?:number;
-    epsilon?:number;
-    decay?:number;
-    momentum?:number;
-    useNesterov?:boolean;
-    centered?:boolean;
-}
 
 @Injectable()
 export class ModelsService {
@@ -187,7 +176,7 @@ export class ModelsService {
         });    
     }
 
-    getOptimizationFunction(optimizer:number,values:args):tf.Optimizer{
+    getOptimizationFunction(optimizer:number,values:optimizerArgs):tf.Optimizer{
 
         if(optimizer === 0){
             return tf.train.adadelta(values.learningRate,values.rho,values.epsilon);
