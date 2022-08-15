@@ -48,10 +48,9 @@ export class LoadDataComponent implements OnInit {
   }
 
   loadData(value:any): void{
+    this.data = this.dataStore = null;
     const reader = new FileReader();
-    
     reader.readAsText(value.target.files[0]);
-
     const type = value.target.files[0].type;
 
     if(this.fileType !== type){
@@ -279,5 +278,15 @@ export class LoadDataComponent implements OnInit {
       this.analysis.push("Total trainings data: " + Math.ceil((this.trainingData / 100) * this.data.length));
       this.analysis.push("Total testing data: " + Math.floor(((100 - this.trainingData) / 100) * this.data.length));
     }
+
+    
+    // const init = {
+    //   method: "POST",
+    //   body: new FormData()
+    // }
+
+    // init.body.append('model.json','hello world!');
+
+    // fetch("http://localhost:3333/api/models/upload",init).then((value)=>value.json()).then((data)=>console.log(data));
   }
 }

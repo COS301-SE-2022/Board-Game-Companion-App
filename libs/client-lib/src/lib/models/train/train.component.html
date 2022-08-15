@@ -22,14 +22,14 @@
             <span class = "text-sm ml-2 h-4 w-4" [ngClass]="{'text-gray-600':!enableConfigure}">Configure</span>
         </div>
     </div>
-    <div *ngIf = "step === 0" class = "training-stepper-content row">
+    <div class = "training-stepper-content row" [ngClass] = "{'hidden':step !== 0}">
         <board-game-companion-app-load-data (checkEvent)="check(0)"></board-game-companion-app-load-data>
     </div>
-    <div *ngIf = "step === 1" class = "training-stepper-content row">
+    <div class = "training-stepper-content row" [ngClass] = "{'hidden':step !== 1}">
         <board-game-companion-app-architecture (checkEvent)="check(1)"></board-game-companion-app-architecture>
     </div>
-    <div *ngIf = "step === 2" class = "training-stepper-content row">
-       <board-game-companion-app-configure></board-game-companion-app-configure> 
+    <div class = "training-stepper-content row" [ngClass] = "{'hidden':step !== 2}">
+       <board-game-companion-app-configure (trainEvent)="train()"></board-game-companion-app-configure> 
     </div>
 </div>
 

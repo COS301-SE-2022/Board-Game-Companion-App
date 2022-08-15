@@ -17,7 +17,7 @@
                 
             <div class="w-full">
                 <div class="input-group relative w-full mb-4">
-                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "inputFeature" name = "inputFeature" [type] = "fileType==='application/json'?'search':'number'" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "inputFeature" name = "inputFeature" [type] = "fileType==='text/csv'?'number':'search'" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
                     <button (click) = "addInputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                         <i class="far fa-plus fa-2x"></i>
                     </button>
@@ -38,7 +38,7 @@
             <div class="w-full">
             
             <div class="input-group relative w-full mb-4">
-                    <input (keypress)="checkOutputOnEnter($event)" [(ngModel)] = "outputLabel" name = "outputLabel" [type] = "fileType==='application/json'?'search':'number'" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <input (keypress)="checkOutputOnEnter($event)" [(ngModel)] = "outputLabel" name = "outputLabel" [type] = "fileType==='text/csv'?'number':'search'"  min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
                     <button (click) = "addOutputFeature()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="addOutputFeature">
                         <i class="far fa-plus fa-2x"></i>
                     </button>

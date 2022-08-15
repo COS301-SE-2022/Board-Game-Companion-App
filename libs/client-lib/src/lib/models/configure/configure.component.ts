@@ -26,7 +26,7 @@ export class ConfigureComponent implements OnInit {
   type = "classification"
 
   ngOnInit(): void{
-    console.log("models")
+    this.epochs = 32;
   }
 
   getOptimizer(): number{

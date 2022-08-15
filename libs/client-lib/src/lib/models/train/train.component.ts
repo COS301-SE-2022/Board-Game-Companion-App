@@ -102,9 +102,11 @@ export class TrainComponent implements OnInit{
     const model = this.modelsService.createModel(this.dataLoader.getInputs().length,tensorData.labels.length,this.architectureSetup.getHiddenLayers());
     const xs = tensorData.inputs;
     
-    tensorData.outputs.print();
     const ys = tf.oneHot(tensorData.outputs,tensorData.labels.length);
-    const dataDivider = [Math.ceil((this.dataLoader.getTrainingPercentage() / 100) * this.dataLoader.getData().length)];
+    const left = Math.ceil((this.dataLoader.getTrainingPercentage() / 100) * this.dataLoader.getData().length);
+    const right = this.dataLoader.getData().length - left;
+    const dataDivider = [left,right];
+
     const [trainXs, testXs] = tf.split(xs,dataDivider);
     const [trainYs, testYs] = tf.split(ys,dataDivider);
 

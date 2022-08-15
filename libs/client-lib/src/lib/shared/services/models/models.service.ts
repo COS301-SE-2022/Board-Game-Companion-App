@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as tf from '@tensorflow/tfjs';
 import { layer } from '../../models/layer';
 import { optimizerArgs } from '../../models/optimizerArgs';
+import { user } from '../../models/user';
 
 
 @Injectable()
@@ -14,8 +15,13 @@ export class ModelsService {
     this.api = "http://localhost:3333/api/"
   }
 
-  uploadModel(model:tf.Sequential):Promise<tf.io.SaveResult>{
-    return model.save(this.api + "models/save-files");
+  alreadyStored(user:user,model:string): Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("userName",user.name);
+    param = param.set("userEmail",user.email);
+    param = param.set("modelName",model);
+
+    return this.httpClient.get<boolean>(this.api + "models/stored",{params: param})
   }
 
   uploadMetaData(name:string,created:Date,labels:any[],max:number[],min:number[]){
@@ -24,8 +30,6 @@ export class ModelsService {
 
 
   setLayer(nodes:number,activation:string,inputshape?:number[]){
-    
-    console.log(nodes);
     
     if(activation === "elu"){        
         return tf.layers.dense({
@@ -113,14 +117,13 @@ export class ModelsService {
     model.add(this.setLayer(layers[0].nodes,layers[0].activation,[inputs]))
 
     for(let count = 1; count < layers.length; count++){
-        model.add(this.setLayer(layers[0].nodes,layers[0].activation))
+        model.add(this.setLayer(layers[count].nodes,layers[count].activation))
     }
 
     model.add(tf.layers.dense({
         units: labels, 
         activation: 'softmax'
     }));
-
 
     return model;
   }
@@ -161,7 +164,6 @@ export class ModelsService {
             //normalizedInputs.print();
             const normalizedOutputs = outputTensor.sub(outputMinimum).div(outputMaximum.sub(outputMinimum));
             //normalizedOutputs.print();
-            console.log(labels);
             
             return { 
                 labels: labels,
@@ -201,8 +203,7 @@ export class ModelsService {
             loss: 'categoricalCrossentropy',
             metrics: ['accuracy']
         })
-        
-        
+          
         return model.fit(inputs,outputs,options);
     }
 

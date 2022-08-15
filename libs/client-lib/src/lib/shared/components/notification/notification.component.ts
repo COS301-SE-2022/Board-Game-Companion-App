@@ -12,7 +12,7 @@ export class NotificationComponent implements OnInit {
   notifications:notification[] = [];
 
   ngOnInit(): void {    
-    console.log("notification");
+    this.notifications = [];
   }
 
   add(value:notification): void{
@@ -20,9 +20,7 @@ export class NotificationComponent implements OnInit {
   }
 
   pop(): void{
-    console.log("clear");
     this.notifications.pop();
-    console.log(this.notifications.length)
   }
 }
 

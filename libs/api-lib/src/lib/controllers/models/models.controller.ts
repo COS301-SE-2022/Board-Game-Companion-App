@@ -1,15 +1,26 @@
-import { Controller, Post, Body,Get, UseInterceptors, UploadedFiles  } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query  } from '@nestjs/common';
 import { ModelsService } from '../../services/models/models.service';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FormDataRequest, MemoryStoredFile } from 'nestjs-form-data';
+import fs = require("fs");
+import { user } from '../../models/general/user';
 
 @Controller('models')
 export class ApiModelsController {
     constructor(private readonly modelsService:ModelsService){}
 
-    @Post('save-files')
-    @UseInterceptors(FilesInterceptor('files'))
-    uploadFile(@UploadedFiles() files:any){
-      console.log(files);
+    @Post('upload')
+    @FormDataRequest()
+    uploadFile(@Body('model.json')model:MemoryStoredFile,@Body('model.weights.bin')weights:MemoryStoredFile){
+      fs.writeFileSync('templates/' + model.originalName,model.buffer);
+      fs.writeFileSync('templates/' + weights.originalName,weights.buffer);
+      return {success:true}
+    }
+
+    @Get('stored')
+    alreadyStored(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('modelName')modelName:string):boolean{
+      const user:user = {name:userName,email:userEmail};
+
+      return false;
     }
 
 }

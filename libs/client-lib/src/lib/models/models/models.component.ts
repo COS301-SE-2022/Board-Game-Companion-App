@@ -13,12 +13,12 @@ import { GeneralComponent } from '../general/general.component';
 })
 export class ModelsComponent implements OnInit {
   tab = 0;
-  @ViewChild(GeneralComponent,{static:true}) general: GeneralComponent = new GeneralComponent(this.modelService);
+  @ViewChild(GeneralComponent,{static:false}) general: GeneralComponent = new GeneralComponent(this.modelService);
 
   constructor(private readonly modelService:ModelsService){}
 
   ngOnInit(): void{
-    console.log("models")
+    this.tab = 0;
   }
 
   changeTab(value:number): void{

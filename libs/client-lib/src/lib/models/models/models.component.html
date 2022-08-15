@@ -14,8 +14,8 @@
             </div>
             
             <div class="col-md-10 px-4">
-                <board-game-companion-app-train (trainEvent)="train($event)" *ngIf = "tab === 1"></board-game-companion-app-train>
-                <board-game-companion-app-general  *ngIf = "tab === 0"></board-game-companion-app-general>
+                <board-game-companion-app-general [ngClass] = "{'hidden':tab !== 0}"></board-game-companion-app-general>
+                <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
             </div>
         </div>
     </div>

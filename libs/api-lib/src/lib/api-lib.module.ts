@@ -19,6 +19,7 @@ import { ApiModelsController } from './controllers/models/models.controller';
 import { ModelsService } from './services/models/models.service';
 import { HttpModule } from '@nestjs/axios';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
   imports:[
@@ -28,7 +29,7 @@ import { LocalStorageService } from './services/local-storage/local-storage.serv
                                 {name:Rating.name,schema:RatingSchema},
                                 {name:Like.name,schema:LikeSchema}
                               ]),
-                              HttpModule
+                              HttpModule,NestjsFormDataModule
   ],
   controllers: [
     CollectionsController,

@@ -1,4 +1,4 @@
-<div class="model-block w-full shadow-sm text-white p-2">
+<div class="model-block w-full shadow-sm text-white p-2 mt-2">
     <div class = "mb-4">
         <label for="data-partition" class="form-label font-medium"><b>Optimizer</b></label>
         <div class = "row p-2">
@@ -60,11 +60,11 @@
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Learning rate </label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Decay rate</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "rho" name = "rho" id="rho" placeholder="Decay rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "rho" name = "rho" id="rho" placeholder="Decay rate">
                         </div>
                     </div>
                 </div>
@@ -73,11 +73,11 @@
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                         </div>
                         <div class="mb-3">
                             <label for="accumulator" class="form-label">Initial Accumulator Value</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "initialAccumulatorValue" name = "initialAccumulatorValue" id="initialAccumulatorValue" placeholder="Initial Accumulator Value">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "initialAccumulatorValue" name = "initialAccumulatorValue" id="initialAccumulatorValue" placeholder="Initial Accumulator Value">
                         </div>
                     </div>
                 </div>
@@ -86,25 +86,25 @@
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="Decay" class="form-label">Learning rate</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                         </div>
                         <div class="mb-3">
                             <label for="Decay" class="form-label">Decay</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
                         </div>
                         <div class="mb-3">
                             <label for="epsilon" class="form-label">Epsilon</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
                         </div>
                     </div>
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="beta" class="form-label">Beta 1</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta1" name="beta1" id="beta1" placeholder="Beta1">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta1" name="beta1" id="beta1" placeholder="Beta1">
                         </div>
                         <div class="mb-3">
                             <label for="beta" class="form-label">Beta2</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta2" name="beta2" id="Beta2" placeholder="Beta2">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta2" name="beta2" id="Beta2" placeholder="Beta2">
                         </div>
                     </div>
                 </div>
@@ -113,11 +113,11 @@
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                         </div>
                         <div class="mb-3">
                             <label for="momentum" class="form-label">Momentum <strong>*</strong></label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
                         </div>
                         <div class="form-check">
                             <input [(ngModel)] = "useNesterov" class="form-check-input" type="checkbox" name="useNesterov" id="useNesterov" [checked] = "useNesterov">
@@ -133,21 +133,21 @@
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                         </div>
                         <div class="mb-3">
                             <label for="decay" class="form-label">Decay</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
                         </div>
                     </div>
                     <div class = "col-sm-6">
                         <div class="mb-3">
                             <label for="momentum" class="form-label">Momentum</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
                         </div>
                         <div class="mb-3">
                             <label for="epsilon" class="form-label">Epsilon</label>
-                            <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
                         </div>
                     </div>
                     
@@ -165,7 +165,7 @@
                 <div id = "sgd" *ngIf = "optimizer === 6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Learning rate <strong>*</strong></label>
-                        <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
         <div class = "w-full mt-4">
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label"><b>Neural network name</b></label>
-                <input type="text" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "name" name = "name" id="name" placeholder="name">
+                <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "name" name = "name" id="name" placeholder="name">
             </div>
         </div>
 
