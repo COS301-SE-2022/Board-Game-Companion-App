@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
 import * as tokensStore from '../../models/general/tokens';
 import { entity } from '../../models/general/entity';
+import { throwError } from 'rxjs';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
 
@@ -343,10 +344,23 @@ export class CompilerService {
     }
 
     scanHelper(input:string):chevrotain.ILexingResult{
+         const bannedTokens = ["window","var","console","document","eval"];
          const tokens:chevrotain.TokenType[] = tokensStore.AllTokens; 
          const lexer = new chevrotain.Lexer(tokens);
+
+         const Tokenized = lexer.tokenize(input);
+
         
-        return lexer.tokenize(input);
+        const isBanned = Tokenized.tokens.filter((value)=>{
+            return bannedTokens.includes(value.image);
+        });
+
+        if(isBanned)
+        {
+            throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
+        }
+
+        return Tokenized;
     }
 
     scan(input:string):lexerResult{
