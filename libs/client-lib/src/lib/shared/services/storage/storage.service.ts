@@ -102,7 +102,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
@@ -145,7 +148,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
@@ -185,7 +191,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
@@ -228,7 +237,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
@@ -266,7 +278,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
@@ -304,7 +319,10 @@ export class StorageService{
         reject('Failed to open database.');
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
-          functionality(resolve,reject);
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
         },this.waitTime)
       }else{
         functionality(resolve,reject);
