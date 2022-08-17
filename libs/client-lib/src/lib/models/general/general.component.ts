@@ -22,10 +22,11 @@ interface progressTracker{
 export class GeneralComponent implements OnInit {
   networks:neuralnetwork[] = [];
   progress:progressTracker[] = [];
-  months: string[] = []
-  uploadPossible: string[] = []
+  months: string[] = [];
+  uploadPossible: string[] = [];
+  uploading: string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
-
+  
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){
     const modelsInfo = localStorage.getItem("models");
 
@@ -38,8 +39,10 @@ export class GeneralComponent implements OnInit {
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
     this.storageService.getAll("networks").then((value:any)=>{
-
       value.forEach((network:any)=>{
+        console.log(network.min);
+        console.log(network.max);
+      
         const temp:neuralnetwork = {
           created: network.created,
           accuracy: network.accuracy,
@@ -48,8 +51,8 @@ export class GeneralComponent implements OnInit {
             labels: network.labels,
             name: network.name,
             type: network.type,
-            min: network.min,
-            max: network.max
+            min: tf.tensor(network.min),
+            max: tf.tensor(network.max)
           }
         }
         this.networks.push(temp);
@@ -91,8 +94,8 @@ export class GeneralComponent implements OnInit {
                 accuracy: this.networks[count].accuracy,
                 type: this.networks[count].setup.type,
                 labels: this.networks[count].setup.labels,
-                min: this.networks[count].setup.min.dataSync(),
-                max: this.networks[count].setup.max.dataSync()
+                min: Array.from(this.networks[count].setup.min.dataSync()),
+                max: Array.from(this.networks[count].setup.max.dataSync())
               });
 
               await this.networks[count].setup.model?.save('indexeddb://' + this.networks[count].setup.name);
@@ -203,17 +206,16 @@ export class GeneralComponent implements OnInit {
       
       const minimum = Array.from(network.setup.min.dataSync());
       const maximum = Array.from(network.setup.max.dataSync());
-      
+
       model.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.setup.name}&created=${network.created?.toString()}&accuracy=${network.accuracy}&loss=${network.loss}&type=${network.setup.type}&labels=${JSON.stringify(network.setup.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
       then((value:tf.io.SaveResult) => {
-        this.uploadPossible.filter((value:string)=> value !== network.setup.name)
-        this.notifications.add({type:"success",message:`${network.setup.name} was successfully uploaded.`});   
+        this.notifications.add({type:"success",message:`${network.setup.name} was successfully uploaded.`}); 
       }).catch(()=>{
         this.notifications.add({type:"danger",message:`Failed to upload ${network.setup.name}`})
       })
     
     }catch(error){
-      this.notifications.add({type:"danger",message:`Failed to upload model '${network.setup.name}'. Could not find on local storage`})
+      this.notifications.add({type:"danger",message:`Failed to upload model '${network.setup.name}'. Could not find in local storage`})
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { ModelsService } from '../../shared/services/models/models.service';
+import { user } from '../../shared/models/user';
 
 @Component({
   selector: 'board-game-companion-app-configure',
@@ -154,8 +155,11 @@ export class ConfigureComponent implements OnInit {
   async train(): Promise<void>{
     if(!this.validate())
       return;
-    
-    const nameCheck = await this.modelService.modelAreadyExists(this.name);
+    const user:user = {
+      name: sessionStorage.getItem("name") as string,
+      email: sessionStorage.getItem("email") as string
+    }
+    const nameCheck = await this.modelService.alreadyStored(user,this.name);
 
     if(nameCheck){
       this.notifications.add({type:"danger",message:`Model with name ${this.name} already exists.`})

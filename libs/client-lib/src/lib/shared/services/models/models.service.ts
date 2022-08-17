@@ -25,37 +25,6 @@ export class ModelsService {
     return this.httpClient.get<boolean>(this.api + "models/stored",{params: param})
   }
 
-
-  async modelAreadyExists(name:string): Promise<boolean>{
-    let result = false;
-
-    const temp = await this.storageService.getByIndex("networks","name",name);
-    
-    if(temp !== undefined && typeof(temp) !== "string"){
-        if(temp.name === name)
-            result = true;
-    }
-
-    if(!result){
-        return new Promise((resolve,reject) =>{
-            this.alreadyStored({
-                name: sessionStorage.getItem("name") as string,
-                email: sessionStorage.getItem("email") as string
-            },name).subscribe({
-                next: (value:boolean) => {
-                    resolve(value)
-                },
-                error:(err: any) => {
-                    reject(err)
-                }
-            })
-        })
-    }
-
-    return result;
-}
-
-
   setLayer(nodes:number,activation:string,inputshape?:number[]){
     
     if(activation === "elu"){        

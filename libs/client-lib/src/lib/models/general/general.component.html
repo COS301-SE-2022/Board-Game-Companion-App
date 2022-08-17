@@ -5,7 +5,7 @@
         <label for="neural-network" class="form-label font-medium"><b>Neural Networks</b></label>
     </div>
     
-    <div class = " border-2 pt-2 mb-4 text-xs" *ngFor = "let network of networks">
+    <div class = " border-2 py-1 mb-4 text-xs" *ngFor = "let network of networks">
         <div class = "row">
             <div class = "col-sm-3">
                 {{network.setup.name}}
@@ -25,21 +25,15 @@
                     </div>
                 </div>
             </div>
-            <div class = "col-sm-4">
+            <div class = "col-sm-5">
                 <div class = "flex text-xs" [ngClass] = "{'flex-col':network.created === undefined,'flex-row':network.created !== undefined}">
                     <div>Loss: <span class = "data-values">{{network.loss?.toFixed(4)}}</span></div>
                     <div [ngClass] = "{'mt-2':network.created === undefined,'ml-2':network.created !== undefined}">Accuracy: <span class = "data-values">{{network.accuracy?.toFixed(2)}}</span></div>
                 </div>
             </div>
-            <div class = "col-sm-2 text-center flex flex-row gap-2">
-                <button class="hover:scale-110 p-1" data-toggle="modal">
-                    <i class="fas fa-sync" data-toggle="tooltip" title="sync"></i>
-                </button>
-                <button class="hover:scale-110 p-1" data-toggle="modal">
+            <div class = "col-sm-1 text-center">
+                <button class="hover:scale-110 hover:text-red-800" data-toggle="modal">
                     <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
-                </button>
-                <button (click) = "upload(network)" class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "uploadPossible.includes(network.setup.name)">
-                    <i class="fas fa-upload" data-toggle="tooltip" title="upload"></i>
                 </button>
             </div>
         </div>
