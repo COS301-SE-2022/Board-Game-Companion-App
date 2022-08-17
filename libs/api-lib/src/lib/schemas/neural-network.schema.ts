@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { file } from '../models/general/files';
 import { user } from '../models/general/user';
 
 export type NeuralNetworkDocument = NeuralNetwork & Document;
@@ -32,6 +33,12 @@ export class NeuralNetwork{
 
     @Prop()
     max: number[];
+
+    @Prop({required:true,type:{name:"",key:"",location:""}})
+    model: file;
+
+    @Prop({required:true,type:{name:"",key:"",location:""}})
+    weights: file;
 }
 
 export const NeuralNetworkSchema = SchemaFactory.createForClass(NeuralNetwork);

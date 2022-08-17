@@ -7,6 +7,7 @@ import { neuralnetworkDto } from '../../models/dto/neuralnetworkDto';
 import { MemoryStoredFile } from 'nestjs-form-data';
 import fs = require("fs");
 import { LocalStorageService } from '../local-storage/local-storage.service'
+import { upload } from '../../models/general/upload';
 
 @Injectable()
 export class ModelsService {
@@ -24,14 +25,23 @@ export class ModelsService {
             type: type,
             labels: labels,
             min: min,
-            max: max
+            max: max,
+            model: {name:model.originalName,key:"",location:""},
+            weights: {name:weights.originalName,key:"",location:""}
         }
         
         const createdNetwork = new this.networkModel(dto);
         const result:NeuralNetworkDocument = await createdNetwork.save();
-        this.storageService.upload(model.originalName,"models/" + result._id + "/meta/",model.buffer);
-        this.storageService.upload(weights.originalName,"models/" + result._id + "/weights/",weights.buffer);
+        const savedModel:upload = await this.storageService.upload(model.originalName,"models/" + result._id + "/",model.buffer);
+        const savedWeights:upload = await this.storageService.upload(weights.originalName,"models/" + result._id + "/",weights.buffer);
         
+        result.model.key = savedModel.key;
+        result.model.location = savedModel.location;
+
+        result.weights.key = savedWeights.key;
+        result.weights.location = savedWeights.location;
+        result.save();
+
         return result;
     }
 

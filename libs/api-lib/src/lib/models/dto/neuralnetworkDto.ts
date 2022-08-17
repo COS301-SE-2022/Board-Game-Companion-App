@@ -1,3 +1,4 @@
+import { file } from '../general/files';
 import { user } from '../general/user';
 
 
@@ -11,4 +12,6 @@ export interface neuralnetworkDto{
     labels: string[];
     min: number[];
     max: number[];
+    model: file;
+    weights: file;
 }
