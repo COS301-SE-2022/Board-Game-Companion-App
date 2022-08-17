@@ -4,27 +4,13 @@ import * as tf from '@tensorflow/tfjs';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import { user } from '../../shared/models/user';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 interface progressTracker{
   name: string;
   trainProgress: number;
   testProgress: number;
 }
-
-// class handler implements tf.io.IOHandler{
-//   save: tf.io.SaveHandler = async(modelArtifacts:tf.io.ModelArtifacts)=>{
-//     const result:tf.io.SaveResult = {
-//       modelArtifactsInfo: tf.io.getModelArtifactsInfoForJSON(modelArtifacts),
-//       responses: []
-//     };
-
-//     return result;
-//   }
-
-//   load: tf.io.LoadHandler = async()=>{
-
-//   }
-// }
 
 @Component({
   selector: 'board-game-companion-app-general',
@@ -38,7 +24,7 @@ export class GeneralComponent implements OnInit {
   months: string[] = []
   uploadPossible: string[] = []
 
-  constructor(private readonly modelService:ModelsService){
+  constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){
     const modelsInfo = localStorage.getItem("models");
 
     if(modelsInfo !== null){
@@ -48,6 +34,26 @@ export class GeneralComponent implements OnInit {
 
   ngOnInit(): void{
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    
+    this.storageService.getAll("networks").then((value:any)=>{
+      //console.log(value)
+
+      value.forEach((network:any)=>{
+        this.networks.push({
+          created: network.created,
+          accuracy: network.accuracy,
+          loss: network.loss,
+          setup: {
+            labels: network.labels,
+            name: network.name,
+            type: network.type,
+            min: network.min,
+            max: network.max
+          }
+        })
+      })
+    })
+  
   }
 
   async train(setup:modelData){
@@ -58,7 +64,7 @@ export class GeneralComponent implements OnInit {
       testProgress: 0
     })
 
-    await this.modelService.train(setup.model,setup.trainXs,setup.trainYs,setup.optimizer,{
+    await this.modelService.train(setup.model as tf.Sequential,setup.trainXs as tf.Tensor,setup.trainYs as tf.Tensor,setup.optimizer as tf.Optimizer,{
       epochs: setup.epochs,
       shuffle: true,
       callbacks:{
@@ -74,6 +80,20 @@ export class GeneralComponent implements OnInit {
               }
 
               this.networks[count].created = new Date();
+
+              this.storageService.insert("networks",{
+                name: this.networks[count].setup.name,
+                created: this.networks[count].created,
+                loss: this.networks[count].loss,
+                accuracy: this.networks[count].accuracy,
+                type: this.networks[count].setup.type,
+                labels: this.networks[count].setup.labels,
+                min: this.networks[count].setup.min.dataSync(),
+                max: this.networks[count].setup.max.dataSync()
+              });
+
+              await this.networks[count].setup.model?.save('indexeddb://' + this.networks[count].setup.name);
+
               this.alreadyStored(this.networks[count]);
 
               break;
@@ -83,7 +103,7 @@ export class GeneralComponent implements OnInit {
         onEpochEnd:(epochs,logs)=>{
           for(let count = 0; count < this.progress.length; count++){
             if(this.progress[count].name === setup.name){
-              const max = setup.epochs;
+              const max = setup.epochs as number;
               this.progress[count].trainProgress = Math.ceil((epochs / max) * 100);
               break;
             }
@@ -109,9 +129,9 @@ export class GeneralComponent implements OnInit {
 
   async test(network:neuralnetwork,tracker:progressTracker): Promise<number>{
     return new Promise((resolve)=>{
-      const len = network.setup.testXs.shape[0];
-      const testXs = network.setup.testXs.split(len,0);
-      const testYs = network.setup.testYs.split(len,0);
+      const len = network.setup.testXs?.shape[0] as number;
+      const testXs = network.setup.testXs?.split(len,0) as unknown as tf.Tensor[];
+      const testYs = network.setup.testYs?.split(len,0) as unknown as tf.Tensor[];
       let result:tf.Tensor;
       let correct = 0;
       tracker.testProgress = 0;
@@ -119,7 +139,7 @@ export class GeneralComponent implements OnInit {
 
       const timer = window.setInterval(()=>{
         if(count < len){
-          result = network.setup.model.predict(testXs[count]) as tf.Tensor;
+          result = network.setup.model?.predict(testXs[count]) as tf.Tensor;
 
           console.log("==============================");
           result.print();

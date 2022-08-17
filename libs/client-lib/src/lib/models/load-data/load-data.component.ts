@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 @Component({
   selector: 'board-game-companion-app-load-data',
@@ -18,6 +19,10 @@ export class LoadDataComponent implements OnInit {
   analysis:string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   @Output()checkEvent = new EventEmitter();
+
+  constructor(private readonly storageService:StorageService){
+
+  }
 
   ngOnInit(): void{
     this.trainingData = 80;
@@ -264,29 +269,25 @@ export class LoadDataComponent implements OnInit {
   }
 
   analyse():void{
-    this.analysis = [];
+    // this.analysis = [];
     
-    if(this.preCheckData()){
-      if(this.fileType === "application/json")
-        this.cleanJsonData();
-      else
-        this.cleanCsvData();
+    // if(this.preCheckData()){
+    //   if(this.fileType === "application/json")
+    //     this.cleanJsonData();
+    //   else
+    //     this.cleanCsvData();
 
-      const removed = this.dataStore.length - this.data.length;
-      this.analysis.push("Removed " + removed + " invalid data " + (removed === 1 ? "entry":"entries"))
-      this.analysis.push("Total data: " + this.data.length.toString());
-      this.analysis.push("Total trainings data: " + Math.ceil((this.trainingData / 100) * this.data.length));
-      this.analysis.push("Total testing data: " + Math.floor(((100 - this.trainingData) / 100) * this.data.length));
-    }
-
-    
-    // const init = {
-    //   method: "POST",
-    //   body: new FormData()
+    //   const removed = this.dataStore.length - this.data.length;
+    //   this.analysis.push("Removed " + removed + " invalid data " + (removed === 1 ? "entry":"entries"))
+    //   this.analysis.push("Total data: " + this.data.length.toString());
+    //   this.analysis.push("Total trainings data: " + Math.ceil((this.trainingData / 100) * this.data.length));
+    //   this.analysis.push("Total testing data: " + Math.floor(((100 - this.trainingData) / 100) * this.data.length));
     // }
 
-    // init.body.append('model.json','hello world!');
-
-    // fetch("http://localhost:3333/api/models/upload",init).then((value)=>value.json()).then((data)=>console.log(data));
+    this.storageService.getByIndex("person","email","u18166793@tuks.co.za").then((value:any)=>{
+      console.log(value);
+    }).catch((value:any)=>{
+      console.log(value);
+    })
   }
 }

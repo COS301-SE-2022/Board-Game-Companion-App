@@ -5,13 +5,14 @@ import * as tf from '@tensorflow/tfjs';
 import { layer } from '../../models/layer';
 import { optimizerArgs } from '../../models/optimizerArgs';
 import { user } from '../../models/user';
+import { StorageService } from '../storage/storage.service';
 
 
 @Injectable()
 export class ModelsService {
   private api = "";
 
-  constructor(private readonly httpClient:HttpClient){
+  constructor(private readonly httpClient:HttpClient,private readonly storageService:StorageService){
     this.api = "http://localhost:3333/api/"
   }
 
@@ -24,9 +25,35 @@ export class ModelsService {
     return this.httpClient.get<boolean>(this.api + "models/stored",{params: param})
   }
 
-  uploadMetaData(name:string,created:Date,labels:any[],max:number[],min:number[]){
-      //return this.httpClient.post<>(this.api + "models/")
-  }
+
+  async modelAreadyExists(name:string): Promise<boolean>{
+    let result = false;
+
+    const temp = await this.storageService.getByIndex("networks","name",name);
+    
+    if(temp !== undefined && typeof(temp) !== "string"){
+        if(temp.name === name)
+            result = true;
+    }
+
+    if(!result){
+        return new Promise((resolve,reject) =>{
+            this.alreadyStored({
+                name: sessionStorage.getItem("name") as string,
+                email: sessionStorage.getItem("email") as string
+            },name).subscribe({
+                next: (value:boolean) => {
+                    resolve(value)
+                },
+                error:(err: any) => {
+                    reject(err)
+                }
+            })
+        })
+    }
+
+    return result;
+}
 
 
   setLayer(nodes:number,activation:string,inputshape?:number[]){

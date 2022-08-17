@@ -8,6 +8,7 @@ import { ArchitectureComponent } from '../architecture/architecture.component';
 import { ConfigureComponent } from '../configure/configure.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { modelData } from '../../shared/models/modelData';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 @Component({
   selector: 'board-game-companion-app-train',
@@ -17,9 +18,9 @@ import { modelData } from '../../shared/models/modelData';
 })
 export class TrainComponent implements OnInit{
   @Output()trainEvent = new EventEmitter<modelData>();
-  @ViewChild(LoadDataComponent,{static:false}) dataLoader: LoadDataComponent = new LoadDataComponent();
+  @ViewChild(LoadDataComponent,{static:false}) dataLoader: LoadDataComponent = new LoadDataComponent(this.storageService);
   @ViewChild(ArchitectureComponent,{static:false}) architectureSetup: ArchitectureComponent = new ArchitectureComponent();
-  @ViewChild(ConfigureComponent,{static:false}) configuration: ConfigureComponent = new ConfigureComponent();
+  @ViewChild(ConfigureComponent,{static:false}) configuration: ConfigureComponent = new ConfigureComponent(this.modelsService);
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   enableArchitecture = false;
   enableConfigure = false;
@@ -27,7 +28,7 @@ export class TrainComponent implements OnInit{
   step = 0;
   timer = 0;
 
-  constructor(private readonly modelsService:ModelsService){}
+  constructor(private readonly modelsService:ModelsService,private readonly storageService:StorageService){}
 
   ngOnInit(): void{
     this.step = 0;

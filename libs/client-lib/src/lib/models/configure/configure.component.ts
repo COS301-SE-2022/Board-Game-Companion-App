@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { ModelsService } from '../../shared/services/models/models.service';
 
 @Component({
   selector: 'board-game-companion-app-configure',
@@ -24,6 +25,8 @@ export class ConfigureComponent implements OnInit {
   centered = false;
   epochs = 32;
   type = "classification"
+
+  constructor(private readonly modelService:ModelsService){}
 
   ngOnInit(): void{
     this.epochs = 32;
@@ -141,16 +144,23 @@ export class ConfigureComponent implements OnInit {
     }
 
     if(this.getMomentum() !== "" && isNaN(parseFloat(this.getMomentum())) === true ){
-      this.notifications.add({type:"danger",message:"Momentum must be a number"});
+      this.notifications.add({type:"danger",message:"Momentum must be a number."});
       result = false;
     }
 
     return result;
   }
 
-  train(): void{
+  async train(): Promise<void>{
     if(!this.validate())
       return;
+    
+    const nameCheck = await this.modelService.modelAreadyExists(this.name);
+
+    if(nameCheck){
+      this.notifications.add({type:"danger",message:`Model with name ${this.name} already exists.`})
+      return;
+    }
 
     let result = true;
 
