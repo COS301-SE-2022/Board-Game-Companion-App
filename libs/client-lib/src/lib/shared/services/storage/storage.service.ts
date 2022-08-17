@@ -6,6 +6,7 @@ export class StorageService{
   private supported  = true;
   private openFailure = false;
   private openSuccess = false;
+  private waitTime = 2000;
   private database = "board-game-companion-database";
   private db!:IDBDatabase;
   private stores:objectStore[] = [{
@@ -102,7 +103,7 @@ export class StorageService{
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
           functionality(resolve,reject);
-        },2000)
+        },this.waitTime)
       }else{
         functionality(resolve,reject);
       }
@@ -145,7 +146,7 @@ export class StorageService{
       }else if(!this.openSuccess){
         window.setTimeout(()=>{
           functionality(resolve,reject);
-        },2000)
+        },this.waitTime)
       }else{
         functionality(resolve,reject);
       }      
@@ -153,7 +154,7 @@ export class StorageService{
   }
 
   getById(storeName:string,id:any):Promise<any>{
-    return new Promise((resolve,reject) => {
+    const functionality = (resolve:any,reject:any) => {
       let found = false;
 
       this.stores.forEach((value:objectStore) => {
@@ -177,11 +178,23 @@ export class StorageService{
           resolve(query.result);
         }
       }
+    }
+    
+    return new Promise((resolve,reject) => {
+      if(this.openFailure){
+        reject('Failed to open database.');
+      }else if(!this.openSuccess){
+        window.setTimeout(()=>{
+          functionality(resolve,reject);
+        },this.waitTime)
+      }else{
+        functionality(resolve,reject);
+      }         
     })
   }
 
   getAll(storeName:string): Promise<any>{
-    return new Promise((resolve,reject) => {
+    const functionality = (resolve:any,reject:any) => {
       let found = false;
 
       this.stores.forEach((value:objectStore) => {
@@ -208,11 +221,23 @@ export class StorageService{
             resolve(result);
         }
       }
+    }
+
+    return new Promise((resolve,reject) => {
+      if(this.openFailure){
+        reject('Failed to open database.');
+      }else if(!this.openSuccess){
+        window.setTimeout(()=>{
+          functionality(resolve,reject);
+        },this.waitTime)
+      }else{
+        functionality(resolve,reject);
+      }
     })  
   }
 
   update(storeName:string,record:any,key?:any): Promise<string>{
-    return new Promise((resolve,reject) => {
+    const functionality = (resolve:any,reject:any) => {
       let found = false;
 
       for(let count = 0; count < this.stores.length && !found; count++){
@@ -234,11 +259,23 @@ export class StorageService{
           resolve("Okay");
         }
       }
+    }
+    
+    return new Promise((resolve,reject) => {
+      if(this.openFailure){
+        reject('Failed to open database.');
+      }else if(!this.openSuccess){
+        window.setTimeout(()=>{
+          functionality(resolve,reject);
+        },this.waitTime)
+      }else{
+        functionality(resolve,reject);
+      }
     })
   }
 
   remove(storeName:string,key?:any): Promise<string>{
-    return new Promise((resolve,reject) => {
+    const functionality = (resolve:any,reject:any) => {
       let found = false;
 
       for(let count = 0; count < this.stores.length && !found; count++){
@@ -259,6 +296,18 @@ export class StorageService{
         query.onsuccess = (ev:any) => {
           resolve("Okay");
         }
+      }
+    }
+
+    return new Promise((resolve,reject) => {
+      if(this.openFailure){
+        reject('Failed to open database.');
+      }else if(!this.openSuccess){
+        window.setTimeout(()=>{
+          functionality(resolve,reject);
+        },this.waitTime)
+      }else{
+        functionality(resolve,reject);
       }
     })
   }
