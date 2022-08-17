@@ -25,13 +25,11 @@ export class StorageService{
 
     request.onerror = (ev:any) => {
       this.openFailure = true;
-      console.log("error")
     }
 
     request.onsuccess = (ev:any) => {
       this.openSuccess = true;
       this.db = ev.target.result;
-      console.log("openned")
     }
 
     request.onupgradeneeded = (ev:any) => {
