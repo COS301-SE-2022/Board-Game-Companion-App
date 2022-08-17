@@ -38,10 +38,12 @@
                 <button class="hover:scale-110 p-1" data-toggle="modal">
                     <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                 </button>
-                <button class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "uploadPossible.includes(network.setup.name)">
+                <button (click) = "upload(network)" class="hover:scale-110 p-1" data-toggle="modal" *ngIf = "uploadPossible.includes(network.setup.name)">
                     <i class="fas fa-upload" data-toggle="tooltip" title="upload"></i>
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

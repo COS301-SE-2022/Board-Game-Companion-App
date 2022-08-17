@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { modelData } from '../../shared/models/modelData';
 import * as tf from '@tensorflow/tfjs';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { neuralnetwork } from '../../shared/models/neuralnetwork';
 import { user } from '../../shared/models/user';
 import { StorageService } from '../../shared/services/storage/storage.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 interface progressTracker{
   name: string;
@@ -23,6 +24,7 @@ export class GeneralComponent implements OnInit {
   progress:progressTracker[] = [];
   months: string[] = []
   uploadPossible: string[] = []
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){
     const modelsInfo = localStorage.getItem("models");
@@ -36,10 +38,9 @@ export class GeneralComponent implements OnInit {
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
     this.storageService.getAll("networks").then((value:any)=>{
-      //console.log(value)
 
       value.forEach((network:any)=>{
-        this.networks.push({
+        const temp:neuralnetwork = {
           created: network.created,
           accuracy: network.accuracy,
           loss: network.loss,
@@ -50,7 +51,9 @@ export class GeneralComponent implements OnInit {
             min: network.min,
             max: network.max
           }
-        })
+        }
+        this.networks.push(temp);
+        this.alreadyStored(temp);
       })
     })
   
@@ -187,5 +190,30 @@ export class GeneralComponent implements OnInit {
         console.log(e);
       }
     })
+  }
+
+
+  async upload(network:neuralnetwork): Promise<void>{
+    try{
+      const model = await tf.loadLayersModel('indexeddb://' + network.setup.name);
+      const user:user = {
+        name: sessionStorage.getItem("name") as string,
+        email: sessionStorage.getItem("email") as string
+      }
+      
+      const minimum = Array.from(network.setup.min.dataSync());
+      const maximum = Array.from(network.setup.max.dataSync());
+      
+      model.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.setup.name}&created=${network.created?.toString()}&accuracy=${network.accuracy}&loss=${network.loss}&type=${network.setup.type}&labels=${JSON.stringify(network.setup.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
+      then((value:tf.io.SaveResult) => {
+        this.uploadPossible.filter((value:string)=> value !== network.setup.name)
+        this.notifications.add({type:"success",message:`${network.setup.name} was successfully uploaded.`});   
+      }).catch(()=>{
+        this.notifications.add({type:"danger",message:`Failed to upload ${network.setup.name}`})
+      })
+    
+    }catch(error){
+      this.notifications.add({type:"danger",message:`Failed to upload model '${network.setup.name}'. Could not find on local storage`})
+    }
   }
 }
