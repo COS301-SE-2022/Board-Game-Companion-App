@@ -36,7 +36,7 @@ export class ApiModelsController {
       }catch(error){
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
       }
-      
+
       return this.modelsService.create(
                                         model,
                                         weights,
@@ -53,10 +53,8 @@ export class ApiModelsController {
     }
 
     @Get('stored')
-    alreadyStored(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('modelName')modelName:string):boolean{
-      const user:user = {name:userName,email:userEmail};
-
-      return false;
+    async alreadyStored(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('modelName')modelName:string):Promise<boolean>{
+      return this.modelsService.alreadExists({name:userName,email:userEmail},modelName);
     }
 
 }
