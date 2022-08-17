@@ -8,7 +8,7 @@ export interface neuralnetworkDto{
     accuracy: number;
     loss: number;
     type: string;
-    labels: number[];
+    labels: string[];
     min: number[];
     max: number[];
 }

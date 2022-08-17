@@ -25,7 +25,7 @@ export class NeuralNetwork{
     type: string;
 
     @Prop()
-    labels: number[];
+    labels: string[];
 
     @Prop()
     min: number[];
