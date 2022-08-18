@@ -232,7 +232,7 @@ export class EditorComponent implements OnInit{
       // code(console,model,input,inputGroup);
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
-          console.log(value)
+          //console.log(value)
 
           const code = new Function("console","model","input","inputGroup",value);
           code(console,model,input,inputGroup);
