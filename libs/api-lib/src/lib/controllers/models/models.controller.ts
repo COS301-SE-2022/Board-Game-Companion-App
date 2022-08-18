@@ -63,7 +63,7 @@ export class ApiModelsController {
     }
 
     @Delete('remove')
-    async removeScript(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('name')name:string){
+    async remove(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('name')name:string){
        return this.modelsService.remove({name:userName,email:userEmail},name); 
     }
 }

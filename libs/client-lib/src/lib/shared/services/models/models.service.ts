@@ -16,21 +16,39 @@ export class ModelsService {
     this.api = "http://localhost:3333/api/"
   }
 
-  alreadyStored(user:user,model:string): Observable<boolean>{
+  alreadyStored(model:string): Promise<boolean>{
     let param = new HttpParams();
-    param = param.set("userName",user.name);
-    param = param.set("userEmail",user.email);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
     param = param.set("modelName",model);
 
-    return this.httpClient.get<boolean>(this.api + "models/stored",{params: param})
+    return new Promise((resolve,reject) => {
+        this.httpClient.get<boolean>(this.api + "models/stored",{params: param}).subscribe({
+            next: (value:boolean) => {
+                resolve(value);
+            },
+            error: (error) => {
+                reject()
+            }
+        })
+    })
   }
 
-  getAll(user:user): Observable<any>{
+  getAll(): Observable<any>{
     let param = new HttpParams();
-    param = param.set("userName",user.name);
-    param = param.set("userEmail",user.email);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
 
     return this.httpClient.get<any>(this.api + "models/all",{params:param});
+  }
+
+  remove(name:string): Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
+    param = param.set("name",name); 
+
+    return this.httpClient.delete<boolean>(this.api + "models/remove",{params:param});
   }
 
 

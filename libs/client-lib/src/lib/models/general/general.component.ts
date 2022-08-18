@@ -35,13 +35,8 @@ export class GeneralComponent implements OnInit {
 
   ngOnInit(): void{
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    
-    const user:user = {
-      name: sessionStorage.getItem("name") as string,
-      email: sessionStorage.getItem("email") as string
-    }
 
-    this.modelService.getAll(user).subscribe({
+    this.modelService.getAll().subscribe({
       next:(value:any) => {
         value.forEach((sub:any) => {
           this.networks.push({
@@ -90,18 +85,7 @@ export class GeneralComponent implements OnInit {
 
               this.networks[count].created = new Date();
 
-              this.storageService.insert("networks",{
-                name: this.networks[count].setup.name,
-                created: this.networks[count].created,
-                loss: this.networks[count].loss,
-                accuracy: this.networks[count].accuracy,
-                type: this.networks[count].setup.type,
-                labels: this.networks[count].setup.labels,
-                min: Array.from(this.networks[count].setup.min.dataSync()),
-                max: Array.from(this.networks[count].setup.max.dataSync())
-              });
-
-              await this.networks[count].setup.model?.save('indexeddb://' + this.networks[count].setup.name);
+              this.upload(this.networks[count]);
 
               break;
             }
@@ -179,10 +163,25 @@ export class GeneralComponent implements OnInit {
     return result;
   }
 
+  remove(network:neuralnetwork): void{
+
+    this.modelService.remove(network.setup.name).subscribe({
+      next: (value:boolean) =>{
+        if(value){
+          this.notifications.add({type:"success",message: `Successfully removed ${network.setup.name}.`})
+          this.networks = this.networks.filter((value:neuralnetwork) => value.setup.name !== network.setup.name)
+        }else{
+          this.notifications.add({type:"warning",message:`Failed to remove ${network.setup.name}`})
+        }
+      },
+      error: (err) => {
+        this.notifications.add({type:"danger",message:`Failed to remove ${network.setup.name}.`})
+      }
+    })
+  }
 
   async upload(network:neuralnetwork): Promise<void>{
     try{
-      const model = await tf.loadLayersModel('indexeddb://' + network.setup.name);
       const user:user = {
         name: sessionStorage.getItem("name") as string,
         email: sessionStorage.getItem("email") as string
@@ -191,7 +190,7 @@ export class GeneralComponent implements OnInit {
       const minimum = Array.from(network.setup.min.dataSync());
       const maximum = Array.from(network.setup.max.dataSync());
 
-      model.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.setup.name}&created=${network.created?.toString()}&accuracy=${network.accuracy}&loss=${network.loss}&type=${network.setup.type}&labels=${JSON.stringify(network.setup.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
+      network.setup.model?.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.setup.name}&created=${network.created?.toString()}&accuracy=${network.accuracy}&loss=${network.loss}&type=${network.setup.type}&labels=${JSON.stringify(network.setup.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
       then((value:tf.io.SaveResult) => {
         this.notifications.add({type:"success",message:`${network.setup.name} was successfully uploaded.`}); 
       }).catch(()=>{

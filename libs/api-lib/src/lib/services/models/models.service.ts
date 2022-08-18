@@ -46,9 +46,9 @@ export class ModelsService {
     }
 
     async alreadExists(user:user,name:string):Promise<boolean>{
-        const value:NeuralNetwork = await this.networkModel.findOne({user:user,name:name});
-        
-        return value !== null;
+        const value:NeuralNetwork = await this.networkModel.findOne({"user.email":user.email,"name":name});
+    
+        return value !== null && value !== undefined;
     }
 
     async getAll(user:user):Promise<NeuralNetwork[]>{

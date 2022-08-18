@@ -155,11 +155,8 @@ export class ConfigureComponent implements OnInit {
   async train(): Promise<void>{
     if(!this.validate())
       return;
-    const user:user = {
-      name: sessionStorage.getItem("name") as string,
-      email: sessionStorage.getItem("email") as string
-    }
-    const nameCheck = await this.modelService.alreadyStored(user,this.name);
+
+    const nameCheck = await this.modelService.alreadyStored(this.name);
 
     if(nameCheck){
       this.notifications.add({type:"danger",message:`Model with name ${this.name} already exists.`})

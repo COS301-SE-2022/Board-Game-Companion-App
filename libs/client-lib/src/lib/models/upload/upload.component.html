@@ -9,7 +9,7 @@
     <div class = "mb-4">
         <div class="input-group">
             <input [(ngModel)] = "path" name = "path" type="text" class="form-control px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Text input with dropdown button">
-            <button style = "background-color:rgb(148,163,184)" class="btn dropdown-toggle border-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+            <button style = "background-color:rgb(148,163,184)" class="btn dropdown-toggle border-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Location</button>
             <ul class="dropdown-menu dropdown-menu-end overflow-hidden">
               <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 0}" (click)="changeLocation(0)">Internet</a></li>
               <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 1}" (click)="changeLocation(1)">IndexedDB</a></li>
