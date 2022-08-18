@@ -23,8 +23,6 @@ export class GeneralComponent implements OnInit {
   networks:neuralnetwork[] = [];
   progress:progressTracker[] = [];
   months: string[] = [];
-  uploadPossible: string[] = [];
-  uploading: string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){
@@ -38,26 +36,31 @@ export class GeneralComponent implements OnInit {
   ngOnInit(): void{
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
-    this.storageService.getAll("networks").then((value:any)=>{
-      value.forEach((network:any)=>{
-        console.log(network.min);
-        console.log(network.max);
-      
-        const temp:neuralnetwork = {
-          created: network.created,
-          accuracy: network.accuracy,
-          loss: network.loss,
-          setup: {
-            labels: network.labels,
-            name: network.name,
-            type: network.type,
-            min: tf.tensor(network.min),
-            max: tf.tensor(network.max)
-          }
-        }
-        this.networks.push(temp);
-        this.alreadyStored(temp);
-      })
+    const user:user = {
+      name: sessionStorage.getItem("name") as string,
+      email: sessionStorage.getItem("email") as string
+    }
+
+    this.modelService.getAll(user).subscribe({
+      next:(value:any) => {
+        value.forEach((sub:any) => {
+          this.networks.push({
+            created: sub.created,
+            loss: sub.loss,
+            accuracy: sub.accuracy,
+            setup: {
+              name: sub.name,
+              type: sub.type,
+              labels: sub.labels,
+              min: tf.tensor(sub.min),
+              max: tf.tensor(sub.max)     
+            }
+          })
+        })
+      },
+      error:(err:any) => {
+        console.log(err)
+      }
     })
   
   }
@@ -99,8 +102,6 @@ export class GeneralComponent implements OnInit {
               });
 
               await this.networks[count].setup.model?.save('indexeddb://' + this.networks[count].setup.name);
-
-              this.alreadyStored(this.networks[count]);
 
               break;
             }
@@ -176,23 +177,6 @@ export class GeneralComponent implements OnInit {
     }
 
     return result;
-  }
-
-  alreadyStored(network:neuralnetwork): void{
-    const user:user = {
-      name: sessionStorage.getItem("name") as string,
-      email: sessionStorage.getItem("email") as string
-    }
-
-    this.modelService.alreadyStored(user,network.setup.name).subscribe({
-      next:(value:boolean)=>{
-        if(!value)
-          this.uploadPossible.push(network.setup.name);
-      },
-      error:(e)=>{
-        console.log(e);
-      }
-    })
   }
 
 

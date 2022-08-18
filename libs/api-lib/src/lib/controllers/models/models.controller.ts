@@ -57,4 +57,9 @@ export class ApiModelsController {
       return this.modelsService.alreadExists({name:userName,email:userEmail},modelName);
     }
 
+    @Get('all')
+    async getAll(@Query('userName')name:string,@Query('userEmail')email:string):Promise<NeuralNetwork[]>{
+      return this.modelsService.getAll({name:name,email:email});
+    }
+
 }

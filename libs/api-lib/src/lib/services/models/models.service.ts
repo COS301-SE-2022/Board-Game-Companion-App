@@ -50,4 +50,8 @@ export class ModelsService {
         
         return value !== null;
     }
+
+    async getAll(user:user):Promise<NeuralNetwork[]>{
+        return this.networkModel.find({"user.email":user.email}).exec();
+    }
 }

@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { LoadDataComponent } from './load-data/load-data.component';
 import { ArchitectureComponent } from './architecture/architecture.component';
 import { ConfigureComponent } from './configure/configure.component';
+import { UploadComponent } from './upload/upload.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SharedModule } from '../shared/shared.module';
     TrainComponent,
     LoadDataComponent,
     ArchitectureComponent,
-    ConfigureComponent
+    ConfigureComponent,
+    UploadComponent
   ],
   imports: [
     CommonModule,

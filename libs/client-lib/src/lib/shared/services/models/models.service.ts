@@ -25,6 +25,15 @@ export class ModelsService {
     return this.httpClient.get<boolean>(this.api + "models/stored",{params: param})
   }
 
+  getAll(user:user): Observable<any>{
+    let param = new HttpParams();
+    param = param.set("userName",user.name);
+    param = param.set("userEmail",user.email);
+
+    return this.httpClient.get<any>(this.api + "models/all",{params:param});
+  }
+
+
   setLayer(nodes:number,activation:string,inputshape?:number[]){
     
     if(activation === "elu"){        
