@@ -39,9 +39,6 @@ class game_state
         
 let t1 = new tile()
 
-<<<<<<< HEAD
-let p1 = piece 
-=======
 t1 . Id = " '1'"
 let t2 = new tile()
 
@@ -67,7 +64,6 @@ t8 . Id = 8
 let t9 = new tile()
 
 t9 . Id = 9 
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
 //State
         
 
@@ -133,12 +129,6 @@ class crossAI extends player {
         "placeCross",
     ]
 
-<<<<<<< HEAD
-    async jump async ( async ) async { async } 
-
-    
-async jumpCond( ) { } 
-=======
      async placeCross ( t ) { let p = new piece() 
 p . Type = 0 
 let message =  'The ai places a cross in' + t . Id 
@@ -154,7 +144,6 @@ if ( t . pieces . length == 1 ) {
 ans = false 
 } 
 return ans } 
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
 
 
     params = []
@@ -208,11 +197,7 @@ break
 
             if(await this.considerations(i) == [])
             {
-<<<<<<< HEAD
-                if(await this.isActionLegal(i, []))
-=======
                 if(await this.isActionLegal(Actions[i], []))
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
                 {
                     choices.push(Actions[i])
                     this.params.push([])
@@ -225,15 +210,9 @@ break
                 {
                     
                     
-<<<<<<< HEAD
-                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
-                    {
-                        choices.push(i)
-=======
                     if(await this.isActionLegal(Actions[i], await this.considerations(i)[j]))
                     {
                         choices.push(Actions[i])
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
                         this.params.push(await this.considerations(i)[j])
 
                     }
@@ -250,12 +229,6 @@ await this.chooseAction ( c [ 0 ] , this . params [ 0 ] )
         "placeNaught",
     ]
 
-<<<<<<< HEAD
-    async shoot async ( async ) async { async } 
-
-    
-async shootCond( ) { } 
-=======
      async placeNaught ( t ) { let p = new piece() 
 p . Type = 1 
 t.pieces.push(p)
@@ -269,7 +242,6 @@ if ( t . pieces . length == 1 ) {
 ans = false 
 } 
 return ans } 
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
 
 
     params = []
@@ -323,11 +295,7 @@ break
 
             if(await this.considerations(i) == [])
             {
-<<<<<<< HEAD
-                if(await this.isActionLegal(i, []))
-=======
                 if(await this.isActionLegal(Actions[i], []))
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
                 {
                     choices.push(Actions[i])
                     this.params.push([])
@@ -340,15 +308,9 @@ break
                 {
                     
                     
-<<<<<<< HEAD
-                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
-                    {
-                        choices.push(i)
-=======
                     if(await this.isActionLegal(Actions[i], await this.considerations(i)[j]))
                     {
                         choices.push(Actions[i])
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
                         this.params.push(await this.considerations(i)[j])
 
                     }
@@ -433,14 +395,6 @@ class script
         }
         while(!await this.endgame())
 
-<<<<<<< HEAD
-        
-    }
-    
-    async endgame()
-    {
-=======
->>>>>>> 19c19bc3998a245ff69ca859862d7673a3124725
         
     }
     

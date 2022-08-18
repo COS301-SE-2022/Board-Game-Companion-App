@@ -181,23 +181,43 @@
             <div id="content-area" class = "col-sm-8">
                 <!--Data Types-->
                 <div *ngIf="isShown.dataType" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
                     <p class="mb-4">
-                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <!--tbody: text body-->
+                        <a id="tbody"> A classification that specifies which type of value a variable has.</a>
                         <br>
                         <br>
-                        <a id="syntax">Syntax</a>
-                        <a> Let *variable name* = *Data Type*</a>
-                        <a id="example"> Example</a>
-                        <a><img src="apps/client/src/assets/images/dataType.PNG"></a>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="tbody"> Let *variable name* = *Data Type*</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="apps\client\src\assets\images\dataType.PNG"></a>
                     </p>
                 </div>
 
                 <!--Declarations-->
                 <div *ngIf="isShown.declaration" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Title</h5>
-                    <p class="text-gray-700 text-base mb-4">
-                        Description
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Declarations</h5>
+                    <p class=" mb-4">
+                        
+                        <a id="tbody">a declaration determines the name and data type of a variable or other element. Programmers declare variables by writing the name of the variable into code, along with any data type indicators and other required syntax.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="tbody">let *variable name* = *Data Type* </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Example</a>
+                        <br>
+                        <br>
+                        <a><img src="apps\client\src\assets\images\dataType.PNG"></a>
                     </p>
                 </div>
 
