@@ -17,16 +17,16 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="VariablesSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#Variables">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Data Types</a>
+                                <li id="DataType" (click)="showType()" class="relative">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Data Types</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Declarations</a>
+                                <li id="Declaration" (click)="showDecl()" class="relative">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Declarations</a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="relative">
+                        <li class="relative" (click)="showOp()">
                             <a id = "OperatorsNav" class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#OperatorsSubNav" aria-expanded="true" aria-controls="OperatorsSubNav">
                                 <span>Operators</span>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -178,14 +178,71 @@
                 </div>
             </div>
 
-            <div class = "col-sm-8">
-                
-                <div class="block p-6 rounded-sm shadow-md h-full bg-white">
+            <div id="content-area" class = "col-sm-8">
+                <!--Data Types-->
+                <div *ngIf="isShown.dataType" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="syntax">Syntax</a>
+                        <a> Let *variable name* = *Data Type*</a>
+                        <a id="example"> Example</a>
+                        <a><img src="apps/client/src/assets/images/dataType.PNG"></a>
+                    </p>
+                </div>
+
+                <!--Declarations-->
+                <div *ngIf="isShown.declaration" class="block p-6 rounded-sm shadow-md h-full bg-white">
                     <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Title</h5>
                     <p class="text-gray-700 text-base mb-4">
                         Description
                     </p>
                 </div>
+
+                <!--Arithmetic Operator-->
+                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="syntax">Syntax</a>
+                        <a> Let *variable name* = *Data Type*</a>
+                        <a id="example"> Example</a>
+                        <a><img src="dataType.PNG"></a>
+                    </p>
+                </div>
+
+                <!--Logical Operator-->
+                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="syntax">Syntax</a>
+                        <a> Let *variable name* = *Data Type*</a>
+                        <a id="example"> Example</a>
+                        <a><img src="dataType.PNG"></a>
+                    </p>
+                </div>
+
+                <!--Conditional Operator-->
+                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="syntax">Syntax</a>
+                        <a> Let *variable name* = *Data Type*</a>
+                        <a id="example"> Example</a>
+                        <a><img src="dataType.PNG"></a>
+                    </p>
+                </div>
+
             </div>
 
         </div>
