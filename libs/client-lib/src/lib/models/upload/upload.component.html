@@ -36,7 +36,7 @@
         </div>
 
         <div class = "col-sm-6" *ngIf = "type === 'classification'">
-            <label for="data-partition" class="form-label font-medium"><b>Input</b></label>
+            <label for="data-partition" class="form-label font-medium"><b>Labels</b></label>
                 
             <div class="w-full">
                 <div class="input-group relative w-full mb-4">
@@ -56,6 +56,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class = "w-full mb-4 text-center">    
+        <button type="button" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
+            <i class="fas fa-upload"></i>
+            upload
+        </button>
     </div>
 </div>
 
