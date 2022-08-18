@@ -8,15 +8,12 @@
 
     <div class = "mb-4">
         <div class="input-group">
-            <input *ngIf = "location !== 1" type="text" class="form-control px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Text input with dropdown button">
-            <input *ngIf = "location === 1"  class="form-control border-2 px-2 py-1 text-sm font-normal text-gray-700 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="dataFile">
-
+            <input [(ngModel)] = "path" name = "path" type="text" class="form-control px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Text input with dropdown button">
             <button style = "background-color:rgb(148,163,184)" class="btn dropdown-toggle border-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-            <ul class="dropdown-menu dropdown-menu-end">
+            <ul class="dropdown-menu dropdown-menu-end overflow-hidden">
               <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 0}" (click)="changeLocation(0)">Internet</a></li>
-              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 1}" (click)="changeLocation(1)">Device</a></li>
-              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 2}" (click)="changeLocation(2)">IndexedDB</a></li>
-              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 3}" (click)="changeLocation(3)">Local Storage</a></li>
+              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 1}" (click)="changeLocation(1)">IndexedDB</a></li>
+              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 2}" (click)="changeLocation(2)">Local Storage</a></li>
             </ul>
         </div>
     </div>
@@ -59,7 +56,7 @@
     </div>
 
     <div class = "w-full mb-4 text-center">    
-        <button type="button" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
+        <button type="button" (click) = "upload()" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
             <i class="fas fa-upload"></i>
             upload
         </button>
