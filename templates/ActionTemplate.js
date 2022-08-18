@@ -50,9 +50,9 @@
 
             if(await this.considerations(i) == [])
             {
-                if(await this.isActionLegal(i, []))
+                if(await this.isActionLegal(Actions[i], []))
                 {
-                    choices.push(i)
+                    choices.push(Actions[i])
                     this.params.push([])
                 }
             }
@@ -63,9 +63,9 @@
                 {
                     
                     
-                    if(await this.isActionLegal(i, await this.considerations(i)[j]))
+                    if(await this.isActionLegal(Actions[i], await this.considerations(i)[j]))
                     {
-                        choices.push(i)
+                        choices.push(Actions[i])
                         this.params.push(await this.considerations(i)[j])
 
                     }
