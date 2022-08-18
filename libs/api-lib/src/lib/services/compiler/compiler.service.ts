@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import { lexerResult } from '../../models/general/lexerResult';
 import * as tokensStore from '../../models/general/tokens';
 import { entity } from '../../models/general/entity';
+import { throwError } from 'rxjs';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
 
@@ -343,10 +344,23 @@ export class CompilerService {
     }
 
     scanHelper(input:string):chevrotain.ILexingResult{
+         const bannedTokens = ["window","var","console","document","eval"];
          const tokens:chevrotain.TokenType[] = tokensStore.AllTokens; 
          const lexer = new chevrotain.Lexer(tokens);
+
+         const Tokenized = lexer.tokenize(input);
+
         
-        return lexer.tokenize(input);
+        const isBanned = Tokenized.tokens.filter((value)=>{
+            return bannedTokens.includes(value.image);
+        });
+
+        if(isBanned)
+        {
+            throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
+        }
+
+        return Tokenized;
     }
 
     scan(input:string):lexerResult{
@@ -619,26 +633,22 @@ class parser extends CstParser
                             this.CONSUME(tokensStore.tCloseBracket )
                         }},
 
-                        { ALT: () =>{ 
-                            this.CONSUME(tokensStore.tConsoleInput )
-                            this.CONSUME2(tokensStore.tOpenBracket )
-                            this.SUBRULE2(this.Expression)
-                        this.CONSUME2(tokensStore.tCloseBracket )
-                    }},
+                        
 
                         
 
                         { ALT: () =>{ this.CONSUME(tokensStore.tPrint )
                             this.CONSUME3(tokensStore.tOpenBracket )
                             this.SUBRULE3(this.Expression)
+                            this.OPTION1(() => {
+                                this.CONSUME3(tokensStore.tComma )
+                            this.SUBRULE3(this.Const)
+                            })
+
                         this.CONSUME3(tokensStore.tCloseBracket )
                         }},
 
-                        { ALT: () =>{ this.CONSUME(tokensStore.tConsoleOutput )
-                            this.CONSUME5(tokensStore.tOpenBracket )
-                            this.SUBRULE4(this.Expression)
-                        this.CONSUME5(tokensStore.tCloseBracket )
-                        }},
+                        
                         { ALT: () =>{ this.CONSUME(tokensStore.tInputGroup )
                             this.CONSUME6(tokensStore.tOpenBracket )
                             this.SUBRULE5(this.Object)
@@ -1735,16 +1745,21 @@ function visitDefActions(cstOutput:CstNode, i:number)
         {
             if(token.tokenType.name == "Action")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actionnums")), i+',' , jsScript.slice(jsScript.indexOf("//actionnums"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'case '+ i+':\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'case '+ i+':\n' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
-                
+                //
             }
             if(token.tokenType.name == "UserDefinedIdentifier")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'this.'+token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return this.'+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actionnums")), "\""+token.image+"\"," , jsScript.slice(jsScript.indexOf("//actionnums"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'case '+ "\""+token.image+"\""+':\n' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'case '+ "\""+token.image+"\""+':\n' , jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
+                
+
+
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//action cases")),'await this.'+token.image+'(' , jsScript.slice(jsScript.indexOf("//action cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//condition cases")),'return await this.'+token.image+'Cond(', jsScript.slice(jsScript.indexOf("//condition cases"))].join('');
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//actioncond")),'\nasync '+token.image+'Cond', jsScript.slice(jsScript.indexOf("//actioncond"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),' async ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                
                 
             }
             if(token.tokenType.name == "CloseBracket")
@@ -1755,7 +1770,7 @@ function visitDefActions(cstOutput:CstNode, i:number)
             }
             if(token.tokenType.name != "Action")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),'async '+token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//actions")),''+token.image+' ', jsScript.slice(jsScript.indexOf("//actions"))].join('');
                 
             }
         }
@@ -1868,12 +1883,17 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                 
                 case "Variable": 
                     break;
+                case "Turn":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'async '+token.image+ ' ', jsScript.slice(jsScript.indexOf(place))].join('');
+                    break;
                 case "Input":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await input', jsScript.slice(jsScript.indexOf(place))].join('');
-                    break;    
-                case "ConsoleOutput":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'console.log ', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
+                case "Print":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await output', jsScript.slice(jsScript.indexOf(place))].join('');
+                    break;    
+                    
+                
                 case "Piece":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new piece() ', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
@@ -1953,12 +1973,12 @@ function visitMethodCall(cstOutput:CstNode, place:string)
             switch(node.name)
             {
                 case "rGetTileByID":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
      
                     visitGetTileByID(node, place)
                     break;
                 case "rGetTilesByType":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await this.State.', jsScript.slice(jsScript.indexOf(place))].join('');
      
                     visitGetTilesByType(node,place)
                     break;
@@ -1975,11 +1995,11 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                     visitGenerateChoices(node, place)
                     break;
                 case "rChooseAction":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.', jsScript.slice(jsScript.indexOf(place))].join('');
                     visitRChooseAction(node, place)
                     break;
                 case "rIsActionLegal":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.', jsScript.slice(jsScript.indexOf(place))].join('');
                     visitRIsActionLegal(node, place)
                     break;
                 case "rCopy":
@@ -2008,8 +2028,7 @@ function visitRCopy(cstOutput:CstNode, place:string)
 function visitRIsActionLegal(cstOutput:CstNode, place:string)
 {
     
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await ', jsScript.slice(jsScript.indexOf(place))].join('');
-     
+    
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
@@ -2017,16 +2036,17 @@ function visitRIsActionLegal(cstOutput:CstNode, place:string)
         const node = child[0] as unknown as CstNode;
 
         if(token.tokenType)
+        {
+           
             jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
-     
+        }
         if(node.name)
             visitRIsActionLegal(node, place)
     }
 }
 function visitRChooseAction(cstOutput:CstNode, place:string)
 {
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await ', jsScript.slice(jsScript.indexOf(place))].join('');
-     
+    
     
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
@@ -2034,8 +2054,10 @@ function visitRChooseAction(cstOutput:CstNode, place:string)
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
         if(token.tokenType)
+        {
+            
             jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
-     
+        }
         if(node.name)
             visitRChooseAction(node, place)
     }

@@ -37,13 +37,46 @@ class game_state
     constructor()
     {
         
-let b = new tile()
+let t1 = new tile()
 
+t1 . Id = " '1'"
+let t2 = new tile()
+
+t2 . Id = " '2'"
+let t3 = new tile()
+
+t3 . Id = " '3'"
+let t4 = new tile()
+
+t4 . Id = " '4'"
+let t5 = new tile()
+
+t5 . Id = " '5'"
+let t6 = new tile()
+
+t6 . Id = " '6'"
+let t7 = new tile()
+
+t7 . Id = " '7'"
+let t8 = new tile()
+
+t8 . Id = " '8'"
+let t9 = new tile()
+
+t9 . Id = " '9'"
 //State
         
 
         
-        this.board.push(b)
+        this.board.push(t1)
+this.board.push(t2)
+this.board.push(t3)
+this.board.push(t4)
+this.board.push(t5)
+this.board.push(t6)
+this.board.push(t7)
+this.board.push(t8)
+this.board.push(t9)
 //tiles
 
         
@@ -91,14 +124,26 @@ class player
         //redefined in subclasses
     }
 }
-class Joseph extends player { 
+class crossAI extends player { 
     Actions = [
-        
+        0,
     ]
 
+     async placeCross ( t ) { let p = new piece() 
+p . Type = 0 
+let message =  'The ai places a cross in' + t . Id 
+await output( message ) 
+t.pieces.push(p)
+p.Tile=t
+
+} 
+
     
-    
-    
+async placeCrossCond( t ) { let ans = true 
+if ( t . pieces . length == 1 ) { 
+ans = false 
+} 
+return ans } 
 
 
     params = []
@@ -106,7 +151,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+await this.placeCross(p)
+break
+
         }
         
         
@@ -115,7 +163,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+return await this.placeCrossCond(p)
+break
+
             
         }
         
@@ -127,7 +178,10 @@ class Joseph extends player {
         
         switch(choice)
         {
-            
+            case 0:
+ return 
+break
+
         }
         
         return [];
@@ -167,14 +221,27 @@ class Joseph extends player {
         }
         
         return choices
-    };async turn ( ){ }} class test extends player { 
+    };async turn ( ) { 
+let c = await this.generateChoices ( ) 
+await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
+} } class naught extends player { 
     Actions = [
-        
+        0,
     ]
 
-    
+     async placeNaught ( t ) { let p = new piece() 
+p . Type = 1 
+t.pieces.push(p)
+p.Tile=t
+
+} 
 
     
+async placeNaughtCond( t ) { let ans = true 
+if ( t . pieces . length == 1 ) { 
+ans = false 
+} 
+return ans } 
 
 
     params = []
@@ -182,7 +249,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+await this.placeNaught(p)
+break
+
         }
         
         
@@ -191,7 +261,10 @@ class Joseph extends player {
     {
         switch(choice)
         {
-            
+            case 0:
+return await this.placeNaughtCond(p)
+break
+
             
         }
         
@@ -203,7 +276,10 @@ class Joseph extends player {
         
         switch(choice)
         {
-            
+            case 0:
+ return 
+break
+
         }
         
         return [];
@@ -243,9 +319,15 @@ class Joseph extends player {
         }
         
         return choices
-    };async turn ( ){ let prompt =  'enter a num' 
-x = await Input( prompt ,  'text' ) 
-}} //players
+    };async turn ( ) { 
+let prompt =  'where will you place the naught' 
+let ans = false 
+do { 
+let i = await input( prompt ,  'text' ) 
+let t = this.State.getTileByID(i)
+ans = await this.isActionLegal ( 0 , t ) 
+} while ( ! ( ans ) ) 
+} } //players
 
 
 
@@ -254,7 +336,7 @@ class script
 {
     State = new game_state();
     players = [
-        new Joseph(),new test(),//add players
+        new crossAI(),new naught(),//add players
     ];
     
 
@@ -264,6 +346,7 @@ class script
 
         
         console.log("script-execution begins");
+            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
@@ -277,7 +360,7 @@ class script
             if(inputElement)
             {
                 //ask using input and output methods
-                order.push(input("when will player "+this.players[i].constructor.name + " move"))
+                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
             }
             else
             {
@@ -305,23 +388,23 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
-                this.players[i].turn();
+                await this.players[i].turn();
             }
         }
-        while(!this.endgame())
+        while(!await this.endgame())
 
-
+        
     }
-
+    
     async endgame()
     {
-        let x = false 
-if ( this . State . board [ 0 ] . pieces . length == 1 ) { 
-x = true 
-} 
-return x 
+        let ans = false 
+let t1 = this.State.getTileByID(1)
+let t2 = this.State.getTileByID(2)
+let t3 = this.State.getTileByID(3)
+return ans 
 //end_game
     
     

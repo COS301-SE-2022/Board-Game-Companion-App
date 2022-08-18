@@ -86,8 +86,6 @@ export const tInputGroup=(chevrotain.createToken({name:"InputGroup",pattern:/inp
 export const tInput=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tInputGroup}));
 export const tPrint=(chevrotain.createToken({name:"Print",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
 export const tRead=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
-export const tConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
-export const tConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -183,8 +181,6 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tInput,
     tPrint,
     tRead,
-    tConsoleInput,
-    tConsoleOutput,
     tWhile,
     tFor,
     tDo,
