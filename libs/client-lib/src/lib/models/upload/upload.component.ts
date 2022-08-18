@@ -75,12 +75,18 @@ export class UploadComponent implements OnInit{
 
   upload(): void{
     if(this.name === ""){
-      this.notifications.add({type: "danger",message: "The name of the neural network is missing."});
+      this.notifications.add({type: "danger", message: "The name of the neural network is missing."});
+      return;
+    }
+
+    if(this.path === ""){
+      this.notifications.add({type: "danger", message: "The path to the models is missing."});
       return;
     }
 
     if(this.type === "classification" && this.labels.length === 0){
-      this.notifications.add({type: "danger",message: "Classification model does not have any labels."});
+      this.notifications.add({type: "danger", message: "Classification model does not have any labels."});
+      return;
     }
 
     switch(this.location){
