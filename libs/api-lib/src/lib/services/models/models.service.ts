@@ -54,4 +54,10 @@ export class ModelsService {
     async getAll(user:user):Promise<NeuralNetwork[]>{
         return this.networkModel.find({"user.email":user.email}).exec();
     }
+
+    async remove(user:user,name:string):Promise<boolean>{
+        const result = await this.networkModel.deleteOne({"user.email":user.email,"name":name});
+        
+        return result.deletedCount === 1;
+    }
 }

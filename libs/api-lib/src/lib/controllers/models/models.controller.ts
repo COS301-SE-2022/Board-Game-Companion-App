@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, HttpException, HttpStatus  } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, HttpException, HttpStatus, Delete, Param  } from '@nestjs/common';
 import { ModelsService } from '../../services/models/models.service';
 import { FormDataRequest, MemoryStoredFile } from 'nestjs-form-data';
 import fs = require("fs");
@@ -62,4 +62,8 @@ export class ApiModelsController {
       return this.modelsService.getAll({name:name,email:email});
     }
 
+    @Delete('remove')
+    async removeScript(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('name')name:string){
+       return this.modelsService.remove({name:userName,email:userEmail},name); 
+    }
 }
