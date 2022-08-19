@@ -26,7 +26,7 @@
                             </ul>
                         </li>
 
-                        <li class="relative" (click)="showOp()">
+                        <li class="relative">
                             <a id = "OperatorsNav" class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#OperatorsSubNav" aria-expanded="true" aria-controls="OperatorsSubNav">
                                 <span>Operators</span>
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -35,8 +35,8 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="OperatorsSubNav" aria-labelledby="OperatorsSubNav" data-bs-parent="#OperatorsNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
+                                <li class="relative" (click)="showArithmetic()">
+                                    <a  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
                                 </li>
                                 <li class="relative">
                                     <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
@@ -223,13 +223,23 @@
 
                 <!--Arithmetic Operator-->
                 <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Arithmetic Operator</h5>
                     <p class="mb-4">
-                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <a class="text-gray-700 text-xs">A mathematical operation that takes two operands and performs a calculation </a>
                         <br>
                         <br>
-                        <a id="syntax">Syntax</a>
-                        <a> Let *variable name* = *Data Type*</a>
+                        <a id="Syntax">Syntax</a>
+                        <a> These operations are listed as follows:</a>
+                        <br>
+                        <a> 
+                            <ul>
+                                <li>Plus (+) </li>
+                                <li>Minus (-) </li>
+                                <li>Multiply (*)</li>
+                                <li>Divide (\\)</li>
+                                <li>Mod (%)</li>
+                            </ul>
+                        </a>
                         <a id="example"> Example</a>
                         <a><img src="dataType.PNG"></a>
                     </p>
