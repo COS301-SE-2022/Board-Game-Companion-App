@@ -197,6 +197,7 @@
                                 <li>tile </li>
                                 <li>piece </li>
                                 <li>card </li>
+                                <li>player </li>
                             </em>
                             </ul>
                         </a>
@@ -284,6 +285,8 @@
                         <br>
                         <br>
                         <a  id="subheading"> Example</a>
+                        <br>
+                        <br>
                         <a><img src="assets/images/arithmetic.PNG"></a>
                         
                     </p>
@@ -302,27 +305,71 @@
                         <a id="tbody"> A list of the Logical Operators:</a>
                         <br>
                         <br>
-                        <a><ul>
-                            <li>AND - <b>&&</b></li>
-                            <li>OR - <b>||</b></li>
-                            <li>NOT - <b>!</b> </li>
-                        </ul></a>
+                        <a>
+                        <table>
+                            <tr>
+                                <td>AND </td>
+                                <td id="symbol"><b> && </b></td>
+                            </tr>
+                            <tr>
+                                <td>OR </td>
+                                <td id="symbol"><b> || </b></td>
+                            </tr>
+                            <tr>
+                                <td>NOT </td>
+                                <td id="symbol"><b> ! </b></td>
+                            </tr>
+                        </table>
+                        </a>
+                        <br>
                         <a id="subheading"> Example </a>
-                        <a><img src="dataType.PNG"></a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/NOT.PNG"></a>
+                        <br>
+                        <a><img src="assets/images/AND.PNG"></a>
                     </p>
                 </div>
 
                 <!--Conditional Operator-->
                 <div *ngIf="isShown.cond" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Conditional Operators</h5>
                     <p class="mb-4">
-                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <a id="tbody" class="text-gray-700"> Operators used to asses a condition applied to one or two boolean expressions. The result will either be TRUE or FALSE.</a>
                         <br>
                         <br>
-                        <a id="syntax">Syntax</a>
-                        <a> Let *variable name* = *Data Type*</a>
-                        <a id="example"> Example</a>
-                        <a><img src="dataType.PNG"></a>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="tbody"> As previously mentioned, the following are logical operators:</a>
+                        <br>
+                        <a>
+                            <table>
+                                <tr>
+                                    <td>AND </td>
+                                    <td id="symbol"><b> && </b></td>
+                                </tr>
+                                <tr>
+                                    <td>OR </td>
+                                    <td id="symbol"><b> || </b></td>
+                                </tr>
+                                <tr>
+                                    <td>NOT </td>
+                                    <td id="symbol"><b> ! </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a id="tbody"> The logical operators <b>AND</b> and <b>OR</b> require <b>TWO</b> operands, of which apply the overall evaluation of the two operands. The logical operator, <b>NOT</b> requires only a single operand.
+                        The logical operators are thereafter used within conditional statements, thus resulting in a single outcome.</a>
+                        <br>
+                        
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/COND.PNG"></a>
+                        <br>
+                        <a><em>The above example evaluates the ID of a tile and the tile of which the piece is on.</em></a>
                     </p>
                 </div>
 
