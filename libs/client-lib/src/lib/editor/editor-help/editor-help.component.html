@@ -38,11 +38,11 @@
                                 <li class="relative" (click)="showArithmetic()">
                                     <a  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
+                                <li class="relative" (click)="showLogical()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
+                                <li class="relative" (click)="showCond()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
                                 </li>
                             </ul>
                         </li>
@@ -228,7 +228,9 @@
                         <a class="text-gray-700 text-xs">A mathematical operation that takes two operands and performs a calculation </a>
                         <br>
                         <br>
-                        <a id="Syntax">Syntax</a>
+                        <a  id="subheading">Syntax</a>
+                        <br>
+                        <br>
                         <a> These operations are listed as follows:</a>
                         <br>
                         <a> 
@@ -240,13 +242,13 @@
                                 <li>Mod (%)</li>
                             </ul>
                         </a>
-                        <a id="example"> Example</a>
+                        <a  id="subheading"> Example</a>
                         <a><img src="dataType.PNG"></a>
                     </p>
                 </div>
 
                 <!--Logical Operator-->
-                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                <div *ngIf="isShown.logical" class="block p-6 rounded-sm shadow-md h-full bg-white">
                     <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
                     <p class="mb-4">
                         <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
@@ -260,7 +262,7 @@
                 </div>
 
                 <!--Conditional Operator-->
-                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                <div *ngIf="isShown.cond" class="block p-6 rounded-sm shadow-md h-full bg-white">
                     <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
                     <p class="mb-4">
                         <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
