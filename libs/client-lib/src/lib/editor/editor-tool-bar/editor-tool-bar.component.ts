@@ -26,10 +26,12 @@ export class EditorToolBarComponent implements OnInit{
   @Output() replaceAllEvent = new EventEmitter<replace>();
   @Output() toggleSideBarEvent = new EventEmitter<boolean>();
   @Output() toggleConsoleEvent = new EventEmitter<boolean>();
+  @Output() toggleDisplayEvent = new EventEmitter<boolean>();
   @Output() themeEvent = new EventEmitter();
   sideBar = true;
   console = true;
   showReplace = false;
+  VDSL = false;
   
 
   ngOnInit(): void {
@@ -59,6 +61,24 @@ export class EditorToolBarComponent implements OnInit{
     this.console = !this.console;
     this.toggleConsoleEvent.emit(this.console);
   }
+
+  toggleDisplay(): void{
+   const d = document.getElementById("switch") as HTMLElement
+   console.log(d.textContent?.length)
+   console.log(d.innerText == "Code")
+   switch(d.innerText)
+   {
+    case "Code":
+      d.textContent = "  VDSL"
+      break
+    case "VDSL":
+      d.textContent = "  Code"
+      break
+   }
+   this.VDSL = true
+   this.toggleDisplayEvent.emit(this.VDSL);
+  }
+
 
   execute(): void {
     this.executeEvent.emit();
