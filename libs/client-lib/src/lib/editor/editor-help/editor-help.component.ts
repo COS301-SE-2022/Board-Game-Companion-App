@@ -12,7 +12,9 @@ export class EditorHelpComponent {
     arithmetic : false,
     logical :false,
     cond:false,
-    relation:false 
+    relation:false,
+    ifState:false,
+    ifelse:false
   }
 
   showType():void{
@@ -22,7 +24,8 @@ export class EditorHelpComponent {
     this.isShown.logical =false; 
     this.isShown.cond = false;
     this.isShown.relation = false;
-    
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
   }
 
   showDecl(): void{
@@ -32,6 +35,8 @@ export class EditorHelpComponent {
     this.isShown.logical =false; 
     this.isShown.cond = false;
     this.isShown.relation = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
   }
 
   showArithmetic(): void{
@@ -40,6 +45,8 @@ export class EditorHelpComponent {
     this.isShown.dataType = false;
     this.isShown.logical =false; 
     this.isShown.cond = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
   }
 
   showLogical():void{
@@ -49,6 +56,8 @@ export class EditorHelpComponent {
     this.isShown.dataType = false;
     this.isShown.cond = false;
     this.isShown.relation = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
   }
 
   showCond():void {
@@ -58,10 +67,36 @@ export class EditorHelpComponent {
     this.isShown.declaration = false;
     this.isShown.dataType = false;
     this.isShown.relation = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
   }
 
   showRelation():void {
     this.isShown.relation = true;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
+  }
+
+  showif():void{
+    this.isShown.ifState = true;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+    this.isShown.ifelse = false;
+  }
+
+  showifelse():void{
+    this.isShown.ifelse = true;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
     this.isShown.cond = false;
     this.isShown.logical =false; 
     this.isShown.arithmetic = false;

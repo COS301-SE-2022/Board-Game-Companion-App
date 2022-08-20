@@ -59,10 +59,10 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="ConditionalStatementsSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#ConditionalStatementsNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
+                                <li class="relative" (click)="showif()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
                                 </li>
-                                <li class="relative">
+                                <li class="relative" (click)="showifelse()">
                                     <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
                                 </li>
                             </ul>
@@ -421,7 +421,81 @@
                         <br>
                         <a><img src="assets/images/EQUAL.PNG"></a>
                         <br>
-                        <a><em>The above example checks if there is <b>1</b> piece on the specific tile t.</em></a>
+                        <a><em>The above example checks if there is <b>1</b> piece on the specific tile <b>t</b>.</em></a>
+                    </p>
+                </div>
+
+                <!--If-statement -->
+                <div *ngIf="isShown.ifState" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A decision-making statement that tells the program which decision to make through condrional statements.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><b>If</b> (condition) </a><br>
+                        <a>&#123;</a><br>
+                        <a>   code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/IF.PNG"></a>
+                        
+                    </p>
+                </div>
+
+                <!--if-Else-Statement-->
+                <div *ngIf="isShown.ifelse" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If-else Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> An operator that defines the relation between two operands.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> A list of Relational Operators:</a>
+                        <br>
+                        <br>
+                        <a>
+                            <table>
+                                <tr>
+                                    <td>GreaterThanOrEqual </td>
+                                    <td id="symbol"><b> >= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThanOrEqual </td>
+                                    <td id="symbol"><b> <= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Equals to</td>
+                                    <td id="symbol"><b> == </b></td>
+                                </tr>
+                                <tr>
+                                    <td>GreaterThan </td>
+                                    <td id="symbol"><b> > </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThan </td>
+                                    <td id="symbol"><b> < </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a>Let <b>x</b> be operand 1 and <b>y</b> be operand 2:</a>
+                        <br>
+                        <a> x > y</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/EQUAL.PNG"></a>
+                        <br>
+                        <a><em>The above example checks if there is <b>1</b> piece on the specific tile <b>t</b>.</em></a>
                     </p>
                 </div>
 
