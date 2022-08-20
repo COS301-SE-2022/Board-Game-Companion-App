@@ -28,7 +28,7 @@ let jsScript = scriptTemplate;
 @Injectable()
 export class CompilerService {
 
-    
+    errorLog = "";
 
     DSLparser = new parser();
 
@@ -352,12 +352,14 @@ export class CompilerService {
 
         
         const isBanned = Tokenized.tokens.filter((value)=>{
+            
             return bannedTokens.includes(value.image);
         });
 
         if(isBanned)
         {
-            throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
+            if(isBanned[0])
+                throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
         }
 
         return Tokenized;
@@ -383,7 +385,7 @@ export class CompilerService {
          const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
         {
-            throw Error(this.DSLparser.errors.toString()+"!!"+this.scanHelper(input).tokens[0].tokenType.PATTERN);
+            throw Error(this.DSLparser.errors.toString());
         }
 
         //otherwise successful parse
@@ -395,23 +397,29 @@ export class CompilerService {
     }
 
 
-    transpile(input:string)
+    transpile(input:string) 
     {
         
+        this.errorLog = "";
+
         this.DSLparser.input = this.scanHelper(input).tokens;
         const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
         {
-            throw Error(this.DSLparser.errors.toString()+"!!"+this.scanHelper(input).tokens[0].tokenType.PATTERN);
+            const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
+            return {err:errMessage}
         }
-        //read in template file
-        jsScript = scriptTemplate;
-        //begin transpilation
-        visit(cstOutput)
-        
-        //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
-        const programStructure = this.getProgramStructure(cstOutput)
-        return {build:jsScript,programStructure:programStructure};
+        else
+        {
+            //read in template file
+            jsScript = scriptTemplate;
+            //begin transpilation
+            visit(cstOutput)
+            
+            //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
+            const programStructure = this.getProgramStructure(cstOutput)
+            return {build:jsScript,programStructure:programStructure};
+        }
     }
 }
 
