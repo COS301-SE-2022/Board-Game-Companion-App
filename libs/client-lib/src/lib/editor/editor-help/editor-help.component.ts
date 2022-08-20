@@ -11,7 +11,8 @@ export class EditorHelpComponent {
     declaration : false,
     arithmetic : false,
     logical :false,
-    cond:false 
+    cond:false,
+    relation:false 
   }
 
   showType():void{
@@ -20,6 +21,7 @@ export class EditorHelpComponent {
     this.isShown.arithmetic = false;
     this.isShown.logical =false; 
     this.isShown.cond = false;
+    this.isShown.relation = false;
     
   }
 
@@ -29,7 +31,7 @@ export class EditorHelpComponent {
     this.isShown.arithmetic = false;
     this.isShown.logical =false; 
     this.isShown.cond = false;
-    
+    this.isShown.relation = false;
   }
 
   showArithmetic(): void{
@@ -46,10 +48,21 @@ export class EditorHelpComponent {
     this.isShown.declaration = false;
     this.isShown.dataType = false;
     this.isShown.cond = false;
+    this.isShown.relation = false;
   }
 
   showCond():void {
     this.isShown.cond = true;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+    this.isShown.relation = false;
+  }
+
+  showRelation():void {
+    this.isShown.relation = true;
+    this.isShown.cond = false;
     this.isShown.logical =false; 
     this.isShown.arithmetic = false;
     this.isShown.declaration = false;

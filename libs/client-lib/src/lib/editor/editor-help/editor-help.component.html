@@ -44,6 +44,9 @@
                                 <li class="relative" (click)="showCond()">
                                     <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
                                 </li>
+                                <li class="relative" (click)="showRelation()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Relational Operators</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -256,6 +259,7 @@
                         <br>
                         <a id="tbody"> These operators are listed as follows:</a>
                         <br>
+                        <br>
                         <a>
                         <table>
                             <tr>
@@ -356,6 +360,57 @@
                                 <tr>
                                     <td>NOT </td>
                                     <td id="symbol"><b> ! </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a id="tbody"> The logical operators <b>AND</b> and <b>OR</b> require <b>TWO</b> operands, of which apply the overall evaluation of the two operands. The logical operator, <b>NOT</b> requires only a single operand.
+                        The logical operators are thereafter used within conditional statements, thus resulting in a single outcome.</a>
+                        <br>
+                        
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/COND.PNG"></a>
+                        <br>
+                        <a><em>The above example evaluates the ID of a tile and the tile of which the piece is on.</em></a>
+                    </p>
+                </div>
+
+                <!--Relational Operators-->
+                <div *ngIf="isShown.relation" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Relational Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> Operators used to asses a condition applied to one or two boolean expressions. The result will either be TRUE or FALSE.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="tbody"> A list of Relational Operators:</a>
+                        <br>
+                        <br>
+                        <a>
+                            <table>
+                                <tr>
+                                    <td>GreaterThanOrEqual </td>
+                                    <td id="symbol"><b> >= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThanOrEqual </td>
+                                    <td id="symbol"><b> <= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Equals to</td>
+                                    <td id="symbol"><b> == </b></td>
+                                </tr>
+                                <tr>
+                                    <td>GreaterThan </td>
+                                    <td id="symbol"><b> > </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThan </td>
+                                    <td id="symbol"><b> < </b></td>
                                 </tr>
                             </table>
                         </a>
