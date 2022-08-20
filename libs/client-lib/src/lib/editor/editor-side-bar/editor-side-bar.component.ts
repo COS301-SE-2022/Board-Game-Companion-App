@@ -4,6 +4,7 @@ import { entity } from '../../shared/models/entity';
 import { script, empty } from '../../shared/models/script';
 import { selection } from '../../shared/models/selection';
 import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
+import { EditorVisualsComponent } from '../editor-visuals/editor-visuals.component';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -12,6 +13,7 @@ import { EditorEntityComponent } from '../editor-entity/editor-entity.component'
   styleUrls: ['./editor-side-bar.component.scss'],
 })
 export class EditorSideBarComponent implements OnInit{
+  @Input() VDSL = false;
   @Input() height = 0;
   @Input() width = 0;
   @Input() current:script = empty;
@@ -31,6 +33,17 @@ export class EditorSideBarComponent implements OnInit{
     },5);
   }
 
+  changeDisplay(value: boolean)
+  {
+    if(value)
+    {
+      this.VDSL = true
+    }
+    else
+    {
+      this.VDSL= false
+    }
+  }
   getMaxWidth(): number{
     return 250;
   }

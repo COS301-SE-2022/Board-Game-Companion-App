@@ -64,18 +64,17 @@ export class EditorToolBarComponent implements OnInit{
 
   toggleDisplay(): void{
    const d = document.getElementById("switch") as HTMLElement
-   console.log(d.textContent?.length)
-   console.log(d.innerText == "Code")
    switch(d.innerText)
    {
     case "Code":
-      d.textContent = "  VDSL"
+      d.textContent = "  Visual"
+      this.VDSL = true
       break
-    case "VDSL":
+    case "Visual":
       d.textContent = "  Code"
+      this.VDSL = false
       break
    }
-   this.VDSL = true
    this.toggleDisplayEvent.emit(this.VDSL);
   }
 

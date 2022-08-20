@@ -2,7 +2,10 @@
     <div class = "w-full h-6 mb-2 shadow-md text-center bar-header text-white font-medium bg-green-700">
         {{current.name}}
     </div>
-    <div class = "w-full">
+    <div class = "w-full" *ngIf = "VDSL === false">
         <board-game-companion-app-editor-entity (removeEvent)="remove($event)" (selectionEvent)="highlight($event)" [current]="value" *ngFor= "let value of current.programStructure.children"></board-game-companion-app-editor-entity>
+    </div>
+    <div class = "w-full" *ngIf = "VDSL === true">
+        <board-game-companion-app-editor-visuals></board-game-companion-app-editor-visuals>
     </div>
 </div>

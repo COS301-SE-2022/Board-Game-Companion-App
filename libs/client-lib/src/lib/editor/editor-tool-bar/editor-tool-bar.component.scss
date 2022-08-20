@@ -1,6 +1,7 @@
 // .editor__tool-bar{
 //     height: 35px;
 // }
+@import 'apps/client/src/assets/globalstylesheet/global';
 
 .editor-logo img{
     height: 100%;
@@ -23,7 +24,7 @@
 }
 
 #switch{
-    color: orange;
+    color: $Pcolour-1;
     font-weight: bold;
 }
 
