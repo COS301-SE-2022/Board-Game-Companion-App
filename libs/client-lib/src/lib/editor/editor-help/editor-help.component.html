@@ -190,13 +190,25 @@
                         <a id="subheading">Syntax</a>
                         <br>
                         <br>
-                        <a id="tbody"> Let *variable name* = *Data Type*</a>
+                        <a id="tbody"> The data types are listed as follows:</a>
+                        <br>
+                        <a id="tbody"> 
+                            <ul><em>
+                                <li>tile </li>
+                                <li>piece </li>
+                                <li>card </li>
+                            </em>
+                            </ul>
+                        </a>
+                        <br>
+                        <a id="tbody"> Let *variable name* = <b><em>*Data Type*</em></b></a>
                         <br>
                         <br>
-                        <a id="subheading"> Example</a>
+                        <a id="subheading"> Example </a>
                         <br>
                         <br>
-                        <a><img src="apps\client\src\assets\images\dataType.PNG"></a>
+                        <a><img src="assets/images/dataType.PNG"></a>
+                        
                     </p>
                 </div>
 
@@ -205,25 +217,35 @@
                     <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Declarations</h5>
                     <p class=" mb-4">
                         
-                        <a id="tbody">a declaration determines the name and data type of a variable or other element. Programmers declare variables by writing the name of the variable into code, along with any data type indicators and other required syntax.</a>
+                        <a id="tbody">Determines the name and data type of a variable and/or function. The user will declare variables or functions by writing the name of the variable and/or functions, it's data type indicator in the required syntax. </a>
                         <br>
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
                         <br>
-                        <a id="tbody">let *variable name* = *Data Type* </a>
+                        <a id="tbody"><b><em>let</em></b>  *variable name* = *Data Type* </a>
                         <br>
                         <br>
                         <a id="subheading">Example</a>
                         <br>
                         <br>
-                        <a><img src="apps\client\src\assets\images\dataType.PNG"></a>
+                        <a><img src="assets/images/dataType.PNG"></a>
+                        <br>
+                        <a>In the above example we deduce the following information:</a>
+                        <br>
+                        <br>
+                        <a><ul>
+                            <li><b>t1</b> (variable) is the name of a variable of <b>tile</b> type.</li>
+                            <li><b>p1</b> (variable) is the name of a variable of <b>piece</b> type.</li>
+                        </ul></a>
+                        
+                        
                     </p>
                 </div>
 
                 <!--Arithmetic Operator-->
                 <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Arithmetic Operator</h5>
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Arithmetic Operators</h5>
                     <p class="mb-4">
                         <a id="tbody">A mathematical operation that takes two operands and performs a calculation </a>
                         <br>
@@ -231,36 +253,61 @@
                         <a  id="subheading">Syntax</a>
                         <br>
                         <br>
-                        <a id="tbody"> These operator are listed as follows:</a>
+                        <a id="tbody"> These operators are listed as follows:</a>
                         <br>
-                        <a id="tbody"> 
-                            <ul>
-                                <li>Plus (+) </li>
-                                <li>Minus (-) </li>
-                                <li>Multiply (*)</li>
-                                <li>Divide (\\)</li>
-                                <li>Mod (%)</li>
-                            </ul>
+                        <a>
+                        <table>
+                            <tr>
+                                <td>Plus</td>
+                                <td id="symbol"><b> + </b></td>
+                            </tr>
+                            <tr>
+                                <td>Minus</td>
+                                <td id="symbol"><b> - </b></td>
+                            </tr>
+                            <tr>
+                                <td>Multiply</td>
+                                <td id="symbol"><b> * </b></td>
+                            </tr>
+                            <tr>
+                                <td>Divide</td>
+                                <td id="symbol"><b> \\ </b></td>
+                            </tr>
+                            <tr>
+                                <td>Mod</td>
+                                <td id="symbol"><b> % </b></td>
+                            </tr>
+                        </table> 
                         </a>
                         <br>
-                        <a id="tbody"> *operand* operator *operand*</a>
+                        <a id="tbody"> *operand*  <b><em>operator</em></b>  *operand*</a>
                         <br>
                         <br>
                         <a  id="subheading"> Example</a>
-                        <a><img src="dataType.PNG"></a>
+                        <a><img src="assets/images/arithmetic.PNG"></a>
+                        
                     </p>
                 </div>
 
                 <!--Logical Operator-->
                 <div *ngIf="isShown.logical" class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Logical Operators</h5>
                     <p class="mb-4">
-                        <a class="text-gray-700 text-xs"> A classification that specifies which type of value a variable has.</a>
+                        <a id="tbody" class="text-gray-700"> A word or symbol used to connect two or more expressions resulting in a compound expression dependent on the original expressions and the menaing of the operator. </a>
                         <br>
                         <br>
-                        <a id="syntax">Syntax</a>
-                        <a> Let *variable name* = *Data Type*</a>
-                        <a id="example"> Example</a>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="tbody"> A list of the Logical Operators:</a>
+                        <br>
+                        <br>
+                        <a><ul>
+                            <li>AND - <b>&&</b></li>
+                            <li>OR - <b>||</b></li>
+                            <li>NOT - <b>!</b> </li>
+                        </ul></a>
+                        <a id="subheading"> Example </a>
                         <a><img src="dataType.PNG"></a>
                     </p>
                 </div>
