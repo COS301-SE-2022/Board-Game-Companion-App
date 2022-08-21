@@ -311,6 +311,11 @@ export class EditorComponent implements OnInit{
     }
   }
 
+  toggleDisplay(value: boolean): void{
+    this.editorSideBar.changeDisplay(value);
+    this.editorBody.changeDisplay(value);
+  }
+
   toggleConsole(value:boolean): void{
     if(value){
       this.editorConsole.open();
