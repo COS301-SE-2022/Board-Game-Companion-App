@@ -997,7 +997,21 @@ class parser extends CstParser
                             {ALT: () =>{
                                 this.SUBRULE(this.rAddToArr )
                             }}
+                            ,
+                            {ALT: () =>{
+                                this.SUBRULE(this.rCreateBoard )
+                            }}
                         ])
+                 })
+                 private rCreateBoard=this.RULE("rCreateBoard", () => {
+                    this.CONSUME(tokensStore.tCreateBoard )
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tIntegerLiteral )
+                    this.OPTION2(() => {
+                        this.CONSUME(tokensStore.tComma )
+                        this.CONSUME2(tokensStore.tIntegerLiteral )
+                    })
+                    this.CONSUME(tokensStore.tCloseBracket )
                  })
                  private rAddToArr=this.RULE("rAddToArr", () => {
                     this.CONSUME(tokensStore.tAddToArr )
