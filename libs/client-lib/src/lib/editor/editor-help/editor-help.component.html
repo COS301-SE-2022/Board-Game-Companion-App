@@ -63,7 +63,7 @@
                                     <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
                                 </li>
                                 <li class="relative" (click)="showifelse()">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
                                 </li>
                             </ul>
                         </li>
@@ -77,14 +77,14 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="FlowControlSubNav" aria-labelledby="FlowControlSubNav" data-bs-parent="#FlowControlNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">for-loop</a>
+                                <li class="relative" (click)="showFor()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">for-loop</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">while-loop</a>
+                                <li class="relative" (click)="showWhile()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">while-loop</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">continue statement</a>
+                                <li class="relative" (click)="showContinue()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">continue statement</a>
                                 </li>
                             </ul>
                         </li>
@@ -192,19 +192,21 @@
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
-                        <a id="tbody"> The data types are listed as follows:</a>
+                        <a id="tbody"> The data type:</a>
                         <br>
                         <a id="tbody"> 
                             <ul><em>
-                                <li>tile </li>
-                                <li>piece </li>
-                                <li>card </li>
-                                <li>player </li>
+                                <li>Player </li>
                             </em>
                             </ul>
                         </a>
                         <br>
-                        <a id="tbody"> Let *variable name* = <b><em>*Data Type*</em></b></a>
+                        <a id="tbody"><b>Player</b> *Variable name*</a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>Actions</b></a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>Declarations</b></a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>PlayerTurn</b></a><br>
+                        <a>&#125;</a>
                         <br>
                         <br>
                         <a id="subheading"> Example </a>
@@ -225,21 +227,28 @@
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
+                        <a> Note: index is either a variable or constant</a>
                         <br>
-                        <a id="tbody"><b><em>let</em></b>  *variable name* = *Data Type* </a>
+                        <br>
+                        <a id="tbody"><b>Variable</b>  *User Defined Name* [ *index* ]</a>
+                        <br>
+                        <a><b>OR</b></a>
+                        <br>
+                        <a id="tbody"><b>Let</b>  *User Defined Name* [ *index* ]</a>
                         <br>
                         <br>
                         <a id="subheading">Example</a>
                         <br>
                         <br>
-                        <a><img src="assets/images/dataType.PNG"></a>
+                        <a><img src="assets/images/DECL.PNG"></a>
                         <br>
                         <a>In the above example we deduce the following information:</a>
                         <br>
                         <br>
                         <a><ul>
-                            <li><b>t1</b> (variable) is the name of a variable of <b>tile</b> type.</li>
-                            <li><b>p1</b> (variable) is the name of a variable of <b>piece</b> type.</li>
+                            <li><b>x</b> (variable) is declared as the value  <b>1</b></li>
+                            <li><b>name</b> (variable) is declared as the value <b>John</b></li>
+                            <li><b>happy</b> (variable) is declared as the value <b>true</b> value</li>
                         </ul></a>
                         
                         
@@ -325,8 +334,6 @@
                         <br>
                         <a id="subheading"> Example </a>
                         <br>
-                        <br>
-                        <a><img src="assets/images/NOT.PNG"></a>
                         <br>
                         <a><img src="assets/images/AND.PNG"></a>
                     </p>
@@ -437,7 +444,7 @@
                         <br>
                         <a><b>If</b> (condition) </a><br>
                         <a>&#123;</a><br>
-                        <a>   code</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
                         <a>&#125;</a><br>
                         <br>
                         <a id="subheading"> Example</a>
@@ -452,26 +459,95 @@
                 <div *ngIf="isShown.ifelse" class="block p-6 rounded-sm shadow-md h-full bg-white">
                     <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If-else Statement</h5>
                     <p class="mb-4">
-                        <a id="tbody" class="text-gray-700"> Just as the IF-statement this is a decision-making statementthat tells the program which decision to make through conditional statements, although this particular statement will have an alternative option</a>
+                        <a id="tbody" class="text-gray-700"> Just as the IF-statement this is a decision-making statement that tells the program which decision to make through conditional statements, although this particular statement will have an alternative option. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a><b>If</b> (condition) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <a><b>else</b></a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                    </p>
+                </div>
+
+                <!--For-Loop-->
+                <div *ngIf="isShown.for" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">For-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A statement that repeats a section of code under certain condition(s) for a <b>known</b> number of times.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>Assume:<br>
+                            <ol>
+                             <li><b>x</b> is a declared variable</li>
+                             <li><b>val</b> is an integer value ie. 0, 1,2, 3...</li>
+                             <li><b>*</b> is an unary operator namely: ++ or --</li>
+                            </ol>
+                        </a>
+                        <br>
+                        <a><b>for</b> ( <b>x = val </b> ; <b>condition </b> ; <b>x**</b> ) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                    </p>
+                </div>
+
+                <!--While-Loop-->
+                <div *ngIf="isShown.while" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">While-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A statement that repeats a section of code under certain condition(s) for a <b>unknown</b> number of times. </a>
                         <br>
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
                         <br>
-                        <a><b>If</b> (condition) </a><br>
+                        <a><b>while</b> ( <b>condition</b> ) </a><br>
                         <a>&#123;</a><br>
-                        <a>   code</a><br>
-                        <a>&#125;</a><br>
-                        <a>else</a><br>
-                        <a>&#123;</a><br>
-                        <a>    code</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
                         <a>&#125;</a><br>
                         <br>
                         <br>
                         <a id="subheading"> Example</a>
                         <br>
+                        <a ><img src="assets/images/WHILE.PNG"></a>
                         <br>
-                        <a><img src="assets/images/IFELSE.PNG"></a>
+                        <a>The following program will output <em>'I am happy you are having a good day'</em>  twice</a>
+                    </p>
+                </div>
+
+                <!--continue statement-->
+                <div *ngIf="isShown.continue" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Continue Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This statement terminates a loop in current execution.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>The syntax of the continue statement merely the writing the word <b>continue</b> , this is usually done within a condition statement or loop, telling the program to continue executing proceeding lines outside the loop.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  src="assets/images/CONTINUE.PNG"></a><br>
+                        <a>The above example will only display the message <em>"I am happy you are having a nice day"</em> only once, as the program is instructed to continue running lines outside of the loop.</a>
+
                     </p>
                 </div>
 

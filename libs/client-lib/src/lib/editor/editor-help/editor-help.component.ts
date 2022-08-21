@@ -14,7 +14,10 @@ export class EditorHelpComponent {
     cond:false,
     relation:false,
     ifState:false,
-    ifelse:false
+    ifelse:false,
+    for:false, 
+    while:false, 
+    continue:false
   }
 
   showType():void{
@@ -26,6 +29,9 @@ export class EditorHelpComponent {
     this.isShown.relation = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showDecl(): void{
@@ -37,6 +43,9 @@ export class EditorHelpComponent {
     this.isShown.relation = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showArithmetic(): void{
@@ -47,6 +56,9 @@ export class EditorHelpComponent {
     this.isShown.cond = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showLogical():void{
@@ -58,6 +70,9 @@ export class EditorHelpComponent {
     this.isShown.relation = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showCond():void {
@@ -69,6 +84,9 @@ export class EditorHelpComponent {
     this.isShown.relation = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showRelation():void {
@@ -80,6 +98,9 @@ export class EditorHelpComponent {
     this.isShown.dataType = false;
     this.isShown.ifState = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showif():void{
@@ -91,6 +112,9 @@ export class EditorHelpComponent {
     this.isShown.declaration = false;
     this.isShown.dataType = false;
     this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
   showifelse():void{
@@ -102,11 +126,51 @@ export class EditorHelpComponent {
     this.isShown.arithmetic = false;
     this.isShown.declaration = false;
     this.isShown.dataType = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
   }
 
+  showFor():void{
+    this.isShown.for = true;
+    this.isShown.while= false;
+    this.isShown.continue= false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
 
-  //(click)="showDiv.previous = !showDiv.previous;showDiv.current = false;showDiv.next = false"
-  // ngOnInit(): void {
-  //     console.log("help");
-  // }
+  showWhile():void{
+    this.isShown.while= true;
+    this.isShown.for = false;
+    this.isShown.continue= false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
+
+  showContinue():void{
+    this.isShown.continue= true;
+    this.isShown.while= false;
+    this.isShown.for = false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
+  
 }
