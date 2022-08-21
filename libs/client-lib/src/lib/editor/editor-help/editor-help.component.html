@@ -17,11 +17,11 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="VariablesSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#Variables">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Data Types</a>
+                                <li id="DataType" (click)="showType()" class="relative">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Data Types</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Declarations</a>
+                                <li id="Declaration" (click)="showDecl()" class="relative">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Declarations</a>
                                 </li>
                             </ul>
                         </li>
@@ -35,14 +35,17 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="OperatorsSubNav" aria-labelledby="OperatorsSubNav" data-bs-parent="#OperatorsNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
+                                <li class="relative" (click)="showArithmetic()">
+                                    <a  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
+                                <li class="relative" (click)="showLogical()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
+                                <li class="relative" (click)="showCond()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
+                                </li>
+                                <li class="relative" (click)="showRelation()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Relational Operators</a>
                                 </li>
                             </ul>
                         </li>
@@ -56,11 +59,11 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="ConditionalStatementsSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#ConditionalStatementsNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
+                                <li class="relative" (click)="showif()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
+                                <li class="relative" (click)="showifelse()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
                                 </li>
                             </ul>
                         </li>
@@ -74,14 +77,14 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="FlowControlSubNav" aria-labelledby="FlowControlSubNav" data-bs-parent="#FlowControlNav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">for-loop</a>
+                                <li class="relative" (click)="showFor()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">for-loop</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">while-loop</a>
+                                <li class="relative" (click)="showWhile()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">while-loop</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">continue statement</a>
+                                <li class="relative" (click)="showContinue()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">continue statement</a>
                                 </li>
                             </ul>
                         </li>
@@ -178,14 +181,376 @@
                 </div>
             </div>
 
-            <div class = "col-sm-8">
-                
-                <div class="block p-6 rounded-sm shadow-md h-full bg-white">
-                    <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Title</h5>
-                    <p class="text-gray-700 text-base mb-4">
-                        Description
+            <div id="content-area" class = "col-sm-8">
+                <!--Data Types-->
+                <div *ngIf="isShown.dataType" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <!--tbody: text body-->
+                        <a id="tbody"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> The data type:</a>
+                        <br>
+                        <a id="tbody"> 
+                            <ul><em>
+                                <li>Player </li>
+                            </em>
+                            </ul>
+                        </a>
+                        <br>
+                        <a id="tbody"><b>Player</b> *Variable name*</a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>Actions</b></a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>Declarations</b></a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;<b>PlayerTurn</b></a><br>
+                        <a>&#125;</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example </a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/dataType.PNG"></a>
+                        
                     </p>
                 </div>
+
+                <!--Declarations-->
+                <div *ngIf="isShown.declaration" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Declarations</h5>
+                    <p class=" mb-4">
+                        
+                        <a id="tbody">Determines the name and data type of a variable and/or function. The user will declare variables or functions by writing the name of the variable and/or functions, it's data type indicator in the required syntax. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a> Note: index is either a variable or constant</a>
+                        <br>
+                        <br>
+                        <a id="tbody"><b>Variable</b>  *User Defined Name* [ *index* ]</a>
+                        <br>
+                        <a><b>OR</b></a>
+                        <br>
+                        <a id="tbody"><b>Let</b>  *User Defined Name* [ *index* ]</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/DECL.PNG"></a>
+                        <br>
+                        <a>In the above example we deduce the following information:</a>
+                        <br>
+                        <br>
+                        <a><ul>
+                            <li><b>x</b> (variable) is declared as the value  <b>1</b></li>
+                            <li><b>name</b> (variable) is declared as the value <b>John</b></li>
+                            <li><b>happy</b> (variable) is declared as the value <b>true</b> value</li>
+                        </ul></a>
+                        
+                        
+                    </p>
+                </div>
+
+                <!--Arithmetic Operator-->
+                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Arithmetic Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody">A mathematical operation that takes two operands and performs a calculation </a>
+                        <br>
+                        <br>
+                        <a  id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> These operators are listed as follows:</a>
+                        <br>
+                        <br>
+                        <a>
+                        <table>
+                            <tr>
+                                <td>Plus</td>
+                                <td id="symbol"><b> + </b></td>
+                            </tr>
+                            <tr>
+                                <td>Minus</td>
+                                <td id="symbol"><b> - </b></td>
+                            </tr>
+                            <tr>
+                                <td>Multiply</td>
+                                <td id="symbol"><b> * </b></td>
+                            </tr>
+                            <tr>
+                                <td>Divide</td>
+                                <td id="symbol"><b> \\ </b></td>
+                            </tr>
+                            <tr>
+                                <td>Mod</td>
+                                <td id="symbol"><b> % </b></td>
+                            </tr>
+                        </table> 
+                        </a>
+                        <br>
+                        <a id="tbody"> *operand*  <b><em>operator</em></b>  *operand*</a>
+                        <br>
+                        <br>
+                        <a  id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/arithmetic.PNG"></a>
+                        
+                    </p>
+                </div>
+
+                <!--Logical Operator-->
+                <div *ngIf="isShown.logical" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Logical Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A word or symbol used to connect two or more expressions resulting in a compound expression dependent on the original expressions and the menaing of the operator. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> A list of the Logical Operators:</a>
+                        <br>
+                        <br>
+                        <a>
+                        <table>
+                            <tr>
+                                <td>AND </td>
+                                <td id="symbol"><b> && </b></td>
+                            </tr>
+                            <tr>
+                                <td>OR </td>
+                                <td id="symbol"><b> || </b></td>
+                            </tr>
+                            <tr>
+                                <td>NOT </td>
+                                <td id="symbol"><b> ! </b></td>
+                            </tr>
+                        </table>
+                        </a>
+                        <br>
+                        <a id="subheading"> Example </a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/AND.PNG"></a>
+                    </p>
+                </div>
+
+                <!--Conditional Operator-->
+                <div *ngIf="isShown.cond" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Conditional Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> Operators used to asses a condition applied to one or two boolean expressions. The result will either be TRUE or FALSE.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> As previously mentioned, the following are logical operators:</a>
+                        <br>
+                        <br>
+                        <a>
+                            <table>
+                                <tr>
+                                    <td>AND </td>
+                                    <td id="symbol"><b> && </b></td>
+                                </tr>
+                                <tr>
+                                    <td>OR </td>
+                                    <td id="symbol"><b> || </b></td>
+                                </tr>
+                                <tr>
+                                    <td>NOT </td>
+                                    <td id="symbol"><b> ! </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a id="tbody"> The logical operators <b>AND</b> and <b>OR</b> require <b>TWO</b> operands, of which apply the overall evaluation of the two operands. The logical operator, <b>NOT</b> requires only a single operand.
+                        The logical operators are thereafter used within conditional statements, thus resulting in a single outcome.</a>
+                        <br>
+                        
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/COND.PNG"></a>
+                        <br>
+                        <a><em>The above example evaluates the ID of a tile and the tile of which the piece is on.</em></a>
+                    </p>
+                </div>
+
+                <!--Relational Operators-->
+                <div *ngIf="isShown.relation" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Relational Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> An operator that defines the relation between two operands.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a id="tbody"> A list of Relational Operators:</a>
+                        <br>
+                        <br>
+                        <a>
+                            <table>
+                                <tr>
+                                    <td>GreaterThanOrEqual </td>
+                                    <td id="symbol"><b> >= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThanOrEqual </td>
+                                    <td id="symbol"><b> <= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Equals to</td>
+                                    <td id="symbol"><b> == </b></td>
+                                </tr>
+                                <tr>
+                                    <td>GreaterThan </td>
+                                    <td id="symbol"><b> > </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThan </td>
+                                    <td id="symbol"><b> < </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a>Let <b>x</b> be operand 1 and <b>y</b> be operand 2:</a>
+                        <br>
+                        <a> x > y</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/EQUAL.PNG"></a>
+                        <br>
+                        <a><em>The above example checks if there is <b>1</b> piece on the specific tile <b>t</b>.</em></a>
+                    </p>
+                </div>
+
+                <!--If-statement -->
+                <div *ngIf="isShown.ifState" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A decision-making statement that tells the program which decision to make through conditional statements.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><b>If</b> (condition) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/IF.PNG"></a>
+                        
+                    </p>
+                </div>
+
+                <!--if-Else-Statement-->
+                <div *ngIf="isShown.ifelse" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If-else Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> Just as the IF-statement this is a decision-making statement that tells the program which decision to make through conditional statements, although this particular statement will have an alternative option. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a><b>If</b> (condition) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <a><b>else</b></a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                    </p>
+                </div>
+
+                <!--For-Loop-->
+                <div *ngIf="isShown.for" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">For-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A statement that repeats a section of code under certain condition(s) for a <b>known</b> number of times.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>Assume:<br>
+                            <ol>
+                             <li><b>x</b> is a declared variable</li>
+                             <li><b>val</b> is an integer value ie. 0, 1,2, 3...</li>
+                             <li><b>*</b> is an unary operator namely: ++ or --</li>
+                            </ol>
+                        </a>
+                        <br>
+                        <a><b>for</b> ( <b>x = val </b> ; <b>condition </b> ; <b>x**</b> ) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                    </p>
+                </div>
+
+                <!--While-Loop-->
+                <div *ngIf="isShown.while" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">While-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A statement that repeats a section of code under certain condition(s) for a <b>unknown</b> number of times. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><b>while</b> ( <b>condition</b> ) </a><br>
+                        <a>&#123;</a><br>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;code</a><br>
+                        <a>&#125;</a><br>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img src="assets/images/WHILE.PNG"></a>
+                        <br>
+                        <a>The following program will output <em>'I am happy you are having a good day'</em>  twice</a>
+                    </p>
+                </div>
+
+                <!--continue statement-->
+                <div *ngIf="isShown.continue" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Continue Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This statement terminates a loop in current execution.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>The syntax of the continue statement merely the writing the word <b>continue</b> , this is usually done within a condition statement or loop, telling the program to continue executing proceeding lines outside the loop.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  src="assets/images/CONTINUE.PNG"></a><br>
+                        <a>The above example will only display the message <em>"I am happy you are having a nice day"</em> only once, as the program is instructed to continue running lines outside of the loop.</a>
+
+                    </p>
+                </div>
+
             </div>
 
         </div>
