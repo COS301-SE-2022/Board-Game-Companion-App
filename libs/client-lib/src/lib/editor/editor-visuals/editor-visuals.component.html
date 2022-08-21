@@ -1,1 +1,65 @@
 
+<!--List of Visual Elements-->
+<div class='container' dragula="COPYABLE"  id = "area">
+    <div [class] = 'item.class' [id] = 'item.class' *ngFor="let item of origin">
+      <div id = "whileBackground">
+        <div id = "content">
+          <!--For Loop-->
+          <div *ngIf = "item.title === 'For'" id = "line">
+            <div class = "pb-1 pt-8 pl-4 text-left">
+              <label>
+                Start
+              </label>
+              <input class = "fInput ml-3" readonly="readonly">
+            </div>
+            <div class = "py-1 pl-4 text-left">
+              <label *ngIf = "item.title === 'For'">
+                End 
+              </label>
+              <input class = "fInput ml-5" readonly="readonly">
+            </div>
+            <div class = "py-1 pl-4 text-left">
+              <label>
+                By
+              </label>
+              <input class = "fInput ml-7" readonly="readonly">
+            </div>
+          </div>
+          <!--Return-->
+          <input id = "return" *ngIf = "item.title === 'Return'" readonly="readonly">
+          <!--Title displayed for certain visuals-->
+          <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
+          <!--Variable declaration name-->
+          <input *ngIf = "item.title === 'Create'" readonly="readonly">
+          <!--List of variables create-->
+          <select *ngIf = "item.title === 'Set'"  readonly="readonly">
+            <option readonly="readonly">
+            </option>
+          </select>
+          <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
+            To
+          </div>
+          <input *ngIf = "item.title === 'Create' || item.title === 'Set'" readonly="readonly">
+          <!--List of pre-made methods-->
+          <select *ngIf = "item.title === 'Call'"  readonly="readonly">
+            <option readonly="readonly">
+            </option>
+          </select>
+          <!--Output and Input-->
+          <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" readonly="readonly"></textarea>
+          <!--While/do While Loop-->
+          <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'" readonly="readonly">
+          <div>
+            <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'" readonly="readonly">
+          </div>
+          <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" readonly="readonly">
+          <!--If Statement-->
+          <input id = "ifInput1" *ngIf = "item.title === 'If'" readonly="readonly">
+          <div>
+            <input id = "ifCompare" *ngIf = "item.title === 'If'" readonly="readonly">
+          </div>
+          <input id = "ifInput2" *ngIf = "item.title === 'If'" readonly="readonly">
+        </div>
+      </div>
+    </div>
+</div>
