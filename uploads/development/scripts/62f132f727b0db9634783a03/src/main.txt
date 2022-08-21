@@ -83,7 +83,7 @@ player naught{
             ans = false
         }
         return ans
-    }e
+    }
     
     
     turn(){

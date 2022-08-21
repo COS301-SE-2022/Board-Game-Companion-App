@@ -401,12 +401,13 @@ export class CompilerService {
     {
         
         this.errorLog = "";
-
+        
         this.DSLparser.input = this.scanHelper(input).tokens;
         const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
         {
             const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
+            
             return {err:errMessage}
         }
         else
