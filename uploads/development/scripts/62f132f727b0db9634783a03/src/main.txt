@@ -78,12 +78,13 @@ player naught{
     condition(t){
         let ans = true
         
+        
         if(t.pieces.length == 1)
         {
             ans = false
         }
         return ans
-    }e
+    }
     
     
     turn(){
