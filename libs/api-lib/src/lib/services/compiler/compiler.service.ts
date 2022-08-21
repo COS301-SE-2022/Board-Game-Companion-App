@@ -2027,21 +2027,64 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCopy":
                     visitRCopy(node, place)
                     break;
-                
+                case "rCreateBoard":
+                        visitRCreateBoard(node, place)
+                        break;
             }
         }
     }
 }
-function visitRCopy(cstOutput:CstNode, place:string)
+function visitRCreateBoard(cstOutput:CstNode, place:string)
 {
     
-    
+    let i = 0;
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
+        if(token.image)
+        {
+            if(token.tokenType.name == "IntegerLiteral")
+            {
+                if(i == 0)
+                {
+                    i++;
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<='+token.image+';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+                }
+                else
+                {
+                    i++;
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                }
+            }
+        }
+
+
+    }
+    if(i == 1)
+    {
+        
+        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.Board[i-1]=new tile()\nthis.Board[i-1].Id =i+\'\'\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '}\n', jsScript.slice(jsScript.indexOf(place))].join('');
+}   
+
+
+function visitRCopy(cstOutput:CstNode, place:string)
+{
+    
+    
+
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        
     }
 }
 
