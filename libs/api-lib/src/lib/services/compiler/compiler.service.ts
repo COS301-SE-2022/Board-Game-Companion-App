@@ -468,8 +468,11 @@ class parser extends CstParser
         private Cards = this.RULE("Cards", () => {
             this.CONSUME(tokensStore.tCards)
             this.CONSUME(tokensStore.tUserDefinedIdentifier)
-            this.CONSUME(tokensStore.tOpenBrace)
+            this.CONSUME(tokensStore.tOpenBracket)
             this.SUBRULE(this.nParameters),
+            this.CONSUME(tokensStore.tCloseBracket)
+            this.CONSUME(tokensStore.tOpenBrace)
+            
             this.SUBRULE(this.CardEffect )
             this.SUBRULE(this.CardCondition)
             this.CONSUME(tokensStore.tCloseBrace)
@@ -493,11 +496,6 @@ class parser extends CstParser
             this.CONSUME(tokensStore.tCondition )
             this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements)
-            this.CONSUME(tokensStore.tReturn)
-            this.OR([
-                { ALT: () =>{ this.SUBRULE(this.Const )}}, 
-                { ALT: () =>{ this.SUBRULE(this.nVariable)}}
-            ])
             this.CONSUME(tokensStore.tCloseBrace)
         });
         private CardEffect=this.RULE("CardEffect", () => {
@@ -1582,7 +1580,11 @@ function visitCards(cstOutput:CstNode)
                 switch(token.tokenType.name)
                 {
                     case "UserDefinedIdentifier":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), "class "+token.image+ " extends cards ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardActivation")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardActivation"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardUsable")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardUsable"))].join('');
+                        
                         break;
                     case "tCards":
                         break;
@@ -1627,26 +1629,34 @@ function visitEffect(cstOutput:CstNode)
         const token = child[0] as unknown as IToken;
 
 
-        if(token.tokenType)
+        if(node.name)
             {
-                switch(token.tokenType.name)
-                {
-                    case "tEffect":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ "()", jsScript.slice(jsScript.indexOf("//cards"))].join('');
-                        break;
-                    default:
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ " ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
-                        break;
-
-                }
+                visitPlayerStatements(node, "//cardEffect");
             }
 
     }
-        
+    jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")),"}\n", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
+                         
 }
 function visitCondition(cstOutput:CstNode)
 {
     //
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+
+        if(node.name)
+            {
+                visitPlayerStatements(node, "//cardCondition");
+            }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")),"}\n", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
+    
 }
 
 function visitPlayer(cstOutput:CstNode)
