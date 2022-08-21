@@ -73,7 +73,8 @@ export class ScriptService {
             programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
             source: {name:"",location:"",key:""},
             build:{name:"",location:"",key:""},
-            icon: {name:"",location:"",key:""}
+            icon: {name:"",location:"",key:""},
+            models: []
         };
         
         
@@ -142,7 +143,8 @@ export class ScriptService {
                         programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
                         source: {name:"",location:"",key:""},
                         build:{name:"",location:"",key:""},
-                        icon: {name:"",location:"",key:""}
+                        icon: {name:"",location:"",key:""},
+                        models: []
                     };
 
                     const createdScript = new this.scriptModel(dto);

@@ -13,6 +13,7 @@ import { NotificationComponent } from './components/notification/notification.co
 import { NotificationUnitComponent } from './components/notification-unit/notification-unit.component'; 
 import { InputInterfaceComponent } from './components/input-interface/input-interface.component';
 import { StorageService } from './services/storage/storage.service';
+import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { StorageService } from './services/storage/storage.service';
     HeaderComponent,
     NotificationComponent,
     NotificationUnitComponent,
-    InputInterfaceComponent
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,8 @@ import { StorageService } from './services/storage/storage.service';
     HeaderComponent,
     FooterComponent,
     NotificationComponent,
-    InputInterfaceComponent
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ]
 })
 export class SharedModule { }

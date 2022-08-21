@@ -67,6 +67,9 @@ export class Script{
 
     @Prop({required:true,type:{name:"",key:"",location:""}})
     icon: file; 
+
+    @Prop()
+    models: string[]
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);
