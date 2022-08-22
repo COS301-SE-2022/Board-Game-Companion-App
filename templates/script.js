@@ -1,6 +1,10 @@
 class cards
 {
     name;
+    constructor(n)
+    {
+        this.name = n;
+    }
     //cardEffect
 
     //cardCondition

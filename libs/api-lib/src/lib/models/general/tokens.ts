@@ -13,6 +13,8 @@ export const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,lon
 export const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
 
 export const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+export const tCreateCard=(chevrotain.createToken({name:"CreateCard",pattern:/createCard/,longer_alt:tUserDefinedIdentifier}));
+
 export const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
 export const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
 export const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
@@ -136,6 +138,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tPlayer,
     tCards,
     tTile,
+    tCreateCard,
     tCreateBoard,
     tPiece,
     tAddToArr,

@@ -761,6 +761,10 @@ class parser extends CstParser
                         }},
                         { 
                             ALT: () =>{ 
+                                this.SUBRULE(this.rCreateCard)
+                        }},
+                        { 
+                            ALT: () =>{ 
                                 this.SUBRULE(this.rGetTileByID)
                         }},
                         { 
@@ -792,6 +796,12 @@ class parser extends CstParser
                     ])
                     
                 });
+                private rCreateCard=this.RULE("rCreateCard", () => {
+                    this.CONSUME(tokensStore.tCreateCard )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rCopy=this.RULE("rCopy", () => {
                     this.CONSUME(tokensStore.tCopy )
                     this.CONSUME2(tokensStore.tOpenBracket )
@@ -2044,9 +2054,36 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCreateBoard":
                         visitRCreateBoard(node, place)
                         break;
+                case "rCreateCard":
+                    visitRCreateCard(node, place)
+                        break;  
             }
         }
     }
+}
+function visitRCreateCard(cstOutput:CstNode, place:string)
+{
+    
+    let i = 0;
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+
+        if(token.image)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+        }
+        if(node.name)
+        {
+            visitRCreateCard(node, place);
+        }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n', jsScript.slice(jsScript.indexOf(place))].join('');
+        
 }
 function visitRCreateBoard(cstOutput:CstNode, place:string)
 {
