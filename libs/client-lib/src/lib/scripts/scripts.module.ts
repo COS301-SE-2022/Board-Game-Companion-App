@@ -12,6 +12,7 @@ import { NbContextMenuModule } from '@nebular/theme';
 import { SharedModule } from '../shared/shared.module';
 import { DownloadsPageComponent } from './downloads-page/downloads-page.component';
 import { OwnScriptsPageComponent } from './own-scripts-page/own-scripts-page.component';
+import { MainScriptsComponent } from './main-scripts/main-scripts.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { OwnScriptsPageComponent } from './own-scripts-page/own-scripts-page.com
     UpdateScriptComponent,
     DownloadsPageComponent,
     OwnScriptsPageComponent,
+    MainScriptsComponent,
   ],
   imports: [
     NbContextMenuModule,
