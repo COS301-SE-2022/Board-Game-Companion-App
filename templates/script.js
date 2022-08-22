@@ -1,13 +1,32 @@
 class cards
 {
-    parameters;
+    name;
+    //cardEffect
+
+    //cardCondition
+    
     async activate()
     {
-        //
+        activate("")
     }
     async canUse()
     {
-        return true;
+        canUse("")
+    }
+    async activate(parameters)
+    {
+        switch(this.name)
+        {
+            //cardActivation
+        }
+    }
+    async canUse(parameters)
+    {
+        switch(this.name)
+        {
+            //cardUsable
+        }
+        return false;
     }
 }
 //cards

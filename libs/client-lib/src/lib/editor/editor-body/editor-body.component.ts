@@ -35,6 +35,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
+  VDSL = false;
 
   constructor(private readonly scriptService:ScriptService){
     
@@ -101,6 +102,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       enableLiveAutocompletion: true
     });
 
+  }
+
+  changeDisplay(value: boolean): void
+  {
+    this.VDSL = value
   }
 
   getCode(): string{

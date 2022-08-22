@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EditorComponent } from './editor/editor.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { EditorToolBarComponent } from './editor-tool-bar/editor-tool-bar.component';
 import { EditorSideBarComponent } from './editor-side-bar/editor-side-bar.component';
@@ -11,9 +11,10 @@ import { EditorConsoleComponent } from './editor-console/editor-console.componen
 import { EditorBodyComponent } from './editor-body/editor-body.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditorHelpComponent } from './editor-help/editor-help.component';
-import { EditorThemeComponent  } from './editor-theme/editor-theme.component';
+import { EditorThemeComponent } from './editor-theme/editor-theme.component';
 import { EditorEditFeaturesComponent } from './editor-edit-features/editor-edit-features.component';
 import { EditorEntityComponent } from './editor-entity/editor-entity.component';
+import { EditorVisualsComponent } from './editor-visuals/editor-visuals.component';
 
 @NgModule({
   declarations: [
@@ -26,16 +27,15 @@ import { EditorEntityComponent } from './editor-entity/editor-entity.component';
     EditorHelpComponent,
     EditorThemeComponent,
     EditorEditFeaturesComponent,
-    EditorEntityComponent
+    EditorEntityComponent,
+    EditorVisualsComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    RouterModule.forChild([{path:'',component:EditorComponent}])
-  ]
+    RouterModule.forChild([{ path: '', component: EditorComponent }]),
+  ],
 })
-export class ScriptEditorModule { 
-
-}
+export class ScriptEditorModule {}

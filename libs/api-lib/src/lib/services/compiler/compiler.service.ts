@@ -28,7 +28,7 @@ let jsScript = scriptTemplate;
 @Injectable()
 export class CompilerService {
 
-    
+    errorLog = "";
 
     DSLparser = new parser();
 
@@ -383,7 +383,7 @@ export class CompilerService {
          const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
         {
-            throw Error(this.DSLparser.errors.toString()+"!!"+this.scanHelper(input).tokens[0].tokenType.PATTERN);
+            throw Error(this.DSLparser.errors.toString());
         }
 
         //otherwise successful parse
@@ -395,23 +395,30 @@ export class CompilerService {
     }
 
 
-    transpile(input:string)
+    transpile(input:string) 
     {
+        
+        this.errorLog = "";
         
         this.DSLparser.input = this.scanHelper(input).tokens;
         const cstOutput = this.DSLparser.Program();
         if(this.DSLparser.errors.length!=0)
         {
-            throw Error(this.DSLparser.errors.toString()+"!!"+this.scanHelper(input).tokens[0].tokenType.PATTERN);
+            const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
+            
+            return {err:errMessage}
         }
-        //read in template file
-        jsScript = scriptTemplate;
-        //begin transpilation
-        visit(cstOutput)
-        
-        //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
-        const programStructure = this.getProgramStructure(cstOutput)
-        return {build:jsScript,programStructure:programStructure};
+        else
+        {
+            //read in template file
+            jsScript = scriptTemplate;
+            //begin transpilation
+            visit(cstOutput)
+            
+            //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
+            const programStructure = this.getProgramStructure(cstOutput)
+            return {build:jsScript,programStructure:programStructure};
+        }
     }
 }
 
@@ -460,8 +467,11 @@ class parser extends CstParser
         private Cards = this.RULE("Cards", () => {
             this.CONSUME(tokensStore.tCards)
             this.CONSUME(tokensStore.tUserDefinedIdentifier)
-            this.CONSUME(tokensStore.tOpenBrace)
+            this.CONSUME(tokensStore.tOpenBracket)
             this.SUBRULE(this.nParameters),
+            this.CONSUME(tokensStore.tCloseBracket)
+            this.CONSUME(tokensStore.tOpenBrace)
+            
             this.SUBRULE(this.CardEffect )
             this.SUBRULE(this.CardCondition)
             this.CONSUME(tokensStore.tCloseBrace)
@@ -485,11 +495,6 @@ class parser extends CstParser
             this.CONSUME(tokensStore.tCondition )
             this.CONSUME(tokensStore.tOpenBrace)
             this.SUBRULE(this.statements)
-            this.CONSUME(tokensStore.tReturn)
-            this.OR([
-                { ALT: () =>{ this.SUBRULE(this.Const )}}, 
-                { ALT: () =>{ this.SUBRULE(this.nVariable)}}
-            ])
             this.CONSUME(tokensStore.tCloseBrace)
         });
         private CardEffect=this.RULE("CardEffect", () => {
@@ -989,7 +994,21 @@ class parser extends CstParser
                             {ALT: () =>{
                                 this.SUBRULE(this.rAddToArr )
                             }}
+                            ,
+                            {ALT: () =>{
+                                this.SUBRULE(this.rCreateBoard )
+                            }}
                         ])
+                 })
+                 private rCreateBoard=this.RULE("rCreateBoard", () => {
+                    this.CONSUME(tokensStore.tCreateBoard )
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tIntegerLiteral )
+                    this.OPTION2(() => {
+                        this.CONSUME(tokensStore.tComma )
+                        this.CONSUME2(tokensStore.tIntegerLiteral )
+                    })
+                    this.CONSUME(tokensStore.tCloseBracket )
                  })
                  private rAddToArr=this.RULE("rAddToArr", () => {
                     this.CONSUME(tokensStore.tAddToArr )
@@ -1560,7 +1579,11 @@ function visitCards(cstOutput:CstNode)
                 switch(token.tokenType.name)
                 {
                     case "UserDefinedIdentifier":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), "class "+token.image+ " extends cards ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardActivation")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardActivation"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardUsable")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardUsable"))].join('');
+                        
                         break;
                     case "tCards":
                         break;
@@ -1605,26 +1628,34 @@ function visitEffect(cstOutput:CstNode)
         const token = child[0] as unknown as IToken;
 
 
-        if(token.tokenType)
+        if(node.name)
             {
-                switch(token.tokenType.name)
-                {
-                    case "tEffect":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ "()", jsScript.slice(jsScript.indexOf("//cards"))].join('');
-                        break;
-                    default:
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ " ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
-                        break;
-
-                }
+                visitPlayerStatements(node, "//cardEffect");
             }
 
     }
-        
+    jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")),"}\n", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
+                         
 }
 function visitCondition(cstOutput:CstNode)
 {
     //
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+
+
+        if(node.name)
+            {
+                visitPlayerStatements(node, "//cardCondition");
+            }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")),"}\n", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
+    
 }
 
 function visitPlayer(cstOutput:CstNode)
@@ -2005,21 +2036,64 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCopy":
                     visitRCopy(node, place)
                     break;
-                
+                case "rCreateBoard":
+                        visitRCreateBoard(node, place)
+                        break;
             }
         }
     }
 }
-function visitRCopy(cstOutput:CstNode, place:string)
+function visitRCreateBoard(cstOutput:CstNode, place:string)
 {
     
-    
+    let i = 0;
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
+        if(token.image)
+        {
+            if(token.tokenType.name == "IntegerLiteral")
+            {
+                if(i == 0)
+                {
+                    i++;
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<='+token.image+';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+                }
+                else
+                {
+                    i++;
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                }
+            }
+        }
+
+
+    }
+    if(i == 1)
+    {
+        
+        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.Board[i-1]=new tile()\nthis.Board[i-1].Id =i+\'\'\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '}\n', jsScript.slice(jsScript.indexOf(place))].join('');
+}   
+
+
+function visitRCopy(cstOutput:CstNode, place:string)
+{
+    
+    
+
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        
     }
 }
 

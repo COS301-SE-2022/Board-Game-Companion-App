@@ -2,10 +2,15 @@
     <div (click) = "showEntities = !showEntities" [ngClass] = "{'bg-zinc-600 hover:bg-zinc-400':!showEntities,'title-header':showEntities}" class = "cursor-pointer w-full h-6 mb-1 shadow-md text-center bar-header text-white font-medium">
         {{current.name}}
     </div>
-    <div class = "w-full" *ngIf="showEntities">
-        <board-game-companion-app-editor-entity (removeEvent)="remove($event)" (selectionEvent)="highlight($event)" [current]="value" *ngFor= "let value of current.programStructure.children"></board-game-companion-app-editor-entity>
+    <div class = "w-full" *ngIf = "VDSL === false">
+        <div *ngIf="showEntities">
+            <board-game-companion-app-editor-entity (removeEvent)="remove($event)" (selectionEvent)="highlight($event)" [current]="value" *ngFor= "let value of current.programStructure.children"></board-game-companion-app-editor-entity>
+        </div>
+        <div (click) = "showModels = !showModels" [ngClass] = "{'bg-zinc-600 hover:bg-zinc-400':!showModels,'title-header':showModels}" class = "cursor-pointer w-full h-6 mb-1 shadow-md text-center bar-header text-white font-medium">
+            Models
+        </div>        
     </div>
-    <div (click) = "showModels = !showModels" [ngClass] = "{'bg-zinc-600 hover:bg-zinc-400':!showModels,'title-header':showModels}" class = "cursor-pointer w-full h-6 mb-1 shadow-md text-center bar-header text-white font-medium">
-        Models
+    <div class = "w-full" *ngIf = "VDSL === true">
+        <board-game-companion-app-editor-visuals></board-game-companion-app-editor-visuals>
     </div>
 </div>

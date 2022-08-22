@@ -15,6 +15,15 @@ import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
 import { HttpService } from '@nestjs/axios';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { entity } from '../../models/general/entity';
+
+interface programResult{
+    build:string;
+    programStructure:entity;
+}
+interface errResult{
+    err:string;
+}
 
 @Injectable()
 export class ScriptService {
@@ -297,8 +306,13 @@ export class ScriptService {
             result = {status:"failed",message: "invalid script id"};
         else{
             try{
-                const compiledCode = this.compilerService.transpile(content);
-                
+                const compilerResult = this.compilerService.transpile(content);
+                const err = compilerResult as errResult;
+                const compiledCode = compilerResult as programResult;
+                if(err.err)
+                {
+                    throw new Error(err.err);
+                }
                 result = {status:"success",message:"successfully updated script on " + (new Date()).toString(),programStructure:compiledCode.programStructure};
                 
                 await this.updateBuild(id,compiledCode.build);
@@ -309,7 +323,7 @@ export class ScriptService {
                 script.save();
             
             }catch(e){
-                console.log(e);
+                //console.log(e);
                 result = {status:"failed",message:e};
             }
         }

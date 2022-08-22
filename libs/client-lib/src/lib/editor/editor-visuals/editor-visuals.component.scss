@@ -1,0 +1,389 @@
+.visualC {
+    width: 150px;
+    height: 150px;
+    border: solid 5px black;
+    margin-bottom: 1em;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+  }
+
+.visualC #content{
+    margin-top: 1.5em;
+}
+
+.visualS {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 1em;
+    border: solid 5px black;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.visualS #content{
+    margin-top: 1.2em;
+}
+
+.visualIn {
+    position: relative;
+    margin-bottom: 1em;
+    width: 150px;
+    height: 150px;
+    -webkit-clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+  
+.visualIn #content{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    -webkit-clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    cursor: move;
+    background: white;
+}
+
+.visualIn #title{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.visualO {
+    position: relative;
+    margin-bottom: 1em;
+    width: 150px;
+    height: 150px;
+    -webkit-clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
+    clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+  }
+  
+.visualO #content{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    -webkit-clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
+    clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
+    cursor: move;
+    background: white;
+}
+  
+.visualO #title{
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+.visualM {
+    position: relative;
+    margin-bottom: 1em;
+    width: 150px;
+    height: 150px;
+    -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+  
+.visualM #content{
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    right: 7px;
+    bottom: 7px;
+    -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    cursor: move;
+    background: white;
+}
+
+.visualM select{
+    margin-top: 1em;
+}
+
+.visualIf {
+    position: relative;
+    margin-bottom: 1em;
+    width: 150px;
+    height: 150px;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+  
+.visualIf #content{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    cursor: move;
+    background: white;
+}
+
+.visualR {
+    width: 150px;
+    height: 50px;
+    border: solid 5px black;
+    border-radius: 40px;
+    margin-bottom: 1em;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.visualR #return{
+    margin-top: 0.5em;
+}
+
+.visualF {
+    width: 140px;
+    height: 150px;
+    border: solid 5px black;
+    border-radius: 40px 0 0 40px;
+    margin-bottom: 1em;
+    margin-right: 0;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.visualW {
+    width: 140px;
+    height: 150px;
+    border: solid 5px black;
+    border-radius: 40px 0 0 40px;
+    margin-bottom: 1em;
+    margin-right: 0;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+  
+}
+   
+.visualW #whileBackground{
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+  
+.visualW #content{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    cursor: move;
+    background: white;
+}
+
+.visualD {
+    width: 140px;
+    height: 150px;
+    border: solid 5px black;
+    border-radius: 0 40px 40px 0;
+    margin-bottom: 1em;
+    margin-left: 0;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+  
+}
+  
+  
+.visualD #whileBackground {
+    position: relative;
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+    width: 120px;
+    height: 120px;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    color: rgba(0, 0, 0, 0.87);
+    cursor: move;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+}
+  
+.visualD #content{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+    cursor: move;
+    background: white;
+}
+
+input{
+    width: 75px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    text-align: center;
+}
+
+select{
+    width: 75px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+}
+
+textarea{
+    width: 100px;
+    height: 80px;
+    border: solid 3px black;
+    border-radius: 15px;
+}
+
+#ifInput1{
+    width: 70px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 2em;
+    text-align: center;
+}
+  
+#ifInput2{
+    width: 70px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 0.5em;
+    text-align: center;
+}
+  
+#ifCompare{
+    width: 35px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 10px;
+    margin-top: 0.5em;
+    text-align: center;
+    font-weight: bold;
+}
+
+#whileInput1{
+    width: 50px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 1.2em;
+    text-align: center;
+}
+  
+#whileInput2{
+    width: 50px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 0.3em;
+    text-align: center;
+}
+  
+#whileCompare{
+    width: 30px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 0.3em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.fInput{
+    width: 50px;
+    height: 20px;
+    border: solid 3px black;
+    border-radius: 5px;
+    text-align: center;
+}
