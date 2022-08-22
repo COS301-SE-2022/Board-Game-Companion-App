@@ -171,7 +171,7 @@ export class EditorComponent implements OnInit{
       this.outputBlock = true;
       this.showOutput = true;
       this.outputMessage = value;
-
+      
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
             if(!this.outputBlock){
@@ -294,7 +294,7 @@ export class EditorComponent implements OnInit{
           this.interpreter(value);
         },
         error:(e)=>{
-          console.log(e);
+          console.log(e.message);
         }
       });
     }catch(err){
@@ -391,6 +391,7 @@ export class EditorComponent implements OnInit{
 
     for(let count = 0; count < this.statusMessages.length; count++)
       this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
+      
   }
 
   printWarningMessages(): void{

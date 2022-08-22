@@ -52,6 +52,7 @@ export const tDot = chevrotain.createToken({name:"Dot",pattern:/\./})
 export const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
 export const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
 export const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+export const tNotEqual = chevrotain.createToken({name:"NotEqual",pattern:/!=/});
 export const tGreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
 export const tLessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
 
@@ -79,7 +80,7 @@ export const tMod=(chevrotain.createToken({name:"Mod",pattern:/%/,longer_alt:tUs
 //logical operators
 export const tAnd=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
 export const tOr=(chevrotain.createToken({name:"Or",pattern:/\|\|/,longer_alt:tUserDefinedIdentifier}));
-export const tNot=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tUserDefinedIdentifier}));
+export const tNot=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tNotEqual}));
 
 
 
@@ -164,6 +165,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tLessThanOrEqual,
     tGreaterThanOrEqual,
     tEqual,
+    tNotEqual,
     tGreaterThan,
     tLessThan,
     tAssign,

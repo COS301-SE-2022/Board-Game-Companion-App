@@ -61,28 +61,28 @@ let t1 = new tile()
 t1 . Id = " '1'"
 let t2 = new tile()
 
-t2 . Id = 2 
+t2 . Id = " '2'"
 let t3 = new tile()
 
-t3 . Id = 3 
+t3 . Id = " '3'"
 let t4 = new tile()
 
-t4 . Id = 4 
+t4 . Id = " '4'"
 let t5 = new tile()
 
-t5 . Id = 5 
+t5 . Id = " '5'"
 let t6 = new tile()
 
-t6 . Id = 6 
+t6 . Id = " '6'"
 let t7 = new tile()
 
-t7 . Id = 7 
+t7 . Id = " '7'"
 let t8 = new tile()
 
-t8 . Id = 8 
+t8 . Id = " '8'"
 let t9 = new tile()
 
-t9 . Id = 9 
+t9 . Id = " '9'"
 //State
         
 
@@ -423,6 +423,12 @@ class script
 let t1 = await this.State.getTileByID(1)
 let t2 = await this.State.getTileByID(2)
 let t3 = await this.State.getTileByID(3)
+let t3 = await this.State.getTileByID(4)
+let t3 = await this.State.getTileByID(5)
+let t3 = await this.State.getTileByID(6)
+let t3 = await this.State.getTileByID(7)
+let t3 = await this.State.getTileByID(8)
+let t3 = await this.State.getTileByID(9)
 return ans 
 //end_game
     

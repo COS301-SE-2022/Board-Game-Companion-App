@@ -405,7 +405,7 @@ export class CompilerService {
         if(this.DSLparser.errors.length!=0)
         {
             const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
-            
+            console.log(errMessage)
             return {err:errMessage}
         }
         else
@@ -1315,6 +1315,11 @@ class parser extends CstParser
                     ALT: () =>{ 
                         this.CONSUME(tokensStore.tEqual)
                 }}
+                ,
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(tokensStore.tNotEqual)
+                }}
         ])
         });
 
@@ -2066,7 +2071,7 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
                 else
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
                 }
             }
         }
