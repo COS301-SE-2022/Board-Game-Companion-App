@@ -1,7 +1,5 @@
 import { Component, Input, OnInit,OnDestroy, Output, EventEmitter } from '@angular/core';
 
-
-
 @Component({
   selector: 'board-game-companion-app-notification-unit',
   templateUrl: './notification-unit.component.html',
@@ -19,7 +17,7 @@ export class NotificationUnitComponent implements OnInit,OnDestroy {
     this.timer = window.setInterval(()=>{
       this.opacity -= 0.05;
       
-      if(this.opacity === 0.6)
+      if(this.opacity < 0.6)
         this.removeEvent.emit();
 
     },500);

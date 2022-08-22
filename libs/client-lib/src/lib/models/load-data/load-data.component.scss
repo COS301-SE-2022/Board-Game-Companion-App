@@ -1,0 +1,82 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+
+.model-block{
+    background-color: $Pcolour-2;
+}
+
+.input-feature-display::-webkit-scrollbar {
+    width: 5px;
+}
+  
+.input-feature-display::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.input-feature-display::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.input-feature-display::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.menu-btn{
+    color:black;
+    padding: 2px 6px;
+    font-size: 14px;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.activation-funtion-menu{
+    position:relative;
+    height: 100%;
+    width: 100%;
+}
+
+.menu-content{
+    display: none;
+    width: 100%;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menu-content a{
+    text-decoration: none;
+    display: block;
+    color:black;
+}
+
+.activation-funtion-menu:hover .menu-content{
+    display: block;
+}
+
+.number-icon{
+    background-color: $Pcolour-2;
+}
+
+.active-step{
+    background-color: $Pcolour-1;
+}
+
+.display-panel::-webkit-scrollbar {
+    width: 10px;
+}
+  
+.display-panel::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.display-panel::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.display-panel::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

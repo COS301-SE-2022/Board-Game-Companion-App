@@ -5,6 +5,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
   templateUrl: './editor-help.component.html',
   styleUrls: ['./editor-help.component.scss'],
 })
+
 export class EditorHelpComponent {
   isShown = {
     dataType : false,
@@ -172,5 +173,4 @@ export class EditorHelpComponent {
     this.isShown.declaration = false;
     this.isShown.dataType = false;
   }
-  
 }

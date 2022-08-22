@@ -59,14 +59,17 @@ export class Script{
     @Prop({required:true,type:emptyEntity})
     programStructure:entity;
 
-    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    @Prop({required:true,type:{name:"",key:"",location:""}})
     source: file;
 
-    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    @Prop({required:true,type:{name:"",key:"",location:""}})
     build: file;
 
-    @Prop({required:true,type:{name:"",awsKey:"",location:""}})
+    @Prop({required:true,type:{name:"",key:"",location:""}})
     icon: file; 
+
+    @Prop()
+    models: string[]
 }
 
 export const ScriptSchema = SchemaFactory.createForClass(Script);

@@ -21,7 +21,9 @@ export class EditorSideBarComponent implements OnInit{
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();
   @ViewChildren(EditorEntityComponent) entities: QueryList<EditorEntityComponent> = new QueryList<EditorEntityComponent>();
-  
+  showEntities = true;
+  showModels = false;
+
   ngOnInit(): void {
     setInterval(()=>{
       const temp = document.getElementById("editor-side-bar")?.style.width;

@@ -8,7 +8,9 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 export class EditorStatusBarComponent implements OnInit{
   @Input() height = 0;
   @Output() printStatusMessagesEvent = new EventEmitter();
+  @Output() printWarningMessagesEvent = new EventEmitter();
   statusOfChanges = 2;
+  warnings = 0;
 
   ngOnInit(): void {
     this.statusOfChanges = 2;  
@@ -20,6 +22,14 @@ export class EditorStatusBarComponent implements OnInit{
 
   printStatusMessages(): void{
     this.printStatusMessagesEvent.emit();
+  }
+
+  updateWarningsCount(val:number): void{
+    this.warnings = val;
+  }
+
+  printWarningMessages(): void{
+    this.printWarningMessagesEvent.emit();
   }
 
 }

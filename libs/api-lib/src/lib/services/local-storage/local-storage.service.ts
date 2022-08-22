@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { awsUpload } from '../../models/general/awsUpload';
+import { upload } from '../../models/general/upload';
 import fs = require("fs");
 
 @Injectable()
 export class LocalStorageService{
 
-    async upload(name:string,path:string,data:any):Promise<awsUpload>{
+    async upload(name:string,path:string,data:any):Promise<upload>{
         path = (process.env.PROJECT_STATUS == "production" ? "uploads/production/" : "uploads/development/") + path;
         const key = path + name;
         

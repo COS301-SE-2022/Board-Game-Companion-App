@@ -1,21 +1,26 @@
-<div class = "w-full p-4">
+<div class = "w-full" style = "padding:5rem 10rem;">
     <div class = "models-wrapper w-full">
         <div class="row p-5">
             <div class="col-md-2 mb-3">
                 <ul class="nav nav-pills flex-column" id="modelstabs" role="tablist">
                     <li class="nav-item">
-                        <a (click) = "changeTab(0)" [ngClass]="{'active':tab===0}" class="cursor-pointer nav-link" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">General</a>
+                        <a (click) = "changeTab(0)" [ngClass]="{'active':tab===0,'hover:bg-zinc-400':tab !== 0}" class="cursor-pointer nav-link" id="general-tab" data-toggle="tab" role="tab" aria-controls="general-tab" aria-selected="true">General</a>
                     </li>
                 
                     <li class="nav-item">
-                        <a (click) = "changeTab(1)" [ngClass]="{'active':tab===1}" class="cursor-pointer nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">Train</a>
+                        <a (click) = "changeTab(1)" [ngClass]="{'active':tab===1,'hover:bg-zinc-400':tab !== 1}" class="cursor-pointer nav-link" id="train-tab" data-toggle="tab" role="tab" aria-controls="train-tab" aria-selected="false">Train</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a (click) = "changeTab(2)" [ngClass]="{'active':tab===2,'hover:bg-zinc-400':tab !== 2}" class="cursor-pointer nav-link" id="pre-train-tab" data-toggle="tab" role="tab" aria-controls="pre-train-tab" aria-selected="false">Upload</a>
                     </li>
                 </ul>
             </div>
             
-            <div class="col-md-10 p-2">
-                <board-game-companion-app-train (beginTrainingEvent)="beginTraining($event)" *ngIf = "tab === 1"></board-game-companion-app-train>
-                <board-game-companion-app-general [beginTrainingModel]="beginTrainingModel" *ngIf = "tab === 0"></board-game-companion-app-general>
+            <div class="col-md-10 px-4">
+                <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
+                <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
+                <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload>
             </div>
         </div>
     </div>

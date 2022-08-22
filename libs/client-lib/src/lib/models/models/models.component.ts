@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { beginTraining } from '../../shared/models/beginTraining';
+import { modelData } from '../../shared/models/modelData';
+import { ModelsService } from '../../shared/services/models/models.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import { GeneralComponent } from '../general/general.component';
 
 
 @Component({
@@ -10,18 +14,20 @@ import { beginTraining } from '../../shared/models/beginTraining';
 })
 export class ModelsComponent implements OnInit {
   tab = 0;
-  beginTrainingModel!:beginTraining;
+  @ViewChild(GeneralComponent,{static:false}) general: GeneralComponent = new GeneralComponent(this.modelService,this.storageService);
+
+  constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){}
 
   ngOnInit(): void{
-    console.log("models")
+    this.tab = 0;
   }
 
   changeTab(value:number): void{
     this.tab = value;
   }
 
-  beginTraining(value:beginTraining):void{
-    this.beginTrainingModel = value;
+  train(value:modelData):void{
+    this.general.train(value);
     this.changeTab(0);
   }
 }

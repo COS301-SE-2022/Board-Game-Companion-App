@@ -13,22 +13,25 @@ import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
 import { Like, LikeSchema } from './schemas/like.schema';
+import { NeuralNetwork, NeuralNetworkSchema } from './schemas/neural-network.schema';
 import { S3Service } from './services/aws/s3.service';
 import { CompilerService } from './services/compiler/compiler.service';
 import { ApiModelsController } from './controllers/models/models.controller';
 import { ModelsService } from './services/models/models.service';
 import { HttpModule } from '@nestjs/axios';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
   imports:[
     MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
-                                {name:Script.name,schema: ScriptSchema},
-                                {name:Comment.name,schema:CommentSchema},
-                                {name:Rating.name,schema:RatingSchema},
-                                {name:Like.name,schema:LikeSchema}
+                                { name: Script.name, schema: ScriptSchema},
+                                { name: Comment.name, schema: CommentSchema},
+                                { name: Rating.name, schema: RatingSchema},
+                                { name: Like.name, schema: LikeSchema},
+                                { name: NeuralNetwork.name, schema: NeuralNetworkSchema}
                               ]),
-                              HttpModule
+                              HttpModule,NestjsFormDataModule
   ],
   controllers: [
     CollectionsController,

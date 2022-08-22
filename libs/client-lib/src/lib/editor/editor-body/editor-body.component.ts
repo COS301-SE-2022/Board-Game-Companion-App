@@ -48,6 +48,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       this.themeEditor = theme;
 
     this.createEditor();
+
+    
+    
     clearInterval(this.cursorCheckerTimer);
     this.codeEditor.navigateTo(0,0);
 
@@ -59,6 +62,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         this.cursorPosition = value;
       }
     },500);
+    
   }
 
   ngOnDestroy(): void {

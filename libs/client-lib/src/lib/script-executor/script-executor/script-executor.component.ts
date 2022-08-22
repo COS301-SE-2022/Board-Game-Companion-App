@@ -131,15 +131,15 @@ export class ScriptExecutorComponent implements OnInit {
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
+      const models:{name:string,model:tf.LayersModel,min:tf.Tensor,max:tf.Tensor,labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
         models.push({
-          name: networks[count].name,
-          model: await tf.loadLayersModel('localstorage://' + networks[count].name),
-          min: networks[count].min as number[],
-          max: networks[count].max as number[],
-          labels: networks[count].labels as string[]
+          name: networks[count].setup.name,
+          model: await tf.loadLayersModel('localstorage://' + networks[count].setup.name),
+          min: networks[count].setup.min,
+          max: networks[count].setup.max,
+          labels: networks[count].setup.labels as string[]
         })
       }
 

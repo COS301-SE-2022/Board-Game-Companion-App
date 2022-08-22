@@ -2,46 +2,57 @@ import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as tf from '@tensorflow/tfjs';
+import { layer } from '../../models/layer';
+import { optimizerArgs } from '../../models/optimizerArgs';
+import { user } from '../../models/user';
+import { StorageService } from '../storage/storage.service';
 
-export interface args{
-    learningRate?:number;
-    rho?:number;
-    initialAccumulatorValue?:number;
-    beta1?:number;
-    beta2?:number;
-    epsilon?:number;
-    decay?:number;
-    momentum?:number;
-    useNesterov?:boolean;
-    centered?:boolean;
-}
-
-export interface layer{
-    index: number;
-    activation: string;
-    nodes: number;
-}
 
 @Injectable()
 export class ModelsService {
   private api = "";
 
-  constructor(private readonly httpClient:HttpClient){
+  constructor(private readonly httpClient:HttpClient,private readonly storageService:StorageService){
     this.api = "http://localhost:3333/api/"
   }
 
-  uploadModel(model:tf.Sequential):Promise<tf.io.SaveResult>{
-    return model.save(this.api + "models/save-files");
+  alreadyStored(model:string): Promise<boolean>{
+    let param = new HttpParams();
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
+    param = param.set("modelName",model);
+
+    return new Promise((resolve,reject) => {
+        this.httpClient.get<boolean>(this.api + "models/stored",{params: param}).subscribe({
+            next: (value:boolean) => {
+                resolve(value);
+            },
+            error: (error) => {
+                reject()
+            }
+        })
+    })
   }
 
-  uploadMetaData(name:string,created:Date,labels:any[],max:number[],min:number[]){
-      //return this.httpClient.post<>(this.api + "models/")
+  getAll(): Observable<any>{
+    let param = new HttpParams();
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
+
+    return this.httpClient.get<any>(this.api + "models/all",{params:param});
+  }
+
+  remove(name:string): Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
+    param = param.set("name",name); 
+
+    return this.httpClient.delete<boolean>(this.api + "models/remove",{params:param});
   }
 
 
   setLayer(nodes:number,activation:string,inputshape?:number[]){
-    
-    console.log(nodes);
     
     if(activation === "elu"){        
         return tf.layers.dense({
@@ -129,14 +140,13 @@ export class ModelsService {
     model.add(this.setLayer(layers[0].nodes,layers[0].activation,[inputs]))
 
     for(let count = 1; count < layers.length; count++){
-        model.add(this.setLayer(layers[0].nodes,layers[0].activation))
+        model.add(this.setLayer(layers[count].nodes,layers[count].activation))
     }
 
     model.add(tf.layers.dense({
         units: labels, 
         activation: 'softmax'
     }));
-
 
     return model;
   }
@@ -177,7 +187,6 @@ export class ModelsService {
             //normalizedInputs.print();
             const normalizedOutputs = outputTensor.sub(outputMinimum).div(outputMaximum.sub(outputMinimum));
             //normalizedOutputs.print();
-            console.log(labels);
             
             return { 
                 labels: labels,
@@ -192,7 +201,7 @@ export class ModelsService {
         });    
     }
 
-    getOptimizationFunction(optimizer:number,values:args):tf.Optimizer{
+    getOptimizationFunction(optimizer:number,values:optimizerArgs):tf.Optimizer{
 
         if(optimizer === 0){
             return tf.train.adadelta(values.learningRate,values.rho,values.epsilon);
@@ -217,8 +226,7 @@ export class ModelsService {
             loss: 'categoricalCrossentropy',
             metrics: ['accuracy']
         })
-        
-        
+          
         return model.fit(inputs,outputs,options);
     }
 

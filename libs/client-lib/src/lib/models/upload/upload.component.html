@@ -1,0 +1,66 @@
+<h1 class = "text-gray-900 text-xl font-medium mb-4">Pre-trained Models</h1>
+
+<div class="px-2 pt-4 wrapper text-white overflow-y-scroll overflow-x-hidden">
+    <div class="mb-4">
+        <label for="exampleFormControlInput1" class="form-label"><b>Neural network name</b></label>
+        <input type="text" autocomplete="off" class="form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "name" name = "name" id="name" placeholder="name">
+    </div>
+
+    <div class = "mb-4">
+        <div class="input-group">
+            <input [(ngModel)] = "path" name = "path" type="text" class="form-control px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Text input with dropdown button">
+            <button style = "background-color:rgb(148,163,184)" class="btn dropdown-toggle border-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Location</button>
+            <ul class="dropdown-menu dropdown-menu-end overflow-hidden">
+              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 0}" (click)="changeLocation(0)">Internet</a></li>
+              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 1}" (click)="changeLocation(1)">IndexedDB</a></li>
+              <li><a class="dropdown-item" [ngClass] = "{'bg-slate-200':location === 2}" (click)="changeLocation(2)">Local Storage</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class = "w-full row mb-4">
+        <div class = "col-sm-6">
+            <label for="exampleFormControlInput1" class="form-label"><b>Type</b></label>
+            <div class = "activation-funtion-menu w-60">
+                <button class = "menu-btn bg-gray-300 p-1 text-sm rounded-md">
+                    {{type}}
+                </button>
+                <div class = "menu-content absolute rounded-md overflow-hidden">
+                    <a (click)="type='classification'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">classification</a>
+                    <a (click)="type='regression'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">regression</a>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-sm-6" *ngIf = "type === 'classification'">
+            <label for="data-partition" class="form-label font-medium"><b>Labels</b></label>
+                
+            <div class="w-full">
+                <div class="input-group relative w-full mb-4">
+                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "label" name = "label" type = "search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <button (click) = "addLabel()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                        <i class="far fa-plus fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let feature of labels">
+                    <p>{{feature}}</p>
+                    <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeInput(feature)">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "w-full mb-4 text-center">    
+        <button type="button" (click) = "upload()" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
+            <i class="fas fa-upload"></i>
+            upload
+        </button>
+    </div>
+</div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
