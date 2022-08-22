@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'board-game-companion-app-editor-visuals',
-  templateUrl: './editor-visuals.component.html',
-  styleUrls: ['./editor-visuals.component.scss'],
+  selector: 'board-game-companion-app-editor-visual-side-bar',
+  templateUrl: './editor-visual-side-bar.component.html',
+  styleUrls: ['./editor-visual-side-bar.component.scss'],
 })
-export class EditorVisualsComponent implements OnInit {
+export class EditorVisualsComponent {
 
   origin = [
     {title: 'Create',  class: 'visualC', pos: 0},
@@ -19,7 +19,4 @@ export class EditorVisualsComponent implements OnInit {
     {title: 'While', class: 'visualW', pos: 0},
     {title: 'doWhile', class: 'visualD', pos: 0}
   ];
-  constructor() {}
-
-  ngOnInit(): void {}
 }
