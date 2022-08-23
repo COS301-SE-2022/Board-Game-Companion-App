@@ -34,11 +34,8 @@ import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visu
     EditorEntityComponent,
     EditorVisualsComponent,
     EditorTextSideBarComponent,
-<<<<<<< HEAD
-    EditorModelsComponent
-=======
-    EditorBodyVisualComponent,
->>>>>>> beaaa592da60a5151ddfacb30c987f4568b7bd83
+    EditorModelsComponent,
+    EditorBodyVisualComponent
   ],
   imports: [
     CommonModule,
