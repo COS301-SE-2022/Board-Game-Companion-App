@@ -7,16 +7,18 @@
 }
 
 .sidebar {
-    // margin-top: 10%;
     margin-left: 1%;
     font-size: 20px;
     width: 120px;
     background-color: #f1f1f1;
-    position: fixed;
+    position: absolute;
     height: 100%;
     overflow: auto;
   }
-  
+  .sideB {
+    margin-top: 10%;
+  }
+
   .sidebar a {
     display: block;
     color: $Pcolour-3;
@@ -36,8 +38,3 @@
     cursor: pointer;
   }
   
-//   div.content {
-//     margin-left: 200px;
-//     padding: 1px 16px;
-//     height: 1000px;
-//   }

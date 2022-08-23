@@ -1,0 +1,78 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+.container{
+    width: 80%;
+    margin: 10%;
+    margin-top: 5rem;
+}
+
+
+#heading{
+    display: flex;
+    font-weight: bold;
+    font-size: 64px;
+    float: left;
+}
+
+.SortAndSearch{
+    display: flex;
+    float: right;
+    margin-top: 34px;
+}
+
+.row{
+    margin-top: 30px;
+    width:100%;
+}
+div#TitleBlock {
+    background-color: $Pcolour-2;
+    height: 84px;
+    color: white;
+}
+
+div.grid-view{
+    background-color: black;
+}
+ div.col-3{
+    width:225px;
+    height:250px;
+    border: 1px solid $Pcolour-1;
+    border-radius: 10%;
+ }
+
+//  .script-image {
+//     float: left;
+//   }
+  
+  .script-image img {
+    // border-radius: 50%;
+    display: inline-block;
+    height: 110px;
+    width: 100px;
+    // margin-left: auto;
+    // margin-right: auto;
+
+  }
+
+  figure{
+    display: block;
+    text-align: center;
+  }
+
+li{
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 8%;
+    padding-top: 15px;
+    text-align: center;
+    font-size: 28px;
+  }
+
+  ul{
+    margin-top: 12%;
+  }
+  li:hover{
+    color: $Pcolour-2;
+  }
+  .list-hoziron{
+    text-align: center;
+  }
