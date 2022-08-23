@@ -16,6 +16,8 @@ import { EditorEditFeaturesComponent } from './editor-edit-features/editor-edit-
 import { EditorEntityComponent } from './editor-entity/editor-entity.component';
 import { EditorVisualsComponent } from './editor-visual-side-bar/editor-visual-side-bar.component';
 import { EditorTextSideBarComponent } from './editor-text-side-bar/editor-text-side-bar.component';
+import { DragulaModule } from 'ng2-dragula';
+import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visual.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +32,15 @@ import { EditorTextSideBarComponent } from './editor-text-side-bar/editor-text-s
     EditorEditFeaturesComponent,
     EditorEntityComponent,
     EditorVisualsComponent,
-    EditorTextSideBarComponent
+    EditorTextSideBarComponent,
+    EditorBodyVisualComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    DragulaModule,
     RouterModule.forChild([{ path: '', component: EditorComponent }]),
   ],
 })
