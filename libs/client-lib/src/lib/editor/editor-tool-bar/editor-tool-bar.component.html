@@ -10,7 +10,6 @@
             File
         </button>
         <div class = "menu-content absolute">
-            <a class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Model</a>
             <a (click) = "exit()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Exit</a>
         </div>
     </div>
@@ -50,6 +49,16 @@
             <a (click) = "execute()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">
                 Execute
             </a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
+            Models
+        </button>
+        <div class = "menu-content absolute">
+            <a class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Create</a>
+            <a data-bs-toggle="modal" data-bs-target="#modelsModal" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Add</a>
         </div>
     </div>
 
