@@ -216,6 +216,88 @@ export class EditorHelpComponent {
     this.isShown.arithmetic = false;
     this.isShown.declaration = false;
     this.isShown.dataType = false;
+    this.isShown.uiOut = false;
+    this.isShown.uiIn = false;
+    this.isShown.cOut = false;
+    this.isShown.cIn = false;
   }
+
   
+
+  uInput():void{
+    this.isShown.uiIn = true;
+    this.isShown.uiOut = false;
+    this.isShown.continue= false;
+    this.isShown.cOut = false;
+    this.isShown.cIn = false;
+    this.isShown.while= false;
+    this.isShown.for = false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+    this.isShown.uiOut = false;
+    this.isShown.uiIn = false;
+    this.isShown.cOut = false;
+    this.isShown.cIn = false;
+  }
+
+  uOutput():void{
+    this.isShown.uiOut = true;
+    this.isShown.uiIn = false;
+    this.isShown.continue= false;
+    this.isShown.cOut = false;
+    this.isShown.cIn = false;
+    this.isShown.while= false;
+    this.isShown.for = false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
+
+  cInput():void{
+    this.isShown.cIn = true;
+    this.isShown.uiOut = false;
+    this.isShown.continue= false;
+    this.isShown.cOut = false;
+    this.isShown.uiIn = false;
+    this.isShown.while= false;
+    this.isShown.for = false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
+
+  cOuput():void{
+    this.isShown.cOut = true;
+    this.isShown.uiOut = false;
+    this.isShown.continue= false;
+    this.isShown.uiIn = false;
+    this.isShown.cIn = false;
+    this.isShown.while= false;
+    this.isShown.for = false;
+    this.isShown.ifelse = false;
+    this.isShown.ifState = false;
+    this.isShown.relation = false;
+    this.isShown.cond = false;
+    this.isShown.logical =false; 
+    this.isShown.arithmetic = false;
+    this.isShown.declaration = false;
+    this.isShown.dataType = false;
+  }
+
 }
