@@ -6,6 +6,7 @@ import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 
 interface file{
   name:string;

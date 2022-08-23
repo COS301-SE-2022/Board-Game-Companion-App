@@ -20,5 +20,10 @@ export class EditorVisualsComponent {
     {title: 'doWhile', class: 'visualD', pos: 0}
   ];
 
+  ngOnInit(): void{
+    const k = document.getElementById("area") as HTMLElement
+    console.log(k)
+  }
+
   
 }

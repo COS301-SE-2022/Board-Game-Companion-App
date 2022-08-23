@@ -57,7 +57,7 @@ export class EditorComponent implements OnInit{
   programStructure!:entity;
 
 
-  constructor(private readonly scriptService:ScriptService, private router: Router, private dragulaService: DragulaService){
+  constructor(private readonly scriptService:ScriptService, private router: Router, protected dragulaService: DragulaService){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
     dragulaService.createGroup('COPYABLE', 
     {
