@@ -1,0 +1,34 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+.container{
+    width: 80%;
+    margin: 10%;
+    margin-top: 5rem;
+}
+
+
+#heading{
+    display: flex;
+    font-weight: bold;
+    font-size: 64px;
+    float: left;
+}
+
+.SortAndSearch{
+    display: flex;
+    float: right;
+    margin-top: 34px;
+}
+
+thead{
+    color: white;
+    background-color: $Pcolour-3;
+}
+div#TitleBlock {
+    background-color: $Pcolour-2;
+    height: 80px;
+    color: white;
+}
+
+table{
+    width: 100%;
+}

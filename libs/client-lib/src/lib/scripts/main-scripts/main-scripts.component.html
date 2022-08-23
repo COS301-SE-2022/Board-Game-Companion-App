@@ -7,7 +7,7 @@
 
     <div class="main-content">
         <board-game-companion-app-scripts *ngIf="page==='Scripts'"></board-game-companion-app-scripts>
-        <board-game-companion-app-downloads-page [ngIf]="page==='Loads'"></board-game-companion-app-downloads-page>
-        <!-- <board-game-companion-app-own-scripts-page [ngIf]="page==='Yours'"></board-game-companion-app-own-scripts-page> -->
+        <board-game-companion-app-downloads-page *ngIf="page==='Loads'"></board-game-companion-app-downloads-page>
+        <board-game-companion-app-own-scripts-page *ngIf="page==='Yours'"></board-game-companion-app-own-scripts-page>
     </div>
 </div>
