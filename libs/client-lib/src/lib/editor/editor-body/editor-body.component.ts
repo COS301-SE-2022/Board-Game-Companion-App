@@ -35,13 +35,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
-  VDSL = false;
 
   constructor(private readonly scriptService:ScriptService){
     
   }
 
   ngOnInit(): void {
+    
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
     if(theme != null)
@@ -106,7 +106,20 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
   changeDisplay(value: boolean): void
   {
-    this.VDSL = value
+    if(value)
+    {
+      const e = document.getElementById("editor-content") as HTMLElement
+      const v = document.getElementById("visual-content") as HTMLElement
+      e.style.display = "none"
+      v.style.display = "block"
+    }
+    else
+    {
+      const e = document.getElementById("editor-content") as HTMLElement
+      const v = document.getElementById("visual-content") as HTMLElement
+      e.style.display = "block"
+      v.style.display = "none"
+    }
   }
 
   getCode(): string{
