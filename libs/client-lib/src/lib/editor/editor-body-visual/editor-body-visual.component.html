@@ -1,0 +1,23 @@
+<div class="wrapper" dragula="COPYABLE" [(dragulaModel)]="dest"  id = "game">
+    <div  style = "display: flex;" id = "listItems" *ngFor = "let item of dest let i = index">
+        <div [class] = "item.class">
+            <div id = "whileBackground">
+                <div id = "content">
+                    <!--Title displayed for certain visuals-->
+                    <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
+                    <!--Variable declaration name-->
+                    <input *ngIf = "item.title === 'Create'" readonly="readonly">
+                    <!--List of variables create-->
+                    <select *ngIf = "item.title === 'Set'"  readonly="readonly">
+                        <option readonly="readonly">
+                        </option>
+                    </select>
+                    <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
+                        To
+                    </div>
+                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

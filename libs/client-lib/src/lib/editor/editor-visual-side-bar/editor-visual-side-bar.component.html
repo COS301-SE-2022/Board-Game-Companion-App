@@ -1,7 +1,6 @@
-
 <!--List of Visual Elements-->
-<div class='container' dragula="COPYABLE"  id = "area">
-    <div [class] = 'item.class' [id] = 'item.class' *ngFor="let item of origin">
+<div class='container' dragula="COPYABLE"  id = "area" [(dragulaModel)] = "origin">
+    <div [class] = 'item.class' [id] = 'item.class' *ngFor = "let item of origin">
       <div id = "whileBackground">
         <div id = "content">
           <!--For Loop-->
