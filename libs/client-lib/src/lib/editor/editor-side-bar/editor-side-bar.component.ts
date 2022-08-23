@@ -4,7 +4,7 @@ import { entity } from '../../shared/models/entity';
 import { script, empty } from '../../shared/models/script';
 import { selection } from '../../shared/models/selection';
 import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
-import { EditorVisualsComponent } from '../editor-visuals/editor-visuals.component';
+import { EditorVisualsComponent } from '../editor-visual-side-bar/editor-visual-side-bar.component';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -21,7 +21,8 @@ export class EditorSideBarComponent implements OnInit{
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();
   @ViewChildren(EditorEntityComponent) entities: QueryList<EditorEntityComponent> = new QueryList<EditorEntityComponent>();
-  
+
+
   ngOnInit(): void {
     setInterval(()=>{
       const temp = document.getElementById("editor-side-bar")?.style.width;

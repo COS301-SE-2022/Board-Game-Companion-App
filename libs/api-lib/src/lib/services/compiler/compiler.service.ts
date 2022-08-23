@@ -351,16 +351,14 @@ export class CompilerService {
          const Tokenized = lexer.tokenize(input);
 
         
-        const isBanned = Tokenized.tokens.filter((value)=>{
-            
-            return bannedTokens.includes(value.image);
-        });
+        // const isBanned = Tokenized.tokens.filter((value)=>{
+        //     return bannedTokens.includes(value.image);
+        // });
 
-        if(isBanned)
-        {
-            if(isBanned[0])
-                throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
-        }
+        // if(isBanned)
+        // {
+        //     throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
+        // }
 
         return Tokenized;
     }

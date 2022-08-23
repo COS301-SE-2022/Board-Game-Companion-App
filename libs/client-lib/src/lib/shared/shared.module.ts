@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { NotificationComponent } from './components/notification/notification.component';
 import { NotificationUnitComponent } from './components/notification-unit/notification-unit.component'; 
 import { InputInterfaceComponent } from './components/input-interface/input-interface.component';
+import { StorageService } from './services/storage/storage.service';
+import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { InputInterfaceComponent } from './components/input-interface/input-inte
     HeaderComponent,
     NotificationComponent,
     NotificationUnitComponent,
-    InputInterfaceComponent
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ],
   imports: [
     CommonModule,
@@ -31,13 +34,15 @@ import { InputInterfaceComponent } from './components/input-interface/input-inte
     ScriptService,
     GoogleAuthService,
     CommentService,
-    ModelsService
+    ModelsService,
+    StorageService
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     NotificationComponent,
-    InputInterfaceComponent
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ]
 })
 export class SharedModule { }

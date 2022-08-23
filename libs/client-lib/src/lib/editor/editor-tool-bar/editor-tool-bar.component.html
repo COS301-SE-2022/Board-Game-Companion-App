@@ -10,7 +10,6 @@
             File
         </button>
         <div class = "menu-content absolute">
-            <a class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Model</a>
             <a (click) = "exit()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Exit</a>
         </div>
     </div>
@@ -36,9 +35,9 @@
         </button>
         <div class = "menu-content absolute">
             <a data-bs-toggle="modal" data-bs-target="#themeModal"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Theme</a>
-            <a (click) = "toggleSideBar()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "hide" : "show"}} side bar</a>
-            <a (click) = "toggleConsole()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "hide" : "show"}} console</a>
-            
+            <a (click) = "toggleDisplay()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600"  style = "border-bottom:1px solid gray">{{VDSL === true ? "Visual" : "Text"}}</a>
+            <a (click) = "toggleSideBar()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "Hide" : "Show"}} side bar</a>
+            <a (click) = "toggleConsole()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "Hide" : "Show"}} console</a>     
         </div>
     </div>
 
@@ -55,6 +54,16 @@
 
     <div class = "editor__dropdown-menu">
         <button class = "menu-btn hover:bg-zinc-400">
+            Models
+        </button>
+        <div class = "menu-content absolute">
+            <a class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" (click) = "viewModels()">Create</a>
+            <a data-bs-toggle="modal" data-bs-target="#modelsModal" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">Add</a>
+        </div>
+    </div>
+
+    <div class = "editor__dropdown-menu">
+        <button class = "menu-btn hover:bg-zinc-400">
             Help
         </button>
         <div class = "menu-content absolute">
@@ -63,11 +72,6 @@
             </a>
         </div>
     </div>
-    <div class = "editor__dropdown-menu">
-        <button (click) = "toggleDisplay()" id = "switch" class = "menu-btn hover:bg-zinc-400">
-            Code
-        </button>
-    </div>
 </div>
 
 <!-- modals -->
@@ -75,3 +79,4 @@
 <board-game-companion-app-editor-theme (themeEvent)="themeChange()"></board-game-companion-app-editor-theme>
 <board-game-companion-app-editor-edit-features (findEvent)="find($event)" (findNextEvent)="findNext()" (findPreviousEvent)="findPrevious()" (replaceEvent)="replace($event)" (replaceAllEvent)="replace($event)" [showReplace]="showReplace"></board-game-companion-app-editor-edit-features>
 <board-game-companion-app-editor-help></board-game-companion-app-editor-help>
+<board-game-companion-app-editor-models></board-game-companion-app-editor-models>

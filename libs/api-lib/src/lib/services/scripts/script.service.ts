@@ -9,7 +9,7 @@ import { status } from '../../models/general/status';
 import { S3Service } from '../aws/s3.service'
 import { file } from '../../models/general/files';
 import { v4 as uuidv4 } from 'uuid';
-import { awsUpload } from '../../models/general/awsUpload';
+import { upload } from '../../models/general/upload';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
@@ -48,7 +48,7 @@ export class ScriptService {
             script.build = {
                 name:"main.js",
                 location:fileUploadResult.location,
-                awsKey:fileUploadResult.key
+                key:fileUploadResult.key
             };
 
             script.size = await fileSize(script.build.location).catch(console.error);
@@ -80,9 +80,10 @@ export class ScriptService {
             size: 0,
             comments: [],
             programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
-            source: {name:"",location:"",awsKey:""},
-            build:{name:"",location:"",awsKey:""},
-            icon: {name:"",location:"",awsKey:""}
+            source: {name:"",location:"",key:""},
+            build:{name:"",location:"",key:""},
+            icon: {name:"",location:"",key:""},
+            models: []
         };
         
         
@@ -93,7 +94,7 @@ export class ScriptService {
         result.build = await this.createBuildFile(result._id);
         result.size = await fileSize(result.build.location).catch(console.error);
         const savedIcon = await this.storeIcon(result._id,icon);
-        result.icon = {name: icon.originalname,location:savedIcon.location,awsKey:savedIcon.key};
+        result.icon = {name: icon.originalname,location:savedIcon.location,key:savedIcon.key};
 
         result.save();
 
@@ -149,9 +150,10 @@ export class ScriptService {
                         size: script.size,
                         comments: script.comments,
                         programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
-                        source: {name:"",location:"",awsKey:""},
-                        build:{name:"",location:"",awsKey:""},
-                        icon: {name:"",location:"",awsKey:""}
+                        source: {name:"",location:"",key:""},
+                        build:{name:"",location:"",key:""},
+                        icon: {name:"",location:"",key:""},
+                        models: []
                     };
 
                     const createdScript = new this.scriptModel(dto);
@@ -164,7 +166,7 @@ export class ScriptService {
                     const buildResponse = await this.localStorage.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
                     //console.log(buildResponse)
                     newScript.build.name = script.build.name;
-                    newScript.build.awsKey = buildResponse.key;
+                    newScript.build.key = buildResponse.key;
                     newScript.build.location = buildResponse.location;
 
                     
@@ -175,7 +177,7 @@ export class ScriptService {
                     newScript.icon = {
                         name: script.icon.name,
                         location: savedIcon.location,
-                        awsKey: savedIcon.key
+                        key: savedIcon.key
                     }
 
                     newScript.save();
@@ -189,8 +191,8 @@ export class ScriptService {
     }
 
     async createSourceFile(id:string):Promise<file>{
-        const result:file = {name:"main.txt",location:"",awsKey:""};
-        let fileUploadResult:awsUpload = {key:"",location:""};
+        const result:file = {name:"main.txt",location:"",key:""};
+        let fileUploadResult:upload = {key:"",location:""};
         const path = "scripts/" + id + "/src/";
         let data = "";
 
@@ -203,14 +205,14 @@ export class ScriptService {
         //fileUploadResult = await this.s3Service.upload("main.txt",path,data);
         fileUploadResult = await this.localStorage.upload("main.txt",path,data);
         result.location = fileUploadResult.location;
-        result.awsKey = fileUploadResult.key;
+        result.key = fileUploadResult.key;
 
         return result;
     }
 
     async createBuildFile(id:string):Promise<file>{
-        const result:file = {name:"main.js",location:"",awsKey:""};
-        let fileUploadResult:awsUpload = {key:"",location:""};
+        const result:file = {name:"main.js",location:"",key:""};
+        let fileUploadResult:upload = {key:"",location:""};
         const path = "scripts/" + id + "/build/";
         let data = "";
 
@@ -223,7 +225,7 @@ export class ScriptService {
         //fileUploadResult = await this.s3Service.upload("main.js",path,data);
         fileUploadResult = await this.localStorage.upload("main.js",path,data);
         result.location = fileUploadResult.location;
-        result.awsKey = fileUploadResult.key;
+        result.key = fileUploadResult.key;
         console.log(result);
         
         return result;        
@@ -246,7 +248,7 @@ export class ScriptService {
         return result;
     }
 
-    async storeIcon(id:string,icon:any):Promise<awsUpload>{
+    async storeIcon(id:string,icon:any):Promise<upload>{
         const path = "scripts/" + id + "/icons/";
         
         //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
@@ -314,8 +316,8 @@ export class ScriptService {
                 result = {status:"success",message:"successfully updated script on " + (new Date()).toString(),programStructure:compiledCode.programStructure};
                 
                 await this.updateBuild(id,compiledCode.build);
-                //this.s3Service.update(script.source.awsKey,content);
-                await this.localStorage.update(script.source.awsKey,content);
+                //this.s3Service.update(script.source.key,content);
+                await this.localStorage.update(script.source.key,content);
                 script.lastupdate = new Date();
                 script.programStructure = compiledCode.programStructure;
                 script.save();

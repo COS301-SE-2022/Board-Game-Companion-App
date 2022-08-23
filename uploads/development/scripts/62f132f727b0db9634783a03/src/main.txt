@@ -67,6 +67,7 @@ player crossAI{
     }
 }
 
+
 player naught{
     action placeNaught(t){
         let p = piece
@@ -85,7 +86,6 @@ player naught{
         }
         return ans
     }
-    
     
     turn(){
         

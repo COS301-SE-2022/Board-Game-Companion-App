@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorVisualsComponent } from './editor-visuals.component';
+import { EditorVisualsComponent } from './editor-visual-side-bar.component';
 
 describe('EditorVisualsComponent', () => {
   let component: EditorVisualsComponent;
