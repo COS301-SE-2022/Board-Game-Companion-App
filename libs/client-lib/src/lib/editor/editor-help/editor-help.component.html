@@ -98,17 +98,17 @@
                             </a>
 
                             <ul class="relative accordion-collapse collapse" id="IOSubNav" aria-labelledby="IOSubNav" data-bs-parent="#IONav">
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">user interface input</a>
+                                <li class="relative" (click)="uInput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">user interface input</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">user interface output</a>
+                                <li class="relative" (click)="uOutput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">user interface output</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">console input</a>
+                                <li class="relative" (click)="cInput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">console input</a>
                                 </li>
-                                <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">console output</a>
+                                <li class="relative" (click)="cOuput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">console output</a>
                                 </li>
                             </ul>
                         </li>
@@ -124,22 +124,22 @@
 
                             <ul class="relative accordion-collapse collapse" id="ObjectsSubNav" aria-labelledby="ObjectsSubNav" data-bs-parent="#ObjectsSubNav">
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>state</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>state</b></a>
                                 </li>
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>player</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>player</b></a>
                                 </li>
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>tile</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>tile</b></a>
                                 </li>
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>piece</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>piece</b></a>
                                 </li>
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>card</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>card</b></a>
                                 </li>
                                 <li class="relative">
-                                    <a href="#!" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>endgame</b></a>
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>endgame</b></a>
                                 </li>
                             </ul>
                         </li>
@@ -192,11 +192,18 @@
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
-                        <a id="tbody"> The data type:</a>
+                        <a id="tbody"> The data types are namely:</a>
                         <br>
                         <a id="tbody"> 
                             <ul><em>
-                                <li>Player </li>
+                                <li>player </li>
+                                <li>root</li>
+                                <li>state </li>
+                                <li>condition</li>
+                                <li>card </li>
+                                <li>turn</li>
+                                <li>action</li>
+                                <li>endgame</li>
                             </em>
                             </ul>
                         </a>
@@ -222,19 +229,26 @@
                     <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Declarations</h5>
                     <p class=" mb-4">
                         
-                        <a id="tbody">Determines the name and data type of a variable and/or function. The user will declare variables or functions by writing the name of the variable and/or functions, it's data type indicator in the required syntax. </a>
+                        <a id="tbody">Determines the name and data type of a variable and/or function. The user will declare variables or functions by writing the name of the variable and/or functions, it's data type indicator in the required syntax. The language follows javascript scoping conventions.</a>
                         <br>
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
-                        <a> Note: index is either a variable or constant</a>
-                        <br>
+                        <a> As mentioned the language uses javascript scoping conventions, meaning:</a><br>
+                        <a><ol>
+                            <li>1. The declaration of a variable within a function, use the <b>let</b> keyword.</li>
+                            <li>2.<em> Accessing a variable outside the function it is declared in:</em></li>
+                                <li>- Given a function <b>turn()</b> that is defined within the <b>player()</b> function, then to access a variable declared in the turn() , use:</li>
+                                <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>this.VariableName</b></a>
+                        </ol></a>
                         <br>
                         <a id="tbody"><b>Variable</b>  *User Defined Name* [ *index* ]</a>
                         <br>
                         <a><b>OR</b></a>
                         <br>
                         <a id="tbody"><b>Let</b>  *User Defined Name* [ *index* ]</a>
+                        <br>
+                        <a> Note: index is either a variable or constant</a>
                         <br>
                         <br>
                         <a id="subheading">Example</a>
@@ -503,7 +517,9 @@
                         <br>
                         <a id="subheading"> Example</a>
                         <br>
-                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                        <a ><img  id="ifelse" src="assets/images/FOR.PNG"></a>
+                        <br>
+                        <a> From the above example, note the the message <em>'Hello There!'</em> will be displayed <b>twice</b>.</a>
                     </p>
                 </div>
 
@@ -551,6 +567,73 @@
                     </p>
                 </div>
 
+                <!--User Interface Input-->
+                <div *ngIf="isShown.uiIn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">User Interface Input</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is how the user will give their input to the system. This is the visual aspect of input.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >...</a><br>
+
+                    </p>
+                </div>
+
+                <!--User Interface Output-->
+                <div *ngIf="isShown.uiOut" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">User Interface Output</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is how the user will get their output from the system. This is the visual aspect of displaying information.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >image here</a><br>
+                    </p>
+                </div>
+
+                <!--Console In-->
+                <div *ngIf="isShown.cIn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Console Input</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">...</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>The syntax of the continue statement merely the writing the word <b>continue</b> , this is usually done within a condition statement or loop, telling the program to continue executing proceeding lines outside the loop.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a></a>
+                    </p>
+                </div>
+
+                <!--Console Out-->
+                <div *ngIf="isShown.cOut" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Console Output</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">...</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >...</a>
+
+                    </p>
+                </div>
             </div>
 
         </div>
