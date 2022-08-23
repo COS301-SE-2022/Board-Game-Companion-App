@@ -31,7 +31,7 @@ import { MainScriptsComponent } from './main-scripts/main-scripts.component';
     FormsModule,
     NgxPaginationModule,
     SharedModule,
-    RouterModule.forChild([{ path: '', component: ScriptsComponent }]),
+    RouterModule.forChild([{ path: '', component: MainScriptsComponent }]),
   ],
 })
 export class ScriptsModule {}
