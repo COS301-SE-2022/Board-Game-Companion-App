@@ -10,11 +10,13 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment.prod';
 import { NbThemeModule,NbMenuModule } from '@nebular/theme';
 import { SharedModule } from '@board-game-companion-app/client-lib';
+import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     NbThemeModule.forRoot(),
+    DragulaModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
