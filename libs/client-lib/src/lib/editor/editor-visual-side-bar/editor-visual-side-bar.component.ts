@@ -19,4 +19,6 @@ export class EditorVisualsComponent {
     {title: 'While', class: 'visualW', pos: 0},
     {title: 'doWhile', class: 'visualD', pos: 0}
   ];
+
+  
 }

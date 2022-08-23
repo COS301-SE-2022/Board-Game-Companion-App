@@ -14,6 +14,7 @@ import { inputParameters } from '../../shared/models/inputParameters';
 import { entity } from '../../shared/models/entity';
 import { selection } from '../../shared/models/selection';
 import { Ace } from 'ace-builds';
+import {DragulaService} from 'ng2-dragula';
 
 interface message{
   message: string;
@@ -55,8 +56,30 @@ export class EditorComponent implements OnInit{
   warningMessages:string[] = [];
   programStructure!:entity;
 
-  constructor(private readonly scriptService:ScriptService, private router: Router){
+
+  constructor(private readonly scriptService:ScriptService, private router: Router, private dragulaService: DragulaService){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
+    dragulaService.createGroup('COPYABLE', 
+    {
+      direction:'horizontal',
+      copy: (el, source) => {
+        return source.id === 'area';
+      },
+      copyItem: (obj) => {
+        return {title: obj.title, class: obj.class , pos: obj.pos};
+      },
+      accepts: (el, target, source, sibling) => {
+        // To avoid dragging from right to left container
+        if(target != null)
+        {
+          return target.id !== 'area';
+        }
+        else
+        {
+          return false;
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
