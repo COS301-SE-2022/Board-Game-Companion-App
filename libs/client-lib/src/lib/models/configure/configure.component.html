@@ -1,0 +1,210 @@
+<div class="model-block w-full shadow-sm text-white p-2 mt-2">
+    <div class = "mb-4">
+        <label for="data-partition" class="form-label font-medium"><b>Optimizer</b></label>
+        <div class = "row p-2 border-2 mx-1 rounded-md">
+            <div class = "col-sm-4" style="border-right:1px solid white">
+                <div class="form-check">
+                    <input (click)="setOptimizer(0)" [checked] = "optimizer === 0" class="form-check-input" type="radio" name="adadelta" id="adadelta">
+                    <label class="form-check-label" for="adadelta">
+                        adadelta
+                    </label>
+                </div>
+                
+                <div class="form-check">
+                    <input (click)="setOptimizer(1)" [checked] = "optimizer === 1" class ="form-check-input" type="radio" name="adagrad" id="adagrad">
+                    <label class="form-check-label" for="adagrad">
+                        adagrad
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input (click)="setOptimizer(2)" [checked] = "optimizer === 2" class="form-check-input" type="radio" name="adam" id="adam">
+                    <label class="form-check-label" for="adam">
+                        adam
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input (click)="setOptimizer(3)" [checked] = "optimizer === 3" class="form-check-input" type="radio" name="adamax" id="adamax">
+                    <label class="form-check-label" for="adamax">
+                        adamax
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input (click)="setOptimizer(4)" [checked] = "optimizer === 4" class="form-check-input" type="radio" name="momentum" id="momentum">
+                    <label class="form-check-label" for="momentum">
+                        momentum
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input (click)="setOptimizer(5)" [checked] = "optimizer === 5" class="form-check-input" type="radio" name="rmsprop" id="rmsprop">
+                    <label class="form-check-label" for="rmsprop">
+                        rmsprop
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input (click)="setOptimizer(6)" [checked] = "optimizer === 6" class="form-check-input" type="radio" name="sgd" id="sgd">
+                    <label class="form-check-label" for="sgd">
+                        sgd
+                    </label>
+                </div>
+
+                
+            </div>
+            <div class = "col-sm-8">
+
+                <div id = "momentum" class = "row" *ngIf = "optimizer === 0">
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Learning rate </label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Decay rate</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "rho" name = "rho" id="rho" placeholder="Decay rate">
+                        </div>
+                    </div>
+                </div>
+
+                <div id = "momentum" class = "row" *ngIf = "optimizer === 1">
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="accumulator" class="form-label">Initial Accumulator Value</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "initialAccumulatorValue" name = "initialAccumulatorValue" id="initialAccumulatorValue" placeholder="Initial Accumulator Value">
+                        </div>
+                    </div>
+                </div>
+
+                <div id = "adamax" class = "row" *ngIf = "optimizer === 3 || optimizer === 2">
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="Decay" class="form-label">Learning rate</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Decay" class="form-label">Decay</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
+                        </div>
+                        <div class="mb-3">
+                            <label for="epsilon" class="form-label">Epsilon</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
+                        </div>
+                    </div>
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="beta" class="form-label">Beta 1</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta1" name="beta1" id="beta1" placeholder="Beta1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="beta" class="form-label">Beta2</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "beta2" name="beta2" id="Beta2" placeholder="Beta2">
+                        </div>
+                    </div>
+                </div>
+
+                <div id = "momentum" class = "row" *ngIf = "optimizer === 4">
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="momentum" class="form-label">Momentum <strong>*</strong></label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
+                        </div>
+                        <div class="form-check">
+                            <input [(ngModel)] = "useNesterov" class="form-check-input" type="checkbox" name="useNesterov" id="useNesterov" [checked] = "useNesterov">
+                            <label class="form-check-label" for="Centered">
+                                UseNesterov
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id = "rmsprop" class = "row" *ngIf = "optimizer === 5">
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="rate" class="form-label">Learning rate <strong>*</strong></label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="decay" class="form-label">Decay</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [ngModel] = "decay" name = "decay" id="decay" placeholder="Decay">
+                        </div>
+                    </div>
+                    <div class = "col-sm-6">
+                        <div class="mb-3">
+                            <label for="momentum" class="form-label">Momentum</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "momentum" name = "momentum" id="momentum" placeholder="Momentum">
+                        </div>
+                        <div class="mb-3">
+                            <label for="epsilon" class="form-label">Epsilon</label>
+                            <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epsilon" name = "epsilon" id="epsilon" placeholder="Epsilon">
+                        </div>
+                    </div>
+                    
+                    <div class = "col-sm-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [(ngModel)] = "centered" name = "centered" id="centered">
+                            <label class="form-check-label" for="Centered">
+                                Centered
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id = "sgd" *ngIf = "optimizer === 6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Learning rate <strong>*</strong></label>
+                        <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-32 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "learningRate" name = "learningRate" id="learningRate" placeholder="Learnings rate">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "w-full mt-4">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"><b>Neural network name</b></label>
+                <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "name" name = "name" id="name" placeholder="name">
+            </div>
+        </div>
+
+        <div class = "w-full mt-4">
+            <div class="mb-3">
+                <label for="epochs" class="form-label"><b>Epochs</b></label>
+                <input type="number" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epochs" name = "epochs" id="epochs" min = "1" placeholder="epochs">
+            </div>
+        </div>
+
+        <div class = "w-full mt-4 mb-3">
+            <label for="exampleFormControlInput1" class="form-label"><b>Type</b></label>
+            <div class = "activation-funtion-menu w-60">
+                <button class = "menu-btn bg-gray-300 p-1 text-sm rounded-md">
+                    {{type}}
+                </button>
+                <div class = "menu-content absolute rounded-md overflow-hidden">
+                    <a (click)="type='classification'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">classification</a>
+                    <a (click)="type='regression'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">regression</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class = "w-full mt-4 text-center">    
+            <button (click)="train()" type="button" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
+                <i class="fas fa-cog"></i>
+                train
+            </button>
+        </div>
+    </div>
+</div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

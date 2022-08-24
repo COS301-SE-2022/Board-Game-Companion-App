@@ -6,6 +6,7 @@ import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 
 interface file{
   name:string;
@@ -41,12 +42,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
+    
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
     if(theme != null)
       this.themeEditor = theme;
 
     this.createEditor();
+
+    
+    
     clearInterval(this.cursorCheckerTimer);
     this.codeEditor.navigateTo(0,0);
 
@@ -58,6 +63,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         this.cursorPosition = value;
       }
     },500);
+    
   }
 
   ngOnDestroy(): void {
@@ -97,6 +103,24 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       enableLiveAutocompletion: true
     });
 
+  }
+
+  changeDisplay(value: boolean): void
+  {
+    if(value)
+    {
+      const e = document.getElementById("editor-content") as HTMLElement
+      const v = document.getElementById("visual-content") as HTMLElement
+      e.style.display = "none"
+      v.style.display = "block"
+    }
+    else
+    {
+      const e = document.getElementById("editor-content") as HTMLElement
+      const v = document.getElementById("visual-content") as HTMLElement
+      e.style.display = "block"
+      v.style.display = "none"
+    }
   }
 
   getCode(): string{
@@ -186,7 +210,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           }else{
             this.changesTracker.emit(0);
           }
+          console.log()
           this.newMessageEvent.emit(value.message);
+          console.log(value);
         },
         error:(e)=>{
           //console.log(e);

@@ -11,11 +11,14 @@ export const tState=(chevrotain.createToken({name:"State",pattern:/state/,longer
 export const tTurn=(chevrotain.createToken({name:"Turn",pattern:/turn/,longer_alt:tUserDefinedIdentifier}));
 export const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,longer_alt:tUserDefinedIdentifier}));
 export const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
+
 export const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
 export const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
 export const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
 export const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
 export const tCopy=(chevrotain.createToken({name:"copy",pattern:/copy/,longer_alt:tUserDefinedIdentifier}));
+
+export const tCreateBoard=(chevrotain.createToken({name:"CreateBoard",pattern:/createBoard/,longer_alt:tUserDefinedIdentifier}));
 
 
 export const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
@@ -86,8 +89,6 @@ export const tInputGroup=(chevrotain.createToken({name:"InputGroup",pattern:/inp
 export const tInput=(chevrotain.createToken({name:"Input",pattern:/input/,longer_alt:tInputGroup}));
 export const tPrint=(chevrotain.createToken({name:"Print",pattern:/output/,longer_alt:tUserDefinedIdentifier}));
 export const tRead=(chevrotain.createToken({name:"Read",pattern:/read/,longer_alt:tUserDefinedIdentifier}));
-export const tConsoleInput=(chevrotain.createToken({name:"ConsoleInput",pattern:/console.input/,longer_alt:tUserDefinedIdentifier}));
-export const tConsoleOutput=(chevrotain.createToken({name:"ConsoleOutput",pattern:/console.print/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -134,6 +135,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tPlayer,
     tCards,
     tTile,
+    tCreateBoard,
     tPiece,
     tAddToArr,
     tAddToBoard,
@@ -183,8 +185,6 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tInput,
     tPrint,
     tRead,
-    tConsoleInput,
-    tConsoleOutput,
     tWhile,
     tFor,
     tDo,

@@ -18,7 +18,7 @@
                             <a class="nav-link block pt-1" (click)="moveTo('collections')">Collections</a>
                         </li>
                         <li id="BoardGames" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Board Games</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Games</a>
                         </li>
                         <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block pt-1" (click)="moveTo('scripts')">Scripts</a>
@@ -27,10 +27,10 @@
                             <a class="nav-link block p-0 pt-1" (click)="moveTo('models')">Models</a>
                         </li>
                         <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('admin')">Administration</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('admin')">Admin</a>
                         </li>
                         <li id="GameSession" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('gameSessions')">Game Sessions</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('gameSessions')">Sessions</a>
                         </li>
                         <li id="Search" class="nav-item sm:px-4 pt-2.5 sm:hidden cursor-pointer">
 

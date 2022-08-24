@@ -1,10 +1,10 @@
-import { Component, OnInit, HostListener, ViewChild, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
 import { empty, script } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
@@ -14,6 +14,7 @@ import { inputParameters } from '../../shared/models/inputParameters';
 import { entity } from '../../shared/models/entity';
 import { selection } from '../../shared/models/selection';
 import { Ace } from 'ace-builds';
+import {DragulaService} from 'ng2-dragula';
 
 interface message{
   message: string;
@@ -45,14 +46,40 @@ export class EditorComponent implements OnInit{
   currentScript:script = empty;
   location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
   showInput = false;
+  showOutput = false;
   inputBlock = false;
+  outputBlock = false;
   inputResult:any[] = [];
   parameters:inputParameters[] = [];
+  outputMessage = "";
   statusMessages:string[] = [];
+  warningMessages:string[] = [];
   programStructure!:entity;
 
-  constructor(private readonly scriptService:ScriptService, private router: Router){
+
+  constructor(private readonly scriptService:ScriptService, private router: Router, protected dragulaService: DragulaService){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
+    dragulaService.createGroup('COPYABLE', 
+    {
+      direction:'horizontal',
+      copy: (el, source) => {
+        return source.id === 'area';
+      },
+      copyItem: (obj) => {
+        return {title: obj.title, class: obj.class , pos: obj.pos};
+      },
+      accepts: (el, target, source, sibling) => {
+        // To avoid dragging from right to left container
+        if(target != null)
+        {
+          return target.id !== 'area';
+        }
+        else
+        {
+          return false;
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -116,15 +143,15 @@ export class EditorComponent implements OnInit{
       return null;
     else{
       const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
+      const models:{name:string,model:tf.LayersModel,min:tf.Tensor,max:tf.Tensor,labels:string[]}[] = [];
       
       for(let count = 0; count < networks.length; count++){
         models.push({
-          name: networks[count].name,
-          model: await tf.loadLayersModel('localstorage://' + networks[count].name),
-          min: networks[count].min as number[],
-          max: networks[count].max as number[],
-          labels: networks[count].labels as string[]
+          name: networks[count].setup.name,
+          model: await tf.loadLayersModel('localstorage://' + networks[count].setup.name),
+          min: networks[count].setup.min,
+          max: networks[count].setup.max,
+          labels: networks[count].setup.labels as string[]
         })
       }
 
@@ -160,6 +187,25 @@ export class EditorComponent implements OnInit{
 
     if(theme !== null)
       this.editorCode.codeEditor.setTheme("ace/theme/" + theme.toLowerCase());
+  }
+
+  output(){
+    return (async(value:string) => {
+      this.outputBlock = true;
+      this.showOutput = true;
+      this.outputMessage = value;
+
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.outputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+    })
   }
 
   input(){
@@ -217,32 +263,66 @@ export class EditorComponent implements OnInit{
     this.inputBlock = false;
   }
 
+  okayOutput(): void{
+    this.showOutput = false;
+    this.outputBlock = false;
+  }
+
+  async getSandBox():Promise<any>{
+    return {
+      console: this.editorConsole.defineConsole(),
+      model: await this.neuralnetworks(),
+      input: this.input(),
+      inputGroup: this.inputGroup(),
+      output: this.output()
+    }
+  }
+
+  async interpreter(source:string){
+    const strCode = 'with (sandbox) { ' + source + '}';
+    const code = new Function('sandbox', strCode);
+    const sandbox = await this.getSandBox();
+
+    const proxy = new Proxy(sandbox,{
+      has:(target:any,key:any)=>{
+        return true;
+      },
+      get:(target:any,key:symbol)=>{
+        if(target[key] === undefined && key != Symbol.unscopables){
+          if(Object.keys(window).includes(String(key)) || String(key) === "document"){
+            this.warningMessages.push("Access to " + String(key) + " is not allowed.");
+          }
+
+          return ()=>{return "Access to " + String(key) + " is not allowed."};
+        }
+
+        return target[key];            
+      }     
+    })
+
+    this.warningMessages = [];
+    code(proxy);
+    this.editorStatusBar.updateWarningsCount(this.warningMessages.length);
+  }
 
   async execute(): Promise<void>{
     
     this.editorConsole.open();
-
+    
     try{
-      const console = this.editorConsole.defineConsole();
-      const model = await this.neuralnetworks();
-      const input = this.input();
-      const inputGroup = this.inputGroup();
       this.editorConsole.clear();
-      // const code = new Function("console","model","input","inputGroup",this.editorBody.getCode());
-      // code(console,model,input,inputGroup);
+
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
-          console.log(value)
-
-          const code = new Function("console","model","input","inputGroup",value);
-          code(console,model,input,inputGroup);
+          this.interpreter(value);
         },
         error:(e)=>{
           console.log(e);
         }
       });
     }catch(err){
-      //console.log(err);
+      this.warningMessages.push(String(err));
+      this.editorStatusBar.updateWarningsCount(this.warningMessages.length);
     }
 
   }
@@ -311,6 +391,11 @@ export class EditorComponent implements OnInit{
     }
   }
 
+  toggleDisplay(value: boolean): void{
+    this.editorSideBar.changeDisplay(value);
+    this.editorBody.changeDisplay(value);
+  }
+
   toggleConsole(value:boolean): void{
     if(value){
       this.editorConsole.open();
@@ -325,8 +410,17 @@ export class EditorComponent implements OnInit{
   }
 
   printStatusMessages(): void{
+    this.editorConsole.clear();
+
     for(let count = 0; count < this.statusMessages.length; count++)
       this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
+  }
+
+  printWarningMessages(): void{
+    this.editorConsole.clear();
+
+    for(let count = 0; count < this.warningMessages.length; count++)
+      this.editorConsole.print({output:true,outputMessage:this.warningMessages[count]})
   }
 
   highlight(value:selection): void{

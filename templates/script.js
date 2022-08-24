@@ -1,13 +1,32 @@
 class cards
 {
-    parameters;
+    name;
+    //cardEffect
+
+    //cardCondition
+    
     async activate()
     {
-        //
+        activate("")
     }
     async canUse()
     {
-        return true;
+        canUse("")
+    }
+    async activate(parameters)
+    {
+        switch(this.name)
+        {
+            //cardActivation
+        }
+    }
+    async canUse(parameters)
+    {
+        switch(this.name)
+        {
+            //cardUsable
+        }
+        return false;
     }
 }
 //cards
@@ -105,7 +124,7 @@ class script
     {
 
         
-        console.log("script-execution begins");
+        //console.log("script-execution begins");
             
         for(let i =0;i< this.players.length;i++)
         {
@@ -113,20 +132,20 @@ class script
         }
         //get player turn order
         let order = []
-        let inputElement = document.getElementById("TextOutput");
+        //let inputElement = document.getElementById("TextOutput");
         
         for(let i =0;i< this.players.length;i++)
         {
-            if(inputElement)
-            {
+            //if(inputElement)
+            //{
                 //ask using input and output methods
                 order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 //use default order
-                order.push(i)
-            }
+                //order.push(i)
+            //}
         }
         //re order 
         for(let i =0;i< this.players.length;i++)

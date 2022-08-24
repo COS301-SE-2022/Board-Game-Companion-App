@@ -24,6 +24,7 @@ export interface script{
     source: file;
     build: file;
     icon: file;
+    models: string[];
     __v: number;
 }
 
@@ -48,5 +49,6 @@ export const empty:script = {
     source: {name:"",location:"",awsKey:""},
     build: {name:"",location:"",awsKey:""},
     icon: {name:"",location:"",awsKey:""},
+    models: [],
     __v: 0,
 }

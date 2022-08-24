@@ -23,4 +23,5 @@ export interface scriptDto{
     source: file;
     build: file;
     icon: file;
+    models: string[]
 };

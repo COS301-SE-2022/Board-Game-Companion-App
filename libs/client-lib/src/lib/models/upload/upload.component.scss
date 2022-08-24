@@ -1,0 +1,59 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.wrapper{
+    background-color: $Pcolour-2;
+}
+
+.data-values{
+    color: $Pcolour-1
+}
+
+.wrapper::-webkit-scrollbar {
+    width: 10px;
+}
+  
+.wrapper::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.wrapper::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.menu-btn{
+    color:black;
+    padding: 2px 6px;
+    font-size: 14px;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.activation-funtion-menu{
+    position:relative;
+}
+
+.menu-content{
+    display: none;
+    width: 100%;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+
+.menu-content a{
+    text-decoration: none;
+    display: block;
+    color:black;
+}
+
+.activation-funtion-menu:hover .menu-content{
+    display: block;
+}

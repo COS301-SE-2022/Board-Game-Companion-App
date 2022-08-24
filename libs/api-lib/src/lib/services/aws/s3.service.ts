@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as aws from "aws-sdk";
-import { awsUpload } from '../../models/general/awsUpload';
+import { upload } from '../../models/general/upload';
 
 @Injectable()
 export class S3Service {
@@ -10,7 +10,7 @@ export class S3Service {
         secretAccessKey: process.env.AWS_SECRET_KEY,
     });
 
-    async upload(name:string,path:string,data:any):Promise<awsUpload>{
+    async upload(name:string,path:string,data:any):Promise<upload>{
         const key = (process.env.PROJECT_STATUS == "production" ? "production/" : "development/") + path + name;
         const params = {
             Bucket: this.bucket,

@@ -1,35 +1,115 @@
 state{
+    let t1 = tile
+    t1.Id = '1'
+    addToBoard(t1)
+    let t2 = tile
+    t2.Id = 2
+    addToBoard(t2)
+    
+    let t3 = tile
+    t3.Id = 3
+    addToBoard(t3)
+    
+    let t4 = tile
+    t4.Id = 4
+    addToBoard(t4)
+    
+    let t5 = tile
+    t5.Id = 5
+    addToBoard(t5)
+    
+    let t6 = tile
+    t6.Id = 6
+    addToBoard(t6)
+    
+    let t7 = tile
+    t7.Id = 7
+    addToBoard(t7)
+    
+    let t8 = tile
+    t8.Id = 8
+    addToBoard(t8)
+    
+    let t9 = tile
+    t9.Id = 9
+    addToBoard(t9)
     
 }
 
-player cross{
-    action jump(){
+player crossAI{
+    action placeCross(t){
+        let p = piece
+        p.Type=0
+        let message = 'The ai places a cross in'+t.Id
+        
+        output(message)
+        addPieceToTile(p,t)
         
     }
     
-    condition(){
+    condition(t){
+        let ans = true
+        if(t.pieces.length == 1)
+        {
+            ans = false
+        }
+        return ans
         
     }
     
     turn(){
+        let c =generateChoices()
+        
+        chooseAction(c[0],this.params[0])
+        
+        
         
     }
 }
 
-player agent{
-    action shoot(){
-        
+
+player naught{
+    action placeNaught(t){
+        let p = piece
+        p.Type=1
+    
+        addPieceToTile(p,t)
     }
     
-    condition(){
+    condition(t){
+        let ans = true
         
+        
+        if(t.pieces.length == 1)
+        {
+            ans = false
+        }
+        return ans
     }
     
     turn(){
         
+        let prompt = 'where will you place the naught'
+        
+        let ans = false
+        
+        do
+        {
+            let i =input(prompt, 'text')
+            let t = getTileByID(i)
+            ans = isActionLegal(0,t)
+            
+        }
+        while(!(ans))
     }
 }
 
 endgame{
+    let ans = false
+    let t1 = getTileByID(1)
+    let t2 = getTileByID(2)
+    let t3 = getTileByID(3)
     
+    
+    return ans
 }
