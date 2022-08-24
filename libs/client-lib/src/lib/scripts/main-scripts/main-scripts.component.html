@@ -1,0 +1,13 @@
+<div>
+    <div class="sidebar text-center"[ngClass]="{'sideB':page==='Scripts'}">
+        <a (click)="Tab('Scripts')" [ngClass]="{'active':page==='Scripts'}">Scripts</a>
+        <a (click)="Tab('Loads')" [ngClass]="{'active':page==='Loads'}">Downloads</a>
+        <a (click)="Tab('Yours')" [ngClass]="{'active':page==='Yours'}">Your Own</a>
+    </div>
+
+    <div class="main-content">
+        <board-game-companion-app-scripts *ngIf="page==='Scripts'"></board-game-companion-app-scripts>
+        <board-game-companion-app-downloads-page *ngIf="page==='Loads'"> </board-game-companion-app-downloads-page>
+        <board-game-companion-app-own-scripts-page *ngIf="page==='Yours'"></board-game-companion-app-own-scripts-page>
+    </div>
+</div>
