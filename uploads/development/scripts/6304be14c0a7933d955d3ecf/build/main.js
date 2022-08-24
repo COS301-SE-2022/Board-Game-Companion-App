@@ -1,6 +1,6 @@
 class cards
 {
-    name;
+    name = "";
     constructor(n)
     {
         this.name = n;
@@ -62,31 +62,31 @@ class game_state
         
 let t1 = new tile()
 
-t1 . Id = " '1'"
+t1 . Id = '1'
 let t2 = new tile()
 
-t2 . Id = " '2'"
+t2 . Id = '2'
 let t3 = new tile()
 
-t3 . Id = " '3'"
+t3 . Id = '3'
 let t4 = new tile()
 
-t4 . Id = " '4'"
+t4 . Id = '4'
 let t5 = new tile()
 
-t5 . Id = " '5'"
+t5 . Id = '5'
 let t6 = new tile()
 
-t6 . Id = " '6'"
+t6 . Id = '6'
 let t7 = new tile()
 
-t7 . Id = " '7'"
+t7 . Id = '7'
 let t8 = new tile()
 
-t8 . Id = " '8'"
+t8 . Id = '8'
 let t9 = new tile()
 
-t9 . Id = " '9'"
+t9 . Id = '9'
 //State
         
 
@@ -153,8 +153,8 @@ class crossAI extends player {
     ]
 
      async placeCross ( t ) { let p = new piece() 
-p . Type = 0 
-let message =  'The ai places a cross in' + t . Id 
+p . Id = 'x'
+let message = 'The ai places a cross in'+ t . Id 
 await output( message ) 
 t.pieces.push(p)
 p.Tile=t
@@ -246,6 +246,7 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
+await output( c [ 0 ] ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
     Actions = [
@@ -253,7 +254,7 @@ await this.chooseAction ( c [ 0 ] , this . params [ 0 ] )
     ]
 
      async placeNaught ( t ) { let p = new piece() 
-p . Type = 1 
+p . Id = 'o'
 t.pieces.push(p)
 p.Tile=t
 
@@ -343,12 +344,16 @@ break
         
         return choices
     };async turn ( ) { 
-let prompt =  'where will you place the naught' 
+let prompt = 'where will you place the naught'
 let ans = false 
 do { 
-let i = await input( prompt ,  'text' ) 
+let i = await input( prompt , 'text') 
+await output( i ) 
 let t = await this.State.getTileByID(i)
-ans = await this.isActionLegal ( 0 , t ) 
+await output( t . pieces . length ) 
+let act = 'placeNaught'
+ans = await this.isActionLegal ( act , t ) 
+await output( ans ) 
 } while ( ! ( ans ) ) 
 } } //players
 
@@ -424,15 +429,109 @@ class script
     async endgame()
     {
         let ans = false 
-let t1 = await this.State.getTileByID(1)
-let t2 = await this.State.getTileByID(2)
-let t3 = await this.State.getTileByID(3)
-let t3 = await this.State.getTileByID(4)
-let t3 = await this.State.getTileByID(5)
-let t3 = await this.State.getTileByID(6)
-let t3 = await this.State.getTileByID(7)
-let t3 = await this.State.getTileByID(8)
-let t3 = await this.State.getTileByID(9)
+let x1 = '1'
+let x2 = '2'
+let x3 = '3'
+let x4 = '4'
+let x5 = '5'
+let x6 = '6'
+let x7 = '7'
+let x8 = '8'
+let x9 = '9'
+let t1 = await this.State.getTileByID(x1)
+let t2 = await this.State.getTileByID(x2)
+let t3 = await this.State.getTileByID(x3)
+let t4 = await this.State.getTileByID(x4)
+let t5 = await this.State.getTileByID(x5)
+let t6 = await this.State.getTileByID(x6)
+let t7 = await this.State.getTileByID(x7)
+let t8 = await this.State.getTileByID(x8)
+let t9 = await this.State.getTileByID(x9)
+if ( t1 . pieces . length == 1 && t2 . pieces . length == 1 && t3 . pieces . length == 1 ) { 
+if ( t1 . pieces [ 0 ] . Id == t2 . pieces [ 0 ] . Id && t2 . pieces [ 0 ] . Id == t3 . pieces [ 0 ] . Id ) { 
+if ( t1 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t4 . pieces . length == 1 && t5 . pieces . length == 1 && t6 . pieces . length == 1 ) { 
+if ( t4 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t6 . pieces [ 0 ] . Id ) { 
+if ( t4 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t7 . pieces . length == 1 && t8 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
+if ( t7 . pieces [ 0 ] . Id == t8 . pieces [ 0 ] . Id && t8 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
+if ( t7 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t1 . pieces . length == 1 && t4 . pieces . length == 1 && t7 . pieces . length == 1 ) { 
+if ( t1 . pieces [ 0 ] . Id == t4 . pieces [ 0 ] . Id && t4 . pieces [ 0 ] . Id == t7 . pieces [ 0 ] . Id ) { 
+if ( t1 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t2 . pieces . length == 1 && t5 . pieces . length == 1 && t8 . pieces . length == 1 ) { 
+if ( t2 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t8 . pieces [ 0 ] . Id ) { 
+if ( t2 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t3 . pieces . length == 1 && t6 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
+if ( t3 . pieces [ 0 ] . Id == t6 . pieces [ 0 ] . Id && t6 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
+if ( t3 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t1 . pieces . length == 1 && t5 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
+if ( t1 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
+if ( t1 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t3 . pieces . length == 1 && t5 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
+if ( t3 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
+if ( t3 . pieces [ 0 ] . Id == 'x') { 
+await output( 'Theaiwins') 
+} else { 
+await output( 'Youwin') 
+} 
+ans = true 
+} 
+} 
+if ( t7 . pieces . length == 1 && t8 . pieces . length == 1 && t9 . pieces . length == 1 && t4 . pieces . length == 1 && t6 . pieces . length == 1 && t5 . pieces . length == 1 && t1 . pieces . length == 1 && t2 . pieces . length == 1 && t3 . pieces . length == 1 ) { 
+await output( 'draw') 
+ans = true 
+} 
+let x = '"m"'
 return ans 
 //end_game
     

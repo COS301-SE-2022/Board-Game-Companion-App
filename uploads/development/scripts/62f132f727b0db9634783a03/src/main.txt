@@ -2,36 +2,37 @@ state{
     let t1 = tile
     t1.Id = '1'
     addToBoard(t1)
+    
     let t2 = tile
-    t2.Id = 2
+    t2.Id = '2'
     addToBoard(t2)
     
     let t3 = tile
-    t3.Id = 3
+    t3.Id = '3'
     addToBoard(t3)
     
     let t4 = tile
-    t4.Id = 4
+    t4.Id = '4'
     addToBoard(t4)
     
     let t5 = tile
-    t5.Id = 5
+    t5.Id = '5'
     addToBoard(t5)
     
     let t6 = tile
-    t6.Id = 6
+    t6.Id = '6'
     addToBoard(t6)
     
     let t7 = tile
-    t7.Id = 7
+    t7.Id = '7'
     addToBoard(t7)
     
     let t8 = tile
-    t8.Id = 8
+    t8.Id = '8'
     addToBoard(t8)
     
     let t9 = tile
-    t9.Id = 9
+    t9.Id = '9'
     addToBoard(t9)
     
 }
@@ -106,9 +107,16 @@ player naught{
 
 endgame{
     let ans = false
-    let t1 = getTileByID(1)
-    let t2 = getTileByID(2)
-    let t3 = getTileByID(3)
+    let t1 = getTileByID('1')
+    let t2 = getTileByID('2')
+    let t3 = getTileByID('3')
+    let t3 = getTileByID('4')
+    let t3 = getTileByID('5')
+    let t3 = getTileByID('6')
+    let t3 = getTileByID('7')
+    let t3 = getTileByID('8')
+    let t3 = getTileByID('9')
+    
     
     
     return ans

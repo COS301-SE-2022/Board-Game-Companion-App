@@ -1,5 +1,6 @@
 state{
     let t1 = tile
+    
     t1.Id = '1'
     addToBoard(t1)
     
@@ -61,6 +62,7 @@ player crossAI{
     turn(){
         let c =generateChoices()
         
+        output(c[0])
         chooseAction(c[0],this.params[0])
         
         
@@ -70,7 +72,7 @@ player crossAI{
 
 
 player naught{
-     placeNaught(t){
+    action placeNaught(t){
         let p = piece
         p.Id='o'
     
@@ -97,9 +99,12 @@ player naught{
         do
         {
             let i =input(prompt, 'text')
+            output(i)
             let t = getTileByID(i)
-            ans = isActionLegal('placeNaught',t)
-            
+            output(t.pieces.length)
+            let act = 'placeNaught'
+            ans = isActionLegal(act,t)
+            output(ans)
         }
         while(!(ans))
     }
@@ -107,57 +112,67 @@ player naught{
 
 endgame{
     let ans = false
-    let t1 = getTileByID('1')
-    let t2 = getTileByID('2')
-    let t3 = getTileByID('3')
-    let t3 = getTileByID('4')
-    let t3 = getTileByID('5')
-    let t3 = getTileByID('6')
-    let t3 = getTileByID('7')
-    let t3 = getTileByID('8')
-    let t3 = getTileByID('9')
+    let x1 = '1'
+    let x2 = '2'
+    let x3 = '3'
+    let x4 = '4'
+    let x5 = '5'
+    let x6 = '6'
+    let x7 = '7'
+    let x8 = '8'
+    let x9 = '9'
+    
+    let t1 = getTileByID(x1)
+    let t2 = getTileByID(x2)
+    let t3 = getTileByID(x3)
+    let t4 = getTileByID(x4)
+    let t5 = getTileByID(x5)
+    let t6 = getTileByID(x6)
+    let t7 = getTileByID(x7)
+    let t8 = getTileByID(x8)
+    let t9 = getTileByID(x9)
     
     if(t1.pieces.length == 1 && t2.pieces.length == 1 && t3.pieces.length == 1)
     {
-        if(t1.pieces[0].Id == t2.pieces[0].Id == t3.pieces[0].Id)
+        if(t1.pieces[0].Id == t2.pieces[0].Id && t2.pieces[0].Id == t3.pieces[0].Id)
         {
             if(t1.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
     if(t4.pieces.length == 1 && t5.pieces.length == 1 && t6.pieces.length == 1)
     {
-        if(t4.pieces[0].Id == t5.pieces[0].Id == t6.pieces[0].Id)
+        if(t4.pieces[0].Id == t5.pieces[0].Id &&t5.pieces[0].Id == t6.pieces[0].Id)
         {
             if(t4.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
     if(t7.pieces.length == 1 && t8.pieces.length == 1 && t9.pieces.length == 1)
     {
-        if(t7.pieces[0].Id == t8.pieces[0].Id == t9.pieces[0].Id)
+        if(t7.pieces[0].Id == t8.pieces[0].Id&&t8.pieces[0].Id == t9.pieces[0].Id)
         {
             if(t7.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
@@ -168,45 +183,45 @@ endgame{
 
     if(t1.pieces.length == 1 && t4.pieces.length == 1 && t7.pieces.length == 1)
     {
-        if(t1.pieces[0].Id == t4.pieces[0].Id == t7.pieces[0].Id)
+        if(t1.pieces[0].Id == t4.pieces[0].Id && t4.pieces[0].Id == t7.pieces[0].Id)
         {
             if(t1.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
     if(t2.pieces.length == 1 && t5.pieces.length == 1 && t8.pieces.length == 1)
     {
-        if(t2.pieces[0].Id == t5.pieces[0].Id == t8.pieces[0].Id)
+        if(t2.pieces[0].Id == t5.pieces[0].Id&&t5.pieces[0].Id == t8.pieces[0].Id)
         {
             if(t2.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
     if(t3.pieces.length == 1 && t6.pieces.length == 1 && t9.pieces.length == 1)
     {
-        if(t3.pieces[0].Id == t6.pieces[0].Id == t9.pieces[0].Id)
+        if(t3.pieces[0].Id == t6.pieces[0].Id&&t6.pieces[0].Id == t9.pieces[0].Id)
         {
             if(t3.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
@@ -217,42 +232,48 @@ endgame{
 
     if(t1.pieces.length == 1 && t5.pieces.length == 1 && t9.pieces.length == 1)
     {
-        if(t1.pieces[0].Id == t5.pieces[0].Id == t9.pieces[0].Id)
+        if(t1.pieces[0].Id == t5.pieces[0].Id&&t5.pieces[0].Id == t9.pieces[0].Id)
         {
             if(t1.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
     if(t3.pieces.length == 1 && t5.pieces.length == 1 && t9.pieces.length == 1)
     {
-        if(t3.pieces[0].Id == t5.pieces[0].Id == t9.pieces[0].Id)
+        if(t3.pieces[0].Id == t5.pieces[0].Id && t5.pieces[0].Id == t9.pieces[0].Id)
         {
             if(t3.pieces[0].Id == 'x')
             {
-                output('The ai wins')
+                output('Theaiwins')
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }
     }
 
 
-
+    
 
     if(t7.pieces.length == 1 && t8.pieces.length == 1 && t9.pieces.length == 1 && t4.pieces.length == 1 && t6.pieces.length == 1 && t5.pieces.length == 1 && t1.pieces.length == 1 && t2.pieces.length == 1 && t3.pieces.length == 1)
     {
         output('draw')
-        return true;
+        ans = true
     }
+    let x = "m"
     return ans
+    
+    
+    
+    
+    
 }

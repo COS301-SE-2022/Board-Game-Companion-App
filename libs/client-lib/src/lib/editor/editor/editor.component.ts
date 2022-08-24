@@ -194,7 +194,7 @@ export class EditorComponent implements OnInit{
       this.outputBlock = true;
       this.showOutput = true;
       this.outputMessage = value;
-
+      
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
             if(!this.outputBlock){
@@ -292,7 +292,7 @@ export class EditorComponent implements OnInit{
           if(Object.keys(window).includes(String(key)) || String(key) === "document"){
             this.warningMessages.push("Access to " + String(key) + " is not allowed.");
           }
-
+          console.log(key)
           return ()=>{return "Access to " + String(key) + " is not allowed."};
         }
 
@@ -314,10 +314,11 @@ export class EditorComponent implements OnInit{
 
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
+          console.log(value)
           this.interpreter(value);
         },
         error:(e)=>{
-          console.log(e);
+          console.log(e.message);
         }
       });
     }catch(err){
@@ -414,6 +415,7 @@ export class EditorComponent implements OnInit{
 
     for(let count = 0; count < this.statusMessages.length; count++)
       this.editorConsole.print({output:true,outputMessage:this.statusMessages[count]});
+      
   }
 
   printWarningMessages(): void{

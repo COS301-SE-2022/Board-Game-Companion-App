@@ -13,6 +13,8 @@ export const tPlayer=(chevrotain.createToken({name:"Player",pattern:/player/,lon
 export const tCards=(chevrotain.createToken({name:"Card",pattern:/card/,longer_alt:tUserDefinedIdentifier}));
 
 export const tTile=(chevrotain.createToken({name:"Tile",pattern:/tile/,longer_alt:tUserDefinedIdentifier}));
+export const tCreateCard=(chevrotain.createToken({name:"CreateCard",pattern:/createCard/,longer_alt:tUserDefinedIdentifier}));
+
 export const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
 export const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
 export const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
@@ -52,6 +54,7 @@ export const tDot = chevrotain.createToken({name:"Dot",pattern:/\./})
 export const tGreaterThanOrEqual = chevrotain.createToken({name:"GreaterThanOrEqual",pattern:/>=/});
 export const tLessThanOrEqual = chevrotain.createToken({name:"LessThanOrEqual",pattern:/<=/});
 export const tEqual = chevrotain.createToken({name:"Equal",pattern:/==/});
+export const tNotEqual = chevrotain.createToken({name:"NotEqual",pattern:/!=/});
 export const tGreaterThan=(chevrotain.createToken({name:"GreaterThan",pattern:/>/,longer_alt:tGreaterThanOrEqual}));
 export const tLessThan=(chevrotain.createToken({name:"LessThan",pattern:/</,longer_alt:tLessThanOrEqual}));
 
@@ -63,7 +66,7 @@ export const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern
 
 
 export const tIntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*") | ('[A-Za-z0-9 ]*')/ }));
+export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*")|('[A-Za-z0-9 ]*')/ }));
 export const tFalse=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
 export const tTrue=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
 
@@ -79,7 +82,7 @@ export const tMod=(chevrotain.createToken({name:"Mod",pattern:/%/,longer_alt:tUs
 //logical operators
 export const tAnd=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
 export const tOr=(chevrotain.createToken({name:"Or",pattern:/\|\|/,longer_alt:tUserDefinedIdentifier}));
-export const tNot=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tUserDefinedIdentifier}));
+export const tNot=(chevrotain.createToken({name:"Not",pattern:/!/,longer_alt:tNotEqual}));
 
 
 
@@ -126,6 +129,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
 
 
  export const AllTokens:chevrotain.TokenType[] = [
+    tStringLiteral,
     tAction,
     tParameters,
     tCondition,
@@ -135,6 +139,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tPlayer,
     tCards,
     tTile,
+    tCreateCard,
     tCreateBoard,
     tPiece,
     tAddToArr,
@@ -164,6 +169,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tLessThanOrEqual,
     tGreaterThanOrEqual,
     tEqual,
+    tNotEqual,
     tGreaterThan,
     tLessThan,
     tAssign,
@@ -177,7 +183,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tNot,
     tFloatLiteral,
     tIntegerLiteral,
-    tStringLiteral,
+    
     tFalse,
     tTrue,
     tInputGroup,

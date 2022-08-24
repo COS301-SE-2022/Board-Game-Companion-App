@@ -360,6 +360,17 @@ export class CompilerService {
         //     throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
         // }
 
+        
+
+
+        for(let i = 0; i<Tokenized.tokens.length;i++)
+        {
+            if(Tokenized.tokens.at(i).tokenType.name == "StringLiteral")
+                console.log(Tokenized.tokens.at(i).image)
+        }
+
+
+
         return Tokenized;
     }
 
@@ -405,7 +416,7 @@ export class CompilerService {
         if(this.DSLparser.errors.length!=0)
         {
             const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
-            
+            console.log(errMessage)
             return {err:errMessage}
         }
         else
@@ -761,6 +772,10 @@ class parser extends CstParser
                         }},
                         { 
                             ALT: () =>{ 
+                                this.SUBRULE(this.rCreateCard)
+                        }},
+                        { 
+                            ALT: () =>{ 
                                 this.SUBRULE(this.rGetTileByID)
                         }},
                         { 
@@ -792,6 +807,12 @@ class parser extends CstParser
                     ])
                     
                 });
+                private rCreateCard=this.RULE("rCreateCard", () => {
+                    this.CONSUME(tokensStore.tCreateCard )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rCopy=this.RULE("rCopy", () => {
                     this.CONSUME(tokensStore.tCopy )
                     this.CONSUME2(tokensStore.tOpenBracket )
@@ -1315,6 +1336,11 @@ class parser extends CstParser
                     ALT: () =>{ 
                         this.CONSUME(tokensStore.tEqual)
                 }}
+                ,
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(tokensStore.tNotEqual)
+                }}
         ])
         });
 
@@ -1539,7 +1565,7 @@ function visitGameState(cstOutput:CstNode)
                 }
                 else
                 {
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image, jsScript.slice(jsScript.indexOf("//State"))].join('');
                             
                 }
             }
@@ -1923,7 +1949,18 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                 case "Print":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await output', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;    
+                case "StringLiteral":
+                    if(token.image.includes('\''))
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image, jsScript.slice(jsScript.indexOf(place))].join('');
                     
+                    }
+                    else
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\''+token.image+'\'', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+                    }
+                    break;
                 
                 case "Piece":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new piece() ', jsScript.slice(jsScript.indexOf(place))].join('');
@@ -2039,9 +2076,36 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCreateBoard":
                         visitRCreateBoard(node, place)
                         break;
+                case "rCreateCard":
+                    visitRCreateCard(node, place)
+                        break;  
             }
         }
     }
+}
+function visitRCreateCard(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+
+        if(token.image)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+        }
+        if(node.name)
+        {
+            visitRCreateCard(node, place);
+        }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n', jsScript.slice(jsScript.indexOf(place))].join('');
+        
 }
 function visitRCreateBoard(cstOutput:CstNode, place:string)
 {
@@ -2066,7 +2130,7 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
                 else
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
                 }
             }
         }
