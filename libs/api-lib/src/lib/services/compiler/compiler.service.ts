@@ -360,6 +360,9 @@ export class CompilerService {
         //     throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
         // }
 
+        
+
+
         for(let i = 0; i<Tokenized.tokens.length;i++)
         {
             if(Tokenized.tokens.at(i).tokenType.name == "StringLiteral")

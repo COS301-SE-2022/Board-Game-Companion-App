@@ -262,12 +262,18 @@ endgame{
     }
 
 
-
+    
 
     if(t7.pieces.length == 1 && t8.pieces.length == 1 && t9.pieces.length == 1 && t4.pieces.length == 1 && t6.pieces.length == 1 && t5.pieces.length == 1 && t1.pieces.length == 1 && t2.pieces.length == 1 && t3.pieces.length == 1)
     {
         output('draw')
         ans = true
     }
+    let x = "m"
     return ans
+    
+    
+    
+    
+    
 }
