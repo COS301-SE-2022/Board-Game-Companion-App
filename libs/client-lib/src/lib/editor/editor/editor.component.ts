@@ -292,7 +292,7 @@ export class EditorComponent implements OnInit{
           if(Object.keys(window).includes(String(key)) || String(key) === "document"){
             this.warningMessages.push("Access to " + String(key) + " is not allowed.");
           }
-
+          console.log(key)
           return ()=>{return "Access to " + String(key) + " is not allowed."};
         }
 
@@ -314,6 +314,7 @@ export class EditorComponent implements OnInit{
 
       this.scriptService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
+          console.log(value)
           this.interpreter(value);
         },
         error:(e)=>{

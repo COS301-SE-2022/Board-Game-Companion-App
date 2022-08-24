@@ -1,6 +1,6 @@
 class cards
 {
-    name;
+    name = "";
     constructor(n)
     {
         this.name = n;

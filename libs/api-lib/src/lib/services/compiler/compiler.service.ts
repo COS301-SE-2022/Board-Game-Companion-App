@@ -360,6 +360,14 @@ export class CompilerService {
         //     throw Error("Unallowed UserIdentifier discovered -->"+isBanned[0].image);
         // }
 
+        for(let i = 0; i<Tokenized.tokens.length;i++)
+        {
+            if(Tokenized.tokens.at(i).tokenType.name == "StringLiteral")
+                console.log(Tokenized.tokens.at(i).image)
+        }
+
+
+
         return Tokenized;
     }
 
@@ -1554,7 +1562,7 @@ function visitGameState(cstOutput:CstNode)
                 }
                 else
                 {
-                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//State"))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//State")), token.image, jsScript.slice(jsScript.indexOf("//State"))].join('');
                             
                 }
             }
@@ -1938,7 +1946,18 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                 case "Print":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await output', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;    
+                case "StringLiteral":
+                    if(token.image.includes('\''))
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image, jsScript.slice(jsScript.indexOf(place))].join('');
                     
+                    }
+                    else
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\''+token.image+'\'', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+                    }
+                    break;
                 
                 case "Piece":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new piece() ', jsScript.slice(jsScript.indexOf(place))].join('');
@@ -2064,7 +2083,7 @@ function visitMethodCall(cstOutput:CstNode, place:string)
 function visitRCreateCard(cstOutput:CstNode, place:string)
 {
     
-    let i = 0;
+    
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];

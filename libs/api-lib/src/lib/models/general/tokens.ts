@@ -129,6 +129,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
 
 
  export const AllTokens:chevrotain.TokenType[] = [
+    tStringLiteral,
     tAction,
     tParameters,
     tCondition,
@@ -182,7 +183,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tNot,
     tFloatLiteral,
     tIntegerLiteral,
-    tStringLiteral,
+    
     tFalse,
     tTrue,
     tInputGroup,
