@@ -32,3 +32,29 @@ div#TitleBlock {
 table{
     width: 100%;
 }
+
+input:focus{
+    outline: none;
+  }
+  #sort,#search{
+    background-color: $Pcolour-3;
+    font-size: 14px;
+  }
+  #search{
+    margin-right: 5px;
+  }
+  input{
+    border-radius: 10px;
+    width: 250px;
+    height: 24px;
+    color: black;
+    margin-left: 16px;
+    font-size: 14px;
+    border: solid 1px  $Pcolour-2;
+}
+
+#sorting{
+  color: $Pcolour-2;
+  font-size: 14px;
+  background-color: white;
+}
