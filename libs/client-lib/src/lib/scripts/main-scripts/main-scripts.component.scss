@@ -10,9 +10,9 @@
     margin-left: 1%;
     font-size: 20px;
     width: 120px;
-    background-color: #f1f1f1;
+    background-color: $Pcolour-3;
     position: fixed;
-    height: 100%;
+    border-radius: 10%;
     overflow: auto;
   }
   .sideB {
@@ -21,14 +21,14 @@
 
   .sidebar a {
     display: block;
-    color: $Pcolour-3;
+    color: white;
     padding: 10px;
     text-decoration: none;
   }
    
   .sidebar a.active {
     background-color: $Pcolour-2;
-    color: $Pcolour-3;
+    // color: $Pcolour-1;
     cursor: pointer;
   }
   

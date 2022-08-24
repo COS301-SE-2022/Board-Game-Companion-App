@@ -1,8 +1,8 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 .container{
     width: 80%;
-    margin: 10%;
-    margin-top: 5rem;
+    margin: auto;
+    margin-top: 10rem;
 }
 
 
@@ -57,4 +57,9 @@ input:focus{
   color: $Pcolour-2;
   font-size: 14px;
   background-color: white;
+}
+
+.container{
+  padding: 0%;
+  margin-right: 10%;
 }
