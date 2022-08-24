@@ -29,9 +29,6 @@ div#TitleBlock {
     color: white;
 }
 
-div.grid-view{
-    background-color: black;
-}
  div.col-3{
     width:225px;
     height:250px;
@@ -65,14 +62,21 @@ li{
     padding-top: 15px;
     text-align: center;
     font-size: 28px;
+    color: $Pcolour-2;
   }
 
   ul{
     margin-top: 12%;
   }
-  li:hover{
-    color: $Pcolour-2;
+  p{
+    font-weight:bold;
+    padding:10%;
   }
+  li:hover{
+      transform: scale(1.05);
+      cursor: pointer;
+  }
+
   .list-hoziron{
     text-align: center;
   }
