@@ -38,10 +38,10 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
+  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService, this.dragulaService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
-  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService);
+  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService, this.dragulaService);
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   currentScript:script = empty;
   location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
@@ -57,7 +57,7 @@ export class EditorComponent implements OnInit{
   programStructure!:entity;
 
 
-  constructor(private readonly scriptService:ScriptService, private router: Router, protected dragulaService: DragulaService){
+  constructor(private readonly scriptService:ScriptService, private router: Router, public dragulaService: DragulaService){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
     dragulaService.createGroup('COPYABLE', 
     {
