@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy } from '@angular/core';
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
+import { DragulaService } from 'ng2-dragula';
 import { entity } from '../../shared/models/entity';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
 import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
+import { Subscription } from 'rxjs';
 
 interface file{
   name:string;
@@ -19,6 +21,7 @@ interface file{
   styleUrls: ['./editor-body.component.scss'],
 })
 export class EditorBodyComponent implements OnInit,OnDestroy{
+ 
   @Input() height = 0;
   @Input() width = 0;
   @Input() margin = 0;
@@ -36,12 +39,23 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
+  dragula = new Subscription()
 
-  constructor(private readonly scriptService:ScriptService){
+  constructor(private readonly scriptService:ScriptService, private readonly dragulaService: DragulaService){
     
   }
 
   ngOnInit(): void {
+
+    this.dragula.add(this.dragulaService.drop('COPYABLE')
+    .subscribe(({name, el, target, source, sibling}) => {
+        console.log(name)
+        console.log(el)
+        console.log(target)
+        console.log(source)
+        console.log(sibling)
+      })
+    );
     
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
