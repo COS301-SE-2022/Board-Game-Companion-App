@@ -7,11 +7,13 @@
 #headings{
     font-size: 34px;
     font-weight: bold;
+    color: $Pcolour-2;
 }
 
 #subheading{
     font-size:24px;
     font-weight:500; 
+    color: $Pcolour-2;
 }
 
 #tbody{
@@ -20,4 +22,20 @@
 
 #symbol{
     padding-left:56px;
+}
+
+code{
+    color: black;
+}
+
+#syntaxEg{
+    background-color: #D3D3D3;
+}
+
+li.indent{
+    margin-left:30px;
+}
+
+a.indent2{
+    margin-left:60px; 
 }
