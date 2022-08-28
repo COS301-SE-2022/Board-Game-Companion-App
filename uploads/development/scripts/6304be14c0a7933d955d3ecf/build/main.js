@@ -202,7 +202,7 @@ break
         switch(choice)
         {
             case 0:
- return 
+ return []
 break
 
         }
@@ -246,7 +246,7 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
-await output( c [ 0 ] ) 
+await output( c ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
     Actions = [
@@ -301,7 +301,7 @@ break
         switch(choice)
         {
             case 0:
- return 
+ return []
 break
 
         }

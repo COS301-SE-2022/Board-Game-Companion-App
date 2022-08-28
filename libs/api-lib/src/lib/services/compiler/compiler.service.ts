@@ -1886,7 +1886,7 @@ function visitDefCondition(cstOutput:CstNode, i:number)
             else
             {
                 //
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n return ', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n return []', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
                 visitConsideration(node, i)
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'\nbreak\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
                 

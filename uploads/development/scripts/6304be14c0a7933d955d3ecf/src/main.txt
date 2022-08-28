@@ -62,7 +62,7 @@ player crossAI{
     turn(){
         let c =generateChoices()
         
-        output(c[0])
+        output(c)
         chooseAction(c[0],this.params[0])
         
         
