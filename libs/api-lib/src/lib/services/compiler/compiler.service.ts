@@ -363,11 +363,7 @@ export class CompilerService {
         
 
 
-        for(let i = 0; i<Tokenized.tokens.length;i++)
-        {
-            if(Tokenized.tokens.at(i).tokenType.name == "StringLiteral")
-                console.log(Tokenized.tokens.at(i).image)
-        }
+        
 
 
 
@@ -1886,8 +1882,16 @@ function visitDefCondition(cstOutput:CstNode, i:number)
             else
             {
                 //
-                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n return []', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'case '+i+':\n return ', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                const val = jsScript.indexOf("//considerations cases");
                 visitConsideration(node, i)
+                if(val == jsScript.indexOf("//considerations cases"))
+                {
+                    //nothing was written
+                    jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'[]', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
+                
+                }
+
                 jsScript = [jsScript.slice(0, jsScript.indexOf("//considerations cases")),'\nbreak\n', jsScript.slice(jsScript.indexOf("//considerations cases"))].join('');
                 
             }

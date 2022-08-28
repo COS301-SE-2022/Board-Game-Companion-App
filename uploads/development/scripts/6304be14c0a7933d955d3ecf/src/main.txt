@@ -50,6 +50,7 @@ player crossAI{
     }
     
     condition(t){
+        consider : this.State.board
         let ans = true
         if(t.pieces.length == 1)
         {
@@ -62,7 +63,7 @@ player crossAI{
     turn(){
         let c =generateChoices()
         
-        output(c)
+        output(c[0])
         chooseAction(c[0],this.params[0])
         
         

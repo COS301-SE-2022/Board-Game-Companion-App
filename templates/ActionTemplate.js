@@ -59,14 +59,14 @@
             else
             {
                 
-                for(let j = 0;j<await this.considerations(i).length;j++)
+                for(let j = 0;j<gcCond.length;j++)
                 {
                     
-                    
-                    if(await this.isActionLegal(this.Actions[i], await this.considerations(i)[j]))
+                    let isLegal = await this.isActionLegal(this.Actions[i], gcCond[j]);
+                    if(isLegal)
                     {
                         choices.push(this.Actions[i])
-                        this.params.push(await this.considerations(i)[j])
+                        this.params.push(gcCond[j])
 
                     }
                 }
