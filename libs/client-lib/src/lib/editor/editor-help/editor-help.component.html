@@ -126,9 +126,24 @@
                                 <li class="relative" (click)="state()">
                                     <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>state</b></a>
                                 </li>
-                                <li class="relative" (click)="player()">
-                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>player</b></a>
+                                <li class="relative">
+                                    <a id="PlayerSubNav" (click)="player()" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#PlayerSubNav" aria-expanded="true" aria-controls="PlayerSubNav">
+                                    <span><b>player</b></span>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                    </svg>
+                                    </a>
                                 </li>
+
+                                <ul class="relative accordion-collapse collapse" id="PlayerSubNav" aria-labelledby="PlayerSubNav" data-bs-parent="#PlayerSubNav">
+                                    <li class="relative" (click)="showActions()">
+                                        <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>Actions</b></a>
+                                    </li>
+                                    <li class="relative" (click)="showTurn()">
+                                        <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>Turn</b></a>
+                                    </li>
+                                </ul>
+
                                 <li class="relative" (click)="tile()">
                                     <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>tile</b></a>
                                 </li>
@@ -743,6 +758,63 @@
                         <li>&nbsp;- Furthermore the predefined method <b>chooseAction()</b> is called to generate the appropriate action of the player in their respective turn.</li>
                         </ul></a>
                       
+                    </p>
+                </div>
+
+                <!--actions-->
+                <div *ngIf="isShown.tile" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Actions</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>tile</b> of the respective board game.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>let var = <b>tile</b></code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img src="assets/images/tile.PNG"></a><br>
+                        <a>In the above example: </a><br>
+                        <a><ul>
+                            <li>- The variable <b>t2</b> is defined as a tile.</li>
+                            <li>- The tile t2 is then assigned the id <b>2</b>, meaning it is the second tile within the board game.</li>
+                            <li>- The tile t2 is then added to the board game.</li>
+                        </ul></a>
+                        <br>
+                    </p>
+                </div>
+
+                <!--turn-->
+                <div *ngIf="isShown.turn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Turn</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the turn function, it specifies the turn of the respective player. Turns are defined within the playyer function.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>turn ()</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>statement(s)</em><br>
+                            &#125;<br>
+                        </code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img src="assets/images/turn.PNG"></a><br>
+                        <a>In the above example: </a><br>
+                        <a><em>Suppose the board game of choice is TicTacToe</em></a><br>
+                        <a><ul>
+                            <li>- An input message is displayed asking the user where they would like to place the naught.</li>
+                            <li>- The system then stores the input provided by the user as the tile's ID.</li>
+                            <li>- The variable <b>'act'</b> then stores the description of the action that has been made.</li>
+                            <li>- <b>'ans'</b> is then evaluated to see if whether the move is allowed.</li>
+                            <li>- If the move is legal then <b>'ans'</b> becomes <b>true</b>. If not then <b>'ans'</b> remains <b>false</b>.</li>
+                        </ul></a>
+                        <br>
                     </p>
                 </div>
 
