@@ -1,1 +1,12 @@
-<board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="dest"  id = "game" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-element-template>
+<div id = "board" class = "boardContainers">
+    <div class = "title text-2xl font-bold ml-4 mt-2">
+        Game
+    </div>
+    <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Game" [dest] = "Game" [dests] = "GameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+</div>
+<div id = "endGame" class = "boardContainers">
+    <div class = "title text-2xl font-bold ml-4 mt-2">
+        Endgame
+    </div>
+    <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+</div>

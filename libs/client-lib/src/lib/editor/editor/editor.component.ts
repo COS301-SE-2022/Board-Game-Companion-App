@@ -62,6 +62,7 @@ export class EditorComponent implements OnInit{
     dragulaService.createGroup('COPYABLE', 
     {
       direction:'horizontal',
+      removeOnSpill: true,
       copy: (el, source) => {
         return source.id === 'area';
       },

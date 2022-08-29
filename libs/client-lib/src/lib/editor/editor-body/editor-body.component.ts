@@ -57,14 +57,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-      console.log(this.editorVisual.dest)
-          console.log(this.editorVisual.dests)
+      console.log(target)
        switch(el.id)
        {
         case "visualF": {
-          this.editorVisual.destIndex++
-          this.editorVisual.dest[this.editorVisual.dest.length-1].pos = this.editorVisual.destIndex
-          this.editorVisual.dests.push(this.dest)
+          
+          //this.editorVisual.destIndex++
+          //this.editorVisual.dests.push(this.dest)
           break
         }
         case "VisualW":

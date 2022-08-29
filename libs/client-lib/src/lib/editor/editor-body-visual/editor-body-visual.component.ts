@@ -7,16 +7,24 @@ import { ElementTemplateComponent } from './element-template';
   templateUrl: './editor-body-visual.component.html',
   styleUrls: ['./editor-body-visual.component.scss'],
 })
-export class EditorBodyVisualComponent implements OnInit {
+export class EditorBodyVisualComponent {
   
   destIndex = 0
 
-  dest = [
+  Game = [
     {title: '', class: '' , pos: 0}
   ]
 
-  dests = [
-    this.dest
+  Endgame = [
+    {title: '', class: '' , pos: 0}
+  ]
+
+  GameLoops = [
+    this.Game
+  ]
+
+  EndgameLoops = [
+    this.Endgame
   ]
 
   methods = [
@@ -24,10 +32,4 @@ export class EditorBodyVisualComponent implements OnInit {
     {name: 'addPieceToTile', arguments: 2},
     {name: 'addToArr', arguments: 2}
   ]
-
-  ngOnInit(): void 
-  {
-    console.log(this.dest)
-    
-  }
 }

@@ -1,11 +1,11 @@
 @import '../visuals.scss';
 
-#game{
+.wrapper{
     width: 100%;
     height: 100%;
     display: flex;
     padding: 2em;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 #codeArea{
@@ -22,4 +22,16 @@
 #listItems{
     padding: 1em;
 }
-  
+
+.boardContainers{
+    background-color: white;
+    border: 8px solid grey;
+    min-height: 20%;
+    min-width: 20%;
+    max-width: 95%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
