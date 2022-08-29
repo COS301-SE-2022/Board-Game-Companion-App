@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ViewContainerRef ,ComponentFactoryResolver} from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';

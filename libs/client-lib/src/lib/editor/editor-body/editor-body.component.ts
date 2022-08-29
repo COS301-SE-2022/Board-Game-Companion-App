@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
@@ -9,6 +9,8 @@ import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';
+import { ConsoleLogger } from '@nestjs/common';
+import { LoopTemplateComponent } from '../editor-body-visual/loop-template';
 
 interface file{
   name:string;
@@ -30,6 +32,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   @Output() newMessageEvent = new EventEmitter<string>();
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
   @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
+  @ViewChild(EditorBodyVisualComponent) editorVisual: EditorBodyVisualComponent = new EditorBodyVisualComponent();
+  @ViewChild('anchor', {read: ViewContainerRef}) anchor !: ViewContainerRef;
   codeEditor!:ace.Ace.Editor;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -40,6 +44,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
+  dest = [
+    {title: '', class: '', pos: 0}
+  ]
+  count = 0
 
   constructor(private readonly scriptService:ScriptService, private readonly dragulaService: DragulaService){
     
@@ -49,12 +57,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-        console.log(name)
-        console.log(el)
-        console.log(target)
-        console.log(source)
-        console.log(sibling)
+      console.log(this.editorVisual.dest)
+          console.log(this.editorVisual.dests)
+       switch(el.id)
+       {
+        case "visualF": {
+          this.editorVisual.destIndex++
+          this.editorVisual.dest[this.editorVisual.dest.length-1].pos = this.editorVisual.destIndex
+          this.editorVisual.dests.push(this.dest)
+          break
+        }
+        case "VisualW":
+          break
+       }
       })
+      
     );
     
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");

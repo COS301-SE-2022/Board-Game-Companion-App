@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ElementTemplateComponent } from './element-template';
 
 
 @Component({
@@ -8,8 +9,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class EditorBodyVisualComponent implements OnInit {
   
+  destIndex = 0
+
   dest = [
     {title: '', class: '' , pos: 0}
+  ]
+
+  dests = [
+    this.dest
   ]
 
   methods = [
