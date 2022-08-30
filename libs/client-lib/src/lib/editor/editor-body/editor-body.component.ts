@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
@@ -30,6 +30,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   @Output() newMessageEvent = new EventEmitter<string>();
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
   @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
+  @ViewChild(EditorBodyVisualComponent) editorVisual: EditorBodyVisualComponent = new EditorBodyVisualComponent();
+  @ViewChild('anchor', {read: ViewContainerRef}) anchor !: ViewContainerRef;
   codeEditor!:ace.Ace.Editor;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -40,6 +42,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
+  count = 0
 
   constructor(private readonly scriptService:ScriptService, private readonly dragulaService: DragulaService){
     
@@ -49,12 +52,136 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-        console.log(name)
-        console.log(el)
-        console.log(target)
-        console.log(source)
-        console.log(sibling)
+      //Remove empty spot
+      const c = this.editorVisual.Endgame.findIndex((obj) => {
+        return obj.class === ''
       })
+      if(c != null && c !== -1)
+      {
+        this.editorVisual.Endgame.splice(c,1)
+      }
+      //Check if new element added or swapping elements
+      if(source !== target)
+      {
+        //need to find which loop it belongs to
+        console.log(this.editorVisual.EndgameLoops)
+        this.count++
+        let recent = this.editorVisual.Endgame.findIndex((obj) => {
+          return obj.id === "e" + this.count.toString()
+        })
+        //If not in general area must be in one of the loops.
+        let index = 0
+        if(recent === -1)
+        {
+          for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
+          {
+            recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+            if(recent !== -1)
+            {
+              index = j
+              break
+            }
+          }
+          switch(el.id)
+          {
+            case "visualF": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+            case "visualW": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+          }
+
+        }
+        else
+        {
+          switch(el.id)
+          {
+            case "visualF": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+          }
+        }
+        
+      }
+      else
+      {
+        if(el.firstChild != null)
+        {
+          const ew = el.firstChild as HTMLElement
+          const recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === ew.id
+          })
+          console.log(this.editorVisual.Endgame)
+          console.log(recent)
+        }
+      }
+      
+       
+      })
+      
     );
     
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");

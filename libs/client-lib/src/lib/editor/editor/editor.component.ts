@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ViewContainerRef ,ComponentFactoryResolver} from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
@@ -55,6 +55,7 @@ export class EditorComponent implements OnInit{
   statusMessages:string[] = [];
   warningMessages:string[] = [];
   programStructure!:entity;
+  count = 0;
 
 
   constructor(private readonly scriptService:ScriptService, private router: Router, public dragulaService: DragulaService){
@@ -62,11 +63,22 @@ export class EditorComponent implements OnInit{
     dragulaService.createGroup('COPYABLE', 
     {
       direction:'horizontal',
+      removeOnSpill: true,
       copy: (el, source) => {
         return source.id === 'area';
       },
       copyItem: (obj) => {
-        return {title: obj.title, class: obj.class , pos: obj.pos};
+        if(obj.id !== '')
+        {
+          return {title: obj.title, class: obj.class , id: obj.id, pos: obj.pos};
+        }
+        else
+        {
+          this.count++
+          const id = "e" + this.count.toString()
+          return {title: obj.title, class: obj.class , id: id, pos: obj.pos};
+        }
+        
       },
       accepts: (el, target, source, sibling) => {
         // To avoid dragging from right to left container
