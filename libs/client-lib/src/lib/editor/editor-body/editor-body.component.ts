@@ -9,8 +9,6 @@ import { selection } from '../../shared/models/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';
-import { ConsoleLogger } from '@nestjs/common';
-import { LoopTemplateComponent } from '../editor-body-visual/loop-template';
 
 interface file{
   name:string;
@@ -44,9 +42,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   cursorCheckerTimer = 0;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
-  dest = [
-    {title: '', class: '', pos: 0}
-  ]
   count = 0
 
   constructor(private readonly scriptService:ScriptService, private readonly dragulaService: DragulaService){
@@ -57,18 +52,134 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-      console.log(target)
-       switch(el.id)
-       {
-        case "visualF": {
-          
-          //this.editorVisual.destIndex++
-          //this.editorVisual.dests.push(this.dest)
-          break
+      //Remove empty spot
+      const c = this.editorVisual.Endgame.findIndex((obj) => {
+        return obj.class === ''
+      })
+      if(c != null && c !== -1)
+      {
+        this.editorVisual.Endgame.splice(c,1)
+      }
+      //Check if new element added or swapping elements
+      if(source !== target)
+      {
+        //need to find which loop it belongs to
+        console.log(this.editorVisual.EndgameLoops)
+        this.count++
+        let recent = this.editorVisual.Endgame.findIndex((obj) => {
+          return obj.id === "e" + this.count.toString()
+        })
+        //If not in general area must be in one of the loops.
+        let index = 0
+        if(recent === -1)
+        {
+          for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
+          {
+            recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+            if(recent !== -1)
+            {
+              index = j
+              break
+            }
+          }
+          switch(el.id)
+          {
+            case "visualF": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+            case "visualW": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+          }
+
         }
-        case "VisualW":
-          break
-       }
+        else
+        {
+          switch(el.id)
+          {
+            case "visualF": {
+              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                console.log(recent)
+                console.log(this.editorVisual.Endgame)
+                console.log(this.editorVisual.EndgameLoops)
+              }
+              else
+              {
+                this.editorVisual.gameLoopIndex++
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.GameLoops.push(dest)
+                }
+                break
+            }
+          }
+        }
+        
+      }
+      else
+      {
+        if(el.firstChild != null)
+        {
+          const ew = el.firstChild as HTMLElement
+          const recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === ew.id
+          })
+          console.log(this.editorVisual.Endgame)
+          console.log(recent)
+        }
+      }
+      
+       
       })
       
     );

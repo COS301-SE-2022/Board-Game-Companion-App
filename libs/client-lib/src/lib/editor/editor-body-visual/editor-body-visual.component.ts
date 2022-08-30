@@ -9,14 +9,15 @@ import { ElementTemplateComponent } from './element-template';
 })
 export class EditorBodyVisualComponent {
   
-  destIndex = 0
+  endLoopIndex = 0
+  gameLoopIndex = 0
 
   Game = [
-    {title: '', class: '' , pos: 0}
+    {title: '', class: '' , id: '', pos: 0}
   ]
 
   Endgame = [
-    {title: '', class: '' , pos: 0}
+    {title: '', class: '' , id: '', pos: 0}
   ]
 
   GameLoops = [

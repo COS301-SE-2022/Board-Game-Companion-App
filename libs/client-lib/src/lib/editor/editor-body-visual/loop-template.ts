@@ -4,7 +4,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
     selector: 'board-game-companion-app-loop-template',
     styleUrls:['./editor-body-visual.component.scss'],
     template: `
-        <div [class] = "item.class">
+        <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
                 <div id = "content">
                     <!--For Loop-->
@@ -68,14 +68,15 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                 </div>
             </div>
         </div>
-        <div class="container"  id = "codeArea" dragula="COPYABLE" *ngIf = "item.title === 'For' || item.title === 'While'">
+        <div class="container"  id = "codeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
+            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
     `
 })
 
 export class LoopTemplateComponent{
-    @Input() dest = [{title: '', class: '' , pos: 0}] 
-    @Input() item = {title: '', class: '' , pos: 0}
+    @Input() dest = [{title: '', class: '' , id: '', pos: 0}] 
+    @Input() item = {title: '', class: '' , id: '', pos: 0}
     @Input() dests = [this.dest]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
