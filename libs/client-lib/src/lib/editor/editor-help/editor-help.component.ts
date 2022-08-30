@@ -7,6 +7,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 
 export class EditorHelpComponent {
+  //document.getElementById("sublabel").onclick = changeColor;
   isShown = {
     dataType : false,
     declaration : false,
@@ -65,6 +66,7 @@ export class EditorHelpComponent {
 
   showDecl(): void{
     this.isShown.declaration = true;
+    //event?.target.style.color = 'green';
     this.isShown.dataType = false;
     this.isShown.arithmetic = false;
     this.isShown.logical =false; 
