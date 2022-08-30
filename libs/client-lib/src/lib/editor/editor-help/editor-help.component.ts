@@ -7,6 +7,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 
 export class EditorHelpComponent {
+  //document.getElementById("sublabel").onclick = changeColor;
   isShown = {
     dataType : false,
     declaration : false,
@@ -21,8 +22,8 @@ export class EditorHelpComponent {
     continue:false, 
     uiInn: false, 
     uiOut: false, 
-    // cIn: false, 
-    // cOut: false, 
+    turn:false, 
+    actions:false,
     endgame:false, 
     card:false,
     piece:false,
@@ -59,10 +60,13 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showDecl(): void{
     this.isShown.declaration = true;
+    //event?.target.style.color = 'green';
     this.isShown.dataType = false;
     this.isShown.arithmetic = false;
     this.isShown.logical =false; 
@@ -86,6 +90,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showArithmetic(): void{
@@ -112,6 +118,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showLogical():void{
@@ -139,6 +147,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showCond():void {
@@ -166,6 +176,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showRelation():void {
@@ -193,6 +205,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showif():void{
@@ -220,6 +234,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showifelse():void{
@@ -247,6 +263,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showFor():void{
@@ -274,6 +292,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showWhile():void{
@@ -301,6 +321,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   showContinue():void{
@@ -328,6 +350,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   uInput():void{
@@ -358,6 +382,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   uOutput():void{
@@ -385,6 +411,8 @@ export class EditorHelpComponent {
     this.isShown.player=false ;
     this.isShown.state = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   // cInput():void{
@@ -440,14 +468,6 @@ export class EditorHelpComponent {
   //   this.isShown.state = false;
   //   this.isShown.minmax = false;
   // }
-
-  // endgame:false,
-  //   card:false,
-  //   piece:false,
-  //   tile:false, 
-  //   player:false,
-  //   state:false
-
   endgame():void{
     this.isShown.endgame = true; 
     this.isShown.card = false;
@@ -473,6 +493,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   card():void{
@@ -500,6 +522,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   piece():void{
@@ -527,6 +551,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   tile():void{
@@ -554,6 +580,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   player():void{
@@ -581,6 +609,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   state():void{
@@ -608,6 +638,8 @@ export class EditorHelpComponent {
     this.isShown.nNetwork=false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   neuralNetwork():void{
@@ -635,6 +667,8 @@ export class EditorHelpComponent {
     this.isShown.dataType = false;
     this.isShown.DTree =false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   DecisionTree():void{
@@ -662,6 +696,8 @@ export class EditorHelpComponent {
     this.isShown.declaration = false;
     this.isShown.dataType = false;
     this.isShown.minmax = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
   }
 
   minmaxAlgo():void{
@@ -689,5 +725,61 @@ export class EditorHelpComponent {
     this.isShown.arithmetic = false;
     this.isShown.declaration = false;
     this.isShown.dataType = false;
+    this.isShown.turn = false;
+    this.isShown.actions = false;
+  }
+
+  showActions():void{
+    this.isShown.actions = true; 
+    this.isShown.turn = false; 
+    this.isShown.dataType = false;
+    this.isShown.declaration = false;
+    this.isShown.arithmetic = false;
+    this.isShown.logical =false; 
+    this.isShown.cond = false;
+    this.isShown.relation = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
+    this.isShown.uiOut = false;
+    this.isShown.uiInn = false;
+    this.isShown.nNetwork=false;
+    this.isShown.DTree =false;
+    this.isShown.endgame = false; 
+    this.isShown.card = false;
+    this.isShown.piece = false; 
+    this.isShown.tile = false; 
+    this.isShown.player=false ;
+    this.isShown.state = false;
+    this.isShown.minmax = false;
+  }
+
+  showTurn(){
+    this.isShown.turn = true;
+    this.isShown.actions = false;  
+    this.isShown.dataType = false;
+    this.isShown.declaration = false;
+    this.isShown.arithmetic = false;
+    this.isShown.logical =false; 
+    this.isShown.cond = false;
+    this.isShown.relation = false;
+    this.isShown.ifState = false;
+    this.isShown.ifelse = false;
+    this.isShown.for=false;
+    this.isShown.while=false;
+    this.isShown.continue=false;
+    this.isShown.uiOut = false;
+    this.isShown.uiInn = false;
+    this.isShown.nNetwork=false;
+    this.isShown.DTree =false;
+    this.isShown.endgame = false; 
+    this.isShown.card = false;
+    this.isShown.piece = false; 
+    this.isShown.tile = false; 
+    this.isShown.player=false ;
+    this.isShown.state = false;
+    this.isShown.minmax = false;
   }
 }
