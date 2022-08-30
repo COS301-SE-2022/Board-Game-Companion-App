@@ -5,7 +5,7 @@ import { Component, Input} from "@angular/core";
     styleUrls:['./editor-body-visual.component.scss'],
     template: `
     <div  style = "display: flex;" id = "listItems" *ngFor = "let item of dest">
-        <div [class] = "item.class">
+        <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
                 <div id = "content">
                     <!--For Loop-->
@@ -77,7 +77,7 @@ import { Component, Input} from "@angular/core";
 })
 
 export class ElementTemplateComponent{
-    @Input() dest = [{title: '', class: '' , pos: 0}] 
+    @Input() dest = [{title: '', class: '' , id: '', pos: 0}] 
     @Input() dests = [this.dest]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},

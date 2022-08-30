@@ -55,6 +55,7 @@ export class EditorComponent implements OnInit{
   statusMessages:string[] = [];
   warningMessages:string[] = [];
   programStructure!:entity;
+  count = 0;
 
 
   constructor(private readonly scriptService:ScriptService, private router: Router, public dragulaService: DragulaService){
@@ -67,7 +68,17 @@ export class EditorComponent implements OnInit{
         return source.id === 'area';
       },
       copyItem: (obj) => {
-        return {title: obj.title, class: obj.class , pos: obj.pos};
+        if(obj.id !== '')
+        {
+          return {title: obj.title, class: obj.class , id: obj.id, pos: obj.pos};
+        }
+        else
+        {
+          this.count++
+          const id = "e" + this.count.toString()
+          return {title: obj.title, class: obj.class , id: id, pos: obj.pos};
+        }
+        
       },
       accepts: (el, target, source, sibling) => {
         // To avoid dragging from right to left container
