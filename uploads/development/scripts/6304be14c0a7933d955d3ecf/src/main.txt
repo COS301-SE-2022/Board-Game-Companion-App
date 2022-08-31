@@ -102,12 +102,17 @@ player naught{
             let i =input(prompt, 'text')
             output(i)
             let t = getTileByID(i)
-            output(t.pieces.length)
+            
             let act = 'placeNaught'
             ans = isActionLegal(act,t)
-            output(ans)
+            if(ans)
+            {
+                chooseAction(act,t)
+            }
         }
         while(!(ans))
+        
+        
     }
 }
 
