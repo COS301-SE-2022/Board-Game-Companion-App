@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { empty, script } from '../../shared/models/script';
 import { ModelsService } from '../../shared/services/models/models.service';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-editor-models',
@@ -12,10 +13,18 @@ export class EditorModelsComponent implements OnInit{
   scriptNetworks:any = [];
   @Input()current:script = empty;
 
-  constructor(private readonly modelsService:ModelsService){}
+  constructor(private readonly modelsService:ModelsService,private readonly scriptService:ScriptService){}
 
-  apply(){
-    console.log("void")
+  save(){
+    const temp = this.networks.map((value:any) => value._id);
+    this.scriptService.updateScriptModels(temp).subscribe({
+      next:(value:script) => {
+        this.current = value;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -39,6 +48,11 @@ export class EditorModelsComponent implements OnInit{
   add(network:any){
     this.networks = this.networks.filter((value:any) => value._id !== network._id);
     this.scriptNetworks.push(network);
+  }
+
+  remove(network:any){
+    this.scriptNetworks = this.scriptNetworks.filter((value:any) => value._id !== network._id);
+    this.networks.push(network);
   }
 
 }
