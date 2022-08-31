@@ -52,7 +52,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-      //Remove empty spot
+      //Clear any empty objects in arrays
+      //Clear general container first
       const c = this.editorVisual.Endgame.findIndex((obj) => {
         return obj.class === ''
       })
@@ -64,7 +65,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       if(source !== target)
       {
         //need to find which loop it belongs to
-        console.log(this.editorVisual.EndgameLoops)
         this.count++
         let recent = this.editorVisual.Endgame.findIndex((obj) => {
           return obj.id === "e" + this.count.toString()
@@ -83,6 +83,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               index = j
               break
             }
+            const k = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
+              return obj.class === ''
+            })
+            if(k != null && k !== -1)
+            {
+              this.editorVisual.EndgameLoops[j].splice(k,1)
+            }
           }
           switch(el.id)
           {
@@ -95,9 +102,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   {title: '', class: '', id: '', pos: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
               }
               else
               {
@@ -118,9 +122,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   {title: '', class: '', id: '', pos: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
               }
               else
               {
@@ -148,9 +149,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   {title: '', class: '', id: '', pos: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
               }
               else
               {

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ElementTemplateComponent } from './element-template';
 
 
 @Component({
@@ -18,6 +17,23 @@ export class EditorBodyVisualComponent {
 
   Endgame = [
     {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Player1 = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Player2 = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Players = [
+    {action: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}], turn: [{title: '', class: '' , id: '', pos: 0}]},
+    {action: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}], turn: [{title: '', class: '' , id: '', pos: 0}]}
+  ]
+
+  PlayersLoops = [
+    this.Player1
   ]
 
   GameLoops = [
