@@ -14,6 +14,7 @@ import { NotificationUnitComponent } from './components/notification-unit/notifi
 import { InputInterfaceComponent } from './components/input-interface/input-interface.component';
 import { StorageService } from './services/storage/storage.service';
 import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
+import { DownloadsService } from './services/downloads/downloads.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { OutputInterfaceComponent } from './components/output-interface/output-i
     GoogleAuthService,
     CommentService,
     ModelsService,
-    StorageService
+    StorageService,
+    DownloadsService
   ],
   exports: [
     HeaderComponent,

@@ -22,33 +22,33 @@
 
     <!-- GRIDVIEW -->
     <div class="row gap-4 ">
-        <div class="col-3 p-3 text-black content-center">
+        <div class="col-3 p-3 text-black content-center" *ngFor="let myScript of myScripts">
             <figure class="script-image">
                 <img src="assets/images/logo.png" alt="picArt">
             </figure>
             <ul class="list-hoziron">
                 <li>
-                    <a href="#">
-                    <i class="fas fa-edit"></i>
-                    </a>
+                    <button (click)="showEditor(myScript)">
+                        <i class="fas fa-edit"></i>
+                    </button>
                 </li>
                 <li>
-                    <a href="#">
-                    <i class="fas fa-play"></i>
-                    </a>
+                    <button (click)="play(myScript)">
+                        <i class="fas fa-play"></i>
+                    </button>
                 </li>
                 <li>
-                    <a href="#">
-                    <i class="fas fa-trash"></i>
-                    </a>
+                    <button (click)="removeScript(myScript._id)">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </li>
                 <li>
-                    <a href="#">
-                    <i class="fas fa-info-circle"></i>
-                    </a>
+                    <button (click)="showInfo(myScript)">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
                 </li>
             </ul>
-            <p class="text-center">title of script </p>
+            <p class="text-center">{{ myScript.name }}</p>
         </div>
     </div>
 </div>
