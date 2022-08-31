@@ -350,10 +350,11 @@ do {
 let i = await input( prompt , 'text') 
 await output( i ) 
 let t = await this.State.getTileByID(i)
-await output( t . pieces . length ) 
 let act = 'placeNaught'
 ans = await this.isActionLegal ( act , t ) 
-await output( ans ) 
+if ( ans ) { 
+await this.chooseAction ( act , t ) 
+} 
 } while ( ! ( ans ) ) 
 } } //players
 
