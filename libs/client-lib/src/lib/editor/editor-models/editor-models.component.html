@@ -10,13 +10,13 @@
 
         <div class="modal-body relative row m-2">
           <div class = "col-sm-5 rounded-sm border p-2">
-            <div class = "network rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of networks">
+            <div (click) = "add(network)" class = "network rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of networks">
                 <div class = "ml-2 font-medium"> {{network.name}}</div>
             </div>
           </div>
 
           <div class = "col-sm-5 offset-sm-2 rounded-sm border p-2">
-            <div class = "text-black bg-white rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of networks">
+            <div class = "text-black bg-white rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of scriptNetworks">
                 <div class = "ml-2 font-medium"> {{network.name}}</div>
                 <div class = "absolute right-0 mr-2 hover:text-red-800">
                     <i class="fas fa-times"></i>

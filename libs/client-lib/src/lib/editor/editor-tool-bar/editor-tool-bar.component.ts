@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { find } from '../../shared/models/find';
 import { replace } from '../../shared/models/replace';
+import { empty, script } from '../../shared/models/script';
 
 @Component({
   selector: 'board-game-companion-app-editor-tool-bar',
@@ -12,6 +13,8 @@ export class EditorToolBarComponent implements OnInit{
   constructor(private readonly router: Router) {
 
   }
+
+  @Input() current:script = empty;
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
   @Output() undoEvent = new EventEmitter();
