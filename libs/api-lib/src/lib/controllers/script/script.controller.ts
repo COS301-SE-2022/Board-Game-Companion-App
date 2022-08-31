@@ -74,6 +74,11 @@ export class ApiScriptController {
        await this.scriptService.removeById(id); 
     }
 
+    @Put('update-models')
+    async updateModels(@Body('script')script:string,@Body('networks')networks:string[]):Promise<Script>{
+        return await this.scriptService.updateModels(script,networks);
+    }
+
     //rating functions
     
     @Post('rate')

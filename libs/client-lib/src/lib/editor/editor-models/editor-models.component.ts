@@ -17,7 +17,8 @@ export class EditorModelsComponent implements OnInit{
 
   save(){
     const temp = this.networks.map((value:any) => value._id);
-    this.scriptService.updateScriptModels(temp).subscribe({
+
+    this.scriptService.updateScriptModels(this.current._id,temp).subscribe({
       next:(value:script) => {
         this.current = value;
       },

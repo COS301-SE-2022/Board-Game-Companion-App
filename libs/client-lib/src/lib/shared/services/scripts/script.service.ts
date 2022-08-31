@@ -128,8 +128,8 @@ export class ScriptService {
     return this.httpClient.get<number>(this.api + "scripts/average-rating",{params:param});
   }
 
-  updateScriptModels(networks:string[]):Observable<script>{
-    return this.httpClient.put<script>("scripts/update-models",networks);
+  updateScriptModels(script:string,networks:string[]):Observable<script>{
+    return this.httpClient.put<script>("scripts/update-models",{script:script,networks:networks});
   }
 
 
