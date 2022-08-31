@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ElementTemplateComponent } from './element-template';
 
 
 @Component({
@@ -6,10 +7,25 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './editor-body-visual.component.html',
   styleUrls: ['./editor-body-visual.component.scss'],
 })
-export class EditorBodyVisualComponent implements OnInit {
+export class EditorBodyVisualComponent {
   
-  dest = [
-    {title: '', class: '' , pos: 0}
+  endLoopIndex = 0
+  gameLoopIndex = 0
+
+  Game = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Endgame = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  GameLoops = [
+    this.Game
+  ]
+
+  EndgameLoops = [
+    this.Endgame
   ]
 
   methods = [
@@ -17,10 +33,4 @@ export class EditorBodyVisualComponent implements OnInit {
     {name: 'addPieceToTile', arguments: 2},
     {name: 'addToArr', arguments: 2}
   ]
-
-  ngOnInit(): void 
-  {
-    console.log(this.dest)
-    
-  }
 }
