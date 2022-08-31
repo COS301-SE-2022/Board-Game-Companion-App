@@ -48,30 +48,48 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page }">
             <tr>
                 <td>
-
+                    {{ script.name }}
                 </td>
                 <td>
-
+                    {{ script.author.name }}
                 </td>
                 <td>
-
+                    {{ script.created }}
                 </td>
                 <td>
-
+                    {{ script.lastupdate }}
                 </td>
+                <td *ngIf="script.status.value===0" class="bg-red text-danger">
+                    {{ "flagged" }}
+                </td>                        
+                <td *ngIf="script.status.value===1" class="bg-red text-primary">
+                    {{ "In Progress"}}
+                </td >
+                <td *ngIf="script.status.value===2" class="bg-red text-success" >
+                    {{ "Published" }}
+                </td > 
                 <td>
-
+                    {{ script.size }}
                 </td>
-                <td>
-
-                </td>
-                <td>
-                    
+                <td class="text-center align-middle">
+                    <button (click)="showEditor(script)" class="btn btn-success mx-2" data-toggle="modal">
+                        <span  class="fas fa-edit" data-toggle="tooltip" title="Edit"></span>
+                    </button>
+                    <button (click)="showInfo(script)" class="btn btn-primary mx-2" data-toggle="modal">
+                        <span class="fas fa-info-circle" data-toggle="tooltip" title="Info"></span>
+                    </button>
+                    <button (click)="removeById(script._id)" class="btn btn-danger mx-2" data-toggle="modal">
+                        <span  class="fas fa-trash" data-toggle="tooltip" title="Delete"></span>
+                    </button>
+                    <button (click)="play(script)" class="btn btn-primary mx-2" data-toggle="modal">
+                        <span class="fas fa-play" data-toggle="tooltip" title="Play"></span>
+                    </button>
                 </td>
             </tr>
         </tbody>
     </table>
+    <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
 </div>

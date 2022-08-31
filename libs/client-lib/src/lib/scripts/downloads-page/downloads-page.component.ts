@@ -10,6 +10,7 @@ import { DownloadsService } from '../../shared/services/downloads/downloads.serv
 export class DownloadsPageComponent implements OnInit {
   scripts: script[] = [];
   currentScript: script = empty;
+  page = 1;
 
   constructor(private readonly downloadsService:DownloadsService, private readonly router:Router) {}
 
