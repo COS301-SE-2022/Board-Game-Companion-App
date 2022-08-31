@@ -12,7 +12,7 @@ export class DownloadsController {
     }
 
     @Get('retrieve/downloadedByMe')
-    async getMyDownloads(@Query('ownerName')ownerName:string, @Query('ownerEmail')ownerEmail:string):Promis<Script[]>{
+    async getMyDownloads(@Query('ownerName')ownerName:string, @Query('ownerEmail')ownerEmail:string):Promise<Script[]>{
         return await this.downloadsService.getMyDownloads({name:ownerName, email:ownerEmail});
     }
 
