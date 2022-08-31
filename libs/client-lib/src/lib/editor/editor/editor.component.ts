@@ -144,6 +144,9 @@ export class EditorComponent implements OnInit{
     },250);
   }
 
+  updateScript(value:script): void{
+    this.currentScript = value;
+  }
 
 
   async neuralnetworks():Promise<any>{

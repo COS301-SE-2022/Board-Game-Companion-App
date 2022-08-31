@@ -129,7 +129,7 @@ export class ScriptService {
   }
 
   updateScriptModels(script:string,networks:string[]):Observable<script>{
-    return this.httpClient.put<script>("scripts/update-models",{script:script,networks:networks});
+    return this.httpClient.put<script>(this.api + "scripts/update-models",{script:script,networks:networks});
   }
 
 

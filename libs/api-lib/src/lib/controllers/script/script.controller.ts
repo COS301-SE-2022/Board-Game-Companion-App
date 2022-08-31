@@ -73,9 +73,10 @@ export class ApiScriptController {
     async removeScript(@Param('id')id:string){
        await this.scriptService.removeById(id); 
     }
-
+ 
     @Put('update-models')
     async updateModels(@Body('script')script:string,@Body('networks')networks:string[]):Promise<Script>{
+        console.log(networks)
         return await this.scriptService.updateModels(script,networks);
     }
 

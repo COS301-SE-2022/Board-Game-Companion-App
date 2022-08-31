@@ -7,4 +7,11 @@
 </div>
 <div (click) = "showModels = !showModels" [ngClass] = "{'bg-zinc-600 hover:bg-zinc-400':!showModels,'title-header':showModels}" class = "cursor-pointer w-full h-6 mb-1 shadow-md text-center bar-header text-white font-medium">
     Models
+</div>
+<div *ngIf = "showModels">
+    <div class = "model flex flex-row relative" *ngFor = "let model of models">
+        <div class = "text-white py-1 ml-2">
+            {{model}}
+        </div>
+    </div>
 </div>  

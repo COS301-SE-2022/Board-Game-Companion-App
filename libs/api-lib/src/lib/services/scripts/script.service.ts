@@ -264,12 +264,13 @@ export class ScriptService {
         if(result === null || undefined)
             throw new HttpException('Script Not Found', HttpStatus.NOT_FOUND);
 
-        networks.forEach(async(value:string) => {
+        for(let count = 0; count < networks.length; count++){
+            const value = networks[count];
             const temp = await this.networksModel.findById(value);
             
             if(temp === null || undefined)
                 throw new HttpException(`Model with id ${value} does not exist`,HttpStatus.BAD_REQUEST);
-        })
+        }
 
         result.models = networks;
         

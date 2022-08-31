@@ -31,6 +31,7 @@ export class EditorToolBarComponent implements OnInit{
   @Output() toggleConsoleEvent = new EventEmitter<boolean>();
   @Output() toggleDisplayEvent = new EventEmitter<boolean>();
   @Output() themeEvent = new EventEmitter();
+  @Output() updateScriptEvent = new EventEmitter<script>();
   sideBar = true;
   console = true;
   showReplace = false;
@@ -122,6 +123,10 @@ export class EditorToolBarComponent implements OnInit{
 
   replaceAll(value:replace): void{
     this.replaceAllEvent.emit(value);
+  }
+
+  updateScript(value:script): void{
+    this.updateScriptEvent.emit(value);
   }
 
 }
