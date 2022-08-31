@@ -21,15 +21,29 @@
 }
 
 #symbol{
-    padding-left:56px;
+    padding-left:10px;
+    // width:40%;
+    // border-left: 1px solid black;
+}
+
+#symbol1{
+    border-top: 1px solid black;
+    // border-left: 1px solid black;
+    padding-left:10px;
+    // width:40%;
 }
 
 code{
     color: black;
 }
 
+// .img{
+//     width: 60px;
+//     height:
+// }
+
 #syntaxEg{
-    background-color: #D3D3D3;
+    background-color:#E3E5E5;
 }
 
 li.indent{
@@ -38,4 +52,21 @@ li.indent{
 
 a.indent2{
     margin-left:60px; 
+}
+
+#sublabel:active{
+    color:green;
+    //background-color:aquamarine;
+}
+
+.tableHeader{
+    border-bottom: 1px solid black;
+}
+
+#listlistItem{
+    margin-left:16px;
+}
+
+#listlistItem2{
+    margin-left:30px; 
 }

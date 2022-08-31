@@ -18,10 +18,10 @@
             </div>
       
             <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
-                <button data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
                     <i class="fa-solid fa-rectangle-xmark fa-2x"></i>
                 </button>
-                <button (click)="apply()" id = "save-theme" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <button data-toggle="tooltip" title="save" (click)="apply()" id = "save-theme" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
                     <i class="fa-solid fa-floppy-disk fa-2x"></i>
                 </button>
             </div>
