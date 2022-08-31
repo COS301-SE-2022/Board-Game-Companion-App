@@ -14,7 +14,8 @@ import { inputParameters } from '../../shared/models/inputParameters';
 import { entity } from '../../shared/models/entity';
 import { selection } from '../../shared/models/selection';
 import { Ace } from 'ace-builds';
-import {DragulaService} from 'ng2-dragula';
+import { DragulaService } from 'ng2-dragula';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 interface message{
   message: string;
@@ -58,7 +59,10 @@ export class EditorComponent implements OnInit{
   count = 0;
 
 
-  constructor(private readonly scriptService:ScriptService, private router: Router, public dragulaService: DragulaService){
+  constructor(private readonly scriptService:ScriptService,
+              private router: Router,
+              public dragulaService: DragulaService,
+              private readonly storageService: StorageService){
     this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
     dragulaService.createGroup('COPYABLE', 
     {
@@ -150,51 +154,23 @@ export class EditorComponent implements OnInit{
 
 
   async neuralnetworks():Promise<any>{
-    
-    const modelsInfo = localStorage.getItem("models");
-    const result = new Object();
+      return (async(name:string,input:number[])=>{
+        const info = await this.storageService.getByIndex("networks","name",name);
 
-    if(modelsInfo === null)
-      return null;
-    else{
-      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      const models:{name:string,model:tf.LayersModel,min:tf.Tensor,max:tf.Tensor,labels:string[]}[] = [];
-      
-      for(let count = 0; count < networks.length; count++){
-        models.push({
-          name: networks[count].setup.name,
-          model: await tf.loadLayersModel('localstorage://' + networks[count].setup.name),
-          min: networks[count].setup.min,
-          max: networks[count].setup.max,
-          labels: networks[count].setup.labels as string[]
-        })
-      }
-
-      return ((name:string,input:number[])=>{
-        
-        let index = -1;
-
-        for(let count = 0; count < models.length && index === -1; count++){
-          if(models[count].name === name)
-            index = count;
-        }
-
-        if(index === -1)
+        if(info.name == undefined)
           return "";
 
-        
+        const model = await tf.loadLayersModel(`indexeddb://${info.name}`);
+        const min = tf.tensor(info.min);
+        const max = tf.tensor(info.max);
+
         const inputTensor = tf.tensor2d(input,[1,input.length]);
-        const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
-        const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
-        tensorResult.print();
-        index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-        return models[index].labels[index];
+        const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+        const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+        //tensorResult.print();
+        const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+        return info.labels[index];
       })
-
-      
-    }
-
-    return result;
   }
 
   changeTheme():void{
