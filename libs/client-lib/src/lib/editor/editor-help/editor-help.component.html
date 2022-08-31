@@ -950,22 +950,28 @@
                 <div *ngIf="isShown.nNetwork" class="block p-6 rounded-sm shadow-md h-full bg-white">
                     <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Neural Network</h5>
                     <p class="mb-4">
-                        <a id="tbody" class="text-gray-700">A series of algorithms that attempts to recognize the relationshipd in a set of data through process that imitate how the human brain works.</a>
+                        <a id="tbody" class="text-gray-700">A series of algorithms that attempts to recognize the relationships in a set of data through process that imitate how the human brain works.</a><br>
+                        <a>The main intent of the function is to generate the next possible <b>move</b> that the AI opoonent would make depending on the moves made by the user.</a>
                         <br>
                         <br>
                         <a id="subheading">Syntax</a>
                         <br>
                         <br>
-                        <a><div id ="syntaxEg"><code><b>NeuralNetwork</b><br>
-                        &#123;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expression <br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continuation <br>
-                        &#125;<br>  
+                        <a><div id ="syntaxEg"><code>
+                            <b>NeuralNetwork</b> (name, input)
                         </code></div></a>
-                        <a id="subheading"> Example</a>
                         <br>
-                        <a >...</a>
-
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/nNetwork.PNG"></a><br>
+                        <a>In the above example:</a><br>
+                        <a><em>Suppose the game played is TicTacToe</em></a><br>
+                        <br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The variable, <b>name</b> is assigned the name of the neural network's name.</div></li>
+                            <li><div id="listlistItem">- The variable, <b>input</b> stores an array of inputs, representing the tiles within the respective board game.</div></li>
+                            <li><div id="listlistItem">- The variable, <b>network</b> then stores produces a number between 1 and 9, where the next piece is placed</div></li>
+                        </ul></a>
                     </p>
                 </div>
 
