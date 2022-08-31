@@ -60,4 +60,18 @@ export class ModelsService {
         
         return result.deletedCount === 1;
     }
+
+    async getModel(user:user,id:string):Promise<NeuralNetwork>{
+        return this.networkModel.findOne({"user.email":user.email,"user.name":user.name,"_id":id});
+    }
+
+    async getModels(user:user,idList:string[]):Promise<NeuralNetwork[]>{
+        //let result =  await 
+        return this.networkModel.find({"user.name":user.name,"user.email":user.email}).where('_id').in(idList);
+        
+        // result = result.filter((value:NeuralNetwork) => value.user.name === user.name && value.user.email === user.email);
+
+        // return result;
+    }
+
 }
