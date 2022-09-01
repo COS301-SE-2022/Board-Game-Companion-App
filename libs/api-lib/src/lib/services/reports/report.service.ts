@@ -38,8 +38,8 @@ export class ReportService {
         return this.reportModel.find({"script":id});
     }
 
-    async alreadyIssued(user:user):Promise<boolean>{
-        const count = await this.reportModel.countDocuments({"user.name":user.name,"user.email":user.email});
+    async alreadyIssued(user:user,script:string):Promise<boolean>{
+        const count = await this.reportModel.countDocuments({"user.name":user.name,"user.email":user.email,"script":script});
         
         return count > 0;
     }

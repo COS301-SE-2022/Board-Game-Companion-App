@@ -94,7 +94,7 @@
       </div>
 
 
-      <div id="rate" class="script-rate text-center">
+      <div id="rate" class="script-rate text-center mb-4">
         <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
 
         <div id="outerStar">
@@ -119,7 +119,7 @@
           class="hover:opacity-80 hover:scale-105 w-11/12 inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out"
           data-bs-toggle="modal" data-bs-target="#reportModal"
           >
-          <i class="fas fa-flag fa-3x" style = "color: rgb(190,18,60);" data-toggle="tooltip" title="flag"></i>
+          <i class="fas fa-flag fa-3x" style = "color: rgb(190,18,60);" data-toggle="tooltip" [title]="alreadyReported?'already flagged':'flag'"></i>
           <p id="down" class="text-lg" style = "color: rgb(190,18,60);"><b>FLAG</b></p>
         </button>
       </div>
@@ -130,4 +130,4 @@
 
 <board-game-companion-app-notification></board-game-companion-app-notification>
 
-<board-game-companion-app-report-form></board-game-companion-app-report-form>
+<board-game-companion-app-report-form [id] = "current._id" [reported] = "alreadyReported" (reportEvent) = "alreadyReported = true" ></board-game-companion-app-report-form>

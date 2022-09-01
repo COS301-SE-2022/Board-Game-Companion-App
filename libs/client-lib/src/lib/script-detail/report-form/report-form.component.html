@@ -6,8 +6,8 @@
             <h5 class="text-xl font-medium leading-normal text-center" id="exampleModalLabel">Report</h5>
         </div>
 
-        <div class="modal-body relative p-2 overflow-y-auto">
-            <textarea (keypress)="onEnter($event)" [disabled] = "content===''"
+        <div class="modal-body relative p-4 overflow-y-auto">
+            <textarea (keypress)="onEnter($event)" 
               class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               id="exampleFormControlTextarea1"
               rows="3"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
-            <button data-bs-dismiss="modal" data-toggle="tooltip" title="send" (click)="send()" id = "save-theme" class = "send-button py-2 px-4 rounded hover:scale-105 active:shadow-none font-medium">
+            <button [disabled] = "content===''"  data-bs-dismiss="modal" data-toggle="tooltip" title="send" (click)="send()" id = "save-theme" class = "send-button py-2 px-4 rounded hover:scale-105 active:shadow-none font-medium">
                 SEND
             </button>
         </div>

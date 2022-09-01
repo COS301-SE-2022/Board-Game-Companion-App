@@ -28,8 +28,8 @@ export class ApiReportsController{
     }
 
     @Get('already-issued')
-    async alreadyIssued(@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<boolean>{
-        return this.reportsService.alreadyIssued({name:userName,email:userEmail});
+    async alreadyIssued(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('script')script:string):Promise<boolean>{
+        return this.reportsService.alreadyIssued({name:userName,email:userEmail},script);
     }
 
     @Get('count-reported')

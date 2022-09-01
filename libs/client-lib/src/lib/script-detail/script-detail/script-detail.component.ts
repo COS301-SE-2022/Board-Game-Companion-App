@@ -7,6 +7,7 @@ import { CommentService } from '../../shared/services/comments/comment.service';
 import { rating } from '../../shared/models/rating';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { ReportService } from '../../shared/services/reports/report.service';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -23,6 +24,7 @@ export class ScriptDetailComponent implements OnInit {
   averageRating = 0;
   voterCount = 0;
   downloading = false;
+  alreadyReported = false;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
@@ -30,7 +32,8 @@ export class ScriptDetailComponent implements OnInit {
     private readonly commentService:CommentService,
     private readonly router:Router,
     private route: ActivatedRoute,
-    private readonly gapi: GoogleAuthService
+    private readonly gapi: GoogleAuthService,
+    private readonly reportService:ReportService
     ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
       
@@ -44,6 +47,7 @@ export class ScriptDetailComponent implements OnInit {
       this.getRating();
       this.getAverageRating();
       this.getVoterCount();
+      this.getAlreadyReported();
     } 
   }
 
@@ -57,7 +61,7 @@ export class ScriptDetailComponent implements OnInit {
     this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(val)=>{
         this.downloading = false;
-        this.notifications.add({type:"primary",message:val.message});
+        this.notifications.add({type:"success",message:val.message});
 
       },
       error:(err)=>{     
@@ -95,6 +99,17 @@ export class ScriptDetailComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  getAlreadyReported():void{
+    this.reportService.alreadyIssued(this.current._id).subscribe({
+      next:(value:boolean) => {
+        this.alreadyReported = value;
+      },
+      error:(err) => {
+        console.log(err);
+      }
+    })
   }
 
   getRating(): void{
