@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { find } from '../../shared/models/find';
-import { replace } from '../../shared/models/replace';
-import { empty, script } from '../../shared/models/script';
+import { find } from '../../shared/models/editor/find';
+import { replace } from '../../shared/models/editor/replace';
+import { empty, script } from '../../shared/models/scripts/script';
 
 @Component({
   selector: 'board-game-companion-app-editor-tool-bar',

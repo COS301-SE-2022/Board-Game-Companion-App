@@ -1,4 +1,4 @@
-import { user } from './user';
+import { user } from '../general/user';
 
 export interface report{
 	_id: string   

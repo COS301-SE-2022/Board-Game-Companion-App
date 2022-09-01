@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { empty, script } from '../../shared/models/script';
+import { empty, script } from '../../shared/models/scripts/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { GoogleAuthService, userDetails } from '../../google-login/GoogleAuth/google-auth.service';
 

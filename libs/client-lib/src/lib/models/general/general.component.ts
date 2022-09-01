@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { modelData } from '../../shared/models/modelData';
+import { modelData } from '../../shared/models/neuralnetwork/modelData';
 import * as tf from '@tensorflow/tfjs';
 import { ModelsService } from '../../shared/services/models/models.service';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
-import { user } from '../../shared/models/user';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
+import { user } from '../../shared/models/general/user';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
-import { script } from '../../shared/models/script';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import { script } from '../../shared/models/scripts/script';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
 import * as tf from '@tensorflow/tfjs'
 @Component({

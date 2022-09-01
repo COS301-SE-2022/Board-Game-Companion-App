@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { empty, script } from '../../shared/models/script';
+import { empty, script } from '../../shared/models/scripts/script';
 import { DownloadsService } from '../../shared/services/downloads/downloads.service';
 @Component({
   selector: 'board-game-companion-app-downloads-page',

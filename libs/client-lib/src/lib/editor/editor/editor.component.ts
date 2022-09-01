@@ -2,17 +2,17 @@ import { Component, OnInit, HostListener, ViewChild, ViewContainerRef ,Component
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
-import { empty, script } from '../../shared/models/script';
+import { empty, script } from '../../shared/models/scripts/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
-import { find } from '../../shared/models/find';
-import { replace } from '../../shared/models/replace';
+import { find } from '../../shared/models/editor/find';
+import { replace } from '../../shared/models/editor/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
-import { inputParameters } from '../../shared/models/inputParameters';
-import { entity } from '../../shared/models/entity';
-import { selection } from '../../shared/models/selection';
+import { inputParameters } from '../../shared/models/scripts/inputParameters';
+import { entity } from '../../shared/models/editor/entity';
+import { selection } from '../../shared/models/editor/selection';
 import { Ace } from 'ace-builds';
 import { DragulaService } from 'ng2-dragula';
 import { StorageService } from '../../shared/services/storage/storage.service';

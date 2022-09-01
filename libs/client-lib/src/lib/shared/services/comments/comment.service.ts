@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { comment } from '../../models/comment';
-import { like } from '../../models/like';
-import { commentCount } from '../../models/commentCount';
-import { user } from '../../models/user';
+import { comment } from '../../models/comments/comment';
+import { like } from '../../models/comments/like';
+import { commentCount } from '../../models/comments/commentCount';
+import { user } from '../../models/general/user';
 
 
 @Injectable()

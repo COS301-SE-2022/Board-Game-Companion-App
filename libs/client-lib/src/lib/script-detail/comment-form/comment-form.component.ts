@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { comment } from '../../shared/models/comment';
+import { comment } from '../../shared/models/comments/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
-import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 

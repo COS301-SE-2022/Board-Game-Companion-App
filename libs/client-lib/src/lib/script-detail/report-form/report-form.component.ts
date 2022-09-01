@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { comment } from '../../shared/models/comment';
+import { comment } from '../../shared/models/comments/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ReportService } from '../../shared/services/reports/report.service';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-import { report } from '../../shared/models/report';
+import { report } from '../../shared/models/scripts/report';
 
 @Component({
   selector: 'board-game-companion-app-report-form',

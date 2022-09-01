@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
-import { script } from '../../shared/models/script';
-import { comment, empty } from '../../shared/models/comment';
+import { script } from '../../shared/models/scripts/script';
+import { comment, empty } from '../../shared/models/comments/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 

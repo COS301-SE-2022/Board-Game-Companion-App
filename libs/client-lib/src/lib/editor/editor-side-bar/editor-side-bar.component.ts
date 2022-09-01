@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { Ace } from 'ace-builds';
-import { entity } from '../../shared/models/entity';
-import { script, empty } from '../../shared/models/script';
-import { selection } from '../../shared/models/selection';
+import { entity } from '../../shared/models/editor/entity';
+import { script, empty } from '../../shared/models/scripts/script';
+import { selection } from '../../shared/models/editor/selection';
 import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
 import { EditorVisualsComponent } from '../editor-visual-side-bar/editor-visual-side-bar.component';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'

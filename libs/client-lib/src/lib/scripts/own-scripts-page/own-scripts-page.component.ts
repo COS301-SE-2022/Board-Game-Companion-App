@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { script, empty } from '../../shared/models/script';
+import { script, empty } from '../../shared/models/scripts/script';
 import { Router } from '@angular/router';
 
 @Component({

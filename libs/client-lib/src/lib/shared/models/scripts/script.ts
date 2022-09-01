@@ -1,7 +1,7 @@
-import { entity } from "./entity";
-import { file } from "./file";
-import { status } from "./status";
-import { user} from './user'
+import { entity } from "../editor/entity";
+import { file } from "../general/file";
+import { status } from "../general/status";
+import { user} from '../general/user'
 
 export interface script{
     _id: string;

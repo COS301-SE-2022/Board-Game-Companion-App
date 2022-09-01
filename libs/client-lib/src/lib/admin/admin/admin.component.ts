@@ -3,7 +3,7 @@ import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 // import { script } from '../../shared/models/script';
-import { user } from '../../shared/models/user';
+import { user } from '../../shared/models/general/user';
 // import { TestPassService } from '../../test-pass.service';
 // import { Router } from '@angular/router';
 

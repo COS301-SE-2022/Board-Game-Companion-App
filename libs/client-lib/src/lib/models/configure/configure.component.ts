@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { ModelsService } from '../../shared/services/models/models.service';
-import { user } from '../../shared/models/user';
+import { user } from '../../shared/models/general/user';
 
 @Component({
   selector: 'board-game-companion-app-configure',

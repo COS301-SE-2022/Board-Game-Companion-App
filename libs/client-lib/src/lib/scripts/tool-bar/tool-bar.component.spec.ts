@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { script, empty} from '../../shared/models/script';
+import { script, empty} from '../../shared/models/scripts/script';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { GoogleAuthService, userDetails } from '../../google-login/GoogleAuth/google-auth.service';

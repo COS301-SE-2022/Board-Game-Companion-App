@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { objectStore } from '../../models/objectStore';
+import { objectStore } from '../../models/general/objectStore';
 
 @Injectable()
 export class StorageService{

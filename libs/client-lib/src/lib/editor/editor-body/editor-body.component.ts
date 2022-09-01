@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy, V
 import { valueAndGrads } from '@tensorflow/tfjs';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
-import { entity } from '../../shared/models/entity';
-import { find } from '../../shared/models/find';
-import { replace } from '../../shared/models/replace';
-import { selection } from '../../shared/models/selection';
+import { entity } from '../../shared/models/editor/entity';
+import { find } from '../../shared/models/editor/find';
+import { replace } from '../../shared/models/editor/replace';
+import { selection } from '../../shared/models/editor/selection';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';

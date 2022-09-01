@@ -1,11 +1,11 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { script } from '../../models/script';
-import { rating } from '../../models/rating';
-import { user } from '../../models/user';
+import { script } from '../../models/scripts/script';
+import { rating } from '../../models/scripts/rating';
+import { user } from '../../models/general/user';
 import { User } from 'aws-sdk/clients/budgets';
-import { entity } from '../../models/entity';
+import { entity } from '../../models/editor/entity';
 
 
 @Injectable()

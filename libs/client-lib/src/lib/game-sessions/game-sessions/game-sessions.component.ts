@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
-import { fetchSessionResults } from '../../shared/models/fetch-session-results';
+import { fetchSessionResults } from '../../shared/models/sessions/fetch-session-results';
 import { Router } from '@angular/router';
 
 

@@ -1,10 +1,10 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { script, empty } from '../../shared/models/script';
+import { script, empty } from '../../shared/models/scripts/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
-import { rating } from '../../shared/models/rating';
+import { rating } from '../../shared/models/scripts/rating';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { ReportService } from '../../shared/services/reports/report.service';

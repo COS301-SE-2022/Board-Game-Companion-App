@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { script ,empty} from '../../shared/models/script';
+import { script ,empty} from '../../shared/models/scripts/script';
 import { Router } from '@angular/router';
 import { GoogleAuthService, userDetails} from '../../google-login/GoogleAuth/google-auth.service';
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { beginTraining } from '../../shared/models/beginTraining';
-import { modelData } from '../../shared/models/modelData';
+import { beginTraining } from '../../shared/models/neuralnetwork/beginTraining';
+import { modelData } from '../../shared/models/neuralnetwork/modelData';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { GeneralComponent } from '../general/general.component';

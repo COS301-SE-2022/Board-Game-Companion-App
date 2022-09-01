@@ -2,9 +2,9 @@ import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as tf from '@tensorflow/tfjs';
-import { layer } from '../../models/layer';
-import { optimizerArgs } from '../../models/optimizerArgs';
-import { user } from '../../models/user';
+import { layer } from '../../models/neuralnetwork/layer';
+import { optimizerArgs } from '../../models/neuralnetwork/optimizerArgs';
+import { user } from '../../models/general/user';
 import { StorageService } from '../storage/storage.service';
 
 

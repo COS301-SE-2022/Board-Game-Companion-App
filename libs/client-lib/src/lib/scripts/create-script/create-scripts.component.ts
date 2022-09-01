@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter,ViewChild } from '@angular/core';
-import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';

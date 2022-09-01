@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { script, empty } from '../../shared/models/script';
-import { selection } from '../../shared/models/selection';
+import { script, empty } from '../../shared/models/scripts/script';
+import { selection } from '../../shared/models/editor/selection';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';

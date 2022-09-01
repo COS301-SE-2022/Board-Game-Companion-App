@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { user } from '../../models/user';
-import { report } from '../../models/report';
+import { user } from '../../models/general/user';
+import { report } from '../../models/scripts/report';
 
 @Injectable()
 export class ReportService {
