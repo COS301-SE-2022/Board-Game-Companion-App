@@ -2,7 +2,7 @@
     <div class="block p-1 bg-inherit w-full">
         <div class="flex justify-center">
             <div class="w-full">
-              <textarea
+              <textarea (keypress)="onEnter($event)"
                 class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="exampleFormControlTextarea1"
                 rows="3"
@@ -20,3 +20,5 @@
         </div>
     </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

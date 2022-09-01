@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { comment } from '../../shared/models/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { script } from '../../shared/models/script';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'board-game-companion-app-comment-form',
@@ -13,22 +15,32 @@ export class CommentFormComponent implements OnInit {
   @Input()formType = "";
   @Input()width = 0;
   @Output()newComment = new EventEmitter<comment>();
-
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   content = "";
-  name = "Joseph";
-  image = "https://mdbootstrap.com/img/new/standard/city/043.jpg";
   
 
-  constructor(private readonly commentService:CommentService) {}
+  constructor(private readonly commentService:CommentService, private readonly gapi: GoogleAuthService) {}
 
   ngOnInit(): void {
     console.log("comment-form");
   }
 
+  onEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.recordComment();
+    }
+  }
+
   recordComment(): void{
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to comment on the script."});
+      return;
+    }
+
     const formData: FormData = new FormData();
-    formData.append("name",this.name);
-    formData.append("image",this.image);
+    formData.append("name",sessionStorage.getItem("name") as string);
+    formData.append("image",sessionStorage.getItem("img") as string);
     formData.append("content",this.content);
     formData.append("script",this.script);
 

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { rating } from '../../shared/models/rating';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -28,7 +29,9 @@ export class ScriptDetailComponent implements OnInit {
     private readonly boardGameService:BggSearchService,
     private readonly commentService:CommentService,
     private readonly router:Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private readonly gapi: GoogleAuthService
+    ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
       
   }
@@ -45,6 +48,11 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   download(): void{
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to download this script."});
+      return;
+    }
+
     this.downloading = true;
     this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(val)=>{
@@ -124,6 +132,11 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   rateScript(val:number): void{
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to rate the script."});
+      return;
+    }
+
     this.scriptService.rate({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id,val).subscribe({
       next:(val)=>{
         this.getAverageRating();
