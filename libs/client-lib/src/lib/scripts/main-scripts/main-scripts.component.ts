@@ -4,17 +4,29 @@ import { Component, OnInit } from '@angular/core';
   selector: 'board-game-companion-app-main-scripts',
   templateUrl: './main-scripts.component.html',
   styleUrls: ['./main-scripts.component.scss'],
-})
+}) 
 export class MainScriptsComponent implements OnInit {
-  page = "Scripts"; // Default page;
+  page = 0;
+  gridView = true;
+  showControlMenu = false;
 
-  constructor() {}
+  ngOnInit(): void {
+    document.addEventListener('click', (value:MouseEvent) => {
+      const box = document.getElementById('script-control-menu') as HTMLElement;
+      const menu = document.getElementById('control-menu-btn') as HTMLElement;
 
-  ngOnInit(): void {}
+      if(!box.contains(value.target as Node) && !menu.contains(value.target as Node)) {
+        this.showControlMenu = false;
+      }
+    });
+  }
 
-  Tab(page:string) : void
-  {
-    this.page = page;
+  toggleControlMenu(){
+    this.showControlMenu = !this.showControlMenu;
+  }
+
+  tab(value:number) : void{
+    this.page = value;
   }
 
 }
