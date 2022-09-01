@@ -14,13 +14,17 @@ import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
 import { Like, LikeSchema } from './schemas/like.schema';
 import { NeuralNetwork, NeuralNetworkSchema } from './schemas/neural-network.schema';
+import { Report, ReportSchema } from './schemas/report.schema';
 import { S3Service } from './services/aws/s3.service';
 import { CompilerService } from './services/compiler/compiler.service';
 import { ApiModelsController } from './controllers/models/models.controller';
 import { ModelsService } from './services/models/models.service';
+import { ApiReportsController } from './controllers/report/report.controller';
+import { ReportService } from './services/reports/report.service';
 import { HttpModule } from '@nestjs/axios';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { NestjsFormDataModule } from 'nestjs-form-data';
+
 
 @Module({
   imports:[
@@ -29,7 +33,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
                                 { name: Comment.name, schema: CommentSchema},
                                 { name: Rating.name, schema: RatingSchema},
                                 { name: Like.name, schema: LikeSchema},
-                                { name: NeuralNetwork.name, schema: NeuralNetworkSchema}
+                                { name: NeuralNetwork.name, schema: NeuralNetworkSchema},
+                                { name: Report.name, schema: ReportSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
@@ -37,7 +42,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
     CollectionsController,
     ApiScriptController,
     ApiCommentController,
-    ApiModelsController
+    ApiModelsController,
+    ApiReportsController
   ],
   providers: [
     CollectionsService,
@@ -48,7 +54,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
     S3Service,
     CompilerService,
     ModelsService,
-    LocalStorageService
+    LocalStorageService,
+    ReportService
   ],
   exports: [],
 })
