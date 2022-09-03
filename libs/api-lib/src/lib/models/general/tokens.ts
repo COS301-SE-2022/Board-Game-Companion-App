@@ -73,11 +73,16 @@ export const tTrue=(chevrotain.createToken({name:"True",pattern:/true/,longer_al
 
 
 //arithmetic operators
+
+
 export const tPlus=(chevrotain.createToken({name:"Plus",pattern:/\+/}));
 export const tMinus=(chevrotain.createToken({name:"Minus",pattern:/-/,longer_alt:tIntegerLiteral}));
 export const tMultiply=(chevrotain.createToken({name:"Multiply",pattern:/\*/}));
 export const tDivide=(chevrotain.createToken({name:"Divide",pattern:/\\/}));
 export const tMod=(chevrotain.createToken({name:"Mod",pattern:/%/,longer_alt:tUserDefinedIdentifier}));
+
+
+
 
 //logical operators
 export const tAnd=(chevrotain.createToken({name:"And",pattern:/&&/,longer_alt:tUserDefinedIdentifier}));
@@ -173,6 +178,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tGreaterThan,
     tLessThan,
     tAssign,
+    
     tPlus,
     tMinus,
     tMultiply,

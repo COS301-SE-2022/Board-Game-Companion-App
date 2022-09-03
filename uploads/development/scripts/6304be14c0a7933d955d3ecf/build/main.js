@@ -246,7 +246,9 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
-await output( c [ 0 ] ) 
+let arr = [ ] 
+let a = await model( 'AName', arr ) 
+await output( a ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
     Actions = [
