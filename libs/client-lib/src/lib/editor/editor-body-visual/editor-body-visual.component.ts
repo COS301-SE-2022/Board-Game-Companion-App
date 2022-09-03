@@ -28,9 +28,10 @@ export class EditorBodyVisualComponent {
   ]
 
   Players = [
-    {action: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}], turn: [{title: '', class: '' , id: '', pos: 0}]},
-    {action: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}], turn: [{title: '', class: '' , id: '', pos: 0}]}
+    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
+    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
   ]
+
 
   PlayersLoops = [
     this.Player1

@@ -4,8 +4,7 @@
     </div>
     <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Game" [dest] = "Game" [dests] = "GameLoops" [methods] = "methods"></board-game-companion-app-element-template>
 </div>
-<board-game-companion-app-player-template [Action]="Players[0].action" [Condition]="Players[0].condition" [Turn]="Players[0].turn" [PlayerLoops]="PlayersLoops" [methods]="methods"></board-game-companion-app-player-template>
-<board-game-companion-app-player-template [Action]="Players[1].action" [Condition]="Players[1].condition" [Turn]="Players[1].turn" [PlayerLoops]="PlayersLoops" [methods]="methods"></board-game-companion-app-player-template>
+<board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "i" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods"></board-game-companion-app-player-template>
 <div id = "endGame" class = "boardContainers">
     <div class = "title text-2xl font-bold ml-4 mt-2">
         Endgame
