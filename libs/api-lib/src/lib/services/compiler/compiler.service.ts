@@ -380,6 +380,7 @@ export class CompilerService {
         if(tokens.errors.length !== 0){
             result.success = false;
             //result.errors = tokens.errors;
+            console.log(tokens.errors)
         }
 
         return result;
@@ -885,7 +886,7 @@ class parser extends CstParser
                                 this.SUBRULE(this.ForLoopInitialiser )
                                 this.CONSUME(tokensStore.tSemiColon )
                                 this.SUBRULE(this.ForLoopCondition )
-                                this.CONSUME1(tokensStore.tSemiColon )
+                                
                                 this.SUBRULE(this.ForLoopStep )
                                 this.CONSUME1(tokensStore.tCloseBracket )
                                 this.CONSUME1(tokensStore.tOpenBrace )
@@ -922,7 +923,7 @@ class parser extends CstParser
                     
                 });
                 private ForLoopStep=this.RULE("ForLoopStep", () => {
-                    
+                    this.CONSUME1(tokensStore.tSemiColon )
                     this.SUBRULE(this.nVariable)
                     this.SUBRULE(this.Unary_Operator)
                      
@@ -1168,16 +1169,21 @@ class parser extends CstParser
                     { 
                         ALT: () =>{ 
                             this.CONSUME(tokensStore.tMinus)
-                            this.CONSUME1(tokensStore.tMinus)
+                            this.SUBRULE(this.SecondMinus)
                     }},
                     { 
                         ALT: () =>{ 
                             this.CONSUME(tokensStore.tPlus)
-                            this.CONSUME1(tokensStore.tPlus)
+                            this.SUBRULE(this.SecondPlus)
                     }}
             ])
         });
-
+        private SecondPlus=this.RULE("SecondPlus", () => {
+            this.CONSUME1(tokensStore.tPlus)
+        });
+        private SecondMinus=this.RULE("SecondMinus", () => {
+            this.CONSUME1(tokensStore.tMinus)
+        });
         private Binary=this.RULE("Binary", () => {
                         
             this.SUBRULE(this.BinaryOperator)
@@ -1952,7 +1958,10 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                     break;
                 case "Print":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await output', jsScript.slice(jsScript.indexOf(place))].join('');
-                    break;    
+                    break;   
+                case "NeuralNetwork":
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await '+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
+                        break; 
                 case "StringLiteral":
                     if(token.image.includes('\''))
                     {
@@ -1994,11 +2003,35 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
             jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ']', jsScript.slice(jsScript.indexOf(place))].join('');
 
         }
+        else if(node.name == "ForLoopStep")
+        {
+            visitForLoopStep(node,place);
+        }
         else{
             visitPlayerStatements(node,place);
         }
     }
 }
+function visitForLoopStep(cstOutput:CstNode, place:string)
+{
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(node.name)
+            visitForLoopStep(node,place);
+
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image + '', jsScript.slice(jsScript.indexOf(place))].join('');
+                    
+        }
+    }
+}
+
+
 function visitObject(cstOutput:CstNode, place:string)
 {
     

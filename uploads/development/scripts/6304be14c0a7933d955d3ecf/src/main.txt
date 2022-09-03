@@ -63,7 +63,11 @@ player crossAI{
     turn(){
         let c =generateChoices()
         
-        output(c[0])
+        
+        
+        let arr = []
+        let a = model('AName', arr)
+        output(a)
         chooseAction(c[0],this.params[0])
         
         
