@@ -53,44 +53,44 @@ export class ScriptsComponent implements OnInit {
   }
 
   loadAllScripts(): void{
-    this.scriptService.getScriptsCreatedByMe({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
-      next:(value)=>{
-        this.creationStore = value;
-        this.scripts = this.scripts.concat(value);
-      },
-      error:(e)=>{
-        console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
-    });
+    // this.scriptService.getScriptsCreatedByMe({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
+    //   next:(value)=>{
+    //     this.creationStore = value;
+    //     this.scripts = this.scripts.concat(value);
+    //   },
+    //   error:(e)=>{
+    //     console.log(e)
+    //   },
+    //   complete:()=>{
+    //     console.log("complete")
+    //   }          
+    // });
 
-    this.scriptService.getScriptsDownloadedByMe({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
-      next:(value)=>{
-        this.otherScripts = value;
-        this.scripts = this.scripts.concat(value);
-      },
-      error:(e)=>{
-        console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
-    });
+    // this.scriptService.getScriptsDownloadedByMe({name:"Joseph",email:"u18166793@tuks.co.za"}).subscribe({
+    //   next:(value)=>{
+    //     this.otherScripts = value;
+    //     this.scripts = this.scripts.concat(value);
+    //   },
+    //   error:(e)=>{
+    //     console.log(e)
+    //   },
+    //   complete:()=>{
+    //     console.log("complete")
+    //   }          
+    // });
 
-    this.scriptService.getOther({name:sessionStorage.getItem("name") as string,email: sessionStorage.getItem('email') as string}).subscribe({
-      next:(value)=>{
-        this.downloadStore = value;
-        this.scripts = this.scripts.concat(value);
-      },
-      error:(e)=>{
-        console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
-    });
+    // this.scriptService.getOther({name:sessionStorage.getItem("name") as string,email: sessionStorage.getItem('email') as string}).subscribe({
+    //   next:(value)=>{
+    //     this.downloadStore = value;
+    //     this.scripts = this.scripts.concat(value);
+    //   },
+    //   error:(e)=>{
+    //     console.log(e)
+    //   },
+    //   complete:()=>{
+    //     console.log("complete")
+    //   }          
+    // });
   }
   
 

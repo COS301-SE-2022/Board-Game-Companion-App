@@ -24,7 +24,9 @@ import { ReportService } from './services/reports/report.service';
 import { HttpModule } from '@nestjs/axios';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { NestjsFormDataModule } from 'nestjs-form-data';
-
+import { MyScript, MyScriptSchema } from './schemas/my-script.schema';
+import { MyScriptService } from './services/my-script/my-script.service';
+import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
 
 @Module({
   imports:[
@@ -34,7 +36,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
                                 { name: Rating.name, schema: RatingSchema},
                                 { name: Like.name, schema: LikeSchema},
                                 { name: NeuralNetwork.name, schema: NeuralNetworkSchema},
-                                { name: Report.name, schema: ReportSchema}
+                                { name: Report.name, schema: ReportSchema},
+                                { name: MyScript.name, schema: MyScriptSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
@@ -43,7 +46,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
     ApiScriptController,
     ApiCommentController,
     ApiModelsController,
-    ApiReportsController
+    ApiReportsController,
+    ApiMyScriptController
   ],
   providers: [
     CollectionsService,
@@ -55,7 +59,8 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
     CompilerService,
     ModelsService,
     LocalStorageService,
-    ReportService
+    ReportService,
+    MyScriptService
   ],
   exports: [],
 })

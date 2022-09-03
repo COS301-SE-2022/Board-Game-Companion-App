@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { myScript } from '../../shared/models/scripts/my-script';
+import { MyScriptsComponent } from '../my-scripts/my-scripts.component';
 
 @Component({
   selector: 'board-game-companion-app-main-scripts',
@@ -9,6 +11,8 @@ export class MainScriptsComponent implements OnInit {
   page = 0;
   gridView = true;
   showControlMenu = false;
+  searchTerm = "";
+  @ViewChild(MyScriptsComponent,{static:false}) myScripts!: MyScriptsComponent;
 
   ngOnInit(): void {
     document.addEventListener('click', (value:MouseEvent) => {
@@ -27,6 +31,37 @@ export class MainScriptsComponent implements OnInit {
 
   tab(value:number) : void{
     this.page = value;
+    this.gridView = true;
+    
+    switch(value){
+      case 0:{
+
+      }break;
+      case 1:{
+        if(this.myScripts !== undefined)
+          this.myScripts.ngOnInit();
+      }break;
+      case 2:{
+
+      }break;
+    }
+  }
+
+  newScript(value:myScript): void{
+    if(this.myScripts !== undefined)
+      this.myScripts.newScript(value);
+  }
+
+  search(): void{
+    if(this.myScripts !== undefined)
+      this.myScripts.search(this.searchTerm);
+  }
+
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
+    }
   }
 
 }

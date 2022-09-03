@@ -17,5 +17,15 @@ export interface entity{
     endPosition: number;
     properties: attribute[];
     children: entity[];
+}
 
+export const empty:entity = {
+    type: "",
+    name: "",
+    startLine: 0,
+    endLine: 0,
+    startPosition: 0,
+    endPosition: 0,
+    properties: [],
+    children: []
 }

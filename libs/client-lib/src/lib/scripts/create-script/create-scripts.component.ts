@@ -3,6 +3,7 @@ import { script } from '../../shared/models/scripts/script';
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { myScript } from '../../shared/models/scripts/my-script';
 
 
 @Component({
@@ -12,8 +13,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
   
 })
 export class CreateScriptComponent implements OnInit {
-  @Output()newScript = new EventEmitter<script>();
-  maxfiles = 3;
+  @Output()newScript = new EventEmitter<myScript>();
   errorMessage = "";
   warningMessage = "";
   error = false;
@@ -51,7 +51,17 @@ export class CreateScriptComponent implements OnInit {
             if(response.length !== 1)
               this.notifications.add({type:"danger",message:"Could not find board game '" + this.boardgame + "'."});
             else{
-              this.save(response[0].id);
+              this.scriptService.checkName(this.scriptname).subscribe({
+                next:(value:boolean) => {
+                  if(!value)
+                    this.save(response[0].id);
+                  else
+                    this.notifications.add({type:"danger",message:`Script with name ${this.scriptname} already exists.`})
+                },
+                error:() => {
+                  this.notifications.add({type:"danger",message:"Something went wrong when validating the script name.Try create a script later or contact the administrator if the error persists."})
+                }
+              })
             }
           },
           error:(e)=>{
@@ -63,7 +73,17 @@ export class CreateScriptComponent implements OnInit {
         });
 
       }else{
-        this.save(temp);
+        this.scriptService.checkName(this.scriptname).subscribe({
+          next:(value:boolean) => {
+            if(!value)
+              this.save(temp);
+            else
+              this.notifications.add({type:"danger",message:`Script with name ${this.scriptname} already exists.`})
+          },
+          error:() => {
+            this.notifications.add({type:"danger",message:"Something went wrong when validating the script name.Try create a script later or contact the administrator if the error persists."})
+          }
+        })
       } 
     }
   }

@@ -46,9 +46,9 @@ export const empty:script = {
     size: 0,
     comments: [],
     programStructure: {type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
-    source: {name:"",location:"",awsKey:""},
-    build: {name:"",location:"",awsKey:""},
-    icon: {name:"",location:"",awsKey:""},
+    source: {name:"",location:"",key:""},
+    build: {name:"",location:"",key:""},
+    icon: {name:"",location:"",key:""},
     models: [],
     __v: 0,
 }

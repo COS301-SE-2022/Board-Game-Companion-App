@@ -99,6 +99,7 @@
     "mongoose": "^6.3.3",
     "nestjs-form-data": "^1.7.1",
     "ng2-dragula": "^2.1.1",
+    "ngx-online-status": "^2.0.0",
     "ngx-pagination": "^6.0.2",
     "ngx-smart-popover": "^1.5.0",
     "node-fs": "^0.1.7",
