@@ -17,13 +17,16 @@ import { user } from '../../models/general/user';
 import { HttpService } from '@nestjs/axios';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { entity } from '../../models/general/entity';
+import { AutomataService } from '../automata/automata.service';
+import { version } from '../../models/general/version';
 
 @Injectable()
 export class MyScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
     constructor(@InjectModel(MyScript.name) private myScriptModel: Model<MyScriptDocument>,
-    private readonly localStorage: LocalStorageService){
+    private readonly localStorage: LocalStorageService,
+    private readonly automataService: AutomataService){
         
     }
 
@@ -143,5 +146,14 @@ export class MyScriptService {
         
         result.save();
         return result;
+    }
+
+    async release(id:string,version:version):Promise<{success:boolean,message?:string}>{
+        const script = await this.myScriptModel.findById(id);
+
+        if(script === null || script === undefined)
+            return {success: false,message: "Can not find script you are trying to release."};
+        
+        
     }
 }

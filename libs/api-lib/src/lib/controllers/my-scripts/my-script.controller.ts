@@ -40,4 +40,9 @@ export class ApiMyScriptController {
     async update(@Body('id')id:string,@Body('export')exp:boolean,@Body('description')description:string){
         return this.myScriptService.update(id,exp,description);
     }
+
+    @Get('release')
+    async release(@Query('id')id: string,@Query('vMajor')vMajor: number,@Query('vMinor')vMinor: number,@Query('vPatch')vPatch: number):Promise<{success:boolean,message?:string}>{
+        return this.myScriptService.release(id,{major:vMajor,minor:vMinor,patch:vPatch});
+    }
 }

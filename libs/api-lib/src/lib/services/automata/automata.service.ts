@@ -5,7 +5,7 @@ import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-s
 import { user } from '../../models/general/user';
 
 @Injectable()
-export class RatingService {
+export class AutomataService {
     constructor(@InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument> ){}
 
     async getAll():Promise<AutomataScript[]>{
