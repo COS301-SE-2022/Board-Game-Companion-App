@@ -27,7 +27,7 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
 import { MyScript, MyScriptSchema } from './schemas/my-script.schema';
 import { MyScriptService } from './services/my-script/my-script.service';
 import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
-
+import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.schema';
 @Module({
   imports:[
     MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
@@ -37,7 +37,8 @@ import { ApiMyScriptController } from './controllers/my-scripts/my-script.contro
                                 { name: Like.name, schema: LikeSchema},
                                 { name: NeuralNetwork.name, schema: NeuralNetworkSchema},
                                 { name: Report.name, schema: ReportSchema},
-                                { name: MyScript.name, schema: MyScriptSchema}
+                                { name: MyScript.name, schema: MyScriptSchema},
+                                { name: AutomataScript.name, schema: AutomataScriptSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
