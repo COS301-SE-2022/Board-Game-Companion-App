@@ -8,7 +8,7 @@ export type NeuralNetworkDocument = NeuralNetwork & Document;
 @Schema()
 export class NeuralNetwork{
     @Prop({required:true,type:{name:"",email:""}})
-    user: user;
+    creator: user;
 
     @Prop({required: true})
     name: string;
@@ -39,6 +39,9 @@ export class NeuralNetwork{
 
     @Prop({required:true,type:{name:"",key:"",location:""}})
     weights: file;
+
+    @Prop({required:true})
+    discriminator: NeuralNetworkDiscriminator
 }
 
 export const NeuralNetworkSchema = SchemaFactory.createForClass(NeuralNetwork);

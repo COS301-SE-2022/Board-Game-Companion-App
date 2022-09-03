@@ -3,7 +3,7 @@ import { user } from '../general/user';
 
 
 export interface neuralnetworkDto{
-    user: user;
+    creator: user;
     name: string;
     created: Date;
     accuracy: number;
@@ -14,4 +14,5 @@ export interface neuralnetworkDto{
     max: number[];
     model: file;
     weights: file;
+    discriminator: NeuralNetworkDiscriminator
 }

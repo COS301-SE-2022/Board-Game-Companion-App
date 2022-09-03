@@ -28,6 +28,8 @@ import { MyScript, MyScriptSchema } from './schemas/my-script.schema';
 import { MyScriptService } from './services/my-script/my-script.service';
 import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
 import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.schema';
+import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
+
 @Module({
   imports:[
     MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
@@ -38,7 +40,8 @@ import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.
                                 { name: NeuralNetwork.name, schema: NeuralNetworkSchema},
                                 { name: Report.name, schema: ReportSchema},
                                 { name: MyScript.name, schema: MyScriptSchema},
-                                { name: AutomataScript.name, schema: AutomataScriptSchema}
+                                { name: AutomataScript.name, schema: AutomataScriptSchema},
+                                { name: OldScript.name, schema: OldScriptSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
