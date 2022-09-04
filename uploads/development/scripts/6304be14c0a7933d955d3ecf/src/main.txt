@@ -62,11 +62,32 @@ player crossAI{
     
     turn(){
         let c =generateChoices()
-        
-        
-        
         let arr = []
-        let a = model('AName', arr)
+        for(let i = 1;i<10;i++)
+        {
+            let b = getTileByID(''+i)
+            let j = i - 1
+            if(b.pieces.length == 0)
+            {
+                arr[j] = 0
+            }
+            else
+            {
+                if (b.pieces[0].Id=='o')
+                {
+                    arr[j]=1
+                }
+                else
+                {
+                    arr[j]=-1
+                }
+                
+            }
+           
+        }
+        
+        
+        let a = model('Test', arr)
         output(a)
         chooseAction(c[0],this.params[0])
         

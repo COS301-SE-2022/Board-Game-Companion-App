@@ -247,7 +247,20 @@ break
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
 let arr = [ ] 
-let a = await model( 'AName', arr ) 
+for ( let i = 1 ; i < 10 ;i++) { 
+let b = await this.State.getTileByID(''+i)
+let j = i - 1 
+if ( b . pieces . length == 0 ) { 
+arr [ j ] = 0 
+} else { 
+if ( b . pieces [ 0 ] . Id == 'o') { 
+arr [ j ] = 1 
+} else { 
+arr [ j ] = -1 
+} 
+} 
+} 
+let a = await model( 'Test', arr ) 
 await output( a ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
