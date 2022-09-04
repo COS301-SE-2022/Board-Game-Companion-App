@@ -15,6 +15,8 @@ import { InputInterfaceComponent } from './components/input-interface/input-inte
 import { StorageService } from './services/storage/storage.service';
 import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
 import { DownloadsService } from './services/downloads/downloads.service';
+import { ReportService } from './services/reports/report.service';
+import { EditorService } from './services/editor/editor.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { DownloadsService } from './services/downloads/downloads.service';
     CommentService,
     ModelsService,
     StorageService,
-    DownloadsService
+    DownloadsService,
+    ReportService,
+    EditorService
   ],
   exports: [
     HeaderComponent,

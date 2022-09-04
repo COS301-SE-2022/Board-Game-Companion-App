@@ -41,8 +41,12 @@ export class RatingService {
 
         const temp:any = await this.ratingModel.aggregate([{$match:{script:id}},{$group: {_id: '$script',sum: { $sum: "$value"}}}]);
         const count: number = await this.countRating(script);
+        
+        let result = 0;
+        if(temp.length > 0)
+            result = Math.floor(temp[0].sum / count);
 
-        return Math.floor(temp[0].sum / count);
+        return result;
     }
 
     async countRating(script:string):Promise<number>{

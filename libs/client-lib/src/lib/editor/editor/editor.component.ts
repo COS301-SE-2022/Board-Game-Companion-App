@@ -1,21 +1,21 @@
-import { Component, OnInit, HostListener, ViewChild, ViewContainerRef ,ComponentFactoryResolver} from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild} from '@angular/core';
 import { EditorBodyComponent } from '../editor-body/editor-body.component';
 import { EditorConsoleComponent } from '../editor-console/editor-console.component';
 import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar.component';
-import { empty, script } from '../../shared/models/script';
-import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
-import { find } from '../../shared/models/find';
-import { replace } from '../../shared/models/replace';
+import { find } from '../../shared/models/editor/find';
+import { replace } from '../../shared/models/editor/replace';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
-import { inputParameters } from '../../shared/models/inputParameters';
-import { entity } from '../../shared/models/entity';
-import { selection } from '../../shared/models/selection';
+import { inputParameters } from '../../shared/models/scripts/inputParameters';
+import { entity } from '../../shared/models/editor/entity';
+import { selection } from '../../shared/models/editor/selection';
 import { Ace } from 'ace-builds';
 import { DragulaService } from 'ng2-dragula';
 import { StorageService } from '../../shared/services/storage/storage.service';
+import { myScript } from '../../shared/models/scripts/my-script';
+import { EditorService } from '../../shared/services/editor/editor.service';
 
 interface message{
   message: string;
@@ -39,12 +39,12 @@ export class EditorComponent implements OnInit{
   bodyHeight = 0;
   bodyWidth = 0;
   messages:message[] = [];
-  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.scriptService, this.dragulaService);
+  @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.editorService, this.dragulaService);
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
-  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.scriptService, this.dragulaService);
+  @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.editorService, this.dragulaService);
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
-  currentScript:script = empty;
+  currentScript!:myScript;
   location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
   showInput = false;
   showOutput = false;
@@ -59,7 +59,7 @@ export class EditorComponent implements OnInit{
   count = 0;
 
 
-  constructor(private readonly scriptService:ScriptService,
+  constructor(private readonly editorService:EditorService,
               private router: Router,
               public dragulaService: DragulaService,
               private readonly storageService: StorageService){
@@ -148,7 +148,7 @@ export class EditorComponent implements OnInit{
     },250);
   }
 
-  updateScript(value:script): void{
+  updateScript(value:myScript): void{
     this.currentScript = value;
   }
 
@@ -303,7 +303,7 @@ export class EditorComponent implements OnInit{
     try{
       this.editorConsole.clear();
 
-      this.scriptService.getFileData(this.currentScript.build.location).subscribe({
+      this.editorService.getFileData(this.currentScript.build.location).subscribe({
         next:(value)=>{
           console.log(value)
           this.interpreter(value);

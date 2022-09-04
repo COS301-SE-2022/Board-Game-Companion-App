@@ -1,7 +1,7 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Rating} from '../../schemas/rating.schema';
-import { RatingService } from './rating.service';
+import { RatingService } from '../../services/ratings/rating.service';
 
 describe('RatingService', () => {
   let service: RatingService;

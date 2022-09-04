@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { Ace } from 'ace-builds';
-import { entity } from '../../shared/models/entity';
-import { selection } from '../../shared/models/selection';
+import { entity } from '../../shared/models/editor/entity';
+import { selection } from '../../shared/models/editor/selection';
 
 @Component({
   selector: 'board-game-companion-app-editor-entity',

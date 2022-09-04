@@ -7,7 +7,7 @@ import { AdminComponent } from './admin.component';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { of } from 'rxjs';
-import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { FormsModule } from '@angular/forms';
 
 describe('AdminComponent', () => {

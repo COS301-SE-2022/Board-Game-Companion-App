@@ -2,9 +2,9 @@ import { Component, EventEmitter, OnInit,Output, ViewChild } from '@angular/core
 import { ModelsService } from '../../shared/services/models/models.service';
 import * as tf from '@tensorflow/tfjs'
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-import { modelData } from '../../shared/models/modelData';
+import { modelData } from '../../shared/models/neuralnetwork/modelData';
 import { StorageService } from '../../shared/services/storage/storage.service';
-import { user } from '../../shared/models/user';
+import { user } from '../../shared/models/general/user';
 
 @Component({
   selector: 'board-game-companion-app-upload',

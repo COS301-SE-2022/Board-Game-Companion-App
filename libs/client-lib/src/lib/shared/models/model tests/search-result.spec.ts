@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { SearchResult } from '../search-result';
+import { SearchResult } from '../general/search-result';
 describe('search result model test',()=>{
     let model: SearchResult;
     beforeEach(async () => {

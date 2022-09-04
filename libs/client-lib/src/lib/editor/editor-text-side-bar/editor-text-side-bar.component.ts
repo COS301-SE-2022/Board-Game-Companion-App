@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { script, empty } from '../../shared/models/script';
-import { selection } from '../../shared/models/selection';
+import { script, empty } from '../../shared/models/scripts/script';
+import { selection } from '../../shared/models/editor/selection';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import * as tf from '@tensorflow/tfjs'
+import { myScript } from '../../shared/models/scripts/my-script';
 
 @Component({
   selector: 'board-game-companion-app-editor-text-side-bar',
@@ -15,7 +16,7 @@ export class EditorTextSideBarComponent implements OnInit,OnChanges{
   showEntities = true;
   showModels = false;
   models:string[] = [];
-  @Input() current:script = empty;
+  @Input() current!:myScript;
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();

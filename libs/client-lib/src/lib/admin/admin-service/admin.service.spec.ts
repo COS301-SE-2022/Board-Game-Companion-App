@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { AdminService } from './admin.service';
 
 const mockData: script[] = [{

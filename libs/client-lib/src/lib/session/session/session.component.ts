@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { disableDebugTools } from '@angular/platform-browser';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
-import { fetchSessionResults } from '../../shared/models/fetch-session-results';
+import { fetchSessionResults } from '../../shared/models/sessions/fetch-session-results';
 
 @Component({
   selector: 'board-game-companion-app-session',

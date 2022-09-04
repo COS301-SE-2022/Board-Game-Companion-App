@@ -1,11 +1,14 @@
 import { Injectable, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { script } from '../../models/script';
-import { rating } from '../../models/rating';
-import { user } from '../../models/user';
+import { script } from '../../models/scripts/script';
+import { rating } from '../../models/scripts/rating';
+import { user } from '../../models/general/user';
 import { User } from 'aws-sdk/clients/budgets';
-import { entity } from '../../models/entity';
+import { entity } from '../../models/editor/entity';
+import { myScript } from '../../models/scripts/my-script';
+import { version } from '../../models/scripts/version';
+import { automataScript } from '../../models/scripts/automata-script';
 
 
 @Injectable()
@@ -41,20 +44,47 @@ export class ScriptService {
     return this.httpClient.get<script>(this.api + "scripts/retrieve/byid",{params:param});
   }
 
-  saveScript(formData:FormData):Observable<script>{
-    return this.httpClient.post<script>(this.api + "scripts/create-script",formData);
+  checkName(name:string):Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+
+    return this.httpClient.get<boolean>(this.api + "my-scripts/check-name",{params:param});
+  }
+
+  saveScript(formData:FormData):Observable<myScript>{
+    return this.httpClient.post<myScript>(this.api + "my-scripts/create-script",formData);
   }
 
   download(id:string,owner:user):Observable<{status:string,message:string,script:script}>{
     return this.httpClient.post<{status:string,message:string,script:script}>(this.api + "scripts/download",{id:id,owner:owner});
   }
 
-  getScriptsCreatedByMe(owner:user):Observable<script[]>{
+  getScriptsCreatedByMe():Observable<myScript[]>{
     let param = new HttpParams();
-    param = param.set("ownerName",owner.name);
-    param = param.set("ownerEmail",owner.email);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
 
-    return this.httpClient.get<script[]>(this.api + "scripts/retrieve/createdByMe",{params:param});
+    return this.httpClient.get<myScript[]>(this.api + "my-scripts/all-my-script",{params:param});
+  }
+
+  update(id:string,exp:boolean,description:string): Observable<myScript>{
+    return this.httpClient.put<myScript>(this.api + "my-scripts/update",{id:id,export:exp,description:description});
+  }
+
+  release(id:string,version:version): Observable<{success:boolean,message?:string,content?:automataScript}>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    param = param.set("vMajor",version.major);
+    param = param.set("vMinor",version.minor);
+    param = param.set("vPatch",version.patch);
+
+    return this.httpClient.get<{success:boolean,message?:string,content?:automataScript}>(this.api + "my-scripts/release",{params:param});
+  }
+
+  getAutomataScripts():Observable<automataScript[]>{
+    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retreive-all");
   }
 
   getScriptsDownloadedByMe(owner:user):Observable<script[]>{
@@ -74,7 +104,7 @@ export class ScriptService {
   }
 
   addComment(scriptId:string,commentId:string):void{
-    this.httpClient.put(this.api + "scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
+    this.httpClient.put(this.api + "automata-scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
   }
 
   removeScript(id:string):Observable<void>{
@@ -102,7 +132,7 @@ export class ScriptService {
   }
 
   rate(user:user,script:string,value:number):Observable<rating>{
-    return this.httpClient.post<rating>(this.api + "scripts/rate",{user:user,script:script,value:value});
+    return this.httpClient.post<rating>(this.api + "automata-scripts/rate",{user:user,script:script,value:value});
   }
 
   getRating(user:user,script:string):Observable<rating>{
@@ -111,21 +141,21 @@ export class ScriptService {
     param = param.set("userEmail",user.email);
     param = param.set("script",script);
     
-    return this.httpClient.get<rating>(this.api + "scripts/retrieve-rating",{params:param});
+    return this.httpClient.get<rating>(this.api + "automata-scripts/retrieve-rating",{params:param});
   }
 
   countRating(script:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("script",script);
 
-    return this.httpClient.get<number>(this.api + "scripts/count-rating",{params:param});
+    return this.httpClient.get<number>(this.api + "automata-scripts/count-rating",{params:param});
   }
 
   averageRating(script:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("script",script);
 
-    return this.httpClient.get<number>(this.api + "scripts/average-rating",{params:param});
+    return this.httpClient.get<number>(this.api + "automata-scripts/average-rating",{params:param});
   }
 
   updateScriptModels(script:string,networks:string[]):Observable<script>{

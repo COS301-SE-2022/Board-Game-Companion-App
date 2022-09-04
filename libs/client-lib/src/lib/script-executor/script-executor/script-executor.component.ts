@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
-import { script } from '../../shared/models/script';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
+import { script } from '../../shared/models/scripts/script';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
 import * as tf from '@tensorflow/tfjs'
+import { entity } from '../../shared/models/editor/entity';
+import { inputParameters } from '../../shared/models/scripts/inputParameters';
 @Component({
   selector: 'board-game-companion-app-script-executor',
   templateUrl: './script-executor.component.html',
@@ -22,6 +24,19 @@ export class ScriptExecutorComponent implements OnInit {
   s = 0;
   sec = "sec";
   gameName = ""
+  showInput = false;
+  showOutput = false;
+  inputBlock = false;
+  outputBlock = false;
+  inputResult:any[] = [];
+  parameters:inputParameters[] = [];
+  outputMessage = "";
+  statusMessages:string[] = [];
+  warningMessages:string[] = [];
+  programStructure!:entity;
+  count = 0;
+
+
 
   constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
@@ -89,7 +104,7 @@ export class ScriptExecutorComponent implements OnInit {
       localStorage.setItem(name, JSON.stringify(session))
     }
 
-    this.router.navigate(['scripts']);
+    //this.router.navigate(['scripts']);
   }
   
   ngOnInit(): void {
@@ -109,8 +124,9 @@ export class ScriptExecutorComponent implements OnInit {
 
       this.scriptService.getFileData(this.current.build.location).subscribe({
         next:(val)=>{
+          
            this.code = val;
-           this.play();       
+           this.interpreter(val);  
         },
         error:(e)=>{
           console.log(e)
@@ -179,5 +195,119 @@ export class ScriptExecutorComponent implements OnInit {
     code(model);
     this.replay = true;
   }
+  output(){
+    return (async(value:string) => {
+      this.outputBlock = true;
+      this.showOutput = true;
+      this.outputMessage = value;
+      
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.outputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+    })
+  }
 
+  input(){
+    
+    return (async(prompt:string,type:string,options?:string[])=>{
+      this.inputBlock = true;
+      this.showInput = true;
+      this.parameters = [{
+        prompt:prompt,
+        type:type,
+        options:options
+      }]
+      
+      console.log(prompt)
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult[0];
+    })
+  }
+
+
+  inputGroup(){
+    return (async(parameters:inputParameters[])=>{
+      console.log(parameters);
+      
+      this.inputBlock = true;
+      this.showInput = true;
+      this.parameters = parameters;
+  
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult;
+    })
+  }
+
+  submitInput(value:any[]): void{
+    this.inputResult = value;
+    this.showInput = false;
+    this.inputBlock = false;
+  }
+
+  okayOutput(): void{
+    this.showOutput = false;
+    this.outputBlock = false;
+  }
+  async getSandBox():Promise<any>{
+    return {
+      
+      model: await this.neuralnetworks(),
+      input: this.input(),
+      inputGroup: this.inputGroup(),
+      output: this.output()
+    }
+  }
+
+  async interpreter(source:string){
+    const strCode = 'with (sandbox) { ' + source + '}';
+    const code = new Function('sandbox', strCode);
+    const sandbox = await this.getSandBox();
+
+    const proxy = new Proxy(sandbox,{
+      has:(target:any,key:any)=>{
+        return true;
+      },
+      get:(target:any,key:symbol)=>{
+        if(target[key] === undefined && key != Symbol.unscopables){
+          if(Object.keys(window).includes(String(key)) || String(key) === "document"){
+            this.warningMessages.push("Access to " + String(key) + " is not allowed.");
+          }
+          console.log(key)
+          return ()=>{return "Access to " + String(key) + " is not allowed."};
+        }
+
+        return target[key];            
+      }     
+    })
+
+    this.warningMessages = [];
+    code(proxy);
+  }
 }
