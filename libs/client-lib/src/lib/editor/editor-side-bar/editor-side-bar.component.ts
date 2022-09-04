@@ -5,6 +5,7 @@ import { script, empty } from '../../shared/models/scripts/script';
 import { selection } from '../../shared/models/editor/selection';
 import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
 import { EditorVisualsComponent } from '../editor-visual-side-bar/editor-visual-side-bar.component';
+import { myScript } from '../../shared/models/scripts/my-script';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -16,7 +17,7 @@ export class EditorSideBarComponent implements OnInit{
   @Input() VDSL = false;
   @Input() height = 0;
   @Input() width = 0;
-  @Input() current:script = empty;
+  @Input() current!:myScript;
   @Output() resizeEvent = new EventEmitter<number>();
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();

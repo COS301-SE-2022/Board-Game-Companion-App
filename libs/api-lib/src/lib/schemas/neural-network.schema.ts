@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
 import { user } from '../models/general/user';
-
+import { NeuralNetworkDiscriminator } from '../models/general/modelDiscriminator';
 export type NeuralNetworkDocument = NeuralNetwork & Document;
 
 @Schema()
@@ -41,7 +41,7 @@ export class NeuralNetwork{
     weights: file;
 
     @Prop({required:true})
-    discriminator: NeuralNetworkDiscriminator
+    discriminator: number
 }
 
 export const NeuralNetworkSchema = SchemaFactory.createForClass(NeuralNetwork);

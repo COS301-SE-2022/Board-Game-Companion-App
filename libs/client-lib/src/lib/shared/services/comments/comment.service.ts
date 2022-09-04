@@ -24,7 +24,8 @@ export class CommentService {
 
   saveComment(formData:FormData):Observable<comment>{
     const data = {
-      user: formData.get("user"),
+      userName: formData.get("userName"),
+      userEmail: formData.get("userEmail"),
       image: formData.get("image"),
       content: formData.get("content"),
       script: formData.get("script")

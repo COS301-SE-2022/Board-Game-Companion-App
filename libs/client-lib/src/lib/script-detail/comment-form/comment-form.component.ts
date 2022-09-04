@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { comment } from '../../shared/models/comments/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
-import { script } from '../../shared/models/scripts/script';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 
 @Component({
   selector: 'board-game-companion-app-comment-form',
@@ -17,9 +17,15 @@ export class CommentFormComponent implements OnInit {
   @Output()newComment = new EventEmitter<comment>();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   content = "";
-  
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
 
-  constructor(private readonly commentService:CommentService, private readonly gapi: GoogleAuthService) {}
+  constructor(private readonly commentService:CommentService,
+              private readonly gapi: GoogleAuthService,
+              private networkService: OnlineStatusService) {
+                this.networkService.status.subscribe((status: OnlineStatusType) =>{
+                  this.status = status;
+                });
+              }
 
   ngOnInit(): void {
     console.log("comment-form");
@@ -33,13 +39,19 @@ export class CommentFormComponent implements OnInit {
   }
 
   recordComment(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:"You must be online to add a comment."});
+      return;
+    }
+
     if(!this.gapi.isLoggedIn()){
       this.notifications.add({type:"primary",message:"You must be logged In to comment on the script."});
       return;
     }
 
     const formData: FormData = new FormData();
-    formData.append("name",sessionStorage.getItem("name") as string);
+    formData.append("userName",sessionStorage.getItem("name") as string);
+    formData.append("userEmail",sessionStorage.getItem("email") as string);
     formData.append("image",sessionStorage.getItem("img") as string);
     formData.append("content",this.content);
     formData.append("script",this.script);

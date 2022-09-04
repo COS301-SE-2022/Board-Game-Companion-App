@@ -13,6 +13,7 @@ import { DownloadsPageComponent } from './downloads-page/downloads-page.componen
 import { MyScriptsComponent } from './my-scripts/my-scripts.component'
 import { MainScriptsComponent } from './main-scripts/main-scripts.component';
 import { OnlineStatusModule } from 'ngx-online-status';
+import { AutomataScriptComponent } from './automata-scripts/automata-scripts.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { OnlineStatusModule } from 'ngx-online-status';
     DownloadsPageComponent,
     MyScriptsComponent,
     MainScriptsComponent,
+    AutomataScriptComponent
   ],
   imports: [
     NbContextMenuModule,

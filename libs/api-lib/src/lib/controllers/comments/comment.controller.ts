@@ -11,8 +11,8 @@ export class ApiCommentController {
     constructor(private readonly commentService:CommentService){}
     
     @Post('create-comment')
-    async createComment(@Body('user')user:user,@Body('image')image:string,@Body('script')script:string,@Body('content')content:string): Promise<Comment>{ 
-        return this.commentService.createComment(user,image,script,content);
+    async createComment(@Body('userName')userName:string,@Body('userEmail')userEmail:string,@Body('image')image:string,@Body('script')script:string,@Body('content')content:string): Promise<Comment>{ 
+        return this.commentService.createComment({name:userName,email:userEmail},image,script,content);
     }
 
     @Get('retrieve-all')

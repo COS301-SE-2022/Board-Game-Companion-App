@@ -16,6 +16,7 @@ import { StorageService } from './services/storage/storage.service';
 import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
 import { DownloadsService } from './services/downloads/downloads.service';
 import { ReportService } from './services/reports/report.service';
+import { EditorService } from './services/editor/editor.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ReportService } from './services/reports/report.service';
     ModelsService,
     StorageService,
     DownloadsService,
-    ReportService
+    ReportService,
+    EditorService
   ],
   exports: [
     HeaderComponent,

@@ -2,7 +2,6 @@ import { baseScript } from './base-script';
 import { file } from '../general/file';
 import { status as stat} from '../general/status';
 import { entity,empty } from '../editor/entity';
-import { user } from '../general/user';
 
 export class myScript extends baseScript{
     _id = "";

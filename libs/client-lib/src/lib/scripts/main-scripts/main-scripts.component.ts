@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { myScript } from '../../shared/models/scripts/my-script';
+import { AutomataScriptComponent } from '../automata-scripts/automata-scripts.component';
 import { MyScriptsComponent } from '../my-scripts/my-scripts.component';
 
 @Component({
@@ -13,9 +14,12 @@ export class MainScriptsComponent implements OnInit {
   showControlMenu = false;
   searchTerm = "";
   @ViewChild(MyScriptsComponent,{static:false}) myScripts!: MyScriptsComponent;
+  @ViewChild(AutomataScriptComponent,{static:false}) automataScripts!: AutomataScriptComponent;
 
+  constructor(private elementRef:ElementRef){}
+  
   ngOnInit(): void {
-    document.addEventListener('click', (value:MouseEvent) => {
+    this.elementRef.nativeElement.addEventListener('click', (value:MouseEvent) => {
       const box = document.getElementById('script-control-menu') as HTMLElement;
       const menu = document.getElementById('control-menu-btn') as HTMLElement;
 
@@ -42,7 +46,8 @@ export class MainScriptsComponent implements OnInit {
           this.myScripts.ngOnInit();
       }break;
       case 2:{
-
+        if(this.automataScripts !== undefined)
+          this.automataScripts.ngOnInit();
       }break;
     }
   }
@@ -53,8 +58,19 @@ export class MainScriptsComponent implements OnInit {
   }
 
   search(): void{
-    if(this.myScripts !== undefined)
-      this.myScripts.search(this.searchTerm);
+    switch(this.page){
+      case 0:{
+
+      }break;
+      case 1:{
+        if(this.myScripts !== undefined)
+          this.myScripts.search(this.searchTerm);
+      }break;
+      case 2:{
+        if(this.automataScripts !== undefined)
+          this.automataScripts.search(this.searchTerm);
+      }break;
+    }
   }
 
   checkSearchOnEnter(value:any): void{

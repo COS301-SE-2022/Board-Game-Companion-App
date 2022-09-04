@@ -21,6 +21,7 @@ import { automataScriptDto } from '../../models/dto/automataScriptDto';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { ModelsService } from '../models/models.service';
 import { oldScriptDto } from '../../models/dto/oldScriptDto';
+import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 
 @Injectable()
 export class MyScriptService {
@@ -28,7 +29,7 @@ export class MyScriptService {
     
     constructor(@InjectModel(MyScript.name) private myScriptModel: Model<MyScriptDocument>,
                 @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
-                private readonly oldScriptModel: Model<OldScriptDocument>,
+                @InjectModel(OldScript.name) private oldScriptModel: Model<OldScriptDocument>,
                 private readonly localStorage: LocalStorageService,
                 private readonly automataService: AutomataService,
                 private readonly modelService: ModelsService){
@@ -61,10 +62,11 @@ export class MyScriptService {
         
         result.source = await this.createSourceFile(result._id);
         result.build = await this.createBuildFile(result._id);
-        result.size = await fileSize(result.build.location).catch(console.error);
         const savedIcon = await this.storeIcon(result._id,icon);
         result.icon = {name: icon.originalname,location:savedIcon.location,key:savedIcon.key};
-
+        result.size = await fileSize(result.build.location).catch(console.error);
+        result.size += await fileSize(result.icon.location).catch(console.error);
+        
         result.save();
 
         return result;
@@ -171,9 +173,29 @@ export class MyScriptService {
         return result;
     }
 
-    async relegate(script: AutomataScript): Promise<void>{
+    async relegate(script: AutomataScriptDocument): Promise<void>{
         //this.oldScriptModel
-        const dto:oldScriptDto = script;
+        const dto:oldScriptDto = {
+            name: script.name,
+            author: script.author,
+            boardgame: script.boardgame,
+            downloads: script.downloads,
+            size: script.size,
+            comments: script.comments,
+            description: script.description,
+            version: {
+                major: script.version.major,
+                minor: script.version.minor,
+                patch: script.version.patch
+            },
+            dateReleased: script.dateReleased,
+            lastDownload: script.lastDownload,
+            export: script.export,
+            models: [],
+            source: {name: "", key: "",location: ""},
+            build: {name: "", key: "", location: ""},
+            icon: {name: "", key: "", location: ""}
+        };
 
         const createdScript = new this.oldScriptModel(dto);
         const result:OldScriptDocument =  await createdScript.save();
@@ -188,7 +210,7 @@ export class MyScriptService {
 
         const buildCopy = this.localStorage.copy(script.build.key,"scripts/old-scripts/" + result._id + "/build/",script.build.name);
         
-        result.source = {
+        result.build = {
             name: script.build.name,
             location: buildCopy.location,
             key: buildCopy.key
@@ -203,22 +225,24 @@ export class MyScriptService {
 
         for(let count = 0; count < script.models.length; count++){
             const value = script.models[count];
-            const modelCopy = await this.modelService.copyModel(value,NeuralNetworkDiscriminator.AutomataScript);
+            const modelCopy = await this.modelService.copyModel(value,NeuralNetworkDiscriminator.OldScript);
             
             if(modelCopy !== "")
                 result.models.push(modelCopy);
         }
 
+        this.automataService.remove(script._id);
+
         await result.save();
     }
 
-    async release(id:string,version:version):Promise<{success:boolean,message?:string}>{
+    async release(id:string,version:version):Promise<{success:boolean,message?:string,content?:AutomataScript}>{
         const script = await this.myScriptModel.findById(id);
 
         if(script === null || script === undefined)
             return {success: false,message: "Can not find script you are trying to release."};
         
-        const current = await this.automataService.getAutomataScript(script.name,script.author);
+        const current:AutomataScriptDocument = await this.automataService.getAutomataScript(script.name,script.author);
 
         if(current !== null && current !== undefined){
             this.relegate(current);
@@ -256,7 +280,7 @@ export class MyScriptService {
 
         const buildCopy = this.localStorage.copy(script.build.key,"scripts/automata-scripts/" + result._id + "/build/",script.build.name);
         
-        result.source = {
+        result.build = {
             name: script.build.name,
             location: buildCopy.location,
             key: buildCopy.key
@@ -277,8 +301,15 @@ export class MyScriptService {
                 result.models.push(modelCopy);
         }
 
+        script.status.value = 2;
+
+        script.version.major = version.major;
+        script.version.minor = version.minor;
+        script.version.patch = version.patch;
+
+        await script.save();
         await result.save();
 
-        return {success: true};
+        return {success: true,content:result};
     }
 }

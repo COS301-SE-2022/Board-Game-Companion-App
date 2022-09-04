@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-import { empty, script } from '../../shared/models/scripts/script';
+import { myScript } from '../../shared/models/scripts/my-script';
 import { ModelsService } from '../../shared/services/models/models.service';
-import { ScriptService } from '../../shared/services/scripts/script.service';
+import { EditorService } from '../../shared/services/editor/editor.service';
 
 @Component({
   selector: 'board-game-companion-app-editor-models',
@@ -12,17 +12,17 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 export class EditorModelsComponent implements OnInit{
   networks:any = [];
   scriptNetworks:any = [];
-  @Input()current:script = empty;
-  @Output()updateScriptModelsEvent = new EventEmitter<script>();
+  @Input()current!:myScript;
+  @Output()updateScriptModelsEvent = new EventEmitter<myScript>();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
-  constructor(private readonly modelsService:ModelsService,private readonly scriptService:ScriptService){}
+  constructor(private readonly modelsService:ModelsService,private readonly editorService:EditorService){}
 
   save(){
     const temp = this.scriptNetworks.map((value:any) => value._id);
 
-    this.scriptService.updateScriptModels(this.current._id,temp).subscribe({
-      next:(value:script) => {
+    this.editorService.updateScriptModels(this.current._id,temp).subscribe({
+      next:(value:myScript) => {
         this.current = value;
         this.updateScriptModelsEvent.emit(value);
         this.notifications.add({type:'success',message:'Successfully updated the neural network models the script is able to access.'});

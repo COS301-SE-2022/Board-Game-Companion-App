@@ -82,8 +82,8 @@
                             <textarea [(ngModel)]="value.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea>
                         </div>
                         <div class = "col-sm-12 items-center justify-end space-x-2">
-                            <button data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
-                                <i class="fas fa-rocket"></i>
+                            <button *ngIf = "value.status.value === 1" data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>
                             </button>
                             <button (click) = "update(value)" data-toggle="tooltip" title="update"  id = "save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
                                 <i class="fas fa-cog" [ngClass] = "{'fa-spin':updates.includes(value._id)}"></i>
@@ -132,7 +132,7 @@
                 <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
                     <i class="fa-solid fa-rectangle-xmark"></i>
                 </button>
-                <button data-toggle="tooltip" title="release" (click)="release()" id = "save-theme" class = "ml-2 script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
+                <button  data-bs-dismiss="modal" data-toggle="tooltip" title="release" (click)="release(currentRelease)" id = "save-theme" class = "ml-2 script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
                     <i class="fas fa-rocket"></i>
                 </button>
             </div>

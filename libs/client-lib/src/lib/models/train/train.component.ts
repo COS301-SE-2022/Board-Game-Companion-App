@@ -20,7 +20,7 @@ export class TrainComponent implements OnInit{
   @Output()trainEvent = new EventEmitter<modelData>();
   @ViewChild(LoadDataComponent,{static:false}) dataLoader: LoadDataComponent = new LoadDataComponent(this.storageService);
   @ViewChild(ArchitectureComponent,{static:false}) architectureSetup: ArchitectureComponent = new ArchitectureComponent();
-  @ViewChild(ConfigureComponent,{static:false}) configuration: ConfigureComponent = new ConfigureComponent(this.modelsService);
+  @ViewChild(ConfigureComponent,{static:false}) configuration!: ConfigureComponent;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   enableArchitecture = false;
   enableConfigure = false;

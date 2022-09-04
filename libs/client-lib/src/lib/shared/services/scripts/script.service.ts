@@ -8,6 +8,7 @@ import { User } from 'aws-sdk/clients/budgets';
 import { entity } from '../../models/editor/entity';
 import { myScript } from '../../models/scripts/my-script';
 import { version } from '../../models/scripts/version';
+import { automataScript } from '../../models/scripts/automata-script';
 
 
 @Injectable()
@@ -72,14 +73,18 @@ export class ScriptService {
     return this.httpClient.put<myScript>(this.api + "my-scripts/update",{id:id,export:exp,description:description});
   }
 
-  release(id:string,version:version): Observable<myScript>{
+  release(id:string,version:version): Observable<{success:boolean,message?:string,content?:automataScript}>{
     let param = new HttpParams();
     param = param.set("id",id);
     param = param.set("vMajor",version.major);
     param = param.set("vMinor",version.minor);
     param = param.set("vPatch",version.patch);
 
-    return this.httpClient.get<myScript>(this.api + "my-scripts/release",{params:param});
+    return this.httpClient.get<{success:boolean,message?:string,content?:automataScript}>(this.api + "my-scripts/release",{params:param});
+  }
+
+  getAutomataScripts():Observable<automataScript[]>{
+    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retreive-all");
   }
 
   getScriptsDownloadedByMe(owner:user):Observable<script[]>{
@@ -99,7 +104,7 @@ export class ScriptService {
   }
 
   addComment(scriptId:string,commentId:string):void{
-    this.httpClient.put(this.api + "scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
+    this.httpClient.put(this.api + "automata-scripts/add-comment",{scriptId:scriptId,commentId:commentId}).subscribe();
   }
 
   removeScript(id:string):Observable<void>{
@@ -127,7 +132,7 @@ export class ScriptService {
   }
 
   rate(user:user,script:string,value:number):Observable<rating>{
-    return this.httpClient.post<rating>(this.api + "scripts/rate",{user:user,script:script,value:value});
+    return this.httpClient.post<rating>(this.api + "automata-scripts/rate",{user:user,script:script,value:value});
   }
 
   getRating(user:user,script:string):Observable<rating>{
@@ -136,21 +141,21 @@ export class ScriptService {
     param = param.set("userEmail",user.email);
     param = param.set("script",script);
     
-    return this.httpClient.get<rating>(this.api + "scripts/retrieve-rating",{params:param});
+    return this.httpClient.get<rating>(this.api + "automata-scripts/retrieve-rating",{params:param});
   }
 
   countRating(script:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("script",script);
 
-    return this.httpClient.get<number>(this.api + "scripts/count-rating",{params:param});
+    return this.httpClient.get<number>(this.api + "automata-scripts/count-rating",{params:param});
   }
 
   averageRating(script:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("script",script);
 
-    return this.httpClient.get<number>(this.api + "scripts/average-rating",{params:param});
+    return this.httpClient.get<number>(this.api + "automata-scripts/average-rating",{params:param});
   }
 
   updateScriptModels(script:string,networks:string[]):Observable<script>{

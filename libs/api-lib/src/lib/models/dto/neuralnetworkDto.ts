@@ -1,6 +1,6 @@
 import { file } from '../general/files';
 import { user } from '../general/user';
-
+import { NeuralNetworkDiscriminator } from '../general/modelDiscriminator';
 
 export interface neuralnetworkDto{
     creator: user;

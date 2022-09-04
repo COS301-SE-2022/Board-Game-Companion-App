@@ -7,12 +7,11 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { status } from '../../models/general/status';
-import { RatingService } from '../../services/ratings/rating.service';
-import { Rating } from '../../schemas/rating.schema';
 import { CompilerService } from '../../services/compiler/compiler.service';
 import * as chevrotain from 'chevrotain';
 import { lexerResult } from '../../models/general/lexerResult';
 import { user } from '../../models/general/user';
+import { AutomataScript } from '../../schemas/automata-script.schema';
 
 @Controller('my-scripts')
 export class ApiMyScriptController {
@@ -42,7 +41,7 @@ export class ApiMyScriptController {
     }
 
     @Get('release')
-    async release(@Query('id')id: string,@Query('vMajor')vMajor: number,@Query('vMinor')vMinor: number,@Query('vPatch')vPatch: number):Promise<{success:boolean,message?:string}>{
+    async release(@Query('id')id: string,@Query('vMajor')vMajor: number,@Query('vMinor')vMinor: number,@Query('vPatch')vPatch: number):Promise<{success:boolean,message?:string,content?:AutomataScript}>{
         return this.myScriptService.release(id,{major:vMajor,minor:vMinor,patch:vPatch});
     }
 }

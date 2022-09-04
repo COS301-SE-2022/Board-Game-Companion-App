@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { script, empty } from '../../shared/models/scripts/script';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.ser
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { version } from '../../shared/models/scripts/version';
+
 
 @Component({
   selector: 'board-game-companion-app-my-scripts',
@@ -24,6 +25,7 @@ export class MyScriptsComponent implements OnInit{
   page = 1;
   @Input()gridView = true;
   updates:string[] = [];
+  releasing:string[] = [];
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
   currentRelease!:myScript;
@@ -36,7 +38,7 @@ export class MyScriptsComponent implements OnInit{
               private readonly router:Router,
               private networkService: OnlineStatusService,
               private readonly gapi: GoogleAuthService,
-              private readonly boardGameService:BggSearchService,
+              private readonly boardGameService:BggSearchService
               ){
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
@@ -52,15 +54,14 @@ export class MyScriptsComponent implements OnInit{
   }
 
   getMyScripts():void{
-    if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"primary",message:"You must be logged In to view your scripts."});
-      return;
-    }
-
     if(this.status === OnlineStatusType.OFFLINE){
       if(this.scripts.length === 0)
         this.showOffline = true;
+      return;
+    }
 
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to view your scripts."});
       return;
     }
 
@@ -91,7 +92,11 @@ export class MyScriptsComponent implements OnInit{
 
   showVersionPopup(value:myScript){
     this.currentRelease = value;
-    this.version = value.version;
+    this.version = {
+      major: value.version.major,
+      minor: value.version.minor,
+      patch: value.version.patch
+    };
   }
 
 
@@ -133,16 +138,16 @@ export class MyScriptsComponent implements OnInit{
     })
   }
 
-  checkVersion(): boolean{
+  checkVersion(oldVersion:version,newVersion:version): boolean{
     let result = true;
 
-    if(this.version.major < this.currentRelease.version.major){
+    if(newVersion.major < oldVersion.major){
       result = false;
-    }else if(this.version.major === this.currentRelease.version.major){
-      if(this.version.minor < this.currentRelease.version.minor){
+    }else if(newVersion.major === oldVersion.major){
+      if(newVersion.minor < oldVersion.minor){
         result = false;
-      }else if(this.version.minor === this.currentRelease.version.minor){
-        if(this.version.patch <= this.currentRelease.version.patch)
+      }else if(newVersion.minor === oldVersion.minor){
+        if(newVersion.patch <= oldVersion.patch)
           result = false;
       }
     }
@@ -150,24 +155,46 @@ export class MyScriptsComponent implements OnInit{
     return result;
   }
 
-  release(): void{
+  release(script:myScript): void{
     if(this.status === OnlineStatusType.OFFLINE){
-      this.notifications.add({type: "warning",message: "Can not update script when offline"})
+      this.notifications.add({type: "warning",message: `Can not ${script.name} when offline`})
       return;
     }
 
-    switch(this.currentRelease.status.value){
+    switch(script.status.value){
       case 0:{
-        this.notifications.add({type: "danger",message: "Script has been flagged."})
+        this.notifications.add({type: "danger",message: `${script.name} has been flagged.`})
       }break;
       case 1:{
-        if(this.checkVersion())
-          this.scriptService.release(this.currentRelease._id,this.version);
-        else
+        if(this.checkVersion(script.version,this.version)){
+          this.releasing.push(script.name);
+
+          this.scriptService.release(script._id,this.version).subscribe({
+            next:(value) => {
+                if(value.success){ 
+                  script.version = {
+                    major: value.content?.version.major as number,
+                    minor: value.content?.version.minor as number,
+                    patch: value.content?.version.patch as number
+                  }
+                  script.status.value = 2;
+                  this.notifications.add({type:"success",message:`${value.content?.name} was successfully released.`})
+                }else{
+                  this.notifications.add({type:"warning",message:value.message as string});
+                }
+
+                this.releasing = this.releasing.filter((value:string) => value !== script.name);
+              },
+            error:() => {
+              this.releasing = this.releasing.filter((value:string) => value !== script.name);
+              this.notifications.add({type:"danger",message:`Something went wrong when releasing the ${script.name}.Try again later or contact administrator if this error persists.`})
+            }
+          });
+        }else
           this.notifications.add({type: "warning",message: "The new version must be greater than the current version."})
       }break;
       case 2:{
-        this.notifications.add({type: "danger",message: "Script has already been released."})
+        this.notifications.add({type: "danger",message: `${script.name} has already been released.`})
       }break;
     }
   }

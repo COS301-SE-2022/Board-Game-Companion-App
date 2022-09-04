@@ -14,7 +14,7 @@
 
       <div class="flex flex-row name-value-pair text-sm p-2">
         <label class="script-field-name">Release date: </label>
-        <p class="script-field-value">{{formatDate(current.release)}}</p>
+        <p class="script-field-value">{{formatDate(current.dateReleased)}}</p>
       </div>
 
       <div class="flex flex-row name-value-pair text-sm p-2">
@@ -25,9 +25,9 @@
       <div class="flex flex-row name-value-pair text-sm p-2">
         <label class="script-field-name">Downloads: </label>
         <p class="script-field-value">{{current.downloads}}</p>
-        <label *ngIf="current.lastdownload!==null" class="script-field-name" style="margin-left:120px">Last downloads:
+        <label *ngIf="current.lastDownload!==null" class="script-field-name" style="margin-left:120px">Last downloads:
         </label>
-        <p *ngIf="current.lastdownload!==null" class="script-field-value">{{formatDate(current.lastdownload)}}</p>
+        <p *ngIf="current.lastDownload!==null" class="script-field-value">{{formatDate(current.lastDownload)}}</p>
       </div>
 
       <div class="text-sm name-value-pair p-2">

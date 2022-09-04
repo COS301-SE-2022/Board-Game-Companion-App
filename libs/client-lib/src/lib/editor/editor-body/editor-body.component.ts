@@ -1,19 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { valueAndGrads } from '@tensorflow/tfjs';
+import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
 import { entity } from '../../shared/models/editor/entity';
 import { find } from '../../shared/models/editor/find';
 import { replace } from '../../shared/models/editor/replace';
 import { selection } from '../../shared/models/editor/selection';
-import { ScriptService } from '../../shared/services/scripts/script.service';
+import { EditorService } from '../../shared/services/editor/editor.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';
-
-interface file{
-  name:string;
-  location:string;
-}
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
@@ -44,7 +38,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   dragula = new Subscription()
   count = 0
 
-  constructor(private readonly scriptService:ScriptService, private readonly dragulaService: DragulaService){
+  constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
     
   }
 
@@ -215,7 +209,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     //console.log("changes: " + this.fileLocation);
 
     if(this.fileLocation !== ""){
-      this.scriptService.getFileData(this.fileLocation).subscribe({
+      this.editorService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
@@ -343,7 +337,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     clearTimeout(this.sendChangesTimer);
 
     this.sendChangesTimer = window.setTimeout(()=>{
-      this.scriptService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
+      this.editorService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
           if(value.status === "success"){
             this.changesTracker.emit(2);

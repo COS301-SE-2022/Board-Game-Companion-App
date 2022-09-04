@@ -4,7 +4,7 @@ import { ApiScriptController } from './controllers/script/script.controller';
 import { ApiCommentController } from './controllers/comments/comment.controller';
 import { CollectionsService } from './services/collection/collections.service';
 import { ScriptService } from './services/scripts/script.service';
-import { ScriptEditorService } from './services/editor/script-editor.service';
+import { EditorService } from './services/editor/editor.service';
 import { RatingService } from './services/ratings/rating.service';
 import { CommentService } from './services/comments/comment.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -29,6 +29,9 @@ import { MyScriptService } from './services/my-script/my-script.service';
 import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
 import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.schema';
 import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
+import { AutomataService } from './services/automata/automata.service';
+import { ApiAutomataScriptController } from './controllers/automata-scripts/automata-script.controller';
+import { ApiEditorController } from './controllers/editor/editor.controller';
 
 @Module({
   imports:[
@@ -51,11 +54,13 @@ import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
     ApiCommentController,
     ApiModelsController,
     ApiReportsController,
-    ApiMyScriptController
+    ApiMyScriptController,
+    ApiAutomataScriptController,
+    ApiEditorController
   ],
   providers: [
     CollectionsService,
-    ScriptEditorService,
+    EditorService,
     ScriptService,
     RatingService,
     CommentService,
@@ -64,7 +69,8 @@ import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
     ModelsService,
     LocalStorageService,
     ReportService,
-    MyScriptService
+    MyScriptService,
+    AutomataService
   ],
   exports: [],
 })

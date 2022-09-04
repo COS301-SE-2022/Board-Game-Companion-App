@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { find } from '../../shared/models/editor/find';
 import { replace } from '../../shared/models/editor/replace';
+import { myScript } from '../../shared/models/scripts/my-script';
 import { empty, script } from '../../shared/models/scripts/script';
 
 @Component({
@@ -14,7 +15,7 @@ export class EditorToolBarComponent implements OnInit{
 
   }
 
-  @Input() current:script = empty;
+  @Input() current!:myScript;
   @Input() height = 0;
   @Output() executeEvent = new EventEmitter();
   @Output() undoEvent = new EventEmitter();
@@ -31,7 +32,7 @@ export class EditorToolBarComponent implements OnInit{
   @Output() toggleConsoleEvent = new EventEmitter<boolean>();
   @Output() toggleDisplayEvent = new EventEmitter<boolean>();
   @Output() themeEvent = new EventEmitter();
-  @Output() updateScriptEvent = new EventEmitter<script>();
+  @Output() updateScriptEvent = new EventEmitter<myScript>();
   sideBar = true;
   console = true;
   showReplace = false;
@@ -125,7 +126,7 @@ export class EditorToolBarComponent implements OnInit{
     this.replaceAllEvent.emit(value);
   }
 
-  updateScript(value:script): void{
+  updateScript(value:myScript): void{
     this.updateScriptEvent.emit(value);
   }
 

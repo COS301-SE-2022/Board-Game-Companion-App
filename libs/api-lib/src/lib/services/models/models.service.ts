@@ -8,7 +8,7 @@ import { MemoryStoredFile } from 'nestjs-form-data';
 import fs = require("fs");
 import { LocalStorageService } from '../local-storage/local-storage.service'
 import { upload } from '../../models/general/upload';
-import { file } from '../../models/general/files';
+import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 
 @Injectable()
 export class ModelsService {
@@ -103,12 +103,15 @@ export class ModelsService {
         const result:NeuralNetworkDocument = await createdNetwork.save();
 
         const modelUpload = this.storageService.copy(current.model.key,"models/" + result._id + "/",result.model.name);
-        result.model.key = modelUpload.key;
+        result.model.key = modelUpload.key; 
         result.model.location = modelUpload.location;
 
-        const weightsUpload = this.storageService.copy(current.model.key,"models/" + result._id + "/",result.model.name);
-        result.model.key = weightsUpload.key;
-        result.model.location = weightsUpload.location;
+        //console.log(current.weights.key);
+        //console.log("models/" + result._id + "/");
+
+        const weightsUpload = this.storageService.copy(current.weights.key,"models/" + result._id + "/",result.weights.name);
+        result.weights.key = weightsUpload.key;
+        result.weights.location = weightsUpload.location;
 
         await result.save();
         

@@ -1,4 +1,4 @@
-enum NeuralNetworkDiscriminator{
+export enum NeuralNetworkDiscriminator{
     None = 0,
     MyScript = 1,
     AutomataScript = 2,

@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/cor
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { user } from '../../shared/models/general/user';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-configure',
@@ -26,8 +28,15 @@ export class ConfigureComponent implements OnInit {
   centered = false;
   epochs = 32;
   type = "classification"
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
 
-  constructor(private readonly modelService:ModelsService){}
+  constructor(private readonly modelService:ModelsService,
+              private networkService: OnlineStatusService,
+              private readonly gapi: GoogleAuthService){
+    this.networkService.status.subscribe((status: OnlineStatusType) =>{
+      this.status = status;
+    });
+  }
 
   ngOnInit(): void{
     this.epochs = 32;
@@ -153,6 +162,16 @@ export class ConfigureComponent implements OnInit {
   }
 
   async train(): Promise<void>{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type: "warning",message: "Can not train model when offline."})
+      return;
+    }
+
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to train model."});
+      return;
+    }
+
     if(!this.validate())
       return;
 

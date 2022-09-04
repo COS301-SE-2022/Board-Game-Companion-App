@@ -1,5 +1,4 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { script, empty } from '../../shared/models/scripts/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +7,7 @@ import { rating } from '../../shared/models/scripts/rating';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { ReportService } from '../../shared/services/reports/report.service';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -15,7 +15,7 @@ import { ReportService } from '../../shared/services/reports/report.service';
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  current: script = empty;
+  current!: automataScript;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
   showComments = true;
@@ -25,6 +25,7 @@ export class ScriptDetailComponent implements OnInit {
   voterCount = 0;
   downloading = false;
   alreadyReported = false;
+  
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
