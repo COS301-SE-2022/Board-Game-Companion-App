@@ -5,12 +5,19 @@ import { AutomataScript } from '../../schemas/automata-script.schema';
 import { RatingService } from '../../services/ratings/rating.service';
 import { AutomataService } from '../../services/automata/automata.service';
 import { Rating } from '../../schemas/rating.schema';
+import { OldScript } from '../../schemas/old-script.schema'
 
 @Controller('automata-scripts')
 export class ApiAutomataScriptController {
     constructor(private readonly automataService:AutomataService,
         private readonly ratingService:RatingService){}
     
+
+    @Get('old-versions')
+    async getOldVersions(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<OldScript[]>{
+        return this.automataService.getOldVersions(name,{name:userName,email:userEmail});
+    }
+
     @Get('retreive-all')
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
