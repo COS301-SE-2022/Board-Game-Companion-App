@@ -66,4 +66,23 @@ export class ApiModelsController {
     async remove(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('name')name:string){
        return this.modelsService.remove({name:userName,email:userEmail},name); 
     }
+
+    @Get('retrieve-by-id')
+    async getModel(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<NeuralNetwork>{
+      return this.modelsService.getModel({name:userName,email:userEmail},id);
+    }
+
+    @Get('retrieve-subset')
+    async getModels(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('idList')idList:string):Promise<NeuralNetwork[]>{
+        
+        
+        try{
+            const temp = JSON.parse(idList);
+            return this.modelsService.getModels({name:userName,email:userEmail},temp)
+        }catch(error){
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+        }
+
+        
+    }
 }

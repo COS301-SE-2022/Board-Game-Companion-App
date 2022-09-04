@@ -1,7 +1,8 @@
-import { Injectable, Query } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Script, ScriptDocument } from '../../schemas/script.schema';
+import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
 import { scriptDto } from '../../models/dto/scriptDto';
 import fs = require('fs');
 import http = require('http');
@@ -30,6 +31,7 @@ export class ScriptService {
     months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     
     constructor(@InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,
+    @InjectModel(NeuralNetwork.name) private networksModel: Model<NeuralNetworkDocument>,
     private readonly s3Service:S3Service,
     private readonly compilerService:CompilerService,
     private readonly httpService: HttpService,
@@ -253,6 +255,28 @@ export class ScriptService {
         
         //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
         const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
+        return result;
+    }
+
+    async updateModels(script:string,networks:string[]):Promise<Script>{
+        const result:ScriptDocument = await this.scriptModel.findById(script);
+        
+        if(result === null || undefined)
+            throw new HttpException('Script Not Found', HttpStatus.NOT_FOUND);
+
+        for(let count = 0; count < networks.length; count++){
+            const value = networks[count];
+            const temp = await this.networksModel.findById(value);
+            
+            if(temp === null || undefined)
+                throw new HttpException(`Model with id ${value} does not exist`,HttpStatus.BAD_REQUEST);
+        }
+
+        result.models = networks;
+        
+        
+        result.save();
+
         return result;
     }
 

@@ -19,6 +19,8 @@ import { EditorTextSideBarComponent } from './editor-text-side-bar/editor-text-s
 import { EditorModelsComponent } from './editor-models/editor-models.component';
 import { DragulaModule } from 'ng2-dragula';
 import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visual.component';
+import { ElementTemplateComponent } from './editor-body-visual/element-template';
+import { LoopTemplateComponent } from './editor-body-visual/loop-template';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visu
     EditorVisualsComponent,
     EditorTextSideBarComponent,
     EditorModelsComponent,
-    EditorBodyVisualComponent
+    EditorBodyVisualComponent,
+    ElementTemplateComponent,
+    LoopTemplateComponent
   ],
   imports: [
     CommonModule,

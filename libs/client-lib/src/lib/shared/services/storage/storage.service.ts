@@ -70,6 +70,47 @@ export class StorageService{
     return this.db;
   }
 
+  clear(storeName:string): Promise<string>{
+    const functionality = (resolve:any,reject:any)=>{
+      let found = false;
+
+      for(let count = 0; count < this.stores.length && !found; count++){
+        if(this.stores[count].name === storeName)
+          found = true;
+      }
+
+      if(!found){
+        reject(`${storeName} does not exists.`);
+      }else{
+        const transaction = this.db.transaction(storeName,'readwrite');
+        const store = transaction.objectStore(storeName);
+        const query = store.clear();
+        query.onerror = (ev:any) => {
+          reject(`Failed to clear ${storeName}. Error: ${ev.target.errorCode}`);
+        }
+
+        query.onsuccess = (ev:any) => {
+          resolve("Okay");
+        }
+      }
+    }
+    
+    return new Promise((resolve,reject) => {
+      if(this.openFailure){
+        reject('Failed to open database.');
+      }else if(!this.openSuccess){
+        window.setTimeout(()=>{
+          if(this.openSuccess)
+            functionality(resolve,reject);
+          else
+            reject('Failed to open database.');
+        },this.waitTime)
+      }else{
+        functionality(resolve,reject);
+      }
+    })    
+  }
+
   insert(storeName:string,record:any): Promise<string>{
     const functionality = (resolve:any,reject:any)=>{
       let found = false;

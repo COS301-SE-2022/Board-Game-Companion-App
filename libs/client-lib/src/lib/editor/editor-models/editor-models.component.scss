@@ -1,0 +1,15 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.wrapper{
+    background-color: $Pcolour-2;
+}
+
+.network{
+    background-color: whitesmoke;
+    color: black;
+}
+
+.network:hover{
+    background-color:rgb(55,65,81);
+    color:white;
+}
