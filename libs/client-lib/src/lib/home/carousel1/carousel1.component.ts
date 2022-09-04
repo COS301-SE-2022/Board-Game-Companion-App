@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
-import { SearchResult } from '../../shared/models/search-result';
+import { SearchResult } from '../../shared/models/general/search-result';
 import { XmlParser } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';

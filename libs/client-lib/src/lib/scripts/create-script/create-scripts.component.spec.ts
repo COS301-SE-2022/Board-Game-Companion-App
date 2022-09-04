@@ -1,7 +1,7 @@
 import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { CreateScriptComponent } from './create-scripts.component';
-import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

@@ -1,0 +1,38 @@
+<div *ngIf = "!showOffline" class = "row">
+    <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
+        <div [id] = "value._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+            <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span>   
+            <img class="w-full h-full" [src]="value.icon.location" alt=""/>
+            
+            <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span> 
+                <div class = "w-full absolute bottom-20 content-center space-x-4">
+                    <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                        <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                    </button>
+                    <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                        <i class="fas fa-download" data-toggle="tooltip" title="download"></i>
+                    </button>
+                    <button *ngIf = "value.export" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                        <i class="fas fa-file-import" data-toggle="tooltip" title="import"></i>
+                    </button>
+                </div>
+                <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+            </div>
+        </div>
+    </div>       
+</div>
+
+<pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>
+
+<div *ngIf ="showOffline" class = "w-full h-60 text-center bg-gray-300 shadow-sm">
+    <div class = "text-gray-700">
+        <i class="fa-solid fa-cloud-slash fa-2x"></i>
+    </div>
+    <div class = "text-gray-700">
+        Your are offline
+    </div>
+</div>
+
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

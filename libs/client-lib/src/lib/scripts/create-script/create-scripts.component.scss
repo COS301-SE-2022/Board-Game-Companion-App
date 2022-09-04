@@ -1,4 +1,14 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
 
+
+.wrapper{
+  background-color: $Pcolour-2;
+  color: white;
+}
+
+.script-button{
+  background-color: $Pcolour-3;
+}
 
 #image-input{
     opacity: 0.0; 
@@ -14,7 +24,6 @@
 #image-input:hover{
     cursor: pointer;
 }
-
 
 
 .autocomplete {

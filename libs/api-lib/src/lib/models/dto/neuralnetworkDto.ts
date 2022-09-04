@@ -1,9 +1,9 @@
 import { file } from '../general/files';
 import { user } from '../general/user';
-
+import { NeuralNetworkDiscriminator } from '../general/modelDiscriminator';
 
 export interface neuralnetworkDto{
-    user: user;
+    creator: user;
     name: string;
     created: Date;
     accuracy: number;
@@ -14,4 +14,5 @@ export interface neuralnetworkDto{
     max: number[];
     model: file;
     weights: file;
+    discriminator: NeuralNetworkDiscriminator
 }

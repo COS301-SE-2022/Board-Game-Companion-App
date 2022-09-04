@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
-import { script } from '../../shared/models/script';
-import { comment, empty } from '../../shared/models/comment';
+import { script } from '../../shared/models/scripts/script';
+import { comment, empty } from '../../shared/models/comments/comment';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 
 @Component({
   selector: 'board-game-companion-app-comment-section',
@@ -12,7 +13,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 export class CommentSectionComponent implements OnInit {
   showComments = false;
   comments:comment[] = [];
-  @Input()currentScript!:script;
+  @Input()currentScript!:automataScript;
   @Output()incrementCommentCounter = new EventEmitter();
   constructor(private readonly commentService:CommentService,private readonly scriptService:ScriptService){}
 

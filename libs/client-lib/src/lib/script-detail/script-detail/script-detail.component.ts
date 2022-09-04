@@ -1,11 +1,13 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { script, empty } from '../../shared/models/script';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentService } from '../../shared/services/comments/comment.service';
-import { rating } from '../../shared/models/rating';
+import { rating } from '../../shared/models/scripts/rating';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { ReportService } from '../../shared/services/reports/report.service';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -13,7 +15,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
   styleUrls: ['./script-detail.component.scss'],
 })
 export class ScriptDetailComponent implements OnInit {
-  current: script = empty;
+  current!: automataScript;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
   showComments = true;
@@ -22,13 +24,18 @@ export class ScriptDetailComponent implements OnInit {
   averageRating = 0;
   voterCount = 0;
   downloading = false;
+  alreadyReported = false;
+  
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
     private readonly boardGameService:BggSearchService,
     private readonly commentService:CommentService,
     private readonly router:Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private readonly gapi: GoogleAuthService,
+    private readonly reportService:ReportService
+    ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
       
   }
@@ -41,15 +48,21 @@ export class ScriptDetailComponent implements OnInit {
       this.getRating();
       this.getAverageRating();
       this.getVoterCount();
+      this.getAlreadyReported();
     } 
   }
 
   download(): void{
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to download this script."});
+      return;
+    }
+
     this.downloading = true;
     this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
       next:(val)=>{
         this.downloading = false;
-        this.notifications.add({type:"primary",message:val.message});
+        this.notifications.add({type:"success",message:val.message});
 
       },
       error:(err)=>{     
@@ -89,6 +102,17 @@ export class ScriptDetailComponent implements OnInit {
     });
   }
 
+  getAlreadyReported():void{
+    this.reportService.alreadyIssued(this.current._id).subscribe({
+      next:(value:boolean) => {
+        this.alreadyReported = value;
+      },
+      error:(err) => {
+        console.log(err);
+      }
+    })
+  }
+
   getRating(): void{
     this.scriptService.getRating({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id).subscribe({
       next:(val)=>{
@@ -124,6 +148,11 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   rateScript(val:number): void{
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:"You must be logged In to rate the script."});
+      return;
+    }
+
     this.scriptService.rate({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id,val).subscribe({
       next:(val)=>{
         this.getAverageRating();

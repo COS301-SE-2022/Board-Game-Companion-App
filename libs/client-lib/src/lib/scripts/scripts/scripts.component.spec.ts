@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { empty,script } from '../../shared/models/script';
+import { empty,script } from '../../shared/models/scripts/script';
 import { TestBed } from '@angular/core/testing';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { ScriptsComponent } from './scripts.component';

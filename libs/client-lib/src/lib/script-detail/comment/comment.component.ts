@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { comment,empty } from '../../shared/models/comment';
-import { like } from '../../shared/models/like';
-import { commentCount } from '../../shared/models/commentCount';
-import { script } from '../../shared/models/script';
+import { comment,empty } from '../../shared/models/comments/comment';
+import { like } from '../../shared/models/comments/like';
+import { commentCount } from '../../shared/models/comments/commentCount';
+import { script } from '../../shared/models/scripts/script';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 
