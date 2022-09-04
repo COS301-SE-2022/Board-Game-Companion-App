@@ -3,7 +3,7 @@ import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 // import { script } from '../../shared/models/script';
-import { user } from '../../shared/models/user';
+// import { user } from '../../shared/models/user';
 // import { TestPassService } from '../../test-pass.service';
 // import { Router } from '@angular/router';
 
@@ -19,6 +19,7 @@ export class AdminComponent implements OnInit {
   public Flagged = 0 ; // Total number of flagged scripts.
   public InProgress = 0; // Total number of scripts In progress.
   public Active = 0; // Total number of current running scripts.
+  public Reports = 0;
 
   public page = 1;
   public search = "";

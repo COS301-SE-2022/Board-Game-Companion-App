@@ -55,9 +55,9 @@
                     <div class="card-body" (click)="flaggedScripts()">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="mb-1">Flagged</div>
+                                <div class="mb-1">Reports</div>
                                 <div>
-                                    <span class="firstSpan h5 mb-0 font-weight-bold text-white-800">{{ Flagged }}</span>
+                                    <span class="firstSpan h5 mb-0 font-weight-bold text-white-800">{{ Reports }}</span>
                                     <span class="secondSpan fa-solid fa-triangle-exclamation fa-1x text-white-300"></span>
                                 </div>
                             </div>
@@ -139,7 +139,8 @@
                     <td *ngIf="script.status.value===1" class="bg-red text-primary">
                         {{ "In Progress"}}
                     </td >
-                    <td *ngIf="script.status.value===2" class="bg-red text-success" >                            {{ "Published" }}
+                    <td *ngIf="script.status.value===2" class="bg-red text-success" >
+                        {{ "Published" }}
                     </td >                        
                     <td class="text-center align-middle">
                         <button (click)="onEdit(script.source.name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
