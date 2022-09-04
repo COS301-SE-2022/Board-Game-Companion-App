@@ -26,6 +26,7 @@ export class ScriptDetailComponent implements OnInit {
   voterCount = 0;
   downloading = false;
   alreadyReported = false;
+  oldies:oldScript[] = []
   
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
@@ -50,7 +51,19 @@ export class ScriptDetailComponent implements OnInit {
       this.getAverageRating();
       this.getVoterCount();
       this.getAlreadyReported();
+      this.getOldies();
     } 
+  }
+
+  getOldies(): void{
+    this.scriptService.getOldVersions(this.current.name,this.current.author).subscribe({
+      next: (value:oldScript[]) => {
+        this.oldies = value;
+      },
+      error: (err) => {
+        this.notifications.add({type:"danger",message:`Failed to retrieve older versions of ${this.current.name}`})
+      }
+    })
   }
 
   download(): void{
