@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { comment } from '../../models/comment';
-import { like } from '../../models/like';
+import { like } from '../../models/comments/like';
 // import { likeCount } from '../../models/likeCount';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommentService } from './comment.service';
-import { commentCount } from '../../models/commentCount';
+import { commentCount } from '../../models/comments/commentCount';
 
 
 describe('Test script service',()=>{

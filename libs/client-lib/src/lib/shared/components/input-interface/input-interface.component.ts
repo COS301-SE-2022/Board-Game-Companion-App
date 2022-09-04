@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges ,Output, SimpleChanges } from '@angular/core';
-import { inputParameters } from '../../models/inputParameters';
+import { inputParameters } from '../../models/scripts/inputParameters';
 
 @Component({
   selector: 'board-game-companion-app-input-interface',

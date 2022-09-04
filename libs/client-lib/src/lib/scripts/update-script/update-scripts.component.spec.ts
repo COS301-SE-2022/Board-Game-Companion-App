@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { script, empty } from '../../shared/models/script';
+import { script, empty } from '../../shared/models/scripts/script';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { UpdateScriptComponent } from './update-scripts.component';

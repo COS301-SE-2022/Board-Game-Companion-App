@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { comment } from '../../models/comment';
-import { like } from '../../models/like';
-import { commentCount } from '../../models/commentCount';
-import { user } from '../../models/user';
+import { comment } from '../../models/comments/comment';
+import { like } from '../../models/comments/like';
+import { commentCount } from '../../models/comments/commentCount';
+import { user } from '../../models/general/user';
 
 
 @Injectable()
@@ -24,7 +24,8 @@ export class CommentService {
 
   saveComment(formData:FormData):Observable<comment>{
     const data = {
-      user: formData.get("user"),
+      userName: formData.get("userName"),
+      userEmail: formData.get("userEmail"),
       image: formData.get("image"),
       content: formData.get("content"),
       script: formData.get("script")

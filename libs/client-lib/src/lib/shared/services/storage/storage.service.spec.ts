@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { script } from '../../models/script';
-import { rating } from '../../models/rating';
+import { script } from '../../models/scripts/script';
+import { rating } from '../../models/scripts/rating';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { StorageService } from './storage.service';

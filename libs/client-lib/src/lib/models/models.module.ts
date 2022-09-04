@@ -10,6 +10,7 @@ import { ArchitectureComponent } from './architecture/architecture.component';
 import { ConfigureComponent } from './configure/configure.component';
 import { UploadComponent } from './upload/upload.component';
 import { SharedModule } from '../shared/shared.module';
+import { OnlineStatusModule } from 'ngx-online-status';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     SharedModule,
+    OnlineStatusModule,
     RouterModule.forChild([{ path: '', component: ModelsComponent }]),
   ],
 })

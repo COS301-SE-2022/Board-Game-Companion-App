@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { fetchSessionResults } from '../fetch-session-results';
+import { fetchSessionResults } from '../sessions/fetch-session-results';
 describe('search result model test',()=>{
     let model: fetchSessionResults;
     beforeEach(async () => {

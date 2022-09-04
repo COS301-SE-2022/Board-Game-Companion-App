@@ -18,7 +18,20 @@ export class LocalStorageService{
         }
     }
 
-    async update(key:string,data:string){
+    update(key:string,data:string){
         fs.writeFileSync(key,data);
+    }
+
+    copy(source:string,destination:string,name:string):upload{
+        destination = (process.env.PROJECT_STATUS == "production" ? "uploads/production/" : "uploads/development/") + destination;
+        const key = destination + name;
+        
+        try{
+            fs.mkdirSync(destination,{recursive: true});
+            fs.copyFileSync(source,key);  
+            return {location:"http://localhost:3333/"+key,key:key};
+        }catch (e){
+            console.log(e);
+        }
     }
 }

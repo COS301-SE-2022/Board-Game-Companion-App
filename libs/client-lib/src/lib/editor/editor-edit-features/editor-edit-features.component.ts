@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { find } from '../../shared/models/find';
-import { replace } from '../../shared/models/replace';
+import { find } from '../../shared/models/editor/find';
+import { replace } from '../../shared/models/editor/replace';
 
 @Component({
   selector: 'board-game-companion-app-editor-edit-features',

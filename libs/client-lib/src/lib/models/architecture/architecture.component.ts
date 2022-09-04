@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { layer } from '../../shared/models/layer';
+import { layer } from '../../shared/models/neuralnetwork/layer';
 
 @Component({
   selector: 'board-game-companion-app-architecture',
