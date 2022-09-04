@@ -5,8 +5,8 @@ import { script } from '../../shared/models/scripts/script';
 import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
 import * as tf from '@tensorflow/tfjs'
-import { entity } from '../../shared/models/entity';
-import { inputParameters } from '../../shared/models/inputParameters';
+import { entity } from '../../shared/models/editor/entity';
+import { inputParameters } from '../../shared/models/scripts/inputParameters';
 @Component({
   selector: 'board-game-companion-app-script-executor',
   templateUrl: './script-executor.component.html',
