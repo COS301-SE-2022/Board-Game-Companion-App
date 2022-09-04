@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
+import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { user } from '../../models/general/user';
 import fs = require('fs');
 import { ModelsService } from '../models/models.service';
@@ -9,10 +10,15 @@ import { ModelsService } from '../models/models.service';
 @Injectable()
 export class AutomataService {
     constructor(@InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
+                @InjectModel(OldScript.name) private oldModel: Model<OldScriptDocument>,
                 private readonly modelService:ModelsService){}
 
     async getAll():Promise<AutomataScript[]>{
         return this.automataModel.find({});
+    }
+
+    async getOldVersions(name:string,author:user):Promise<OldScript[]>{
+        return this.oldModel.find({"name":name,"author.name":author.name,"author.email":author.email});
     }
 
     async getAutomataScript(name:string,author:user):Promise<AutomataScriptDocument>{
