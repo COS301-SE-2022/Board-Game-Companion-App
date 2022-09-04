@@ -8,6 +8,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { ReportService } from '../../shared/services/reports/report.service';
 import { automataScript } from '../../shared/models/scripts/automata-script';
+import { oldScript } from '../../shared/models/scripts/old-script';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',

@@ -7,6 +7,7 @@ import { user } from '../../models/general/user';
 import { User } from 'aws-sdk/clients/budgets';
 import { entity } from '../../models/editor/entity';
 import { myScript } from '../../models/scripts/my-script';
+import { oldScript } from '../../models/scripts/old-script';
 import { version } from '../../models/scripts/version';
 import { automataScript } from '../../models/scripts/automata-script';
 
@@ -85,6 +86,15 @@ export class ScriptService {
 
   getAutomataScripts():Observable<automataScript[]>{
     return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retreive-all");
+  }
+
+  getOldVersions(name:string,author:user):Observable<oldScript[]>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("userName",author.name);
+    param = param.set("userEmail",author.email);
+
+    return this.httpClient.get<oldScript[]>(this.api + "automata-scripts/old-versions",{params: param});
   }
 
   getScriptsDownloadedByMe(owner:user):Observable<script[]>{
