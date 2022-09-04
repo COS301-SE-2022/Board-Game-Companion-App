@@ -202,7 +202,7 @@ break
         switch(choice)
         {
             case 0:
- return []this.State.board
+ return this.State.board
 break
 
         }
@@ -229,14 +229,14 @@ break
             else
             {
                 
-                for(let j = 0;j<await this.considerations(i).length;j++)
+                for(let j = 0;j<gcCond.length;j++)
                 {
                     
-                    
-                    if(await this.isActionLegal(this.Actions[i], await this.considerations(i)[j]))
+                    let isLegal = await this.isActionLegal(this.Actions[i], gcCond[j]);
+                    if(isLegal)
                     {
                         choices.push(this.Actions[i])
-                        this.params.push(await this.considerations(i)[j])
+                        this.params.push(gcCond[j])
 
                     }
                 }
@@ -246,7 +246,13 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
-await output( c ) 
+let x = this . State . board 
+let arr = [ ] 
+for ( let i = 1 ; i <= 9 i + ) { 
+arr [ i ] = x [ 0 ] . Id + ''
+await output( arr [ i ] ) 
+} 
+await output( c [ 0 ] ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
     Actions = [
@@ -328,14 +334,14 @@ break
             else
             {
                 
-                for(let j = 0;j<await this.considerations(i).length;j++)
+                for(let j = 0;j<gcCond.length;j++)
                 {
                     
-                    
-                    if(await this.isActionLegal(this.Actions[i], await this.considerations(i)[j]))
+                    let isLegal = await this.isActionLegal(this.Actions[i], gcCond[j]);
+                    if(isLegal)
                     {
                         choices.push(this.Actions[i])
-                        this.params.push(await this.considerations(i)[j])
+                        this.params.push(gcCond[j])
 
                     }
                 }
@@ -350,10 +356,11 @@ do {
 let i = await input( prompt , 'text') 
 await output( i ) 
 let t = await this.State.getTileByID(i)
-await output( t . pieces . length ) 
 let act = 'placeNaught'
 ans = await this.isActionLegal ( act , t ) 
-await output( ans ) 
+if ( ans ) { 
+await this.chooseAction ( act , t ) 
+} 
 } while ( ! ( ans ) ) 
 } } //players
 

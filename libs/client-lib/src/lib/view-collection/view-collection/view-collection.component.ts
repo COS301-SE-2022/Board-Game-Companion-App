@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';

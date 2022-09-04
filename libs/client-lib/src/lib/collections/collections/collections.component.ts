@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
@@ -11,7 +11,7 @@ import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.se
   styleUrls: ['./collections.component.scss'],
 })
 export class CollectionsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private router:Router) {}
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
 
   collections: collectionList[] = new Array<collectionList>();
   public selected = "";
@@ -21,7 +21,7 @@ export class CollectionsComponent implements OnInit {
   viewCollection(n:String)
   {
     //
-    this.router.navigate(['viewCollection'],{queryParams: {my_object: n}})
+    this.router.navigate(['viewCollection',{my_object: n}])
   }
 
   //delete a selected collection
@@ -50,7 +50,7 @@ export class CollectionsComponent implements OnInit {
     else
     {
       const  names:string[] = JSON.parse(localStorage.getItem("collections")||"");
-
+      //console.log(names)
       for(let i=0; i<names.length;i++)
       {
         //get the 
