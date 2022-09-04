@@ -10,6 +10,7 @@ export class EditorBodyVisualComponent {
   
   endLoopIndex = 0
   gameLoopIndex = 0
+  playersLoopIndex = 0
 
   Game = [
     {title: '', class: '' , id: '', pos: 0}
@@ -28,7 +29,13 @@ export class EditorBodyVisualComponent {
   ]
 
   Players = [
-    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
+    {actions: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ], 
+      conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
     {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
   ]
 
@@ -50,4 +57,9 @@ export class EditorBodyVisualComponent {
     {name: 'addPieceToTile', arguments: 2},
     {name: 'addToArr', arguments: 2}
   ]
+
+  addNewPlayer()
+  {
+    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]})
+  }
 }
