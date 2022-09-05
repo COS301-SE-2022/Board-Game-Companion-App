@@ -12,6 +12,9 @@ export class StorageService{
   private stores:objectStore[] = [{
     name: "networks",
     indices: ["name"]
+  },{
+    name: "downloads",
+    indices: ["name"]
   }]
 
   constructor(){

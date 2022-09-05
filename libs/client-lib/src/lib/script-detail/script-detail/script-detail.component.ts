@@ -10,6 +10,10 @@ import { ReportService } from '../../shared/services/reports/report.service';
 import { automataScript } from '../../shared/models/scripts/automata-script';
 import { oldScript } from '../../shared/models/scripts/old-script';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import { ModelsService } from '../../shared/services/models/models.service';
+import * as tf from '@tensorflow/tfjs'
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -39,6 +43,8 @@ export class ScriptDetailComponent implements OnInit {
     private readonly gapi: GoogleAuthService,
     private readonly reportService:ReportService,
     private networkService: OnlineStatusService,
+    private storageService: StorageService,
+    private modelsService: ModelsService
     ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
 
@@ -89,10 +95,32 @@ export class ScriptDetailComponent implements OnInit {
         }else{
           this.downloading = true;
           this.scriptService.download(this.current._id).subscribe({
-            next:(val)=>{
-              this.downloading = false;
-              this.notifications.add({type:"success",message:`Successfully downloaded ${this.current.name}`});
+            next:(val:downloadScript)=>{
 
+                this.modelsService.getModelsByIdOnly(val.models).subscribe({
+                  next:(models:any) => {
+                    models.forEach((network:any) => {
+                      this.storageService.insert("networks",network).then(async(res:string) => {
+                        const imodel = await tf.loadLayersModel(network.model.location);
+                        await imodel.save(`indexeddb://${network.name}`);
+                      }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                    })
+
+                    this.storageService.insert("downloads",val).then((res:string)=>{
+                      this.downloading = false;
+                      this.notifications.add({type:"success",message:`Successfully downloaded ${this.current.name}`});
+                    }).catch(() =>{
+                      this.downloading = false;
+                      this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                    })
+
+                  },
+                  error:(err) => {
+                    this.downloading = false;
+                    console.log(err);
+                    this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                  }
+                })
             },
             error:(err)=>{     
               this.downloading = false;

@@ -75,6 +75,10 @@ export class ModelsService {
         return this.networkModel.find({"creator.name":user.name,"creator.email":user.email}).where('_id').in(idList);
     }
 
+    async getModelsByIdOnly(idList:string[]):Promise<NeuralNetwork[]>{
+        return this.networkModel.find().where('_id').in(idList);
+    }
+
     async copyModel(id:string,location:NeuralNetworkDiscriminator): Promise<string>{
         const current = await this.networkModel.findById(id);
 
