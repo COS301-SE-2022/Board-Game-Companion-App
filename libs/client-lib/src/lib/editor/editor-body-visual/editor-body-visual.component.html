@@ -1,17 +1,24 @@
 <div id = "board" class = "boardContainers">
-    <div class = "title text-2xl font-bold ml-4 mt-2">
-        Board
-    </div>
-    <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Game" [dest] = "Game" [dests] = "GameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+    <details open>
+        <summary class = "list-none flex flex-wrap items-center cursor-pointer">
+            <div class = "title text-2xl font-bold ml-4 mt-2">
+                Board
+            </div>
+           <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Game" [dest] = "Game" [dests] = "GameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+        </summary>
+    </details>
 </div>
-
 <div id = "players">
     <button (click)="addNewPlayer()" id = "addNewPlayer">Add New Player</button>
     <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "i" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods" open></board-game-companion-app-player-template>
 </div>
 <div id = "endGame" class = "boardContainers">
-    <div class = "title text-2xl font-bold ml-4 mt-2">
-        Endgame
-    </div>
-    <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+    <details open>
+        <summary class = "list-none flex flex-wrap items-center cursor-pointer">
+            <div class = "title text-2xl font-bold ml-4 mt-2">
+                Endgame
+            </div>
+        </summary>
+        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods"></board-game-companion-app-element-template>
+    </details>
 </div>
