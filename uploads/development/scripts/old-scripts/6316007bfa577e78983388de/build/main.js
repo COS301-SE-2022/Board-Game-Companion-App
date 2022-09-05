@@ -498,7 +498,7 @@ if ( t1 . pieces [ 0 ] . Id == t4 . pieces [ 0 ] . Id && t4 . pieces [ 0 ] . Id 
 if ( t1 . pieces [ 0 ] . Id == 'x') { 
 await output( 'Theaiwins') 
 } else { 
-await output( 'You win') 
+await output( 'Youwin') 
 } 
 ans = true 
 } 

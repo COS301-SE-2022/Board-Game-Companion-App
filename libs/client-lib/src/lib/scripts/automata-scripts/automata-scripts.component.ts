@@ -23,6 +23,7 @@ export class AutomataScriptComponent implements OnInit{
   page = 1;
   downloading:string[] = [];
   downloaded:string[] = [];
+  showImports:string[] = []
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
 
@@ -80,6 +81,24 @@ export class AutomataScriptComponent implements OnInit{
         }
       })
     })
+  }
+
+  checkShowImports(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      return;
+    }    
+    
+    if(!this.gapi.isLoggedIn()){
+      return;
+    }
+
+    const name = sessionStorage.getItem("name") as string;
+    const email = sessionStorage.getItem("email") as string;
+
+    this.scripts.forEach((value:automataScript) => {
+      if(name !== value.author.name && email !== value.author.email)
+        this.showImports.push(value._id);
+    })  
   }
 
   download(current:automataScript): void{
@@ -158,5 +177,17 @@ export class AutomataScriptComponent implements OnInit{
 
   play(value:automataScript): void{
     this.router.navigate(['script-exec'], { state: { value: value } });
+  }
+
+  import(current:automataScript): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to download ${current.name}`});
+      return;
+    }
+    
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:`You must be logged In to download ${current.name}`});
+      return;
+    }    
   }
 }

@@ -222,7 +222,7 @@ endgame{
             }
             else
             {
-                output('You win')
+                output('Youwin')
             }
             ans = true
         }

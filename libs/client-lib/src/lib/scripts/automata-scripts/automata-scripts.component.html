@@ -11,9 +11,10 @@
                         <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                     </button>
                     <button *ngIf = "!downloaded.includes(value._id)" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
-                        <i class="fas fa-download" data-toggle="tooltip" title="download"></i>
+                        <i *ngIf = "!downloading.includes(value._id)" class="fas fa-download" data-toggle="tooltip" title="download"></i>
+                        <i *ngIf = "downloading.includes(value._id)" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="downloading"></i>
                     </button>
-                    <button *ngIf = "value.export" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                    <button *ngIf = "value.export && showImports.includes(value._id)" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-file-import" data-toggle="tooltip" title="import"></i>
                     </button>
                 </div>
