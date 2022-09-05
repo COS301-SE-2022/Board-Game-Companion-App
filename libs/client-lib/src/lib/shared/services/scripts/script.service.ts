@@ -104,7 +104,11 @@ export class ScriptService {
   }
 
   getAutomataScripts():Observable<automataScript[]>{
-    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retreive-all");
+    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-all");
+  }
+
+  getDownloadScripts():Observable<downloadScript[]>{
+    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all");
   }
 
   getOldVersions(name:string,author:user):Observable<oldScript[]>{

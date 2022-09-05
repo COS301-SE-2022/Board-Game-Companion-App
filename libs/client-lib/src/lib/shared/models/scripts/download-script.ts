@@ -3,7 +3,8 @@ import { user } from "../general/user";
 import { version } from "./version";
 import { baseScript } from "./base-script";
 
-export interface downloadScript extends baseScript{
-    owner: user;
-    dateDownloaded: Date;
+export class downloadScript extends baseScript{
+    _id = "";
+    owner!:user;
+    dateDownloaded!: Date;
 }

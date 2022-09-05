@@ -33,7 +33,8 @@ import { DownloadScript, DownloadScriptSchema } from './schemas/download-script.
 import { AutomataService } from './services/automata/automata.service';
 import { ApiAutomataScriptController } from './controllers/automata-scripts/automata-script.controller';
 import { ApiEditorController } from './controllers/editor/editor.controller';
-
+import { DownloadsService } from './services/downloads/downloads.service';
+import { ApiDownloadScriptController } from './controllers/downloads/downloads.controller';
 @Module({
   imports:[
     MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
@@ -58,7 +59,8 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
     ApiReportsController,
     ApiMyScriptController,
     ApiAutomataScriptController,
-    ApiEditorController
+    ApiEditorController,
+    ApiDownloadScriptController
   ],
   providers: [
     CollectionsService,
@@ -72,6 +74,7 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
     LocalStorageService,
     ReportService,
     MyScriptService,
+    DownloadsService,
     AutomataService
   ],
   exports: [],

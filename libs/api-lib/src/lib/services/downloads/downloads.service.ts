@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
 import { user } from '../../models/general/user';
-import { scriptDto } from '../../models/dto/scriptDto';
+import { version } from '../../models/general/version';
 import { HttpService } from '@nestjs/axios';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
@@ -28,12 +28,14 @@ export class DownloadsService {
         return script !== null && script !== undefined;
     }
 
-    async getMyDownloads(owner:user):Promise<Script[]>{
-        return this.downloadsModel.find({"owner.email":owner.email});
+    async getMyDownloads(owner:user):Promise<DownloadScript[]>{
+        return this.downloadsModel.find({"owner.name":owner.name,"owner.email":owner.email});
     }
-    async retrieveById(id:string):Promise<Script>{
+    
+    async retrieveById(id:string):Promise<DownloadScript>{
         return this.downloadsModel.findById(id).exec();
     }
+
     async removeScript(id:string){
         this.downloadsModel.findByIdAndRemove(id).exec();
     }

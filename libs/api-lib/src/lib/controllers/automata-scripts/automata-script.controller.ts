@@ -24,7 +24,7 @@ export class ApiAutomataScriptController {
         return this.automataService.getOldVersions(name,{name:userName,email:userEmail});
     }
 
-    @Get('retreive-all')
+    @Get('retrieve-all')
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
     }
