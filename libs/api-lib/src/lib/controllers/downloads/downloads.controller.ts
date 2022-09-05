@@ -1,7 +1,8 @@
-import { Controller, Body, Get, Post, Query, Delete, Param } from '@nestjs/common';
+import { Controller, Body, Get, Post, Query, Delete, Param, Put } from '@nestjs/common';
 import { DownloadsService } from '../../services/downloads/downloads.service';
 import { Script } from '../../schemas/script.schema';
 import { DownloadScript } from '../../schemas/download-script.schema';
+import { update } from '../../models/general/update';
 
 
 @Controller('download-scripts')
@@ -26,5 +27,10 @@ export class ApiDownloadScriptController {
     @Delete('remove/id')
     async removeScript(@Param('id')id:string){
         this.downloadsService.removeScript(id);
+    }
+
+    @Put('update')
+    async update(@Body('ids')ids:update):Promise<DownloadScript>{
+        return this.downloadsService.update(ids);
     }
 }
