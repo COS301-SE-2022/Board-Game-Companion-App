@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ElementTemplateComponent } from './element-template';
 
 
 @Component({
@@ -11,6 +10,7 @@ export class EditorBodyVisualComponent {
   
   endLoopIndex = 0
   gameLoopIndex = 0
+  playersLoopIndex = 0
 
   Game = [
     {title: '', class: '' , id: '', pos: 0}
@@ -18,6 +18,30 @@ export class EditorBodyVisualComponent {
 
   Endgame = [
     {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Player1 = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Player2 = [
+    {title: '', class: '' , id: '', pos: 0}
+  ]
+
+  Players = [
+    {actions: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ], 
+      conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
+    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
+  ]
+
+
+  PlayersLoops = [
+    this.Player1
   ]
 
   GameLoops = [
@@ -33,4 +57,9 @@ export class EditorBodyVisualComponent {
     {name: 'addPieceToTile', arguments: 2},
     {name: 'addToArr', arguments: 2}
   ]
+
+  addNewPlayer()
+  {
+    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]})
+  }
 }

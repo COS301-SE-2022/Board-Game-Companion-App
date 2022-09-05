@@ -21,6 +21,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visual.component';
 import { ElementTemplateComponent } from './editor-body-visual/element-template';
 import { LoopTemplateComponent } from './editor-body-visual/loop-template';
+import { PlayerTemplateComponent } from './editor-body-visual/player-template';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { LoopTemplateComponent } from './editor-body-visual/loop-template';
     EditorModelsComponent,
     EditorBodyVisualComponent,
     ElementTemplateComponent,
-    LoopTemplateComponent
+    LoopTemplateComponent,
+    PlayerTemplateComponent
   ],
   imports: [
     CommonModule,
