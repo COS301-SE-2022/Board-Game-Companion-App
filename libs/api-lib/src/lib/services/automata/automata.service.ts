@@ -76,6 +76,10 @@ export class AutomataService {
                 result.models.push(modelCopy);
         }
 
+        script.downloads++;
+        script.lastDownload = new Date();
+
+        await script.save();
         await result.save();
 
         return result;
