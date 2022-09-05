@@ -7,7 +7,10 @@
             <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                 <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span> 
                 <div class = "w-full absolute bottom-20 content-center space-x-4">
-                    <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                    <button (click) = "play(value)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                        <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
+                    </button>
+                    <button *ngIf = "online()" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                     </button>
                     <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">

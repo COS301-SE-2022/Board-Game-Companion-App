@@ -39,6 +39,10 @@ export class DownloadScriptsComponent implements OnInit {
     this.getDownloadScripts();
   }
 
+  online(): boolean{
+    return this.status === OnlineStatusType.ONLINE;
+  }
+
   getDownloadScripts():void{
     
     if(this.status === OnlineStatusType.OFFLINE){
