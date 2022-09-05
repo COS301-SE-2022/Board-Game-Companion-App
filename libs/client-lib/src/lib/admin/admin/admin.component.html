@@ -1,5 +1,4 @@
 <div class="container-fluid">
-    <h1 class="text-center">Admin Page</h1>
 <!-- Information -->
     <div class="container-fluid px-5 pt-12">
         <div class="row g-4 justify-content-center">
@@ -52,7 +51,7 @@
 
             <div class="col-xl-2 col-md-6 mb-4 g-2">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-4">
-                    <div class="card-body" (click)="flaggedScripts()">
+                    <div class="card-body" (click)="ReportedScripts()">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="mb-1">Reports</div>
@@ -85,74 +84,58 @@
     </div>
 </div>
 <div class="container">
-<!-- search and sort functionality -->
-    <div id="searc">
-        <div>
-            <input id = "textInput" [(ngModel)]="searchedValue">
-            <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
-        </div>
-        <div>
-            <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
-                <option selected value="alphabetical">Alphabetical</option>
-                <option value="date">Date</option>
-            </select>
-            <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+<!-- search functionality -->
+<div class = "row px-2.5 py-3">
+    <div class = "col-sm-11">
+        <div class="input-group relative w-full">
+            <input name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+            <button (click) = "onSearch()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                <i class="fas fa-search fa-2x"></i>
+            </button>
         </div>
     </div>
 <!-- a table and search functionality -->
-    <div>
+    <!-- <div>
         <table class="table-auto" data-toggle="table">
             <thead>
                 <tr>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Creator
-                    </th>
-                    <th>
-                        Script Name
-                    </th>
-                    <th>
-                        Status
+                    <th class="text-center">
+
                     </th>
                     <th class="text-center">
-                        Action
+
+                    </th>
+                    <th class="text-center">
+
+                    </th>
+                    <th class="text-center">
+
+                    </th>
+                    <th class="text-center">
+
                     </th>
                 </tr>
             </thead>
 
             <tbody *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page } ">
                 <tr>
-                    <td>
-                        {{ script.created }}
+                    <td class="text-center">
                     </td>
-                    <td id="Author">
-                        {{ script.author.name }}
+                    <td id="Author" class="text-center">
                     </td>
-                    <td>
-                        {{ script.name }}
+                    <td class="text-center">
                     </td>
-                    <td *ngIf="script.status.value===0" class="bg-red text-danger">
-                        {{ "flagged" }}
+                    <td *ngIf="script.status.value===0" class="bg-red text-danger" class="text-center">
                     </td>                        
-                    <td *ngIf="script.status.value===1" class="bg-red text-primary">
-                        {{ "In Progress"}}
+                    <td *ngIf="script.status.value===1" class="bg-red text-primary" class="text-center">
                     </td >
-                    <td *ngIf="script.status.value===2" class="bg-red text-success" >
-                        {{ "Published" }}
+                    <td *ngIf="script.status.value===2" class="bg-red text-success" class="text-center">
                     </td >                        
                     <td class="text-center align-middle">
-                        <button (click)="onEdit(script.source.name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
-                            <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
-                        </button>
-                        <button (click)="onComment(script.source.name,script._id)" class="btn btn-primary mx-2" data-toggle="modal">
-                            <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
-                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
-    </div>
+    </div> -->
 </div>

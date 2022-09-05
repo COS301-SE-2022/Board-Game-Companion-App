@@ -12,13 +12,7 @@ table{
 button{
     padding: 2rem;
 }
-h1{
-    font-size: 64px;
-    font-weight: bold;
-    color: $Pcolour-2;
-    margin-top: 64px;
-    margin-bottom: 48px;
-}
+
 thead{
     width: 100%;
     background-color: $Pcolour-2;
@@ -67,38 +61,34 @@ td{
     transform: scale(1.25);
     cursor: pointer;
 }
-#search{
-    background-color: $Pcolour-2;
-    color: $Pcolour-3;
-    font-size: 14px;
-    float: left;
-    // margin-right: 64px;
-    margin-top: 68px;
-}
-input{
-    border-radius: 10px;
-    width: 400px;
-    color: black;
-    margin-right: 16px;
-    margin-top: 68px;
-    border: solid 1px  $Pcolour-2;
-    float:left;
-}
+// #search{
+//     background-color: $Pcolour-2;
+//     color: $Pcolour-3;
+//     font-size: 14px;
+//     float: left;
+//     // margin-right: 64px;
+//     margin-top: 68px;
+// }
+// input{
+//     border-radius: 10px;
+//     width: 400px;
+//     color: black;
+//     margin-right: 16px;
+//     margin-top: 68px;
+//     border: solid 1px  $Pcolour-2;
+//     float:left;
+// }
 input:focus{
     outline: none;
 }
-#sort{
-    background-color: $Pcolour-2;
-    color: $Pcolour-3;
-    font-size: 14px;
-    margin-top: 68px;
-    float:right;
+
+tr{
+    border-bottom: solid 3px $Pcolour-2;
 }
-#sorting{
-    color: $Pcolour-2;
-    font-size: 14px;
-    margin-top: 68px;
-    margin-bottom: 12px;
-    float:right;
-    background-color: white;
+.search-btn{
+    background-color: $Pcolour-3;
+}
+
+.search-input{
+    border:2px solid $Pcolour-3
 }

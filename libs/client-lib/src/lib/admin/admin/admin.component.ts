@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-// import { script } from '../../shared/models/script';
+import { script } from '../../shared/models/scripts/script';
 import { user } from '../../shared/models/general/user';
+import { report } from '../../shared/models/scripts/report';
 // import { TestPassService } from '../../test-pass.service';
-// import { Router } from '@angular/router';
+import { ReportService } from '../../shared/services/reports/report.service';
+import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-admin',
@@ -23,12 +25,18 @@ export class AdminComponent implements OnInit {
 
   public page = 1;
   public search = "";
-  public scripts : any;
-
+  public scripts:script[] = [];
+  public months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  public reports:report[] = [];
   public selected = "";
   public searchedValue = "";
 
-  constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
+  constructor(
+    private adminService: AdminService,
+    private router:Router, 
+    private route: ActivatedRoute, 
+    private reportService:ReportService,
+    private scriptService:ScriptService) {}
   
   onEdit(filename: string, id: string): void{
     console.log("this works okay");
@@ -61,10 +69,15 @@ export class AdminComponent implements OnInit {
 
         this.scripts = data;
         this.totalPub = this.scripts.length;
-        for(let i=0; i < this.scripts.length; i++){
-          const date = this.scripts[i].created.split(" ");
-  
-          this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      });
+
+      this.reportService.getAll().subscribe({
+        next:(data)=>{
+          this.reports = data;
+          this.Reports = this.reports.length;
+        },
+        error:(e)=>{
+          console.log(e);
         }
       });
     }
@@ -74,11 +87,6 @@ export class AdminComponent implements OnInit {
     this.adminService.getScripts().subscribe(data=>{
 
       this.scripts = data;
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
     });
   }
   currentMonth(): void{
@@ -93,14 +101,8 @@ export class AdminComponent implements OnInit {
         const d = new Date(res.created.toString());
         return d.getMonth()===date.getMonth();
       });
-
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-        // console.log(date);
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
       
-      this.ngOnInit();
+      // this.ngOnInit();
     });
 
   }
@@ -111,12 +113,7 @@ export class AdminComponent implements OnInit {
 
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
 
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      this.ngOnInit();
+      // this.ngOnInit();
     });
     
   }
@@ -126,12 +123,7 @@ export class AdminComponent implements OnInit {
       
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
 
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      this.ngOnInit();
+      // this.ngOnInit();
     });
   }
 
@@ -139,12 +131,7 @@ export class AdminComponent implements OnInit {
     this.adminService.getScripts().subscribe(data=>{
       
       this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      this.ngOnInit();
+      // this.ngOnInit();
     });
   }
 
@@ -155,12 +142,6 @@ export class AdminComponent implements OnInit {
       console.log(this.searchedValue);
       this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      // this.ngOnInit();
     });
   }
 
@@ -194,5 +175,27 @@ export class AdminComponent implements OnInit {
         return +new Date(dateA) - +new Date(dateB);
       });
     }
+  }
+
+  formatDate(date:Date):string{
+    date = new Date(date);
+    const formated = ("0"+date.getDate()).slice(-2) +" "+ this.months[date.getMonth()] +" "+ date.getFullYear();
+    return formated;
+  }
+
+  ReportedScripts():void{
+    const temp:script[]=[];
+    for(let i=0; i < this.reports.length;i++){
+      this.scriptService.getScriptById(this.reports[i].script).subscribe({
+        next:(data)=>{
+          temp.push(data);
+        },
+        error:(e)=>{
+          console.log(e);
+        }
+      });
+    }
+
+    this.scripts = temp;
   }
 }
