@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { automataScript } from '../../shared/models/scripts/automata-script';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { ModelsService } from '../../shared/services/models/models.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import * as tf from '@tensorflow/tfjs'
 
 @Component({
   selector: 'board-game-companion-app-automata-scripts',
@@ -16,18 +21,27 @@ export class AutomataScriptComponent implements OnInit{
   status: OnlineStatusType = OnlineStatusType.ONLINE;
   showOffline = false;
   page = 1;
+  downloading:string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
 
   constructor(private readonly scriptService:ScriptService,
               private readonly router:Router,
               private networkService: OnlineStatusService,
+              private readonly gapi: GoogleAuthService,
+              private modelsService: ModelsService,
+              private storageService: StorageService,
               ){
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
                   
                   if(this.status === OnlineStatusType.ONLINE && this.filter.length === this.scripts.length){
                     this.getAutomataScripts();
+                    this.showOffline = false;
+                  }
+
+                  if(this.status == OnlineStatusType.OFFLINE){
+                    this.showOffline = true;
                   }
                 });
 
@@ -39,9 +53,6 @@ export class AutomataScriptComponent implements OnInit{
 
   getAutomataScripts():void{
     if(this.status === OnlineStatusType.OFFLINE){
-      if(this.scripts.length === 0)
-        this.showOffline = true;
-
       return;
     }
 
@@ -55,6 +66,7 @@ export class AutomataScriptComponent implements OnInit{
       }
     })  
   }
+
 
 
   search(value:string): void{

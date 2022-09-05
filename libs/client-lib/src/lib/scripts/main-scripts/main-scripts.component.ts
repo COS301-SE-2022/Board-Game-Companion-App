@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { myScript } from '../../shared/models/scripts/my-script';
 import { AutomataScriptComponent } from '../automata-scripts/automata-scripts.component';
 import { MyScriptsComponent } from '../my-scripts/my-scripts.component';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { DownloadScriptsComponent } from '../download-scripts/download-scripts.component';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 
 @Component({
   selector: 'board-game-companion-app-main-scripts',
@@ -13,12 +16,30 @@ export class MainScriptsComponent implements OnInit {
   gridView = true;
   showControlMenu = false;
   searchTerm = "";
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
+  @ViewChild(DownloadScriptsComponent,{static:false}) downloadScripts!: DownloadScriptsComponent;
   @ViewChild(MyScriptsComponent,{static:false}) myScripts!: MyScriptsComponent;
   @ViewChild(AutomataScriptComponent,{static:false}) automataScripts!: AutomataScriptComponent;
 
-  constructor(private elementRef:ElementRef){}
+  constructor(private elementRef:ElementRef,
+              private networkService: OnlineStatusService,
+              private readonly gapi: GoogleAuthService,){
+
+    this.networkService.status.subscribe((status: OnlineStatusType) =>{
+      this.status = status;  
+    });
+  }
   
   ngOnInit(): void {
+    if(this.status === OnlineStatusType.OFFLINE)
+      this.page = 0;
+    else{
+      if(this.gapi.isLoggedIn()){
+        this.page = 1;
+      }else
+        this.page = 0;
+    }
+
     this.elementRef.nativeElement.addEventListener('click', (value:MouseEvent) => {
       const box = document.getElementById('script-control-menu') as HTMLElement;
       const menu = document.getElementById('control-menu-btn') as HTMLElement;
@@ -39,7 +60,8 @@ export class MainScriptsComponent implements OnInit {
     
     switch(value){
       case 0:{
-
+        if(this.downloadScripts !== undefined)
+        this.downloadScripts.ngOnInit();
       }break;
       case 1:{
         if(this.myScripts !== undefined)
@@ -60,7 +82,8 @@ export class MainScriptsComponent implements OnInit {
   search(): void{
     switch(this.page){
       case 0:{
-
+        if(this.downloadScripts !== undefined)
+        this.downloadScripts.ngOnInit();
       }break;
       case 1:{
         if(this.myScripts !== undefined)

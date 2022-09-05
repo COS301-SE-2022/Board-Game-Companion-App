@@ -76,7 +76,6 @@ export class ApiScriptController {
  
     @Put('update-models')
     async updateModels(@Body('script')script:string,@Body('networks')networks:string[]):Promise<Script>{
-        console.log(networks)
         return await this.scriptService.updateModels(script,networks);
     }
 

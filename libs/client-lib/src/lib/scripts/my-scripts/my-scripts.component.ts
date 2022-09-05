@@ -44,7 +44,13 @@ export class MyScriptsComponent implements OnInit{
                   this.status = status;
                   
                   if(this.status === OnlineStatusType.ONLINE && this.filter.length === this.scripts.length){
+                    this.showOffline = false;
                     this.getMyScripts();
+                  }
+
+
+                  if(this.status === OnlineStatusType.OFFLINE){
+                    this.showOffline = true;                    
                   }
                 });
   }
@@ -55,8 +61,6 @@ export class MyScriptsComponent implements OnInit{
 
   getMyScripts():void{
     if(this.status === OnlineStatusType.OFFLINE){
-      if(this.scripts.length === 0)
-        this.showOffline = true;
       return;
     }
 

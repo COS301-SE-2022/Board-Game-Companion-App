@@ -69,7 +69,7 @@ export class ScriptService {
     param = param.set("vMinor",version.minor);
     param = param.set("vPatch",version.patch);
 
-    return this.httpClient.get<boolean>(this.api + "downloads/already-downloaded",{params: param})
+    return this.httpClient.get<boolean>(this.api + "download-scripts/already-downloaded",{params: param})
   }
 
   download(id:string):Observable<downloadScript>{
@@ -108,7 +108,11 @@ export class ScriptService {
   }
 
   getDownloadScripts():Observable<downloadScript[]>{
-    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all");
+    let param = new HttpParams();
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+
+    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all",{params : param});
   }
 
   getOldVersions(name:string,author:user):Observable<oldScript[]>{

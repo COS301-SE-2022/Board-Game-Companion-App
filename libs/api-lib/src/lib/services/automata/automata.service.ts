@@ -24,10 +24,10 @@ export class AutomataService {
     }
 
     async download(id:string,owner:user):Promise<DownloadScript>{
-        const script = await this.downloadModel.findById(id);
+        const script = await this.automataModel.findById(id);
 
         if(script === null || script === undefined)
-             throw new HttpException('Script Not Found', HttpStatus.NOT_FOUND);
+            return null;
 
         const dto:downloadScriptDto = {
             name: script.name,

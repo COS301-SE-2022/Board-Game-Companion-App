@@ -15,7 +15,7 @@ export class DownloadsService {
 
 
     async alreadyDownloaded(owner:user,author:user,name:string,version:version):Promise<boolean>{
-        const script =  this.downloadsModel.findOne({   "owner.name": owner.name,
+        const script =  await this.downloadsModel.findOne({   "owner.name": owner.name,
                                             "owner.email": owner.email,
                                             "author.name": author.name,
                                             "author.email": author.email,

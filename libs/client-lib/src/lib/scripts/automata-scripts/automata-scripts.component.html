@@ -25,12 +25,9 @@
 
 <pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>
 
-<div *ngIf ="showOffline" class = "w-full h-60 text-center bg-gray-300 shadow-sm">
-    <div class = "text-gray-700">
-        <i class="fa-solid fa-cloud-slash fa-2x"></i>
-    </div>
-    <div class = "text-gray-700">
-        Your are offline
+<div *ngIf ="showOffline" class = "w-full h-60 text-center bg-gray-300 shadow-sm font-bold flex items-center">
+    <div class = "text-gray-700 text-2xl grow">
+        You are offline
     </div>
 </div>
 

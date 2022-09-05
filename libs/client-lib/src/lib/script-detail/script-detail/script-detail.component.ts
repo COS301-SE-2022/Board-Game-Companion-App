@@ -96,6 +96,10 @@ export class ScriptDetailComponent implements OnInit {
           this.downloading = true;
           this.scriptService.download(this.current._id).subscribe({
             next:(val:downloadScript)=>{
+              if(val === null){
+                this.notifications.add({type: "danger",message: `Could not find ${this.current.name}`})
+                this.downloading = false;
+              }
 
                 this.modelsService.getModelsByIdOnly(val.models).subscribe({
                   next:(models:any) => {
