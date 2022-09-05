@@ -30,7 +30,7 @@ export class ScriptExecutorComponent implements OnInit {
   showOutput = false;
   inputBlock = false;
   outputBlock = false;
-  inputResult:any[] = [];
+  inputResult = "";
   parameters:inputParameters[] = [];
   outputMessage = "";
   statusMessages:string[] = [];
@@ -188,15 +188,10 @@ export class ScriptExecutorComponent implements OnInit {
     
     return (async(prompt:string,type:string,options?:string[])=>{
       this.inputBlock = true;
-      this.showInput = true;
-      this.parameters = [{
-        prompt:prompt,
-        type:type,
-        options:options
-      }]
+      
       const elem = document.getElementById("TextOutput");
       if(elem)
-        elem.innerHTML += prompt;
+        elem.innerHTML += prompt+"\n";
       
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
@@ -209,7 +204,7 @@ export class ScriptExecutorComponent implements OnInit {
   
       await pause;
   
-      return this.inputResult[0];
+      return this.inputResult;
     })
   }
 
@@ -237,8 +232,19 @@ export class ScriptExecutorComponent implements OnInit {
     })
   }
 
-  submitInput(value:any[]): void{
-    this.inputResult = value;
+  submitInput(): void{
+    
+    const inputElem = document.getElementById("inputBox") as HTMLInputElement;
+    if(inputElem)
+    {
+      this.inputResult = inputElem.value;
+      inputElem.value = "";
+    }
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
     this.showInput = false;
     this.inputBlock = false;
   }

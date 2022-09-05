@@ -16,9 +16,9 @@
             </div>
         </div>
         
-        <button id= "EnterButton" class = "w-full mb-4 px-4 text-center">
-            <div  >
-                <div  class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium">
+        <button id= "EnterButton" class = "w-full mb-4 px-4 text-center" (click)="submitInput()">
+            <div >
+                <div  class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium" >
                     Enter
                 </div>
             </div>
@@ -26,3 +26,4 @@
     </div>
     
 </div>
+<board-game-companion-app-output-interface (okayEvent)="okayOutput()" [show]="showOutput" [output] = "outputMessage"></board-game-companion-app-output-interface>
