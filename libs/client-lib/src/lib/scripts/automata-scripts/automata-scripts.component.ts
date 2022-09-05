@@ -67,6 +67,68 @@ export class AutomataScriptComponent implements OnInit{
     })  
   }
 
+  download(current:automataScript): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to download ${current.name}`});
+      return;
+    }
+    
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:`You must be logged In to download ${current.name}`});
+      return;
+    }
+
+    this.scriptService.alreadyDownloaded(current.author,current.name,current.version).subscribe({
+      next:(value:boolean) => {
+        if(value){
+          this.notifications.add({type:"warning",message:`You have already downloaded ${current.name}`})
+        }else{
+          this.downloading.push(current._id);
+          this.scriptService.download(current._id).subscribe({
+            next:(val:downloadScript)=>{
+              if(val === null){
+                this.notifications.add({type: "danger",message: `Could not find ${current.name}`})
+                this.downloading = this.downloading.filter((id:string) => id !== current._id);
+              }
+
+                this.modelsService.getModelsByIdOnly(val.models).subscribe({
+                  next:(models:any) => {
+                    models.forEach((network:any) => {
+                      this.storageService.insert("networks",network).then(async(res:string) => {
+                        const imodel = await tf.loadLayersModel(network.model.location);
+                        await imodel.save(`indexeddb://${network.name}`);
+                      }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                    })
+
+                    this.storageService.insert("downloads",val).then((res:string)=>{
+                      this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                      this.notifications.add({type:"success",message:`Successfully downloaded ${current.name}`});
+                    }).catch(() =>{
+                      this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                      this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                    })
+
+                  },
+                  error:(err) => {
+                    this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                    console.log(err);
+                    this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                  }
+                })
+            },
+            error:(err)=>{     
+              this.downloading = this.downloading.filter((id:string) => id !== current._id);
+              console.log(err);
+              this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+            }      
+          });
+        }
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+      }
+    })
+  }
 
 
   search(value:string): void{
