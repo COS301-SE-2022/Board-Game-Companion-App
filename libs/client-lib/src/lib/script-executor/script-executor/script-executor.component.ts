@@ -167,13 +167,17 @@ export class ScriptExecutorComponent implements OnInit {
   }
   output(){
     return (async(value:string) => {
-      this.outputBlock = true;
+      this.inputBlock = true;
       this.showOutput = true;
-      this.outputMessage = value;
+      const outputElem = document.getElementById("TextOutput");
+      if(outputElem)
+      {
+        outputElem.innerHTML = value + "<br>Press Enter to continue";
+      }
       
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.outputBlock){
+            if(!this.inputBlock){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -250,6 +254,11 @@ export class ScriptExecutorComponent implements OnInit {
   }
 
   okayOutput(): void{
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
     this.showOutput = false;
     this.outputBlock = false;
   }
