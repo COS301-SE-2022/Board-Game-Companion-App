@@ -61,6 +61,7 @@
 }
 
 #addNewPlayer{
+    font-size: 1em;
     padding: 0.5em;
     color: white;
     background-color: black;
@@ -68,5 +69,16 @@
     margin-left: 2em;
     margin-bottom: 1em;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 2em;
+}
+
+#addAction{
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid grey;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
 }
