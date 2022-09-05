@@ -6,6 +6,7 @@ import { downloadScript } from '../../shared/models/scripts/download-script';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { update } from '../../shared/models/scripts/update';
 
 @Component({
   selector: 'board-game-companion-app-download-scripts',
@@ -16,6 +17,7 @@ export class DownloadScriptsComponent implements OnInit {
   scripts:downloadScript[] = [];
   filter:downloadScript[] = [];
   status: OnlineStatusType = OnlineStatusType.ONLINE;
+  updates:update[] = []
   page = 1;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
@@ -60,6 +62,7 @@ export class DownloadScriptsComponent implements OnInit {
         this.scriptService.getDownloadScripts().subscribe({
           next: (value: downloadScript[]) => {
             this.filter = this.scripts = value;
+            this.checkForUpdates();
           },
           error: (err) => {
             console.log(err)
@@ -68,6 +71,20 @@ export class DownloadScriptsComponent implements OnInit {
         })  
       }
     }
+  }
+
+  checkForUpdates():void{
+    this.scripts.forEach((value:downloadScript) => {
+      this.scriptService.checkForUpdatesForOne(value.name,value.author,value.version).subscribe({
+        next:(response: string) => {
+          this.updates.push({oldId:value._id,newId:response});
+        },
+        error:(err)=>{
+          console.log(err);
+          this.notifications.add({type:"warning",message:"Something went wrong when checking for updates"})
+        }
+      })
+    })
   }
 
   search(value:string): void{
