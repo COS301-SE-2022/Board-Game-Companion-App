@@ -72,6 +72,19 @@ export class ScriptService {
     return this.httpClient.get<boolean>(this.api + "download-scripts/already-downloaded",{params: param})
   }
 
+
+  checkForUpdatesForOne(name:string,author:user,version:version):Observable<string>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("userEmail",author.name);
+    param = param.set("userName",author.email);
+    param = param.set("vMajor",version.major);
+    param = param.set("vMinor",version.minor);
+    param = param.set("vPatch",version.patch);
+    
+    return this.httpClient.get<string>(this.api + 'automata-scripts/check-for-updates-for-one',{params: param});
+  }
+
   importAutomata(id:string):Observable<any>{
     let param = new HttpParams();
     param = param.set("id",id);
