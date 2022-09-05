@@ -46,3 +46,39 @@
     margin-right: 2em;
     margin-bottom: 2em;
 }
+
+.playerContainers{
+    background-color: white;
+    border: 6px solid grey;
+    min-height: 15%;
+    min-width: 15%;
+    max-width: 90%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+#addNewPlayer{
+    font-size: 1em;
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid grey;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+}
+
+#addAction{
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid grey;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+}
