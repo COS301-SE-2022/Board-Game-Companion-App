@@ -22,6 +22,7 @@ export class AutomataScriptComponent implements OnInit{
   showOffline = false;
   page = 1;
   downloading:string[] = [];
+  importing:string[] = [];
   downloaded:string[] = [];
   showImports:string[] = []
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
@@ -105,6 +106,9 @@ export class AutomataScriptComponent implements OnInit{
       return;
     }
 
+    if(this.downloading.includes(current._id))
+      return;
+
     if(this.downloaded.includes(current._id))
       this.notifications.add({type:"warning",message:`You have already downloaded ${current.name}`})
     else{
@@ -186,11 +190,15 @@ export class AutomataScriptComponent implements OnInit{
     if(this.showImports.includes(current._id))
       this.notifications.add({type:"warning",message:"Author can not download own script"});
     else{
+      this.importing.push(current._id);
+
       this.scriptService.importAutomata(current._id).subscribe({
         next: () =>{
+          this.importing = this.importing.filter((value:string) => value !== current._id)
           this.notifications.add({type:"success",message:`Sucessfully imported ${current.name}`})
         },
         error:()=>{
+          this.importing = this.importing.filter((value:string) => value !== current._id)
           this.notifications.add({type:"danger",message:`Failed to import ${current.name}`});
         }
       })

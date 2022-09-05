@@ -12,10 +12,11 @@
                     </button>
                     <button *ngIf = "!downloaded.includes(value._id)" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i *ngIf = "!downloading.includes(value._id)" class="fas fa-download" data-toggle="tooltip" title="download"></i>
-                        <i *ngIf = "downloading.includes(value._id)" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="downloading"></i>
+                        <i *ngIf = "downloading.includes(value._id)" class="fas fa-spinner fa-pulse" data-toggle="tooltip" title="downloading"></i>
                     </button>
                     <button *ngIf = "value.export && showImports.includes(value._id)" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
-                        <i class="fas fa-file-import" data-toggle="tooltip" title="import"></i>
+                        <i *ngIf = "!importing.includes(value._id)"  class="fas fa-file-import" data-toggle="tooltip" title="import"></i>
+                        <i *ngIf = "importing.includes(value._id)" class="fas fa-spinner fa-pulse" data-toggle="tooltip" title="importing"></i>
                     </button>
                 </div>
                 <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>

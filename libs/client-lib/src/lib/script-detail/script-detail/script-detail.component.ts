@@ -88,6 +88,9 @@ export class ScriptDetailComponent implements OnInit {
       return;
     }
 
+    if(this.downloading)
+      return;
+
     this.scriptService.alreadyDownloaded(this.current.author,this.current.name,this.current.version).subscribe({
       next:(value:boolean) => {
         if(value){
