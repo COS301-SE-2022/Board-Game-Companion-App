@@ -22,6 +22,7 @@ import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-s
 import { ModelsService } from '../models/models.service';
 import { oldScriptDto } from '../../models/dto/oldScriptDto';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class MyScriptService {
@@ -32,7 +33,8 @@ export class MyScriptService {
                 @InjectModel(OldScript.name) private oldScriptModel: Model<OldScriptDocument>,
                 private readonly localStorage: LocalStorageService,
                 private readonly automataService: AutomataService,
-                private readonly modelService: ModelsService){
+                private readonly modelService: ModelsService,
+                private readonly httpService: HttpService){
         
     }
 
@@ -311,5 +313,61 @@ export class MyScriptService {
         await result.save();
 
         return {success: true,content:result};
+    }
+
+    async importAutomata(id:string,author:user):Promise<void>{
+        const script = await this.automataModel.findById(id);
+        
+        if(script === null || script === undefined)
+            return;
+
+        const dto:myScriptDto = {
+            name: script.name,
+            author: author,
+            version: {major:0,minor:0,patch:0},
+            boardgame: script.boardgame,
+            description: '',
+            created: new Date(),
+            lastUpdate: new Date(),
+            export: false,
+            status: {value: 1, message: ''},
+            size: 0,
+            programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
+            source: {name:"",location:"",key:""},
+            build:{name:"",location:"",key:""},
+            icon: {name:"",location:"",key:""},
+            models: []
+        }
+
+        const createdScript = new this.myScriptModel(dto);
+        const result:MyScriptDocument =  await createdScript.save();
+
+        const sourceCopy = this.localStorage.copy(script.source.key,"scripts/my-scripts/" + result._id + "/src/",script.source.name);
+        
+        result.source = {
+            name: script.source.name,
+            location: sourceCopy.location,
+            key: sourceCopy.key
+        }
+
+        const buildCopy = this.localStorage.copy(script.build.key,"scripts/my-scripts/" + result._id + "/build/",script.build.name);
+        
+        result.build = {
+            name: script.build.name,
+            location: buildCopy.location,
+            key: buildCopy.key
+        }
+
+        const iconCopy = this.localStorage.copy(script.icon.key,"scripts/my-scripts/" + result._id + "/icons/",script.icon.name);
+        result.icon = {
+            name: script.icon.name,
+            location: iconCopy.location,
+            key: iconCopy.key
+        }
+        
+        result.size = await fileSize(result.build.location).catch(console.error);
+        result.size += await fileSize(result.icon.location).catch(console.error);
+        
+        result.save();
     }
 }

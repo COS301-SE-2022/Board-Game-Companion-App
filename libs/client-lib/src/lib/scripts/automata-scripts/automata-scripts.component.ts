@@ -64,6 +64,7 @@ export class AutomataScriptComponent implements OnInit{
 
         if(this.gapi.isLoggedIn()){
           this.checkAlreadyDownloaded();
+          this.checkShowImports();
         }
       },
       error: () => {
@@ -84,14 +85,6 @@ export class AutomataScriptComponent implements OnInit{
   }
 
   checkShowImports(): void{
-    if(this.status === OnlineStatusType.OFFLINE){
-      return;
-    }    
-    
-    if(!this.gapi.isLoggedIn()){
-      return;
-    }
-
     const name = sessionStorage.getItem("name") as string;
     const email = sessionStorage.getItem("email") as string;
 
@@ -179,7 +172,7 @@ export class AutomataScriptComponent implements OnInit{
     this.router.navigate(['script-exec'], { state: { value: value } });
   }
 
-  import(current:automataScript): void{
+  importAutomata(current:automataScript): void{
     if(this.status === OnlineStatusType.OFFLINE){
       this.notifications.add({type:"warning",message:`You must be online to download ${current.name}`});
       return;
@@ -188,6 +181,19 @@ export class AutomataScriptComponent implements OnInit{
     if(!this.gapi.isLoggedIn()){
       this.notifications.add({type:"primary",message:`You must be logged In to download ${current.name}`});
       return;
-    }    
+    }
+
+    if(this.showImports.includes(current._id))
+      this.notifications.add({type:"warning",message:"Author can not download own script"});
+    else{
+      this.scriptService.importAutomata(current._id).subscribe({
+        next: () =>{
+          this.notifications.add({type:"success",message:`Sucessfully imported ${current.name}`})
+        },
+        error:()=>{
+          this.notifications.add({type:"danger",message:`Failed to import ${current.name}`});
+        }
+      })
+    }
   }
 }

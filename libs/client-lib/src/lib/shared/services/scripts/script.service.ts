@@ -72,6 +72,15 @@ export class ScriptService {
     return this.httpClient.get<boolean>(this.api + "download-scripts/already-downloaded",{params: param})
   }
 
+  importAutomata(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+
+    return this.httpClient.get(this.api + "my-scripts/import",{params: param})
+  }
+
   download(id:string):Observable<downloadScript>{
     let param = new HttpParams();
     param = param.set("id",id);

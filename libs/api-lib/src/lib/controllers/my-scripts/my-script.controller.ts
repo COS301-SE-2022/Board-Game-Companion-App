@@ -44,4 +44,9 @@ export class ApiMyScriptController {
     async release(@Query('id')id: string,@Query('vMajor')vMajor: number,@Query('vMinor')vMinor: number,@Query('vPatch')vPatch: number):Promise<{success:boolean,message?:string,content?:AutomataScript}>{
         return this.myScriptService.release(id,{major:vMajor,minor:vMinor,patch:vPatch});
     }
+
+    @Get('import')
+    async importAutomata(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<void>{
+        this.myScriptService.importAutomata(id,{name:userName,email:userEmail})        
+    }
 }
