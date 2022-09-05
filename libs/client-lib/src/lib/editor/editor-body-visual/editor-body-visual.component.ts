@@ -35,8 +35,19 @@ export class EditorBodyVisualComponent {
           {title: '', class: '' , id: '', pos: 0}
         ]
       ], 
-      conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
-    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
+      conditions: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ], 
+      turn: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ]},
+    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]}
   ]
 
 
@@ -60,6 +71,6 @@ export class EditorBodyVisualComponent {
 
   addNewPlayer()
   {
-    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]})
+    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]})
   }
 }
