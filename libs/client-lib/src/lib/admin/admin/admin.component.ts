@@ -43,9 +43,13 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['editor',{id, filename}]);
   }
   
-  onComment(filename:string, id: string): void {
+  onInfo(filename:string, id: string): void {
     console.log(" Comment on script: "+id);
     this.router.navigate(['script-detail',{id, filename}]);
+  }
+
+  onRemove(id:string): void{
+    console.log("Admin removed");
   }
 
   ngOnInit(): void {
