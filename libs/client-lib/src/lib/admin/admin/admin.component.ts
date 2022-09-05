@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-import { script } from '../../shared/models/scripts/script';
+// import { script } from '../../shared/models/scripts/script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 import { user } from '../../shared/models/general/user';
 import { report } from '../../shared/models/scripts/report';
 // import { TestPassService } from '../../test-pass.service';
 import { ReportService } from '../../shared/services/reports/report.service';
-import { ScriptService } from '../../shared/services/scripts/script.service';
+// import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-admin',
@@ -21,11 +21,12 @@ export class AdminComponent implements OnInit {
   public Flagged = 0 ; // Total number of flagged scripts.
   public InProgress = 0; // Total number of scripts In progress.
   public Active = 0; // Total number of current running scripts.
-  public Reports = 0;
+  public Reports = 0; // Total number of reports.
 
   public page = 1;
   public search = "";
-  public scripts:script[] = [];
+  public scripts:automataScript[] = [];
+  public currentScript: automataScript = new automataScript;
   public months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   public reports:report[] = [];
   public selected = "";
@@ -35,8 +36,7 @@ export class AdminComponent implements OnInit {
     private adminService: AdminService,
     private router:Router, 
     private route: ActivatedRoute, 
-    private reportService:ReportService,
-    private scriptService:ScriptService) {}
+    private reportService:ReportService) {}
   
   onEdit(filename: string, id: string): void{
     console.log("this works okay");
@@ -58,21 +58,12 @@ export class AdminComponent implements OnInit {
       
       this.adminService.getScripts().subscribe(data=>{
         const date = new Date();
-        // const month = date.toLocaleString('default', { month: 'long' });
-        this.scripts = data.filter( (res: { created: string | string[]; }) => {
-          const d = new Date(res.created.toString());
+        this.scripts = data.filter( (res: { dateReleased: Date; }) => {
+          const d = new Date(res.dateReleased.toString());
           return d.getMonth()===date.getMonth();
         });
         this.currentPub = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
         this.Active = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-        this.InProgress = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-        this.Flagged = this.scripts.length;
-
-        this.scripts = data;
-        this.totalPub = this.scripts.length;
       });
 
       this.reportService.getAll().subscribe({
@@ -99,14 +90,11 @@ export class AdminComponent implements OnInit {
 
       const date = new Date();
   
-      // const month = date.toLocaleString('default', { month: 'long' });
-
-      this.scripts = data.filter( (res: { created: string | string[]; }) => {
-        const d = new Date(res.created.toString());
+      this.scripts = data.filter( (res: { dateReleased: Date; }) => {
+        const d = new Date(res.dateReleased.toString());
         return d.getMonth()===date.getMonth();
       });
-      
-      // this.ngOnInit();
+
     });
 
   }
@@ -114,30 +102,23 @@ export class AdminComponent implements OnInit {
   runningScripts(): void{
 
     this.adminService.getScripts().subscribe(data=>{
-
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
-
-      // this.ngOnInit();
+      this.scripts = data;
     });
-    
   }
 
-  flaggedScripts(): void{
-    this.adminService.getScripts().subscribe(data=>{
+  // flaggedScripts(): void{
+  //   this.adminService.getScripts().subscribe(data=>{
+  //     this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
+  //   });
+  // }
+
+  // ProgressScripts(): void{
+  //   this.adminService.getScripts().subscribe(data=>{
       
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-
-      // this.ngOnInit();
-    });
-  }
-
-  ProgressScripts(): void{
-    this.adminService.getScripts().subscribe(data=>{
-      
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-      // this.ngOnInit();
-    });
-  }
+  //     this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+  //     // this.ngOnInit();
+  //   });
+  // }
 
   onSearch(): void{
     this.scripts = [];
@@ -171,10 +152,10 @@ export class AdminComponent implements OnInit {
     }
     else if(this.selected==="date" && this.scripts.length!==0)
     {
-      this.scripts.sort(function(resultA: { created: any; }, resultB: { created: any; }) 
+      this.scripts.sort(function(resultA: { dateReleased: any; }, resultB: { dateReleased: any; }) 
       {
-        const dateA = resultA.created; 
-        const dateB = resultB.created;
+        const dateA = resultA.dateReleased; 
+        const dateB = resultB.dateReleased;
 
         return +new Date(dateA) - +new Date(dateB);
       });
@@ -188,9 +169,9 @@ export class AdminComponent implements OnInit {
   }
 
   ReportedScripts():void{
-    const temp:script[]=[];
+    const temp:automataScript[]=[];
     for(let i=0; i < this.reports.length;i++){
-      this.scriptService.getScriptById(this.reports[i].script).subscribe({
+      this.adminService.getScriptById(this.reports[i].script).subscribe({
         next:(data)=>{
           temp.push(data);
         },

@@ -15,7 +15,10 @@ export class ApiAutomataScriptController {
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
     }
-
+    @Get('retrive-by-id')
+    async getById(@Query('id')id:string):Promise<AutomataScript>{
+        return this.automataService.getScriptById(id);
+    }
     @Put('add-comment')
     async addComment(@Body('scriptId')scriptId:string,@Body('commentId')commentId:string):Promise<void>{
         this.automataService.addComment(scriptId,commentId);

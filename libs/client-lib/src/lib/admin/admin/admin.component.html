@@ -94,50 +94,7 @@
             </button>
         </div>
     </div>
-<!-- a table and search functionality -->
-    <!-- <div>
-        <table class="table-auto" data-toggle="table">
-            <thead>
-                <tr>
-                    <th class="text-center">
-
-                    </th>
-                    <th class="text-center">
-
-                    </th>
-                    <th class="text-center">
-
-                    </th>
-                    <th class="text-center">
-
-                    </th>
-                    <th class="text-center">
-
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page } ">
-                <tr>
-                    <td class="text-center">
-                    </td>
-                    <td id="Author" class="text-center">
-                    </td>
-                    <td class="text-center">
-                    </td>
-                    <td *ngIf="script.status.value===0" class="bg-red text-danger" class="text-center">
-                    </td>                        
-                    <td *ngIf="script.status.value===1" class="bg-red text-primary" class="text-center">
-                    </td >
-                    <td *ngIf="script.status.value===2" class="bg-red text-success" class="text-center">
-                    </td >                        
-                    <td class="text-center align-middle">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
-    </div> -->
+ 
     <div *ngIf="" class="row">
         <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page }">
             <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
@@ -167,5 +124,58 @@
             </div>
         </div>
         <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>    
+    </div>
+    <div class="flagging">
+        <div class="accordion" id="scriptList">
+            <div class="accordion-item" *ngFor="let report of reports | paginate: { itemsPerPage: 8, currentPage: page }">
+                <h2 class="accordion-header" id="title">
+                    <button class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + script.name" aria-expanded="true" [attr.aria-controls]="script.name">
+                        <div>
+                            <img class="w-8 h-8" [src]="script.icon.location" alt=""/>
+                        </div>
+                        <div class = "ml-2 font-medium">
+                            {{script.name}}
+                        </div>
+                    </button>
+                </h2>
+    
+                <div [id]="'item_' + script.name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+                    <div class="accordion-body script-body">
+                        <div class = "row text-sm">
+                            <div class = "col-sm-6">
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Reported by:</label>
+                                    <p class = "info-value ml-2">{{script.version.major + '.' + value.version.minor + '.' + value.version.patch}}</p>
+                                </div>
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Board game:</label>
+                                    <p class = "info-value ml-2">{{script.name}}</p>
+                                </div>
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Date Issued:</label>
+                                    <p class = "info-value ml-2">{{formatDate(script.created)}}</p>                                
+                                </div>
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Status:</label>
+                                    <p class = "info-value ml-2">{{value.status.value === 0 ? 'Flagged' :(value.status.value === 1 ? 'In development' : 'Released')}}</p>
+                                </div>
+                            </div>
+                            <div class = "col-sm-12 mb-2">
+                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message</label>
+                                <textarea [(ngModel)]="script.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea>
+                            </div>
+                            <div class = "col-sm-12 items-center justify-end space-x-2">
+                                <button *ngIf = "value.status.value === 1" data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                    <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>
+                                </button>
+                                <button (click) = "update(value)" data-toggle="tooltip" title="update"  id = "save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                    <i class="fas fa-cog" [ngClass] = "{'fa-spin':updates.includes(value._id)}"></i>
+                                </button>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

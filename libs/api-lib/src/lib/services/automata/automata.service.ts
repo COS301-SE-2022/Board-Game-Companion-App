@@ -26,7 +26,9 @@ export class AutomataService {
         
         script.save();
     }
-
+    async getScriptById(id:string):Promise<AutomataScript>{
+        return this.automataModel.findById(id);
+    }
     async remove(id:string):Promise<void>{
         const script = await this.automataModel.findByIdAndRemove(id);
         fs.unlinkSync(script.source.key);
