@@ -10,6 +10,7 @@ import { ModelsService } from '../models/models.service';
 import { downloadScriptDto } from '../../models/dto/downloadScriptDto';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
+import { version } from '../../models/general/version';
 
 @Injectable()
 export class AutomataService {
@@ -116,5 +117,32 @@ export class AutomataService {
                 fs.unlinkSync(model.weights.key);
             }
         }
+    }
+
+    checkVersion(oldVersion:version,newVersion:version): boolean{
+        let result = true;
+    
+        if(newVersion.major < oldVersion.major){
+          result = false;
+        }else if(newVersion.major === oldVersion.major){
+          if(newVersion.minor < oldVersion.minor){
+            result = false;
+          }else if(newVersion.minor === oldVersion.minor){
+            if(newVersion.patch <= oldVersion.patch)
+              result = false;
+          }
+        }
+    
+        return result;
+      }
+
+    async checkForUpdatesForOne(name:string,author:user,version:version):Promise<string>{
+        const script = await this.automataModel.findOne({"name":name,"author.name":author.name,"author.email":author.email})
+        let result = "";
+
+        if(this.checkVersion(version,script.version))
+            result = script._id;
+
+        return result;
     }
 }
