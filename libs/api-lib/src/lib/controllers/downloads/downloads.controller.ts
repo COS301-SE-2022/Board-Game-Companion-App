@@ -6,14 +6,10 @@ import { Script } from '../../schemas/script.schema';
 @Controller('downloads')
 export class DownloadsController {
     constructor(private readonly downloadsService:DownloadsService){}
-    @Post('store-script')
-    async storeScript(@Body('script')script:Script){
-        return this.downloadsService.storeScript(script);
-    }
 
-    @Post('download')
-    async download(@Body('name')name:string,@Body('owner')owner:user):Promise<any>{
-        return this.downloadsService.download(name,owner);
+    @Get('already-downloaded')
+    async alreadDownloaded(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string,@Query('authorName')authorName:string,@Query('authorEmail')authorEmail:string,@Query('name')name:string,@Query('vMajor')vMajor:number,@Query('vMinor')vMinor:number,@Query('vPatch')vPatch:number):Promise<boolean>{
+        return this.downloadsService.alreadDownloaded({name:ownerName,email:ownerEmail},{name:authorName,email:authorEmail},name,{major:vMajor,minor:vMinor,patch:vPatch});
     }
 
     @Get('retrieve/downloadedByMe')

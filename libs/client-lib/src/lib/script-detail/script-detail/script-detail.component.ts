@@ -9,6 +9,7 @@ import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.ser
 import { ReportService } from '../../shared/services/reports/report.service';
 import { automataScript } from '../../shared/models/scripts/automata-script';
 import { oldScript } from '../../shared/models/scripts/old-script';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -27,7 +28,7 @@ export class ScriptDetailComponent implements OnInit {
   downloading = false;
   alreadyReported = false;
   oldies:oldScript[] = []
-  
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
@@ -36,10 +37,14 @@ export class ScriptDetailComponent implements OnInit {
     private readonly router:Router,
     private route: ActivatedRoute,
     private readonly gapi: GoogleAuthService,
-    private readonly reportService:ReportService
+    private readonly reportService:ReportService,
+    private networkService: OnlineStatusService,
     ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
-      
+
+      this.networkService.status.subscribe((status: OnlineStatusType) =>{
+        this.status = status;
+      });      
   }
 
   ngOnInit(): void {
@@ -67,24 +72,40 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   download(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to download ${this.current.name}`});
+      return;
+    }
+    
     if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"primary",message:"You must be logged In to download this script."});
+      this.notifications.add({type:"primary",message:`You must be logged In to download ${this.current.name}`});
       return;
     }
 
-    this.downloading = true;
-    this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
-      next:(val)=>{
-        this.downloading = false;
-        this.notifications.add({type:"success",message:val.message});
+    this.scriptService.alreadyDownloaded(this.current.author,this.current.name,this.current.version).subscribe({
+      next:(value:boolean) => {
+        if(value){
+          this.notifications.add({type:"warning",message:`You have already downloaded ${this.current.name}`})
+        }else{
+          this.downloading = true;
+          this.scriptService.download(this.current._id).subscribe({
+            next:(val)=>{
+              this.downloading = false;
+              this.notifications.add({type:"success",message:`Successfully downloaded ${this.current.name}`});
 
+            },
+            error:(err)=>{     
+              this.downloading = false;
+              console.log(err);
+              this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+            }      
+          });
+        }
       },
-      error:(err)=>{     
-        this.downloading = false;
-        console.log(err);
+      error:()=>{
         this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
-      }      
-    });
+      }
+    })
   }
 
   convertBytes(value:number): string{

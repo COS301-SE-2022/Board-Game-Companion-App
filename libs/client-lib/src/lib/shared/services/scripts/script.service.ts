@@ -10,7 +10,7 @@ import { myScript } from '../../models/scripts/my-script';
 import { oldScript } from '../../models/scripts/old-script';
 import { version } from '../../models/scripts/version';
 import { automataScript } from '../../models/scripts/automata-script';
-
+import { downloadScript } from '../../models/scripts/download-script';
 
 @Injectable()
 export class ScriptService {
@@ -58,8 +58,27 @@ export class ScriptService {
     return this.httpClient.post<myScript>(this.api + "my-scripts/create-script",formData);
   }
 
-  download(id:string,owner:user):Observable<{status:string,message:string,script:script}>{
-    return this.httpClient.post<{status:string,message:string,script:script}>(this.api + "scripts/download",{id:id,owner:owner});
+  alreadyDownloaded(author:user,name:string,version:version):Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("authorName",author.name);
+    param = param.set("authorEmail",author.email);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("name",name);
+    param = param.set("vMajor",version.major);
+    param = param.set("vMinor",version.minor);
+    param = param.set("vPatch",version.patch);
+
+    return this.httpClient.get<boolean>(this.api + "downloads/already-downloaded",{params: param})
+  }
+
+  download(id:string):Observable<downloadScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+
+    return this.httpClient.get<downloadScript>(this.api + "automata-scripts/download",{params: param});
   }
 
   getScriptsCreatedByMe():Observable<myScript[]>{

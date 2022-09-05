@@ -29,6 +29,7 @@ import { MyScriptService } from './services/my-script/my-script.service';
 import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
 import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.schema';
 import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
+import { DownloadScript, DownloadScriptSchema } from './schemas/download-script.schema';
 import { AutomataService } from './services/automata/automata.service';
 import { ApiAutomataScriptController } from './controllers/automata-scripts/automata-script.controller';
 import { ApiEditorController } from './controllers/editor/editor.controller';
@@ -44,7 +45,8 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
                                 { name: Report.name, schema: ReportSchema},
                                 { name: MyScript.name, schema: MyScriptSchema},
                                 { name: AutomataScript.name, schema: AutomataScriptSchema},
-                                { name: OldScript.name, schema: OldScriptSchema}
+                                { name: OldScript.name, schema: OldScriptSchema},
+                                { name: DownloadScript.name, schema: DownloadScriptSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],

@@ -1,6 +1,6 @@
-import { file } from "../general/files";
+import { file } from "../general/file";
 import { user } from "../general/user";
-import { version } from "../general/version";
+import { version } from "./version";
 import { baseScript } from "./base-script";
 
 export interface downloadScript extends baseScript{

@@ -6,12 +6,18 @@ import { RatingService } from '../../services/ratings/rating.service';
 import { AutomataService } from '../../services/automata/automata.service';
 import { Rating } from '../../schemas/rating.schema';
 import { OldScript } from '../../schemas/old-script.schema'
+import { DownloadScript } from '../../schemas/download-script.schema';
 
 @Controller('automata-scripts')
 export class ApiAutomataScriptController {
     constructor(private readonly automataService:AutomataService,
         private readonly ratingService:RatingService){}
     
+
+    @Get('download')
+    async download(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<DownloadScript>{
+        return this.automataService.download(id,{name:userName,email:userEmail});
+    }
 
     @Get('old-versions')
     async getOldVersions(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<OldScript[]>{
