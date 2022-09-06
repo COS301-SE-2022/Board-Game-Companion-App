@@ -61,6 +61,7 @@ export class DownloadsService {
             }
         }
 
+        oldScript.models = [];
         for(let count = 0; count < newScript.models.length; count++){
             const value = newScript.models[count];
             const modelCopy = await this.modelService.copyModel(value,NeuralNetworkDiscriminator.DownloadScript);

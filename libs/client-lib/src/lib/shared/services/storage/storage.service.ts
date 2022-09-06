@@ -14,7 +14,7 @@ export class StorageService{
     indices: ["name"]
   },{
     name: "downloads",
-    indices: ["name"]
+    indices: ["name","_id"]
   }]
 
   constructor(){
@@ -24,7 +24,7 @@ export class StorageService{
       this.supported = false
     }
 
-    const request = indexedDB.open(this.database,1);
+    const request = indexedDB.open(this.database,2);
 
     request.onerror = (ev:any) => {
       this.openFailure = true;

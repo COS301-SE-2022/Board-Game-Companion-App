@@ -139,6 +139,8 @@ export class AutomataService {
     async checkForUpdatesForOne(name:string,author:user,version:version):Promise<string>{
         const script = await this.automataModel.findOne({"name":name,"author.name":author.name,"author.email":author.email})
         let result = "";
+        console.log(version);
+        console.log(author);
 
         if(this.checkVersion(version,script.version))
             result = script._id;

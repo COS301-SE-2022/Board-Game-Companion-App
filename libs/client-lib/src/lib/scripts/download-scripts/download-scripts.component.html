@@ -13,8 +13,9 @@
                     <button *ngIf = "online()" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                     </button>
-                    <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
-                        <i class="fas fa-download" data-toggle="tooltip" title="download"></i>
+                    <button  (click)="update(value)" class="hover:scale-110 p-1 text-white">
+                        <i *ngIf = "!updating.includes(value._id)" class="fas fa-wrench fa-bounce" data-toggle="tooltip" title="update"></i>
+                        <i *ngIf = "updating.includes(value._id)" class="fas fa-spinner fa-pulse" data-toggle="tooltip" title="updating"></i>
                     </button>
                 </div>
                 <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>

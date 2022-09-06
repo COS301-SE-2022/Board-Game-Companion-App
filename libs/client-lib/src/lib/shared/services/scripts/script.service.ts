@@ -11,6 +11,7 @@ import { oldScript } from '../../models/scripts/old-script';
 import { version } from '../../models/scripts/version';
 import { automataScript } from '../../models/scripts/automata-script';
 import { downloadScript } from '../../models/scripts/download-script';
+import { update } from '../../models/scripts/update';
 
 @Injectable()
 export class ScriptService {
@@ -135,6 +136,10 @@ export class ScriptService {
     param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
 
     return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all",{params : param});
+  }
+
+  updateDownloadedScript(ids:update):Observable<downloadScript>{
+    return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",ids);
   }
 
   getOldVersions(name:string,author:user):Observable<oldScript[]>{

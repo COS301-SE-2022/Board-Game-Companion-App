@@ -7,6 +7,8 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { update } from '../../shared/models/scripts/update';
+import { ModelsService } from '../../shared/services/models/models.service';
+import * as tf from '@tensorflow/tfjs'
 
 @Component({
   selector: 'board-game-companion-app-download-scripts',
@@ -17,6 +19,7 @@ export class DownloadScriptsComponent implements OnInit {
   scripts:downloadScript[] = [];
   filter:downloadScript[] = [];
   status: OnlineStatusType = OnlineStatusType.ONLINE;
+  updating:string[] = []
   updates:update[] = []
   page = 1;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
@@ -25,7 +28,8 @@ export class DownloadScriptsComponent implements OnInit {
               private readonly router:Router,
               private networkService: OnlineStatusService,
               private storageService: StorageService,
-              private readonly gapi: GoogleAuthService) {
+              private readonly gapi: GoogleAuthService,
+              private readonly modelsService: ModelsService) {
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
                   
@@ -41,6 +45,79 @@ export class DownloadScriptsComponent implements OnInit {
 
   online(): boolean{
     return this.status === OnlineStatusType.ONLINE;
+  }
+
+  updateRequired(value:downloadScript): boolean{
+    let result = false;
+
+    for(let count = 0; count < this.updates.length && !result; count++){
+      if(value._id === this.updates[count].oldId)
+        result = true;
+    }
+
+    return result;
+  }
+
+  removeUpdate(id:string): void{
+    const temp:update[] = [];
+    
+    this.updates.forEach((value:update) =>{
+      if(value.oldId  !== id)
+        temp.push(value);
+    })
+  }
+
+
+  update(value:downloadScript): void{
+    this.updates.forEach((val:update) => {
+      if(val.oldId === value._id){
+        this.updating.push(value._id);
+
+        this.scriptService.updateDownloadedScript(val).subscribe({
+          next:(response:downloadScript) => {
+            this.storageService.remove("downloads",value.name).then(()=>{
+              value.models.forEach((id:string) => {
+                this.storageService.remove("networks",id).catch((reason)=> console.error(reason));
+              });
+  
+              this.modelsService.getModelsByIdOnly(response.models).subscribe({
+                next:(networks:any) => {
+                  networks.forEach((network:any) => {
+                    this.storageService.insert("networks",network).then(async(res:string) => {
+                      const imodel = await tf.loadLayersModel(network.model.location);
+                      await imodel.save(`indexeddb://${network.name}`);
+                    }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                  })
+
+                  this.storageService.insert("downloads",response).then((res:string) =>{
+                    this.updating = this.updating.filter((id:string) => id != value._id);
+                    this.removeUpdate(value._id);
+                    this.notifications.add({type:'success',message:`Successfully updated ${response.name}`});
+                  }).catch(() => {
+                    this.updating = this.updating.filter((id:string) => id != value._id);
+                    this.removeUpdate(value._id);
+                    this.notifications.add({type:'danger',message:`Something went wrong when updating ${value.name} locally`})
+                  })
+                },
+                error:(err) =>{
+                  this.updating = this.updating.filter((id:string) => id != value._id)
+                  this.removeUpdate(value._id);
+                  this.notifications.add({type:"danger",message:`Failed to retrieve the models of ${value.name}`})
+                }
+              })
+            }).catch(()=>{
+              this.updating = this.updating.filter((id:string) => id != value._id)
+              this.removeUpdate(value._id);
+              this.notifications.add({type:"danger",message:`Failed to update local version of ${value.name}`})
+            });
+          },
+          error:() => {
+            this.updating = this.updating.filter((id:string) => id != value._id)
+            this.notifications.add({type:"danger",message: `Something went wrong when updating ${value.name}.Try again later and if the error persists, you can contact the administrator`})
+          }   
+        })
+      }
+    })
   }
 
   getDownloadScripts():void{
@@ -82,6 +159,7 @@ export class DownloadScriptsComponent implements OnInit {
       this.scriptService.checkForUpdatesForOne(value.name,value.author,value.version).subscribe({
         next:(response: string) => {
           this.updates.push({oldId:value._id,newId:response});
+          alert(response);
         },
         error:(err)=>{
           console.log(err);

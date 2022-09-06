@@ -56,6 +56,7 @@ export class ApiAutomataScriptController {
 
     @Get('check-for-updates-for-one')
     async checkForUpdatesForOne(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('vMajor')vMajor:number,@Query('vMinor')vMinor:number,@Query('vPatch')vPatch:number): Promise<string>{
+
         return this.automataService.checkForUpdatesForOne(name,{name:userName,email:userEmail},{major:vMajor,minor:vMinor,patch:vPatch});
     }
 }
