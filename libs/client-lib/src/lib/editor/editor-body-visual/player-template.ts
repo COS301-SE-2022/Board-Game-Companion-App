@@ -10,6 +10,7 @@ import { Component, Input} from "@angular/core";
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
                         Player <input> 
                     </div>
+                    <button *ngIf="Players.length > 2" (click)="removePlayer()" id = "removePlayer"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
                 <button (click)="addAction()" id = "addAction">Add Action</button>
                 <div class = "ActionConditionPairs" *ngFor = "item of Actions let i = index">
@@ -19,6 +20,7 @@ import { Component, Input} from "@angular/core";
                                 <div class = "title text-xl font-bold ml-4 mt-2">
                                     Action <input> <input>
                                 </div>
+                                <button *ngIf="Actions.length > 1" (click)="removeAction(i)" id = "removeAction"><i class="fa-solid fa-circle-xmark"></i></button>
                             </summary>
                             <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Actions[i]" [dest] = "Actions[i]" [dests] = "PlayerLoops" [methods] = "methods"></board-game-companion-app-element-template>
                         </details>
@@ -41,7 +43,7 @@ import { Component, Input} from "@angular/core";
                                 Turn
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Turn" [dest] = "Turn" [dests] = "PlayerLoops" [methods] = "methods"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Turn[0]" [dest] = "Turn[0]" [dests] = "PlayerLoops" [methods] = "methods"></board-game-companion-app-element-template>
                     </details>
                 </div>
             </details>
@@ -52,8 +54,10 @@ import { Component, Input} from "@angular/core";
 export class PlayerTemplateComponent{
     @Input() Actions = [[{title: '', class: '' , id: '', pos: 0}]] 
     @Input() Conditions = [[{title: '', class: '' , id: '', pos: 0}]]
-    @Input() Turn = [{title: '', class: '' , id: '', pos: 0}]  
-    @Input() PlayerLoops = [this.Actions[0]]
+    @Input() Turn = [[{title: '', class: '' , id: '', pos: 0}]]  
+    @Input() PlayerLoops = [[{title: '', class: '' , id: '', pos: 0}]]
+    @Input() Players = [{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]},{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]}]
+    @Input() Index = 0
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
@@ -63,6 +67,17 @@ export class PlayerTemplateComponent{
     addAction(){
         this.Actions.push([{title: '', class: '' , id: '', pos: 0}])
         this.Conditions.push([{title: '', class: '' , id: '', pos: 0}])
+    }
+
+    removeAction(i: number)
+    {
+        this.Actions.splice(i, 1)
+        this.Conditions.splice(i,1)
+    }
+
+    removePlayer()
+    {
+        this.Players.splice(this.Index, 1)
     }
     
 }

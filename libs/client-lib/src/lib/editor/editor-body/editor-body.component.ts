@@ -48,6 +48,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
       console.log(this.editorVisual.Players)
+      console.log(this.editorVisual.Endgame)
       if(source !== target)
       {
         console.log(document.getElementById("players")?.contains(target))
@@ -173,8 +174,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               break
             }
 
+            console.log(this.editorVisual.Players[j])
             //Go through players turn
-            recent = this.editorVisual.Players[j].turn.findIndex((obj) => {
+            recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
               return obj.id === "e" + this.count.toString()
             })
 
@@ -214,7 +216,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 const dest = [
                   {title: '', class: '', id: '', pos: 0}
                 ]
-                console.log("Turn Loop")
                 this.editorVisual.PlayersLoops.push(dest)
                 break
               }
@@ -270,7 +271,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   case "VisualD":
                     {
                       this.editorVisual.playersLoopIndex++
-                      this.editorVisual.Players[player].turn[recent].pos = this.editorVisual.playersLoopIndex
+                      this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
                       const dest = [
                         {title: '', class: '', id: '', pos: 0}
                       ]

@@ -35,13 +35,29 @@ export class EditorBodyVisualComponent {
           {title: '', class: '' , id: '', pos: 0}
         ]
       ], 
-      conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
-    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
+      conditions: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ], 
+      turn: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0}
+        ]
+      ]},
+    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]}
   ]
-
 
   PlayersLoops = [
     this.Player1
+  ]
+
+  Cards = [{effect: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}]}]
+
+  CardsLoop = [
+    [{title: '', class: '' , id: '', pos: 0}]
   ]
 
   GameLoops = [
@@ -60,6 +76,11 @@ export class EditorBodyVisualComponent {
 
   addNewPlayer()
   {
-    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]})
+    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]})
+  }
+
+  addNewCard()
+  {
+    this.Cards.push({effect: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}]})
   }
 }
