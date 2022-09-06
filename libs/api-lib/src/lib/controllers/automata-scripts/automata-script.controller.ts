@@ -20,8 +20,14 @@ export class ApiAutomataScriptController {
     }
 
     @Get('old-versions')
-    async getOldVersions(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<OldScript[]>{
-        return this.automataService.getOldVersions(name,{name:userName,email:userEmail});
+    async getOldVersions(@Query('idList')idList:string):Promise<OldScript[]>{
+        try{
+            const list:string[] = JSON.parse(idList);
+            return this.automataService.getOldVersions(list);
+        }catch(err){
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
+        
     }
 
     @Get('retrieve-all')
@@ -55,8 +61,7 @@ export class ApiAutomataScriptController {
     }
 
     @Get('check-for-updates-for-one')
-    async checkForUpdatesForOne(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('vMajor')vMajor:number,@Query('vMinor')vMinor:number,@Query('vPatch')vPatch:number): Promise<string>{
-
-        return this.automataService.checkForUpdatesForOne(name,{name:userName,email:userEmail},{major:vMajor,minor:vMinor,patch:vPatch});
+    async checkForUpdatesForOne(@Query('id')id:string): Promise<string>{
+        return this.automataService.checkForUpdatesForOne(id);
     }
 }

@@ -31,6 +31,7 @@ export class AutomataService {
             return null;
 
         const dto:downloadScriptDto = {
+            link: script._id,
             name: script.name,
             author: {
                 name: script.author.name,
@@ -86,8 +87,8 @@ export class AutomataService {
         return result;
     }
 
-    async getOldVersions(name:string,author:user):Promise<OldScript[]>{
-        return this.oldModel.find({"name":name,"author.name":author.name,"author.email":author.email});
+    async getOldVersions(idList:string[]):Promise<OldScript[]>{
+        return this.oldModel.find().where('_id').in(idList);
     }
 
     async getAutomataScript(name:string,author:user):Promise<AutomataScriptDocument>{
@@ -136,15 +137,12 @@ export class AutomataService {
         return result;
       }
 
-    async checkForUpdatesForOne(name:string,author:user,version:version):Promise<string>{
-        const script = await this.automataModel.findOne({"name":name,"author.name":author.name,"author.email":author.email})
-        let result = "";
-        console.log(version);
-        console.log(author);
-
-        if(this.checkVersion(version,script.version))
-            result = script._id;
-
-        return result;
+    async checkForUpdatesForOne(id:string):Promise<string>{
+        const result = await this.automataModel.findOne({"previous":{$in:[id]}})
+        
+        if(result !== null && result !== undefined)
+            return result._id;
+            
+        return "";
     }
 }

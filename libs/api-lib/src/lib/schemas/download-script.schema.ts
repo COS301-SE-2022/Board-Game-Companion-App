@@ -11,6 +11,9 @@ export class DownloadScript extends baseScript{
     owner: user;
 
     @Prop({required: true})
+    link: string;
+    
+    @Prop({required: true})
     dateDownloaded: Date;
 }
 

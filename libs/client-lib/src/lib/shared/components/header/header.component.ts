@@ -1,4 +1,4 @@
-import { Component, ElementRef, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
@@ -20,10 +20,11 @@ export class HeaderComponent implements OnInit {
   admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com","u19062665@tuks.co.za"];
   searchValue = "";
   showHeader = true;
-
+  @Input()height = 0;
+  
   differ: KeyValueDiffer<string, any>;
   constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
-    
+           
     gapi.UserSubject.subscribe({
       next:(value)=>{
         this.UserDetails = value;
@@ -55,8 +56,9 @@ export class HeaderComponent implements OnInit {
         this.log = "logout";
       } 
 
-    }else
-      this.router.navigate(['/scripts']);
+    }
+    
+    this.router.navigate(['/scripts']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;

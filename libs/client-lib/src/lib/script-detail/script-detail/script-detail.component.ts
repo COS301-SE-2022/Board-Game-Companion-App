@@ -67,7 +67,7 @@ export class ScriptDetailComponent implements OnInit {
   }
 
   getOldies(): void{
-    this.scriptService.getOldVersions(this.current.name,this.current.author).subscribe({
+    this.scriptService.getOldVersions(this.current.previous).subscribe({
       next: (value:oldScript[]) => {
         this.oldies = value;
       },

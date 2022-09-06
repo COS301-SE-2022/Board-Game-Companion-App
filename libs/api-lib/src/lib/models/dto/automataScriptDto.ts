@@ -18,4 +18,5 @@ export interface automataScriptDto{
     export: boolean;
     comments: string[];
     source: file;
+    previous: string[];
 }

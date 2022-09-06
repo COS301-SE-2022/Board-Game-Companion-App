@@ -74,14 +74,9 @@ export class ScriptService {
   }
 
 
-  checkForUpdatesForOne(name:string,author:user,version:version):Observable<string>{
+  checkForUpdatesForOne(id:string):Observable<string>{
     let param = new HttpParams();
-    param = param.set("name",name);
-    param = param.set("userEmail",author.name);
-    param = param.set("userName",author.email);
-    param = param.set("vMajor",version.major);
-    param = param.set("vMinor",version.minor);
-    param = param.set("vPatch",version.patch);
+    param = param.set("id",id);
     
     return this.httpClient.get<string>(this.api + 'automata-scripts/check-for-updates-for-one',{params: param});
   }
@@ -142,11 +137,9 @@ export class ScriptService {
     return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",ids);
   }
 
-  getOldVersions(name:string,author:user):Observable<oldScript[]>{
+  getOldVersions(idList:string[]):Observable<oldScript[]>{
     let param = new HttpParams();
-    param = param.set("name",name);
-    param = param.set("userName",author.name);
-    param = param.set("userEmail",author.email);
+    param = param.set("idList",JSON.stringify(idList));
 
     return this.httpClient.get<oldScript[]>(this.api + "automata-scripts/old-versions",{params: param});
   }

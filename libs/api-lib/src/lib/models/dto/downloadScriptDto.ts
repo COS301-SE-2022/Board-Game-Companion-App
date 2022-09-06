@@ -14,4 +14,5 @@ export interface downloadScriptDto{
     models: string[];
     owner: user;
     dateDownloaded: Date;
+    link: string;
 }

@@ -5,6 +5,7 @@ import { EditorStatusBarComponent } from '../editor-status-bar/editor-status-bar
 import { Router } from '@angular/router';
 import { find } from '../../shared/models/editor/find';
 import { replace } from '../../shared/models/editor/replace';
+import { EditorToolBarComponent } from '../editor-tool-bar/editor-tool-bar.component';
 import { EditorSideBarComponent } from '../editor-side-bar/editor-side-bar.component';
 import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import * as tf from '@tensorflow/tfjs'
@@ -16,6 +17,7 @@ import { DragulaService } from 'ng2-dragula';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { myScript } from '../../shared/models/scripts/my-script';
 import { EditorService } from '../../shared/services/editor/editor.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 interface message{
   message: string;
@@ -40,11 +42,13 @@ export class EditorComponent implements OnInit{
   bodyWidth = 0;
   messages:message[] = [];
   @ViewChild(EditorBodyComponent,{static:true}) editorCode: EditorBodyComponent = new EditorBodyComponent(this.editorService, this.dragulaService);
+  @ViewChild(EditorToolBarComponent,{static:true}) editorToolBar!: EditorToolBarComponent;
   @ViewChild(EditorConsoleComponent,{static:true}) editorConsole: EditorConsoleComponent = new EditorConsoleComponent();
   @ViewChild(EditorStatusBarComponent,{static:true}) editorStatusBar: EditorStatusBarComponent = new EditorStatusBarComponent();
   @ViewChild(EditorBodyComponent,{static:true}) editorBody: EditorBodyComponent = new EditorBodyComponent(this.editorService, this.dragulaService);
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
-  currentScript!:myScript;
+  @ViewChild(NotificationComponent,{static:true}) notification!: NotificationComponent;
+  currentScript:myScript = new myScript();
   location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
   showInput = false;
   showOutput = false;
@@ -63,7 +67,8 @@ export class EditorComponent implements OnInit{
               private router: Router,
               public dragulaService: DragulaService,
               private readonly storageService: StorageService){
-    this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
+    const script = this.router.getCurrentNavigation()?.extras.state?.['value'];
+
     dragulaService.createGroup('COPYABLE', 
     {
       direction:'horizontal',
@@ -99,7 +104,6 @@ export class EditorComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     this.updateDimensions();

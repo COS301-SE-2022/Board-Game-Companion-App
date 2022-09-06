@@ -43,7 +43,7 @@ export class MainScriptsComponent implements OnInit {
     this.elementRef.nativeElement.addEventListener('click', (value:MouseEvent) => {
       const box = document.getElementById('script-control-menu') as HTMLElement;
       const menu = document.getElementById('control-menu-btn') as HTMLElement;
-
+      console.log(document.getElementById('control-menu-btn'));
       if(!box.contains(value.target as Node) && !menu.contains(value.target as Node)) {
         this.showControlMenu = false;
       }

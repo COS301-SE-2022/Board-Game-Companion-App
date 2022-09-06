@@ -7,6 +7,9 @@ export type AutomataScriptDocument = AutomataScript & Document;
 @Schema()
 export class AutomataScript extends baseScript{
     @Prop({required: true})
+    previous: string[];
+    
+    @Prop({required: true})
     dateReleased: Date;
 
     @Prop({required: true})

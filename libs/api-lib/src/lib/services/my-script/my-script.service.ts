@@ -175,7 +175,7 @@ export class MyScriptService {
         return result;
     }
 
-    async relegate(script: AutomataScriptDocument): Promise<void>{
+    async relegate(script: AutomataScriptDocument): Promise<OldScriptDocument>{
         //this.oldScriptModel
         const dto:oldScriptDto = {
             name: script.name,
@@ -236,10 +236,13 @@ export class MyScriptService {
         this.automataService.remove(script._id);
 
         await result.save();
+
+        return result;
     }
 
     async release(id:string,version:version):Promise<{success:boolean,message?:string,content?:AutomataScript}>{
         const script = await this.myScriptModel.findById(id);
+        const previous = [];
 
         if(script === null || script === undefined)
             return {success: false,message: "Can not find script you are trying to release."};
@@ -247,7 +250,9 @@ export class MyScriptService {
         const current:AutomataScriptDocument = await this.automataService.getAutomataScript(script.name,script.author);
 
         if(current !== null && current !== undefined){
-            this.relegate(current);
+            current.previous.forEach((value)=> previous.push(value));
+            const old = await this.relegate(current);
+            current.previous.push(old._id);
         }
 
         const dto:automataScriptDto = {
@@ -265,7 +270,8 @@ export class MyScriptService {
             source: {name: "",location:"",key:""},
             build: {name: "",location:"",key:""},
             icon: {name: "",location:"",key:""}, 
-            models: []
+            models: [],
+            previous: previous
         }
 
         const createdScript = new this.automataModel(dto);

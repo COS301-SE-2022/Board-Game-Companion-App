@@ -10,7 +10,7 @@
                     <button (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                     </button>
-                    <button *ngIf = "!downloaded.includes(value._id)" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                    <button *ngIf = "!downloaded.includes(value._id)" (click)="download(value)" class="hover:scale-110 p-1 text-white">
                         <i *ngIf = "!downloading.includes(value._id)" class="fas fa-download" data-toggle="tooltip" title="download"></i>
                         <i *ngIf = "downloading.includes(value._id)" class="fas fa-spinner fa-pulse" data-toggle="tooltip" title="downloading"></i>
                     </button>

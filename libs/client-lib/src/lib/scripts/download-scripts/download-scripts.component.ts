@@ -156,7 +156,7 @@ export class DownloadScriptsComponent implements OnInit {
 
   checkForUpdates():void{
     this.scripts.forEach((value:downloadScript) => {
-      this.scriptService.checkForUpdatesForOne(value.name,value.author,value.version).subscribe({
+      this.scriptService.checkForUpdatesForOne(value.link).subscribe({
         next:(response: string) => {
           this.updates.push({oldId:value._id,newId:response});
           alert(response);
