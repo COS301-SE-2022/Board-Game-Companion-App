@@ -7,6 +7,7 @@ import { user } from '../../shared/models/general/user';
 import { report } from '../../shared/models/scripts/report';
 // import { TestPassService } from '../../test-pass.service';
 import { ReportService } from '../../shared/services/reports/report.service';
+import { myScript } from '../../shared/models/scripts/my-script';
 // import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
@@ -26,11 +27,15 @@ export class AdminComponent implements OnInit {
   public page = 1;
   public search = "";
   public scripts:automataScript[] = [];
+  public inProgressScripts:myScript[]=[];
   public currentScript: automataScript = new automataScript;
   public months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   public reports:report[] = [];
   public selected = "";
   public searchedValue = "";
+  public viewAuto = true;
+  public viewMines = true;
+  public viewReports = false;
 
   constructor(
     private adminService: AdminService,
@@ -38,87 +43,119 @@ export class AdminComponent implements OnInit {
     private route: ActivatedRoute, 
     private reportService:ReportService) {}
   
-  onEdit(filename: string, id: string): void{
-    console.log("this works okay");
-    this.router.navigate(['editor',{id, filename}]);
+  onMyEdit(script:myScript): void{
+    this.router.navigate(['editor'],{ state: { value: script } });
   }
   
-  onInfo(filename:string, id: string): void {
-    console.log(" Comment on script: "+id);
-    this.router.navigate(['script-detail',{id, filename}]);
+  onMyInfo(script:myScript): void {
+    this.router.navigate(['script-detail'],{ state: { value: script } });
   }
 
-  onRemove(id:string): void{
-    console.log("Admin removed");
+  onMyRemove(script:myScript): void{
+    // this.router.navigate(['editor'],{ state: { value: script } });
   }
 
   ngOnInit(): void {
- 
-    if(this.scripts.length===0){
-      
-      this.adminService.getScripts().subscribe(data=>{
-        const date = new Date();
-        this.scripts = data.filter( (res: { dateReleased: Date; }) => {
-          const d = new Date(res.dateReleased.toString());
-          return d.getMonth()===date.getMonth();
-        });
-        this.currentPub = this.scripts.length;
-        this.Active = this.scripts.length;
-      });
-
-      this.reportService.getAll().subscribe({
-        next:(data)=>{
-          this.reports = data;
-          this.Reports = this.reports.length;
-        },
-        error:(e)=>{
-          console.log(e);
-        }
-      });
-    }
-  }
-
-  findAll(): void{
+     
     this.adminService.getScripts().subscribe(data=>{
-
-      this.scripts = data;
-    });
-  }
-  currentMonth(): void{
-
-    this.adminService.getScripts().subscribe(data=>{
-
       const date = new Date();
-  
-      this.scripts = data.filter( (res: { dateReleased: Date; }) => {
+      let temp:automataScript[]=[];
+      this.scripts = data;
+      temp = data.filter( (res: { dateReleased: Date; }) => {
         const d = new Date(res.dateReleased.toString());
         return d.getMonth()===date.getMonth();
       });
 
+      this.currentPub = temp.length;
+      this.Active = this.scripts.length;
+    });
+    
+    this.reportService.getAll().subscribe({
+      next:(data)=>{
+        this.reports = data;
+        this.Reports = this.reports.length;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
     });
 
+    let temp : myScript[] = [];
+    this.adminService.getUserOwnedScripts().subscribe(data=>{
+        
+    temp = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+    this.inProgressScripts = temp;
+    this.InProgress = temp.length;
+    this.totalPub = this.InProgress + this.Active;
+    });
+
+  }
+
+  findAll(): void{
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        this.scripts = data;
+        this.viewMines = true;
+        this.viewAuto = true;
+        this.viewReports = false;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    });
+  }
+
+  currentMonth(): void{
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        const date = new Date();
+  
+          this.scripts = data.filter( (res: { dateReleased: Date; }) => {
+          const d = new Date(res.dateReleased.toString());
+          return d.getMonth()===date.getMonth();
+        });
+        this.viewAuto = true;
+        this.viewMines = false;
+        this.viewReports = false;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    });
   }
 
   runningScripts(): void{
-
-    this.adminService.getScripts().subscribe(data=>{
-      this.scripts = data;
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        this.scripts = data;
+        console.log(this.scripts);
+        this.viewAuto = true;
+        this.viewMines = false;
+        this.viewReports = false;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
     });
+    
   }
 
-  // flaggedScripts(): void{
-  //   this.adminService.getScripts().subscribe(data=>{
-  //     this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-  //   });
-  // }
+  ProgressScripts(): void{
+    let temp : myScript[] = [];
+    this.adminService.getUserOwnedScripts().subscribe({
+      next:(data)=>{
+        temp = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
 
-  // ProgressScripts(): void{
-  //   this.adminService.getScripts().subscribe(data=>{
-      
-  //     this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-  //     // this.ngOnInit();
-  //   });
-  // }
+        this.inProgressScripts = temp;
+        this.viewAuto = false;
+        this.viewMines = true;
+        this.viewReports = false;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    });
+  }
 
   onSearch(): void{
     this.scripts = [];
@@ -169,18 +206,34 @@ export class AdminComponent implements OnInit {
   }
 
   ReportedScripts():void{
-    const temp:automataScript[]=[];
+    // const temp:automataScript[]=[];
+    this.scripts = [];
     for(let i=0; i < this.reports.length;i++){
       this.adminService.getScriptById(this.reports[i].script).subscribe({
         next:(data)=>{
-          temp.push(data);
+          if(data!==null){
+            this.scripts.push(data);
+            console.log(data);
+            this.viewAuto = false;
+            this.viewMines = false;
+            this.viewReports = true;}
         },
         error:(e)=>{
           console.log(e);
         }
       });
     }
+    // this.scripts = temp;
+  }
+  onAutoEdit(script:automataScript): void{
+    this.router.navigate(['editor'], { state: { value: script } });
+  }
+  
+  onAutoInfo(script:automataScript): void {
+    this.router.navigate(['script-detail'], { state: { value: script } });
+  }
 
-    this.scripts = temp;
+  onAutoRemove(script:automataScript): void{
+    // this.router.navigate([''], { state: { value: script } });
   }
 }

@@ -86,91 +86,111 @@
 <div class="container">
 <!-- search functionality -->
 <div class = "row px-2.5 py-3">
-    <div class = "col-sm-11">
+    <div class = "col-sm-12">
         <div class="input-group relative w-full">
-            <input name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+            <input [(ngModel)]="searchedValue" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search..." aria-label="add" aria-describedby="add-input">
             <button (click) = "onSearch()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                 <i class="fas fa-search fa-2x"></i>
             </button>
         </div>
     </div>
  
-    <div *ngIf="" class="row">
-        <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page }">
+    <div *ngIf="viewAuto===true" class="row">
+        <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of scripts">
             <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
-                <span *ngIf = "script.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
-                <span *ngIf = "script.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
-                <span *ngIf = "script.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
+                <!-- <span *ngIf = "script.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span> -->
+                <!-- <span *ngIf = "script.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span> -->
+                <!-- <span *ngIf = "script.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>       -->
                 <img class="w-full h-full" [src]="script.icon.location" alt=""/>
                 
                 <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                     <div class = "w-full absolute bottom-20 content-center space-x-4">
-                        <!-- <button (click) = "play(value)" *ngIf = "value.status.value === 2" class="hover:scale-110 p-1 text-white" data-toggle="modal">
-                            <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
-                        </button> -->
-                        <button *ngIf = "script.status.value === 2" (click)="onInfo('','')" class="hover:scale-110 p-1 text-white">
+                        <button (click)="onAutoInfo(script)" class="hover:scale-110 p-1 text-white">
                             <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
-                        <button (click)="onEdit('','')" class="hover:scale-110 p-1 text-white">
+                        <button (click)="onAutoEdit(script)" class="hover:scale-110 p-1 text-white">
                             <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                         </button>
                     
-                        <button (click)="onRemove('')" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                        <button (click)="onAutoRemove(script)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
                             <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                         </button>
                     </div>
                     <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{script.name}}</b></p>
                 </div>
             </div>
-        </div>
-        <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>    
+        </div>   
     </div>
-    <div class="flagging">
+    <div *ngIf="viewMines===true" class="row">
+        <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of inProgressScripts">
+            <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+                <span *ngIf = "script.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+                <span *ngIf = "script.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
+                <span *ngIf = "script.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
+                <img class="w-full h-full" [src]="script.icon.location" alt=""/>
+                <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                    <div class = "w-full absolute bottom-20 content-center space-x-4">
+                        <button (click)="onMyInfo(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                        </button>
+                        <button (click)="onMyEdit(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
+                        </button>
+                    
+                        <button (click)="onMyRemove(script)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                        </button>
+                    </div>
+                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{script.name}}</b></p>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div *ngIf="viewReports===true" class="flagging">
         <div class="accordion" id="scriptList">
-            <div class="accordion-item" *ngFor="let report of reports | paginate: { itemsPerPage: 8, currentPage: page }">
+            <div class="accordion-item" *ngFor="let report of reports; index as i;">
                 <h2 class="accordion-header" id="title">
-                    <button class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + script.name" aria-expanded="true" [attr.aria-controls]="script.name">
+                    <button class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + scripts[i].name" aria-expanded="true" [attr.aria-controls]="scripts[i].name">
                         <div>
-                            <img class="w-8 h-8" [src]="script.icon.location" alt=""/>
+                            <img class="w-8 h-8" [src]="scripts[i].icon.location" alt=""/>
                         </div>
                         <div class = "ml-2 font-medium">
-                            {{script.name}}
+                            {{scripts[i].name}}
                         </div>
                     </button>
                 </h2>
     
-                <div [id]="'item_' + script.name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+                <div [id]="'item_' + scripts[i].name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
                     <div class="accordion-body script-body">
                         <div class = "row text-sm">
                             <div class = "col-sm-6">
                                 <div class = "flex flex-row mb-2">
                                     <label class = "info-label font-medium">Reported by:</label>
-                                    <p class = "info-value ml-2">{{script.version.major + '.' + value.version.minor + '.' + value.version.patch}}</p>
+                                    <p class = "info-value ml-2">{{report.user.name}}</p>
                                 </div>
                                 <div class = "flex flex-row mb-2">
                                     <label class = "info-label font-medium">Board game:</label>
-                                    <p class = "info-value ml-2">{{script.name}}</p>
+                                    <p class = "info-value ml-2">{{scripts[i].name}}</p>
                                 </div>
                                 <div class = "flex flex-row mb-2">
                                     <label class = "info-label font-medium">Date Issued:</label>
-                                    <p class = "info-value ml-2">{{formatDate(script.created)}}</p>                                
-                                </div>
-                                <div class = "flex flex-row mb-2">
-                                    <label class = "info-label font-medium">Status:</label>
-                                    <p class = "info-value ml-2">{{value.status.value === 0 ? 'Flagged' :(value.status.value === 1 ? 'In development' : 'Released')}}</p>
+                                    <p class = "info-value ml-2">{{formatDate(report.dateIssued)}}</p>                                
                                 </div>
                             </div>
                             <div class = "col-sm-12 mb-2">
-                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message</label>
-                                <textarea [(ngModel)]="script.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea>
+                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message:</label>
+                                <!-- <textarea [(ngModel)]="script.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea> -->
+                                <div>
+                                    {{report.message}}
+                                </div>
                             </div>
                             <div class = "col-sm-12 items-center justify-end space-x-2">
-                                <button *ngIf = "value.status.value === 1" data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
-                                    <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>
-                                </button>
+                                <!-- <button data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">-->
+                                <!--    <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>-->
+                               <!-- </button>
                                 <button (click) = "update(value)" data-toggle="tooltip" title="update"  id = "save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
                                     <i class="fas fa-cog" [ngClass] = "{'fa-spin':updates.includes(value._id)}"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>    
                     </div>

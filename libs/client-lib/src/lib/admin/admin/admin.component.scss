@@ -78,6 +78,13 @@ td{
 //     border: solid 1px  $Pcolour-2;
 //     float:left;
 // }
+.child{
+    display: none;
+  }
+  
+.parent:hover .child{
+    display: block
+}
 input:focus{
     outline: none;
 }
