@@ -10,6 +10,7 @@ import { Component, Input} from "@angular/core";
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
                         Card <input><input> 
                     </div>
+                    <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
                 <div id = "effect" class = "cardContainers">
                     <details open>
@@ -47,5 +48,10 @@ export class CardTemplateComponent{
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2}
       ]
+
+    removeCard()
+    {
+        this.Cards.splice(this.Index,1)
+    }
     
 }
