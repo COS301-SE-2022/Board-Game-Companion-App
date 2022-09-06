@@ -9,11 +9,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EditorBodyVisualComponent {
   
   endLoopIndex = 0
-  gameLoopIndex = 0
   playersLoopIndex = 0
 
-  Game = [
-    {title: '', class: '' , id: '', pos: 0}
+
+  Tiles = [
+    {variable: '', id: '', name: '', type: ''}
   ]
 
   Endgame = [
@@ -60,10 +60,6 @@ export class EditorBodyVisualComponent {
     [{title: '', class: '' , id: '', pos: 0}]
   ]
 
-  GameLoops = [
-    this.Game
-  ]
-
   EndgameLoops = [
     this.Endgame
   ]
@@ -82,5 +78,15 @@ export class EditorBodyVisualComponent {
   addNewCard()
   {
     this.Cards.push({effect: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}]})
+  }
+
+  addTileToBoard()
+  {
+    this.Tiles.push({variable: '', id: '', name: '', type: ''})
+  }
+
+  removeTile(i: number)
+  {
+    this.Tiles.splice(i, 1)
   }
 }
