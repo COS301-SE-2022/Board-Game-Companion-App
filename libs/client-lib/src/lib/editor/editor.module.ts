@@ -22,6 +22,7 @@ import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visu
 import { ElementTemplateComponent } from './editor-body-visual/element-template';
 import { LoopTemplateComponent } from './editor-body-visual/loop-template';
 import { PlayerTemplateComponent } from './editor-body-visual/player-template';
+import { CardTemplateComponent } from './editor-body-visual/card-template';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PlayerTemplateComponent } from './editor-body-visual/player-template';
     EditorBodyVisualComponent,
     ElementTemplateComponent,
     LoopTemplateComponent,
-    PlayerTemplateComponent
+    PlayerTemplateComponent,
+    CardTemplateComponent
   ],
   imports: [
     CommonModule,

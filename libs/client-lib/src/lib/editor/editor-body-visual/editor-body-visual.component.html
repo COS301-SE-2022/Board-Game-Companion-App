@@ -10,7 +10,11 @@
 </div>
 <div id = "players">
     <button (click)="addNewPlayer()" id = "addNewPlayer">Add New Player</button>
-    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "i" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods" open></board-game-companion-app-player-template>
+    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods" open></board-game-companion-app-player-template>
+</div>
+<div id = "Cards">
+    <button (click)="addNewCard()" id = "addNewCard">Add New Card</button>
+    <board-game-companion-app-card-template *ngFor = "let card of Cards | slice:1 let i = index" [id] = "'c'+ i.toString()" [Index]="i" [Cards]="Cards" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" open></board-game-companion-app-card-template>
 </div>
 <div id = "endGame" class = "boardContainers">
     <details open>

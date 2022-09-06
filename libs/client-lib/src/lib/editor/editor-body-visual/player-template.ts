@@ -55,7 +55,7 @@ export class PlayerTemplateComponent{
     @Input() Actions = [[{title: '', class: '' , id: '', pos: 0}]] 
     @Input() Conditions = [[{title: '', class: '' , id: '', pos: 0}]]
     @Input() Turn = [[{title: '', class: '' , id: '', pos: 0}]]  
-    @Input() PlayerLoops = [this.Actions[0]]
+    @Input() PlayerLoops = [[{title: '', class: '' , id: '', pos: 0}]]
     @Input() Players = [{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]},{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]}]
     @Input() Index = 0
     @Input() methods = [
