@@ -1,9 +1,9 @@
 <div class="container-fluid">
-    <h1 class="text-center">Admin Page</h1>
 <!-- Information -->
     <div class="container-fluid px-5 pt-12">
         <div class="row g-4 justify-content-center">
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===1,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==1}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-1">
                     <div class="card-body" (click)="currentMonth()">
                         <div class="row no-gutters align-items-center">
@@ -18,7 +18,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===2,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==2}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-2">
                     <div class="card-body" (click)="findAll()">
                         <div class="row no-gutters align-items-center">
@@ -34,7 +35,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===3,
+        'col-xl-2 col-md-6 mb-4 g-2':card!==3}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-3">
                     <div class="card-body" (click)="runningScripts()">
                         <div class="row no-gutters align-items-center">
@@ -50,14 +52,15 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===4,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==4}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-4">
-                    <div class="card-body" (click)="flaggedScripts()">
+                    <div class="card-body" (click)="ReportedScripts()">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="mb-1">Flagged</div>
+                                <div class="mb-1">Reports</div>
                                 <div>
-                                    <span class="firstSpan h5 mb-0 font-weight-bold text-white-800">{{ Flagged }}</span>
+                                    <span class="firstSpan h5 mb-0 font-weight-bold text-white-800">{{ Reports }}</span>
                                     <span class="secondSpan fa-solid fa-triangle-exclamation fa-1x text-white-300"></span>
                                 </div>
                             </div>
@@ -66,7 +69,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===5,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==5}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-5">
                     <div class="card-body" (click)="ProgressScripts()">
                         <div class="row no-gutters align-items-center">
@@ -85,73 +89,116 @@
     </div>
 </div>
 <div class="container">
-<!-- search and sort functionality -->
-    <div id="searc">
-        <div>
-            <input id = "textInput" [(ngModel)]="searchedValue">
-            <button id = "search" class="btn px-2 py-1 font-bold" (click)="onSearch()">Search</button>
-        </div>
-        <div>
-            <select id="sorting" class="btn px-2 py-1 font-bold" [(ngModel)]="selected" (change)="onSort()">
-                <option selected value="alphabetical">Alphabetical</option>
-                <option value="date">Date</option>
-            </select>
-            <button id = "sort" class="btn px-2 py-1 font-bold">Sort</button>
+<!-- search functionality -->
+<div class = "row px-2.5 py-3">
+    <div class = "col-sm-12">
+        <div class="input-group relative w-full">
+            <input [(ngModel)]="searchedValue" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search..." aria-label="add" aria-describedby="add-input">
+            <button (click) = "onSearch()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                <i class="fas fa-search fa-2x"></i>
+            </button>
         </div>
     </div>
-<!-- a table and search functionality -->
-    <div>
-        <table class="table-auto" data-toggle="table">
-            <thead>
-                <tr>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Creator
-                    </th>
-                    <th>
-                        Script Name
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th class="text-center">
-                        Action
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody *ngFor="let script of scripts | paginate: { itemsPerPage: 8, currentPage: page } ">
-                <tr>
-                    <td>
-                        {{ script.created }}
-                    </td>
-                    <td id="Author">
-                        {{ script.author.name }}
-                    </td>
-                    <td>
-                        {{ script.name }}
-                    </td>
-                    <td *ngIf="script.status.value===0" class="bg-red text-danger">
-                        {{ "flagged" }}
-                    </td>                        
-                    <td *ngIf="script.status.value===1" class="bg-red text-primary">
-                        {{ "In Progress"}}
-                    </td >
-                    <td *ngIf="script.status.value===2" class="bg-red text-success" >                            {{ "Published" }}
-                    </td >                        
-                    <td class="text-center align-middle">
-                        <button (click)="onEdit(script.source.name, script._id)" class="btn btn-success mx-2" data-toggle="modal">
-                            <span  class="fa-solid fa-pen-to-square" data-toggle="tooltip" title="Edit"></span>
+    <div *ngIf="viewAuto===true" class="row">
+        <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of scripts">
+            <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+                <!-- <span *ngIf = "script.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span> -->
+                <!-- <span *ngIf = "script.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span> -->
+                <!-- <span *ngIf = "script.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>       -->
+                <img class="w-full h-full" [src]="script.icon.location" alt=""/>
+                
+                <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                    <div class = "w-full absolute bottom-20 content-center space-x-4">
+                        <button (click)="onAutoInfo(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                         </button>
-                        <button (click)="onComment(script.source.name,script._id)" class="btn btn-primary mx-2" data-toggle="modal">
-                            <span class="fa-solid fa-comment" data-toggle="tooltip" title="Comment"></span>
+                        <button (click)="onAutoEdit(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                         </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event"></pagination-controls>
+                    
+                        <button (click)="onAutoRemove(script)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                        </button>
+                    </div>
+                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{script.name}}</b></p>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div *ngIf="viewMines===true" class="row">
+        <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of inProgressScripts">
+            <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+                <span *ngIf = "script.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+                <span *ngIf = "script.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
+                <span *ngIf = "script.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
+                <img class="w-full h-full" [src]="script.icon.location" alt=""/>
+                <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                    <div class = "w-full absolute bottom-20 content-center space-x-4">
+                        <button (click)="onMyInfo(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                        </button>
+                        <button (click)="onMyEdit(script)" class="hover:scale-110 p-1 text-white">
+                            <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
+                        </button>
+                    
+                        <button (click)="onMyRemove(script)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                        </button>
+                    </div>
+                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{script.name}}</b></p>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div *ngIf="viewReports===true" class="flagging">
+        <div class="accordion" id="scriptList">
+            <div class="accordion-item" *ngFor="let report of reports; index as i;">
+                <h2 class="accordion-header" id="title">
+                    <button class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + scripts[i].name" aria-expanded="true" [attr.aria-controls]="scripts[i].name">
+                        <div>
+                            <img class="w-8 h-8" [src]="scripts[i].icon.location" alt=""/>
+                        </div>
+                        <div class = "ml-2 font-medium">
+                            {{scripts[i].name}}
+                        </div>
+                    </button>
+                </h2>
+    
+                <div [id]="'item_' + scripts[i].name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+                    <div class="accordion-body script-body">
+                        <div class = "row text-sm">
+                            <div class = "col-sm-6">
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Reported by:</label>
+                                    <p class = "info-value ml-2">{{report.user.name}}</p>
+                                </div>
+                                <!-- <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Board game:</label>
+                                    <p class = "info-value ml-2">{{scripts[i].boardgame}}</p>
+                                </div> -->
+                                <div class = "flex flex-row mb-2">
+                                    <label class = "info-label font-medium">Date Issued:</label>
+                                    <p class = "info-value ml-2">{{formatDate(report.dateIssued)}}</p>                                
+                                </div>
+                            </div>
+                            <div class = "col-sm-12 mb-2">
+                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message: </label>
+                                <span id="text-message">
+                                    {{report.message}}
+                                </span>
+                            </div>
+                            <div class = "col-sm-12 items-center justify-end space-x-2">
+                                <button (click) = "onAutoRemove(scripts[i])" data-toggle="tooltip" title="flag" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                   <i class="fas fa-trash"></i>
+                               </button>
+                                <button (click) = "Ignore(report)" data-toggle="tooltip" title="ignore" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
