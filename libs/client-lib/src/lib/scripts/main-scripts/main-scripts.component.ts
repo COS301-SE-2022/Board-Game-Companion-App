@@ -40,10 +40,14 @@ export class MainScriptsComponent implements OnInit {
         this.page = 0;
     }
 
-    this.elementRef.nativeElement.addEventListener('click', (value:MouseEvent) => {
+    document.getElementById('scripts-wrapper')?.addEventListener('click', (value:MouseEvent) => {
       const box = document.getElementById('script-control-menu') as HTMLElement;
       const menu = document.getElementById('control-menu-btn') as HTMLElement;
-      console.log(document.getElementById('control-menu-btn'));
+
+
+      if(box === null || menu === null)
+        return;
+        
       if(!box.contains(value.target as Node) && !menu.contains(value.target as Node)) {
         this.showControlMenu = false;
       }
@@ -52,6 +56,11 @@ export class MainScriptsComponent implements OnInit {
 
   toggleControlMenu(){
     this.showControlMenu = !this.showControlMenu;
+  }
+
+  clear(): void{
+    if(this.downloadScripts !== undefined && this.downloadScripts !== null)
+      this.downloadScripts.clear();
   }
 
   tab(value:number) : void{
@@ -83,7 +92,7 @@ export class MainScriptsComponent implements OnInit {
     switch(this.page){
       case 0:{
         if(this.downloadScripts !== undefined)
-        this.downloadScripts.ngOnInit();
+          this.downloadScripts.search(this.searchTerm);
       }break;
       case 1:{
         if(this.myScripts !== undefined)

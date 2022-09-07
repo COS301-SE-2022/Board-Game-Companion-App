@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div id="downrate">
+    <div id="downrate" class = "mb-4">
       <div id="download" class="script-download mb-4 bg-white text-center">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
         <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
@@ -131,7 +131,7 @@
       </div>
 
       <div id = "download" class="script-download mb-4 bg-white text-center">
-        <div class = "script-download-header p-2 text-xl mb-2 j text-left"><b>Old Versions</b></div>
+        <div class = "script-download-header p-2 text-xl mb-2 text-left"><b>Old Versions</b></div>
         <div class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium" *ngFor = "let script of oldies">
           {{'v' + script.version.major + '.' + script.version.minor + '.' + script.version.patch}} 
         </div>

@@ -107,13 +107,16 @@ export class ScriptDetailComponent implements OnInit {
                 this.modelsService.getModelsByIdOnly(val.models).subscribe({
                   next:(models:any) => {
                     models.forEach((network:any) => {
-                      this.storageService.insert("networks",network).then(async(res:string) => {
+                      this.storageService.insert("download-networks",network).then(async(res:string) => {
                         const imodel = await tf.loadLayersModel(network.model.location);
                         await imodel.save(`indexeddb://${network.name}`);
-                      }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                      }).catch((reason)=>{
+                        console.log(reason);
+                        this.notifications.add({type:"warning",message:"something went wrong when loading model"})
+                      })
                     })
 
-                    this.storageService.insert("downloads",val).then((res:string)=>{
+                    this.storageService.insert("download-scripts",val).then((res:string)=>{
                       this.downloading = false;
                       this.notifications.add({type:"success",message:`Successfully downloaded ${this.current.name}`});
                     }).catch(() =>{

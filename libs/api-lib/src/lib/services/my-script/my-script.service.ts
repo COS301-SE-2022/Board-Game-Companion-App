@@ -17,6 +17,7 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AutomataService } from '../automata/automata.service';
 import { version } from '../../models/general/version';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
+import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
 import { automataScriptDto } from '../../models/dto/automataScriptDto';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { ModelsService } from '../models/models.service';
@@ -31,6 +32,7 @@ export class MyScriptService {
     constructor(@InjectModel(MyScript.name) private myScriptModel: Model<MyScriptDocument>,
                 @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
                 @InjectModel(OldScript.name) private oldScriptModel: Model<OldScriptDocument>,
+                @InjectModel(DownloadScript.name) private downloadsModel:Model<DownloadScriptDocument>,
                 private readonly localStorage: LocalStorageService,
                 private readonly automataService: AutomataService,
                 private readonly modelService: ModelsService,
@@ -74,22 +76,25 @@ export class MyScriptService {
         return result;
     }
 
+    async getMyScriptInfo(id:string):Promise<AutomataScript>{
+        return this.automataModel.findOne({"link":id});
+    }
+
 
     async remove(id:string):Promise<void>{
         const script = await this.myScriptModel.findByIdAndRemove(id);
+        if(script === null || script === undefined)
+            return;
+
         fs.unlinkSync(script.source.key);
         fs.unlinkSync(script.build.key);
         fs.unlinkSync(script.icon.key);
-        
-        for(let count = 0; count < script.models.length; count++){
-            const value = script.models[count];
-            const model = await this.modelService.removeById(value);
 
-            if(model !== null || model !== undefined){
-                fs.unlinkSync(model.model.key);
-                fs.unlinkSync(model.weights.key);
-            }
-        }
+        const automata = await this.automataModel.findOne({"link":script._id});
+        if(automata === null || automata === undefined)
+            return;
+
+        this.relegate(automata);
     }
 
 
@@ -235,6 +240,8 @@ export class MyScriptService {
 
         this.automataService.remove(script._id);
 
+        this.downloadsModel.updateMany({"link":script._id},{"link":result._id});
+        
         await result.save();
 
         return result;
@@ -252,7 +259,7 @@ export class MyScriptService {
         if(current !== null && current !== undefined){
             current.previous.forEach((value)=> previous.push(value));
             const old = await this.relegate(current);
-            current.previous.push(old._id);
+            previous.push(old._id);
         }
 
         const dto:automataScriptDto = {
@@ -271,7 +278,8 @@ export class MyScriptService {
             build: {name: "",location:"",key:""},
             icon: {name: "",location:"",key:""}, 
             models: [],
-            previous: previous
+            previous: previous,
+            link: script._id
         }
 
         const createdScript = new this.automataModel(dto);

@@ -49,4 +49,14 @@ export class ApiMyScriptController {
     async importAutomata(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<void>{
         this.myScriptService.importAutomata(id,{name:userName,email:userEmail})        
     }
+
+    @Get('info')
+    async getMyScriptInfo(@Query('id')id:string):Promise<AutomataScript>{
+        return this.myScriptService.getMyScriptInfo(id);
+    }
+
+    @Delete('remove')
+    async removeMyScript(@Query('id')id:string):Promise<void>{
+        return this.myScriptService.remove(id);    
+    }
 }

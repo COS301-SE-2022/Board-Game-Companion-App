@@ -18,6 +18,7 @@ import { StorageService } from '../../shared/services/storage/storage.service';
 import { myScript } from '../../shared/models/scripts/my-script';
 import { EditorService } from '../../shared/services/editor/editor.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { ModelsService } from '../../shared/services/models/models.service';
 
 interface message{
   message: string;
@@ -66,8 +67,9 @@ export class EditorComponent implements OnInit{
   constructor(private readonly editorService:EditorService,
               private router: Router,
               public dragulaService: DragulaService,
-              private readonly storageService: StorageService){
-    const script = this.router.getCurrentNavigation()?.extras.state?.['value'];
+              private readonly storageService: StorageService,
+              private modelsService: ModelsService){
+    this.currentScript = this.router.getCurrentNavigation()?.extras.state?.['value'];
 
     dragulaService.createGroup('COPYABLE', 
     {
@@ -127,6 +129,7 @@ export class EditorComponent implements OnInit{
     
 
     document.dispatchEvent(new Event('editor-page'));
+    this.loadModels();
   }
 
 
@@ -157,14 +160,39 @@ export class EditorComponent implements OnInit{
   }
 
 
+  loadModels(): void{
+    this.storageService.clear("editor-networks").catch(()=>{
+      this.notification.add({type:"warning",message:"Failed to locally stored neural network models"});
+    })
+
+    this.currentScript.models.forEach((id:string) => {
+      this.modelsService.getModel(id).subscribe({
+        next:(network:any) =>{
+          this.storageService.insert("editor-networks",network);
+          tf.loadLayersModel(network.model.location).then((value:tf.LayersModel) =>{ 
+            value.save(`indexeddb://editor-${network.name}`).catch(()=>{
+              this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
+            });
+          }).catch(()=>{
+            this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
+          })
+        },
+        error:() => {
+          this.notification.add({type:"danger",message:"Failed to load model."});
+        }
+      })
+    })
+  }
+
+
   async neuralnetworks():Promise<any>{
       return (async(name:string,input:number[])=>{
-        const info = await this.storageService.getByIndex("networks","name",name);
+        const info = await this.storageService.getByIndex("editor-networks","name",name);
 
         if(info.name == undefined)
           return "";
 
-        const model = await tf.loadLayersModel(`indexeddb://${info.name}`);
+        const model = await tf.loadLayersModel(`indexeddb://editor-${info.name}`);
         const min = tf.tensor(info.min);
         const max = tf.tensor(info.max);
 

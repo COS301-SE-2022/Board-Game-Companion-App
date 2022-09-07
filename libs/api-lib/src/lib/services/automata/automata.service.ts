@@ -138,11 +138,15 @@ export class AutomataService {
       }
 
     async checkForUpdatesForOne(id:string):Promise<string>{
-        const result = await this.automataModel.findOne({"previous":{$in:[id]}})
-        
-        if(result !== null && result !== undefined)
-            return result._id;
-            
+        const temp = await this.automataModel.find({});
+        console.log(id);
+        for(let count = 0; count < temp.length; count++){
+            if(temp[count].previous.includes(id)){
+                console.log(temp[count]._id)
+                return temp[count]._id;
+            }
+        }
+
         return "";
     }
 }

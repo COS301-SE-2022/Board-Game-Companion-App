@@ -19,4 +19,5 @@ export interface automataScriptDto{
     comments: string[];
     source: file;
     previous: string[];
+    link: string;
 }

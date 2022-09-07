@@ -9,6 +9,7 @@ import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.ser
 import { update } from '../../shared/models/scripts/update';
 import { ModelsService } from '../../shared/services/models/models.service';
 import * as tf from '@tensorflow/tfjs'
+import { oldScript } from '../../shared/models/scripts/old-script';
 
 @Component({
   selector: 'board-game-companion-app-download-scripts',
@@ -20,6 +21,7 @@ export class DownloadScriptsComponent implements OnInit {
   filter:downloadScript[] = [];
   status: OnlineStatusType = OnlineStatusType.ONLINE;
   updating:string[] = []
+  updatesRequired:string[] = []
   updates:update[] = []
   page = 1;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
@@ -47,17 +49,6 @@ export class DownloadScriptsComponent implements OnInit {
     return this.status === OnlineStatusType.ONLINE;
   }
 
-  updateRequired(value:downloadScript): boolean{
-    let result = false;
-
-    for(let count = 0; count < this.updates.length && !result; count++){
-      if(value._id === this.updates[count].oldId)
-        result = true;
-    }
-
-    return result;
-  }
-
   removeUpdate(id:string): void{
     const temp:update[] = [];
     
@@ -75,21 +66,21 @@ export class DownloadScriptsComponent implements OnInit {
 
         this.scriptService.updateDownloadedScript(val).subscribe({
           next:(response:downloadScript) => {
-            this.storageService.remove("downloads",value.name).then(()=>{
+            this.storageService.remove("download-networks","_id",value._id).then(()=>{
               value.models.forEach((id:string) => {
-                this.storageService.remove("networks",id).catch((reason)=> console.error(reason));
+                this.storageService.remove("networks","_id",id).catch((reason)=> console.error(reason));
               });
   
               this.modelsService.getModelsByIdOnly(response.models).subscribe({
                 next:(networks:any) => {
                   networks.forEach((network:any) => {
-                    this.storageService.insert("networks",network).then(async(res:string) => {
+                    this.storageService.insert("download-networks",network).then(async(res:string) => {
                       const imodel = await tf.loadLayersModel(network.model.location);
                       await imodel.save(`indexeddb://${network.name}`);
                     }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
                   })
 
-                  this.storageService.insert("downloads",response).then((res:string) =>{
+                  this.storageService.insert("download-scripts",response).then((res:string) =>{
                     this.updating = this.updating.filter((id:string) => id != value._id);
                     this.removeUpdate(value._id);
                     this.notifications.add({type:'success',message:`Successfully updated ${response.name}`});
@@ -123,7 +114,7 @@ export class DownloadScriptsComponent implements OnInit {
   getDownloadScripts():void{
     
     if(this.status === OnlineStatusType.OFFLINE){
-      this.storageService.getAll("downloads").then((value:any) => {
+      this.storageService.getAll("download-scripts").then((value:any) => {
         this.filter = this.scripts = value;
       }).catch(()=>{
         this.notifications.add({type:"danger",message:"Failed to downloaded scripts from local storage."});
@@ -132,7 +123,7 @@ export class DownloadScriptsComponent implements OnInit {
       return;
     }else if(this.status === OnlineStatusType.ONLINE){
       if(!this.gapi.isLoggedIn()){
-        this.storageService.getAll("downloads").then((value:any) => {
+        this.storageService.getAll("download-scripts").then((value:any) => {
           this.filter = this.scripts = value;
         }).catch(()=>{
           this.notifications.add({type:"danger",message:"Failed to downloaded scripts from local storage."});
@@ -143,6 +134,36 @@ export class DownloadScriptsComponent implements OnInit {
         this.scriptService.getDownloadScripts().subscribe({
           next: (value: downloadScript[]) => {
             this.filter = this.scripts = value;
+            
+            this.storageService.clear("download-scripts").then(()=>{
+              this.storageService.clear("download-networks")
+            })
+
+            this.scripts.forEach((script:downloadScript) => {
+              this.storageService.insert("download-scripts",script).then(()=>{
+                this.modelsService.getModelsByIdOnly(script.models).subscribe({
+                  next:(networks:any) => {
+                    networks.forEach((network:any)=>{
+                      this.storageService.insert("download-networks",network).then(()=>{
+                        tf.loadLayersModel(network.model.location).then((model:tf.LayersModel) =>{
+                          model.save(`indexeddb://${network.name}`)
+                        }).catch(()=>{
+                          this.notifications.add({type:"warning",message:`One of the models of ${script.name} failed to load properly`})
+                        })
+                      }).catch(()=>{
+                        this.notifications.add({type:"warning",message:`Failed to load one of the models that belong to ${script.name}`})
+                      })
+                    })
+                  },
+                  error:()=>{
+                    this.notifications.add({type:"danger",message:"Failed to load models locally"});
+                  }
+                })
+              }).catch(()=>{
+                this.notifications.add({type:"warning",message:`Failed to load ${script.name} locally.`});
+              })
+            })
+
             this.checkForUpdates();
           },
           error: (err) => {
@@ -158,8 +179,11 @@ export class DownloadScriptsComponent implements OnInit {
     this.scripts.forEach((value:downloadScript) => {
       this.scriptService.checkForUpdatesForOne(value.link).subscribe({
         next:(response: string) => {
-          this.updates.push({oldId:value._id,newId:response});
-          alert(response);
+          console.log(response);
+          if(response !== ""){
+            this.updates.push({oldId:value._id,newId:response});
+            this.updatesRequired.push(value._id);
+          } 
         },
         error:(err)=>{
           console.log(err);
@@ -178,11 +202,58 @@ export class DownloadScriptsComponent implements OnInit {
     this.filter = this.scripts.filter((script:downloadScript) => script.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)
   }
 
-  showInfo(value:downloadScript){
-    this.router.navigate(['script-detail'], { state: { value: value } });
+  showInfo(script:downloadScript){
+    this.scriptService.getDownloadInfo(script.link).subscribe({
+      next:(value:downloadScript | oldScript) =>{
+        if(value === null)
+          this.notifications.add({type:"primary",message:`Could not find the information of ${script.name}`})
+        else
+          this.router.navigate(['script-detail'], { state: { value: value } });
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:`Something went wrong when retrieving the information of ${script.name}`});
+      }
+    })
+    
   }
 
   play(value:downloadScript): void{
     this.router.navigate(['script-exec'], { state: { value: value } });
+  }
+
+  remove(script:downloadScript): void{
+    this.storageService.remove("download-scripts","_id",script._id).then((value:string)=>{
+      script.models.forEach((id:string) => {
+        this.storageService.remove("download-networks","_id",id);
+      })
+
+      if(this.status === OnlineStatusType.OFFLINE){
+        return;
+      }
+  
+      if(!this.gapi.isLoggedIn()){
+        return;
+      }
+
+      this.scriptService.removeDownload(script._id).subscribe({
+        next:()=>{
+          this.notifications.add({type:"success",message:`Successfully removed ${script.name}`});
+          this.scripts = this.scripts.filter((value:downloadScript) => value._id !== script._id);
+          this.filter = this.filter.filter((value:downloadScript) => value._id !== script._id);
+        },
+        error:()=>{
+          this.notifications.add({type:"danger",message:`Something went wrong when deleting ${script.name}`})
+        }
+      })
+    }).catch((reason)=>{
+      console.log(reason);
+      this.notifications.add({type:"warning",message:"Failed to remove script. Try again later or contact the developer if the error persists"});
+    })
+  }
+
+  clear(): void{
+    this.scripts.forEach((value:downloadScript) => {
+      this.remove(value);
+    })
   }
 }

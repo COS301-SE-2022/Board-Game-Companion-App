@@ -10,11 +10,14 @@ export class StorageService{
   private database = "board-game-companion-database";
   private db!:IDBDatabase;
   private stores:objectStore[] = [{
-    name: "networks",
+    name: "editor-networks",
     indices: ["name"]
   },{
-    name: "downloads",
-    indices: ["name","_id"]
+    name: "download-networks",
+    indices: ["_id"]
+  },{
+    name: "download-scripts",
+    indices: ["_id"]
   }]
 
   constructor(){
@@ -331,7 +334,7 @@ export class StorageService{
     })
   }
 
-  remove(storeName:string,key?:any): Promise<string>{
+  remove(storeName:string,index:string,value:any): Promise<string>{
     const functionality = (resolve:any,reject:any) => {
       let found = false;
 
@@ -345,14 +348,25 @@ export class StorageService{
       }else{
         const transaction = this.db.transaction(storeName,'readwrite');
         const store = transaction.objectStore(storeName);
-        const query = store.delete(key);
-        query.onerror = (ev:any) => {
-          reject(`Failed to remove object. Error: ${ev.target.errorCode}`);
-        }
+        const indexed = store.index(index);
+        const key = indexed.getKey(value);
 
-        query.onsuccess = (ev:any) => {
-          resolve("Okay");
-        }
+        key.onsuccess = (() => {
+          const query = store.delete(key.result as IDBValidKey);
+          query.onerror = (ev:any) => {
+            reject(`Failed to remove object. Error: ${ev.target.errorCode}`);
+          }
+  
+          query.onsuccess = (ev:any) => {
+            resolve("Okay");
+          }
+        });
+
+        key.onerror = ((ev:any) => {
+          reject(`Failed to remove object. Error: ${ev.target.errorCode}`);
+        })
+
+
       }
     }
 

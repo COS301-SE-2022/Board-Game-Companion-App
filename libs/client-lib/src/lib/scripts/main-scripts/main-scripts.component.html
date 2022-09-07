@@ -1,7 +1,7 @@
-<div class = "scripts-wrapper">
-    <div id = "scripts-container" class = "container mt-4 border-2">
+<div id = "scripts-wrapper">
+    <div id = "scripts-container" class = "container mt-4">
         <div class = "row">
-            <div class = "col-sm-3 border-2 p-2">
+            <div class = "col-sm-3 p-2">
                 <div class="sidebar text-center font-medium">
                     <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
                     <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
@@ -30,7 +30,7 @@
                                         <div [ngClass] = "{'hidden':!showControlMenu}" id = "script-control-menu" class = "absolute top-1 right-1 z-50 text-left rounded-md shadow-lg text-white bg-gray-700 w-32 py-2 overflow-hidden">
                                             <div data-bs-toggle="modal" data-bs-target="#create-script" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">New</div>
                                             <div (click) = "gridView = !gridView" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">{{gridView ? 'List-view' : 'Grid-view'}}</div>
-                                            <div *ngIf = "page === 0" class = "px-2 py-0.5 control-btn">Clear</div>
+                                            <div data-bs-toggle="modal" data-bs-target="#clearModal" *ngIf = "page === 0" class = "px-2 py-0.5 control-btn">Clear</div>
                                         </div>
                                     </div>
                                 </div>
@@ -47,4 +47,25 @@
         </div>
     </div>
 </div>
+
 <board-game-companion-app-create-scripts (newScript)="newScript($event)"></board-game-companion-app-create-scripts>
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="clearModal" tabindex="-1" aria-labelledby="clearModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+        <div class="wrapper text-center modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto text-white bg-clip-padding rounded-md outline-none text-current">
+            
+            <div class = "modal-body text-center my-2">
+                Are you sure you want to clear your downloads?                                
+            </div>
+      
+            <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
+                <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-gray-600 py-1 px-2 rounded font-medium hover:scale-110 active:shadow-none">
+                    No
+                </button>
+                <button  data-bs-dismiss="modal" data-toggle="tooltip" title="release" (click)="clear()" id = "save-theme" class = "ml-2 script-button bg-gray-600 py-1 px-2 rounded font-medium hover:scale-110 active:shadow-none">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

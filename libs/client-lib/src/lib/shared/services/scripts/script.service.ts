@@ -133,6 +133,34 @@ export class ScriptService {
     return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all",{params : param});
   }
 
+  removeDownload(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.delete<any>(this.api + "download-scripts/remove",{params: param});
+  }
+
+  getDownloadInfo(id:string):Observable<downloadScript | oldScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<downloadScript | oldScript>(this.api + "download-scripts/info",{params: param});
+  }
+
+  removeMyScript(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.delete<any>(this.api + "my-scripts/remove",{params: param})
+  }
+
+  getMyScriptInfo(id:string):Observable<automataScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<automataScript>(this.api + "my-scripts/info",{params: param});
+  }
+
   updateDownloadedScript(ids:update):Observable<downloadScript>{
     return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",ids);
   }

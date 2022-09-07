@@ -54,7 +54,7 @@ export class ModelsService {
     }
 
     async getAll(user:user):Promise<NeuralNetwork[]>{
-        return this.networkModel.find({"creator.email":user.email}).exec();
+        return this.networkModel.find({"creator.name":user.name,"creator.email":user.email,"discriminator":NeuralNetworkDiscriminator.None}).exec();
     }
 
     async remove(user:user,name:string):Promise<boolean>{

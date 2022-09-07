@@ -7,15 +7,18 @@ import { version } from '../../models/general/version';
 import { HttpService } from '@nestjs/axios';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
+import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { update } from '../../models/general/update';
 import fs = require('fs');
 import { ModelsService } from '../models/models.service';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator';
+import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
 
 @Injectable()
 export class DownloadsService {
     constructor(@InjectModel(DownloadScript.name) private downloadsModel:Model<DownloadScriptDocument>,
                 @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
+                @InjectModel(OldScript.name) private oldModel: Model<OldScriptDocument>,
                 private readonly httpService: HttpService,
                 private readonly localStorage: LocalStorageService,
                 private readonly modelService: ModelsService,
@@ -75,6 +78,20 @@ export class DownloadsService {
         return oldScript;
     }
 
+    async getDownloadInfo(id:string):Promise<AutomataScript | OldScript>{
+        const automata = await this.automataModel.findById(id);
+
+        if(automata !== null && automata !== undefined)
+            return automata;
+
+        const old = await this.oldModel.findById(id);
+
+        if(old !== null && old !== undefined)
+            return old;
+
+        return null;
+    }
+
     async getMyDownloads(owner:user):Promise<DownloadScript[]>{
         return this.downloadsModel.find({"owner.name":owner.name,"owner.email":owner.email});
     }
@@ -83,7 +100,21 @@ export class DownloadsService {
         return this.downloadsModel.findById(id).exec();
     }
 
-    async removeScript(id:string){
-        this.downloadsModel.findByIdAndRemove(id).exec();
+    async removeScript(id:string):Promise<void>{
+        const script = await this.downloadsModel.findByIdAndRemove(id);
+        
+        if(script === null || script === undefined)
+            return;
+
+        this.modelService.getModelsByIdOnly(script.models).then((networks:NeuralNetwork[])=>{
+            networks.forEach((network:NeuralNetwork) => {
+                fs.unlinkSync(network.model.key);
+                fs.unlinkSync(network.weights.key);
+            })
+        });
+
+        script.models.forEach((value:string) => {
+            this.modelService.removeById(value);
+        })
     }
 }

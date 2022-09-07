@@ -3,6 +3,8 @@ import { DownloadsService } from '../../services/downloads/downloads.service';
 import { Script } from '../../schemas/script.schema';
 import { DownloadScript } from '../../schemas/download-script.schema';
 import { update } from '../../models/general/update';
+import { AutomataScript } from '../../schemas/automata-script.schema';
+import { OldScript } from '../../schemas/old-script.schema';
 
 
 @Controller('download-scripts')
@@ -32,5 +34,15 @@ export class ApiDownloadScriptController {
     @Put('update')
     async update(@Body('ids')ids:update):Promise<DownloadScript>{
         return this.downloadsService.update(ids);
+    }
+
+    @Delete('remove')
+    async remove(@Query('id')id:string):Promise<void>{
+        return this.downloadsService.removeScript(id);
+    }
+
+    @Get('info')
+    async getDownloadInfo(@Query('id')id:string):Promise<AutomataScript | OldScript>{
+        return this.downloadsService.getDownloadInfo(id);
     }
 }

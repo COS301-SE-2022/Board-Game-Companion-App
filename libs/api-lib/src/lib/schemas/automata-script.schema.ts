@@ -10,6 +10,9 @@ export class AutomataScript extends baseScript{
     previous: string[];
     
     @Prop({required: true})
+    link: string;
+    
+    @Prop({required: true})
     dateReleased: Date;
 
     @Prop({required: true})

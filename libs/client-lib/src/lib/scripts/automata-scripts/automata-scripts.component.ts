@@ -120,16 +120,17 @@ export class AutomataScriptComponent implements OnInit{
               this.downloading = this.downloading.filter((id:string) => id !== current._id);
             }
 
+            this.downloaded.push(current._id)
               this.modelsService.getModelsByIdOnly(val.models).subscribe({
                 next:(models:any) => {
                   models.forEach((network:any) => {
-                    this.storageService.insert("networks",network).then(async(res:string) => {
+                    this.storageService.insert("download-networks",network).then(async(res:string) => {
                       const imodel = await tf.loadLayersModel(network.model.location);
                       await imodel.save(`indexeddb://${network.name}`);
                     }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
                   })
 
-                  this.storageService.insert("downloads",val).then((res:string)=>{
+                  this.storageService.insert("download-scripts",val).then((res:string)=>{
                     this.downloading = this.downloading.filter((id:string) => id !== current._id);
                     this.notifications.add({type:"success",message:`Successfully downloaded ${current.name}`});
                   }).catch(() =>{

@@ -1,6 +1,6 @@
 
 <board-game-companion-app-header [height] = 'headerHeight'></board-game-companion-app-header>
-<div id = "content" class = "overflow-scroll" [style.height.%] = 'contentHeight'>
+<div id = "content" class = "overflow-y-scroll overflow-x-hidden" [style.height.%] = 'contentHeight'>
     <router-outlet></router-outlet>
 </div>
 <board-game-companion-app-footer [height] = 'footerHeight'></board-game-companion-app-footer>
