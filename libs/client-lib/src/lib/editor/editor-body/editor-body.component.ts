@@ -46,137 +46,253 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
-      //Remove empty spot
-      const c = this.editorVisual.Endgame.findIndex((obj) => {
-        return obj.class === ''
-      })
-      if(c != null && c !== -1)
-      {
-        this.editorVisual.Endgame.splice(c,1)
-      }
       //Check if new element added or swapping elements
+      console.log(this.editorVisual.Players)
+      console.log(this.editorVisual.Endgame)
       if(source !== target)
       {
-        //need to find which loop it belongs to
-        console.log(this.editorVisual.EndgameLoops)
+        console.log(document.getElementById("players")?.contains(target))
         this.count++
-        let recent = this.editorVisual.Endgame.findIndex((obj) => {
-          return obj.id === "e" + this.count.toString()
-        })
-        //If not in general area must be in one of the loops.
-        let index = 0
-        if(recent === -1)
+        if(document.getElementById("endGame")?.contains(target))
         {
-          for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
+          //Endgame Container
+          //need to find which loop it belongs to
+          let recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === "e" + this.count.toString()
+          })
+          //If not in general area must be in one of the loops.
+          if(recent === -1)
           {
-            recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
+            let index = 0
+            for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
+            {
+              //Check which loop it is in.
+              recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+              if(recent !== -1)
+              {
+                index = j
+                break
+              }
+            }
+            switch(el.id)
+            {
+              case "visualF": 
+              case "visualW":
+              case "VisualD": 
+              {
+                if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+                {
+                  this.editorVisual.endLoopIndex++
+                  this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                  const dest = [
+                    {title: '', class: '', id: '', pos: 0}
+                  ]
+                  this.editorVisual.EndgameLoops.push(dest)
+                }
+                break
+              }
+              
+            }
+
+          }
+          else
+          {
+            switch(el.id)
+            {
+              case "visualF": 
+              case "visualW":
+              case "VisualD":
+              {
+                if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+                {
+                  this.editorVisual.endLoopIndex++
+                  this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
+                  const dest = [
+                    {title: '', class: '', id: '', pos: 0}
+                  ]
+                  this.editorVisual.EndgameLoops.push(dest)
+                }
+                break
+              }
+            }
+          }
+        }
+        else if(document.getElementById("player")?.contains(target))
+        {
+          console.log("player")
+          //Players
+          let player = 0
+          let position = 0
+          let property = ""
+          let recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === "e" + this.count.toString()
+          })
+          //need to find which player it belongs to
+          for(let j = 0; j < this.editorVisual.Players.length; j++)
+          {
+            //Go through that players actions.
+            for(let i = 0; i < this.editorVisual.Players[j].actions.length; i++)
+            {
+              recent = this.editorVisual.Players[j].actions[i].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+
+              if(recent !== -1)
+              {
+                player = j
+                position = i
+                property = "action"
+                break
+              }
+            }
+
+            if(property !== "")
+            {
+              break
+            }
+
+            //Go through that players conditions
+            for(let i = 0; i < this.editorVisual.Players[j].conditions.length; i++)
+            {
+              recent = this.editorVisual.Players[j].conditions[i].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+
+              if(recent !== -1)
+              {
+                player = j
+                position = i
+                property = "condition"
+                break
+              }
+            }
+
+            if(property !== "")
+            {
+              break
+            }
+
+            console.log(this.editorVisual.Players[j])
+            //Go through players turn
+            recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
               return obj.id === "e" + this.count.toString()
             })
+
             if(recent !== -1)
             {
-              index = j
+              player = j
+              property = "turn"
+              console.log("Turn")
               break
             }
           }
-          switch(el.id)
-          {
-            case "visualF": {
-              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '', id: '', pos: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
-              }
-              else
-              {
-                this.editorVisual.gameLoopIndex++
-                const dest = [
-                  {title: '', class: '', id: '', pos: 0}
-                ]
-                this.editorVisual.GameLoops.push(dest)
-                }
-                break
-            }
-            case "visualW": {
-              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '', id: '', pos: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
-              }
-              else
-              {
-                this.editorVisual.gameLoopIndex++
-                const dest = [
-                  {title: '', class: '', id: '', pos: 0}
-                ]
-                this.editorVisual.GameLoops.push(dest)
-                }
-                break
-            }
-          }
 
-        }
-        else
-        {
-          switch(el.id)
+          //If not in general player container else go to loops
+          if(property === "")
           {
-            case "visualF": {
-              if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
+            let index = 0
+            for(let j = 0; j < this.editorVisual.PlayersLoops.length; j++)
+            {
+              //Check which loop it is in.
+              recent = this.editorVisual.PlayersLoops[j].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+              if(recent !== -1)
               {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '', id: '', pos: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                console.log(recent)
-                console.log(this.editorVisual.Endgame)
-                console.log(this.editorVisual.EndgameLoops)
+                index = j
+                break
               }
-              else
+            }
+            switch(el.id)
+            {
+              case "visualF": 
+              case "visualW":
+              case "VisualD": 
               {
-                this.editorVisual.gameLoopIndex++
+                this.editorVisual.playersLoopIndex++
+                this.editorVisual.PlayersLoops[index][recent].pos = this.editorVisual.playersLoopIndex
                 const dest = [
                   {title: '', class: '', id: '', pos: 0}
                 ]
-                this.editorVisual.GameLoops.push(dest)
+                this.editorVisual.PlayersLoops.push(dest)
+                break
+              }
+              
+            }
+          } 
+          else
+          {
+            switch(property)
+            {
+              case "action":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD":
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].actions[position][recent].pos = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0}
+                    ]
+                    console.log("Turn General")
+                    this.editorVisual.PlayersLoops.push(dest)
+                  }
+                  break
+
+                }
+                break
+              case "condition":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD":
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].conditions[position][recent].pos = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0}
+                    ]
+                    this.editorVisual.PlayersLoops.push(dest)
+                  }
+                  break
+
+                }
+                break
+              case "turn":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD":
+                    {
+                      this.editorVisual.playersLoopIndex++
+                      this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
+                      const dest = [
+                        {title: '', class: '', id: '', pos: 0}
+                      ]
+                      this.editorVisual.PlayersLoops.push(dest)
+                    }
+                    break
+
                 }
                 break
             }
           }
         }
         
+
+        
+        
+        
+        
       }
-      else
-      {
-        if(el.firstChild != null)
-        {
-          const ew = el.firstChild as HTMLElement
-          const recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === ew.id
-          })
-          console.log(this.editorVisual.Endgame)
-          console.log(recent)
-        }
-      }
-      
        
-      })
-      
-    );
+    }));
     
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
