@@ -246,22 +246,6 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
-let arr = [ ] 
-for ( let i = 1 ; i < 10 ;i++) { 
-let b = await this.State.getTileByID(''+i)
-let j = i - 1 
-if ( b . pieces . length == 0 ) { 
-arr [ j ] = 0 
-} else { 
-if ( b . pieces [ 0 ] . Id == 'o') { 
-arr [ j ] = 1 
-} else { 
-arr [ j ] = -1 
-} 
-} 
-} 
-let a = await model( 'Test', arr ) 
-await output( a ) 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
 } } class naught extends player { 
     Actions = [
@@ -359,18 +343,15 @@ break
         
         return choices
     };async turn ( ) { 
-let prompt = 'where will you place the nought'
+let prompt = 'where will you place the naught'
 let ans = false 
+let t = 0 
 do { 
 let i = await input( prompt , 'text') 
-await output( i ) 
-let t = await this.State.getTileByID(i)
-let act = 'placeNaught'
-ans = await this.isActionLegal ( act , t ) 
-if ( ans ) { 
-await this.chooseAction ( act , t ) 
-} 
+t = await this.State.getTileByID(''+i)
+ans = await this.isActionLegal ( 'placeNaught' , t ) 
 } while ( ! ( ans ) ) 
+await this.chooseAction ( 'placeNaught' , t ) 
 } } //players
 
 
@@ -445,30 +426,21 @@ class script
     async endgame()
     {
         let ans = false 
-let x1 = '1'
-let x2 = '2'
-let x3 = '3'
-let x4 = '4'
-let x5 = '5'
-let x6 = '6'
-let x7 = '7'
-let x8 = '8'
-let x9 = '9'
-let t1 = await this.State.getTileByID(x1)
-let t2 = await this.State.getTileByID(x2)
-let t3 = await this.State.getTileByID(x3)
-let t4 = await this.State.getTileByID(x4)
-let t5 = await this.State.getTileByID(x5)
-let t6 = await this.State.getTileByID(x6)
-let t7 = await this.State.getTileByID(x7)
-let t8 = await this.State.getTileByID(x8)
-let t9 = await this.State.getTileByID(x9)
+let t1 = await this.State.getTileByID('1')
+let t2 = await this.State.getTileByID('2')
+let t3 = await this.State.getTileByID('3')
+let t4 = await this.State.getTileByID('4')
+let t5 = await this.State.getTileByID('5')
+let t6 = await this.State.getTileByID('6')
+let t7 = await this.State.getTileByID('7')
+let t8 = await this.State.getTileByID('8')
+let t9 = await this.State.getTileByID('9')
 if ( t1 . pieces . length == 1 && t2 . pieces . length == 1 && t3 . pieces . length == 1 ) { 
 if ( t1 . pieces [ 0 ] . Id == t2 . pieces [ 0 ] . Id && t2 . pieces [ 0 ] . Id == t3 . pieces [ 0 ] . Id ) { 
 if ( t1 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -476,9 +448,9 @@ ans = true
 if ( t4 . pieces . length == 1 && t5 . pieces . length == 1 && t6 . pieces . length == 1 ) { 
 if ( t4 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t6 . pieces [ 0 ] . Id ) { 
 if ( t4 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -486,9 +458,9 @@ ans = true
 if ( t7 . pieces . length == 1 && t8 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
 if ( t7 . pieces [ 0 ] . Id == t8 . pieces [ 0 ] . Id && t8 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
 if ( t7 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -496,9 +468,9 @@ ans = true
 if ( t1 . pieces . length == 1 && t4 . pieces . length == 1 && t7 . pieces . length == 1 ) { 
 if ( t1 . pieces [ 0 ] . Id == t4 . pieces [ 0 ] . Id && t4 . pieces [ 0 ] . Id == t7 . pieces [ 0 ] . Id ) { 
 if ( t1 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -506,9 +478,9 @@ ans = true
 if ( t2 . pieces . length == 1 && t5 . pieces . length == 1 && t8 . pieces . length == 1 ) { 
 if ( t2 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t8 . pieces [ 0 ] . Id ) { 
 if ( t2 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -516,9 +488,9 @@ ans = true
 if ( t3 . pieces . length == 1 && t6 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
 if ( t3 . pieces [ 0 ] . Id == t6 . pieces [ 0 ] . Id && t6 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
 if ( t3 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -526,9 +498,9 @@ ans = true
 if ( t1 . pieces . length == 1 && t5 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
 if ( t1 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
 if ( t1 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -536,9 +508,9 @@ ans = true
 if ( t3 . pieces . length == 1 && t5 . pieces . length == 1 && t9 . pieces . length == 1 ) { 
 if ( t3 . pieces [ 0 ] . Id == t5 . pieces [ 0 ] . Id && t5 . pieces [ 0 ] . Id == t9 . pieces [ 0 ] . Id ) { 
 if ( t3 . pieces [ 0 ] . Id == 'x') { 
-await output( 'Theaiwins') 
+await output( 'The ai wins') 
 } else { 
-await output( 'Youwin') 
+await output( 'You win') 
 } 
 ans = true 
 } 
@@ -547,7 +519,6 @@ if ( t7 . pieces . length == 1 && t8 . pieces . length == 1 && t9 . pieces . len
 await output( 'draw') 
 ans = true 
 } 
-let x = '"m"'
 return ans 
 //end_game
     
