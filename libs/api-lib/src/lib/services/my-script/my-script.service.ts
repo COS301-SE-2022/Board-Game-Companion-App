@@ -312,4 +312,8 @@ export class MyScriptService {
 
         return {success: true,content:result};
     }
+
+    async retrieveAllScripts():Promise<MyScript[]>{
+        return this.myScriptModel.find({});
+    }
 }
