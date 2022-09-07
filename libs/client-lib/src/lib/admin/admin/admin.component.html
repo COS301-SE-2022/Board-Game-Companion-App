@@ -2,7 +2,8 @@
 <!-- Information -->
     <div class="container-fluid px-5 pt-12">
         <div class="row g-4 justify-content-center">
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===1,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==1}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-1">
                     <div class="card-body" (click)="currentMonth()">
                         <div class="row no-gutters align-items-center">
@@ -17,7 +18,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===2,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==2}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-2">
                     <div class="card-body" (click)="findAll()">
                         <div class="row no-gutters align-items-center">
@@ -33,7 +35,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===3,
+        'col-xl-2 col-md-6 mb-4 g-2':card!==3}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-3">
                     <div class="card-body" (click)="runningScripts()">
                         <div class="row no-gutters align-items-center">
@@ -49,7 +52,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===4,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==4}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-4">
                     <div class="card-body" (click)="ReportedScripts()">
                         <div class="row no-gutters align-items-center">
@@ -65,7 +69,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-2 col-md-6 mb-4 g-2">
+            <div [ngClass]="{'col-xl-3 col-md-6 mb-3 g-1':card===5,
+            'col-xl-2 col-md-6 mb-4 g-2':card!==5}">
                 <div class="card border-left-primary shadow h-100 py-1" id="card-5">
                     <div class="card-body" (click)="ProgressScripts()">
                         <div class="row no-gutters align-items-center">
@@ -94,7 +99,6 @@
             </button>
         </div>
     </div>
- 
     <div *ngIf="viewAuto===true" class="row">
         <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let script of scripts">
             <div [id] = "script._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
@@ -168,29 +172,28 @@
                                     <label class = "info-label font-medium">Reported by:</label>
                                     <p class = "info-value ml-2">{{report.user.name}}</p>
                                 </div>
-                                <div class = "flex flex-row mb-2">
+                                <!-- <div class = "flex flex-row mb-2">
                                     <label class = "info-label font-medium">Board game:</label>
-                                    <p class = "info-value ml-2">{{scripts[i].name}}</p>
-                                </div>
+                                    <p class = "info-value ml-2">{{scripts[i].boardgame}}</p>
+                                </div> -->
                                 <div class = "flex flex-row mb-2">
                                     <label class = "info-label font-medium">Date Issued:</label>
                                     <p class = "info-value ml-2">{{formatDate(report.dateIssued)}}</p>                                
                                 </div>
                             </div>
                             <div class = "col-sm-12 mb-2">
-                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message:</label>
-                                <!-- <textarea [(ngModel)]="script.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea> -->
-                                <div>
+                                <label for="description" class="form-label inline-block mb-2 font-medium info-label">Message: </label>
+                                <span id="text-message">
                                     {{report.message}}
-                                </div>
+                                </span>
                             </div>
                             <div class = "col-sm-12 items-center justify-end space-x-2">
-                                <!-- <button data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">-->
-                                <!--    <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>-->
-                               <!-- </button>
-                                <button (click) = "update(value)" data-toggle="tooltip" title="update"  id = "save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
-                                    <i class="fas fa-cog" [ngClass] = "{'fa-spin':updates.includes(value._id)}"></i>
-                                </button> -->
+                                <button (click) = "onAutoRemove(scripts[i])" data-toggle="tooltip" title="flag" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                   <i class="fas fa-trash"></i>
+                               </button>
+                                <button (click) = "Ignore(report)" data-toggle="tooltip" title="ignore" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                    <i class="fas fa-ban"></i>
+                                </button>
                             </div>
                         </div>    
                     </div>

@@ -3,7 +3,7 @@ import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { script } from '../../shared/models/scripts/script';
 import { automataScript } from '../../shared/models/scripts/automata-script';
-import { user } from '../../shared/models/general/user';
+// import { user } from '../../shared/models/general/user';
 import { report } from '../../shared/models/scripts/report';
 // import { TestPassService } from '../../test-pass.service';
 import { ReportService } from '../../shared/services/reports/report.service';
@@ -36,6 +36,7 @@ export class AdminComponent implements OnInit {
   public viewAuto = true;
   public viewMines = true;
   public viewReports = false;
+  public card = 2;
 
   constructor(
     private adminService: AdminService,
@@ -98,6 +99,7 @@ export class AdminComponent implements OnInit {
         this.viewMines = true;
         this.viewAuto = true;
         this.viewReports = false;
+        this.card = 2;
       },
       error:(e)=>{
         console.log(e);
@@ -117,6 +119,7 @@ export class AdminComponent implements OnInit {
         this.viewAuto = true;
         this.viewMines = false;
         this.viewReports = false;
+        this.card = 1;
       },
       error:(e)=>{
         console.log(e);
@@ -132,6 +135,7 @@ export class AdminComponent implements OnInit {
         this.viewAuto = true;
         this.viewMines = false;
         this.viewReports = false;
+        this.card = 3;
       },
       error:(e)=>{
         console.log(e);
@@ -150,6 +154,7 @@ export class AdminComponent implements OnInit {
         this.viewAuto = false;
         this.viewMines = true;
         this.viewReports = false;
+        this.card = 5; 
       },
       error:(e)=>{
         console.log(e);
@@ -167,38 +172,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  onSort(): void{
-    if(this.selected==="alphabetical" && this.scripts.length!==0){
-
-      this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
-      {
-        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
-
-        if (nameA < nameB) 
-        {
-          return -1;
-        }
-        if (nameA > nameB)
-        {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-    else if(this.selected==="date" && this.scripts.length!==0)
-    {
-      this.scripts.sort(function(resultA: { dateReleased: any; }, resultB: { dateReleased: any; }) 
-      {
-        const dateA = resultA.dateReleased; 
-        const dateB = resultB.dateReleased;
-
-        return +new Date(dateA) - +new Date(dateB);
-      });
-    }
-  }
-
   formatDate(date:Date):string{
     date = new Date(date);
     const formated = ("0"+date.getDate()).slice(-2) +" "+ this.months[date.getMonth()] +" "+ date.getFullYear();
@@ -206,8 +179,9 @@ export class AdminComponent implements OnInit {
   }
 
   ReportedScripts():void{
-    // const temp:automataScript[]=[];
     this.scripts = [];
+    console.log("ai: "+this.reports[0].script);
+    this.card = 4; 
     for(let i=0; i < this.reports.length;i++){
       this.adminService.getScriptById(this.reports[i].script).subscribe({
         next:(data)=>{
@@ -216,14 +190,14 @@ export class AdminComponent implements OnInit {
             console.log(data);
             this.viewAuto = false;
             this.viewMines = false;
-            this.viewReports = true;}
+            this.viewReports = true;
+          }
         },
         error:(e)=>{
           console.log(e);
         }
       });
     }
-    // this.scripts = temp;
   }
   onAutoEdit(script:automataScript): void{
     this.router.navigate(['editor'], { state: { value: script } });
@@ -235,5 +209,14 @@ export class AdminComponent implements OnInit {
 
   onAutoRemove(script:automataScript): void{
     // this.router.navigate([''], { state: { value: script } });
+  }
+
+  Ignore(repo:report): void{
+   this.reportService.remove(repo._id).subscribe({next:(result)=>{
+    console.log(repo._id);
+    console.log(result);
+   },error:(e)=>{
+    console.log(e);
+   }})
   }
 }

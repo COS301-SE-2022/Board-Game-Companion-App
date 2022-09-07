@@ -5,27 +5,11 @@
     margin-top: 5rem;
 }
 
-table{
-    width: 100%;
-    background-color: white;
-}
 button{
     padding: 2rem;
 }
-
-thead{
-    width: 100%;
+.main-header-title{
     background-color: $Pcolour-2;
-    color: white;
-}
-th{
-    font-size: 32px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-td{
-    font-size: 24px;
-    color: black;
 }
 #card-1,#card-2,#card-3,#card-4,#card-5{
     font-size: 18px;
@@ -58,26 +42,9 @@ td{
 }
 
 .card-body:hover{
-    transform: scale(1.25);
+    transform: scale(1.05);
     cursor: pointer;
 }
-// #search{
-//     background-color: $Pcolour-2;
-//     color: $Pcolour-3;
-//     font-size: 14px;
-//     float: left;
-//     // margin-right: 64px;
-//     margin-top: 68px;
-// }
-// input{
-//     border-radius: 10px;
-//     width: 400px;
-//     color: black;
-//     margin-right: 16px;
-//     margin-top: 68px;
-//     border: solid 1px  $Pcolour-2;
-//     float:left;
-// }
 .child{
     display: none;
   }
@@ -88,10 +55,18 @@ td{
 input:focus{
     outline: none;
 }
-
-tr{
-    border-bottom: solid 3px $Pcolour-2;
-}
+.script-body{
+    background-color: $Pcolour-2;
+    color: white;
+  }
+  
+  .info-label{
+    color: $Pcolour-3;
+  }
+  
+  .script-button{
+    background-color: $Pcolour-3;
+  }
 .search-btn{
     background-color: $Pcolour-3;
 }
