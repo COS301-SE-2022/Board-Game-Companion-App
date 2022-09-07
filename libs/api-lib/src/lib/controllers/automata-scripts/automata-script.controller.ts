@@ -64,4 +64,9 @@ export class ApiAutomataScriptController {
     async checkForUpdatesForOne(@Query('id')id:string): Promise<string>{
         return this.automataService.checkForUpdatesForOne(id);
     }
+
+    @Get('retrieve-by-game')
+    async getByGame(@Query('id')id:string):Promise<AutomataScript[]>{
+        return this.automataService.getByGame(id);
+    }
 }

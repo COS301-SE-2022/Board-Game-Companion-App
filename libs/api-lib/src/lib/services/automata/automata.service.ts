@@ -24,6 +24,10 @@ export class AutomataService {
         return this.automataModel.find({});
     }
 
+    async getByGame(id:string):Promise<AutomataScript[]>{
+        return this.automataModel.find({"boardgame":id});
+    }
+
     async download(id:string,owner:user):Promise<DownloadScript>{
         const script = await this.automataModel.findById(id);
 

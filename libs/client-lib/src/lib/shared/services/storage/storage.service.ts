@@ -18,6 +18,9 @@ export class StorageService{
   },{
     name: "download-scripts",
     indices: ["_id"]
+  },{
+    name: "collections",
+    indices: ["name"]
   }]
 
   constructor(){

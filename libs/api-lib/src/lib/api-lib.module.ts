@@ -8,7 +8,6 @@ import { EditorService } from './services/editor/editor.service';
 import { RatingService } from './services/ratings/rating.service';
 import { CommentService } from './services/comments/comment.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
@@ -35,9 +34,11 @@ import { ApiAutomataScriptController } from './controllers/automata-scripts/auto
 import { ApiEditorController } from './controllers/editor/editor.controller';
 import { DownloadsService } from './services/downloads/downloads.service';
 import { ApiDownloadScriptController } from './controllers/downloads/downloads.controller';
+import { Collection, CollectionSchema } from './schemas/collection.schema';
+
 @Module({
   imports:[
-    MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
+    MongooseModule.forFeature([ { name: Collection.name, schema: CollectionSchema},
                                 { name: Script.name, schema: ScriptSchema},
                                 { name: Comment.name, schema: CommentSchema},
                                 { name: Rating.name, schema: RatingSchema},
