@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-// import { script } from '../../shared/models/script';
-import { user } from '../../shared/models/general/user';
+// import { script } from '../../shared/models/scripts/script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
+// import { user } from '../../shared/models/general/user';
+import { report } from '../../shared/models/scripts/report';
 // import { TestPassService } from '../../test-pass.service';
-// import { Router } from '@angular/router';
+import { ReportService } from '../../shared/services/reports/report.service';
+import { myScript } from '../../shared/models/scripts/my-script';
+// import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-admin',
@@ -19,131 +22,143 @@ export class AdminComponent implements OnInit {
   public Flagged = 0 ; // Total number of flagged scripts.
   public InProgress = 0; // Total number of scripts In progress.
   public Active = 0; // Total number of current running scripts.
+  public Reports = 0; // Total number of reports.
 
   public page = 1;
   public search = "";
-  public scripts : any;
-
+  public scripts:automataScript[] = [];
+  public inProgressScripts:myScript[]=[];
+  public currentScript: automataScript = new automataScript;
+  public months:string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  public reports:report[] = [];
   public selected = "";
   public searchedValue = "";
+  public viewAuto = true;
+  public viewMines = true;
+  public viewReports = false;
+  public card = 2;
 
-  constructor(private adminService: AdminService, private router:Router, private route: ActivatedRoute) {}
+  constructor(
+    private adminService: AdminService,
+    private router:Router, 
+    private route: ActivatedRoute, 
+    private reportService:ReportService) {}
   
-  onEdit(filename: string, id: string): void{
-    console.log("this works okay");
-    this.router.navigate(['editor',{id, filename}]);
+  onMyEdit(script:myScript): void{
+    this.router.navigate(['editor'],{ state: { value: script } });
   }
   
-  onComment(filename:string, id: string): void {
-    console.log(" Comment on script: "+id);
-    this.router.navigate(['script-detail',{id, filename}]);
+  onMyInfo(script:myScript): void {
+    this.router.navigate(['script-detail'],{ state: { value: script } });
+  }
+
+  onMyRemove(script:myScript): void{
+    // this.router.navigate(['editor'],{ state: { value: script } });
   }
 
   ngOnInit(): void {
- 
-    if(this.scripts.length===0){
-      
-      this.adminService.getScripts().subscribe(data=>{
-        const date = new Date();
-        // const month = date.toLocaleString('default', { month: 'long' });
-        this.scripts = data.filter( (res: { created: string | string[]; }) => {
-          const d = new Date(res.created.toString());
-          return d.getMonth()===date.getMonth();
-        });
-        this.currentPub = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
-        this.Active = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-        this.InProgress = this.scripts.length;
-        this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-        this.Flagged = this.scripts.length;
-
-        this.scripts = data;
-        this.totalPub = this.scripts.length;
-        for(let i=0; i < this.scripts.length; i++){
-          const date = this.scripts[i].created.split(" ");
-  
-          this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-        }
-      });
-    }
-  }
-
-  findAll(): void{
+     
     this.adminService.getScripts().subscribe(data=>{
-
-      this.scripts = data;
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-    });
-  }
-  currentMonth(): void{
-
-    this.adminService.getScripts().subscribe(data=>{
-
       const date = new Date();
-  
-      // const month = date.toLocaleString('default', { month: 'long' });
-
-      this.scripts = data.filter( (res: { created: string | string[]; }) => {
-        const d = new Date(res.created.toString());
+      let temp:automataScript[]=[];
+      this.scripts = data;
+      temp = data.filter( (res: { dateReleased: Date; }) => {
+        const d = new Date(res.dateReleased.toString());
         return d.getMonth()===date.getMonth();
       });
 
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-        // console.log(date);
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+      this.currentPub = temp.length;
+      this.Active = this.scripts.length;
+    });
+    
+    this.reportService.getAll().subscribe({
+      next:(data)=>{
+        this.reports = data;
+        this.Reports = this.reports.length;
+      },
+      error:(e)=>{
+        console.log(e);
       }
-      
-      this.ngOnInit();
+    });
+
+    let temp : myScript[] = [];
+    this.adminService.getUserOwnedScripts().subscribe(data=>{
+        
+    temp = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
+    this.inProgressScripts = temp;
+    this.InProgress = temp.length;
+    this.totalPub = this.InProgress + this.Active;
     });
 
   }
 
-  runningScripts(): void{
-
-    this.adminService.getScripts().subscribe(data=>{
-
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===2);
-
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+  findAll(): void{
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        this.scripts = data;
+        this.viewMines = true;
+        this.viewAuto = true;
+        this.viewReports = false;
+        this.card = 2;
+      },
+      error:(e)=>{
+        console.log(e);
       }
-      this.ngOnInit();
+    });
+  }
+
+  currentMonth(): void{
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        const date = new Date();
+  
+          this.scripts = data.filter( (res: { dateReleased: Date; }) => {
+          const d = new Date(res.dateReleased.toString());
+          return d.getMonth()===date.getMonth();
+        });
+        this.viewAuto = true;
+        this.viewMines = false;
+        this.viewReports = false;
+        this.card = 1;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
+    });
+  }
+
+  runningScripts(): void{
+    this.adminService.getScripts().subscribe({
+      next:(data)=>{
+        this.scripts = data;
+        console.log(this.scripts);
+        this.viewAuto = true;
+        this.viewMines = false;
+        this.viewReports = false;
+        this.card = 3;
+      },
+      error:(e)=>{
+        console.log(e);
+      }
     });
     
   }
 
-  flaggedScripts(): void{
-    this.adminService.getScripts().subscribe(data=>{
-      
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===0);
-
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      this.ngOnInit();
-    });
-  }
-
   ProgressScripts(): void{
-    this.adminService.getScripts().subscribe(data=>{
-      
-      this.scripts = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
+    let temp : myScript[] = [];
+    this.adminService.getUserOwnedScripts().subscribe({
+      next:(data)=>{
+        temp = data.filter( (res: { status: { value: number; }; }) => res.status.value===1);
 
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
+        this.inProgressScripts = temp;
+        this.viewAuto = false;
+        this.viewMines = true;
+        this.viewReports = false;
+        this.card = 5; 
+      },
+      error:(e)=>{
+        console.log(e);
       }
-      this.ngOnInit();
     });
   }
 
@@ -154,44 +169,54 @@ export class AdminComponent implements OnInit {
       console.log(this.searchedValue);
       this.scripts = data.filter( (res: {name: string;}) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
 
-      for(let i=0; i < this.scripts.length; i++){
-        const date = this.scripts[i].created.split(" ");
-
-        this.scripts[i].created = [date[3], date[1], date[2]].join("-");
-      }
-      // this.ngOnInit();
     });
   }
 
-  onSort(): void{
-    if(this.selected==="alphabetical" && this.scripts.length!==0){
+  formatDate(date:Date):string{
+    date = new Date(date);
+    const formated = ("0"+date.getDate()).slice(-2) +" "+ this.months[date.getMonth()] +" "+ date.getFullYear();
+    return formated;
+  }
 
-      this.scripts.sort(function(resultA: { name: string; }, resultB: { name: string; })
-      {
-        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
-
-        if (nameA < nameB) 
-        {
-          return -1;
+  ReportedScripts():void{
+    this.scripts = [];
+    console.log("ai: "+this.reports[0].script);
+    this.card = 4; 
+    for(let i=0; i < this.reports.length;i++){
+      this.adminService.getScriptById(this.reports[i].script).subscribe({
+        next:(data)=>{
+          if(data!==null){
+            this.scripts.push(data);
+            console.log(data);
+            this.viewAuto = false;
+            this.viewMines = false;
+            this.viewReports = true;
+          }
+        },
+        error:(e)=>{
+          console.log(e);
         }
-        if (nameA > nameB)
-        {
-          return 1;
-        }
-
-        return 0;
       });
     }
-    else if(this.selected==="date" && this.scripts.length!==0)
-    {
-      this.scripts.sort(function(resultA: { created: any; }, resultB: { created: any; }) 
-      {
-        const dateA = resultA.created; 
-        const dateB = resultB.created;
+  }
+  onAutoEdit(script:automataScript): void{
+    this.router.navigate(['editor'], { state: { value: script } });
+  }
+  
+  onAutoInfo(script:automataScript): void {
+    this.router.navigate(['script-detail'], { state: { value: script } });
+  }
 
-        return +new Date(dateA) - +new Date(dateB);
-      });
-    }
+  onAutoRemove(script:automataScript): void{
+    // this.router.navigate([''], { state: { value: script } });
+  }
+
+  Ignore(repo:report): void{
+   this.reportService.remove(repo._id).subscribe({next:(result)=>{
+    console.log(repo._id);
+    console.log(result);
+   },error:(e)=>{
+    console.log(e);
+   }})
   }
 }

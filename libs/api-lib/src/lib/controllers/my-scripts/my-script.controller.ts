@@ -57,6 +57,11 @@ export class ApiMyScriptController {
 
     @Delete('remove')
     async removeMyScript(@Query('id')id:string):Promise<void>{
-        return this.myScriptService.remove(id);    
+        return this.myScriptService.remove(id);
+    }
+
+    @Get('all-scripts')
+    async RetrieveAllScripts():Promise<MyScript[]>{
+        return this.myScriptService.retrieveAllScripts();
     }
 }

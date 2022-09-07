@@ -383,5 +383,10 @@ export class MyScriptService {
         result.size += await fileSize(result.icon.location).catch(console.error);
         
         result.save();
+    
+    }
+
+    async retrieveAllScripts():Promise<MyScript[]>{
+        return this.myScriptModel.find({});
     }
 }

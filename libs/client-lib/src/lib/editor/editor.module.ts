@@ -17,11 +17,12 @@ import { EditorEntityComponent } from './editor-entity/editor-entity.component';
 import { EditorVisualsComponent } from './editor-visual-side-bar/editor-visual-side-bar.component';
 import { EditorTextSideBarComponent } from './editor-text-side-bar/editor-text-side-bar.component';
 import { EditorModelsComponent } from './editor-models/editor-models.component';
-import { DragulaModule } from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { EditorBodyVisualComponent } from './editor-body-visual/editor-body-visual.component';
 import { ElementTemplateComponent } from './editor-body-visual/element-template';
 import { LoopTemplateComponent } from './editor-body-visual/loop-template';
 import { PlayerTemplateComponent } from './editor-body-visual/player-template';
+import { CardTemplateComponent } from './editor-body-visual/card-template';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PlayerTemplateComponent } from './editor-body-visual/player-template';
     EditorBodyVisualComponent,
     ElementTemplateComponent,
     LoopTemplateComponent,
-    PlayerTemplateComponent
+    PlayerTemplateComponent,
+    CardTemplateComponent
   ],
   imports: [
     CommonModule,
@@ -51,5 +53,6 @@ import { PlayerTemplateComponent } from './editor-body-visual/player-template';
     DragulaModule,
     RouterModule.forChild([{ path: '', component: EditorComponent }]),
   ],
+  providers:[DragulaService]
 })
 export class ScriptEditorModule {}
