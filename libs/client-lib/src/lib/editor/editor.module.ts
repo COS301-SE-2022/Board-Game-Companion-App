@@ -23,6 +23,7 @@ import { ElementTemplateComponent } from './editor-body-visual/element-template'
 import { LoopTemplateComponent } from './editor-body-visual/loop-template';
 import { PlayerTemplateComponent } from './editor-body-visual/player-template';
 import { CardTemplateComponent } from './editor-body-visual/card-template';
+import { VisualHelpComponent } from './visual-help/visual-help.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { CardTemplateComponent } from './editor-body-visual/card-template';
     ElementTemplateComponent,
     LoopTemplateComponent,
     PlayerTemplateComponent,
-    CardTemplateComponent
+    CardTemplateComponent,
+    VisualHelpComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,6 @@ import { CardTemplateComponent } from './editor-body-visual/card-template';
     DragulaModule,
     RouterModule.forChild([{ path: '', component: EditorComponent }]),
   ],
-  providers:[DragulaService]
+  providers: [DragulaService],
 })
 export class ScriptEditorModule {}
