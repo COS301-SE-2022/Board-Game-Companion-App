@@ -37,8 +37,9 @@ export class ScriptExecutorComponent implements OnInit {
   warningMessages:string[] = [];
   programStructure!:entity;
   count = 0;
-
-
+  history = "";
+  recentPrompt = "";
+  historyVisible = false;
 
   constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router,private readonly storageService: StorageService) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
@@ -174,7 +175,9 @@ export class ScriptExecutorComponent implements OnInit {
       {
         outputElem.innerHTML = value + "<br>Press Enter to continue";
       }
-      
+      this.history += value + "<br>";
+      this.recentPrompt = value + "<br>Press Enter to continue";
+
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
             if(!this.inputBlock){
@@ -183,7 +186,7 @@ export class ScriptExecutorComponent implements OnInit {
             }
         },10);
       });
-  
+      
       await pause;
     })
   }
@@ -196,7 +199,8 @@ export class ScriptExecutorComponent implements OnInit {
       const elem = document.getElementById("TextOutput");
       if(elem)
         elem.innerHTML += prompt+"\n";
-      
+      this.history += prompt + "<br>";
+      this.recentPrompt = prompt;
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
             if(!this.inputBlock){
@@ -249,10 +253,33 @@ export class ScriptExecutorComponent implements OnInit {
     {
       outputElem.innerHTML = "";
     }
+    this.history += this.inputResult + "<br>";
     this.showInput = false;
     this.inputBlock = false;
   }
-
+  showHistory(): void{
+    const elem = document.getElementById("TextOutput");
+    
+    
+    if(this.historyVisible)
+    {
+      if(elem)
+      {
+        if(elem)
+        {
+          elem.innerHTML = this.recentPrompt;
+        }
+      }
+    }
+    else
+    {
+      if(elem)
+      {
+        elem.innerHTML = this.history;
+      }
+    }
+    this.historyVisible = !this.historyVisible;
+  }
   okayOutput(): void{
     const outputElem = document.getElementById("TextOutput");
     if(outputElem)
