@@ -32,4 +32,7 @@ export class baseScript{
     
     @Prop()
     models: string[];
+
+    @Prop({required:true})
+    iconSize: number;
 }

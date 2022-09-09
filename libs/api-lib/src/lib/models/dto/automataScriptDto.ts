@@ -20,4 +20,5 @@ export interface automataScriptDto{
     source: file;
     previous: string[];
     link: string;
+    iconSize: number;
 }

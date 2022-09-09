@@ -8,9 +8,9 @@ import { user } from '../../models/general/user';
 import fs = require('fs');
 import { ModelsService } from '../models/models.service';
 import { downloadScriptDto } from '../../models/dto/downloadScriptDto';
-import { LocalStorageService } from '../local-storage/local-storage.service';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 import { version } from '../../models/general/version';
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 @Injectable()
 export class AutomataService {
@@ -18,7 +18,7 @@ export class AutomataService {
                 @InjectModel(OldScript.name) private oldModel: Model<OldScriptDocument>,
                 @InjectModel(DownloadScript.name) private downloadModel: Model<DownloadScriptDocument>,
                 private readonly modelService:ModelsService,
-                private readonly localStorage: LocalStorageService){}
+                private readonly storageService:MongoDbStorageService){}
 
     async getAll():Promise<AutomataScript[]>{
         return this.automataModel.find({});
@@ -53,21 +53,25 @@ export class AutomataService {
             build: {name:"",key:"",location:""},
             models: [],
             owner: owner,
-            dateDownloaded: new Date()
+            dateDownloaded: new Date(),
+            iconSize: script.iconSize
         }
 
         const createdScript = new this.downloadModel(dto);
         const result:DownloadScriptDocument =  await createdScript.save();
         
-        const buildCopy = this.localStorage.copy(script.build.key,"scripts/download-scripts/" + result._id + "/build/",script.build.name);
+        //const buildCopy = this.localStorage.copy(script.build.key,"scripts/download-scripts/" + result._id + "/build/",script.build.name);
         
+        const buildCopy = await this.storageService.copy(script.build.key);
         result.build = {
             name: script.build.name,
             location: buildCopy.location,
             key: buildCopy.key
         }
 
-        const iconCopy = this.localStorage.copy(script.icon.key,"scripts/download-scripts/" + result._id + "/icons/",script.icon.name);
+        //const iconCopy = this.localStorage.copy(script.icon.key,"scripts/download-scripts/" + result._id + "/icons/",script.icon.name);
+        
+        const iconCopy = await this.storageService.copy(script.icon.key);
         result.icon = {
             name: script.icon.name,
             location: iconCopy.location,
@@ -106,22 +110,24 @@ export class AutomataService {
         
         script.save();
     }
+
     async getScriptById(id:string):Promise<AutomataScript>{
         return this.automataModel.findById(id);
     }
+
     async remove(id:string):Promise<void>{
         const script = await this.automataModel.findByIdAndRemove(id);
-        fs.unlinkSync(script.source.key);
-        fs.unlinkSync(script.build.key);
-        fs.unlinkSync(script.icon.key);
+        this.storageService.remove(script.source.key);
+        this.storageService.remove(script.build.key);
+        this.storageService.remove(script.icon.key);
         
         for(let count = 0; count < script.models.length; count++){
             const value = script.models[count];
             const model = await this.modelService.removeById(value);
 
             if(model !== null || model !== undefined){
-                fs.unlinkSync(model.model.key);
-                fs.unlinkSync(model.weights.key);
+                this.storageService.remove(model.model.key);
+                this.storageService.remove(model.weights.key);
             }
         }
     }

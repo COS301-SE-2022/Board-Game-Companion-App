@@ -5,7 +5,6 @@ import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-s
 import { user } from '../../models/general/user';
 import { version } from '../../models/general/version';
 import { HttpService } from '@nestjs/axios';
-import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { update } from '../../models/general/update';
@@ -13,6 +12,7 @@ import fs = require('fs');
 import { ModelsService } from '../models/models.service';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator';
 import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 @Injectable()
 export class DownloadsService {
@@ -20,8 +20,8 @@ export class DownloadsService {
                 @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
                 @InjectModel(OldScript.name) private oldModel: Model<OldScriptDocument>,
                 private readonly httpService: HttpService,
-                private readonly localStorage: LocalStorageService,
                 private readonly modelService: ModelsService,
+                private readonly storageService: MongoDbStorageService
                 ){}
 
 
@@ -52,15 +52,15 @@ export class DownloadsService {
         oldScript.version.patch = newScript.version.patch;
         oldScript.size = newScript.size;
 
-        this.localStorage.copy(newScript.build.key,"scripts/download-scripts/" + oldScript._id + "/build/",oldScript.build.name);
+        this.storageService.copy(newScript.build.key);
         
         for(let count = 0; count < oldScript.models.length; count++){
             const value = oldScript.models[count];
             const model = await this.modelService.removeById(value);
 
             if(model !== null || model !== undefined){
-                fs.unlinkSync(model.model.key);
-                fs.unlinkSync(model.weights.key);
+                this.storageService.remove(model.model.key);
+                this.storageService.remove(model.weights.key);
             }
         }
 

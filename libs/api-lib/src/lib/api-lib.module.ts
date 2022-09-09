@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CollectionsController } from './controllers/board-collection/collections.controller';
-import { ApiScriptController } from './controllers/script/script.controller';
 import { ApiCommentController } from './controllers/comments/comment.controller';
 import { CollectionsService } from './services/collection/collections.service';
-import { ScriptService } from './services/scripts/script.service';
 import { EditorService } from './services/editor/editor.service';
 import { RatingService } from './services/ratings/rating.service';
 import { CommentService } from './services/comments/comment.service';
@@ -35,6 +33,9 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
 import { DownloadsService } from './services/downloads/downloads.service';
 import { ApiDownloadScriptController } from './controllers/downloads/downloads.controller';
 import { Collection, CollectionSchema } from './schemas/collection.schema';
+import { File, FileSchema } from './schemas/file.schema';
+import { MongoDbStorageService } from './services/mongodb-storage/mongodb-storage.service';
+import { ApiFileManagerController } from './controllers/file-manager/file-manager.controller';
 
 @Module({
   imports:[
@@ -48,25 +49,25 @@ import { Collection, CollectionSchema } from './schemas/collection.schema';
                                 { name: MyScript.name, schema: MyScriptSchema},
                                 { name: AutomataScript.name, schema: AutomataScriptSchema},
                                 { name: OldScript.name, schema: OldScriptSchema},
-                                { name: DownloadScript.name, schema: DownloadScriptSchema}
+                                { name: DownloadScript.name, schema: DownloadScriptSchema},
+                                { name: File.name, schema: FileSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
   controllers: [
     CollectionsController,
-    ApiScriptController,
     ApiCommentController,
     ApiModelsController,
     ApiReportsController,
     ApiMyScriptController,
     ApiAutomataScriptController,
     ApiEditorController,
-    ApiDownloadScriptController
+    ApiDownloadScriptController,
+    ApiFileManagerController
   ],
   providers: [
     CollectionsService,
     EditorService,
-    ScriptService,
     RatingService,
     CommentService,
     S3Service,
@@ -76,7 +77,8 @@ import { Collection, CollectionSchema } from './schemas/collection.schema';
     ReportService,
     MyScriptService,
     DownloadsService,
-    AutomataService
+    AutomataService,
+    MongoDbStorageService
   ],
   exports: [],
 })

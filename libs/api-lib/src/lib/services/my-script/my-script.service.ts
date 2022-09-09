@@ -13,7 +13,6 @@ import { upload } from '../../models/general/upload';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
-import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AutomataService } from '../automata/automata.service';
 import { version } from '../../models/general/version';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
@@ -24,6 +23,7 @@ import { ModelsService } from '../models/models.service';
 import { oldScriptDto } from '../../models/dto/oldScriptDto';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 import { HttpService } from '@nestjs/axios';
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 @Injectable()
 export class MyScriptService {
@@ -33,10 +33,10 @@ export class MyScriptService {
                 @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
                 @InjectModel(OldScript.name) private oldScriptModel: Model<OldScriptDocument>,
                 @InjectModel(DownloadScript.name) private downloadsModel:Model<DownloadScriptDocument>,
-                private readonly localStorage: LocalStorageService,
                 private readonly automataService: AutomataService,
                 private readonly modelService: ModelsService,
-                private readonly httpService: HttpService){
+                private readonly httpService: HttpService,
+                private readonly storageService:MongoDbStorageService){
         
     }
 
@@ -57,7 +57,8 @@ export class MyScriptService {
             source: {name:"",location:"",key:""},
             build:{name:"",location:"",key:""},
             icon: {name:"",location:"",key:""},
-            models: []
+            models: [],
+            iconSize: icon.size
         };
         
         
@@ -68,9 +69,8 @@ export class MyScriptService {
         result.build = await this.createBuildFile(result._id);
         const savedIcon = await this.storeIcon(result._id,icon);
         result.icon = {name: icon.originalname,location:savedIcon.location,key:savedIcon.key};
-        result.size = await fileSize(result.build.location).catch(console.error);
-        result.size += await fileSize(result.icon.location).catch(console.error);
         
+        result.size = icon.size + fs.readFileSync("templates/main.txt","utf8").length;        
         result.save();
 
         return result;
@@ -101,7 +101,7 @@ export class MyScriptService {
     async createSourceFile(id:string):Promise<file>{
         const result:file = {name:"main.txt",location:"",key:""};
         let fileUploadResult:upload = {key:"",location:""};
-        const path = "scripts/my-scripts/" + id + "/src/";
+        //const path = "scripts/my-scripts/" + id + "/src/";
         let data = "";
 
         try{
@@ -111,7 +111,8 @@ export class MyScriptService {
         }
 
         //fileUploadResult = await this.s3Service.upload("main.txt",path,data);
-        fileUploadResult = await this.localStorage.upload("main.txt",path,data);
+        //fileUploadResult = await this.localStorage.upload("main.txt",path,data);
+        fileUploadResult = await this.storageService.upload("main.txt","text/plain",data);
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
 
@@ -121,7 +122,7 @@ export class MyScriptService {
     async createBuildFile(id:string):Promise<file>{
         const result:file = {name:"main.js",location:"",key:""};
         let fileUploadResult:upload = {key:"",location:""};
-        const path = "scripts/my-scripts/" + id + "/build/";
+        //const path = "scripts/my-scripts/" + id + "/build/";
         let data = "";
 
         try{
@@ -131,19 +132,23 @@ export class MyScriptService {
         }
 
         //fileUploadResult = await this.s3Service.upload("main.js",path,data);
-        fileUploadResult = await this.localStorage.upload("main.js",path,data);
+        //fileUploadResult = await this.localStorage.upload("main.js",path,data);
+        fileUploadResult = await this.storageService.upload("main.js","text/javascript",data);
+
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
-        console.log(result);
         
         return result;        
     }
 
     async storeIcon(id:string,icon:any):Promise<upload>{
-        const path = "scripts/my-scripts/" + id + "/icons/";
+        //const path = "scripts/my-scripts/" + id + "/icons/";
         
         //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
-        const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
+        //const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
+
+        const result = await this.storageService.upload(icon.originalname,icon.mimetype,icon.buffer);
+
         return result;
     }
 
@@ -201,13 +206,14 @@ export class MyScriptService {
             models: [],
             source: {name: "", key: "",location: ""},
             build: {name: "", key: "", location: ""},
-            icon: {name: "", key: "", location: ""}
+            icon: {name: "", key: "", location: ""},
+            iconSize: script.iconSize
         };
 
         const createdScript = new this.oldScriptModel(dto);
         const result:OldScriptDocument =  await createdScript.save();
     
-        const sourceCopy = this.localStorage.copy(script.source.key,"scripts/old-scripts/" + result._id + "/src/",script.source.name);
+        const sourceCopy = await this.storageService.copy(script.source.key);
         
         result.source = {
             name: script.source.name,
@@ -215,7 +221,7 @@ export class MyScriptService {
             key: sourceCopy.key
         }
 
-        const buildCopy = this.localStorage.copy(script.build.key,"scripts/old-scripts/" + result._id + "/build/",script.build.name);
+        const buildCopy = await this.storageService.copy(script.build.key);
         
         result.build = {
             name: script.build.name,
@@ -223,7 +229,7 @@ export class MyScriptService {
             key: buildCopy.key
         }
 
-        const iconCopy = this.localStorage.copy(script.icon.key,"scripts/old-scripts/" + result._id + "/icons/",script.icon.name);
+        const iconCopy = await this.storageService.copy(script.icon.key);
         result.icon = {
             name: script.icon.name,
             location: iconCopy.location,
@@ -279,14 +285,15 @@ export class MyScriptService {
             icon: {name: "",location:"",key:""}, 
             models: [],
             previous: previous,
-            link: script._id
+            link: script._id,
+            iconSize: script.iconSize
         }
 
         const createdScript = new this.automataModel(dto);
         const result:AutomataScriptDocument =  await createdScript.save();
 
 
-        const sourceCopy = this.localStorage.copy(script.source.key,"scripts/automata-scripts/" + result._id + "/src/",script.source.name);
+        const sourceCopy = await this.storageService.copy(script.source.key);
         
         result.source = {
             name: script.source.name,
@@ -294,7 +301,7 @@ export class MyScriptService {
             key: sourceCopy.key
         }
 
-        const buildCopy = this.localStorage.copy(script.build.key,"scripts/automata-scripts/" + result._id + "/build/",script.build.name);
+        const buildCopy = await this.storageService.copy(script.build.key);
         
         result.build = {
             name: script.build.name,
@@ -302,7 +309,7 @@ export class MyScriptService {
             key: buildCopy.key
         }
 
-        const iconCopy = this.localStorage.copy(script.icon.key,"scripts/automata-scripts/" + result._id + "/icons/",script.icon.name);
+        const iconCopy = await this.storageService.copy(script.icon.key);
         result.icon = {
             name: script.icon.name,
             location: iconCopy.location,
@@ -345,18 +352,19 @@ export class MyScriptService {
             lastUpdate: new Date(),
             export: false,
             status: {value: 1, message: ''},
-            size: 0,
+            size: script.size,
             programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
             source: {name:"",location:"",key:""},
             build:{name:"",location:"",key:""},
             icon: {name:"",location:"",key:""},
-            models: []
+            models: [],
+            iconSize:script.iconSize
         }
 
         const createdScript = new this.myScriptModel(dto);
         const result:MyScriptDocument =  await createdScript.save();
 
-        const sourceCopy = this.localStorage.copy(script.source.key,"scripts/my-scripts/" + result._id + "/src/",script.source.name);
+        const sourceCopy = await this.storageService.copy(script.source.key);
         
         result.source = {
             name: script.source.name,
@@ -364,7 +372,7 @@ export class MyScriptService {
             key: sourceCopy.key
         }
 
-        const buildCopy = this.localStorage.copy(script.build.key,"scripts/my-scripts/" + result._id + "/build/",script.build.name);
+        const buildCopy = await this.storageService.copy(script.build.key);
         
         result.build = {
             name: script.build.name,
@@ -372,15 +380,12 @@ export class MyScriptService {
             key: buildCopy.key
         }
 
-        const iconCopy = this.localStorage.copy(script.icon.key,"scripts/my-scripts/" + result._id + "/icons/",script.icon.name);
+        const iconCopy = await this.storageService.copy(script.icon.key);
         result.icon = {
             name: script.icon.name,
             location: iconCopy.location,
             key: iconCopy.key
         }
-        
-        result.size = await fileSize(result.build.location).catch(console.error);
-        result.size += await fileSize(result.icon.location).catch(console.error);
         
         result.save();
     

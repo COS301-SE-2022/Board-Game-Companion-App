@@ -15,4 +15,5 @@ export interface downloadScriptDto{
     owner: user;
     dateDownloaded: Date;
     link: string;
+    iconSize: number;
 }
