@@ -18,4 +18,5 @@ export interface oldScriptDto{
     export: boolean;
     comments: string[];
     source: file;
+    iconSize: number;
 }

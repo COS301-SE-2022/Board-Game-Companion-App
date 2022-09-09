@@ -10,6 +10,11 @@
     background-color: $Pcolour-3;
 }
 
+#scripts-wrapper{
+  width: 100%;
+  height: 100%;
+}
+
 
 .sidebar a {
   display: block;
@@ -53,4 +58,8 @@
 
 .control-btn:hover{
   background-color: rgba($color: white, $alpha: 0.2);
+}
+
+.wrapper{
+  background-color: $Pcolour-2;
 }

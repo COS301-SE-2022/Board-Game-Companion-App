@@ -17,6 +17,7 @@ import { OutputInterfaceComponent } from './components/output-interface/output-i
 import { DownloadsService } from './services/downloads/downloads.service';
 import { ReportService } from './services/reports/report.service';
 import { EditorService } from './services/editor/editor.service';
+import { CollectionService } from './services/collections/collection.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { EditorService } from './services/editor/editor.service';
     StorageService,
     DownloadsService,
     ReportService,
-    EditorService
+    EditorService,
+    CollectionService
   ],
   exports: [
     HeaderComponent,

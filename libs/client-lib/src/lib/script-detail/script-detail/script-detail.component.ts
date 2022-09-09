@@ -8,6 +8,12 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { ReportService } from '../../shared/services/reports/report.service';
 import { automataScript } from '../../shared/models/scripts/automata-script';
+import { oldScript } from '../../shared/models/scripts/old-script';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import { ModelsService } from '../../shared/services/models/models.service';
+import * as tf from '@tensorflow/tfjs'
 
 @Component({
   selector: 'board-game-companion-app-script-detail',
@@ -25,7 +31,8 @@ export class ScriptDetailComponent implements OnInit {
   voterCount = 0;
   downloading = false;
   alreadyReported = false;
-  
+  oldies:oldScript[] = []
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
@@ -34,10 +41,16 @@ export class ScriptDetailComponent implements OnInit {
     private readonly router:Router,
     private route: ActivatedRoute,
     private readonly gapi: GoogleAuthService,
-    private readonly reportService:ReportService
+    private readonly reportService:ReportService,
+    private networkService: OnlineStatusService,
+    private storageService: StorageService,
+    private modelsService: ModelsService
     ) {
       this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
-      
+
+      this.networkService.status.subscribe((status: OnlineStatusType) =>{
+        this.status = status;
+      });      
   }
 
   ngOnInit(): void {
@@ -49,28 +62,88 @@ export class ScriptDetailComponent implements OnInit {
       this.getAverageRating();
       this.getVoterCount();
       this.getAlreadyReported();
+      this.getOldies();
     } 
   }
 
+  getOldies(): void{
+    this.scriptService.getOldVersions(this.current.previous).subscribe({
+      next: (value:oldScript[]) => {
+        this.oldies = value;
+      },
+      error: (err) => {
+        this.notifications.add({type:"danger",message:`Failed to retrieve older versions of ${this.current.name}`})
+      }
+    })
+  }
+
   download(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to download ${this.current.name}`});
+      return;
+    }
+    
     if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"primary",message:"You must be logged In to download this script."});
+      this.notifications.add({type:"primary",message:`You must be logged In to download ${this.current.name}`});
       return;
     }
 
-    this.downloading = true;
-    this.scriptService.download(this.current._id,{name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string}).subscribe({
-      next:(val)=>{
-        this.downloading = false;
-        this.notifications.add({type:"success",message:val.message});
+    if(this.downloading)
+      return;
 
+    this.scriptService.alreadyDownloaded(this.current.author,this.current.name,this.current.version).subscribe({
+      next:(value:boolean) => {
+        if(value){
+          this.notifications.add({type:"warning",message:`You have already downloaded ${this.current.name}`})
+        }else{
+          this.downloading = true;
+          this.scriptService.download(this.current._id).subscribe({
+            next:(val:downloadScript)=>{
+              if(val === null){
+                this.notifications.add({type: "danger",message: `Could not find ${this.current.name}`})
+                this.downloading = false;
+              }
+
+                this.modelsService.getModelsByIdOnly(val.models).subscribe({
+                  next:(models:any) => {
+                    models.forEach((network:any) => {
+                      this.storageService.insert("download-networks",network).then(async(res:string) => {
+                        const imodel = await tf.loadLayersModel(network.model.location);
+                        await imodel.save(`indexeddb://${network.name}`);
+                      }).catch((reason)=>{
+                        console.log(reason);
+                        this.notifications.add({type:"warning",message:"something went wrong when loading model"})
+                      })
+                    })
+
+                    this.storageService.insert("download-scripts",val).then((res:string)=>{
+                      this.downloading = false;
+                      this.notifications.add({type:"success",message:`Successfully downloaded ${this.current.name}`});
+                    }).catch(() =>{
+                      this.downloading = false;
+                      this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                    })
+
+                  },
+                  error:(err) => {
+                    this.downloading = false;
+                    console.log(err);
+                    this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                  }
+                })
+            },
+            error:(err)=>{     
+              this.downloading = false;
+              console.log(err);
+              this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+            }      
+          });
+        }
       },
-      error:(err)=>{     
-        this.downloading = false;
-        console.log(err);
+      error:()=>{
         this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
-      }      
-    });
+      }
+    })
   }
 
   convertBytes(value:number): string{

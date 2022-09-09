@@ -2,21 +2,16 @@
 
 
 
-#container{
-    margin: auto;
-    width: 60%;
-    height: 40em;
-   // height:100%;
-    margin-top: 5em;
-    margin-bottom: 5em;
-    background-color: $Pcolour-2;
-    border-radius: 10px;
+h1{
+    background-color: $Pcolour-3;
 }
 
-h1{
-    font-size: 32px;
-    background-color: $Pcolour-3;
-    border-radius: 10px 10px 0 0;
+.data-label{
+    color: $Pcolour-3;
+}
+
+.content{
+    background-color: $Pcolour-2;
 }
 
 #imgDiv{

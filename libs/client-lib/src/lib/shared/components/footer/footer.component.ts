@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'board-game-companion-app-footer',
   templateUrl: './footer.component.html',
@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 
 export class FooterComponent implements OnInit {
   showFooter = true;
-
+  @Input()height = 0;
+  
   ngOnInit(): void {
     document.addEventListener('editor-page',(event)=>{
       this.showFooter = false;
