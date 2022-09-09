@@ -4,11 +4,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule} from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { ClientLibModule } from '@board-game-companion-app/client-lib';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment.prod';
-import { NbThemeModule,NbMenuModule } from '@nebular/theme';
+import { NbThemeModule, NbMenuModule } from '@nebular/theme';
 import { SharedModule } from '@board-game-companion-app/client-lib';
 import { DragulaModule } from 'ng2-dragula';
 
@@ -24,9 +24,12 @@ import { DragulaModule } from 'ng2-dragula';
     AppRoutingModule,
     ClientLibModule,
     NbMenuModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production,  registrationStrategy: 'registerWhenStable:30000',})
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
-  providers: [ HttpClient],
+  providers: [HttpClient],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
