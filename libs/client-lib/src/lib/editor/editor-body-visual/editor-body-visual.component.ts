@@ -10,6 +10,7 @@ export class EditorBodyVisualComponent {
   
   endLoopIndex = 0
   playersLoopIndex = 0
+  cardsLoopIndex = 0
 
 
   Tiles = [

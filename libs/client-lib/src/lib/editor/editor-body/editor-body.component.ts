@@ -284,6 +284,122 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             }
           }
         }
+        else if(document.getElementById("card")?.contains(target))
+        {
+          console.log("cards")
+          //Cards
+          let card = 0
+          let property = ""
+          let recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === "e" + this.count.toString()
+          })
+          //need to find which card it belongs to
+          for(let j = 0; j < this.editorVisual.Cards.length; j++)
+          {
+            //Go through cards effect
+             recent = this.editorVisual.Cards[j].effect.findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+
+            console.log(this.editorVisual.Cards)
+
+            if(recent !== -1)
+            {
+              console.log("yebo")
+              card = j
+              property = "effect"
+              break
+            }
+
+            //Go through cards condition
+            recent = this.editorVisual.Cards[j].condition.findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+
+            if(recent !== -1)
+            {
+              card = j
+              property = "condition"
+              break
+            }
+          }
+
+          //If not in general card container else go to loops
+          if(property === "")
+          {
+            let index = 0
+            for(let j = 0; j < this.editorVisual.CardsLoop.length; j++)
+            {
+              //Check which loop it is in.
+              recent = this.editorVisual.CardsLoop[j].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+              if(recent !== -1)
+              {
+                index = j
+                break
+              }
+            }
+            switch(el.id)
+            {
+              case "visualF": 
+              case "visualW":
+              case "VisualD": 
+              {
+                this.editorVisual.cardsLoopIndex++
+                this.editorVisual.CardsLoop[index][recent].pos = this.editorVisual.cardsLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0}
+                ]
+                this.editorVisual.CardsLoop.push(dest)
+                break
+              }
+              
+            }
+          }
+          else
+          {
+            switch(property)
+            {
+              case "effect":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD": 
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].effect[recent].pos = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  
+                }
+                break
+              case "condition":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD": 
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].condition[recent].pos = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  
+                }
+                break
+            }
+          }
+        }
         
 
         

@@ -71,13 +71,14 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                 </div>
             </div>
         </div>
-        <div class="container"  id = "codeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
+        <div class="container"  id = "loopCodeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
             <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
     `
 })
 
 export class LoopTemplateComponent{
+    @Input() index = 0
     @Input() dest = [{title: '', class: '' , id: '', pos: 0}] 
     @Input() item = {title: '', class: '' , id: '', pos: 0}
     @Input() dests = [this.dest]
