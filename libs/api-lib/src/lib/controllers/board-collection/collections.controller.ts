@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Query, Post } from '@nestjs/common';
+import { Body, Controller, Get, Query, Post, Delete, Put } from '@nestjs/common';
 import { user } from '../../models/general/user';
-import { collection } from '../../schemas/collection'; 
+import { Collection } from '../../schemas/collection.schema';
 import { CollectionsService } from '../../services/collection/collections.service';
 
 @Controller('collections')
@@ -11,28 +11,27 @@ export class CollectionsController {
     } 
 
     @Get('get-collections')
-    getCollectionsForUser(@Query('owner') owner:user):Promise<collection[]>{
-        return this.collectionService.getCollectionByUser(owner);
+    getCollectionsForUser(@Query('ownerName') ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<Collection[]>{
+        return this.collectionService.getCollectionsByUser({name:ownerName,email:ownerEmail});
     }
 
     @Post('create-collection')
-    async createCollection(@Body('name') name: string,@Body('owner') owner: user, @Body('description') desc:string,@Body('boardgames') games:string[]){
-        const newCollection: collection = {
-            name: name,
-            owner: owner,
-            description: desc,
-            boardgames: games
-        };
-        return {message: await this.collectionService.create(newCollection)}; 
+    async createCollection(@Body('name') name: string,@Body('owner') owner: user, @Body('description') desc:string):Promise<Collection>{
+        return this.collectionService.create(name,owner,desc); 
     }
 
-    @Post('remove')
-    async removeCollection(@Body('name') name: string,@Body('owner') owner: user){
-        return {success: await this.collectionService.removeCollection(owner,name)};
+    @Delete('remove')
+    async removeCollection(@Query('name') name: string,@Query('ownerName')ownerName: string,@Query('ownerEmail')ownerEmail:string):Promise<number>{
+        return this.collectionService.removeCollection({name:ownerName,email:ownerEmail},name);
     }
 
-    @Post('add-game')
-    async addGameToCollection(@Body('owner')owner:user,@Body('name')name:string,@Body('boardgames')game:string){
-        return {success: await this.collectionService.addBoardGame(game,name,owner)};
+    @Delete('remove-by-id')
+    async removeCollectionById(@Query('id')id:string):Promise<number>{
+        return this.collectionService.removeCollectionById(id);
+    }
+
+    @Put('add-game')
+    async addGameToCollection(@Body('owner')owner:user,@Body('name')name:string,@Body('boardgames')game:string):Promise<boolean>{
+        return this.collectionService.addBoardGame(game,name,owner);
     }
 }

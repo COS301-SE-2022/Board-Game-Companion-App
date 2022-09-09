@@ -577,9 +577,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           }else{
             this.changesTracker.emit(0);
           }
-          console.log()
+
+          console.log(value)
           this.newMessageEvent.emit(value.message);
-          console.log(value);
         },
         error:(e)=>{
           //console.log(e);

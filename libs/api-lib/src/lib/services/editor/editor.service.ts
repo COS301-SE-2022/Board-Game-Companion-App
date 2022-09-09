@@ -10,6 +10,7 @@ import { HttpService } from '@nestjs/axios';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { entity } from '../../models/general/entity';
 import { MyScript, MyScriptDocument } from '../../schemas/my-script.schema';
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 interface programResult{
     build:string;
@@ -27,34 +28,22 @@ export class EditorService {
     @InjectModel(NeuralNetwork.name) private networksModel: Model<NeuralNetworkDocument>,
     private readonly s3Service:S3Service,
     private readonly compilerService:CompilerService,
-    private readonly localStorage: LocalStorageService,
-    private readonly httpService: HttpService){
+    private readonly httpService: HttpService,
+    private readonly storageService:MongoDbStorageService){
         
     }
 
-    async updateBuild(id:string,compiledCode:string): Promise<{status:boolean,script:MyScript}>{
+    async updateBuild(id:string,compiledCode:string): Promise<void>{
         let status = true;
-        const path = "scripts/" + id + "/build/";
         const script:MyScriptDocument = await this.myScriptModel.findById(id).exec();
         
         try{
-            //const fileUploadResult = await this.s3Service.upload("main.js",path,compiledCode);
-            const fileUploadResult = await this.localStorage.upload("main.js",path,compiledCode)
-            script.build = {
-                name:"main.js",
-                location:fileUploadResult.location,
-                key:fileUploadResult.key
-            };
-
-            script.size = await fileSize(script.build.location).catch(console.error);
-    
-            script.save();
+            await this.storageService.update(script.build.key,compiledCode);
+            await script.save();
         }catch(e){
             status = false;
         }
 
-
-        return {status:status,script:script};
     }
 
     async updateModels(script:string,networks:string[]):Promise<MyScript>{
@@ -95,14 +84,13 @@ export class EditorService {
             result = {status:"failed",message: "invalid script id"};
         else{
             try{
-                const compilerResult = this.compilerService.transpile(content);
-                const err = compilerResult as errResult;
-                const compiledCode = compilerResult as programResult;
-                if(err.err)
-                {
-                    throw new Error(err.err);
-                }
-                result = {status:"success",message:"successfully updated script on " + (new Date()).toString(),programStructure:compiledCode.programStructure};
+                const compiledCode = this.compilerService.transpile(content);
+
+                result = {
+                            status: "success",
+                            message: "successfully updated script on " + (new Date()).toString(),
+                            programStructure: compiledCode.programStructure
+                        };
                 
                 
                 const data:string  = (await this.httpService.axiosRef.get(script.source.location,{
@@ -115,21 +103,18 @@ export class EditorService {
                 }
 
                 await this.updateBuild(id,compiledCode.build);
-                //this.s3Service.update(script.source.key,content);
-                await this.localStorage.update(script.source.key,content);
+                await this.storageService.update(script.source.key,content);
                 
                 script.programStructure = compiledCode.programStructure;
-
-
+                script.size = script.iconSize + compiledCode.build.length + content.length;
 
                 script.save();
             
             }catch(e){
-                //console.log(e);
                 result = {status:"failed",message:e};
             }
         }
-        //console.log(result)
+        
         return result;
     }
 }

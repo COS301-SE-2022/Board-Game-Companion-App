@@ -7,9 +7,11 @@ import { user } from '../../models/general/user';
 import { User } from 'aws-sdk/clients/budgets';
 import { entity } from '../../models/editor/entity';
 import { myScript } from '../../models/scripts/my-script';
+import { oldScript } from '../../models/scripts/old-script';
 import { version } from '../../models/scripts/version';
 import { automataScript } from '../../models/scripts/automata-script';
-
+import { downloadScript } from '../../models/scripts/download-script';
+import { update } from '../../models/scripts/update';
 
 @Injectable()
 export class ScriptService {
@@ -57,8 +59,50 @@ export class ScriptService {
     return this.httpClient.post<myScript>(this.api + "my-scripts/create-script",formData);
   }
 
-  download(id:string,owner:user):Observable<{status:string,message:string,script:script}>{
-    return this.httpClient.post<{status:string,message:string,script:script}>(this.api + "scripts/download",{id:id,owner:owner});
+  alreadyDownloaded(author:user,name:string,version:version):Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("authorName",author.name);
+    param = param.set("authorEmail",author.email);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("name",name);
+    param = param.set("vMajor",version.major);
+    param = param.set("vMinor",version.minor);
+    param = param.set("vPatch",version.patch);
+
+    return this.httpClient.get<boolean>(this.api + "download-scripts/already-downloaded",{params: param})
+  }
+
+  getByGame(id:string):Observable<automataScript[]>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-by-game",{params: param})
+  }
+
+  checkForUpdatesForOne(id:string):Observable<string>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    
+    return this.httpClient.get<string>(this.api + 'automata-scripts/check-for-updates-for-one',{params: param});
+  }
+
+  importAutomata(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+
+    return this.httpClient.get(this.api + "my-scripts/import",{params: param})
+  }
+
+  download(id:string):Observable<downloadScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+
+    return this.httpClient.get<downloadScript>(this.api + "automata-scripts/download",{params: param});
   }
 
   getScriptsCreatedByMe():Observable<myScript[]>{
@@ -84,7 +128,54 @@ export class ScriptService {
   }
 
   getAutomataScripts():Observable<automataScript[]>{
-    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retreive-all");
+    return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-all");
+  }
+
+  getDownloadScripts():Observable<downloadScript[]>{
+    let param = new HttpParams();
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+
+    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/retrieve-all",{params : param});
+  }
+
+  removeDownload(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.delete<any>(this.api + "download-scripts/remove",{params: param});
+  }
+
+  getDownloadInfo(id:string):Observable<downloadScript | oldScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<downloadScript | oldScript>(this.api + "download-scripts/info",{params: param});
+  }
+
+  removeMyScript(id:string):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.delete<any>(this.api + "my-scripts/remove",{params: param})
+  }
+
+  getMyScriptInfo(id:string):Observable<automataScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<automataScript>(this.api + "my-scripts/info",{params: param});
+  }
+
+  updateDownloadedScript(ids:update):Observable<downloadScript>{
+    return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",ids);
+  }
+
+  getOldVersions(idList:string[]):Observable<oldScript[]>{
+    let param = new HttpParams();
+    param = param.set("idList",JSON.stringify(idList));
+
+    return this.httpClient.get<oldScript[]>(this.api + "automata-scripts/old-versions",{params: param});
   }
 
   getScriptsDownloadedByMe(owner:user):Observable<script[]>{

@@ -5,13 +5,32 @@ import { AutomataScript } from '../../schemas/automata-script.schema';
 import { RatingService } from '../../services/ratings/rating.service';
 import { AutomataService } from '../../services/automata/automata.service';
 import { Rating } from '../../schemas/rating.schema';
+import { OldScript } from '../../schemas/old-script.schema'
+import { DownloadScript } from '../../schemas/download-script.schema';
 
 @Controller('automata-scripts')
 export class ApiAutomataScriptController {
     constructor(private readonly automataService:AutomataService,
         private readonly ratingService:RatingService){}
     
-    @Get('retreive-all')
+
+    @Get('download')
+    async download(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<DownloadScript>{
+        return this.automataService.download(id,{name:userName,email:userEmail});
+    }
+
+    @Get('old-versions')
+    async getOldVersions(@Query('idList')idList:string):Promise<OldScript[]>{
+        try{
+            const list:string[] = JSON.parse(idList);
+            return this.automataService.getOldVersions(list);
+        }catch(err){
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+        }
+        
+    }
+
+    @Get('retrieve-all')
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
     }
@@ -42,5 +61,15 @@ export class ApiAutomataScriptController {
     @Get('average-rating')
     async averateRating(@Query('script')script:string): Promise<number>{
         return this.ratingService.average(script);
+    }
+
+    @Get('check-for-updates-for-one')
+    async checkForUpdatesForOne(@Query('id')id:string): Promise<string>{
+        return this.automataService.checkForUpdatesForOne(id);
+    }
+
+    @Get('retrieve-by-game')
+    async getByGame(@Query('id')id:string):Promise<AutomataScript[]>{
+        return this.automataService.getByGame(id);
     }
 }

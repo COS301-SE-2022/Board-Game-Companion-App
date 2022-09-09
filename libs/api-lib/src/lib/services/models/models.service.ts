@@ -6,15 +6,15 @@ import { user } from '../../models/general/user';
 import { neuralnetworkDto } from '../../models/dto/neuralnetworkDto';
 import { MemoryStoredFile } from 'nestjs-form-data';
 import fs = require("fs");
-import { LocalStorageService } from '../local-storage/local-storage.service'
 import { upload } from '../../models/general/upload';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 @Injectable()
 export class ModelsService {
 
     constructor(@InjectModel(NeuralNetwork.name) private networkModel: Model<NeuralNetworkDocument>,
-        private readonly storageService:LocalStorageService){}
+                private readonly storageService:MongoDbStorageService){}
 
     async create(model:MemoryStoredFile,weights:MemoryStoredFile,user:user,name:string,created:Date,type:string,min:number[],max:number[],accuracy?:number,loss?:number,labels?:string[]): Promise<NeuralNetwork>{
         const dto:neuralnetworkDto = {
@@ -34,8 +34,8 @@ export class ModelsService {
         
         const createdNetwork = new this.networkModel(dto);
         const result:NeuralNetworkDocument = await createdNetwork.save();
-        const savedModel:upload = await this.storageService.upload(model.originalName,"models/" + result._id + "/",model.buffer);
-        const savedWeights:upload = await this.storageService.upload(weights.originalName,"models/" + result._id + "/",weights.buffer);
+        const savedModel:upload = await this.storageService.upload(model.originalName,model.mimetype,model.buffer);
+        const savedWeights:upload = await this.storageService.upload(weights.originalName,weights.mimetype,weights.buffer);
         
         result.model.key = savedModel.key;
         result.model.location = savedModel.location;
@@ -54,7 +54,7 @@ export class ModelsService {
     }
 
     async getAll(user:user):Promise<NeuralNetwork[]>{
-        return this.networkModel.find({"creator.email":user.email}).exec();
+        return this.networkModel.find({"creator.name":user.name,"creator.email":user.email,"discriminator":NeuralNetworkDiscriminator.None}).exec();
     }
 
     async remove(user:user,name:string):Promise<boolean>{
@@ -73,6 +73,10 @@ export class ModelsService {
 
     async getModels(user:user,idList:string[]):Promise<NeuralNetwork[]>{
         return this.networkModel.find({"creator.name":user.name,"creator.email":user.email}).where('_id').in(idList);
+    }
+
+    async getModelsByIdOnly(idList:string[]):Promise<NeuralNetwork[]>{
+        return this.networkModel.find().where('_id').in(idList);
     }
 
     async copyModel(id:string,location:NeuralNetworkDiscriminator): Promise<string>{
@@ -102,14 +106,11 @@ export class ModelsService {
         const createdNetwork = new this.networkModel(dto);
         const result:NeuralNetworkDocument = await createdNetwork.save();
 
-        const modelUpload = this.storageService.copy(current.model.key,"models/" + result._id + "/",result.model.name);
+        const modelUpload = await this.storageService.copy(current.model.key);
         result.model.key = modelUpload.key; 
         result.model.location = modelUpload.location;
 
-        //console.log(current.weights.key);
-        //console.log("models/" + result._id + "/");
-
-        const weightsUpload = this.storageService.copy(current.weights.key,"models/" + result._id + "/",result.weights.name);
+        const weightsUpload = await this.storageService.copy(current.weights.key);
         result.weights.key = weightsUpload.key;
         result.weights.location = weightsUpload.location;
 
