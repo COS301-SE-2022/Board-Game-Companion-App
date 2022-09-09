@@ -3,10 +3,10 @@
         <img [src] = "current.icon.location" class = "w-full h-full">
     </div>
     <div class = "w-1/2 h-80 interface rounded-r-md text-white" >
-        <div class = "w-full mt-2 mb-4 text-center">
-            <label for="data-partition" class="form-label font-medium text-xl"><b>Data</b></label>
+        <div class = "w-full mt-1 mb-2 text-center">
+            <label for="data-partition" class="form-label font-medium text-xl"><b>Game</b></label>
         </div>
-        <div class = "w-full mb-4 px-4">
+        <div class = "w-full mb-2 px-4">
             <label for="data-partition" class="form-label font-medium text-base"><b>Enter value</b></label>
             <input id="inputBox" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="input" aria-label="input" aria-describedby="input">
         </div>
@@ -16,10 +16,17 @@
             </div>
         </div>
         
-        <button id= "EnterButton" class = "w-full mb-4 px-4 text-center" (click)="submitInput()">
+        <button id= "EnterButton" class = "w-full mb-2 px-4 text-center" (click)="submitInput()">
             <div >
                 <div  class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium" >
                     Enter
+                </div>
+            </div>
+        </button>
+        <button id= "HistoryButton" class = "w-full mb-2 px-4 text-center" (click)="showHistory()">
+            <div >
+                <div  class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium" >
+                    History
                 </div>
             </div>
         </button>
