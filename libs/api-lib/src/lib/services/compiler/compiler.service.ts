@@ -1103,10 +1103,14 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.SUBRULE(this.Array)
                                 this.CONSUME(tokensStore.tClosedSquareBracket)
                             }}
                     ])
                 });
+                
+
+
                 private FlowControl=this.RULE("FlowControl", () => {
                         
                     this.OR([

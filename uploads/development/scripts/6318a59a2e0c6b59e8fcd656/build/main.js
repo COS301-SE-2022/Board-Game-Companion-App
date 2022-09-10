@@ -246,25 +246,7 @@ break
         return choices
     };async turn ( ) { 
 let c = await this.generateChoices ( ) 
-let arr = [ ] 
-for ( let i = 0 ; i < 9 ;i++) { 
-arr [ i ] = 0 
-if ( this . State . board [ i ] . pieces . length == 1 ) { 
-if ( this . State . board [ i ] . pieces . Id == 'x') { 
-arr [ i ] = -1 
-} else { 
-arr [ i ] = 1 
-} 
-} 
-} 
-let x = await model( 'test', arr ) 
-let t = await this.State.getTileByID(x)
-let ans = await this.isActionLegal ( c [ 0 ] , t ) 
-if ( ans ) { 
-await this.chooseAction ( c [ 0 ] , t ) 
-} else { 
 await this.chooseAction ( c [ 0 ] , this . params [ 0 ] ) 
-} 
 } } class naught extends player { 
     Actions = [
         "placeNaught",
