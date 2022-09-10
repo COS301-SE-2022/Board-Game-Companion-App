@@ -38,10 +38,10 @@ import { Component, Input} from "@angular/core";
 })
 
 export class CardTemplateComponent{
-    @Input() Cards = [{effect: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}]}]
-    @Input() CardsLoops = [[{title: '', class: '' , id: '', pos: 0}]]
-    @Input() Effect = [{title: '', class: '' , id: '', pos: 0}]
-    @Input() Condition = [{title: '', class: '' , id: '', pos: 0}]
+    @Input() Cards = [{effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]}]
+    @Input() CardsLoops = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
+    @Input() Effect = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
+    @Input() Condition = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
     @Input() Index = 0
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},

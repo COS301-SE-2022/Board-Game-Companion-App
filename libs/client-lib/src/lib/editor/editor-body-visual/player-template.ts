@@ -52,11 +52,11 @@ import { Component, Input} from "@angular/core";
 })
 
 export class PlayerTemplateComponent{
-    @Input() Actions = [[{title: '', class: '' , id: '', pos: 0}]] 
-    @Input() Conditions = [[{title: '', class: '' , id: '', pos: 0}]]
-    @Input() Turn = [[{title: '', class: '' , id: '', pos: 0}]]  
-    @Input() PlayerLoops = [[{title: '', class: '' , id: '', pos: 0}]]
-    @Input() Players = [{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]},{actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0}]]}]
+    @Input() Actions = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]] 
+    @Input() Conditions = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
+    @Input() Turn = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]  
+    @Input() PlayerLoops = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
+    @Input() Players = [{actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]},{actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]}]
     @Input() Index = 0
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
@@ -65,8 +65,8 @@ export class PlayerTemplateComponent{
       ]
 
     addAction(){
-        this.Actions.push([{title: '', class: '' , id: '', pos: 0}])
-        this.Conditions.push([{title: '', class: '' , id: '', pos: 0}])
+        this.Actions.push([{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}])
+        this.Conditions.push([{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}])
     }
 
     removeAction(i: number)

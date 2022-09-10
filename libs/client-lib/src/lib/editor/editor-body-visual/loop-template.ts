@@ -74,18 +74,27 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
         <div class="container"  id = "loopCodeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
             <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
+        <div class = "tfSection" *ngIf = "item.title === 'If'">
+            <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="True[index]">
+            
+            </div>
+            <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="False[index]">
+
+            </div>
+        </div>
     `
 })
 
 export class LoopTemplateComponent{
+    @Input() True = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
+    @Input() False = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
     @Input() index = 0
-    @Input() dest = [{title: '', class: '' , id: '', pos: 0}] 
-    @Input() item = {title: '', class: '' , id: '', pos: 0}
+    @Input() dest = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}] 
+    @Input() item = {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
     @Input() dests = [this.dest]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2}
       ]
-
 }
