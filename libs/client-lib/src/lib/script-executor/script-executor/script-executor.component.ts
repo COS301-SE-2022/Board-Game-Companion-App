@@ -37,7 +37,7 @@ export class ScriptExecutorComponent implements OnInit {
   warningMessages:string[] = [];
   programStructure!:entity;
   count = 0;
-  history = "";
+  history:string[] = [];
   recentPrompt = "";
   historyVisible = false;
 
@@ -175,7 +175,7 @@ export class ScriptExecutorComponent implements OnInit {
       {
         outputElem.innerHTML = value + "<br>Press Enter to continue";
       }
-      this.history += value + "<br>";
+      this.history.push(value);
       this.recentPrompt = value + "<br>Press Enter to continue";
 
       const pause = new Promise((resolve)=>{
@@ -199,7 +199,7 @@ export class ScriptExecutorComponent implements OnInit {
       const elem = document.getElementById("TextOutput");
       if(elem)
         elem.innerHTML += prompt+"\n";
-      this.history += prompt + "<br>";
+      this.history.push(prompt);
       this.recentPrompt = prompt;
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
@@ -253,7 +253,7 @@ export class ScriptExecutorComponent implements OnInit {
     {
       outputElem.innerHTML = "";
     }
-    this.history += this.inputResult + "<br>";
+    this.history.push(this.inputResult) ;
     this.showInput = false;
     this.inputBlock = false;
   }
@@ -275,7 +275,12 @@ export class ScriptExecutorComponent implements OnInit {
     {
       if(elem)
       {
-        elem.innerHTML = this.history;
+        elem.innerHTML = "";
+        for(let i = 0; i< this.history.length;i++)
+        {
+          elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"historyElement\">" +this.history[i]+"</div>";
+        }
+        
       }
     }
     this.historyVisible = !this.historyVisible;
