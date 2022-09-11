@@ -80,19 +80,22 @@
             </button>
         </div>
         <div class = "col-sm-12 mt-4">
-            <div class = "mb-4 font-medium data-label">
+            <div (click) = "showAutomata = !showAutomata" class = "mb-4 font-medium cursor-pointer text-white text-lg hover:underline">
                 Automata Scripts
             </div>
 
-            <div *ngFor = "let value of scripts" class = "mb-1 row m-0  p-1 rounded-md border-2 hover:shadow-lg hover:scale-y-105 hover:bg-slate-700">
-                <div class = "col-sm-1 text-left">
-                    <img class = "h-8 w-8" [src] = "value.icon.location">
-                </div>
-                <div class = "col-sm-9 text-left text-white text-left text-xl capitalize">
-                    {{value.name}}
-                </div>
-                <div class = "col-sm-2 text-xl text-right">
-                    <i class="fas fa-star fa-sm text-orange-500"></i>
+            <div *ngIf = "showAutomata" class = "automata max-h-60">
+                <div (click) = showInfo(value) *ngFor = "let value of scripts" class = "mb-1 row m-0  p-1 cursor-pointer rounded-md border-2 hover:shadow-lg hover:scale-y-105 hover:bg-slate-700">
+                    <div class = "col-sm-1 text-left">
+                        <img class = "h-8 w-8" [src] = "value.icon.location">
+                    </div>
+                    <div class = "col-sm-9 text-left text-white text-left text-xl capitalize">
+                        {{value.name}}
+                    </div>
+                    <div class = "col-sm-2 text-xl text-right">
+                        <p class = "text-white">{{value.rating}}</p>
+                        <i class="fas fa-star fa-sm text-orange-500"></i>
+                    </div>
                 </div>
             </div>
         </div>

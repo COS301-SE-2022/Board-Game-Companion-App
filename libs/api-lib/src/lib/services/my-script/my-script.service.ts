@@ -86,9 +86,9 @@ export class MyScriptService {
         if(script === null || script === undefined)
             return;
 
-        fs.unlinkSync(script.source.key);
-        fs.unlinkSync(script.build.key);
-        fs.unlinkSync(script.icon.key);
+        this.storageService.remove(script.source.key);
+        this.storageService.remove(script.build.key);
+        this.storageService.remove(script.icon.key);
 
         const automata = await this.automataModel.findOne({"link":script._id});
         if(automata === null || automata === undefined)

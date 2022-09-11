@@ -1,6 +1,6 @@
 
 <div id = "container">
-    <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1>
+    <!-- <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1> -->
     <div id = "left" class = "ml-16">
         <!-- Top Games -->
         <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14">Top Games</h1>
@@ -26,23 +26,13 @@
     </div>
     <div id = "wrapper">
         <div id="outerDiv" class="flex justify-center h-14">
-            <div id = "search-tools">
-              <div class="mb-3">
-                  <div class="input-group mb-4">
-                      <input id = "search" class = "mt-3 ml-12 pl-4 focus:outline-none" [(ngModel)] = "searchValue" name = "searchValue" type="search" aria-label="Search" aria-describedby="button-addon3">
-                      <button (click)="search()" class="btn inline-block font-bold px-2 py-1" type="button" id="button-addon3"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
-                      
-                    <div id="sortingDiv">
-                        <select id="sorting" class="btn font-bold" [(ngModel)]="selected">
-                            <option value="" disabled selected>Sort By..</option>
-                            <option value="alphabetical">Alphabetical</option>
-                            <!-- <option value="score">Score</option>
-                            <option value="date">Date</option> -->
-                        </select>
-                        <button id ="sort" class="btn px-2 py-1  font-bold"  (click)="onSort()">Sort</button>
-                    </div>
-                  </div>
-              </div>
+            <div id = "search-tools" class = "p-2.5">
+                <div class="input-group relative w-full">
+                    <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
+                    <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
               
               <!-- <div class="flex justify-left">
                 <div style="width:150px">

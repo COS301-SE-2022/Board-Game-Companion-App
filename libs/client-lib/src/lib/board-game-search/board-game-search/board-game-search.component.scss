@@ -28,7 +28,6 @@
 #left{
     width: 20%;
     float: left;
-    margin-top: 3em;
     margin-bottom: 10em;
     background-color: white;
 }
@@ -36,7 +35,6 @@
 #right{
     width: 20%;
     float: right;
-    margin-top: 3em;
     margin-bottom: 10em;
     background-color: white;
 }
@@ -79,6 +77,14 @@
 
 .game-image>a>img{
     height:100%;
+}
+
+.search-btn{
+  background-color: $Pcolour-3;
+}
+
+.search-input{
+  border:2px solid $Pcolour-3
 }
 
 .board-game{ 
