@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Query, Post, Delete, Put } from '@nestjs/common';
 import { user } from '../../models/general/user';
+import { AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { Collection } from '../../schemas/collection.schema';
 import { CollectionsService } from '../../services/collection/collections.service';
 
@@ -16,8 +17,8 @@ export class CollectionsController {
     }
 
     @Post('create-collection')
-    async createCollection(@Body('name') name: string,@Body('owner') owner: user, @Body('description') desc:string):Promise<Collection>{
-        return this.collectionService.create(name,owner,desc); 
+    async createCollection(@Body('name') name: string,@Body('owner') owner: user):Promise<Collection>{
+        return this.collectionService.create(name,owner); 
     }
 
     @Delete('remove')
@@ -33,5 +34,15 @@ export class CollectionsController {
     @Put('add-game')
     async addGameToCollection(@Body('owner')owner:user,@Body('name')name:string,@Body('boardgames')game:string):Promise<boolean>{
         return this.collectionService.addBoardGame(game,name,owner);
+    }
+
+    @Get('get-scripts')
+    async getScripts(@Query('id')id:string):Promise<AutomataScriptDocument[]>{
+        return this.collectionService.getScripts(id);
+    }
+
+    @Get('already-exist')
+    async alreadyExists(@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string,@Query('name')name:string):Promise<boolean>{
+        return this.collectionService.alreadyExist({name:ownerName,email:ownerEmail},name);
     }
 }

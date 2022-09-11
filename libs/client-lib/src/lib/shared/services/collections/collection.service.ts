@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { user } from '../../models/general/user';
 import { collection } from '../../models/collection/collection';
+import { automataScript } from '../../models/scripts/automata-script';
 
 
 
@@ -24,13 +25,13 @@ export class CollectionService {
     return this.httpClient.get<collection[]>(this.api + "collections/get-collections",{params:param})
   }
   
-  createCollection(name:string,description:string):Observable<collection>{
+  createCollection(name:string):Observable<collection>{
     const owner:user = {
       name: sessionStorage.getItem("name") as string,
       email: sessionStorage.getItem("email") as string
     }
 
-    return this.httpClient.post<collection>(this.api + "collections/create-collection",{name:name,owner:owner,description:description});
+    return this.httpClient.post<collection>(this.api + "collections/create-collection",{name:name,owner:owner});
   }
 
   removeCollection(name:string):Observable<number>{
@@ -59,4 +60,20 @@ export class CollectionService {
     return this.httpClient.put<boolean>(this.api + "collections/add-game",{owner:owner,name:name,game:game});
   }
 
+  getScripts(id:string):Observable<automataScript[]>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<automataScript[]>(this.api + "collections/get-scripts",{params: param});
+  }
+
+  
+  alreadyExists(name:string):Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+    param = param.set("name",name);
+
+    return this.httpClient.get<boolean>(this.api + "collections/already-exist",{params: param});
+  }
 }

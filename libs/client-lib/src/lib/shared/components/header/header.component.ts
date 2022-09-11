@@ -28,8 +28,6 @@ export class HeaderComponent implements OnInit {
     gapi.UserSubject.subscribe({
       next:(value)=>{
         this.UserDetails = value;
-        console.log("constructor");
-        console.log(value);
         sessionStorage.setItem("name",value.info.name);
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
@@ -58,7 +56,7 @@ export class HeaderComponent implements OnInit {
 
     }
     
-    this.router.navigate(['/home']);
+    this.router.navigate(['/board-game-search']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;
