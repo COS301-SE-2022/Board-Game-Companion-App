@@ -194,6 +194,7 @@ export class MyScriptService {
             downloads: script.downloads,
             size: script.size,
             comments: script.comments,
+            rating: script.rating,
             description: script.description,
             version: {
                 major: script.version.major,
@@ -207,7 +208,7 @@ export class MyScriptService {
             source: {name: "", key: "",location: ""},
             build: {name: "", key: "", location: ""},
             icon: {name: "", key: "", location: ""},
-            iconSize: script.iconSize
+            iconSize: script.iconSize,
         };
 
         const createdScript = new this.oldScriptModel(dto);
@@ -273,6 +274,7 @@ export class MyScriptService {
             author: script.author,
             boardgame: script.boardgame,
             comments: [],
+            rating: 0,
             dateReleased: new Date(),
             description: script.description,
             downloads: 0,

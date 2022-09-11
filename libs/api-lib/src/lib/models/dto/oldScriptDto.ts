@@ -17,6 +17,7 @@ export interface oldScriptDto{
     lastDownload: Date;
     export: boolean;
     comments: string[];
+    rating: number;
     source: file;
     iconSize: number;
 }
