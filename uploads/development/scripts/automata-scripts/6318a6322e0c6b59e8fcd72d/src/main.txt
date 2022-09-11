@@ -62,35 +62,9 @@ player crossAI{
     turn(){
         let c =generateChoices()
         
+        chooseAction(c[0],this.params[0])
         
-        let arr = []
-        for(let i = 0; i<9;i++)
-        {
-            arr[i] = 0
-            if(this.State.board[i].pieces.length == 1)
-            {
-                if(this.State.board[i].pieces.Id == 'x')
-                {
-                    arr[i] = -1
-                }
-                else
-                {
-                    arr[i] = 1
-                }
-            }
-        }
-        let x = model('test',arr)
-        let t = getTileByID(x)
-        let ans = isActionLegal(c[0], t)
         
-        if(ans)
-        {
-            chooseAction(c[0],t)
-        }
-        else
-        {
-            chooseAction(c[0],this.params[0])
-        }
         
     }
 }
