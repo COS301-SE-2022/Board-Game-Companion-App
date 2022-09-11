@@ -11,16 +11,6 @@ export class EditorBodyVisualComponent {
   endLoopIndex = 0
   playersLoopIndex = 0
   cardsLoopIndex = 0
-  trueIndex = 0
-  falseIndex = 0
-
-  True = [
-    [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
-  ]
-
-  False = [
-    [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
-  ]
 
   Tiles = [
     {variable: '', id: '', name: '', type: ''}

@@ -76,11 +76,11 @@ import { Component, Input} from "@angular/core";
             <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
         <div class = "tfSection" *ngIf = "item.title === 'If'">
-            <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="True[0]">
-        
+            <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
-            <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="False[0]">
-
+            <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
         </div>
     </div>
@@ -88,8 +88,6 @@ import { Component, Input} from "@angular/core";
 })
 
 export class ElementTemplateComponent{
-    @Input() True = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
-    @Input() False = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
     @Input() dest = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}] 
     @Input() dests = [this.dest]
     @Input() methods = [
