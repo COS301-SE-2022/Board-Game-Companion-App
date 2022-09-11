@@ -60,6 +60,13 @@ export class ModelsService {
     return this.httpClient.get<any>(this.api + "models/retrieve-subset",{params:param}); 
   }
 
+  getModelsByIdOnly(idList:string[]):Observable<any>{
+    let param = new HttpParams();
+    param = param.set("idList",JSON.stringify(idList));
+
+    return this.httpClient.get<any>(this.api + "models/retrieve-subset-by-id-only",{params:param});
+  }
+
   remove(name:string): Observable<boolean>{
     let param = new HttpParams();
     param = param.set("userName",sessionStorage.getItem("name") as string);

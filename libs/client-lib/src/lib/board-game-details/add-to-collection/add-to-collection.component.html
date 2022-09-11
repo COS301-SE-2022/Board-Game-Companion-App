@@ -1,0 +1,31 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="collectionModal" tabindex="-1" aria-labelledby="versionModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+      <div class="wrapper text-center modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto text-white bg-clip-padding rounded-md outline-none text-current">
+    
+          <div class="modal-header flex flex-shrink-0 items-center justify-center p-2 border-b border-gray-200 rounded-t-md text-center">
+              <h5 class="text-xl font-medium leading-normal text-center" id="exampleModalLabel">Collections</h5>
+          </div>
+          
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="collection" data-bs-toggle="dropdown" aria-expanded="false">
+              {{selected === undefined ? '' : selected.name}}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="collection">
+              <li *ngFor = "let option of options"><a class="dropdown-item" (click) = "selected = option">Action</a></li>
+            </ul>
+          </div>
+
+          <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
+              <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
+                  <i class="fa-solid fa-rectangle-xmark"></i>
+              </button>
+              <button  data-bs-dismiss="modal" data-toggle="tooltip" title="save" (click)="add()" id = "save-theme" class = "ml-2 script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
+                  <i class="fa-solid fa-floppy-disk fa-2x text-white"></i>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

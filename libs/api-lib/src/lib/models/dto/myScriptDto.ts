@@ -19,5 +19,6 @@ export interface myScriptDto{
     status:status;
     export: boolean;
     programStructure:entity;
-    source: file; 
+    source: file;
+    iconSize: number; 
 }

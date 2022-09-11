@@ -1,14 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CollectionsController } from './controllers/board-collection/collections.controller';
-import { ApiScriptController } from './controllers/script/script.controller';
 import { ApiCommentController } from './controllers/comments/comment.controller';
 import { CollectionsService } from './services/collection/collections.service';
-import { ScriptService } from './services/scripts/script.service';
 import { EditorService } from './services/editor/editor.service';
 import { RatingService } from './services/ratings/rating.service';
 import { CommentService } from './services/comments/comment.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { collectionSchema } from './schemas/collection';
 import { Script, ScriptSchema } from './schemas/script.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { Rating, RatingSchema } from './schemas/rating.schema';
@@ -29,13 +26,20 @@ import { MyScriptService } from './services/my-script/my-script.service';
 import { ApiMyScriptController } from './controllers/my-scripts/my-script.controller';
 import { AutomataScript, AutomataScriptSchema } from './schemas/automata-script.schema';
 import { OldScript, OldScriptSchema } from './schemas/old-script.schema';
+import { DownloadScript, DownloadScriptSchema } from './schemas/download-script.schema';
 import { AutomataService } from './services/automata/automata.service';
 import { ApiAutomataScriptController } from './controllers/automata-scripts/automata-script.controller';
 import { ApiEditorController } from './controllers/editor/editor.controller';
+import { DownloadsService } from './services/downloads/downloads.service';
+import { ApiDownloadScriptController } from './controllers/downloads/downloads.controller';
+import { Collection, CollectionSchema } from './schemas/collection.schema';
+import { File, FileSchema } from './schemas/file.schema';
+import { MongoDbStorageService } from './services/mongodb-storage/mongodb-storage.service';
+import { ApiFileManagerController } from './controllers/file-manager/file-manager.controller';
 
 @Module({
   imports:[
-    MongooseModule.forFeature([ { name: 'collection', schema: collectionSchema},
+    MongooseModule.forFeature([ { name: Collection.name, schema: CollectionSchema},
                                 { name: Script.name, schema: ScriptSchema},
                                 { name: Comment.name, schema: CommentSchema},
                                 { name: Rating.name, schema: RatingSchema},
@@ -44,24 +48,26 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
                                 { name: Report.name, schema: ReportSchema},
                                 { name: MyScript.name, schema: MyScriptSchema},
                                 { name: AutomataScript.name, schema: AutomataScriptSchema},
-                                { name: OldScript.name, schema: OldScriptSchema}
+                                { name: OldScript.name, schema: OldScriptSchema},
+                                { name: DownloadScript.name, schema: DownloadScriptSchema},
+                                { name: File.name, schema: FileSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
   controllers: [
     CollectionsController,
-    ApiScriptController,
     ApiCommentController,
     ApiModelsController,
     ApiReportsController,
     ApiMyScriptController,
     ApiAutomataScriptController,
-    ApiEditorController
+    ApiEditorController,
+    ApiDownloadScriptController,
+    ApiFileManagerController
   ],
   providers: [
     CollectionsService,
     EditorService,
-    ScriptService,
     RatingService,
     CommentService,
     S3Service,
@@ -70,7 +76,9 @@ import { ApiEditorController } from './controllers/editor/editor.controller';
     LocalStorageService,
     ReportService,
     MyScriptService,
-    AutomataService
+    DownloadsService,
+    AutomataService,
+    MongoDbStorageService
   ],
   exports: [],
 })

@@ -82,7 +82,20 @@ export class ApiModelsController {
         }catch(error){
             throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
-
         
     }
+
+    @Get('retrieve-subset-by-id-only')
+    async getModelsByIdOnly(@Query('idList')idList:string):Promise<NeuralNetwork[]>{
+        
+        
+        try{
+            const temp = JSON.parse(idList);
+            return this.modelsService.getModelsByIdOnly(temp)
+        }catch(error){
+            throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+        }
+        
+    }
+
 }

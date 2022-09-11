@@ -3,6 +3,7 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 import { script, empty } from '../../shared/models/scripts/script';
 import { Router } from '@angular/router';
 import { myScript } from '../../shared/models/scripts/my-script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
@@ -44,7 +45,13 @@ export class MyScriptsComponent implements OnInit{
                   this.status = status;
                   
                   if(this.status === OnlineStatusType.ONLINE && this.filter.length === this.scripts.length){
+                    this.showOffline = false;
                     this.getMyScripts();
+                  }
+
+
+                  if(this.status === OnlineStatusType.OFFLINE){
+                    this.showOffline = true;                    
                   }
                 });
   }
@@ -55,8 +62,6 @@ export class MyScriptsComponent implements OnInit{
 
   getMyScripts():void{
     if(this.status === OnlineStatusType.OFFLINE){
-      if(this.scripts.length === 0)
-        this.showOffline = true;
       return;
     }
 
@@ -101,20 +106,16 @@ export class MyScriptsComponent implements OnInit{
 
 
   remove(current:myScript):void{
-    this.scriptService.removeScript(current._id).subscribe({
-      next:(value)=>{
-        const temp:script[] = [];
-
-        for(let count = 0; count < this.myScripts.length; count++){
-          if(this.myScripts[count]._id !== current._id)
-            temp.push(this.myScripts[count]);
-        }
-        this.myScripts = temp;
+    this.scriptService.removeMyScript(current._id).subscribe({
+      next:() => {
+        this.notifications.add({type:"success",message:`Successfully deleted ${current.name}`});
+        this.scripts = this.scripts.filter((value:myScript) => value._id !== current._id)
+        this.filter = this.filter.filter((value:myScript) => value._id !== current._id)
       },
-      error:(e)=>{
-        console.log(e);
+      error:() => {
+        this.notifications.add({type:"danger",message:`Failed to delete ${current.name}`});
       }
-    });
+    })
   }
 
   update(value:myScript): void{
@@ -237,7 +238,15 @@ export class MyScriptsComponent implements OnInit{
   }
 
   showInfo(value:myScript){
-    this.router.navigate(['script-detail'], { state: { value: value } });
+    this.scriptService.getMyScriptInfo(value._id).subscribe({
+      next:(response:automataScript) => {
+        this.router.navigate(['script-detail'], { state: { value: response } });
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:`Could not find the release version of ${value.name}`})
+      }
+    });
+    
   }
 
   showEditor(value:myScript){

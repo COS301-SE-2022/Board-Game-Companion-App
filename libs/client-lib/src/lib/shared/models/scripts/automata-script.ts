@@ -9,4 +9,5 @@ export class automataScript extends baseScript {
     export = false;
     comments: string[] = [];
     source: file = { name: "", key: "", location: ""};
+    previous: string[] = [];
 }
