@@ -516,6 +516,9 @@ class parser extends CstParser
         private GameState=this.RULE("GameState", () => {
             this.CONSUME(tokensStore.tState )
             this.CONSUME(tokensStore.tOpenBrace)
+            this.OPTION(() =>{
+                this.SUBRULE(this.rTileAttributes )
+            })
             this.SUBRULE(this.Declarations )
             this.CONSUME(tokensStore.tCloseBrace)
         });
@@ -974,7 +977,7 @@ class parser extends CstParser
                         this.SUBRULE(this.SpecialMethods )
                     })
                     this.OPTION1(() => {
-                            
+
                                 this.SUBRULE(this.nVariable )
                                 
                                 this.OPTION2(() => {
@@ -1027,15 +1030,24 @@ class parser extends CstParser
                             {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
                             }}
+                            
                         ])
                  })
+
+                 private rTileAttributes=this.RULE("rTileAttributes", () => {
+                    this.CONSUME(tokensStore.tTileAttributes)
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.Declarations)
+                    this.CONSUME(tokensStore.tCloseBracket )
+                 })
+
                  private rCreateBoard=this.RULE("rCreateBoard", () => {
                     this.CONSUME(tokensStore.tCreateBoard )
                     this.CONSUME(tokensStore.tOpenBracket )
-                    this.CONSUME(tokensStore.tIntegerLiteral )
+                    this.SUBRULE(this.Const)
                     this.OPTION2(() => {
                         this.CONSUME(tokensStore.tComma )
-                        this.CONSUME2(tokensStore.tIntegerLiteral )
+                        this.SUBRULE2(this.Const)
                     })
                     this.CONSUME(tokensStore.tCloseBracket )
                  })
@@ -1595,7 +1607,14 @@ function visitGameState(cstOutput:CstNode)
             }
             if(node.name != "SpecialMethods")
             {
-                visitGameState(node);
+                if(node.name == "rTileAttributes")
+                {
+                    visitTileAttributes(node)
+                }
+                else
+                {
+                    visitGameState(node);
+                }
             }
             else
             {
@@ -1605,6 +1624,20 @@ function visitGameState(cstOutput:CstNode)
             
         }
 
+}
+function visitTileAttributes(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+
+        if(node.name)
+        {
+            visitPlayerStatements(node, "//tile properties");
+        }
+    }
 }
 function visitCards(cstOutput:CstNode)
 {
@@ -2172,24 +2205,29 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
-        if(token.image)
+        
+        if(node.name)
         {
-            if(token.tokenType.name == "IntegerLiteral")
+            if(node.name == "Const")
             {
                 if(i == 0)
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<='+token.image+';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<=', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitPlayerStatements(node, place);
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
         
                 }
                 else
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<=', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitPlayerStatements(node, place);
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                
                 }
             }
         }
-
 
     }
     if(i == 1)
