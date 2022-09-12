@@ -43,7 +43,7 @@ class tile
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
-    //tile properties
+    //possibly functions to make the scripters life easier like:
     
 }
 class piece
@@ -59,11 +59,16 @@ class game_state
     board = []
     constructor()
     {
-        //State
+        
+let t1 = new tile()
+
+t1 . Id = '1'
+//State
         
 
         
-        //tiles
+        this.board.push(t1)
+//tiles
 
         
     }
@@ -110,7 +115,161 @@ class player
         //redefined in subclasses
     }
 }
-//players
+class AI extends player { 
+    Actions = [
+        
+    ]
+
+    
+
+    
+
+
+    params = []
+    async chooseAction(choice, p)
+    {
+        switch(choice)
+        {
+            
+        }
+        
+        
+    }
+    async isActionLegal(choice, p)
+    {
+        switch(choice)
+        {
+            
+            
+        }
+        
+        return false;
+    }
+
+    async considerations(choice)
+    {
+        
+        switch(choice)
+        {
+            
+        }
+        
+        return [];
+    }
+    async generateChoices()
+    {
+        this.params = []
+        let choices =[]
+        
+        for(let i = 0;i<this.Actions.length;i++)
+        {
+            let gcCond = await this.considerations(i);
+
+            if( gcCond.length == 0)
+            {
+                if(await this.isActionLegal(this.Actions[i], []))
+                {
+                    choices.push(this.Actions[i])
+                    this.params.push([])
+                }
+            }
+            else
+            {
+                
+                for(let j = 0;j<gcCond.length;j++)
+                {
+                    
+                    let isLegal = await this.isActionLegal(this.Actions[i], gcCond[j]);
+                    if(isLegal)
+                    {
+                        choices.push(this.Actions[i])
+                        this.params.push(gcCond[j])
+
+                    }
+                }
+            }
+        }
+        
+        return choices
+    };async turn ( ) { 
+} } class Human extends player { 
+    Actions = [
+        
+    ]
+
+    
+
+    
+
+
+    params = []
+    async chooseAction(choice, p)
+    {
+        switch(choice)
+        {
+            
+        }
+        
+        
+    }
+    async isActionLegal(choice, p)
+    {
+        switch(choice)
+        {
+            
+            
+        }
+        
+        return false;
+    }
+
+    async considerations(choice)
+    {
+        
+        switch(choice)
+        {
+            
+        }
+        
+        return [];
+    }
+    async generateChoices()
+    {
+        this.params = []
+        let choices =[]
+        
+        for(let i = 0;i<this.Actions.length;i++)
+        {
+            let gcCond = await this.considerations(i);
+
+            if( gcCond.length == 0)
+            {
+                if(await this.isActionLegal(this.Actions[i], []))
+                {
+                    choices.push(this.Actions[i])
+                    this.params.push([])
+                }
+            }
+            else
+            {
+                
+                for(let j = 0;j<gcCond.length;j++)
+                {
+                    
+                    let isLegal = await this.isActionLegal(this.Actions[i], gcCond[j]);
+                    if(isLegal)
+                    {
+                        choices.push(this.Actions[i])
+                        this.params.push(gcCond[j])
+
+                    }
+                }
+            }
+        }
+        
+        return choices
+    };async turn ( ) { 
+} } //players
 
 
 
@@ -119,7 +278,7 @@ class script
 {
     State = new game_state();
     players = [
-        //add players
+        new AI(),new Human(),//add players
     ];
     
 
@@ -186,7 +345,7 @@ class script
         //end_game
     
     
-        return true
+        return false
     }
     
 

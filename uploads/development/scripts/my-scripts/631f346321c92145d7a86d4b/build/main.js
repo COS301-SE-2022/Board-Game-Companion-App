@@ -43,7 +43,7 @@ class tile
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
-    //tile properties
+    //possibly functions to make the scripters life easier like:
     
 }
 class piece
@@ -186,7 +186,7 @@ class script
         //end_game
     
     
-        return true
+        return false
     }
     
 
