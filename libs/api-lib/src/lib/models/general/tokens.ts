@@ -27,6 +27,8 @@ export const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/ad
 export const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
 export const tAddPieceToTile =(chevrotain.createToken({name:"addPieceToTile",pattern:/addPieceToTile/,longer_alt:tUserDefinedIdentifier}));
 
+export const tGetBoard =(chevrotain.createToken({name:"getBoard",pattern:/getBoard/,longer_alt:tUserDefinedIdentifier}));
+
 export const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
 export const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
 export const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
@@ -153,6 +155,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tCopy,
     tAddAdjacency,
     tAddPieceToTile,
+    tGetBoard,
     tGetTileByID,
     tGetTilesByType,
     tGenerateChoices,

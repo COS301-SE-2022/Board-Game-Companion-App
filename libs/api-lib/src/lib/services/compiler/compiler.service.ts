@@ -801,20 +801,30 @@ class parser extends CstParser
                                 this.SUBRULE(this.rCopy) 
                             
                         }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetBoard) 
+                            
+                        }},
                     ])
                     
                 });
+                private rGetBoard=this.RULE("rGetBoard", () => {
+                    this.CONSUME(tokensStore.tGetBoard )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rCreateCard=this.RULE("rCreateCard", () => {
                     this.CONSUME(tokensStore.tCreateCard )
-                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME3(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME2(tokensStore.tCloseBracket )
+                    this.CONSUME3(tokensStore.tCloseBracket )
                 })
                 private rCopy=this.RULE("rCopy", () => {
                     this.CONSUME(tokensStore.tCopy )
-                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME4(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME2(tokensStore.tCloseBracket )
+                    this.CONSUME4(tokensStore.tCloseBracket )
                 })
 
 
@@ -2116,6 +2126,9 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCreateCard":
                     visitRCreateCard(node, place)
                         break;  
+                case "rGetBoard":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.State.board', jsScript.slice(jsScript.indexOf(place))].join('');
+                    break;
             }
         }
     }
