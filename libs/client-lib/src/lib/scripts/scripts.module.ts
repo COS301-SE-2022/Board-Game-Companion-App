@@ -9,7 +9,7 @@ import { UpdateScriptComponent } from './update-script/update-scripts.component'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NbContextMenuModule } from '@nebular/theme';
 import { SharedModule } from '../shared/shared.module';
-import { DownloadsPageComponent } from './downloads-page/downloads-page.component';
+import { DownloadScriptsComponent } from './download-scripts/download-scripts.component';
 import { MyScriptsComponent } from './my-scripts/my-scripts.component'
 import { MainScriptsComponent } from './main-scripts/main-scripts.component';
 import { OnlineStatusModule } from 'ngx-online-status';
@@ -20,7 +20,7 @@ import { AutomataScriptComponent } from './automata-scripts/automata-scripts.com
     ScriptsComponent,
     CreateScriptComponent,
     UpdateScriptComponent,
-    DownloadsPageComponent,
+    DownloadScriptsComponent,
     MyScriptsComponent,
     MainScriptsComponent,
     AutomataScriptComponent

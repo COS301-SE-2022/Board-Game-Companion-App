@@ -405,16 +405,17 @@ export class CompilerService {
 
     transpile(input:string) 
     {
-        
+
         this.errorLog = "";
         
         this.DSLparser.input = this.scanHelper(input).tokens;
         const cstOutput = this.DSLparser.Program();
+        
         if(this.DSLparser.errors.length!=0)
         {
             const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
-            console.log(errMessage)
-            return {err:errMessage}
+            
+            throw errMessage;
         }
         else
         {
@@ -1112,10 +1113,14 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.CONSUME(tokensStore.tOpenSquareBracket)
+                                this.SUBRULE(this.Array)
                                 this.CONSUME(tokensStore.tClosedSquareBracket)
                             }}
                     ])
                 });
+                
+
+
                 private FlowControl=this.RULE("FlowControl", () => {
                         
                     this.OR([

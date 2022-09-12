@@ -4,13 +4,56 @@
             <div class = "title text-2xl font-bold ml-4 mt-2">
                 Board
             </div>
-           <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Game" [dest] = "Game" [dests] = "GameLoops" [methods] = "methods"></board-game-companion-app-element-template>
         </summary>
+        <table class = "table-fixed m-4 mt-2">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        <button (click)="addTileToBoard()" id = "addTile"><i class="fa-solid fa-plus"></i></button>
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let tile of Tiles let i = index">
+                    <td>
+                        <button (click)="removeTile(i)" class = "mr-2" id = "removeTile"><i class="fa-solid fa-circle-xmark"></i></button>
+                    </td>
+                    <td>
+                        <input [value]="tile.variable">
+                    </td>
+                    <td>
+                        <input [value]="tile.id">
+                    </td>
+                    <td>
+                        <input [value]="tile.name">
+                    </td>
+                    <td>
+                        <input [value]="tile.type">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </details>
 </div>
 <div id = "players">
     <button (click)="addNewPlayer()" id = "addNewPlayer">Add New Player</button>
-    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "i" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods" open></board-game-companion-app-player-template>
+    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerLoops]="PlayersLoops" [methods]="methods" open></board-game-companion-app-player-template>
+</div>
+<div id = "Cards">
+    <button (click)="addNewCard()" id = "addNewCard">Add New Card</button>
+    <board-game-companion-app-card-template *ngFor = "let card of Cards | slice:1 let i = index" [id] = "'c'+ i.toString()" [Index]="i" [Cards]="Cards" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" open></board-game-companion-app-card-template>
 </div>
 <div id = "endGame" class = "boardContainers">
     <details open>

@@ -1,145 +1,120 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Script, ScriptDocument } from '../../schemas/script.schema';
+import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
 import { user } from '../../models/general/user';
-import { scriptDto } from '../../models/dto/scriptDto';
+import { version } from '../../models/general/version';
 import { HttpService } from '@nestjs/axios';
-import { LocalStorageService } from '../local-storage/local-storage.service';
+import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
+import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
+import { update } from '../../models/general/update';
+import fs = require('fs');
+import { ModelsService } from '../models/models.service';
+import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator';
+import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
+import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 
 @Injectable()
 export class DownloadsService {
-    constructor(@InjectModel('Downloaded') private downloadsModel:Model<ScriptDocument>,
-                @InjectModel(Script.name) private scriptModel: Model<ScriptDocument>,
+    constructor(@InjectModel(DownloadScript.name) private downloadsModel:Model<DownloadScriptDocument>,
+                @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>,
+                @InjectModel(OldScript.name) private oldModel: Model<OldScriptDocument>,
                 private readonly httpService: HttpService,
-                private readonly localStorage: LocalStorageService){}
+                private readonly modelService: ModelsService,
+                private readonly storageService: MongoDbStorageService
+                ){}
 
-    async storeScript(script:Script){
-        
-        const dto:scriptDto = {
-            name: script.name,
-            author: script.author,
-            owner: script.owner,
-            boardgame: script.boardgame,
-            description: script.description,
-            created: new Date(script.created),
-            release: script.release,
-            lastupdate: script.lastupdate,
-            downloads: script.downloads,
-            lastdownload: script.lastdownload,
-            public: script.public,
-            export: script.public,
-            status: script.status,
-            size: script.size,
-            comments: script.comments,
-            programStructure:{type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
-            source: script.source,
-            build: script.build,
-            icon: script.icon,
-            models: script.models
-        };
-        const result = new this.downloadsModel(dto).save();
-        console.log(result);
+
+    async alreadyDownloaded(owner:user,author:user,name:string,version:version):Promise<boolean>{
+        const script =  await this.downloadsModel.findOne({   "owner.name": owner.name,
+                                            "owner.email": owner.email,
+                                            "author.name": author.name,
+                                            "author.email": author.email,
+                                            "name":name,
+                                            "version.major":version.major,
+                                            "version.minor":version.minor,
+                                            "version.patch":version.patch
+                                        });
+
+        return script !== null && script !== undefined;
     }
 
-    async download(name:string,owner:user):Promise<{status:string,message:string,script:Script}>{
-        const result = {
-            status:"success",
-            message:"Successfully downloaded " + name + " on " + (new Date()).toString(),
-            script:null
-        }
-
-        let script:ScriptDocument = await this.scriptModel.findOne({"name": name,"owner.email":owner.email});
+    async update(ids:update):Promise<DownloadScript>{
+        const oldScript = await this.downloadsModel.findById(ids.oldId);
+        const newScript = await this.automataModel.findById(ids.newId);
         
-        if(script !== null){
-            result.status = "warning";
-            result.message = "You already downloaded " + script.name + ".";
-        }else{
-            script = await this.scriptModel.find({"name": name});  
-            
-            if(script === null){
-                result.status = "danger";
-                result.message = "The script you are trying to download does not exist.";
-            }else{
-                if(script.status.value !== 2){
-                    result.status = "danger";
-                    
-                    if(script.status.value === 0)
-                        result.message = "The script you are trying to download has been flagged.";
-                    
-                    if(script.status.value === 1)
-                        result.message = "The script you are trying to download is still in development.";
-                }else{
-                    const dto:scriptDto = {
-                        name: script.name,
-                        author: script.author,
-                        owner: owner,
-                        boardgame: script.boardgame,
-                        description: script.description,
-                        created: new Date(script.created),
-                        release: script.release,
-                        lastupdate: script.lastupdate,
-                        downloads: script.downloads,
-                        lastdownload: script.lastdownload,
-                        public: script.public,
-                        export: script.export,
-                        status: script.status,
-                        size: script.size,
-                        comments: script.comments,
-                        programStructure: null,
-                        source: {name:"",location:"",key:""},
-                        build:{name:"",location:"",key:""},
-                        icon: {name:"",location:"",key:""},
-                        models: []
-                    };
+        if(oldScript === null || newScript === null || oldScript === undefined || newScript === undefined)
+            return null;
+        
+        oldScript.description = newScript.description;
+        oldScript.version.major = newScript.version.major;
+        oldScript.version.minor = newScript.version.minor;
+        oldScript.version.patch = newScript.version.patch;
+        oldScript.size = newScript.size;
 
-                    const createdScript = new this.downloadsModel(dto);
-                    const newScript:ScriptDocument = await createdScript.save();
-                    const data  = (await this.httpService.axiosRef.get(script.build.location,{
-                        responseType:'text'
-                    })).data;
+        this.storageService.copy(newScript.build.key);
+        
+        for(let count = 0; count < oldScript.models.length; count++){
+            const value = oldScript.models[count];
+            const model = await this.modelService.removeById(value);
 
-                    //const buildResponse = await this.s3Service.upload(script.build.name,"scripts/" + newScript._id + "/build/",data);
-                    const buildResponse = await this.localStorage.upload(script.build.name,"downloads/" + newScript._id + "/build/",data);
-                    //console.log(buildResponse)
-                    newScript.build = {
-                        name = script.build.name,
-                        key = buildResponse.key,
-                        location = buildResponse.location
-                    }
-
-                    
-                    const image = (await this.httpService.axiosRef.get(script.icon.location));
-                   
-                    //const savedIcon = await this.s3Service.upload(script.icon.name,"scripts/" + newScript._id + "/icons/",image);
-                    const savedIcon = await this.localStorage.upload(script.icon.name,"downloads/" + newScript._id + "/icons/",image)
-                    newScript.icon = {
-                        name: script.icon.name,
-                        location: savedIcon.location,
-                        key: savedIcon.key
-                    }
-
-                    script.lastdownload = new Date();
-
-                    script.save();
-                    newScript.save();
-                    result.script = newScript;
-                    
-                }
+            if(model !== null || model !== undefined){
+                this.storageService.remove(model.model.key);
+                this.storageService.remove(model.weights.key);
             }
         }
 
-        return result;
+        oldScript.models = [];
+        for(let count = 0; count < newScript.models.length; count++){
+            const value = newScript.models[count];
+            const modelCopy = await this.modelService.copyModel(value,NeuralNetworkDiscriminator.DownloadScript);
+            
+            if(modelCopy !== "")
+                oldScript.models.push(modelCopy);
+        }
+
+        await oldScript.save();
+
+        return oldScript;
     }
 
+    async getDownloadInfo(id:string):Promise<AutomataScript | OldScript>{
+        const automata = await this.automataModel.findById(id);
 
-    async getMyDownloads(owner:user):Promise<Script[]>{
-        return this.downloadsModel.find({"owner.email":owner.email});
+        if(automata !== null && automata !== undefined)
+            return automata;
+
+        const old = await this.oldModel.findById(id);
+
+        if(old !== null && old !== undefined)
+            return old;
+
+        return null;
     }
-    async retrieveById(id:string):Promise<Script>{
+
+    async getMyDownloads(owner:user):Promise<DownloadScript[]>{
+        return this.downloadsModel.find({"owner.name":owner.name,"owner.email":owner.email});
+    }
+    
+    async retrieveById(id:string):Promise<DownloadScript>{
         return this.downloadsModel.findById(id).exec();
     }
-    async removeScript(id:string){
-        this.downloadsModel.findByIdAndRemove(id).exec();
+
+    async removeScript(id:string):Promise<void>{
+        const script = await this.downloadsModel.findByIdAndRemove(id);
+        
+        if(script === null || script === undefined)
+            return;
+
+        this.modelService.getModelsByIdOnly(script.models).then((networks:NeuralNetwork[])=>{
+            networks.forEach((network:NeuralNetwork) => {
+                fs.unlinkSync(network.model.key);
+                fs.unlinkSync(network.weights.key);
+            })
+        });
+
+        script.models.forEach((value:string) => {
+            this.modelService.removeById(value);
+        })
     }
 }

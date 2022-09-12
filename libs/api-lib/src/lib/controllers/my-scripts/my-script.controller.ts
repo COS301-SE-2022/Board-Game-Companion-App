@@ -44,4 +44,24 @@ export class ApiMyScriptController {
     async release(@Query('id')id: string,@Query('vMajor')vMajor: number,@Query('vMinor')vMinor: number,@Query('vPatch')vPatch: number):Promise<{success:boolean,message?:string,content?:AutomataScript}>{
         return this.myScriptService.release(id,{major:vMajor,minor:vMinor,patch:vPatch});
     }
+
+    @Get('import')
+    async importAutomata(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<void>{
+        this.myScriptService.importAutomata(id,{name:userName,email:userEmail})        
+    }
+
+    @Get('info')
+    async getMyScriptInfo(@Query('id')id:string):Promise<AutomataScript>{
+        return this.myScriptService.getMyScriptInfo(id);
+    }
+
+    @Delete('remove')
+    async removeMyScript(@Query('id')id:string):Promise<void>{
+        return this.myScriptService.remove(id);
+    }
+
+    @Get('all-scripts')
+    async RetrieveAllScripts():Promise<MyScript[]>{
+        return this.myScriptService.retrieveAllScripts();
+    }
 }

@@ -1,0 +1,31 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.wrapper{
+  background-color: $Pcolour-2;
+}
+
+.child{
+  display: none;
+}
+
+.parent:hover .child{
+  display: block
+}
+
+.script-body{
+  background-color: $Pcolour-2;
+  color: white;
+}
+
+.info-label{
+  color: $Pcolour-3;
+}
+
+.script-button{
+  background-color: $Pcolour-3;
+}
+
+.script-button:hover{
+  background-color: rgba($Pcolour-3,0.7);
+}

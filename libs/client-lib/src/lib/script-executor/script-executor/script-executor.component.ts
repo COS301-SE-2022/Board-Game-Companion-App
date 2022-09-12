@@ -7,6 +7,8 @@ import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg
 import * as tf from '@tensorflow/tfjs'
 import { entity } from '../../shared/models/editor/entity';
 import { inputParameters } from '../../shared/models/scripts/inputParameters';
+import { StorageService } from '../../shared/services/storage/storage.service';
+
 @Component({
   selector: 'board-game-companion-app-script-executor',
   templateUrl: './script-executor.component.html',
@@ -28,17 +30,18 @@ export class ScriptExecutorComponent implements OnInit {
   showOutput = false;
   inputBlock = false;
   outputBlock = false;
-  inputResult:any[] = [];
+  inputResult = "";
   parameters:inputParameters[] = [];
   outputMessage = "";
   statusMessages:string[] = [];
   warningMessages:string[] = [];
   programStructure!:entity;
   count = 0;
+  history:string[] = [];
+  recentPrompt = "";
+  historyVisible = false;
 
-
-
-  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router) {
+  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router,private readonly storageService: StorageService) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
     this.searchService.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.current.boardgame)
             .subscribe(
@@ -138,56 +141,24 @@ export class ScriptExecutorComponent implements OnInit {
       })
   }
   async neuralnetworks():Promise<any>{
-    
-    console.log(name)
-    const modelsInfo = localStorage.getItem("models");
-    const result = new Object();
+    return (async(name:string,input:number[])=>{
+      const info = await this.storageService.getByIndex("networks","name",name);
 
-    if(modelsInfo === null)
-      return null;
-    else{
-      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      const models:{name:string,model:tf.LayersModel,min:tf.Tensor,max:tf.Tensor,labels:string[]}[] = [];
-      
-      for(let count = 0; count < networks.length; count++){
-        models.push({
-          name: networks[count].setup.name,
-          model: await tf.loadLayersModel('localstorage://' + networks[count].setup.name),
-          min: networks[count].setup.min,
-          max: networks[count].setup.max,
-          labels: networks[count].setup.labels as string[]
-        })
-      }
+      if(info.name == undefined)
+        return "";
 
-      return ((name:string,input:number[])=>{
-        
-        console.log(name,input)
-        let index = -1;
+      const model = await tf.loadLayersModel(`indexeddb://${info.name}`);
+      const min = tf.tensor(info.min);
+      const max = tf.tensor(info.max);
 
-        for(let count = 0; count < models.length && index === -1; count++){
-          if(models[count].name === name)
-            index = count;
-        }
-
-        if(index === -1)
-          return "";
-
-        //console.print(model("color-picker",[0,255,0]))
-        const inputTensor = tf.tensor2d(input,[1,input.length]);
-        const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
-        const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
-        tensorResult.print();
-        index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-        console.log(index);
-        console.log(models[index])
-        return models[index].labels[index];
-      })
-
-      
-    }
-
-    return result;
-  }
+      const inputTensor = tf.tensor2d(input,[1,input.length]);
+      const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+      const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+      //tensorResult.print();
+      const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+      return info.labels[index];
+    })
+}
   async play(): Promise<void>{
     this.replay = false;
     const code = new Function("model",this.code);
@@ -197,19 +168,25 @@ export class ScriptExecutorComponent implements OnInit {
   }
   output(){
     return (async(value:string) => {
-      this.outputBlock = true;
+      this.inputBlock = true;
       this.showOutput = true;
-      this.outputMessage = value;
-      
+      const outputElem = document.getElementById("TextOutput");
+      if(outputElem)
+      {
+        outputElem.innerHTML = value + "<br>Press Enter to continue";
+      }
+      this.history.push(value);
+      this.recentPrompt = value + "<br>Press Enter to continue";
+
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.outputBlock){
+            if(!this.inputBlock){
                 clearInterval(interval);
                 resolve("Okay");
             }
         },10);
       });
-  
+      
       await pause;
     })
   }
@@ -218,14 +195,12 @@ export class ScriptExecutorComponent implements OnInit {
     
     return (async(prompt:string,type:string,options?:string[])=>{
       this.inputBlock = true;
-      this.showInput = true;
-      this.parameters = [{
-        prompt:prompt,
-        type:type,
-        options:options
-      }]
       
-      console.log(prompt)
+      const elem = document.getElementById("TextOutput");
+      if(elem)
+        elem.innerHTML += prompt+"\n";
+      this.history.push(prompt);
+      this.recentPrompt = prompt;
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
             if(!this.inputBlock){
@@ -237,7 +212,7 @@ export class ScriptExecutorComponent implements OnInit {
   
       await pause;
   
-      return this.inputResult[0];
+      return this.inputResult;
     })
   }
 
@@ -265,13 +240,57 @@ export class ScriptExecutorComponent implements OnInit {
     })
   }
 
-  submitInput(value:any[]): void{
-    this.inputResult = value;
+  submitInput(): void{
+    
+    const inputElem = document.getElementById("inputBox") as HTMLInputElement;
+    if(inputElem)
+    {
+      this.inputResult = inputElem.value;
+      inputElem.value = "";
+    }
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
+    this.history.push(this.inputResult) ;
     this.showInput = false;
     this.inputBlock = false;
   }
-
+  showHistory(): void{
+    const elem = document.getElementById("TextOutput");
+    
+    
+    if(this.historyVisible)
+    {
+      if(elem)
+      {
+        if(elem)
+        {
+          elem.innerHTML = this.recentPrompt;
+        }
+      }
+    }
+    else
+    {
+      if(elem)
+      {
+        elem.innerHTML = "";
+        for(let i = 0; i< this.history.length;i++)
+        {
+          elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"historyElement\">" +this.history[i]+"</div>";
+        }
+        
+      }
+    }
+    this.historyVisible = !this.historyVisible;
+  }
   okayOutput(): void{
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
     this.showOutput = false;
     this.outputBlock = false;
   }
@@ -282,6 +301,7 @@ export class ScriptExecutorComponent implements OnInit {
       input: this.input(),
       inputGroup: this.inputGroup(),
       output: this.output()
+
     }
   }
 

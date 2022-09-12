@@ -9,43 +9,55 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EditorBodyVisualComponent {
   
   endLoopIndex = 0
-  gameLoopIndex = 0
   playersLoopIndex = 0
+  cardsLoopIndex = 0
 
-  Game = [
-    {title: '', class: '' , id: '', pos: 0}
+  Tiles = [
+    {variable: '', id: '', name: '', type: ''}
   ]
 
   Endgame = [
-    {title: '', class: '' , id: '', pos: 0}
+    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
   ]
 
   Player1 = [
-    {title: '', class: '' , id: '', pos: 0}
+    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
   ]
 
   Player2 = [
-    {title: '', class: '' , id: '', pos: 0}
+    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
   ]
 
   Players = [
     {actions: 
       [
         [
-          {title: '', class: '' , id: '', pos: 0}
+          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
         ]
       ], 
-      conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]},
-    {actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]}
+      conditions: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
+        ]
+      ], 
+      turn: 
+      [
+        [
+          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
+        ]
+      ]},
+    {actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]}
   ]
-
 
   PlayersLoops = [
     this.Player1
   ]
 
-  GameLoops = [
-    this.Game
+  Cards = [{effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]}]
+
+  CardsLoop = [
+    [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
   ]
 
   EndgameLoops = [
@@ -60,6 +72,21 @@ export class EditorBodyVisualComponent {
 
   addNewPlayer()
   {
-    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0}]], turn: [{title: '', class: '' , id: '', pos: 0}]})
+    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
+  }
+
+  addNewCard()
+  {
+    this.Cards.push({effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]})
+  }
+
+  addTileToBoard()
+  {
+    this.Tiles.push({variable: '', id: '', name: '', type: ''})
+  }
+
+  removeTile(i: number)
+  {
+    this.Tiles.splice(i, 1)
   }
 }

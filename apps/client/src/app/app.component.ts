@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'client';
-
+  headerHeight = 8;
+  contentHeight = 84;
+  footerHeight = 8;
   constructor(private router:Router){
 
   }

@@ -12,6 +12,13 @@
     background-color: $Pcolour-2;
 }
 
+.version{
+    background-color: $Pcolour-2;    
+}
+
+.version:hover{
+    background-color: rgba($Pcolour-2,0.7);
+}
 
 .script-title{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

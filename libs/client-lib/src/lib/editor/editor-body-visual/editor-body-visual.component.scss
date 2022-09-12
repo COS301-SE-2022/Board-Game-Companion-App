@@ -8,7 +8,7 @@
     overflow-x: auto;
 }
 
-#codeArea{
+.container{
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
@@ -81,4 +81,76 @@
     margin-bottom: 1em;
     font-weight: bold;
     border-radius: 2em;
+}
+
+#removeAction{
+    font-size: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#removePlayer{
+    font-size: 2em;
+    margin-left: 2em;
+}
+
+.cardContainers{
+    background-color: white;
+    border: 6px solid grey;
+    min-height: 25%;
+    min-width: 25%;
+    max-width: 90%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+#removeCard{
+    font-size: 2em;
+    margin-left: 1em;
+}
+
+#addNewCard{
+    font-size: 1em;
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid grey;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+}
+
+.tfSection{
+    display:block;
+}
+
+#trueSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: white;
+    border: 5px solid black;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+    margin-top: 0;
+}
+
+#falseSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: white;
+    border: 5px solid black;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+}
+
+.visualIf{
+    top: 25%;
 }

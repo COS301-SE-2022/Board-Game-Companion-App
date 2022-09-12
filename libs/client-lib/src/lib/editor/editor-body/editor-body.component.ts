@@ -48,6 +48,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
       console.log(this.editorVisual.Players)
+      console.log(this.editorVisual.Endgame)
+      console.log(target.id)
       if(source !== target)
       {
         console.log(document.getElementById("players")?.contains(target))
@@ -81,20 +83,31 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               case "visualW":
               case "VisualD": 
               {
-                if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
-                {
-                  this.editorVisual.endLoopIndex++
-                  this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
-                  const dest = [
-                    {title: '', class: '', id: '', pos: 0}
-                  ]
-                  this.editorVisual.EndgameLoops.push(dest)
-                }
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                
                 break
               }
+              case "visualIf":
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].true = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.EndgameLoops[index][recent].false = this.editorVisual.endLoopIndex
+                this.editorVisual.EndgameLoops.push(dest)
+                break
+              }
+                
               
             }
-
           }
           else
           {
@@ -109,10 +122,23 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   this.editorVisual.endLoopIndex++
                   this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
                   const dest = [
-                    {title: '', class: '', id: '', pos: 0}
+                    {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
                   ]
                   this.editorVisual.EndgameLoops.push(dest)
                 }
+                break
+              }
+              case "visualIf":
+              {
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.Endgame[recent].true = this.editorVisual.endLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.EndgameLoops.push(dest)
+                this.editorVisual.endLoopIndex++
+                this.editorVisual.Endgame[recent].false = this.editorVisual.endLoopIndex
+                this.editorVisual.EndgameLoops.push(dest)
                 break
               }
             }
@@ -173,8 +199,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               break
             }
 
+            console.log(this.editorVisual.Players[j])
             //Go through players turn
-            recent = this.editorVisual.Players[j].turn.findIndex((obj) => {
+            recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
               return obj.id === "e" + this.count.toString()
             })
 
@@ -212,9 +239,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.playersLoopIndex++
                 this.editorVisual.PlayersLoops[index][recent].pos = this.editorVisual.playersLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0}
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
                 ]
-                console.log("Turn Loop")
+                this.editorVisual.PlayersLoops.push(dest)
+                break
+              }
+              case "visualIf":
+              {
+                this.editorVisual.playersLoopIndex++
+                this.editorVisual.PlayersLoops[index][recent].true = this.editorVisual.playersLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.PlayersLoops.push(dest)
+                this.editorVisual.playersLoopIndex++
+                this.editorVisual.PlayersLoops[index][recent].false = this.editorVisual.playersLoopIndex
                 this.editorVisual.PlayersLoops.push(dest)
                 break
               }
@@ -235,12 +274,27 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].actions[position][recent].pos = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0}
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
                     ]
                     console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
                   }
                   break
+                  case "visualIf":
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].actions[position][recent].true = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    console.log("Turn General")
+                    this.editorVisual.PlayersLoops.push(dest)
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].actions[position][recent].false = this.editorVisual.playersLoopIndex
+                    console.log("Turn General")
+                    this.editorVisual.PlayersLoops.push(dest)
+                    break
+                  }
 
                 }
                 break
@@ -254,11 +308,24 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].conditions[position][recent].pos = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0}
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.PlayersLoops.push(dest)
                   }
                   break
+                  case "visualIf":
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].conditions[position][recent].true = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.PlayersLoops.push(dest)
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].conditions[position][recent].false = this.editorVisual.playersLoopIndex
+                    this.editorVisual.PlayersLoops.push(dest)
+                    break
+                  }
 
                 }
                 break
@@ -268,16 +335,184 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   case "visualF": 
                   case "visualW":
                   case "VisualD":
-                    {
-                      this.editorVisual.playersLoopIndex++
-                      this.editorVisual.Players[player].turn[recent].pos = this.editorVisual.playersLoopIndex
-                      const dest = [
-                        {title: '', class: '', id: '', pos: 0}
-                      ]
-                      this.editorVisual.PlayersLoops.push(dest)
-                    }
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.PlayersLoops.push(dest)
+                  }
+                  break
+                  case "visualIf":
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].turn[0][recent].true = this.editorVisual.playersLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.PlayersLoops.push(dest)
+                    this.editorVisual.playersLoopIndex++
+                    this.editorVisual.Players[player].turn[0][recent].false = this.editorVisual.playersLoopIndex
+                    this.editorVisual.PlayersLoops.push(dest)
                     break
+                  }
 
+                }
+                break
+            }
+          }
+        }
+        else if(document.getElementById("card")?.contains(target))
+        {
+          console.log("cards")
+          //Cards
+          let card = 0
+          let property = ""
+          let recent = this.editorVisual.Endgame.findIndex((obj) => {
+            return obj.id === "e" + this.count.toString()
+          })
+          //need to find which card it belongs to
+          for(let j = 0; j < this.editorVisual.Cards.length; j++)
+          {
+            //Go through cards effect
+             recent = this.editorVisual.Cards[j].effect.findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+
+            console.log(this.editorVisual.Cards)
+
+            if(recent !== -1)
+            {
+              console.log("yebo")
+              card = j
+              property = "effect"
+              break
+            }
+
+            //Go through cards condition
+            recent = this.editorVisual.Cards[j].condition.findIndex((obj) => {
+              return obj.id === "e" + this.count.toString()
+            })
+
+            if(recent !== -1)
+            {
+              card = j
+              property = "condition"
+              break
+            }
+          }
+
+          //If not in general card container else go to loops
+          if(property === "")
+          {
+            let index = 0
+            for(let j = 0; j < this.editorVisual.CardsLoop.length; j++)
+            {
+              //Check which loop it is in.
+              recent = this.editorVisual.CardsLoop[j].findIndex((obj) => {
+                return obj.id === "e" + this.count.toString()
+              })
+              if(recent !== -1)
+              {
+                index = j
+                break
+              }
+            }
+            switch(el.id)
+            {
+              case "visualF": 
+              case "visualW":
+              case "VisualD": 
+              {
+                this.editorVisual.cardsLoopIndex++
+                this.editorVisual.CardsLoop[index][recent].pos = this.editorVisual.cardsLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.CardsLoop.push(dest)
+                break
+              }
+              case "visualIf":
+              {
+                this.editorVisual.cardsLoopIndex++
+                this.editorVisual.CardsLoop[index][recent].true = this.editorVisual.cardsLoopIndex
+                const dest = [
+                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.CardsLoop.push(dest)
+                this.editorVisual.cardsLoopIndex++
+                this.editorVisual.CardsLoop[index][recent].false = this.editorVisual.cardsLoopIndex
+                this.editorVisual.CardsLoop.push(dest)
+                break
+              }
+            
+            }
+          }
+          else
+          {
+            switch(property)
+            {
+              case "effect":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD": 
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].effect[recent].pos = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  case "visualIf":
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].effect[recent].true = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].effect[recent].false = this.editorVisual.cardsLoopIndex
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  
+                }
+                break
+              case "condition":
+                switch(el.id)
+                {
+                  case "visualF": 
+                  case "visualW":
+                  case "VisualD": 
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].condition[recent].pos = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  case "visualIf":
+                  {
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].condition[recent].true = this.editorVisual.cardsLoopIndex
+                    const dest = [
+                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.CardsLoop.push(dest)
+                    this.editorVisual.cardsLoopIndex++
+                    this.editorVisual.Cards[card].condition[recent].false = this.editorVisual.cardsLoopIndex
+                    this.editorVisual.CardsLoop.push(dest)
+                    break
+                  }
+                  
                 }
                 break
             }
@@ -450,19 +685,20 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
   sendChanges(): void{
     clearTimeout(this.sendChangesTimer);
-
     this.sendChangesTimer = window.setTimeout(()=>{
+      //Console.log happens
       this.editorService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
         next:(value)=>{
           if(value.status === "success"){
+            //UpdateLineArray()
             this.changesTracker.emit(2);
             this.newProgramStructureEvent.emit(value.programStructure);
           }else{
             this.changesTracker.emit(0);
           }
-          console.log()
+
+          console.log(value)
           this.newMessageEvent.emit(value.message);
-          console.log(value);
         },
         error:(e)=>{
           //console.log(e);
