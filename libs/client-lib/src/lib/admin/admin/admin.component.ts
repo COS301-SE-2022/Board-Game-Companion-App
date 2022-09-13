@@ -180,7 +180,6 @@ export class AdminComponent implements OnInit {
 
   ReportedScripts():void{
     this.scripts = [];
-    console.log("ai: "+this.reports[0].script);
     this.card = 4; 
     for(let i=0; i < this.reports.length;i++){
       this.adminService.getScriptById(this.reports[i].script).subscribe({
