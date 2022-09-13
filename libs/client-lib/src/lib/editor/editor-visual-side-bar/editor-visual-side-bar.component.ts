@@ -8,16 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class EditorVisualsComponent {
 
   origin = [
-    {title: 'Create',  class: 'visualC', id: '', pos: 0},
-    {title: 'Set',  class: 'visualS', id: '', pos: 0},
-    {title: 'Input',  class: 'visualIn', id: '', pos: 0},
-    {title: 'Output', class: 'visualO', id: '', pos: 0},
-    {title: 'Call', class: 'visualM', id: '', pos: 0},
-    {title: 'If', class: 'visualIf', id: '', pos: 0},
-    {title: 'Return', class: 'visualR', id: '', pos: 0},
-    {title: 'For', class: 'visualF', id: '', pos: 0},
-    {title: 'While', class: 'visualW', id: '', pos: 0},
-    {title: 'doWhile', class: 'visualD', id: '', pos: 0}
+    {title: 'Create',  class: 'visualC', id: '', pos: 0, true: 0, false: 0},
+    {title: 'Set',  class: 'visualS', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'Input',  class: 'visualIn', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'Output', class: 'visualO', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'Call', class: 'visualM', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'If', class: 'visualIf', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'Return', class: 'visualR', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'For', class: 'visualF', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'While', class: 'visualW', id: '', pos: 0,  true: 0, false: 0},
+    {title: 'doWhile', class: 'visualD', id: '', pos: 0,  true: 0, false: 0}
   ];
 
   ngOnInit(): void{

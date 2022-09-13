@@ -36,7 +36,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <!--Title displayed for certain visuals-->
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->
-                    <input *ngIf = "item.title === 'Create'">
+                    <input *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
                     <!--List of variables create-->
                     <select *ngIf = "item.title === 'Set'">
                         <option>
@@ -45,7 +45,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
                     </div>
-                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'">
+                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
                     <!--List of pre-made methods-->
                     <select *ngIf = "item.title === 'Call'">
                         <option>
@@ -87,8 +87,8 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
 
 export class LoopTemplateComponent{
     @Input() index = 0
-    @Input() dest = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}] 
-    @Input() item = {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
+    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
+    @Input() item = {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
     @Input() dests = [this.dest]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},

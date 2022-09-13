@@ -86,7 +86,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.endLoopIndex++
                 this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
                 
@@ -97,7 +97,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.endLoopIndex++
                 this.editorVisual.EndgameLoops[index][recent].true = this.editorVisual.endLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
                 this.editorVisual.endLoopIndex++
@@ -122,7 +122,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   this.editorVisual.endLoopIndex++
                   this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
                   const dest = [
-                    {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                    {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                   ]
                   this.editorVisual.EndgameLoops.push(dest)
                 }
@@ -133,7 +133,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.endLoopIndex++
                 this.editorVisual.Endgame[recent].true = this.editorVisual.endLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.EndgameLoops.push(dest)
                 this.editorVisual.endLoopIndex++
@@ -239,7 +239,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.playersLoopIndex++
                 this.editorVisual.PlayersLoops[index][recent].pos = this.editorVisual.playersLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.PlayersLoops.push(dest)
                 break
@@ -249,7 +249,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.playersLoopIndex++
                 this.editorVisual.PlayersLoops[index][recent].true = this.editorVisual.playersLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.PlayersLoops.push(dest)
                 this.editorVisual.playersLoopIndex++
@@ -274,7 +274,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].actions[position][recent].pos = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
@@ -285,7 +285,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].actions[position][recent].true = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
@@ -308,7 +308,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].conditions[position][recent].pos = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.PlayersLoops.push(dest)
                   }
@@ -318,7 +318,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].conditions[position][recent].true = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.PlayersLoops.push(dest)
                     this.editorVisual.playersLoopIndex++
@@ -339,7 +339,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.PlayersLoops.push(dest)
                   }
@@ -349,7 +349,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].turn[0][recent].true = this.editorVisual.playersLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.PlayersLoops.push(dest)
                     this.editorVisual.playersLoopIndex++
@@ -428,7 +428,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.cardsLoopIndex++
                 this.editorVisual.CardsLoop[index][recent].pos = this.editorVisual.cardsLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.CardsLoop.push(dest)
                 break
@@ -438,7 +438,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.cardsLoopIndex++
                 this.editorVisual.CardsLoop[index][recent].true = this.editorVisual.cardsLoopIndex
                 const dest = [
-                  {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.CardsLoop.push(dest)
                 this.editorVisual.cardsLoopIndex++
@@ -463,7 +463,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.cardsLoopIndex++
                     this.editorVisual.Cards[card].effect[recent].pos = this.editorVisual.cardsLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.CardsLoop.push(dest)
                     break
@@ -473,7 +473,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.cardsLoopIndex++
                     this.editorVisual.Cards[card].effect[recent].true = this.editorVisual.cardsLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.CardsLoop.push(dest)
                     this.editorVisual.cardsLoopIndex++
@@ -494,7 +494,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.cardsLoopIndex++
                     this.editorVisual.Cards[card].condition[recent].pos = this.editorVisual.cardsLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.CardsLoop.push(dest)
                     break
@@ -504,7 +504,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     this.editorVisual.cardsLoopIndex++
                     this.editorVisual.Cards[card].condition[recent].true = this.editorVisual.cardsLoopIndex
                     const dest = [
-                      {title: '', class: '', id: '', pos: 0, true: 0, false: 0}
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
                     this.editorVisual.CardsLoop.push(dest)
                     this.editorVisual.cardsLoopIndex++
@@ -730,9 +730,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let method = ""
     let player = -1
     let action = 0
+    let open = 0
     for(let j = 0; j < lines.length; j++)
     {
       flag++
+      if(lines[j].includes("{"))
+      {
+        open++
+      }
       if(lines[j].includes("state"))
       {
         method = "state"
@@ -742,11 +747,41 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         method = "player"
         player++
         action = 0
+        if(this.editorVisual.Players[player] == null)
+        {
+          this.editorVisual.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
+        }
+        if(flag == 1)
+        {
+          const l = lines[j].split(/\s+/)
+          this.editorVisual.Players[player].name = l[1].replace(/{/g, "")
+        }
+      }
+      else if(lines[j].includes("action"))
+      {
+        method = "action"
+        const l = lines[j].split(/\s+/)
+        this.editorVisual.Players[player].actionNames[action] = l[2].substring(0, l[2].indexOf("("))
+        this.editorVisual.Players[player].actionParams[action][0] = l[2].substring(l[2].indexOf("(") + 1, l[2].indexOf(")"))
+      }
+      else if(lines[j].includes("condition"))
+      {
+        method = "condtiion"
+        const l = lines[j].split(/\s+/)
+        this.editorVisual.Players[player].conditionParams[action] = l[1].substring(l[1].indexOf("(") + 1, l[1].indexOf(")"))
+      }
+      else if (lines[j].includes("turn"))
+      {
+        method = "turn"
       }
       else if(lines[j].includes("}"))
       {
-        method = ""
         flag = 0
+        open--
+      }
+      else if(open == 0)
+      {
+        method = ""
       }
 
       switch(method)
@@ -769,7 +804,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             else if(l[1].includes("name"))
             {
               const num = l[1].match(/(\d+)/)
-              console.log(l)
               if(num != null)
               {
                 this.editorVisual.Tiles[+num[0]].name = l[3].replace(/'/g, "")
@@ -778,7 +812,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             else if(l[1].includes("type"))
             {
               const num = l[1].match(/(\d+)/)
-              console.log(l)
               if(num != null)
               {
                 this.editorVisual.Tiles[+num[0]].type = l[3].replace(/'/g, "")
@@ -787,7 +820,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             else if(l[1].includes("id"))
             {
               const num = l[1].match(/(\d+)/)
-              console.log(l)
               if(num != null)
               {
                 this.editorVisual.Tiles[+num[0]].id = l[3].replace(/'/g, "")
@@ -795,23 +827,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             } 
           }
           break
-        case "player":
-          if(this.editorVisual.Players[player] == null)
-          {
-            this.editorVisual.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
-          }
-          if(flag == 1)
+        case "action":
+          if(flag > 1)
           {
             const l = lines[j].split(/\s+/)
-            this.editorVisual.Players[player].name = l[1].replace(/{/g, "")
+            if(l[1] == "let")
+            {
+              this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: '', inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+            }
+            
           }
-          if(lines[j].includes("action"))
-          {
-            const l = lines[j].split(/\s+/)
-            this.editorVisual.Players[player].actionNames[action] = l[2].substring(0, l[2].indexOf("("))
-            this.editorVisual.Players[player].actionParams[action][0] = l[2].substring(l[2].indexOf("(") + 1, l[2].indexOf(")"))
-          }
+          break
+        case "condition":
           
+          break
+        case "turn":
+
           break
       }
     }
