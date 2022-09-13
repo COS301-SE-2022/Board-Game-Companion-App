@@ -41,6 +41,10 @@ import { Component, Input} from "@angular/core";
                     <!--List of variables create-->
                     <select *ngIf = "item.title === 'Set'">
                         <option>
+                            {{item.inputs[0]}}
+                        </option>
+                        <option *ngFor="let vars of variables">
+                            {{vars.name}}
                         </option>
                     </select>
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
@@ -56,7 +60,7 @@ import { Component, Input} from "@angular/core";
                         </option>
                     </select>
                     <!--Output and Input-->
-                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'"></textarea>
+                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
                     <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
                     <div>
@@ -90,6 +94,7 @@ import { Component, Input} from "@angular/core";
 export class ElementTemplateComponent{
     @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
     @Input() dests = [this.dest]
+    @Input() variables = [{name: "", value: ""}]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},

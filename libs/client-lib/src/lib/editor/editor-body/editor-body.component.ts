@@ -831,9 +831,23 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           if(flag > 1)
           {
             const l = lines[j].split(/\s+/)
+            //Create
             if(l[1] == "let")
             {
               this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: '', inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+              this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
+            }
+            //Set
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
+            {
+              const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
+              if(set != null)
+              this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: '', inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+            }
+            //Output
+            else if (l[1].includes('output'))
+            {
+              this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf("'")),"","","","","","",""], pos: 0, true: 0, false: 0})
             }
             
           }

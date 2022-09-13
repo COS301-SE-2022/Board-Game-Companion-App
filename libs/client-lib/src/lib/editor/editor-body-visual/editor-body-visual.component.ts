@@ -16,9 +16,7 @@ export class EditorBodyVisualComponent {
     {variable: '', id: '', name: '', type: ''}
   ]
 
-  Variables = [
-    ""
-  ]
+  Variables = [{name: "", value: ""} ]
 
   Endgame = [
     {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
@@ -80,5 +78,6 @@ export class EditorBodyVisualComponent {
         this.Players[j].actions[i].splice(0)
       }
     }
+    this.Variables.splice(0)
   }
 }

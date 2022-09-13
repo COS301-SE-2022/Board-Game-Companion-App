@@ -5,7 +5,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
     styleUrls:['./editor-body-visual.component.scss'],
     template: `
         <div id = "doArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'doWhile'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
         </div>
         <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
@@ -41,6 +41,9 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <select *ngIf = "item.title === 'Set'">
                         <option>
                         </option>
+                        <option *ngFor="let vars of Variables">
+                            {{vars.name}}
+                        </option>
                     </select>
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
@@ -55,7 +58,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                         </option>
                     </select>
                     <!--Output and Input-->
-                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'"></textarea>
+                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
                     <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
                     <div>
@@ -72,14 +75,14 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
             </div>
         </div>
         <div class="container"  id = "loopCodeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
         </div>
         <div class = "tfSection" *ngIf = "item.title === 'If'">
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
             <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
         </div>
     `
@@ -90,6 +93,7 @@ export class LoopTemplateComponent{
     @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
     @Input() item = {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
     @Input() dests = [this.dest]
+    @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
