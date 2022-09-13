@@ -142,6 +142,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tParameters,
     tCondition,
     tEffect,
+    tTileAttributes,
     tState,
     tTurn,
     tPlayer,

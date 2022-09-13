@@ -452,6 +452,9 @@ class parser extends CstParser
         
         
         public Program = this.RULE("Program", () => {
+            
+            this.SUBRULE(this.rTileAttributes )
+            
             this.SUBRULE(this.GameState)
             this.SUBRULE(this.Definition)
         });
@@ -516,9 +519,7 @@ class parser extends CstParser
         private GameState=this.RULE("GameState", () => {
             this.CONSUME(tokensStore.tState )
             this.CONSUME(tokensStore.tOpenBrace)
-            this.OPTION(() =>{
-                this.SUBRULE(this.rTileAttributes )
-            })
+            
             this.SUBRULE(this.Declarations )
             this.CONSUME(tokensStore.tCloseBrace)
         });
@@ -1035,10 +1036,12 @@ class parser extends CstParser
                  })
 
                  private rTileAttributes=this.RULE("rTileAttributes", () => {
-                    this.CONSUME(tokensStore.tTileAttributes)
-                    this.CONSUME(tokensStore.tOpenBracket )
-                    this.SUBRULE(this.Declarations)
-                    this.CONSUME(tokensStore.tCloseBracket )
+                    this.OPTION(() =>{
+                        this.CONSUME(tokensStore.tTileAttributes)
+                        this.CONSUME(tokensStore.tOpenBrace )
+                        this.SUBRULE(this.Declarations)
+                        this.CONSUME(tokensStore.tCloseBrace )
+                    })
                  })
 
                  private rCreateBoard=this.RULE("rCreateBoard", () => {
@@ -1528,6 +1531,10 @@ function visit(cstOutput:CstNode)
                 case "GameState":
                     visitGameState(node);
                     break;
+                case "rTileAttributes":
+                    visitTileAttributes(node)
+                    break;
+                
                 case "Definition":
                     visit(node);
                     break;
@@ -1607,14 +1614,10 @@ function visitGameState(cstOutput:CstNode)
             }
             if(node.name != "SpecialMethods")
             {
-                if(node.name == "rTileAttributes")
-                {
-                    visitTileAttributes(node)
-                }
-                else
-                {
-                    visitGameState(node);
-                }
+                
+                
+                visitGameState(node);
+                
             }
             else
             {
