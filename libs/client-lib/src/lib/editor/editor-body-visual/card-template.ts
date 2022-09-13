@@ -19,7 +19,7 @@ import { Component, Input} from "@angular/core";
                                 Effect
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Effect" [dest] = "Effect" [dests] = "CardsLoops" [methods] = "methods"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods"></board-game-companion-app-element-template>
                     </details>
                 </div>
                 <div id = "condition" class = "cardContainers">
@@ -29,7 +29,7 @@ import { Component, Input} from "@angular/core";
                                 Condition <input>
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Condition" [dest] = "Condition" [dests] = "CardsLoops" [methods] = "methods"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods"></board-game-companion-app-element-template>
                     </details>
                 </div>
             </details>
@@ -38,10 +38,10 @@ import { Component, Input} from "@angular/core";
 })
 
 export class CardTemplateComponent{
-    @Input() Cards = [{effect: [{title: '', class: '' , id: '', pos: 0}], condition: [{title: '', class: '' , id: '', pos: 0}]}]
-    @Input() CardsLoops = [[{title: '', class: '' , id: '', pos: 0}]]
-    @Input() Effect = [{title: '', class: '' , id: '', pos: 0}]
-    @Input() Condition = [{title: '', class: '' , id: '', pos: 0}]
+    @Input() Cards = [{effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]}]
+    @Input() CardsLoops = [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]
+    @Input() Effect = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
+    @Input() Condition = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
     @Input() Index = 0
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
