@@ -25,3 +25,14 @@ jobs:
     - run: yarn install
     - run: yarn run build client
     - run: yarn run build api
+    
+  deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: akhileshns/heroku-deploy@v3.12.12
+          with:
+            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+            heroku_app_name: "board-game-companion-app"
+            heroku_email: "frontend.forerunners16@gmail.com"
