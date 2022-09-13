@@ -29,25 +29,8 @@ export class EditorBodyVisualComponent {
   ]
 
   Players = [
-    {actions: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ], 
-      conditions: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ], 
-      turn: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ]},
-    {actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]}
+    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]},
+    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""],actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]}
   ]
 
   PlayersLoops = [
@@ -72,7 +55,7 @@ export class EditorBodyVisualComponent {
 
   addNewPlayer()
   {
-    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
+    this.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
   }
 
   addNewCard()
@@ -88,5 +71,11 @@ export class EditorBodyVisualComponent {
   removeTile(i: number)
   {
     this.Tiles.splice(i, 1)
+  }
+
+  clear()
+  {
+    this.Tiles.splice(0)
+    this.Players.splice(2)
   }
 }

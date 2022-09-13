@@ -563,7 +563,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
-          
+          this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
             this.sendChanges();
@@ -691,6 +691,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           if(value.status === "success"){
             //UpdateLineArray()
+            this.updateVDSL()
             this.changesTracker.emit(2);
             this.newProgramStructureEvent.emit(value.programStructure);
           }else{
@@ -718,6 +719,102 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   remove(value:selection): void{
     this.highlight(value);
     this.cut();
+  }
+
+  updateVDSL()
+  {
+    this.editorVisual.clear()
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    console.log(lines)
+    let flag = 0
+    let method = ""
+    let player = -1
+    let action = 0
+    for(let j = 0; j < lines.length; j++)
+    {
+      flag++
+      if(lines[j].includes("state"))
+      {
+        method = "state"
+      }
+      else if(lines[j].includes("player"))
+      {
+        method = "player"
+        player++
+        action = 0
+      }
+      else if(lines[j].includes("}"))
+      {
+        method = ""
+        flag = 0
+      }
+
+      switch(method)
+      {
+        case "state":
+          if(flag > 1)
+          {
+            const l = lines[j].split(/\s+/)
+            if(l[1].includes("create"))
+            {
+              const num = l[1].match(/(\d+)/)
+              if(num != null)
+              {
+                for(let k = 0; k < +num[0]; k++)
+                {
+                  this.editorVisual.Tiles.push({variable: '', id: '', name: '', type: ''})
+                }
+              }
+            }
+            else if(l[1].includes("name"))
+            {
+              const num = l[1].match(/(\d+)/)
+              console.log(l)
+              if(num != null)
+              {
+                this.editorVisual.Tiles[+num[0]].name = l[3].replace(/'/g, "")
+              }
+            }
+            else if(l[1].includes("type"))
+            {
+              const num = l[1].match(/(\d+)/)
+              console.log(l)
+              if(num != null)
+              {
+                this.editorVisual.Tiles[+num[0]].type = l[3].replace(/'/g, "")
+              }
+            }
+            else if(l[1].includes("id"))
+            {
+              const num = l[1].match(/(\d+)/)
+              console.log(l)
+              if(num != null)
+              {
+                this.editorVisual.Tiles[+num[0]].id = l[3].replace(/'/g, "")
+              }
+            } 
+          }
+          break
+        case "player":
+          if(this.editorVisual.Players[player] == null)
+          {
+            this.editorVisual.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
+          }
+          if(flag == 1)
+          {
+            const l = lines[j].split(/\s+/)
+            this.editorVisual.Players[player].name = l[1].replace(/{/g, "")
+          }
+          if(lines[j].includes("action"))
+          {
+            const l = lines[j].split(/\s+/)
+            this.editorVisual.Players[player].actionNames[action] = l[2].substring(0, l[2].indexOf("("))
+            this.editorVisual.Players[player].actionParams[action][0] = l[2].substring(l[2].indexOf("(") + 1, l[2].indexOf(")"))
+          }
+          
+          break
+      }
+    }
   }
 
 }
