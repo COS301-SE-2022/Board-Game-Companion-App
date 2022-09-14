@@ -1031,10 +1031,21 @@ class parser extends CstParser
                             {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
                             }}
-                            
+                            ,
+                            {ALT: () =>{
+                                this.SUBRULE(this.rToInt )
+                            }}
                         ])
                  })
-
+                 
+                 private rToInt=this.RULE("rToInt", () => {
+                    this.OPTION(() =>{
+                        this.CONSUME(tokensStore.tToInt)
+                        this.CONSUME(tokensStore.tOpenBrace )
+                        this.SUBRULE(this.Declarations)
+                        this.CONSUME(tokensStore.tCloseBrace )
+                    })
+                 })
                  private rTileAttributes=this.RULE("rTileAttributes", () => {
                     this.OPTION(() =>{
                         this.CONSUME(tokensStore.tTileAttributes)
@@ -2170,7 +2181,39 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rGetBoard":
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.State.board', jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
+                case "rToInt":
+                    visitRToInt(node, place)
+                    break;
             }
+        }
+    }
+}
+
+function visitRToInt(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            //
+            if(token.tokenType.name == "toInt")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'+', jsScript.slice(jsScript.indexOf(place))].join('');
+            }
+            else
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image +' ', jsScript.slice(jsScript.indexOf(place))].join('');
+            }
+        }
+        if(node.name)
+        {
+            
+            visitPlayerStatements(node, place);
         }
     }
 }
