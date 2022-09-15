@@ -32,7 +32,7 @@ export class CollectionsController {
     }
 
     @Put('add-game')
-    async addGameToCollection(@Body('owner')owner:user,@Body('name')name:string,@Body('boardgames')game:string):Promise<boolean>{
+    async addGameToCollection(@Body('owner')owner:user,@Body('name')name:string,@Body('game')game:string):Promise<boolean>{
         return this.collectionService.addBoardGame(game,name,owner);
     }
 
