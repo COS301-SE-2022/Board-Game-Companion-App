@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { EditorBodyComponent } from './editor-body.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { EditorService } from '../../shared/services/editor/editor.service';
+import { DragulaService } from 'ng2-dragula';
 
 describe('EditorBodyComponent', () => {
   let component: EditorBodyComponent;
@@ -11,7 +13,7 @@ describe('EditorBodyComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [EditorBodyComponent],
       imports: [HttpClientTestingModule],
-      providers: [ScriptService]
+      providers: [ScriptService,EditorService,DragulaService]
     }).compileComponents();
   });
 
