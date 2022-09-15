@@ -1017,6 +1017,7 @@ class parser extends CstParser
                             ALT: () =>{
                                 this.SUBRULE(this.addTileToBoard )
                             }},
+                            
                             {
                             ALT: () =>{
                                 this.SUBRULE(this.addAdj )
@@ -1030,21 +1031,34 @@ class parser extends CstParser
                             ,
                             {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
-                            }}
-                            ,
+                            }},
+                            
                             {ALT: () =>{
                                 this.SUBRULE(this.rToInt )
-                            }}
+                            }},
+                            {
+                                ALT: () =>{
+                                    this.SUBRULE(this.rMovePiece )
+                            }},
                         ])
                  })
-                 
                  private rToInt=this.RULE("rToInt", () => {
-                    this.OPTION(() =>{
+                    
                         this.CONSUME(tokensStore.tToInt)
                         this.CONSUME(tokensStore.tOpenBrace )
                         this.SUBRULE(this.Declarations)
                         this.CONSUME(tokensStore.tCloseBrace )
-                    })
+                    
+                 })
+                 private rMovePiece=this.RULE("rMovePiece", () => {
+                    
+                        this.CONSUME(tokensStore.tMovePiece )
+                        this.CONSUME(tokensStore.tOpenBracket )
+                        this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                        this.CONSUME(tokensStore.tComma )
+                        this.SUBRULE(this.Value)
+                        this.CONSUME(tokensStore.tCloseBracket )
+                    
                  })
                  private rTileAttributes=this.RULE("rTileAttributes", () => {
                     this.OPTION(() =>{
@@ -2184,10 +2198,37 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rToInt":
                     visitRToInt(node, place)
                     break;
+                case "rMovePiece":
+                    visitMovePiece(node, place)
+                    break;
+
+                    
             }
         }
     }
 }
+function visitMovePiece(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+        }
+        if(node.name)
+        {
+            visitMovePiece(node, place);
+        }
+    }
+}
+
+
 
 function visitRToInt(cstOutput:CstNode, place:string)
 {
