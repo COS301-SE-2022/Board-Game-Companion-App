@@ -52,13 +52,18 @@ import { Component, Input} from "@angular/core";
                     </div>
                     <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
                     <!--List of pre-made methods-->
-                    <select *ngIf = "item.title === 'Call'">
+                    <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-1">
                         <option>
+                            {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let method of methods">
                           {{method.name}}
                         </option>
                     </select>
+                    <!--Method Inputs-->
+                    <div *ngIf = "item.title === 'Call'">
+                        <input class = "mt-1" *ngFor="let argument of [].constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
+                    </div>
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
@@ -100,5 +105,16 @@ export class ElementTemplateComponent{
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2}
       ]
+    arguments = []
+    constructor(){
+       console.log()
+    }
+
+    methodInputs(event: any)
+    {
+        const m = this.methods.find(obj => obj.name === event.target.value)
+        if(m != null)
+        this.arguments.length = m?.arguments
+    }
 
 }

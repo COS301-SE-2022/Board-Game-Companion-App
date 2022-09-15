@@ -50,13 +50,17 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     </div>
                     <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
                     <!--List of pre-made methods-->
-                    <select *ngIf = "item.title === 'Call'">
+                    <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-2">
                         <option>
                         </option>
                         <option *ngFor="let method of methods">
                           {{method.name}}
                         </option>
                     </select>
+                    <!--Method Inputs-->
+                    <div *ngIf = "item.title === 'Call'">
+                        <input class = "mt-1" *ngFor="let argument of arguments">
+                    </div>
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
@@ -99,4 +103,12 @@ export class LoopTemplateComponent{
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2}
       ]
+    
+    arguments = []
+    methodInputs(event: any)
+    {
+        const m = this.methods.find(obj => obj.name === event.target.value)
+        if(m != null)
+        this.arguments.length = m?.arguments
+    }
 }

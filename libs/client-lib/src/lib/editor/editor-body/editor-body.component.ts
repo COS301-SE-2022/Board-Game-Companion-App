@@ -8,6 +8,7 @@ import { selection } from '../../shared/models/editor/selection';
 import { EditorService } from '../../shared/services/editor/editor.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';
+import { ConsoleLogger } from '@nestjs/common';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
@@ -787,7 +788,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       switch(method)
       {
         case "state":
-          if(flag > 1)
+          if(!lines[j].includes("state") && flag > 1)
           {
             const l = lines[j].split(/\s+/)
             if(l[1].includes("create"))
@@ -845,11 +846,34 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: '', inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
             }
             //Output
-            else if (l[1].includes('output'))
+            else if (l[1].includes('output('))
             {
-              this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf("'")),"","","","","","",""], pos: 0, true: 0, false: 0})
+              this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
             }
-            
+            //Input
+            else if(l[1].includes('input('))
+            {
+              this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: '', inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+            }
+            //Methods
+            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            {
+              const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
+              if(call != null)
+              {
+                if(call.arguments === 1)
+                {
+                  this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                }
+                else
+                {
+                  this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                }
+                
+              }
+              
+            }
+
           }
           break
         case "condition":
