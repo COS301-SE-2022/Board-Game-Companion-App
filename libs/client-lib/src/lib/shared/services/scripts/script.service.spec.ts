@@ -67,9 +67,11 @@ describe('Test script service',()=>{
     status: {value:2,message:'The script is currently running'},
     size: 0,
     comments: [],
-    source: {name:'',location:'',awsKey:''},
-    build: {name:'',location:'',awsKey:''},
-    icon: {name:'',location:'',awsKey:''},
+    programStructure: {type:'root',name:'root',endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
+    source: {name:'',location:'',key:''},
+    build: {name:'',location:'',key:''},
+    icon: {name:'',location:'',key:''},
+    models: [],
     __v: 0,
   };
 

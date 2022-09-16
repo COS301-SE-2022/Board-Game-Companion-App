@@ -68,7 +68,7 @@ describe('CollectionsComponent', () => {
     fixture = TestBed.createComponent(CollectionsComponent);
     component =  fixture.componentInstance;
     component.viewCollection('second best');
-    expect(navigateSpy).toBeCalledWith(['viewCollection'], {queryParams: {my_object: 'second best'}});
+    expect(navigateSpy).toBeCalledWith(['viewCollection', {'my_object': 'second best'}]);
   });
 
   it('should deleted a collection when passed string', ()=>{
