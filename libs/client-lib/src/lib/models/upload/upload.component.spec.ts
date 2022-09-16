@@ -20,6 +20,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
 describe('UploadComponent', () => {
   let component: UploadComponent;
   //let modService: ModelsService;
@@ -29,7 +31,7 @@ describe('UploadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
       declarations: [UploadComponent],
-      providers:[ModelsService]
+      providers:[ModelsService,StorageService]
     }).compileComponents(); 
     //check if component created
     fixture = TestBed.createComponent(UploadComponent);
