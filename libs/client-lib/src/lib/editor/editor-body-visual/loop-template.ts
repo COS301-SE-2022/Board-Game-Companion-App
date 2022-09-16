@@ -10,25 +10,25 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
         <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
                 <div id = "content">
-                    <!--For Loop-->
-                    <div *ngIf = "item.title === 'For'" id = "line">
+                      <!--For Loop-->
+                      <div *ngIf = "item.title === 'For'" id = "line">
                         <div class = "pb-1 pt-8 pl-4 text-left">
-                        <label>
-                            Start
-                        </label>
-                        <input class = "fInput ml-3">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label *ngIf = "item.title === 'For'">
-                            End 
-                        </label>
-                        <input class = "fInput ml-5">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label>
-                            By
-                        </label>
-                        <input class = "fInput ml-7">
+                            <label>
+                                Start
+                            </label>
+                            <input class = "fInput ml-3" [value]="item.inputs[0]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label *ngIf = "item.title === 'For'">
+                                End 
+                            </label>
+                            <input class = "fInput ml-5" [value]="item.inputs[1]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label>
+                                By
+                            </label>
+                            <input class = "fInput ml-7" [value]="item.inputs[2]">
                         </div>
                     </div>
                     <!--Return-->
@@ -49,9 +49,10 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                         To
                     </div>
                     <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
-                    <!--List of pre-made methods-->
-                    <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-2">
+                   <!--List of pre-made methods-->
+                   <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-1">
                         <option>
+                            {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let method of methods">
                           {{method.name}}
@@ -59,7 +60,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     </select>
                     <!--Method Inputs-->
                     <div *ngIf = "item.title === 'Call'">
-                        <input class = "mt-1" *ngFor="let argument of arguments">
+                        <input class = "mt-1" *ngFor="let argument of [].constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
                     </div>
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>

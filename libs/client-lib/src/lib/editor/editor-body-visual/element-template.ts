@@ -14,22 +14,22 @@ import { Component, Input} from "@angular/core";
                     <!--For Loop-->
                     <div *ngIf = "item.title === 'For'" id = "line">
                         <div class = "pb-1 pt-8 pl-4 text-left">
-                        <label>
-                            Start
-                        </label>
-                        <input class = "fInput ml-3">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label *ngIf = "item.title === 'For'">
-                            End 
-                        </label>
-                        <input class = "fInput ml-5">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label>
-                            By
-                        </label>
-                        <input class = "fInput ml-7">
+                            <label>
+                                Start
+                            </label>
+                            <input class = "fInput ml-3" [value]="item.inputs[0]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label *ngIf = "item.title === 'For'">
+                                End 
+                            </label>
+                            <input class = "fInput ml-5" [value]="item.inputs[1]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label>
+                                By
+                            </label>
+                            <input class = "fInput ml-7" [value]="item.inputs[2]">
                         </div>
                     </div>
                     <!--Return-->
@@ -67,17 +67,17 @@ import { Component, Input} from "@angular/core";
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
-                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[0]">
                     <div>
-                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[1]">
                     </div>
-                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[2]">
                     <!--If Statement-->
-                    <input id = "ifInput1" *ngIf = "item.title === 'If'">
+                    <input id = "ifInput1" *ngIf = "item.title === 'If'" [value]="item.inputs[0]">
                     <div>
-                        <input id = "ifCompare" *ngIf = "item.title === 'If'">
+                        <input id = "ifCompare" *ngIf = "item.title === 'If'" [value]="item.inputs[1]">
                     </div>
-                    <input id = "ifInput2" *ngIf = "item.title === 'If'">
+                    <input id = "ifInput2" *ngIf = "item.title === 'If'" [value]="item.inputs[2]">
                 </div>
             </div>
         </div>
