@@ -245,9 +245,15 @@ export class MyScriptService {
                 result.models.push(modelCopy);
         }
 
-        this.automataService.remove(script._id);
+        const downloads = await this.downloadsModel.find({"link":script._id});
+        console.log(downloads.length);
 
-        this.downloadsModel.updateMany({"link":script._id},{"link":result._id});
+        downloads.forEach((value) => {
+            value.link = result._id;
+            value.save();
+        });
+
+        this.automataService.remove(script._id);
         
         await result.save();
 
