@@ -26,6 +26,11 @@ export class CollectionsController {
         return this.collectionService.removeCollection({name:ownerName,email:ownerEmail},name);
     }
 
+    @Delete('remove-board-game')//(boardgame:string,name:string,owner:user)
+    async removeBoardGame(@Query('game')game:string,@Query('name')name:string,@Query('ownerName')ownerName:string,@Query('ownerEmail')ownerEmail:string):Promise<number>{
+        return this.collectionService.removeBoardGame(game,name,{name:ownerName,email:ownerEmail});
+    }
+
     @Delete('remove-by-id')
     async removeCollectionById(@Query('id')id:string):Promise<number>{
         return this.collectionService.removeCollectionById(id);

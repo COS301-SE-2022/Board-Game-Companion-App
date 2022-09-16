@@ -571,12 +571,30 @@ export class CollectionsComponent implements OnInit {
 
   removeFromCollection(value:Game): void{
     let found = false;
+    let temp = this.collections[0];
 
     for(let count = 0; count < this.collections.length && !found; count++){
       if(this.collections[count]._id === value.collectionId){
         found = true;
-        this.collections.filter((val:collection) => val._id !== value.collectionId);
+        temp = this.collections[count];
       }
+    }
+
+    if(found){
+      this.collectionService.removeBoardGame(temp.name,value.id).subscribe({
+        next:(response:number) => {
+          if(response === 1){
+            this.notifications.add({type:"success",message:`Successfully removed ${value.name} from ${temp.name}`})
+            this.collections = this.collections.filter((val:collection) => val._id !== value.collectionId);
+          }else{
+            this.notifications.add({type:"warning",message:`Could not find ${value.name} in ${temp.name}`})
+          }
+        },
+        error:()=>{
+          this.notifications.add({type:"danger",message:`Failed to remove ${value.name} from ${temp.name}`})
+        }
+      })
+    
     }
   }
 

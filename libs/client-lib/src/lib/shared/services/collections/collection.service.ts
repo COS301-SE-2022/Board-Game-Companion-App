@@ -43,6 +43,16 @@ export class CollectionService {
     return this.httpClient.delete<number>(this.api + "collections/remove",{params:param})
   }
 
+  removeBoardGame(name:string,game:string):Observable<number>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("game",game);
+    param = param.set("ownerName",sessionStorage.getItem("name") as string);
+    param = param.set("ownerEmail",sessionStorage.getItem("email") as string);
+    
+    return this.httpClient.delete<number>(this.api + "collections/remove-board-game",{params: param});
+  }
+
 
   removeCollectionById(id:string):Observable<number>{
     let param = new HttpParams();
