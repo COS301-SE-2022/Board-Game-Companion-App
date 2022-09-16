@@ -1,10 +1,21 @@
-//import { AutomataScriptDocument } from "../../../schemas/"
 
-export const AutomataScriptDocument = ():  =>{
+
+import { AutomataScriptDocument } from "../../../schemas/automata-script.schema"
+import { baseScriptStub } from "./baseStud"
+
+export const AutomataScriptDocumentStub = (): AutomataScriptDocument =>{
    return {
-    owner: {name:"John", email:"JohnSmith@gmail.com"},
+      ...baseScriptStub,
+    previous: [],
     link: "www.thisIsALink.com",
-    dateDownloaded: new Date("23-10-19")
+    dateReleased: new Date("23-10-18"),
+    downloads: 4,
+    lastDownload: new Date("23-10-19"),
+    export: true ,
+    comments: ["This is a comment", "This is another comment"],
+    source: {name:"",key:"",location:""},
+    build: {name:}
    }
+   
    
 }

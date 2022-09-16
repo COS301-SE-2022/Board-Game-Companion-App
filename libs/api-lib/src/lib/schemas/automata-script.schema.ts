@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { file } from '../models/general/files';
 import { baseScript } from './base-script';
-export type AutomataScriptDocument = AutomataScript & Document;
+export type  AutomataScriptDocument = AutomataScript & Document;
 
 @Schema()
 export class AutomataScript extends baseScript{

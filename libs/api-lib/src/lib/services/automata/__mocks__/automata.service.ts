@@ -1,4 +1,8 @@
-//import {expect, jest, test} from '@jest/globals';
+import { jest } from '@jest/globals';
+import { automataScriptStub } from '../stubs/automata-scriptStub';
+import { AutomataScriptDocumentStub } from '../stubs/automatascript-docStub';
+import { downloadscriptStub } from '../stubs/dowload.stub';
+
 
 export const automataService = jest.fn().mockReturnValue({
     getAll: jest.fn().mockReturnValue(automataScriptStub()),
