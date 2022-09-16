@@ -44,7 +44,14 @@ class tile
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
     //tile properties
-    
+    async removePiece(p)
+    {
+        const index = this.pieces.indexOf(p);
+        if (index > -1) 
+        { 
+            this.pieces.splice(index, 1); 
+        }
+    }
 }
 class piece
 {
@@ -54,6 +61,15 @@ class piece
     Tile; //the tile this piece is on
     
 }
+
+async function movePiece(p, t)
+{
+    await p.Tile.removePiece(p)
+    p.Tile = t
+    t.pieces.push(p)
+}
+
+
 class game_state
 {
     board = []
