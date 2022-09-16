@@ -196,6 +196,7 @@ export class MyScriptService {
             comments: script.comments,
             rating: script.rating,
             description: script.description,
+            previous: script.previous,
             version: {
                 major: script.version.major,
                 minor: script.version.minor,

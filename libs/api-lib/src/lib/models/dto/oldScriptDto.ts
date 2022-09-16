@@ -12,6 +12,7 @@ export interface oldScriptDto{
     icon: file;
     build: file;
     models: string[];
+    previous: string[];
     dateReleased: Date;
     downloads: number;
     lastDownload: Date;

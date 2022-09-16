@@ -50,7 +50,7 @@ export class RatingService {
     }
 
     async getRating(user:user,script:string):Promise<Rating>{
-        return this.ratingModel.findOne({user:user,script:script});
+        return this.ratingModel.findOne({"user.name":user.name,"user.email":user.email,"script":script});
     }
 
     async average(script:string):Promise<number>{

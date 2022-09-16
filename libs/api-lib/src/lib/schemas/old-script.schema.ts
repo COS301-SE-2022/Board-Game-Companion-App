@@ -7,6 +7,9 @@ export type OldScriptDocument = OldScript & Document;
 @Schema()
 export class OldScript extends baseScript{
     @Prop({required: true})
+    previous: string[];
+    
+    @Prop({required: true})
     dateReleased: Date;
 
     @Prop({required: true})
