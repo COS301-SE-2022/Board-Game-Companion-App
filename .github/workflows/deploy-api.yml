@@ -14,5 +14,5 @@ jobs:
       - name: Deploy to Heroku
         uses: behe/heroku-build@v1.1
         with:
-          app-name: "board-game-companion-app-api"
+          app-name: "board-game-companion-app"
           api-key: "${{secrets.HEROKU_API_KEY}}"

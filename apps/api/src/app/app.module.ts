@@ -13,7 +13,8 @@ import { join } from 'path';
   imports: [
     ApiLibModule,
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd()),
+      rootPath: join(__dirname, '..', 'client'),
+      exclude: ['/api*'],
     }),
     ConfigModule.forRoot(),
 
