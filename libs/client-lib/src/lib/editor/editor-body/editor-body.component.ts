@@ -736,6 +736,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let player = -1
     let action = 0
     let open = 0
+    let d = 0
     for(let j = 0; j < lines.length; j++)
     {
       if(lines[j].includes("{"))
@@ -854,117 +855,174 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           }
           break
         case "action":
-          if(!lines[j].includes("action") && openAction != 0)
           {
-            const l = lines[j].split(/\s+/)
-            //Create
-            if(l[1] == "let")
+            if(!lines[j].includes("action") && openAction != 0)
             {
-              this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: '', inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-              this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
-            }
-            //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
-            {
-              const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
-              if(set != null)
-              this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: '', inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-            }
-            //Output
-            else if (l[1].includes('output('))
-            {
-              this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
-            }
-            //Input
-            else if(l[1].includes('input('))
-            {
-              this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: '', inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
-            }
-            //Methods
-            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
-            {
-              const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
-              if(call != null)
+              const l = lines[j].split(/\s+/)
+              //Create
+              if(l[1] == "let")
               {
-                if(call.arguments === 1)
+                this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: '', inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
+              }
+              //Set
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
+              {
+                const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
+                if(set != null)
+                this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: '', inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+              }
+              //Output
+              else if (l[1].includes('output('))
+              {
+                this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
+              }
+              //Input
+              else if(l[1].includes('input('))
+              {
+                this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: '', inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+              }
+              //Methods
+              else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+              {
+                const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
+                if(call != null)
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                  if(call.arguments === 1)
+                  {
+                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                  }
+                  else
+                  {
+                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                  }
+                }
+              }
+              //If Statements
+              else if(lines[j].includes("if(") || lines[j].includes("if ("))
+              {
+                let params = [""]
+                let operator = ""
+                if(lines[j].includes(">") && !lines[j].includes("="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">")
+                  operator = ">"
+                }
+                else if(lines[j].includes("<") && !lines[j].includes("="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<")
+                  operator = "<"
+                }
+                else if(lines[j].includes("=="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("==")
+                  operator = "=="
+                }
+                else if(lines[j].includes("!="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("!=")
+                  operator = "!="
+                }
+                else if(lines[j].includes(">="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">=")
+                  operator = ">="
+                }
+                else if(lines[j].includes("<="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<=")
+                  operator = "<="
+                }
+                this.editorVisual.playersLoopIndex++
+                this.editorVisual.playersLoopIndex++
+                this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1), "","","","",""], pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                const dest = [
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.PlayersLoops.push(dest)
+                this.editorVisual.PlayersLoops.push(dest)
+              }
+              //For Loops
+              else if(lines[j].includes("for(") || lines[j].includes("for ("))
+              {
+                const loop = lines[j].split(";")
+                const num = loop[1].replace(/\D/g, '')
+                let n = +num
+                if(!loop[1].includes("="))
+                {
+                  n--
+                }
+                let by = 0
+                if(loop[2].includes("++"))
+                {
+                  by = 1
                 }
                 else
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                  by = +loop[1].replace(/\D/g, '')
                 }
+                this.editorVisual.playersLoopIndex++    
+                this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: '', inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                const dest = [
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.PlayersLoops.push(dest)
               }
-            }
-            //If Statements
-            else if(lines[j].includes("if(") || lines[j].includes("if ("))
-            {
-              let params = [""]
-              let operator = ""
-              if(lines[j].includes(">") && !lines[j].includes("="))
+              //Do
+              else if(lines[j].includes("do{") || lines[j].includes("do"))
               {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split(">")
-                operator = ">"
+                d = 1
               }
-              else if(lines[j].includes("<") && !lines[j].includes("="))
+              //While/do While Loops
+              else if(lines[j].includes("while(") || lines[j].includes("while ("))
               {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split("<")
-                operator = "<"
+                let params = [""]
+                let operator = ""
+                if(lines[j].includes(">") && !lines[j].includes("="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">")
+                  operator = ">"
+                }
+                else if(lines[j].includes("<") && !lines[j].includes("="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<")
+                  operator = "<"
+                }
+                else if(lines[j].includes("=="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("==")
+                  operator = "=="
+                }
+                else if(lines[j].includes("!="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("!=")
+                  operator = "!="
+                }
+                else if(lines[j].includes(">="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">=")
+                  operator = ">="
+                }
+                else if(lines[j].includes("<="))
+                {
+                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<=")
+                  operator = "<="
+                }
+                this.editorVisual.playersLoopIndex++
+                if(d === 1)
+                {
+                  this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  d = 0
+                } 
+                else
+                {
+                  this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }
+                const dest = [
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.PlayersLoops.push(dest)
               }
-              else if(lines[j].includes("=="))
-              {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split("==")
-                operator = "=="
-              }
-              else if(lines[j].includes("!="))
-              {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split("!=")
-                operator = "!="
-              }
-              else if(lines[j].includes(">="))
-              {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split(">=")
-                operator = ">="
-              }
-              else if(lines[j].includes("<="))
-              {
-                params = lines[j].substring(lines[j].indexOf("(") + 1).split("<=")
-                operator = "<="
-              }
-              this.editorVisual.playersLoopIndex++
-              this.editorVisual.playersLoopIndex++
-              this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1), "","","","",""], pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
-              const dest = [
-                {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-              ]
-              this.editorVisual.PlayersLoops.push(dest)
-              this.editorVisual.PlayersLoops.push(dest)
-            }
-            //For Loops
-            else if(lines[j].includes("for(") || lines[j].includes("for ("))
-            {
-              const loop = lines[j].split(";")
-              const num = loop[1].replace(/\D/g, '')
-              let n = +num
-              if(!loop[1].includes("="))
-              {
-                n--
-              }
-              let by = 0
-              if(loop[2].includes("++"))
-              {
-                by = 1
-              }
-              else
-              {
-                by = +loop[1].replace(/\D/g, '')
-              }
-              this.editorVisual.playersLoopIndex++    
-              this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: '', inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
-              const dest = [
-                {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-              ]
-              this.editorVisual.PlayersLoops.push(dest)
             }
           }
           break
