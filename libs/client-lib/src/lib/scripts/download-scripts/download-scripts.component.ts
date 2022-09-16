@@ -179,8 +179,7 @@ export class DownloadScriptsComponent implements OnInit {
     this.scripts.forEach((value:downloadScript) => {
       this.scriptService.checkForUpdatesForOne(value.link).subscribe({
         next:(response: string) => {
-          console.log(response);
-          if(response !== ""){
+          if(response !== "" && response !== null){
             this.updates.push({oldId:value._id,newId:response});
             this.updatesRequired.push(value._id);
           } 

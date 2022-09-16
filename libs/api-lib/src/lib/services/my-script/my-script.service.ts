@@ -165,8 +165,8 @@ export class MyScriptService {
         return result;
     }
 
-    async getAllMyScript(owner:user):Promise<MyScript[]>{
-        return this.myScriptModel.find({"owner.name":owner.name,"owner.email":owner.email});
+    async getAllMyScript(author:user):Promise<MyScript[]>{
+        return this.myScriptModel.find({"author.name":author.name,"author.email":author.email});
     }
 
     async checkName(name:string,user:user):Promise<boolean>{
