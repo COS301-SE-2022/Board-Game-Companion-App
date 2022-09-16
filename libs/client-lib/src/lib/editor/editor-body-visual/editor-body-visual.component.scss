@@ -8,7 +8,7 @@
     overflow-x: auto;
 }
 
-#codeArea{
+.container{
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
@@ -122,4 +122,35 @@
     margin-bottom: 1em;
     font-weight: bold;
     border-radius: 2em;
+}
+
+.tfSection{
+    display:block;
+}
+
+#trueSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: white;
+    border: 5px solid black;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+    margin-top: 0;
+}
+
+#falseSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: white;
+    border: 5px solid black;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+}
+
+.visualIf{
+    top: 25%;
 }

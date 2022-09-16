@@ -452,6 +452,9 @@ class parser extends CstParser
         
         
         public Program = this.RULE("Program", () => {
+            
+            this.SUBRULE(this.rTileAttributes )
+            
             this.SUBRULE(this.GameState)
             this.SUBRULE(this.Definition)
         });
@@ -516,6 +519,7 @@ class parser extends CstParser
         private GameState=this.RULE("GameState", () => {
             this.CONSUME(tokensStore.tState )
             this.CONSUME(tokensStore.tOpenBrace)
+            
             this.SUBRULE(this.Declarations )
             this.CONSUME(tokensStore.tCloseBrace)
         });
@@ -802,20 +806,30 @@ class parser extends CstParser
                                 this.SUBRULE(this.rCopy) 
                             
                         }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetBoard) 
+                            
+                        }},
                     ])
                     
                 });
+                private rGetBoard=this.RULE("rGetBoard", () => {
+                    this.CONSUME(tokensStore.tGetBoard )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rCreateCard=this.RULE("rCreateCard", () => {
                     this.CONSUME(tokensStore.tCreateCard )
-                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME3(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME2(tokensStore.tCloseBracket )
+                    this.CONSUME3(tokensStore.tCloseBracket )
                 })
                 private rCopy=this.RULE("rCopy", () => {
                     this.CONSUME(tokensStore.tCopy )
-                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.CONSUME4(tokensStore.tOpenBracket )
                     this.SUBRULE(this.Expression)
-                    this.CONSUME2(tokensStore.tCloseBracket )
+                    this.CONSUME4(tokensStore.tCloseBracket )
                 })
 
 
@@ -964,7 +978,7 @@ class parser extends CstParser
                         this.SUBRULE(this.SpecialMethods )
                     })
                     this.OPTION1(() => {
-                            
+
                                 this.SUBRULE(this.nVariable )
                                 
                                 this.OPTION2(() => {
@@ -1003,6 +1017,7 @@ class parser extends CstParser
                             ALT: () =>{
                                 this.SUBRULE(this.addTileToBoard )
                             }},
+                            
                             {
                             ALT: () =>{
                                 this.SUBRULE(this.addAdj )
@@ -1016,16 +1031,51 @@ class parser extends CstParser
                             ,
                             {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
-                            }}
+                            }},
+                            
+                            {ALT: () =>{
+                                this.SUBRULE(this.rToInt )
+                            }},
+                            {
+                                ALT: () =>{
+                                    this.SUBRULE(this.rMovePiece )
+                            }},
                         ])
                  })
+                 private rToInt=this.RULE("rToInt", () => {
+                    
+                        this.CONSUME(tokensStore.tToInt)
+                        this.CONSUME(tokensStore.tOpenBrace )
+                        this.SUBRULE(this.Declarations)
+                        this.CONSUME(tokensStore.tCloseBrace )
+                    
+                 })
+                 private rMovePiece=this.RULE("rMovePiece", () => {
+                    
+                        this.CONSUME(tokensStore.tMovePiece )
+                        this.CONSUME(tokensStore.tOpenBracket )
+                        this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                        this.CONSUME(tokensStore.tComma )
+                        this.SUBRULE(this.Value)
+                        this.CONSUME(tokensStore.tCloseBracket )
+                    
+                 })
+                 private rTileAttributes=this.RULE("rTileAttributes", () => {
+                    this.OPTION(() =>{
+                        this.CONSUME(tokensStore.tTileAttributes)
+                        this.CONSUME(tokensStore.tOpenBrace )
+                        this.SUBRULE(this.Declarations)
+                        this.CONSUME(tokensStore.tCloseBrace )
+                    })
+                 })
+
                  private rCreateBoard=this.RULE("rCreateBoard", () => {
                     this.CONSUME(tokensStore.tCreateBoard )
                     this.CONSUME(tokensStore.tOpenBracket )
-                    this.CONSUME(tokensStore.tIntegerLiteral )
+                    this.SUBRULE(this.Const)
                     this.OPTION2(() => {
                         this.CONSUME(tokensStore.tComma )
-                        this.CONSUME2(tokensStore.tIntegerLiteral )
+                        this.SUBRULE2(this.Const)
                     })
                     this.CONSUME(tokensStore.tCloseBracket )
                  })
@@ -1506,6 +1556,10 @@ function visit(cstOutput:CstNode)
                 case "GameState":
                     visitGameState(node);
                     break;
+                case "rTileAttributes":
+                    visitTileAttributes(node)
+                    break;
+                
                 case "Definition":
                     visit(node);
                     break;
@@ -1585,7 +1639,10 @@ function visitGameState(cstOutput:CstNode)
             }
             if(node.name != "SpecialMethods")
             {
+                
+                
                 visitGameState(node);
+                
             }
             else
             {
@@ -1595,6 +1652,20 @@ function visitGameState(cstOutput:CstNode)
             
         }
 
+}
+function visitTileAttributes(cstOutput:CstNode)
+{
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+
+        const node = child[0] as unknown as CstNode;
+
+        if(node.name)
+        {
+            visitPlayerStatements(node, "//tile properties");
+        }
+    }
 }
 function visitCards(cstOutput:CstNode)
 {
@@ -2121,7 +2192,69 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rCreateCard":
                     visitRCreateCard(node, place)
                         break;  
+                case "rGetBoard":
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.State.board', jsScript.slice(jsScript.indexOf(place))].join('');
+                    break;
+                case "rToInt":
+                    visitRToInt(node, place)
+                    break;
+                case "rMovePiece":
+                    visitMovePiece(node, place)
+                    break;
+
+                    
             }
+        }
+    }
+}
+function visitMovePiece(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+        }
+        if(node.name)
+        {
+            visitMovePiece(node, place);
+        }
+    }
+}
+
+
+
+function visitRToInt(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            //
+            if(token.tokenType.name == "toInt")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'+', jsScript.slice(jsScript.indexOf(place))].join('');
+            }
+            else
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image +' ', jsScript.slice(jsScript.indexOf(place))].join('');
+            }
+        }
+        if(node.name)
+        {
+            
+            visitPlayerStatements(node, place);
         }
     }
 }
@@ -2159,24 +2292,29 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
-        if(token.image)
+        
+        if(node.name)
         {
-            if(token.tokenType.name == "IntegerLiteral")
+            if(node.name == "Const")
             {
                 if(i == 0)
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<='+token.image+';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let i=1;i<=', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitPlayerStatements(node, place);
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';i++){\n', jsScript.slice(jsScript.indexOf(place))].join('');
         
                 }
                 else
                 {
                     i++;
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<='+token.image+';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<=', jsScript.slice(jsScript.indexOf(place))].join('');
+                    visitPlayerStatements(node, place);
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                
                 }
             }
         }
-
 
     }
     if(i == 1)

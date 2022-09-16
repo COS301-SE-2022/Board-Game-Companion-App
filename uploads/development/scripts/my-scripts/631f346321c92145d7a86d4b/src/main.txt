@@ -1,0 +1,15 @@
+state{
+    let t1 = tile
+    t1.Id = '1'
+    addToBoard(t1)
+}
+player AI{
+    turn(){
+        
+    }
+}
+player Human{
+    turn(){
+        
+    }
+}

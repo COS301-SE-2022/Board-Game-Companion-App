@@ -26,12 +26,17 @@ export const tCreateBoard=(chevrotain.createToken({name:"CreateBoard",pattern:/c
 export const tAddToBoard =(chevrotain.createToken({name:"AddToBoard",pattern:/addToBoard/,longer_alt:tUserDefinedIdentifier}));
 export const tAddAdjacency =(chevrotain.createToken({name:"AddAdjacency",pattern:/addAdjacency/,longer_alt:tUserDefinedIdentifier}));
 export const tAddPieceToTile =(chevrotain.createToken({name:"addPieceToTile",pattern:/addPieceToTile/,longer_alt:tUserDefinedIdentifier}));
+export const tMovePiece =(chevrotain.createToken({name:"movePiece",pattern:/movePiece/,longer_alt:tUserDefinedIdentifier}));
+
+export const tGetBoard =(chevrotain.createToken({name:"getBoard",pattern:/getBoard/,longer_alt:tUserDefinedIdentifier}));
+export const tTileAttributes =(chevrotain.createToken({name:"tileAttribute",pattern:/tileAttribute/,longer_alt:tUserDefinedIdentifier}));
 
 export const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/getTileByID/,longer_alt:tUserDefinedIdentifier}));
 export const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
 export const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
 export const tChooseAction =(chevrotain.createToken({name:"chooseAction",pattern:/chooseAction/,longer_alt:tUserDefinedIdentifier}));
 export const tIsActionLegal =(chevrotain.createToken({name:"isActionLegal",pattern:/isActionLegal/,longer_alt:tUserDefinedIdentifier}));
+export const tToInt =(chevrotain.createToken({name:"toInt",pattern:/toInt/,longer_alt:tUserDefinedIdentifier}));
 
 
 export const tEndgame=(chevrotain.createToken({name:"Endgame",pattern:/endgame/,longer_alt:tUserDefinedIdentifier}));
@@ -139,6 +144,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tParameters,
     tCondition,
     tEffect,
+    tTileAttributes,
     tState,
     tTurn,
     tPlayer,
@@ -153,6 +159,8 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tCopy,
     tAddAdjacency,
     tAddPieceToTile,
+    tMovePiece,
+    tGetBoard,
     tGetTileByID,
     tGetTilesByType,
     tGenerateChoices,
