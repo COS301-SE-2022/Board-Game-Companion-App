@@ -45,6 +45,10 @@ export class CollectionsService {
         return this.collectionModel.find({"owner.name":owner.name,"owner.email":owner.email});
     }
 
+    async getAllCollections():Promise<CollectionDocument[]>{
+        return this.collectionModel.find({});
+    }
+
     async addBoardGame(boardgame:string,name:string,owner:user): Promise<boolean>{
         const result = await this.collectionModel.findOne({"owner.name":owner.name,"owner.email":owner.email,"name":name});
 
@@ -77,6 +81,8 @@ export class CollectionsService {
 
         return result !== null ? 1 : 0;       
     }
+
+
 
     async removeCollection(owner:user,name:string):Promise<number>{
         const result = await this.collectionModel.findOneAndRemove({"owner.name":owner.name,"owner.email":owner.email,"name":name});

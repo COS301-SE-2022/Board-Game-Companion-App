@@ -39,6 +39,7 @@ import { ApiFileManagerController } from './controllers/file-manager/file-manage
 import { Alert, AlertSchema } from './schemas/alert.schema';
 import { AlertService } from './services/alert/alert.service';
 import { AlertGateway } from './services/alert/alert.gateway';
+import { ApiAlertController } from './controllers/alert/alert.controller';
 
 @Module({
   imports:[
@@ -67,7 +68,8 @@ import { AlertGateway } from './services/alert/alert.gateway';
     ApiAutomataScriptController,
     ApiEditorController,
     ApiDownloadScriptController,
-    ApiFileManagerController
+    ApiFileManagerController,
+    ApiAlertController
   ],
   providers: [
     CollectionsService,

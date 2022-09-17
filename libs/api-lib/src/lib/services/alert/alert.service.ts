@@ -20,11 +20,10 @@ export class AlertService {
 
     
 
-    async create(recepient:user,message:string,link:string,type:alertType):Promise<AlertDocument>{
+    async create(recepient:user,link:string,type:alertType):Promise<AlertDocument>{
         const dto:alertDto = {
             recepient:recepient,
             date: new Date(),
-            message:message,
             link:link,
             alertType:type,
             read:false

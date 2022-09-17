@@ -12,9 +12,6 @@ export class Alert{
 
     @Prop({required:true})
     date: Date;
-    
-    @Prop({required:true})
-    message: string;
 
     @Prop({required: true})
     link: string;
