@@ -1041,6 +1041,10 @@ class parser extends CstParser
                             }}
                             ,
                             {ALT: () =>{
+                                this.SUBRULE(this.rRemoveFromArr )
+                            }}
+                            ,
+                            {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
                             }},
                             
@@ -1057,6 +1061,16 @@ class parser extends CstParser
                             }},
                         ])
                  })
+                 private rRemoveFromArr =this.RULE("rRemoveFromArr", () => {
+                    this.CONSUME(tokensStore.tRemoveFromArr )
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                    this.CONSUME(tokensStore.tComma )
+                    this.SUBRULE(this.Value)
+                    this.CONSUME(tokensStore.tCloseBracket )
+                 })
+
+
                  private rActivate=this.RULE("rActivate", () => {
                     
                     this.CONSUME(tokensStore.tActivate)
@@ -2250,11 +2264,44 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                 case "rActivate":
                     visitActivate(node, place)
                     break;  
+                case "rRemoveFromArr":
+                    visitRemoveFromArr(node, place)
+                    break;  
+                    
             }
         }
     }
 }
+function visitRemoveFromArr(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' '+token.image+'.splice(', jsScript.slice(jsScript.indexOf(place))].join('');
 
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "value")
+            {
+                visitPlayerStatements(node, place)
+            }
+        }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),', 1) \n', jsScript.slice(jsScript.indexOf(place))].join('');
+
+
+}
 function visitActivate(cstOutput:CstNode, place:string)
 {
     
@@ -2373,7 +2420,7 @@ function visitRCreateCard(cstOutput:CstNode, place:string)
     let k: keyof typeof cstOutput.children;  // visit all children
 
     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new cards(', jsScript.slice(jsScript.indexOf(place))].join('');
-        
+    
 
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
