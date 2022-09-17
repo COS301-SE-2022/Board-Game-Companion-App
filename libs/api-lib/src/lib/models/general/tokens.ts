@@ -17,6 +17,8 @@ export const tCreateCard=(chevrotain.createToken({name:"CreateCard",pattern:/cre
 
 export const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
 export const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
+export const tRemoveFromArr=(chevrotain.createToken({name:"tRemoveFromArr",pattern:/tRemoveFromArr/,longer_alt:tUserDefinedIdentifier}));
+
 export const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
 export const tCopy=(chevrotain.createToken({name:"copy",pattern:/copy/,longer_alt:tUserDefinedIdentifier}));
 
@@ -37,6 +39,9 @@ export const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pat
 export const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
 export const tChooseAction =(chevrotain.createToken({name:"chooseAction",pattern:/chooseAction/,longer_alt:tUserDefinedIdentifier}));
 export const tActivate =(chevrotain.createToken({name:"activate",pattern:/activate/,longer_alt:tUserDefinedIdentifier}));
+export const tCanUse =(chevrotain.createToken({name:"canUse",pattern:/canUse/,longer_alt:tUserDefinedIdentifier}));
+
+
 
 export const tIsActionLegal =(chevrotain.createToken({name:"isActionLegal",pattern:/isActionLegal/,longer_alt:tUserDefinedIdentifier}));
 export const tToInt =(chevrotain.createToken({name:"toInt",pattern:/toInt/,longer_alt:tUserDefinedIdentifier}));
@@ -157,6 +162,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tCreateBoard,
     tPiece,
     tAddToArr,
+    tRemoveFromArr,
     tAddToBoard,
     tConsider,
     tCopy,
@@ -170,6 +176,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tGenerateChoices,
     tChooseAction,
     tActivate,
+    tCanUse,
     tIsActionLegal,
     tEndgame,
     tReturn,
