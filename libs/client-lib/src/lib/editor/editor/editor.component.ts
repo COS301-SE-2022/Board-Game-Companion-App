@@ -81,13 +81,13 @@ export class EditorComponent implements OnInit{
       copyItem: (obj) => {
         if(obj.id !== '')
         {
-          return {title: obj.title, class: obj.class , id: obj.id, pos: obj.pos};
+          return {title: obj.title, class: obj.class , id: obj.id, inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
         }
         else
         {
           this.count++
           const id = "e" + this.count.toString()
-          return {title: obj.title, class: obj.class , id: id, pos: obj.pos};
+          return {title: obj.title, class: obj.class , id: id, inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
         }
         
       },
