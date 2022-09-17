@@ -1,7 +1,7 @@
 <header class = "w-full" [ngClass] = "{'hidden': !showHeader}" [style.height.%] = 'height'>
     <div class = "header-bar flex h-full w-full py-0.5" [ngClass] = "{'flex-row':width > breakpoint,'flex-col':width<=breakpoint}">
         <div class = "flex flex-row justify-between" [ngClass] = "{'w-12':width > breakpoint,'w-full':width<=breakpoint}">
-            <div class = "h-full w-12 cursor-pointer">
+            <div (click)="moveTo('home')" class = "h-full w-12 cursor-pointer">
                 <img src="assets/images/logo.png" alt="logo" class=" h-full w-full">
             </div>
             <div (click) = "showOptions = !showOptions" class = "h-full w-12 flex items-center cursor-pointer hover:text-white" *ngIf = "width <= breakpoint">
@@ -27,7 +27,15 @@
             Admin
         </div>
         <div *ngIf = "(showOptions || width > breakpoint)" class = "header-bar-link z-50" [ngClass] = "{'grow relative ':width>breakpoint,'flex items-center py-1 px-4':width<=breakpoint}">
-            <div class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
+            <div data-toggle="tooltip" title="Notifications" class = "h-full w-10 flex items-center text-center hover:text-white cursor-pointer" [ngClass] = "{'absolute right-20':width>breakpoint}">
+                <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full p-0.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bell fa-2x w-full"></i>
+                </a>
+                <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
+                    <li><a class="dropdown-item text-sm py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer" >Action</a></li>
+                </ul>
+            </div>
+            <div data-toggle="tooltip" [title]="getStatus()" class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full border-2 p-0.5" [ngClass] = "{'online':online(),'offline':!online()}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img [src]="profile" class="h-full rounded-full" alt="">
                 </a>
