@@ -10,7 +10,7 @@ import { entity } from '../../models/general/entity';
 import { throwError } from 'rxjs';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
-
+let playerCount = 0;
 
 scriptTemplate = fs.readFileSync("templates/script.js","utf8");
 
@@ -405,7 +405,7 @@ export class CompilerService {
 
     transpile(input:string) 
     {
-
+        playerCount = 0;
         this.errorLog = "";
         
         this.DSLparser.input = this.scanHelper(input).tokens;
@@ -811,9 +811,20 @@ class parser extends CstParser
                                 this.SUBRULE(this.rGetBoard) 
                             
                         }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetPlayer) 
+                            
+                        }},
                     ])
                     
                 });
+                private rGetPlayer=this.RULE("rGetPlayer", () => {
+                    this.CONSUME(tokensStore.tGetPlayer )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rGetBoard=this.RULE("rGetBoard", () => {
                     this.CONSUME(tokensStore.tGetBoard )
                     this.CONSUME2(tokensStore.tOpenBracket )
@@ -1784,7 +1795,9 @@ function visitPlayer(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
                         //write to add players
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
-                        
+                        //write to get players
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//playerIndexes")), "case \""+token.image+ "\": \n return "+playerCount+"\nbreak\n", jsScript.slice(jsScript.indexOf("//playerIndexes"))].join('');
+                        playerCount++;
                         break; 
 
                         
@@ -2202,11 +2215,43 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                     visitMovePiece(node, place)
                     break;
 
-                    
+                case "rGetPlayer":
+                    visitGetPlayer(node, place)
+                    break;    
             }
         }
     }
 }
+function visitGetPlayer(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "getBoard")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.'+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            else
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),+token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+        }
+        if(node.name)
+        {
+            
+            visitPlayerStatements(node, place);
+        }
+    }
+}
+
 function visitMovePiece(cstOutput:CstNode, place:string)
 {
     

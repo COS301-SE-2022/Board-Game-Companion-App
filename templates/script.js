@@ -1,12 +1,13 @@
 class cards
 {
     name = "";
+    State = null
     constructor(n)
     {
         this.name = n;
     }
     //cardEffect
-
+    
     //cardCondition
     
     async activate()
@@ -32,6 +33,14 @@ class cards
         }
         return false;
     }
+
+    async getPlayer(s)
+    {
+        let i = await indexOfPlayer(s)
+        return this.State.players[i]
+    }
+
+
 }
 //cards
 
@@ -73,6 +82,9 @@ async function movePiece(p, t)
 class game_state
 {
     board = []
+    players = [
+        
+    ]
     constructor()
     {
         //State
@@ -112,8 +124,6 @@ class game_state
 
 
 
-
-
 class player
 {
     State = new game_state();
@@ -128,7 +138,14 @@ class player
 }
 //players
 
-
+async function indexOfPlayer(s)
+{
+    switch(s)
+    {
+        //playerIndexes
+    }
+    return 0
+}
 
 //
 class script
@@ -136,13 +153,17 @@ class script
     State = new game_state();
     players = [
         //add players
-    ];
+    ]
     
-
+    async getPlayer(s)
+    {
+        let i = indexOfPlayer(s)
+        return this.State.players[i]
+    }
 
     async play()
     {
-
+        this.State.players = players
         
         //console.log("script-execution begins");
             
@@ -200,7 +221,7 @@ class script
     async endgame()
     {
         //end_game
-    
+        
     
         return true
     }
