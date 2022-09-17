@@ -27,7 +27,7 @@
             Admin
         </div>
         <div *ngIf = "(showOptions || width > breakpoint)" class = "header-bar-link z-50" [ngClass] = "{'grow relative ':width>breakpoint,'flex items-center py-1 px-4':width<=breakpoint}">
-            <div class="dropdown  h-full w-10 " [ngClass] = "{'absolute right-2':width>breakpoint}">
+            <div class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full border-2 p-0.5" [ngClass] = "{'online':online(),'offline':!online()}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img [src]="profile" class="h-full rounded-full" alt="">
                 </a>
