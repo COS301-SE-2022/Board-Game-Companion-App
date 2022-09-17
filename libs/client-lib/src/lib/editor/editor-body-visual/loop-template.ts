@@ -5,30 +5,30 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
     styleUrls:['./editor-body-visual.component.scss'],
     template: `
         <div id = "doArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'doWhile'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
         </div>
         <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
                 <div id = "content">
-                    <!--For Loop-->
-                    <div *ngIf = "item.title === 'For'" id = "line">
+                      <!--For Loop-->
+                      <div *ngIf = "item.title === 'For'" id = "line">
                         <div class = "pb-1 pt-8 pl-4 text-left">
-                        <label>
-                            Start
-                        </label>
-                        <input class = "fInput ml-3">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label *ngIf = "item.title === 'For'">
-                            End 
-                        </label>
-                        <input class = "fInput ml-5">
-                        </div>
-                        <div class = "py-1 pl-4 text-left">
-                        <label>
-                            By
-                        </label>
-                        <input class = "fInput ml-7">
+                            <label>
+                                Start
+                            </label>
+                            <input class = "fInput ml-3" [value]="item.inputs[0]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label *ngIf = "item.title === 'For'">
+                                End 
+                            </label>
+                            <input class = "fInput ml-5" [value]="item.inputs[1]">
+                            </div>
+                            <div class = "py-1 pl-4 text-left">
+                            <label>
+                                By
+                            </label>
+                            <input class = "fInput ml-7" [value]="item.inputs[2]">
                         </div>
                     </div>
                     <!--Return-->
@@ -36,26 +36,34 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <!--Title displayed for certain visuals-->
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->
-                    <input *ngIf = "item.title === 'Create'">
+                    <input *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
                     <!--List of variables create-->
                     <select *ngIf = "item.title === 'Set'">
                         <option>
+                        </option>
+                        <option *ngFor="let vars of Variables">
+                            {{vars.name}}
                         </option>
                     </select>
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
                     </div>
-                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'">
-                    <!--List of pre-made methods-->
-                    <select *ngIf = "item.title === 'Call'">
+                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
+                   <!--List of pre-made methods-->
+                   <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-1">
                         <option>
+                            {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let method of methods">
                           {{method.name}}
                         </option>
                     </select>
+                    <!--Method Inputs-->
+                    <div *ngIf = "item.title === 'Call'">
+                        <input class = "mt-1" *ngFor="let argument of [].constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
+                    </div>
                     <!--Output and Input-->
-                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'"></textarea>
+                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
                     <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
                     <div>
@@ -72,14 +80,14 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
             </div>
         </div>
         <div class="container"  id = "loopCodeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
         </div>
         <div class = "tfSection" *ngIf = "item.title === 'If'">
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
             <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
         </div>
     `
@@ -87,12 +95,21 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
 
 export class LoopTemplateComponent{
     @Input() index = 0
-    @Input() dest = [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}] 
-    @Input() item = {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
+    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
+    @Input() item = {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
     @Input() dests = [this.dest]
+    @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2}
       ]
+    
+    arguments = []
+    methodInputs(event: any)
+    {
+        const m = this.methods.find(obj => obj.name === event.target.value)
+        if(m != null)
+        this.arguments.length = m?.arguments
+    }
 }
