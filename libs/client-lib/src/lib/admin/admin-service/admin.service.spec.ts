@@ -52,10 +52,6 @@ describe('AdminService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(()=>{
-    httpTestingController.verify();
-  });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
@@ -63,10 +59,10 @@ describe('AdminService', () => {
   it('should GET scripts from service',()=>{
     service.getScripts().subscribe(data=>{
       expect(data).not.toBe(null);
-      expect(data).toBe(automataScript);
+      expect(data).toBe(mockAutomata);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retrieve-by-id');
+    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retreive-all');
     expect(req.request.method).toBe('GET');
-    req.flush(automataScript);
+    req.flush(mockAutomata);
   });
 });
