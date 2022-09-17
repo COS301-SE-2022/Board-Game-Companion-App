@@ -46,9 +46,9 @@ describe('BoardGameDetailsComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     scriptService = TestBed.inject(ScriptService);
     httpTestingController = TestBed.inject(HttpTestingController);
-    const spyRoute = jest.spyOn(route.snapshot.paramMap, 'get');
+    const spyRoute = jest.spyOn(router,'getCurrentNavigation');
     // spyRoute.and.returnValue('3454');
-    spyRoute.mockReturnValue('3454');
+    spyRoute.mockReturnValue({extras: {state: {value: 3454}}} as any);
     component = new BoardGameDetailsComponent(Bggservice, route, router, scriptService);
     component.ngOnInit();
     const req = httpTestingController.expectOne('https://boardgamegeek.com/xmlapi2/thing?id=3454');

@@ -1,9 +1,3 @@
-// describe('Test editor',()=>{
-//   it('testing testing',()=>{
-//     expect("1").toBe("1");
-//   })
-// })
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModelsComponent } from './models.component';
@@ -15,6 +9,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
+
 describe('ModelsComponent', () => {
   let component: ModelsComponent;
   let fixture: ComponentFixture<ModelsComponent>;
