@@ -82,6 +82,7 @@ export const tIntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",patt
 export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*")|('[A-Za-z0-9 ]*')/ }));
 export const tFalse=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
 export const tTrue=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
+export const tNull=(chevrotain.createToken({name:"null",pattern:/null/,longer_alt:tUserDefinedIdentifier}));
 
 
 
@@ -212,6 +213,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     
     tFalse,
     tTrue,
+    tNull,
     tInputGroup,
 
     tInput,

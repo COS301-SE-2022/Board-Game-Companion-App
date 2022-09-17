@@ -1202,12 +1202,6 @@ class parser extends CstParser
                             { 
                                 ALT: () =>{ 
                                 this.CONSUME(tokensStore.tPiece)
-                            }},
-                            { 
-                                ALT: () =>{ 
-                                this.CONSUME(tokensStore.tOpenSquareBracket)
-                                this.SUBRULE(this.Array)
-                                this.CONSUME(tokensStore.tClosedSquareBracket)
                             }}
                     ])
                 });
@@ -1507,10 +1501,27 @@ class parser extends CstParser
                 { 
                     ALT: () =>{ 
                         this.CONSUME(tokensStore.tIntegerLiteral)
+                }},
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(tokensStore.tNull)
+                }},
+                { 
+                    ALT: () =>{ 
+                        this.CONSUME(tokensStore.tOpenSquareBracket)
+                        this.SUBRULE(this.Const)
+                        this.SUBRULE(this.rMoreElements)
+                        this.CONSUME(tokensStore.tClosedSquareBracket)
                 }}
         ])
         });
-
+        private rMoreElements=this.RULE("rMoreElements", () => {
+            this.OPTION(() => {   
+                this.CONSUME(tokensStore.tComma)
+                this.SUBRULE(this.Const)
+                this.SUBRULE(this.rMoreElements)
+            })
+        })
         
         private nVariable=this.RULE("nVariable", () => {
             this.OPTION(() => {                 
