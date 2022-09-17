@@ -36,6 +36,8 @@ export const tGetTileByID =(chevrotain.createToken({name:"getTileByID",pattern:/
 export const tGetTilesByType =(chevrotain.createToken({name:"getTilesByType",pattern:/getTilesByType/,longer_alt:tUserDefinedIdentifier}));
 export const tGenerateChoices =(chevrotain.createToken({name:"generateChoices",pattern:/generateChoices/,longer_alt:tUserDefinedIdentifier}));
 export const tChooseAction =(chevrotain.createToken({name:"chooseAction",pattern:/chooseAction/,longer_alt:tUserDefinedIdentifier}));
+export const tActivate =(chevrotain.createToken({name:"activate",pattern:/activate/,longer_alt:tUserDefinedIdentifier}));
+
 export const tIsActionLegal =(chevrotain.createToken({name:"isActionLegal",pattern:/isActionLegal/,longer_alt:tUserDefinedIdentifier}));
 export const tToInt =(chevrotain.createToken({name:"toInt",pattern:/toInt/,longer_alt:tUserDefinedIdentifier}));
 
@@ -167,6 +169,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tGetTilesByType,
     tGenerateChoices,
     tChooseAction,
+    tActivate,
     tIsActionLegal,
     tEndgame,
     tReturn,

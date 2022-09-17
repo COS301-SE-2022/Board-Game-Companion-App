@@ -1051,8 +1051,36 @@ class parser extends CstParser
                                 ALT: () =>{
                                     this.SUBRULE(this.rMovePiece )
                             }},
+                            {
+                                ALT: () =>{
+                                    this.SUBRULE(this.rActivate )
+                            }},
                         ])
                  })
+                 private rActivate=this.RULE("rActivate", () => {
+                    
+                    this.CONSUME(tokensStore.tActivate)
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.rVar)
+                    this.OPTION(() => {
+                        this.CONSUME(tokensStore.tComma )
+                        this.SUBRULE(this.Value)
+                    })
+                    this.CONSUME(tokensStore.tCloseBracket )
+                
+             })
+             private rVar=this.RULE("rVar", () => {
+                this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                this.OPTION2(() => {
+                    this.SUBRULE(this.Field)
+                })
+                this.OPTION3(() => {
+                    this.CONSUME(tokensStore.tDot)
+                    this.SUBRULE(this.nVariable)
+                    
+                })
+             })
+
                  private rToInt=this.RULE("rToInt", () => {
                     
                         this.CONSUME(tokensStore.tToInt)
@@ -2217,10 +2245,45 @@ function visitMethodCall(cstOutput:CstNode, place:string)
 
                 case "rGetPlayer":
                     visitGetPlayer(node, place)
-                    break;    
+                    break;   
+                    
+                case "rActivate":
+                    visitActivate(node, place)
+                    break;  
             }
         }
     }
+}
+
+function visitActivate(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        
+        if(node.name)
+        {
+            if(node.name == "rVar")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' await ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+                visitPlayerStatements(node, place)
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'.activate(', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            if(node.name == "Value")
+            {
+                
+                visitPlayerStatements(node, place)
+                
+            }
+        }
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+
 }
 function visitGetPlayer(cstOutput:CstNode, place:string)
 {
@@ -2308,24 +2371,22 @@ function visitRCreateCard(cstOutput:CstNode, place:string)
     
     
     let k: keyof typeof cstOutput.children;  // visit all children
+
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new cards(', jsScript.slice(jsScript.indexOf(place))].join('');
+        
+
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
-        const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
-        if(token.image)
-        {
-            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
-        
-        }
         if(node.name)
         {
-            visitRCreateCard(node, place);
+            visitPlayerStatements(node, place);
         }
 
     }
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n', jsScript.slice(jsScript.indexOf(place))].join('');
-        
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+         
 }
 function visitRCreateBoard(cstOutput:CstNode, place:string)
 {
