@@ -4,7 +4,7 @@ import { AlertDocument } from '../../schemas/alert.schema';
 import { user } from '../../models/general/user';
 
 
-@Controller('comments')
+@Controller('alerts')
 export class ApiAlertController {
     constructor(private readonly alertService:AlertService){}    
     
@@ -14,7 +14,7 @@ export class ApiAlertController {
     }
 
     @Put('mark-as-read')
-    async markAsRead(id:string):Promise<AlertDocument>{
+    async markAsRead(@Body('id')id:string):Promise<AlertDocument>{
         return this.alertService.markAsRead(id);
     }
 }
