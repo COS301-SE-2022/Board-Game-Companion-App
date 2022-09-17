@@ -80,6 +80,6 @@ import { ApiFileManagerController } from './controllers/file-manager/file-manage
     AutomataService,
     MongoDbStorageService
   ],
-  exports: [],
+  exports: [RatingService, MongooseModule],
 })
 export class ApiLibModule {}
