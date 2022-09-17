@@ -79,7 +79,6 @@
     "@nestjs/mongoose": "^9.0.3",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/serve-static": "^2.2.2",
-    "@ng-bootstrap/ng-bootstrap": "^12.1.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tensorflow/tfjs": "^3.19.0",
     "ace-builds": "^1.6.0",

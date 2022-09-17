@@ -8,10 +8,52 @@
 //     height: 5em;
 // }
 
+.menu-full-width::after{
+    position: absolute;
+    top: 0;
+    left: 75%;
+    margin-left: -10px;
+	margin-top:-10px;
+    z-index:1;
+    border-bottom: solid 10px white;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent;
+    width: 0;
+    height: 0;
+    content: '';
+}
+
+.menu-small-width::after{
+    position: absolute;
+    top: 0;
+    left: 25%;
+    margin-left: -10px;
+	margin-top:-10px;
+    z-index:1;
+    border-bottom: solid 10px white;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent;
+    width: 0;
+    height: 0;
+    content: '';
+}
+
 header{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
     width: 100%;
+}
+
+.header-bar-link{
+    background-color: $Pcolour-2;
+}
+
+.online{
+    border-color: $Pcolour-3;
+}
+
+.offline{
+    border-color: red;
 }
 
 #menu{
@@ -22,13 +64,13 @@ header{
     background-color:$Pcolour-2 ;
 }
 
-ul{
-    background-color:$Pcolour-2 ;
-}
+// ul{
+//     background-color:$Pcolour-2 ;
+// }
 
-li{
-    background-color:$Pcolour-2 ;
-}
+// li{
+//     background-color:$Pcolour-2 ;
+// }
 
 // #login{
 //     margin-left: auto;
@@ -60,10 +102,10 @@ li{
     color: $Pcolour-2;
 }
 
-li:hover{
-    background-color: $Pcolour-3;
-    color: $Pcolour-2;
-}
+// li:hover{
+//     background-color: $Pcolour-3;
+//     color: $Pcolour-2;
+// }
 
 
 // a{
@@ -71,9 +113,9 @@ li:hover{
     
 // }
 
-a:hover{
-    color: $Pcolour-2;
-}
+// a:hover{
+//     color: $Pcolour-2;
+// }
 
 
 
@@ -140,33 +182,33 @@ input:focus{
     font-size: 14px;
 }
 
-@media (max-width: 639px){
-    #Collections{
-        padding-left: 21.5px;
-        padding-right: 21.5px;
-    }
+// @media (max-width: 639px){
+//     #Collections{
+//         padding-left: 21.5px;
+//         padding-right: 21.5px;
+//     }
 
-    #BoardGames{
-        padding: 13px;
-    }
+//     #BoardGames{
+//         padding: 13px;
+//     }
 
-    #Search{
-        padding-left:38px;
-        padding-right:37.5px
-    }
+//     #Search{
+//         padding-left:38px;
+//         padding-right:37.5px
+//     }
 
-    #Scripts{
-        height:100%;
-        width:100%;
-    }
+//     #Scripts{
+//         height:100%;
+//         width:100%;
+//     }
 
-    #GameSession{
-        padding-right:7.5px;
-        padding-left:7.5px;
-    }
+//     #GameSession{
+//         padding-right:7.5px;
+//         padding-left:7.5px;
+//     }
 
-    .a{
-        text-align: center;
-    }
-}
+//     .a{
+//         text-align: center;
+//     }
+// }
 

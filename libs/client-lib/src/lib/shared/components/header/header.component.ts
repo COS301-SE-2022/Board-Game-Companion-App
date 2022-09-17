@@ -1,8 +1,8 @@
-import { Component, ElementRef, Input, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
-
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 
 
 @Component({
@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   // @ViewChild('menu', {static: false, read: ElementRef}) 
   // burgerbtn: any; //similar to getElementById
   ShowMenu = false; 
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
   UserDetails: any | undefined;
   log = "login";
   loggedIn = false;
@@ -21,16 +22,30 @@ export class HeaderComponent implements OnInit {
   searchValue = "";
   showHeader = true;
   @Input()height = 0;
-  
+  focus = "";
+  width = window.innerWidth;
+  breakpoint = 600;
+  showOptions = false;
   differ: KeyValueDiffer<string, any>;
-  constructor(private readonly router:Router, private readonly gapi: GoogleAuthService, private differs: KeyValueDiffers) {
+  profile = "assets/images/no-profile.png"
+
+  constructor(private readonly router:Router,
+              private readonly gapi: GoogleAuthService, 
+              private differs: KeyValueDiffers,
+              private networkService: OnlineStatusService,) {
            
+              this.networkService.status.subscribe((status: OnlineStatusType) =>{
+                this.status = status;
+              }); 
+
     gapi.UserSubject.subscribe({
       next:(value)=>{
         this.UserDetails = value;
+        this.profile = value.info.picture;
         sessionStorage.setItem("name",value.info.name);
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
+        
       },
       error:(err)=>{     
         console.log(err);
@@ -39,8 +54,21 @@ export class HeaderComponent implements OnInit {
     this.differ = this.differs.find({}).create();
   }
 
+  online(): boolean{
+    return this.status === OnlineStatusType.ONLINE;
+  }
+
+  getStatus(): string{
+    if(this.online()){
+      if(this.gapi.isLoggedIn()){
+        return "online";
+      }else
+        return "signed out"
+    }else
+      return "offline";
+  }
+
   ngOnInit(): void {
-    
     if(this.gapi.isLoggedIn())
     {
       
@@ -67,6 +95,12 @@ export class HeaderComponent implements OnInit {
     })
   }
 
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    this.width = window.innerWidth;
+  }
+
+
   toggleMenu():void{
     console.log('toggle function called');
     // this.burgerbtn.nativeElement.classList.toggle('translate-x-0');
@@ -89,6 +123,8 @@ export class HeaderComponent implements OnInit {
   }
 
   moveTo(path:string):void{
+    this.focus = path;
+
     if(path == "collection")
     {
       this.router.navigate(['/home']);
@@ -103,6 +139,10 @@ export class HeaderComponent implements OnInit {
       {
         this.loggedIn = false;
         this.gapi.signOut();
+        sessionStorage.removeItem("name");
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("image");
+        this.profile = "assets/images/no-profile.png";
         this.router.navigate(['/home']);
       }
     }
