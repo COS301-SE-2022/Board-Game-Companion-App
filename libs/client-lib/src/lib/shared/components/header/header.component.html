@@ -31,15 +31,20 @@
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full p-0.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-bell fa-2x w-full"></i>
                 </a>
-                <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
-                    <li><a class="dropdown-item text-sm py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer" >Action</a></li>
+                <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
+                    <li class = "w-full p-0.5">
+                        <div class="border dropdown-item text-sm py-1 px-2 font-normal block w-full whitespace-nowrap text-gray-700 font-medium cursor-pointer" >
+                            <h1 class = "w-full whitespace-normal font-medium mb-1">Subject</h1>
+                            <p class = "w-full whitespace-normal text-xs text-gray-400">This is the true message that has been sent</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div data-toggle="tooltip" [title]="getStatus()" class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full border-2 p-0.5" [ngClass] = "{'online':online(),'offline':!online()}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img [src]="profile" class="h-full rounded-full" alt="">
                 </a>
-                <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width':width>breakpoint,'menu-small-width':width<=breakpoint}">
+                <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width':width>breakpoint,'menu-small-width':width<=breakpoint}">
                     <li><a id = "l" class="dropdown-item text-sm py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer" (click)="moveTo('login')">{{log}}</a></li>
                 </ul>
             </div>
