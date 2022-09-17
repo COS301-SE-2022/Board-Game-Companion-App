@@ -29,10 +29,14 @@ export class AutomataService {
     }
 
     async download(id:string,owner:user):Promise<DownloadScript>{
-        const script = await this.automataModel.findById(id);
+        let script = await this.automataModel.findById(id);
 
-        if(script === null || script === undefined)
-            return null;
+        if(script === null || script === undefined){
+           script = await this.oldModel.findById(id);
+           
+           if(script === null || script === undefined)
+               return null;
+        }
 
         const dto:downloadScriptDto = {
             link: script._id,
@@ -104,8 +108,15 @@ export class AutomataService {
     }
 
     async addComment(scriptId:string,commentId:string): Promise<void>{
-        const script:AutomataScriptDocument = await this.automataModel.findById(scriptId);
+        let script = await this.automataModel.findById(scriptId);
         
+        if(script === null || script === undefined){
+            script = await this.oldModel.findById(scriptId);
+            
+            if(script === null || script === undefined)
+                return;
+        }
+
         script.comments.unshift(commentId);
         
         script.save();
@@ -151,10 +162,8 @@ export class AutomataService {
 
     async checkForUpdatesForOne(id:string):Promise<string>{
         const temp = await this.automataModel.find({});
-        console.log(id);
         for(let count = 0; count < temp.length; count++){
             if(temp[count].previous.includes(id)){
-                console.log(temp[count]._id)
                 return temp[count]._id;
             }
         }

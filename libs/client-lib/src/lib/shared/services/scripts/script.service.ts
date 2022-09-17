@@ -168,7 +168,7 @@ export class ScriptService {
   }
 
   updateDownloadedScript(ids:update):Observable<downloadScript>{
-    return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",ids);
+    return this.httpClient.put<downloadScript>(this.api + "download-scripts/update",{ids:ids});
   }
 
   getOldVersions(idList:string[]):Observable<oldScript[]>{

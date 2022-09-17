@@ -86,9 +86,9 @@ export class MyScriptService {
         if(script === null || script === undefined)
             return;
 
-        fs.unlinkSync(script.source.key);
-        fs.unlinkSync(script.build.key);
-        fs.unlinkSync(script.icon.key);
+        this.storageService.remove(script.source.key);
+        this.storageService.remove(script.build.key);
+        this.storageService.remove(script.icon.key);
 
         const automata = await this.automataModel.findOne({"link":script._id});
         if(automata === null || automata === undefined)
@@ -165,8 +165,8 @@ export class MyScriptService {
         return result;
     }
 
-    async getAllMyScript(owner:user):Promise<MyScript[]>{
-        return this.myScriptModel.find({"owner.name":owner.name,"owner.email":owner.email});
+    async getAllMyScript(author:user):Promise<MyScript[]>{
+        return this.myScriptModel.find({"author.name":author.name,"author.email":author.email});
     }
 
     async checkName(name:string,user:user):Promise<boolean>{
@@ -194,7 +194,9 @@ export class MyScriptService {
             downloads: script.downloads,
             size: script.size,
             comments: script.comments,
+            rating: script.rating,
             description: script.description,
+            previous: script.previous,
             version: {
                 major: script.version.major,
                 minor: script.version.minor,
@@ -207,7 +209,7 @@ export class MyScriptService {
             source: {name: "", key: "",location: ""},
             build: {name: "", key: "", location: ""},
             icon: {name: "", key: "", location: ""},
-            iconSize: script.iconSize
+            iconSize: script.iconSize,
         };
 
         const createdScript = new this.oldScriptModel(dto);
@@ -244,9 +246,15 @@ export class MyScriptService {
                 result.models.push(modelCopy);
         }
 
-        this.automataService.remove(script._id);
+        const downloads = await this.downloadsModel.find({"link":script._id});
+        console.log(downloads.length);
 
-        this.downloadsModel.updateMany({"link":script._id},{"link":result._id});
+        downloads.forEach((value) => {
+            value.link = result._id;
+            value.save();
+        });
+
+        this.automataService.remove(script._id);
         
         await result.save();
 
@@ -273,6 +281,7 @@ export class MyScriptService {
             author: script.author,
             boardgame: script.boardgame,
             comments: [],
+            rating: 0,
             dateReleased: new Date(),
             description: script.description,
             downloads: 0,

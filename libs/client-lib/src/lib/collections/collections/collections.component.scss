@@ -7,10 +7,66 @@
     margin-top: 5em;
     flex-direction: column;
 }
+
 h1{
     font-size: xxx-large;
     text-decoration: underline;
     color: $Pcolour-2;
+}
+
+.new-collection{
+    background-color: $Pcolour-2;
+}
+
+.search-btn{
+    background-color: $Pcolour-3;
+}
+
+.search-input{
+    border:2px solid $Pcolour-3
+}
+
+.back{
+    transform: rotate(90);
+}
+
+.collection-name:hover{
+    opacity: 0.7;
+}
+
+.board-game-black-screen{
+    display: none;
+    background-color:rgba(0,0,0,0.5)
+}
+  
+.child{
+    display: none;
+}
+  
+.parent:hover .child{
+    display: block
+}
+
+.board-game:hover .board-game-black-screen{
+display: block
+}
+
+#board-games::-webkit-scrollbar {
+    width: 5px;
+}
+  
+#board-games::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+#board-games::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+#board-games::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 // .imgSpan
@@ -94,6 +150,7 @@ input:focus{
 #remove{
     background-color: $Pcolour-4;
 }
+
 i{
     transform: scale(1.3);
     color: white;

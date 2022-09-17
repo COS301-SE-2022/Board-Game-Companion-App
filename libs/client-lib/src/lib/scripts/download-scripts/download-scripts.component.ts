@@ -66,41 +66,76 @@ export class DownloadScriptsComponent implements OnInit {
 
         this.scriptService.updateDownloadedScript(val).subscribe({
           next:(response:downloadScript) => {
-            this.storageService.remove("download-networks","_id",value._id).then(()=>{
-              value.models.forEach((id:string) => {
-                this.storageService.remove("networks","_id",id).catch((reason)=> console.error(reason));
-              });
-  
-              this.modelsService.getModelsByIdOnly(response.models).subscribe({
-                next:(networks:any) => {
-                  networks.forEach((network:any) => {
-                    this.storageService.insert("download-networks",network).then(async(res:string) => {
-                      const imodel = await tf.loadLayersModel(network.model.location);
-                      await imodel.save(`indexeddb://${network.name}`);
-                    }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
-                  })
+            if(response === null || response === undefined){
+              this.updating = this.updating.filter((id:string) => id != value._id);
+              this.notifications.add({type:"warning",message:"Could not find new version on the server."});
+              return;
+            }
 
-                  this.storageService.insert("download-scripts",response).then((res:string) =>{
+            this.storageService.getAll("download-scripts").then((values:downloadScript[])=>{
+              this.storageService.clear("download-scripts").then(()=>{
+                this.storageService.getAll("download-networks").then((models:any)=>{
+                  this.storageService.clear("download-networks").then(()=>{
+                    values = values.filter((download:downloadScript) => download._id !== value._id);
+                    models = models.filter((model:any) => !value.models.includes(model._id));
+                    values.push(response);
+
+                    this.modelsService.getModelsByIdOnly(response.models).subscribe({
+                      next:(networks:any)=>{  
+                        networks.forEach((network:any) => {
+                          this.storageService.insert("download-networks",network).then(async(res:string) => {
+                            const imodel = await tf.loadLayersModel(network.model.location);
+                            await imodel.save(`indexeddb://${network.name}`);
+                          }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                        })
+                      },
+                      error:()=>{
+                        this.updating = this.updating.filter((id:string) => id != value._id);
+                        this.notifications.add({type:"warning",message:`Failed to update ${value.name} locally due to models`});
+                      }
+                    })
+
+                    values.forEach((script:downloadScript) => {
+                      this.storageService.insert("download-scripts",script);
+                    })
+
+                    models.forEach((model:any) => {
+                      this.storageService.insert("download-scripts",model);
+                    })
+                    
                     this.updating = this.updating.filter((id:string) => id != value._id);
+                    this.scripts = this.scripts.filter((script:downloadScript) => script._id !== value._id);
+                    const temp = this.filter;
+                    this.filter = [];
+                    temp.forEach((script:downloadScript) => {
+                      if(script._id === value._id)
+                        this.filter.push(response);
+                      else
+                        this.filter.push(script);
+                    })
+
+                    this.scripts.push(response)
+                    this.updatesRequired = this.updatesRequired.filter((id:string) => id != value._id);
+
                     this.removeUpdate(value._id);
                     this.notifications.add({type:'success',message:`Successfully updated ${response.name}`});
-                  }).catch(() => {
-                    this.updating = this.updating.filter((id:string) => id != value._id);
-                    this.removeUpdate(value._id);
-                    this.notifications.add({type:'danger',message:`Something went wrong when updating ${value.name} locally`})
+                    
+                  }).catch(()=>{
+                    this.notifications.add({type:"warning",message:`Failed to update ${value.name} locally.`});
+                    this.updating = this.updating.filter((id:string) => id != value._id);                      
                   })
-                },
-                error:(err) =>{
-                  this.updating = this.updating.filter((id:string) => id != value._id)
-                  this.removeUpdate(value._id);
-                  this.notifications.add({type:"danger",message:`Failed to retrieve the models of ${value.name}`})
-                }
+                }).catch(()=>{
+                  this.notifications.add({type:"warning",message:`Failed to update ${value.name} locally.`});
+                  this.updating = this.updating.filter((id:string) => id != value._id);                
+                })
+              }).catch(() => {
+                this.notifications.add({type:"warning",message:`Failed to update ${value.name} locally.`});
+                this.updating = this.updating.filter((id:string) => id != value._id);                
               })
             }).catch(()=>{
-              this.updating = this.updating.filter((id:string) => id != value._id)
-              this.removeUpdate(value._id);
-              this.notifications.add({type:"danger",message:`Failed to update local version of ${value.name}`})
-            });
+              this.notifications.add({type:"warning",message:`Failed to update ${value.name} locally.`});
+              this.updating = this.updating.filter((id:string) => id != value._id);
+            })
           },
           error:() => {
             this.updating = this.updating.filter((id:string) => id != value._id)
@@ -179,8 +214,7 @@ export class DownloadScriptsComponent implements OnInit {
     this.scripts.forEach((value:downloadScript) => {
       this.scriptService.checkForUpdatesForOne(value.link).subscribe({
         next:(response: string) => {
-          console.log(response);
-          if(response !== ""){
+          if(response !== "" && response !== null){
             this.updates.push({oldId:value._id,newId:response});
             this.updatesRequired.push(value._id);
           } 

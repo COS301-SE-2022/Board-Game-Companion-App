@@ -14,9 +14,6 @@ export class Collection{
     name: string;
 
     @Prop({required: true})
-    description: string;
-
-    @Prop({required: true})
     boardgames: string[]
 }
 

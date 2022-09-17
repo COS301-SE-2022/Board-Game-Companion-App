@@ -53,7 +53,7 @@ export class CommentService {
 
     async like(comment:string,user:user,like:boolean):Promise<Like>{
 
-        let value:LikeDocument = await this.likeModel.findOne({comment:comment,user:user});
+        let value:LikeDocument = await this.likeModel.findOne({"comment":comment,"user.name":user.name,"user.email":user.email});
 
         if(value === null){
             const createLike = new this.likeModel({
@@ -72,7 +72,7 @@ export class CommentService {
     }
 
     async getLike(comment:string,user:user):Promise<Like>{
-        return this.likeModel.findOne({comment:comment,user:user});
+        return this.likeModel.findOne({"comment":comment,"user.name":user.name,"user.email":user.email});
     }
 
     async removeLike(id:string):Promise<void>{

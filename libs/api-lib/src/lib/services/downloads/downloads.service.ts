@@ -51,9 +51,12 @@ export class DownloadsService {
         oldScript.version.minor = newScript.version.minor;
         oldScript.version.patch = newScript.version.patch;
         oldScript.size = newScript.size;
-
-        this.storageService.copy(newScript.build.key);
+        oldScript.link = newScript._id;
         
+        const buildCopy = await this.storageService.copy(newScript.build.key);
+        oldScript.build.key = buildCopy.key;
+        oldScript.build.location = buildCopy.location;
+
         for(let count = 0; count < oldScript.models.length; count++){
             const value = oldScript.models[count];
             const model = await this.modelService.removeById(value);
@@ -73,6 +76,10 @@ export class DownloadsService {
                 oldScript.models.push(modelCopy);
         }
 
+        newScript.downloads++;
+        newScript.lastDownload = new Date();
+
+        await newScript.save();
         await oldScript.save();
 
         return oldScript;

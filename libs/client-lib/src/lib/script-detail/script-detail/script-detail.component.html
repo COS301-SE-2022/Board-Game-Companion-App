@@ -83,7 +83,7 @@
     </div>
 
     <div id="downrate" class = "mb-4">
-      <div id="download" class="script-download mb-4 bg-white text-center">
+      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
         <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
@@ -99,6 +99,22 @@
         </button>
       </div>
 
+
+      <div *ngIf = "updateScript !== ''" id="update" class="script-download mb-4 bg-white text-center">
+        <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Update</b></div>
+        <button id="downloadbtn" *ngIf="!updating" (click)="update()" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          <i id="downIcon" class="fas fa-wrench fa-3x" data-toggle="tooltip" title="update"></i>
+          <p id="down" class="text-lg"><b>UPDATE</b></p>
+        </button>
+
+
+        <button *ngIf="updating" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          <i id="downIcon" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="updating"></i>
+          <p id="down" class="text-lg"><b>UPDATING</b></p>
+        </button>
+      </div>
 
       <div id="rate" class="script-rate text-center mb-4">
         <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
@@ -132,7 +148,7 @@
 
       <div id = "download" class="script-download mb-4 bg-white text-center">
         <div class = "script-download-header p-2 text-xl mb-2 text-left"><b>Old Versions</b></div>
-        <div class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium" *ngFor = "let script of oldies">
+        <div (click) = "showOldieInfo(script)" class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium cursor-pointer" *ngFor = "let script of oldies">
           {{'v' + script.version.major + '.' + script.version.minor + '.' + script.version.patch}} 
         </div>
       </div>

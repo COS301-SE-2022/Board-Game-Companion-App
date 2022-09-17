@@ -29,7 +29,10 @@ export class ScriptDetailComponent implements OnInit {
   rate:rating = {_id:"",user:{name:"",email:""},script:"",value:0};
   averageRating = 0;
   voterCount = 0;
+  updateScript = "";
+  downloadRequired = true;
   downloading = false;
+  updating = false;
   alreadyReported = false;
   oldies:oldScript[] = []
   status: OnlineStatusType = OnlineStatusType.ONLINE;
@@ -39,7 +42,6 @@ export class ScriptDetailComponent implements OnInit {
     private readonly boardGameService:BggSearchService,
     private readonly commentService:CommentService,
     private readonly router:Router,
-    private route: ActivatedRoute,
     private readonly gapi: GoogleAuthService,
     private readonly reportService:ReportService,
     private networkService: OnlineStatusService,
@@ -63,6 +65,7 @@ export class ScriptDetailComponent implements OnInit {
       this.getVoterCount();
       this.getAlreadyReported();
       this.getOldies();
+      this.checkForUpdates();
     } 
   }
 
@@ -74,6 +77,108 @@ export class ScriptDetailComponent implements OnInit {
       error: (err) => {
         this.notifications.add({type:"danger",message:`Failed to retrieve older versions of ${this.current.name}`})
       }
+    })
+  }
+
+  checkForUpdates(): void{
+
+    this.scriptService.getDownloadScripts().subscribe({
+      next:(value: downloadScript[]) => {
+        for(let count = 0; count < value.length; count++){
+          if(this.current.previous.includes(value[count].link)){
+            this.updateScript = value[count]._id;
+            break;
+          }
+          if(value[count].link === this.current._id)
+            this.downloadRequired = false;
+        }
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:"Failed to check for updates."});
+      }
+    })
+  }
+
+  update(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to update ${this.current.name}`});
+      return;
+    }
+    
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:`You must be logged In to update ${this.current.name}`});
+      return;
+    }
+
+    if(this.updating)
+      return;
+
+    this.updating = true;
+    this.scriptService.updateDownloadedScript({oldId:this.updateScript,newId:this.current._id}).subscribe({
+      next:(response:downloadScript) => {
+        if(response === null || response === undefined){
+          this.updating = false;
+          this.notifications.add({type:"warning",message:"Could not find new version on the server."});
+          return;
+        }
+
+        this.storageService.getAll("download-scripts").then((values:downloadScript[])=>{
+          this.storageService.clear("download-scripts").then(()=>{
+            this.storageService.getAll("download-networks").then((models:any)=>{
+              this.storageService.clear("download-networks").then(()=>{
+                values = values.filter((download:downloadScript) => download._id !== this.current._id);
+                models = models.filter((model:any) => !this.current.models.includes(model._id));
+                values.push(response);
+
+                this.modelsService.getModelsByIdOnly(response.models).subscribe({
+                  next:(networks:any)=>{  
+                    networks.forEach((network:any) => {
+                      this.storageService.insert("download-networks",network).then(async(res:string) => {
+                        const imodel = await tf.loadLayersModel(network.model.location);
+                        await imodel.save(`indexeddb://${network.name}`);
+                      }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                    })
+                  },
+                  error:()=>{
+                    this.updating = false;
+                    this.notifications.add({type:"warning",message:`Failed to update ${this.current.name} locally due to models`});
+                  }
+                })
+
+                values.forEach((script:downloadScript) => {
+                  this.storageService.insert("download-scripts",script);
+                })
+
+                models.forEach((model:any) => {
+                  this.storageService.insert("download-scripts",model);
+                })
+                
+                this.updating = false;
+                this.downloadRequired = false;
+                this.updateScript = "";
+                this.notifications.add({type:'success',message:`Successfully updated ${response.name}`});
+                
+              }).catch(()=>{
+                this.notifications.add({type:"warning",message:`Failed to update ${this.current.name} locally.`});
+                this.updating = false;                      
+              })
+            }).catch(()=>{
+              this.notifications.add({type:"warning",message:`Failed to update ${this.current.name} locally.`});
+              this.updating = false;                
+            })
+          }).catch(() => {
+            this.notifications.add({type:"warning",message:`Failed to update ${this.current.name} locally.`});
+            this.updating = false;               
+          })
+        }).catch(()=>{
+          this.notifications.add({type:"warning",message:`Failed to update ${this.current.name} locally.`});
+          this.updating = false;
+        })
+      },
+      error:() => {
+        this.updating = false;
+        this.notifications.add({type:"danger",message: `Something went wrong when updating ${this.current.name}.Try again later and if the error persists, you can contact the administrator`})
+      }   
     })
   }
 
@@ -189,8 +294,10 @@ export class ScriptDetailComponent implements OnInit {
   getRating(): void{
     this.scriptService.getRating({name:sessionStorage.getItem("name") as string,email:sessionStorage.getItem("email") as string},this.current._id).subscribe({
       next:(val)=>{
-        if(val !== null)
+        if(val !== null && val !== undefined)
           this.rate = val;
+
+        console.log(val);
       },
       error:(err)=>{
         console.log(err);
@@ -272,5 +379,13 @@ export class ScriptDetailComponent implements OnInit {
         console.log("complete")
       }          
     });
+  }
+
+  showOldieInfo(value:oldScript): void{
+    //this.router.navigate(['script-detail'], { state: { value: value } });
+
+    this.current = value as automataScript;
+    document.documentElement.scrollTop = 0;
+    this.ngOnInit();
   }
 }

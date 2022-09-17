@@ -25,6 +25,7 @@ export class BoardGameDetailsComponent implements OnInit {
   artist = "";
   publisher = "";
   showFullDescription = false;
+  showAutomata = false;
   scripts:automataScript[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
@@ -146,5 +147,9 @@ export class BoardGameDetailsComponent implements OnInit {
         this.notifications.add({type:"warning",message:"Failed to load the board game scripts."})
       }
     })
+  }
+
+  showInfo(value:automataScript){
+    this.router.navigate(['script-detail'], { state: { value: value } });
   }
 }

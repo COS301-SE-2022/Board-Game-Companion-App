@@ -77,20 +77,7 @@ export class AddToCollectionComponent implements OnInit {
     this.collectionService.addGameToCollection(this.selected.name,this.gameId).subscribe({
       next:(value:boolean) => {
         if(value){
-          this.storageService.getByIndex("collections","name",this.selected.name).then((response:any)=>{
-            this.storageService.remove("collections","name",this.selected.name).then(()=>{
-              response.boardgames.push(this.gameId);
-              this.storageService.insert("collections",response).then(()=>{
-                this.notifications.add({type:"success",message:`Successfully added board game to ${this.selected.name}`});
-              }).catch(()=>{
-                this.notifications.add({type:"danger",message:`Failed to update ${this.selected.name} locally`});
-              }) 
-            }).catch(()=>{
-              this.notifications.add({type:"danger",message:`Failed to update ${this.selected.name} locally`});
-            })
-          }).catch(()=>{
-            this.notifications.add({type:"danger",message:`Failed to update ${this.selected.name} locally`});
-          })
+          this.notifications.add({type:"success",message:`Successfully added board game to ${this.selected.name}`});
         }else{
           this.notifications.add({type:"danger",message:`Failed to add board game to ${this.selected.name}`});
         }
