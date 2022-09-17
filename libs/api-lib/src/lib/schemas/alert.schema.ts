@@ -11,6 +11,9 @@ export class Alert{
     recepient: user;
 
     @Prop({required:true})
+    date: Date;
+    
+    @Prop({required:true})
     message: string;
 
     @Prop({required: true})
@@ -18,6 +21,9 @@ export class Alert{
 
     @Prop({required: true})
     alertType: number;
+
+    @Prop({required: true})
+    read: boolean;
 }
 
-export const CollectionSchema = SchemaFactory.createForClass(Alert);
+export const AlertSchema = SchemaFactory.createForClass(Alert);

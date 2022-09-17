@@ -36,6 +36,9 @@ import { Collection, CollectionSchema } from './schemas/collection.schema';
 import { File, FileSchema } from './schemas/file.schema';
 import { MongoDbStorageService } from './services/mongodb-storage/mongodb-storage.service';
 import { ApiFileManagerController } from './controllers/file-manager/file-manager.controller';
+import { Alert, AlertSchema } from './schemas/alert.schema';
+import { AlertService } from './services/alert/alert.service';
+import { AlertGateway } from './services/alert/alert.gateway';
 
 @Module({
   imports:[
@@ -50,7 +53,8 @@ import { ApiFileManagerController } from './controllers/file-manager/file-manage
                                 { name: AutomataScript.name, schema: AutomataScriptSchema},
                                 { name: OldScript.name, schema: OldScriptSchema},
                                 { name: DownloadScript.name, schema: DownloadScriptSchema},
-                                { name: File.name, schema: FileSchema}
+                                { name: File.name, schema: FileSchema},
+                                { name: Alert.name, schema: AlertSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
@@ -78,7 +82,9 @@ import { ApiFileManagerController } from './controllers/file-manager/file-manage
     MyScriptService,
     DownloadsService,
     AutomataService,
-    MongoDbStorageService
+    MongoDbStorageService,
+    AlertService,
+    AlertGateway
   ],
   exports: [],
 })
