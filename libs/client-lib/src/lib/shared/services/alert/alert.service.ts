@@ -13,7 +13,7 @@ export class AlertService {
     //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
 
-  getAllUserMessages(name:string,email:string):Observable<alert[]>{
+  getAllUserMessages():Observable<alert[]>{
     let param = new HttpParams();
     param = param.set("name",sessionStorage.getItem("name") as string);
     param = param.set("email",sessionStorage.getItem("email") as string);

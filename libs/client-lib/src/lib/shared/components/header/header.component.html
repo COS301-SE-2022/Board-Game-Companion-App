@@ -29,15 +29,19 @@
         <div *ngIf = "(showOptions || width > breakpoint)" class = "header-bar-link z-50" [ngClass] = "{'grow relative ':width>breakpoint,'flex items-center py-1 px-4':width<=breakpoint}">
             <div data-toggle="tooltip" title="Notifications" class = "h-full w-10 flex items-center text-center hover:text-white cursor-pointer" [ngClass] = "{'absolute right-20':width>breakpoint}">
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full p-0.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-bell fa-2x w-full"></i>
+                    <i class="fas fa-bell fa-2x w-full" [ngClass] = "{'fa-shake':alerts.length !== 0}"></i>
                 </a>
                 <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
-                    <li class = "w-full p-0.5">
-                        <div class="border dropdown-item text-sm py-1 px-2 font-normal block w-full whitespace-nowrap text-gray-700 font-medium cursor-pointer" >
-                            <h1 class = "w-full whitespace-normal font-medium mb-1">Subject</h1>
-                            <p class = "w-full whitespace-normal text-xs text-gray-400">This is the true message that has been sent</p>
+                    <li class = "w-full p-0.5" *ngFor = "let value of alerts">
+                        <div (click) = "processAlert(value)" class="border dropdown-item text-sm py-1 px-2 font-normal block w-full whitespace-nowrap text-gray-700 font-medium cursor-pointer" >
+                            <div class = "w-full flex flex-row">
+                                <h1 class = "w-1/2 whitespace-normal font-medium mb-1">{{value.subject}}</h1>
+                                <h1 class = "w-1/2 text-xs text-gray-300 text-right">{{getTime(value.alert.date)}}</h1>
+                            </div>
+                            <p class = "w-full whitespace-normal text-xs text-gray-400">{{value.message}}</p>
                         </div>
                     </li>
+                    <li *ngIf = "alerts.length === 0" class = "w-full"><a class="dropdown-item text-sm text-center py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">No Notifications</a></li>
                 </ul>
             </div>
             <div data-toggle="tooltip" [title]="getStatus()" class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
@@ -51,6 +55,8 @@
         </div>
     </div>
 </header>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
 
 <!-- 
 <header class="relative z-50" [ngClass] = "{'hidden':!showHeader}" [style.height.%] = 'height'>

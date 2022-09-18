@@ -32,12 +32,12 @@ export class CommentService {
 
         const createdComment = new this.commentModel(dto);
         const result:Comment =  await createdComment.save();
-        this.alert(result);
+        this.alertComment(result);
         
         return result;
     }
 
-    async alert(comment:Comment):Promise<void>{
+    async alertComment(comment:Comment):Promise<void>{
         let result = await this.automataModel.findById(comment.script);
         
         if(result === null || result === undefined){
@@ -48,6 +48,20 @@ export class CommentService {
         }
 
         this.alertService.create(result.author,`${comment.user.name}@${comment.script}`,alertType.Comment);
+    }
+
+    async alertReply(commentId:string,replyId:string): Promise<void>{
+        const reply = await this.commentModel.findById(replyId);
+        const comment = await this.commentModel.findById(commentId);
+
+        if(reply === null || reply === undefined)
+            return;
+
+        if(comment === null || comment === undefined)
+            return;
+
+        
+        this.alertService.create(comment.user,`${reply.user.name}@${comment.script}`,alertType.Reply);
     }
 
     async countComments(id:string):Promise<number>{
@@ -62,6 +76,9 @@ export class CommentService {
         const result:CommentDocument = await this.commentModel.findById(commentId);
         let add = true;
 
+        if(result === null || result === undefined)
+            return;
+        
         for(let count = 0; count < result.replies.length && add; count++){
             if(result.replies[count] === replyId)
                 add = false;
@@ -71,6 +88,8 @@ export class CommentService {
             result.replies.unshift(replyId);
             result.save();
         }
+
+        this.alertReply(commentId,replyId);
     }
 
     async like(comment:string,user:user,like:boolean):Promise<Like>{
