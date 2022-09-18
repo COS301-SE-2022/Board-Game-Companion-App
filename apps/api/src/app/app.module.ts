@@ -19,7 +19,6 @@ import { join } from 'path';
 
     MongooseModule.forRoot(process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD)
     //
-
    
   ],
   controllers: [AppController],
