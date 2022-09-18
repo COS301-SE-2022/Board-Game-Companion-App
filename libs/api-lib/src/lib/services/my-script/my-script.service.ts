@@ -24,6 +24,10 @@ import { oldScriptDto } from '../../models/dto/oldScriptDto';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 import { HttpService } from '@nestjs/axios';
 import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
+import { CollectionsService } from '../collection/collections.service';
+import { AlertService } from '../alert/alert.service';
+import { alertType } from '../../models/general/alertType';
+import { Collection } from '../../schemas/collection.schema';
 
 @Injectable()
 export class MyScriptService {
@@ -36,7 +40,9 @@ export class MyScriptService {
                 private readonly automataService: AutomataService,
                 private readonly modelService: ModelsService,
                 private readonly httpService: HttpService,
-                private readonly storageService:MongoDbStorageService){
+                private readonly storageService: MongoDbStorageService,
+                private readonly collectionService: CollectionsService,
+                private readonly alertService: AlertService){
         
     }
 
@@ -184,6 +190,26 @@ export class MyScriptService {
         result.save();
         return result;
     }
+
+    async alertCollection(script: AutomataScriptDocument): Promise<void>{
+        const collections = await this.collectionService.getAllCollections();
+        
+        collections.forEach((value:Collection) => {
+            if(value.boardgames.includes(script.boardgame)){
+                this.alertService.create(value.owner,`${script._id}@${script.boardgame}`,alertType.Collection);
+            }
+        })
+    }
+
+    async alertDownloads(script: AutomataScriptDocument): Promise<void>{
+        const downloads = await this.downloadsModel.find({});
+        
+        downloads.forEach((value:DownloadScriptDocument) => {
+            if(script.previous.includes(value.link)){
+                this.alertService.create(value.owner,`${script._id}@${value._id}`,alertType.Update);
+            }
+        })
+    }   
 
     async relegate(script: AutomataScriptDocument): Promise<OldScriptDocument>{
         //this.oldScriptModel
@@ -338,6 +364,9 @@ export class MyScriptService {
         script.version.major = version.major;
         script.version.minor = version.minor;
         script.version.patch = version.patch;
+
+        this.alertCollection(result);
+        this.alertDownloads(result);
 
         await script.save();
         await result.save();

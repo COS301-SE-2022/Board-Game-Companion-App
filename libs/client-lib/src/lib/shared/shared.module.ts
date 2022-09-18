@@ -19,6 +19,7 @@ import { ReportService } from './services/reports/report.service';
 import { EditorService } from './services/editor/editor.service';
 import { CollectionService } from './services/collections/collection.service';
 import { OnlineStatusModule } from 'ngx-online-status';
+import { AlertService } from './services/alert/alert.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { OnlineStatusModule } from 'ngx-online-status';
     DownloadsService,
     ReportService,
     EditorService,
-    CollectionService
+    CollectionService,
+    AlertService
   ],
   exports: [
     HeaderComponent,
