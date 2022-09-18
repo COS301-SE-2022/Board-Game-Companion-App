@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-
-import { comment } from '../../models/comment';
+import { comment } from '../../models/comments/comment';
 import { like } from '../../models/comments/like';
-// import { likeCount } from '../../models/likeCount';
-
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommentService } from './comment.service';
 import { commentCount } from '../../models/comments/commentCount';
@@ -37,10 +34,11 @@ describe('Test script service',()=>{
   });
 
   const formData = new FormData();
-  formData.append('user','NN');
-  formData.append('image','img.jpg');
-  formData.append('content','This script is working');
-  formData.append('script','');
+  formData.append('userName','NN');
+  formData.append('userEmail','Arha@gmail.com');
+  formData.append('image','image.jpg');
+  formData.append('content','saved ');
+  formData.append('script','fighter script');
 
   const exComment: comment = {
     _id: '6',
@@ -58,7 +56,7 @@ describe('Test script service',()=>{
     });
     const req = httpTestingController.expectOne('http://localhost:3333/api/comments/create-comment');
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({user:'NN',image:'img.jpg',content:'This script is working',script:''});
+    expect(req.request.body).toEqual({userName:'NN',userEmail:'Arha@gmail.com',script:'fighter script',image:'image.jpg',content:'saved '});
 
     req.flush(exComment);
   });

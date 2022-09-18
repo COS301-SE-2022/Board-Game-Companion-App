@@ -41,7 +41,9 @@ describe('AdminComponent', () => {
     router = TestBed.inject(Router);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
-
+  // beforeEach(()=>{
+  //   httpTestingController.verify();
+  // });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -112,21 +114,21 @@ describe('AdminComponent', () => {
 
       fixture.detectChanges();
 
-      const reqScripts = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retreive-all');
-      expect(reqScripts.request.method).toBe('GET');
-      reqScripts.flush(Res1);
+      const reqScripts = httpTestingController.match('http://localhost:3333/api/automata-scripts/retreive-all');
+      expect(reqScripts[0].request.method).toBe('GET');
+      reqScripts[0].flush(Res1);
 
       fixture.detectChanges();
 
 
-      const reqInProgr = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/all-scripts');
-      expect(reqInProgr.request.method).toBe('GET');
-      reqInProgr.flush(Res2);
+      const reqInProgr = httpTestingController.match('http://localhost:3333/api/my-scripts/all-scripts');
+      expect(reqInProgr[0].request.method).toBe('GET');
+      reqInProgr[0].flush(Res3);
 
       
-      const reqRep = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retrive-by-id');
-      expect(reqRep.request.method).toBe('GET');
-      reqRep.flush(Res3);
+      const reqRep = httpTestingController.match('http://localhost:3333/api/reports/retrieve-all');
+      expect(reqRep[0].request.method).toBe('GET');
+      reqRep[0].flush(Res2);
       // const Scripts = fixture.nativeElement.querySelectorAll('tr');
       // expect(Scripts.length-1).toEqual(Response.length); //minus first row
 
