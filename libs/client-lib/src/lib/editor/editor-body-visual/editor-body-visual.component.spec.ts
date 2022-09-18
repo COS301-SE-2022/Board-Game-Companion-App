@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
-
 import { EditorBodyVisualComponent } from './editor-body-visual.component';
 import { ElementTemplateComponent } from './element-template';
 import { PlayerTemplateComponent } from './player-template';
@@ -18,12 +17,10 @@ describe('EditorBodyVisualComponent', () => {
       imports: [DragulaModule,BrowserModule,CommonModule]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditorBodyVisualComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    component = new EditorBodyVisualComponent();
     expect(component).toBeTruthy();
   });
 });

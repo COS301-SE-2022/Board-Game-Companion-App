@@ -8,6 +8,7 @@ import { OAuthLogger, OAuthService, UrlHelperService, DateTimeProvider } from 'a
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 describe('MyScriptsComponent', () => {
   let component: MyScriptsComponent;
@@ -17,7 +18,7 @@ describe('MyScriptsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [MyScriptsComponent,NotificationComponent],
       providers: [ScriptService,OnlineStatusService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider,BggSearchService],
-      imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule]
+      imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule,FormsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MyScriptsComponent);

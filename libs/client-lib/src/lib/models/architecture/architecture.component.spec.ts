@@ -5,13 +5,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
+import { FormsModule } from '@angular/forms';
 describe('ArchitectureComponent', () => {
   let component: ArchitectureComponent;
   let fixture: ComponentFixture<ArchitectureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
       declarations: [ArchitectureComponent,GeneralComponent],
       providers:[ModelsService]
     }).compileComponents(); 

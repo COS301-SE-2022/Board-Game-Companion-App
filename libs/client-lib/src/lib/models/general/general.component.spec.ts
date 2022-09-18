@@ -6,6 +6,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import 'fake-indexeddb/auto';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 describe('GeneralComponent', () => {
   let component: GeneralComponent;
   let fixture: ComponentFixture<GeneralComponent>;
@@ -13,7 +14,7 @@ describe('GeneralComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
-      declarations: [GeneralComponent],
+      declarations: [GeneralComponent,NotificationComponent],
       providers:[ModelsService,StorageService]
     }).compileComponents(); 
     //check if component created

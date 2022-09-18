@@ -11,13 +11,16 @@ import { VisualHelpComponent } from '../visual-help/visual-help.component';
 import { EditorToolBarComponent } from './editor-tool-bar.component';
 import 'fake-indexeddb/auto';
 import { EditorService } from '../../shared/services/editor/editor.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { EditorThemeComponent } from '../editor-theme/editor-theme.component';
 describe('EditorToolBarComponent', () => {
   let component: EditorToolBarComponent;
   let fixture: ComponentFixture<EditorToolBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorToolBarComponent,EditorEditFeaturesComponent,EditorHelpComponent,VisualHelpComponent,EditorModelsComponent],
+      declarations: [EditorToolBarComponent,EditorEditFeaturesComponent,EditorThemeComponent,
+        EditorHelpComponent,VisualHelpComponent,EditorModelsComponent,NotificationComponent],
       imports: [RouterTestingModule,FormsModule,HttpClientTestingModule],
       providers: [ModelsService,StorageService,EditorService]
     }).compileComponents();

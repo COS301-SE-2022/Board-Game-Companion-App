@@ -8,14 +8,16 @@ import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
 import 'fake-indexeddb/auto';
 import { OnlineStatusService } from 'ngx-online-status';
+import { FormsModule } from '@angular/forms';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 describe('ConfigureComponent', () => {
   let component: ConfigureComponent;
   let fixture: ComponentFixture<ConfigureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
-      declarations: [ConfigureComponent,GeneralComponent],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
+      declarations: [ConfigureComponent,GeneralComponent,NotificationComponent],
       providers:[ModelsService,StorageService,OnlineStatusService]
     }).compileComponents(); 
     fixture = TestBed.createComponent(ConfigureComponent);
