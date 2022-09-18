@@ -183,7 +183,10 @@ export class CollectionsComponent implements OnInit {
       next:(response:number) => {
         if(response === 1){
           this.notifications.add({type:"success",message:`Successfully removed ${value.name}`});
-          this.collections = this.collections.filter((val:collection) => val._id !== value._id)
+          this.collections = this.collections.filter((val:collection) => val._id !== value._id);
+          this.showGames = this.showGames.filter((val:Game) => val.collectionId !== value._id);
+          this.games = this.games.filter((val:Game) => val.collectionId !== value._id);
+          this.filterScripts();
         }else
           this.notifications.add({type:"warning",message:`Could not find ${value.name} on the server.`});
       },

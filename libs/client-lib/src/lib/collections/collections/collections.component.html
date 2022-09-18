@@ -30,10 +30,10 @@
         </div>
 
         <div *ngFor = "let value of collections" [ngClass] = "{'bg-gray-700':selectedCollection.includes(value),'bg-lime-500':!selectedCollection.includes(value)}" class = "collection rounded-sm mt-1 overflow-hidden text-white text-center cursor-pointer font-medium flex flex-row">
-            <div (click) = "selectCollection(value)" class = "collection-name h-full w-4/5 bg-inherit py-1.5 border-r-2 text-xs capitalize">
+            <div (click) = "selectCollection(value)" class = "collection-name h-full  bg-inherit py-1.5  text-xs capitalize" [ngClass] = "{'border-r-2 w-4/5':value.name !== 'favourites','w-full':value.name === 'favourites'}">
                 {{value.name}}
             </div>
-            <div (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
+            <div *ngIf = "value.name !== 'favourites'" (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
                 <i class="fas fa-times"></i>
             </div>
         </div>
