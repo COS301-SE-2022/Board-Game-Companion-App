@@ -73,11 +73,25 @@ export class ScriptService {
     return this.httpClient.get<boolean>(this.api + "download-scripts/already-downloaded",{params: param})
   }
 
+  getDownloadedScript(id:string):Observable<downloadScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<downloadScript>(this.api + "download-scripts/retrieve-id",{params: param})
+  }
+
   getByGame(id:string):Observable<automataScript[]>{
     let param = new HttpParams();
     param = param.set("id",id);
 
     return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-by-game",{params: param})
+  }
+
+  getAutomataById(id:string):Observable<automataScript | oldScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<automataScript | oldScript>(this.api + "automata-scripts/retreive-by-id",{params: param})
   }
 
   checkForUpdatesForOne(id:string):Observable<string>{

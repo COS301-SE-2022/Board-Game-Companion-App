@@ -4,6 +4,11 @@
     padding-bottom: 5em;
 }
 
+#content{
+    background-image: url('../assets/images/image4.avif');
+    background-size: cover;
+}
+
 #content::-webkit-scrollbar {
     width: 15px;
 }

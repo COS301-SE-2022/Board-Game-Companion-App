@@ -21,7 +21,7 @@ export class ApiDownloadScriptController {
         return this.downloadsService.getMyDownloads({name:ownerName, email:ownerEmail});
     }
 
-    @Get('retrieve/id')
+    @Get('retrieve-id')
     async retrieveById(@Query('id')id:string):Promise<DownloadScript>{
         return this.downloadsService.retrieveById(id);
     }

@@ -122,8 +122,13 @@ export class AutomataService {
         script.save();
     }
 
-    async getScriptById(id:string):Promise<AutomataScript>{
-        return this.automataModel.findById(id);
+    async getScriptById(id:string):Promise<AutomataScriptDocument | OldScriptDocument>{
+        let result = await this.automataModel.findById(id);
+        
+        if(result === null || result === undefined)
+            result = await this.oldModel.findById(id);
+
+        return result;
     }
 
     async remove(id:string):Promise<void>{
