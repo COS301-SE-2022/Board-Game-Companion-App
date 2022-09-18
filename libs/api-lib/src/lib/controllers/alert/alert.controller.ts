@@ -13,6 +13,11 @@ export class ApiAlertController {
         return this.alertService.getAllUserMessages({name:name,email:email});
     }
 
+    @Get('retreive-all-unread-alerts')
+    async getAllUnReadUserMessages(@Query('name')name:string,@Query('email')email:string):Promise<AlertDocument[]>{
+        return this.alertService.getAllUnReadUserMessages({name:name,email:email});
+    }
+
     @Put('mark-as-read')
     async markAsRead(@Body('id')id:string):Promise<AlertDocument>{
         return this.alertService.markAsRead(id);
