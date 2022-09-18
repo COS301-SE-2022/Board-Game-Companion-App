@@ -13,7 +13,7 @@ import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { automataScript } from '../../models/scripts/automata-script';
 import { downloadScript } from '../../models/scripts/download-script';
 import { oldScript } from '../../models/scripts/old-script';
-
+import { CollectionService } from '../../services/collections/collection.service';
 @Component({
   selector: 'board-game-companion-app-header',
   templateUrl: './header.component.html',
@@ -46,10 +46,10 @@ export class HeaderComponent implements OnInit {
               private networkService: OnlineStatusService,
               private readonly alertService:AlertService,
               private readonly scriptService:ScriptService,
-              private readonly bggSearch:BggSearchService) {
-           
-              this.networkService.status.subscribe((status: OnlineStatusType) =>{
-                this.status = status;
+              private readonly bggSearch:BggSearchService,
+              private readonly collectionService:CollectionService) {
+                this.networkService.status.subscribe((status: OnlineStatusType) =>{
+                  this.status = status;
               }); 
 
     gapi.UserSubject.subscribe({
@@ -60,6 +60,7 @@ export class HeaderComponent implements OnInit {
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
         this.getAlerts();
+        this.createFavouritesCollection();
       },
       error:(err)=>{     
         console.log(err);
@@ -96,6 +97,7 @@ export class HeaderComponent implements OnInit {
         this.log = "logout";
       } 
       this.getAlerts();
+      this.createFavouritesCollection();
     }
     
     this.router.navigate(['/board-game-search']);
@@ -240,6 +242,23 @@ export class HeaderComponent implements OnInit {
     }
     
     return result;
+  }
+
+  createFavouritesCollection(): void{
+    this.collectionService.alreadyExists("favourites").subscribe({
+      next:(value:boolean) => {
+        if(!value){
+          this.collectionService.createCollection("favourites").subscribe({
+            error:(err) => {
+              console.log(err)
+            }
+          })
+        }
+      },
+      error:(err) => {
+        console.log(err);
+      }
+    });
   }
 
   getAlerts(): void{
