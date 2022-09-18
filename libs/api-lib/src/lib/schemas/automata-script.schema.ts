@@ -21,12 +21,15 @@ export class AutomataScript extends baseScript{
     @Prop()
     lastDownload: Date;
     
-    @Prop({required:true})
+    @Prop({required: true})
     export: boolean;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId,ref: 'Owner'}]})
     comments: string[];
 
+    @Prop({required: true})
+    rating: number;
+    
     @Prop({required:true,type:{name:"",key:"",location:""}})
     source: file;
 }
