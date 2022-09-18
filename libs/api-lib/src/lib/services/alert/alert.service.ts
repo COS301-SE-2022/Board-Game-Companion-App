@@ -34,8 +34,11 @@ export class AlertService {
     }
 
     async getAllUserMessages(recepient:user):Promise<AlertDocument[]>{
-        const result = await this.alertModel.find({"recepient.name":recepient.name,"recepient.email":recepient.email});
-        return result;
+        return this.alertModel.find({"recepient.name":recepient.name,"recepient.email":recepient.email});
+    }
+
+    async getAllUnReadUserMessages(recepient:user):Promise<AlertDocument[]>{
+        return this.alertModel.find({"recepient.name":recepient.name,"recepient.email":recepient.email,"read":false});
     }
 
     async markAsRead(id:string):Promise<AlertDocument>{
