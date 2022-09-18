@@ -37,7 +37,7 @@ export class MyScriptsComponent implements OnInit{
 
   constructor(private readonly scriptService:ScriptService,
               private readonly router:Router,
-              private networkService: OnlineStatusService,
+              private readonly networkService: OnlineStatusService,
               private readonly gapi: GoogleAuthService,
               private readonly boardGameService:BggSearchService
               ){

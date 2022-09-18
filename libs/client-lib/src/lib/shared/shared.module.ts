@@ -18,6 +18,8 @@ import { DownloadsService } from './services/downloads/downloads.service';
 import { ReportService } from './services/reports/report.service';
 import { EditorService } from './services/editor/editor.service';
 import { CollectionService } from './services/collections/collection.service';
+import { OnlineStatusModule } from 'ngx-online-status';
+import { AlertService } from './services/alert/alert.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { CollectionService } from './services/collections/collection.service';
   imports: [
     CommonModule,
     FormsModule,
+    OnlineStatusModule,
     OAuthModule.forRoot(),  
   ],
   providers: [
@@ -43,7 +46,8 @@ import { CollectionService } from './services/collections/collection.service';
     DownloadsService,
     ReportService,
     EditorService,
-    CollectionService
+    CollectionService,
+    AlertService
   ],
   exports: [
     HeaderComponent,

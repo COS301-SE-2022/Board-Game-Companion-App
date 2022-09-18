@@ -1,0 +1,23 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="create-collection" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+    <div class="wrapper px-2.5 py-2 modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-clip-padding rounded-md outline-none text-current">
+        <div id = "info" class = "flex flex-col w-full relative content-center">
+          <label for="name" class="form-label inline-block mb-2 font-medium text-lg">Name</label>
+          <input [(ngModel)] = "name" name = "name" (keypress)="checkOnEnter($event)" autocomplete="off" type="text" class="form-control block w-full px-1.5 py-0.5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="name"placeholder="Enter name"> 
+        </div>
+
+        <div id = "script-actions" class = "modal-footer items-center justify-end p-0">
+            <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-script" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-110 active:shadow-none">
+                <i class="fa-solid fa-rectangle-xmark fa-2x text-white"></i>
+            </button>
+            <button data-toggle="tooltip" title="save" data-bs-dismiss="modal" (click) = "save()" id = "save-collection" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-110 active:shadow-none">
+                <i class="fa-solid fa-floppy-disk fa-2x text-white"></i>
+            </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

@@ -1,18 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpStatus , HttpException } from '@nestjs/common';
 import { Collection,CollectionDocument } from '../../schemas/collection.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { user } from '../../models/general/user';
 import { collectionDto } from '../../models/dto/collectionDto';
+import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 
 @Injectable()
 export class CollectionsService {
 
-    constructor(@InjectModel(Collection.name)private readonly collectionModel: Model<CollectionDocument>){
+    constructor(@InjectModel(Collection.name)private readonly collectionModel: Model<CollectionDocument>,
+                @InjectModel(AutomataScript.name) private automataModel: Model<AutomataScriptDocument>
+    ){
 
     }
 
-    async create(name:string,owner:user,description:string): Promise<Collection>{
+    async create(name:string,owner:user): Promise<Collection>{
 
         if(owner === null){
             return null;
@@ -25,7 +28,6 @@ export class CollectionsService {
         const dto:collectionDto ={
             name: name,
             owner: owner,
-            description: description,
             boardgames: []
         }
         
@@ -34,8 +36,17 @@ export class CollectionsService {
         return createdCollection.save();
     }
 
+    async alreadyExist(owner:user,name:string): Promise<boolean>{
+        const result = await this.collectionModel.findOne({"owner.name":owner.name,"owner.email":owner.email,"name":name});
+        return result !== null && result !== undefined;
+    }
+
     async getCollectionsByUser(owner: user): Promise<Collection[]>{
         return this.collectionModel.find({"owner.name":owner.name,"owner.email":owner.email});
+    }
+
+    async getAllCollections():Promise<CollectionDocument[]>{
+        return this.collectionModel.find({});
     }
 
     async addBoardGame(boardgame:string,name:string,owner:user): Promise<boolean>{
@@ -71,9 +82,30 @@ export class CollectionsService {
         return result !== null ? 1 : 0;       
     }
 
+
+
     async removeCollection(owner:user,name:string):Promise<number>{
         const result = await this.collectionModel.findOneAndRemove({"owner.name":owner.name,"owner.email":owner.email,"name":name});
 
         return result !== null ? 1 : 0;
+    }
+
+    async getScripts(id:string):Promise<AutomataScriptDocument[]>{
+        const collection = await this.collectionModel.findById(id);
+        
+        if(collection === null || collection === undefined)
+            throw new HttpException("Not Found",HttpStatus.NOT_FOUND);
+
+        let result:AutomataScriptDocument[] = [];
+
+        for(let count = 0; count < collection.boardgames.length; count++){
+            const script = await this.automataModel.find({"boardgame":collection.boardgames[count]})
+            
+            if(script !== null && script !== undefined){
+                result = result.concat(...script);
+            }
+        }
+
+        return result;
     }
 }

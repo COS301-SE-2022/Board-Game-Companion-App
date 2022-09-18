@@ -17,6 +17,7 @@ export interface automataScriptDto{
     lastDownload: Date;
     export: boolean;
     comments: string[];
+    rating: number;
     source: file;
     previous: string[];
     link: string;

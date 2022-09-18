@@ -1,11 +1,11 @@
 import { Controller, Body,  Get, Query, Post, Put, Delete ,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { status } from '../../models/general/status';
 import { user } from '../../models/general/user';
-import { AutomataScript } from '../../schemas/automata-script.schema';
+import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { RatingService } from '../../services/ratings/rating.service';
 import { AutomataService } from '../../services/automata/automata.service';
 import { Rating } from '../../schemas/rating.schema';
-import { OldScript } from '../../schemas/old-script.schema'
+import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema'
 import { DownloadScript } from '../../schemas/download-script.schema';
 
 @Controller('automata-scripts')
@@ -34,8 +34,8 @@ export class ApiAutomataScriptController {
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
     }
-    @Get('retrive-by-id')
-    async getById(@Query('id')id:string):Promise<AutomataScript>{
+    @Get('retreive-by-id')
+    async getById(@Query('id')id:string):Promise<AutomataScriptDocument | OldScriptDocument>{
         return this.automataService.getScriptById(id);
     }
     @Put('add-comment')

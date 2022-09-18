@@ -8,6 +8,7 @@ export class automataScript extends baseScript {
     lastDownload = new Date(0);
     export = false;
     comments: string[] = [];
+    rating = 0;
     source: file = { name: "", key: "", location: ""};
     previous: string[] = [];
 }
