@@ -21,6 +21,14 @@ export class AlertService {
     return this.httpClient.get<alert[]>(this.api + "alerts/retreive-all-alerts",{params: param});
   }
 
+  getAllUnReadUserMessages():Observable<alert[]>{
+      let param = new HttpParams();
+      param = param.set("name",sessionStorage.getItem("name") as string);
+      param = param.set("email",sessionStorage.getItem("email") as string);
+  
+      return this.httpClient.get<alert[]>(this.api + "alerts/retreive-all-unread-alerts",{params: param});
+  }
+
   markAsRead(id:string):Observable<alert>{
       return this.httpClient.put<alert>(this.api + "alerts/mark-as-read",{id: id});
   }
