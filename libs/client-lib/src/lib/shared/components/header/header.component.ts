@@ -263,7 +263,7 @@ export class HeaderComponent implements OnInit {
 
   getAlerts(): void{
     this.alerts = [];
-    this.alertService.getAllUserMessages().subscribe({
+    this.alertService.getAllUnReadUserMessages().subscribe({
       next:(response:alert[]) => {
         response.forEach((value:alert) => {
 
@@ -277,7 +277,7 @@ export class HeaderComponent implements OnInit {
                       const game = this.bggSearch.parseGetBoardGameById(gameInfo);
                       this.alerts.push({
                         subject: "Collection",
-                        message: `${script.name} v${script.version.major}.${script.version.minor},${script.version.patch} has been released for ${game.name}`,
+                        message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been released for ${game.name}`,
                         alert: value
                       })
                     },
