@@ -1,25 +1,24 @@
-import { TestBed } from '@angular/core/testing';
-import { ScriptService } from '../../shared/services/scripts/script.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditorTextSideBarComponent } from './editor-text-side-bar.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
+import { ModelsService } from '../../shared/services/models/models.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { empty } from '../../shared/models/editor/entity';
 
 let mockStorage: any = {};
 
 describe('EditorTextSideBarComponent', () => {
   let component: EditorTextSideBarComponent;
-  let router: Router;
-  let service: ScriptService;
-
+  let fixture: ComponentFixture<EditorTextSideBarComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditorTextSideBarComponent],
-      imports: [HttpClientTestingModule,RouterTestingModule],
-      providers: [ScriptService]
+      imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule],
+      providers: [StorageService,ModelsService]
     }).compileComponents();
-    service = TestBed.inject(ScriptService);
-    router = TestBed.inject(Router);
 
     const mockLocalStorage = {
       getItem: (key: string): string => {
@@ -40,6 +39,41 @@ describe('EditorTextSideBarComponent', () => {
       value: mockLocalStorage
     })
   });
-  
+
+  jest.mock('./editor-text-side-bar.component');
+  EditorTextSideBarComponent.prototype.ngOnInit = function(){
+    if(this.current._id!=='')
+      this.getModels();
+  }
+  EditorTextSideBarComponent.prototype.current = { _id:'',
+  created: new Date(0),
+  lastUpdate:new Date(0),
+  status:{value:0,message:''},
+  export: false,
+  programStructure:empty,
+  source:{ name: '', location: '', key: ''},
+  name: '',
+  author:{name:'',email:''},
+  boardgame:'',
+  description:'',
+  version:{major:0,minor:0,patch:0},
+  size:0,
+  icon:{name:'',location:'',key:''},
+  build:{name:'',location:'',key:''},
+  models:[],
+
+}
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditorTextSideBarComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create',() => {
+   
+    expect(component).toBeTruthy();
+  });
+
 });
 
