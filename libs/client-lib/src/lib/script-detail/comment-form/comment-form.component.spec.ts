@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { OnlineStatusService } from 'ngx-online-status';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { OAuthService, UrlHelperService, OAuthLogger, DateTimeProvider } from 'angular-oauth2-oidc';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 // import { comment,empty } from '../../shared/models/comment';
 
 describe('CommentFormComponent', () => {
@@ -17,7 +18,7 @@ describe('CommentFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommentFormComponent],
+      declarations: [CommentFormComponent,NotificationComponent],
       providers: [CommentService,GoogleAuthService,OnlineStatusService,
         OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider],
       imports: [HttpClientTestingModule,FormsModule]

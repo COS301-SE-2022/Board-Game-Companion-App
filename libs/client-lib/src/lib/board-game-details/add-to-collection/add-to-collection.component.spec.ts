@@ -11,6 +11,7 @@ import { CollectionService } from '../../shared/services/collections/collection.
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { AddToCollectionComponent } from './add-to-collection.component';
 import 'fake-indexeddb/auto';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 let store: any = {};
 describe('AddToCollectionComponent', () => {
@@ -24,13 +25,10 @@ describe('AddToCollectionComponent', () => {
         { snapshot: { paramMap: convertToParamMap( { 'id': '998877' } ) } } },CollectionService
         ,StorageService,GoogleAuthService,OnlineStatusService,OAuthService,UrlHelperService,
         OAuthLogger,DateTimeProvider]
-      ,declarations: [AddToCollectionComponent]
+      ,declarations: [AddToCollectionComponent,NotificationComponent]
     }).compileComponents();
   });
   beforeEach(()=> {
-    // fixture = TestBed.createComponent(AddToCollectionComponent);
-    // component =  fixture.componentInstance;
-    // fixture.detectChanges();
 
     const mockLocalStorage = {
       getItem: (key: string): string => {

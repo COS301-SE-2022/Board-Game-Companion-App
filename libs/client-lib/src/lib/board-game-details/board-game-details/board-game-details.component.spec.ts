@@ -3,10 +3,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
+import { AddToCollectionComponent } from '../add-to-collection/add-to-collection.component';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BoardGameDetailsComponent } from './board-game-details.component';
-
+import { OnlineStatusService } from 'ngx-online-status';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { CollectionService } from '../../shared/services/collections/collection.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
 
 describe('BoardGameDetailsComponent', () => {
   let component: BoardGameDetailsComponent;
@@ -20,8 +26,9 @@ describe('BoardGameDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,RouterTestingModule.withRoutes([])],
-      providers:[ BggSearchService,ScriptService],
-      declarations: [BoardGameDetailsComponent],
+      providers:[ BggSearchService,ScriptService, OnlineStatusService,OAuthService,UrlHelperService,
+        OAuthLogger,DateTimeProvider,CollectionService,StorageService],
+      declarations: [BoardGameDetailsComponent,AddToCollectionComponent,NotificationComponent],
     }).compileComponents();
   });
 
