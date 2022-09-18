@@ -26,5 +26,87 @@
           ]
         }
       }
+    ],
+    "dataGroups": [
+      {
+        "name":"collections",
+        "urls":["http://localhost:3333/api/collections/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"automata-scripts",
+        "urls":["http://localhost:3333/api/automata-scripts/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"comments",
+        "urls":["http://localhost:3333/api/comments/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"download-scripts",
+        "urls":["http://localhost:3333/api/download-scripts/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"files",
+        "urls":["http://localhost:3333/api/files/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"models",
+        "urls":["http://localhost:3333/api/models/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"my-scripts",
+        "urls":["http://localhost:3333/api/my-scripts/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      },
+      {
+        "name":"reports",
+        "urls":["http://localhost:3333/api/reports/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "10s"
+        }
+      }
     ]
   }
