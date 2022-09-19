@@ -10,6 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OnlineStatusService } from 'ngx-online-status';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 describe('AutomataScriptComponent', () => {
   let component: AutomataScriptComponent;
@@ -17,7 +18,7 @@ describe('AutomataScriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AutomataScriptComponent],
+      declarations: [AutomataScriptComponent,NotificationComponent],
       providers: [ScriptService,GoogleAuthService,OAuthLogger,OAuthService,
         UrlHelperService,DateTimeProvider,StorageService,ModelsService,OnlineStatusService],
       imports: [RouterTestingModule,HttpClientTestingModule,NgxPaginationModule]

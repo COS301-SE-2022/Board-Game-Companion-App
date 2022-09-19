@@ -4,6 +4,11 @@ import { EditorBodyComponent } from './editor-body.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { EditorService } from '../../shared/services/editor/editor.service';
 import { DragulaService } from 'ng2-dragula';
+import { EditorBodyVisualComponent } from '../editor-body-visual/editor-body-visual.component';
+import * as ace from 'ace-builds/src-noconflict/ace';
+ace.config.set('basePath', '/assets/ui/');
+ace.config.set('modePath', '');
+ace.config.set('themePath', '');
 
 describe('EditorBodyComponent', () => {
   let component: EditorBodyComponent;
@@ -11,7 +16,7 @@ describe('EditorBodyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorBodyComponent],
+      declarations: [EditorBodyComponent,EditorBodyVisualComponent],
       imports: [HttpClientTestingModule],
       providers: [ScriptService,EditorService,DragulaService]
     }).compileComponents();

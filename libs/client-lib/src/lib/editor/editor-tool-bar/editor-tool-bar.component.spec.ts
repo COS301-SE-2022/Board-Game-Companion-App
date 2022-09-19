@@ -13,12 +13,13 @@ import 'fake-indexeddb/auto';
 import { EditorService } from '../../shared/services/editor/editor.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { EditorThemeComponent } from '../editor-theme/editor-theme.component';
-import * as ace from 'ace-builds';
+import * as ace from 'ace-builds/src-noconflict/ace';
 ace.config.set('basePath', '/assets/ui/');
 ace.config.set('modePath', '');
 ace.config.set('themePath', '');
 import 'brace/ext/language_tools';
-import 'brace';
+import 'brace/mode/json';
+
 describe('EditorToolBarComponent', () => {
   let component: EditorToolBarComponent;
   let fixture: ComponentFixture<EditorToolBarComponent>;

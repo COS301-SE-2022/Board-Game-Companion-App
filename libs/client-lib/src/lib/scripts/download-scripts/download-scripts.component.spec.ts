@@ -9,6 +9,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import 'fake-indexeddb/auto';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 describe('DownloadPageComponent', () => {
   let component: DownloadScriptsComponent;
@@ -16,7 +17,7 @@ describe('DownloadPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadScriptsComponent],
+      declarations: [DownloadScriptsComponent,NotificationComponent],
       providers: [StorageService,ScriptService,ModelsService,
         OAuthLogger,OAuthService,UrlHelperService,DateTimeProvider,OnlineStatusService],
       imports: [NgxPaginationModule,HttpClientTestingModule,RouterTestingModule]

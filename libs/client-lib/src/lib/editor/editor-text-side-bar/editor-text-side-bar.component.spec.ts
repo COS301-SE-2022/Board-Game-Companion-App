@@ -7,6 +7,7 @@ import 'fake-indexeddb/auto';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { empty } from '../../shared/models/editor/entity';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 let mockStorage: any = {};
 
@@ -15,7 +16,7 @@ describe('EditorTextSideBarComponent', () => {
   let fixture: ComponentFixture<EditorTextSideBarComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorTextSideBarComponent],
+      declarations: [EditorTextSideBarComponent,NotificationComponent],
       imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule],
       providers: [StorageService,ModelsService]
     }).compileComponents();
