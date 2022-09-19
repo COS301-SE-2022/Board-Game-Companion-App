@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import 'fake-indexeddb/auto';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 describe('UploadComponent', () => {
   let component: UploadComponent;
 
@@ -19,7 +20,7 @@ describe('UploadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule,NgxPaginationModule],
-      declarations: [UploadComponent],
+      declarations: [UploadComponent,NotificationComponent],
       providers:[ModelsService,StorageService]
     }).compileComponents(); 
 
