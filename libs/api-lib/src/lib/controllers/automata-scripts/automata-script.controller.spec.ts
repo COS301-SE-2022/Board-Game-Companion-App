@@ -468,7 +468,7 @@ describe('AutomataScriptController',()=>{
           comments: [],
           source: {name:"fileName3", key:"key313", location:"filelocation3"}
       }])
-    })
+    });
  
   });
 
