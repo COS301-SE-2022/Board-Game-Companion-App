@@ -41,9 +41,6 @@ describe('AdminComponent', () => {
     router = TestBed.inject(Router);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
-  // beforeEach(()=>{
-  //   httpTestingController.verify();
-  // });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -90,7 +87,8 @@ describe('AdminComponent', () => {
     size: 0,
     icon: {name:"",location:"",key:""},
     build: {name:"",location:"",key:""},
-    models: []
+    models: [],
+    rating:0,
     }];
 
     it('should load all scripts when ngOnInit()', ()=>{
