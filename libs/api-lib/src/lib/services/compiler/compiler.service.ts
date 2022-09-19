@@ -489,10 +489,7 @@ class parser extends CstParser
             this.CONSUME(tokensStore.tCloseBrace)
         });
         private nParameters =this.RULE("nParameters", () => {
-            this.CONSUME(tokensStore.tParameters )
-            this.CONSUME(tokensStore.tOpenBrace)
-            this.SUBRULE(this.TypeList)
-            this.CONSUME(tokensStore.tCloseBrace)
+            this.CONSUME(tokensStore.tUserDefinedIdentifier)
         });
 
         private TypeList=this.RULE("TypeList", () => {
@@ -625,8 +622,17 @@ class parser extends CstParser
                     { ALT: () =>{ this.SUBRULE(this.FlowControl )
                             this.SUBRULE6(this.statements)}},
 
-                    { ALT: () =>{ this.CONSUME(tokensStore.tReturn )
-                            this.SUBRULE(this.nVariable )}},
+                    { ALT: () =>{ 
+                        this.CONSUME(tokensStore.tReturn )
+                        this.OR2([
+                            { ALT: () =>{ 
+                                this.SUBRULE(this.nVariable )
+                            }},
+                            { ALT: () =>{ 
+                                this.SUBRULE(this.Const )
+                            }}
+                        ])
+                    }},
                 ])
             });
         });
@@ -816,6 +822,9 @@ class parser extends CstParser
                                 this.SUBRULE(this.rGetPlayer) 
                             
                         }},
+                        {ALT: () =>{
+                            this.SUBRULE(this.rToInt )
+                        }},
                     ])
                     
                 });
@@ -872,12 +881,15 @@ class parser extends CstParser
                 private rAddPieceToTile=this.RULE("rAddPieceToTile", () => {
                     this.CONSUME(tokensStore.tAddPieceToTile )
                                 this.CONSUME(tokensStore.tOpenBracket )
-                                this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                                this.SUBRULE(this.rParam1)
                                 this.CONSUME(tokensStore.tComma )
                                 this.SUBRULE(this.Value)
                                 this.CONSUME(tokensStore.tCloseBracket )
                 })
-
+                private rParam1=this.RULE("rParam1", () => {
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                    this.SUBRULE(this.dotContinuation)
+                })
                 private rGetTileByID=this.RULE("rGetTileByID", () => {
                                 this.CONSUME(tokensStore.tGetTileByID )
                                 this.CONSUME2(tokensStore.tOpenBracket )
@@ -1015,6 +1027,10 @@ class parser extends CstParser
                                         ALT: () =>{ 
                                         this.CONSUME(tokensStore.tPiece)
                                     }},
+                                    { 
+                                        ALT: () =>{ 
+                                            this.SUBRULE2(this.MethodCall )
+                                    }},
                                 ])
                             
 
@@ -1048,9 +1064,7 @@ class parser extends CstParser
                                 this.SUBRULE(this.rCreateBoard )
                             }},
                             
-                            {ALT: () =>{
-                                this.SUBRULE(this.rToInt )
-                            }},
+                            
                             {
                                 ALT: () =>{
                                     this.SUBRULE(this.rMovePiece )
@@ -1064,7 +1078,7 @@ class parser extends CstParser
                  private rRemoveFromArr =this.RULE("rRemoveFromArr", () => {
                     this.CONSUME(tokensStore.tRemoveFromArr )
                     this.CONSUME(tokensStore.tOpenBracket )
-                    this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                    this.SUBRULE(this.rParam1)
                     this.CONSUME(tokensStore.tComma )
                     this.SUBRULE(this.Value)
                     this.CONSUME(tokensStore.tCloseBracket )
@@ -1098,9 +1112,9 @@ class parser extends CstParser
                  private rToInt=this.RULE("rToInt", () => {
                     
                         this.CONSUME(tokensStore.tToInt)
-                        this.CONSUME(tokensStore.tOpenBrace )
-                        this.SUBRULE(this.Declarations)
-                        this.CONSUME(tokensStore.tCloseBrace )
+                        this.CONSUME(tokensStore.tOpenBracket )
+                        this.SUBRULE(this.nVariable)
+                        this.CONSUME(tokensStore.tCloseBracket )
                     
                  })
                  private rMovePiece=this.RULE("rMovePiece", () => {
@@ -1108,6 +1122,7 @@ class parser extends CstParser
                         this.CONSUME(tokensStore.tMovePiece )
                         this.CONSUME(tokensStore.tOpenBracket )
                         this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                        this.SUBRULE(this.dotContinuation)
                         this.CONSUME(tokensStore.tComma )
                         this.SUBRULE(this.Value)
                         this.CONSUME(tokensStore.tCloseBracket )
@@ -1509,8 +1524,10 @@ class parser extends CstParser
                 { 
                     ALT: () =>{ 
                         this.CONSUME(tokensStore.tOpenSquareBracket)
-                        this.SUBRULE(this.Const)
-                        this.SUBRULE(this.rMoreElements)
+                        this.OPTION(() => {
+                            this.SUBRULE(this.Const)
+                            this.SUBRULE(this.rMoreElements)
+                        })
                         this.CONSUME(tokensStore.tClosedSquareBracket)
                 }}
         ])
@@ -2153,6 +2170,7 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
             visitPlayerStatements(node,place);
         }
     }
+    
 }
 function visitForLoopStep(cstOutput:CstNode, place:string)
 {
@@ -2292,16 +2310,15 @@ function visitRemoveFromArr(cstOutput:CstNode, place:string)
         const child = cstOutput.children[k];
         const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
-        if(token.tokenType)
-        {
-            if(token.tokenType.name == "UserDefinedIdentifier")
-            {
-                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' '+token.image+'.splice(', jsScript.slice(jsScript.indexOf(place))].join('');
-
-            }
-        }
+        
         if(node.name)
         {
+            if(node.name == "nParam1")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' '+getCode(node)+'.splice(', jsScript.slice(jsScript.indexOf(place))].join('');
+
+                
+            }
             if(node.name == "value")
             {
                 visitPlayerStatements(node, place)
@@ -2615,17 +2632,15 @@ function visitRAddPieceToTile(cstOutput:CstNode, place:string)
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
         const node = child[0] as unknown as CstNode;
-        const token = child[0] as unknown as IToken;
-        if(token.tokenType)
-        {
-            if(token.tokenType.name == "UserDefinedIdentifier")
-            {
-                code = code+token.image+')\n'
-                otherCode = token.image+otherCode
-            }
-        }
+        
+        
         if(node.name)
         {
+            if(node.name == "rParam1")
+            {
+                code = code+getCode(node)+')\n'
+                otherCode = getCode(node)+otherCode
+            }
             if(node.name == "Value")
             {
                 let i: keyof typeof node.children;
@@ -2653,8 +2668,25 @@ function visitRAddPieceToTile(cstOutput:CstNode, place:string)
     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), code+otherCode, jsScript.slice(jsScript.indexOf(place))].join('');
      
 }
-
-
+function getCode(cstOutput:CstNode )
+{
+    let code = ""
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        const token = child[0] as unknown as IToken;
+        if(token.tokenType)
+        {
+            code = code + token.image;
+        }
+        if(node.name)
+        {
+            code = code + getCode(node);
+        }
+    }
+    return code;
+}
 function visitGetTileByID(cstOutput:CstNode, place:string)
 {
             

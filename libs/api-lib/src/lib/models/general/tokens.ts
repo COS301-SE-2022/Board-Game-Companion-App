@@ -17,7 +17,7 @@ export const tCreateCard=(chevrotain.createToken({name:"CreateCard",pattern:/cre
 
 export const tPiece=(chevrotain.createToken({name:"Piece",pattern:/piece/,longer_alt:tUserDefinedIdentifier}));
 export const tAddToArr=(chevrotain.createToken({name:"addToArr",pattern:/addToArr/,longer_alt:tUserDefinedIdentifier}));
-export const tRemoveFromArr=(chevrotain.createToken({name:"tRemoveFromArr",pattern:/tRemoveFromArr/,longer_alt:tUserDefinedIdentifier}));
+export const tRemoveFromArr=(chevrotain.createToken({name:"removeFromArr",pattern:/removeFromArr/,longer_alt:tUserDefinedIdentifier}));
 
 export const tConsider=(chevrotain.createToken({name:"consider",pattern:/consider/,longer_alt:tUserDefinedIdentifier}));
 export const tCopy=(chevrotain.createToken({name:"copy",pattern:/copy/,longer_alt:tUserDefinedIdentifier}));
@@ -79,7 +79,7 @@ export const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern
 
 
 export const tIntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("[A-Za-z0-9 ]*")|('[A-Za-z0-9 ]*')/ }));
+export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("([A-Za-z0-9 ]*\?*)")|('([A-Za-z0-9 ]*\?*)')/ }));
 export const tFalse=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
 export const tTrue=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
 export const tNull=(chevrotain.createToken({name:"null",pattern:/null/,longer_alt:tUserDefinedIdentifier}));
@@ -177,6 +177,7 @@ export const tComent=(chevrotain.createToken({name:"WhiteSpace",pattern:/\/\*[a-
     tGenerateChoices,
     tChooseAction,
     tActivate,
+    tToInt,
     tCanUse,
     tIsActionLegal,
     tEndgame,
