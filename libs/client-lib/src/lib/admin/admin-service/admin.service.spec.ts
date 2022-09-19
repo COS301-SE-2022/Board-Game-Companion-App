@@ -20,7 +20,8 @@ const mockAutomata: automataScript[] = [{
   size: 0,
   icon: {name:"",location:"",key:""},
   build: {name:"",location:"",key:""},
-  models: []
+  models: [],
+  rating:0
 }
 ,{
   _id: "",
@@ -39,7 +40,8 @@ const mockAutomata: automataScript[] = [{
   size: 0,
   icon: {name:"",location:"",key:""},
   build: {name:"",location:"",key:""},
-  models: []
+  models: [],
+  rating:0
 }];
 
 describe('AdminService', () => {
