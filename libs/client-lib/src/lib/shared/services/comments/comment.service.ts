@@ -44,7 +44,12 @@ export class CommentService {
     return this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId});
   }
 
-  like(comment:string,user:user,like:boolean): Observable<like>{
+  like(comment:string,like:boolean): Observable<like>{
+    const user:user = {
+      name: sessionStorage.getItem("name") as string,
+      email: sessionStorage.getItem("email") as string
+    };
+
     return this.httpClient.post<like>(this.api + "comments/like",{comment:comment,user:user,like:like});
   }
 

@@ -155,6 +155,13 @@ export class BoardGameSearchComponent implements OnInit {
     }
   }
 
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
+    }
+  }
+
   search():void {
     let retrieved = 0;
     let required = 0;

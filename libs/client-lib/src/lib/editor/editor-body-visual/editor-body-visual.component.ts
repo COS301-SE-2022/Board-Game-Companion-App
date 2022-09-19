@@ -16,48 +16,25 @@ export class EditorBodyVisualComponent {
     {variable: '', id: '', name: '', type: ''}
   ]
 
+  Variables = [{name: "", value: ""} ]
+
   Endgame = [
-    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-  ]
-
-  Player1 = [
-    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-  ]
-
-  Player2 = [
-    {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
+    {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
   ]
 
   Players = [
-    {actions: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ], 
-      conditions: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ], 
-      turn: 
-      [
-        [
-          {title: '', class: '' , id: '', pos: 0, true: 0, false: 0}
-        ]
-      ]},
-    {actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]}
+    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]},
+    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""],actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]}
   ]
 
   PlayersLoops = [
-    this.Player1
+    [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
   ]
 
-  Cards = [{effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]}]
+  Cards = [{effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
 
   CardsLoop = [
-    [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]
+    [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
   ]
 
   EndgameLoops = [
@@ -72,12 +49,12 @@ export class EditorBodyVisualComponent {
 
   addNewPlayer()
   {
-    this.Players.push({actions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]]})
+    this.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
   }
 
   addNewCard()
   {
-    this.Cards.push({effect: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', pos: 0, true: 0, false: 0}]})
+    this.Cards.push({effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
   }
 
   addTileToBoard()
@@ -88,5 +65,19 @@ export class EditorBodyVisualComponent {
   removeTile(i: number)
   {
     this.Tiles.splice(i, 1)
+  }
+
+  clear()
+  {
+    this.Tiles.splice(0)
+    this.Players.splice(2)
+    for(let j = 0; j < this.Players.length; j++)
+    {
+      for(let i = 0; i < this.Players[j].actions.length; i++)
+      {
+        this.Players[j].actions[i].splice(0)
+      }
+    }
+    this.Variables.splice(0)
   }
 }

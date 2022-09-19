@@ -10,7 +10,7 @@ import { entity } from '../../models/general/entity';
 import { throwError } from 'rxjs';
 
 let scriptTemplate = "//State  //players   class script{\nplayers = [ //add players \n]}";
-
+let playerCount = 0;
 
 scriptTemplate = fs.readFileSync("templates/script.js","utf8");
 
@@ -405,7 +405,7 @@ export class CompilerService {
 
     transpile(input:string) 
     {
-
+        playerCount = 0;
         this.errorLog = "";
         
         this.DSLparser.input = this.scanHelper(input).tokens;
@@ -811,9 +811,20 @@ class parser extends CstParser
                                 this.SUBRULE(this.rGetBoard) 
                             
                         }},
+                        { 
+                            ALT: () =>{ 
+                                this.SUBRULE(this.rGetPlayer) 
+                            
+                        }},
                     ])
                     
                 });
+                private rGetPlayer=this.RULE("rGetPlayer", () => {
+                    this.CONSUME(tokensStore.tGetPlayer )
+                    this.CONSUME2(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.Expression)
+                    this.CONSUME2(tokensStore.tCloseBracket )
+                })
                 private rGetBoard=this.RULE("rGetBoard", () => {
                     this.CONSUME(tokensStore.tGetBoard )
                     this.CONSUME2(tokensStore.tOpenBracket )
@@ -1030,6 +1041,10 @@ class parser extends CstParser
                             }}
                             ,
                             {ALT: () =>{
+                                this.SUBRULE(this.rRemoveFromArr )
+                            }}
+                            ,
+                            {ALT: () =>{
                                 this.SUBRULE(this.rCreateBoard )
                             }},
                             
@@ -1040,8 +1055,46 @@ class parser extends CstParser
                                 ALT: () =>{
                                     this.SUBRULE(this.rMovePiece )
                             }},
+                            {
+                                ALT: () =>{
+                                    this.SUBRULE(this.rActivate )
+                            }},
                         ])
                  })
+                 private rRemoveFromArr =this.RULE("rRemoveFromArr", () => {
+                    this.CONSUME(tokensStore.tRemoveFromArr )
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.CONSUME(tokensStore.tUserDefinedIdentifier )
+                    this.CONSUME(tokensStore.tComma )
+                    this.SUBRULE(this.Value)
+                    this.CONSUME(tokensStore.tCloseBracket )
+                 })
+
+
+                 private rActivate=this.RULE("rActivate", () => {
+                    
+                    this.CONSUME(tokensStore.tActivate)
+                    this.CONSUME(tokensStore.tOpenBracket )
+                    this.SUBRULE(this.rVar)
+                    this.OPTION(() => {
+                        this.CONSUME(tokensStore.tComma )
+                        this.SUBRULE(this.Value)
+                    })
+                    this.CONSUME(tokensStore.tCloseBracket )
+                
+             })
+             private rVar=this.RULE("rVar", () => {
+                this.CONSUME(tokensStore.tUserDefinedIdentifier)
+                this.OPTION2(() => {
+                    this.SUBRULE(this.Field)
+                })
+                this.OPTION3(() => {
+                    this.CONSUME(tokensStore.tDot)
+                    this.SUBRULE(this.nVariable)
+                    
+                })
+             })
+
                  private rToInt=this.RULE("rToInt", () => {
                     
                         this.CONSUME(tokensStore.tToInt)
@@ -1784,7 +1837,9 @@ function visitPlayer(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
                         //write to add players
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
-                        
+                        //write to get players
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//playerIndexes")), "case \""+token.image+ "\": \n return "+playerCount+"\nbreak\n", jsScript.slice(jsScript.indexOf("//playerIndexes"))].join('');
+                        playerCount++;
                         break; 
 
                         
@@ -2202,11 +2257,111 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                     visitMovePiece(node, place)
                     break;
 
+                case "rGetPlayer":
+                    visitGetPlayer(node, place)
+                    break;   
+                    
+                case "rActivate":
+                    visitActivate(node, place)
+                    break;  
+                case "rRemoveFromArr":
+                    visitRemoveFromArr(node, place)
+                    break;  
                     
             }
         }
     }
 }
+function visitRemoveFromArr(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "UserDefinedIdentifier")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' '+token.image+'.splice(', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+        }
+        if(node.name)
+        {
+            if(node.name == "value")
+            {
+                visitPlayerStatements(node, place)
+            }
+        }
+
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),', 1) \n', jsScript.slice(jsScript.indexOf(place))].join('');
+
+
+}
+function visitActivate(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const node = child[0] as unknown as CstNode;
+        
+        if(node.name)
+        {
+            if(node.name == "rVar")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' await ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+                visitPlayerStatements(node, place)
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'.activate(', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            if(node.name == "Value")
+            {
+                
+                visitPlayerStatements(node, place)
+                
+            }
+        }
+    }
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+
+}
+function visitGetPlayer(cstOutput:CstNode, place:string)
+{
+    
+    
+    let k: keyof typeof cstOutput.children;  // visit all children
+    for (k in cstOutput.children) {
+        const child = cstOutput.children[k];
+        const token = child[0] as unknown as IToken;
+        const node = child[0] as unknown as CstNode;
+        if(token.tokenType)
+        {
+            if(token.tokenType.name == "getBoard")
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.'+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+            else
+            {
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),+token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+
+            }
+        }
+        if(node.name)
+        {
+            
+            visitPlayerStatements(node, place);
+        }
+    }
+}
+
 function visitMovePiece(cstOutput:CstNode, place:string)
 {
     
@@ -2263,24 +2418,22 @@ function visitRCreateCard(cstOutput:CstNode, place:string)
     
     
     let k: keyof typeof cstOutput.children;  // visit all children
+
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'new cards(', jsScript.slice(jsScript.indexOf(place))].join('');
+    
+
     for (k in cstOutput.children) {
         const child = cstOutput.children[k];
-        const token = child[0] as unknown as IToken;
         const node = child[0] as unknown as CstNode;
 
-        if(token.image)
-        {
-            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
-        
-        }
         if(node.name)
         {
-            visitRCreateCard(node, place);
+            visitPlayerStatements(node, place);
         }
 
     }
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n', jsScript.slice(jsScript.indexOf(place))].join('');
-        
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+         
 }
 function visitRCreateBoard(cstOutput:CstNode, place:string)
 {

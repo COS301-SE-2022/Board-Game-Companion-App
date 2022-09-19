@@ -41,6 +41,8 @@
   </div>
 </div>
 
+<board-game-companion-app-notification></board-game-companion-app-notification>
+
 <board-game-companion-app-comment-form [script] = "script" (newComment)="addNewReply($event)" *ngIf = "showReplyForm" [formType]="'Reply'" [width]="width - 5"></board-game-companion-app-comment-form>
 <div *ngIf = "showReplies">
   <board-game-companion-app-comment (incrementCommentCounter)="incrementCommentCounter.emit()" [script] = "script" *ngFor = "let reply of replies" [currentComment]="reply" [width] = 'width - 5' ></board-game-companion-app-comment>

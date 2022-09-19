@@ -86,11 +86,10 @@ export class AutomataScriptComponent implements OnInit{
   }
 
   checkShowImports(): void{
-    const name = sessionStorage.getItem("name") as string;
     const email = sessionStorage.getItem("email") as string;
 
     this.scripts.forEach((value:automataScript) => {
-      if(name !== value.author.name && email !== value.author.email)
+      if(email !== value.author.email)
         this.showImports.push(value._id);
     })  
   }
@@ -188,7 +187,7 @@ export class AutomataScriptComponent implements OnInit{
       return;
     }
 
-    if(this.showImports.includes(current._id))
+    if(!this.showImports.includes(current._id))
       this.notifications.add({type:"warning",message:"Author can not download own script"});
     else{
       this.importing.push(current._id);
