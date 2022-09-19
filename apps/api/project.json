@@ -43,6 +43,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/api"],
       "options": {
+        "codeCoverage": true,
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
       }
