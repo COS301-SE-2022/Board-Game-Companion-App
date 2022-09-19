@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ClientLibRoutingModule } from '../../client-lib-routing.module';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { ModelsService } from '../../shared/services/models/models.service';
@@ -22,7 +22,6 @@ describe('ScriptDetailComponent', () => {
   let scriptService: ScriptService;
   let searchService: BggSearchService;
   let router: Router;
-  let route: ActivatedRoute;
   let gapi:  GoogleAuthService;
   let reportService: ReportService;
   let networkService: OnlineStatusService;
@@ -42,7 +41,6 @@ describe('ScriptDetailComponent', () => {
     commentService = TestBed.inject(CommentService);
     scriptService = TestBed.inject(ScriptService);
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
     searchService = TestBed.inject(BggSearchService);
     storageService = TestBed.inject(StorageService);
     modelsService = TestBed.inject(ModelsService);
@@ -50,7 +48,7 @@ describe('ScriptDetailComponent', () => {
     gapi = TestBed.inject(GoogleAuthService);
     reportService = TestBed.inject( ReportService );
     component  = new ScriptDetailComponent(scriptService,searchService,commentService,
-      router,route,gapi,reportService,networkService,storageService,modelsService);
+      router,gapi,reportService,networkService,storageService,modelsService);
     expect(component).toBeTruthy();
   });
 
@@ -58,7 +56,7 @@ describe('ScriptDetailComponent', () => {
     commentService = TestBed.inject(CommentService);
     scriptService = TestBed.inject(ScriptService);
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
+    // route = TestBed.inject(ActivatedRoute);
     searchService = TestBed.inject(BggSearchService);
     expect(commentService).toBeTruthy();
     expect(scriptService).toBeTruthy();
@@ -69,14 +67,13 @@ describe('ScriptDetailComponent', () => {
     commentService = TestBed.inject(CommentService);
     scriptService = TestBed.inject(ScriptService);
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
     searchService = TestBed.inject(BggSearchService);
     storageService = TestBed.inject(StorageService);
     modelsService = TestBed.inject(ModelsService);
     networkService = TestBed.inject(OnlineStatusService);
     gapi = TestBed.inject(GoogleAuthService);
     reportService = TestBed.inject( ReportService );
-    component  = new ScriptDetailComponent(scriptService,searchService,commentService,router,route,gapi,reportService,networkService,storageService,modelsService);
+    component  = new ScriptDetailComponent(scriptService,searchService,commentService,router,gapi,reportService,networkService,storageService,modelsService);
     expect(component.voterCount).toEqual(0);
     expect(component.averageRating).toEqual(0);
     expect(component.months).toBeDefined();
@@ -87,14 +84,13 @@ describe('ScriptDetailComponent', () => {
     commentService = TestBed.inject(CommentService);
     scriptService = TestBed.inject(ScriptService);
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
     searchService = TestBed.inject(BggSearchService);
     storageService = TestBed.inject(StorageService);
     modelsService = TestBed.inject(ModelsService);
     networkService = TestBed.inject(OnlineStatusService);
     gapi = TestBed.inject(GoogleAuthService);
     reportService = TestBed.inject( ReportService );
-    component  = new ScriptDetailComponent(scriptService,searchService,commentService,router,route,gapi,reportService,networkService,storageService,modelsService);
+    component  = new ScriptDetailComponent(scriptService,searchService,commentService,router,gapi,reportService,networkService,storageService,modelsService);
     expect(component.getBoardGameName).toBeDefined();
     expect(component.toggleComments).toBeDefined();
     expect(component.getRating).toBeDefined();
