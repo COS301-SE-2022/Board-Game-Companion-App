@@ -13,6 +13,7 @@ import { ArchitectureComponent } from '../architecture/architecture.component';
 import { ConfigureComponent } from '../configure/configure.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { OnlineStatusService } from 'ngx-online-status';
+import { LoadDataComponent } from '../load-data/load-data.component';
 describe('TrainComponent', () => {
   let component: TrainComponent;
   //let modService: ModelsService;
@@ -21,7 +22,8 @@ describe('TrainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
-      declarations: [TrainComponent,UploadComponent,ArchitectureComponent,ConfigureComponent,NotificationComponent],
+      declarations: [TrainComponent,UploadComponent,ArchitectureComponent,ConfigureComponent,
+        NotificationComponent,LoadDataComponent],
       providers:[ModelsService,StorageService,OnlineStatusService]
     }).compileComponents(); 
     //check if component created
