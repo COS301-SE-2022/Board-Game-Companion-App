@@ -19,10 +19,12 @@ ace.config.set('modePath', '');
 ace.config.set('themePath', '');
 import 'brace/ext/language_tools';
 import 'brace/mode/json';
+import { Router } from '@angular/router';
 
 describe('EditorToolBarComponent', () => {
   let component: EditorToolBarComponent;
-  let fixture: ComponentFixture<EditorToolBarComponent>;
+  // let fixture: ComponentFixture<EditorToolBarComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,15 +33,21 @@ describe('EditorToolBarComponent', () => {
       imports: [RouterTestingModule,FormsModule,HttpClientTestingModule],
       providers: [ModelsService,StorageService,EditorService]
     }).compileComponents();
+    router = TestBed.inject(Router);
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(EditorToolBarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(EditorToolBarComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  //   jest.spyOn(console, 'warn').mockImplementation(()=>{console.log('pass..')});
+  // });
 
+  afterEach(() => {
+    jest.spyOn(console, 'warn').mockImplementation(()=>{console.log('pass..')});
+  });
   it('should create', () => {
+    component = new EditorToolBarComponent(router);
     expect(component).toBeTruthy();
   });
 });

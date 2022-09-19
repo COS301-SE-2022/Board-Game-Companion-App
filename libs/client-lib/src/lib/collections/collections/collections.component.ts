@@ -77,7 +77,7 @@ export class CollectionsComponent implements OnInit {
         this.collections.push(new collectionList(names[i],urls));
       }
     }
-    console.log(this.collections)
+    // console.log(this.collections)
   }
   onSearch(): void
   {

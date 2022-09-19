@@ -22,7 +22,7 @@ export class EditorVisualsComponent {
 
   ngOnInit(): void{
     const k = document.getElementById("area") as HTMLElement
-    console.log(k)
+    // console.log(k)
   }
 
   

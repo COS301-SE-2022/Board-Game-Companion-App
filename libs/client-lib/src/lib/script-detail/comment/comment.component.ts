@@ -25,12 +25,12 @@ export class CommentComponent implements OnInit {
   currentLike!:like;
 
   constructor(private readonly commentService:CommentService){
-    console.log("comment-component");
+    // console.log("comment-component");
   }
 
   ngOnInit(): void {
-    console.log("comment");
-    console.log(this.currentComment);
+    // console.log("comment");
+    // console.log(this.currentComment);
 
     this.commentService.getComments(this.currentComment.replies).subscribe({
       next:(value)=>{
@@ -131,7 +131,7 @@ export class CommentComponent implements OnInit {
     const today = new Date(); 
     const current = new Date(this.currentComment.created);
 
-    console.log(this.currentComment.created);
+    // console.log(this.currentComment.created);
 
     temp = today.getFullYear() - current.getFullYear();
 

@@ -15,14 +15,8 @@ describe('EditorThemeComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [EditorThemeComponent],
     }).compileComponents();
+    component = new EditorThemeComponent();
   });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(EditorThemeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
