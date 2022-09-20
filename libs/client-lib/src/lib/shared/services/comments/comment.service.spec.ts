@@ -4,6 +4,7 @@ import { like } from '../../models/comments/like';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommentService } from './comment.service';
 import { commentCount } from '../../models/comments/commentCount';
+// import { tNull } from 'libs/api-lib/src/lib/models/general/tokens';
 
 
 describe('Test script service',()=>{
@@ -78,13 +79,13 @@ describe('Test script service',()=>{
     like:true
   }
   it('should add like and return like object',()=>{
-    service.like('Oh! great awesome',{name:'ZM',email:'Zap.com'},true).subscribe((data)=>{
+    service.like('Oh! great awesome',true).subscribe((data)=>{
       expect(data).toEqual(exLike);
     });
 
     const req = httpTestingController.expectOne('http://localhost:3333/api/comments/like');
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({comment:'Oh! great awesome',user:{name:'ZM',email:'Zap.com'},like:true});
+    expect(req.request.body).toEqual({comment:'Oh! great awesome',like:true,user:{email:null,name:null}});
 
     req.flush(exLike);
   });
