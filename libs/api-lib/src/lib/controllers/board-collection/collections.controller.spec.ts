@@ -134,7 +134,8 @@ describe('CollectionsController',()=>{
 
   describe('getScripts', ()=>{
     it('should get all scripts', ()=>{
-      expect(controller.getScripts("ScriptId")).resolves.toEqual([{
+      controller.getScripts("ScriptId").then(function(response){
+        expect(response.toString()).toEqual(([{
         name: "ScriptId",
         author: {name:"Mark", email:"MarkDavids@gmail.com"},
         boardgame: "Chess",
@@ -153,7 +154,8 @@ describe('CollectionsController',()=>{
         export: true,
         comments: [],
         source: {name:"fileName3", key:"key313", location:"filelocation3"}
-      }])
+        }]).toString())
+      })
     });
   });
 
