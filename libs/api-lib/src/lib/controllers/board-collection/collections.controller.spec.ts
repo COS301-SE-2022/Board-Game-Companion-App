@@ -1,4 +1,3 @@
-//import { createMock } from '@golevelup/ts-jest';
 import { Test, TestingModule } from "@nestjs/testing"
 import { user } from '../../models/general/user';
 import { CollectionsService } from '../../services/collection/collections.service';
