@@ -1,4 +1,4 @@
-<div id = "container">
+<!-- <div id = "container">
     <div class = "p-4 pr-0 pt-4"  id = "lastPlayed">
         <h1 id = "lpTitle">Last game you played</h1>
         <img [src] =  'url'>
@@ -68,8 +68,108 @@
             <board-game-companion-app-carousel2></board-game-companion-app-carousel2>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- <div *ngIf="ids">
     <board-game-companion-app-carousel [ids]="ids"></board-game-companion-app-carousel>
 </div> -->
+
+<div class = "w-full h-full flex items-center">
+    <div class = "w-4/5 mx-auto row border">
+        <div class = "col-sm-4">
+            <div class = "m-2 p-1 w-full wrapper shadow-sm">
+                <div class = "w-full text-center text-lg font-medium text-white mb-4">
+                    Last game played
+                </div>
+    
+                <div class = "flex flex-row text-sm mb-2 mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Game:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{game}}
+                    </div>
+                </div>
+    
+                <div class = "flex flex-row text-sm mb-2 mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Score:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{score}}
+                    </div>
+                </div>
+    
+                <div class = "flex flex-row mb-2 text-sm mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Script:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{script}}
+                    </div>
+                </div>
+    
+                <div class = "flex flex-row mb-2 text-sm mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Play Time:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{time}}
+                    </div>
+                </div>
+                
+                <div class = "flex flex-row mb-2 text-sm mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Number of Players:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{num}}
+                    </div>
+                </div>
+    
+                <div class = "flex flex-row mb-4 text-sm mx-2">
+                    <div class = "font-medium text-lime-500">
+                        Result:
+                    </div>
+                    <div class = "ml-2 text-white">
+                        {{result}}
+                    </div>
+                </div>
+    
+                <div (click) = "viewSession(id)" class = "w-4/5 mx-auto bg-lime-500 text-white cursor-pointer rounded-sm hover:scale-105 p-2 font-medium text-center active:bg-lime-300">
+                    Explore
+                </div>
+            </div>
+        </div>
+    
+        <div class = "col-sm-8 border">
+            <div class = "m-2 w-full bg-white shadow-sm relative">
+                <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
+                    Your Games
+                </p>
+    
+                <div id = "board-games" class = "w-full flex flex-row mb-2 p-1">
+                    <div (click) = "back()" class = "back h-32 text-gray-800 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
+                    </div>
+                    <div class = "middle h-32 space-x-2 p-1 flex flex-row rounded-sm" [style.width.%] = '92'>
+                        <div  (click) = "showGameInfo(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative hover:scale-105 active:border-2 active:border-gray-800 cursor-pointer" [style.width.%] = "widthPerGame">
+                            <img class = "w-full h-full" [src] = "value.image">
+                        </div>
+                        <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-gray-800 text-center flex items-center">
+                            <p class = "mx-auto">No Board Games</p>
+                        </div>
+                    </div>
+                    <div (click) = "next()" class = "forward h-32 text-gray-800 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

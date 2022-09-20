@@ -1,8 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute,NavigationEnd,Router } from '@angular/router';
 import { elementAt, filter } from 'rxjs';
+import { CollectionService } from '../../shared/services/collections/collection.service';
+import { collection } from '../../shared/models/collection/collection';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+
+interface Game{
+  collectionId: string;
+  id: string;
+  name: string;
+  image: string;
+}
 
 @Component({
   selector: 'board-game-companion-app-home',
@@ -11,7 +21,17 @@ import { elementAt, filter } from 'rxjs';
   
 })
 export class HomeComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private router:Router) {
+  
+  showGames:Game[] = [];
+  carouselPage = 0;
+  maxGames = 6;
+  collections:collection[] = [];
+  widthPerGame = 16;
+  @ViewChild(NotificationComponent,{static:true}) notifications!: NotificationComponent;
+
+  constructor(private bggSearch:BggSearchService,
+              private router:Router,
+              private readonly collectionService:CollectionService) {
     this.router.events
 	      .pipe(filter((e) => e instanceof NavigationEnd))
 	      .subscribe((e: any) => {
@@ -51,7 +71,7 @@ export class HomeComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    
+    this.loadCollections();
     //This is old carousel code
     //check if there are existing collections
     //collections will be the array which holds the names of the collections on localStorage
@@ -152,9 +172,79 @@ export class HomeComponent implements OnInit {
                     })
       }
     }
+  }
 
-
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    const width = window.innerWidth;
     
+    if(width >= 1200){
+      this.maxGames = 6;
+      this.widthPerGame = 16;
+    }else if(width >= 1000){
+      this.maxGames = 4;
+      this.widthPerGame = 24;
+    }else if(width >= 750){
+      this.maxGames = 3;
+      this.widthPerGame = 32;
+    }else if(width >= 450){
+      this.maxGames = 2;
+      this.widthPerGame = 48;
+    }else{
+      this.maxGames = 2;
+      this.widthPerGame = 48;
+    }
+  }
 
+  showGameInfo(value:Game): void{
+    this.router.navigate(['board-game-details'], { state: { value: value.id } });
+  }
+
+  back(): void{
+    if(this.carouselPage === 0)
+      return;
+
+    this.carouselPage -= 1;
+  }
+
+  next(): void{
+    if((this.carouselPage + 1) * this.maxGames >= this.showGames.length)
+      return;
+
+    this.carouselPage += 1;
+  }
+
+  loadCollections(): void{
+    this.collectionService.getCollectionsForUser().subscribe({
+      next:(response:collection[]) => {
+        this.collections = response;
+        this.loadGames();
+      },
+      error:()=>{
+        this.notifications.add({type: "warning",message: "Failed to load collections"});
+      }
+    })
+  }
+
+  loadGames(): void{
+    this.collections.forEach((value:collection) => {
+      value.boardgames.forEach((id:string) => {
+        this.bggSearch.getBoardGameById(id).subscribe({
+          next:(gvalue) =>{
+            const game = this.bggSearch.parseGetBoardGameById(gvalue);
+            const temp:Game = {
+              collectionId: value._id,
+              id: game.id,
+              name: game.name,
+              image: game.image
+            }
+            this.showGames.push(temp);
+          },
+          error:() => {
+            this.notifications.add({type: "warning",message: `Failed to load board game of ${value.name}.`});
+          }
+        })
+      })
+    })
   }
 }

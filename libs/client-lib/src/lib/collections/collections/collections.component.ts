@@ -87,7 +87,7 @@ export class CollectionsComponent implements OnInit {
   }
 
   next(): void{
-    if((this.carouselPage + 1) * this.maxGames >= this.digits.length)
+    if((this.carouselPage + 1) * this.maxGames >= this.showGames.length)
       return;
 
     this.carouselPage += 1;
