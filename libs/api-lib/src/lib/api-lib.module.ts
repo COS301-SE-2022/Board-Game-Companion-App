@@ -88,6 +88,21 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
     AlertService,
     AlertGateway
   ],
-  exports: [],
+  exports: [
+    CollectionsService,
+    EditorService,
+    RatingService,
+    CommentService,
+    S3Service,
+    CompilerService,
+    ModelsService,
+    LocalStorageService,
+    ReportService,
+    MyScriptService,
+    DownloadsService,
+    AutomataService,
+    MongoDbStorageService,
+    MongooseModule
+  ],
 })
 export class ApiLibModule {}
