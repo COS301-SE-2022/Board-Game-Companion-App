@@ -46,7 +46,8 @@ describe('ApiEditorController',()=>{
       }]
     }).compile()
 
-    controller = moduleRef.get<ApiEditorController>(ApiEditorController)
+    controller = moduleRef.get<ApiEditorController>(ApiEditorController);
+    service = moduleRef.get<EditorService>(EditorService)
   })
 
   it('should be defined', () => {
