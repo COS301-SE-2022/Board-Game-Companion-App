@@ -6,6 +6,7 @@ import { CollectionsController } from "../board-collection/collections.controlle
 
 jest.mock('../../services/collection/collections.service');
 
+/***************************************************Unit Test***********************************************/
 describe('CollectionsController',()=>{
   let service : CollectionsService; 
   let controller: CollectionsController;

@@ -15,6 +15,7 @@ import { version } from "../../models/general/version";
 
 
 jest.mock('../../services/automata/automata.service');
+/***************************************************Unit Test***********************************************/
 describe('AutomataScriptController',()=>{
   let automataService : AutomataService; 
   let apiAutomataScriptController: ApiAutomataScriptController;
