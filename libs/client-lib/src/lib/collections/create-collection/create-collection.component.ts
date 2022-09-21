@@ -64,7 +64,7 @@ export class CreateCollectionComponent implements OnInit {
   checkOnEnter(value:any): void{
     if(value.key === "Enter"){
       value?.preventDefault();
-      document.getElementById("save-collection")?.click();
+      document.getElementById("save-collection")?.click;
     }
   }
 }

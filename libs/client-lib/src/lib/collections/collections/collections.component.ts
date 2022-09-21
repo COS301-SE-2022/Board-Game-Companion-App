@@ -22,6 +22,258 @@ interface Game{
   image: string;
 }
 
+const games:Game[] = [
+  {
+    collectionId: "0",
+    id: '1234',
+    name: "game 1",
+    image: "assets/images/logo.png"
+  },
+  {
+    collectionId: "0",
+    id: '5678',
+    name: "game 2",
+    image: "assets/images/logo.png"
+  },
+  {
+    collectionId: "1",
+    id: '2345',
+    name: "game 3",
+    image: "assets/images/logo.png"
+  },
+  {
+    collectionId: "1",
+    id: '6789',
+    name: "game 4",
+    image: "assets/images/logo.png"
+  },
+  {
+    collectionId: "2",
+    id: '3456',
+    name: "game 5",
+    image: "assets/images/logo.png"
+  },
+  {
+    collectionId: "2",
+    id: '5678',
+    name: "game 2",
+    image: "assets/images/logo.png"
+  }
+]
+
+const collections:collection[] = [
+  {
+    _id : "0",
+    boardgames : ["1234","5678"],
+    name: "favourites",
+    owner: {name:"Joseph",email:"u18166793@tuks.co.za"}  
+  },
+  {
+    _id : "1",
+    boardgames : ["2345","6789"],
+    name: "theme-based",
+    owner: {name:"Joseph",email:"u18166793@tuks.co.za"}  
+  },
+  {
+    _id : "2",
+    boardgames : ["3456","5678"],
+    name: "abstract",
+    owner: {name:"Joseph",email:"u18166793@tuks.co.za"}  
+  }
+]
+
+const scripts:automataScript[] = [
+  {
+    _id : "0",
+    name: "mist",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "1234",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "1",
+    name: "gear",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "1234",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "2",
+    name: "cloud",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "5678",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "3",
+    name: "fog",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "2345",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "4",
+    name: "midnight",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "6789",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "5",
+    name: "palm",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "3456",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  },
+  {
+    _id : "6",
+    name: "harem",
+    author:{
+      name: "Joseph",
+      email: "u18166793@tuks.co.za"
+    },
+    boardgame: "3456",
+    dateReleased: new Date(),
+    size: 0,
+    version:{
+      major: 0,
+      minor: 0,
+      patch: 0
+    },
+    previous:[],
+    downloads: 0,
+    rating: 0,
+    export: false,
+    lastDownload: new Date(),
+    comments: [],
+    description: "",
+    models: [],
+    build: {name:"",key:"",location:""},
+    icon: {name:"",key:"",location:"assets/images/logo.png"},
+    source: {name:"",key:"",location:""}
+  }
+]
+
 @Component({
   selector: 'board-game-companion-app-collections',
   templateUrl: './collections.component.html',
@@ -87,7 +339,7 @@ export class CollectionsComponent implements OnInit {
   }
 
   next(): void{
-    if((this.carouselPage + 1) * this.maxGames >= this.showGames.length)
+    if((this.carouselPage + 1) * this.maxGames >= this.digits.length)
       return;
 
     this.carouselPage += 1;
@@ -183,10 +435,7 @@ export class CollectionsComponent implements OnInit {
       next:(response:number) => {
         if(response === 1){
           this.notifications.add({type:"success",message:`Successfully removed ${value.name}`});
-          this.collections = this.collections.filter((val:collection) => val._id !== value._id);
-          this.showGames = this.showGames.filter((val:Game) => val.collectionId !== value._id);
-          this.games = this.games.filter((val:Game) => val.collectionId !== value._id);
-          this.filterScripts();
+          this.collections = this.collections.filter((val:collection) => val._id !== value._id)
         }else
           this.notifications.add({type:"warning",message:`Could not find ${value.name} on the server.`});
       },
@@ -214,8 +463,8 @@ export class CollectionsComponent implements OnInit {
     this.collections.forEach((value:collection) => {
       value.boardgames.forEach((id:string) => {
         this.bggSearch.getBoardGameById(id).subscribe({
-          next:(gvalue) =>{
-            const game = this.bggSearch.parseGetBoardGameById(gvalue);
+          next:(value) =>{
+            const game = this.bggSearch.parseGetBoardGameById(value);
             const temp:Game = {
               collectionId: value._id,
               id: game.id,
@@ -253,6 +502,66 @@ export class CollectionsComponent implements OnInit {
     this.router.navigate(['script-detail'], { state: { value: value } });
   }
 
+  download(current:automataScript): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:`You must be online to download ${current.name}`});
+      return;
+    }
+    
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"primary",message:`You must be logged In to download ${current.name}`});
+      return;
+    }
+
+    if(this.downloading.includes(current._id))
+      return;
+
+    if(this.downloaded.includes(current._id))
+      this.notifications.add({type:"warning",message:`You have already downloaded ${current.name}`})
+    else{
+        this.downloading.push(current._id);
+        this.scriptService.download(current._id).subscribe({
+          next:(val:downloadScript)=>{
+            if(val === null){
+              this.notifications.add({type: "danger",message: `Could not find ${current.name}`})
+              this.downloading = this.downloading.filter((id:string) => id !== current._id);
+            }
+
+            this.downloaded.push(current._id)
+              this.modelsService.getModelsByIdOnly(val.models).subscribe({
+                next:(models:any) => {
+                  models.forEach((network:any) => {
+                    this.storageService.insert("download-networks",network).then(async(res:string) => {
+                      const imodel = await tf.loadLayersModel(network.model.location);
+                      await imodel.save(`indexeddb://${network.name}`);
+                    }).catch(()=> this.notifications.add({type:"warning",message:"something went wrong when loading model"}))
+                  })
+
+                  this.storageService.insert("download-scripts",val).then((res:string)=>{
+                    this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                    this.notifications.add({type:"success",message:`Successfully downloaded ${current.name}`});
+                  }).catch(() =>{
+                    this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                    this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                  })
+
+                },
+                error:(err) => {
+                  this.downloading = this.downloading.filter((id:string) => id !== current._id);
+                  console.log(err);
+                  this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+                }
+              })
+          },
+          error:(err)=>{     
+            this.downloading = this.downloading.filter((id:string) => id !== current._id);
+            console.log(err);
+            this.notifications.add({type:"danger",message:"Something went wrong when downloading the script. If this error persists, contact the administrator"})
+          }      
+        });
+    }
+  }
+
   checkSearchOnEnter(value:any): void{
     if(value.key === "Enter"){
       value?.preventDefault();
@@ -263,10 +572,8 @@ export class CollectionsComponent implements OnInit {
   removeFromCollection(value:Game): void{
     let found = false;
     let temp = this.collections[0];
-    console.log(value);
 
     for(let count = 0; count < this.collections.length && !found; count++){
-      console.log(this.collections)
       if(this.collections[count]._id === value.collectionId){
         found = true;
         temp = this.collections[count];
@@ -276,37 +583,9 @@ export class CollectionsComponent implements OnInit {
     if(found){
       this.collectionService.removeBoardGame(temp.name,value.id).subscribe({
         next:(response:number) => {
-          console.log(response)
-
           if(response === 1){
             this.notifications.add({type:"success",message:`Successfully removed ${value.name} from ${temp.name}`})
-            temp.boardgames = temp.boardgames.filter((val:string) => val !== value.id);
-            this.showGames = this.showGames.filter((val:Game) =>{
-              if(val.id === value.id){
-                if(value.collectionId === temp._id)
-                  return false;
-              }
-              return true;
-            });
-
-            this.games = this.games.filter((val:Game) =>{
-              if(val.id === value.id){
-                if(value.collectionId === temp._id)
-                  return false;
-              }
-              return true;
-            });
-
-            this.selectedGame = this.selectedGame.filter((val:Game) => {
-              if(val.id === value.id){
-                if(value.collectionId === temp._id)
-                  return false;
-              }
-              return true;
-            })
-
-            this.filterScripts();
-
+            this.collections = this.collections.filter((val:collection) => val._id !== value.collectionId);
           }else{
             this.notifications.add({type:"warning",message:`Could not find ${value.name} in ${temp.name}`})
           }
