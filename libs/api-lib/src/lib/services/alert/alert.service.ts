@@ -10,7 +10,7 @@ import { alertDto } from '../../models/dto/alertDto';
 import {WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect} from '@nestjs/websockets';
 import { Server } from 'http';
 
-@WebSocketGateway()
+@WebSocketGateway({cors: true})
 @Injectable()
 export class AlertService {
     @WebSocketServer()server: Server;

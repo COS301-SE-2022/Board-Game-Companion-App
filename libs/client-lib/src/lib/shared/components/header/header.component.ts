@@ -62,6 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
         this.getAlerts();
+        this.receiveAlerts();
         this.createFavouritesCollection();
 
       },
