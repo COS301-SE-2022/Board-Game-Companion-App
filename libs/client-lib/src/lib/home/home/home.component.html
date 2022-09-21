@@ -75,7 +75,7 @@
 </div> -->
 
 <div class = "w-full h-full flex items-center">
-    <div class = "w-4/5 mx-auto row border">
+    <div class = "w-4/5 mx-auto row">
         <div class = "col-sm-4">
             <div class = "m-2 p-1 w-full wrapper shadow-sm">
                 <div class = "w-full text-center text-lg font-medium text-white mb-4">
@@ -142,7 +142,7 @@
             </div>
         </div>
     
-        <div class = "col-sm-8 border">
+        <div class = "col-sm-8">
             <div class = "m-2 w-full bg-white shadow-sm relative">
                 <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
                     Your Games
@@ -164,7 +164,27 @@
                         <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
                     </div>
                 </div>
+            </div>
+
+
+            <div class = "m-2 w-full bg-white shadow-sm relative">
+                <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
+                    Recommendation
+                </p>
     
+                <div id = "board-games" class = "w-full flex flex-row mb-2 p-1">
+                    <div (click) = "backRecommendation()" class = "back h-32 text-gray-800 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
+                    </div>
+                    <div class = "middle h-32 space-x-2 p-1 flex flex-row rounded-sm" [style.width.%] = '92'>
+                        <div  (click) = "showGameInfo(value)" *ngFor = "let value of recommendations.slice(carouselPageRecommendation * maxGames,(carouselPageRecommendation + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative hover:scale-105 active:border-2 active:border-gray-800 cursor-pointer" [style.width.%] = "widthPerGame">
+                            <img class = "w-full h-full" [src] = "value.image">
+                        </div>
+                    </div>
+                    <div (click) = "nextRecommendation()" class = "forward h-32 text-gray-800 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

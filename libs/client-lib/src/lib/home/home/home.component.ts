@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { ActivatedRoute,NavigationEnd,Router } from '@angular/router';
 import { elementAt, filter } from 'rxjs';
 import { CollectionService } from '../../shared/services/collections/collection.service';
@@ -23,7 +23,9 @@ interface Game{
 export class HomeComponent implements OnInit {
   
   showGames:Game[] = [];
+  recommendations:MostActive[] = []
   carouselPage = 0;
+  carouselPageRecommendation = 0;
   maxGames = 6;
   collections:collection[] = [];
   widthPerGame = 16;
@@ -72,6 +74,7 @@ export class HomeComponent implements OnInit {
   
   ngOnInit(): void {
     this.loadCollections();
+    this.loadRecommendations();
     //This is old carousel code
     //check if there are existing collections
     //collections will be the array which holds the names of the collections on localStorage
@@ -196,8 +199,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  showGameInfo(value:Game): void{
+  showGameInfo(value:Game | MostActive): void{
     this.router.navigate(['board-game-details'], { state: { value: value.id } });
+  }
+
+  loadRecommendations(): void{
+    this.bggSearch.getMostActive().subscribe({
+      next:(value:any) => {
+        this.recommendations = this.bggSearch.parseMostActive(value.toString());
+      }
+    });
   }
 
   back(): void{
@@ -207,11 +218,25 @@ export class HomeComponent implements OnInit {
     this.carouselPage -= 1;
   }
 
+  backRecommendation(): void{
+    if(this.carouselPageRecommendation === 0)
+      return;
+
+    this.carouselPageRecommendation -= 1;
+  }
+
   next(): void{
     if((this.carouselPage + 1) * this.maxGames >= this.showGames.length)
       return;
 
     this.carouselPage += 1;
+  }
+
+  nextRecommendation(): void{
+    if((this.carouselPageRecommendation + 1) * this.maxGames >= this.recommendations.length)
+      return;
+
+    this.carouselPageRecommendation += 1;
   }
 
   loadCollections(): void{
