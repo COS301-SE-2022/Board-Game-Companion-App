@@ -999,6 +999,7 @@ class parser extends CstParser
                  private Declarations=this.RULE("Declarations", () => {
                     this.OPTION(() => {
                         this.SUBRULE(this.SpecialMethods )
+                        this.SUBRULE(this.Declarations )
                     })
                     this.OPTION1(() => {
 
@@ -1034,7 +1035,7 @@ class parser extends CstParser
                                 ])
                             
 
-                                this.SUBRULE(this.Declarations )
+                                this.SUBRULE2(this.Declarations )
                             })
 
                  });
@@ -1678,7 +1679,7 @@ function visitGameState(cstOutput:CstNode)
             if(token.image)
             {
                 
-
+                
                 
                 if(token.tokenType.name != "StringLiteral")
                 {
@@ -1721,13 +1722,18 @@ function visitGameState(cstOutput:CstNode)
             if(node.name != "SpecialMethods")
             {
                 
-                
-                visitGameState(node);
-                
+                if(node.name == "MethodCall")
+                {
+                    visitMethodCall(node, "//State");
+                }
+                else
+                {
+                    visitGameState(node);
+                }
             }
             else
             {
-                specialVisit(node, "//tiles")
+                specialVisit(node, "//State")
             }
             
             
@@ -1773,7 +1779,6 @@ function visitCards(cstOutput:CstNode)
                     case "tCards":
                         break;
                     default:
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cards")), token.image+ " ", jsScript.slice(jsScript.indexOf("//cards"))].join('');
                         break;
 
                 }
@@ -2098,7 +2103,11 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
             jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n' , jsScript.slice(jsScript.indexOf(place))].join('');
                     
         }
-
+        if(node.name == "Declarations")
+        {
+            jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\n' , jsScript.slice(jsScript.indexOf(place))].join('');
+                   
+        }
         if(token.tokenType)
         {
             
@@ -2122,16 +2131,7 @@ function visitPlayerStatements(cstOutput:CstNode, place:string)
                         jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'await '+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
                         break; 
                 case "StringLiteral":
-                    if(token.image.includes('\''))
-                    {
-                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image, jsScript.slice(jsScript.indexOf(place))].join('');
-                    
-                    }
-                    else
-                    {
-                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '\''+token.image+'\'', jsScript.slice(jsScript.indexOf(place))].join('');
-                    
-                    }
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), token.image, jsScript.slice(jsScript.indexOf(place))].join('');
                     break;
                 
                 case "Piece":
@@ -2277,7 +2277,14 @@ function visitMethodCall(cstOutput:CstNode, place:string)
                     visitRCreateCard(node, place)
                         break;  
                 case "rGetBoard":
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.State.board', jsScript.slice(jsScript.indexOf(place))].join('');
+                    if(place == "//State")
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.board', jsScript.slice(jsScript.indexOf(place))].join('');
+                    }
+                    else
+                    {
+                        jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'this.State.board', jsScript.slice(jsScript.indexOf(place))].join('');
+                    }
                     break;
                 case "rToInt":
                     visitRToInt(node, place)
@@ -2313,13 +2320,13 @@ function visitRemoveFromArr(cstOutput:CstNode, place:string)
         
         if(node.name)
         {
-            if(node.name == "nParam1")
+            if(node.name == "rParam1")
             {
                 jsScript = [jsScript.slice(0, jsScript.indexOf(place)),' '+getCode(node)+'.splice(', jsScript.slice(jsScript.indexOf(place))].join('');
 
                 
             }
-            if(node.name == "value")
+            if(node.name == "Value")
             {
                 visitPlayerStatements(node, place)
             }
@@ -2332,7 +2339,7 @@ function visitRemoveFromArr(cstOutput:CstNode, place:string)
 }
 function visitActivate(cstOutput:CstNode, place:string)
 {
-    
+    let secondParam = false;
     
     let k: keyof typeof cstOutput.children;  // visit all children
     for (k in cstOutput.children) {
@@ -2353,10 +2360,11 @@ function visitActivate(cstOutput:CstNode, place:string)
             {
                 
                 visitPlayerStatements(node, place)
-                
+                secondParam = true;
             }
         }
     }
+    
     jsScript = [jsScript.slice(0, jsScript.indexOf(place)),')\n', jsScript.slice(jsScript.indexOf(place))].join('');
 
 }
@@ -2371,14 +2379,14 @@ function visitGetPlayer(cstOutput:CstNode, place:string)
         const node = child[0] as unknown as CstNode;
         if(token.tokenType)
         {
-            if(token.tokenType.name == "getBoard")
+            if(token.tokenType.name == "getPlayer")
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.'+token.image, jsScript.slice(jsScript.indexOf(place))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),'await this.getPlayer', jsScript.slice(jsScript.indexOf(place))].join('');
 
             }
             else
             {
-                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),+token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
+                jsScript = [jsScript.slice(0, jsScript.indexOf(place)),token.image+' ', jsScript.slice(jsScript.indexOf(place))].join('');
 
             }
         }
@@ -2491,7 +2499,7 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
                     i++;
                     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'for(let j=1;j<=', jsScript.slice(jsScript.indexOf(place))].join('');
                     visitPlayerStatements(node, place);
-                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';j++){\nthis.Board[i-1][j-1]=new tile()\nthis.Board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+                    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ';j++){\nthis.board[i-1][j-1]=new tile()\nthis.board[i-1][j-1].Id =i+\'-\'+j\n}', jsScript.slice(jsScript.indexOf(place))].join('');
                 
                 }
             }
@@ -2501,7 +2509,7 @@ function visitRCreateBoard(cstOutput:CstNode, place:string)
     if(i == 1)
     {
         
-        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.Board[i-1]=new tile()\nthis.Board[i-1].Id =i+\'\'\n}', jsScript.slice(jsScript.indexOf(place))].join('');
+        jsScript = [jsScript.slice(0, jsScript.indexOf(place)), 'this.board[i-1]=new tile()\nthis.board[i-1].Id =i+\'\'\n', jsScript.slice(jsScript.indexOf(place))].join('');
         
     }
     jsScript = [jsScript.slice(0, jsScript.indexOf(place)), '}\n', jsScript.slice(jsScript.indexOf(place))].join('');
@@ -2643,20 +2651,10 @@ function visitRAddPieceToTile(cstOutput:CstNode, place:string)
             }
             if(node.name == "Value")
             {
-                let i: keyof typeof node.children;
-                for (i in node.children) {
-                    const child = node.children[i];
-                    const tokeni = child[0] as unknown as IToken;
-                    if(tokeni.tokenType)
-                    {
-                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
-                        {
-                            code = tokeni.image+code
-                            otherCode = otherCode+tokeni.image+'\n'
-                        }
-                    }
-
-                }
+                
+                code = getCode(node)+code
+                otherCode = otherCode+getCode(node)+'\n'
+               
             }
         }
         }
@@ -2748,19 +2746,15 @@ function visitEnd(cstOutput:CstNode)
                     case "CloseBrace":
                         break; 
                     case "StringLiteral":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), '"'+token.image+ '"', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image, jsScript.slice(jsScript.indexOf("//end_game"))].join('');
                         break;
                     default:
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//end_game")), token.image+ ' ', jsScript.slice(jsScript.indexOf("//end_game"))].join('');
                 }
             }
-            if(node.name != "SpecialMethods")
+            if(node.name)
             {
                 visitPlayerStatements(node,"//end_game");
-            }
-            else
-            {
-                specialVisit(node, "//tiles")
             }
             if(node.name == "statements")
             {
@@ -2790,6 +2784,18 @@ function specialVisit(cstOutput:CstNode, place:string)
                 case "addAdj":
                     visitAdj(node, place)
                     break;
+                case "rCreateBoard":
+                       visitRCreateBoard(node, place)
+                       break;
+                   case "rToInt":
+                       visitRToInt(node, place)
+                       break;
+                   case "rRemoveFromArr":
+                        visitRemoveFromArr(node, place)
+                        break; 
+                    case "rAddToArr":
+                        visitRAddToArre(node, place)
+                        break;    
             }
         }
     }
