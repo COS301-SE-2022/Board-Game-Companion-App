@@ -1,7 +1,7 @@
-import { BggSearchService, MostActive } from '../../shared/services/bgg-search/bgg-search.service';
+import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { CreateScriptComponent } from './create-scripts.component';
-import { script } from '../../shared/models/scripts/script';
+// import { script } from '../../shared/models/scripts/script';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -31,7 +31,6 @@ describe('CreateScriptComponent',()=>{
     searchService = TestBed.inject(BggSearchService);
     serviceScript = TestBed.inject(ScriptService);
     component = new CreateScriptComponent(searchService,serviceScript);
-    expect(component.maxfiles).toBe(3);
     expect(component.error).toBe(false);
     expect(component.warning).toBe(false);
     expect(component.boardgames).toStrictEqual([]);

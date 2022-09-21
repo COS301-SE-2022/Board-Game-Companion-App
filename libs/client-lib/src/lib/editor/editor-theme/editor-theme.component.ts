@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import * as ace from "ace-builds";
-
+import 'brace';
 @Component({
   selector: 'board-game-companion-app-editor-theme',
   templateUrl: './editor-theme.component.html',

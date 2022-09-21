@@ -1,23 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
+import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { StorageService } from '../storage/storage.service';
 import { ModelsService } from './models.service';
+import 'fake-indexeddb/auto';
 describe('Test script service',()=>{
 
   let service: ModelsService;
-  let httpTestingController: HttpTestingController;
 
   beforeEach(()=>{
-    TestBed.configureTestingModule({imports:[HttpClientTestingModule],providers:[ModelsService]});
+    TestBed.configureTestingModule({imports:[HttpClientTestingModule],providers:[ModelsService,StorageService]});
     service = TestBed.inject(ModelsService);
-    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(()=>{
-    httpTestingController.verify();
-  });
-
-  it('testing testing',()=>{
+  it('should create',()=>{
     expect(service).toBeTruthy();
   });
 
