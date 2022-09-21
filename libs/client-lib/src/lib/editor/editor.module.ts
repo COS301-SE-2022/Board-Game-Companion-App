@@ -24,7 +24,6 @@ import { LoopTemplateComponent } from './editor-body-visual/loop-template';
 import { PlayerTemplateComponent } from './editor-body-visual/player-template';
 import { CardTemplateComponent } from './editor-body-visual/card-template';
 import { VisualHelpComponent } from './visual-help/visual-help.component';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { BrowserModule } from '@angular/platform-browser';
     FormsModule,
     SharedModule,
     DragulaModule,
-    BrowserModule,
     RouterModule.forChild([{ path: '', component: EditorComponent }]),
   ],
   providers: [DragulaService],
