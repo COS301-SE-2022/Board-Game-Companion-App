@@ -157,13 +157,13 @@ class script
     
     async getPlayer(s)
     {
-        let i = indexOfPlayer(s)
+        let i = await indexOfPlayer(s)
         return this.State.players[i]
     }
 
     async play()
     {
-        this.State.players = players
+        this.State.players = this.players
         
         //console.log("script-execution begins");
             
