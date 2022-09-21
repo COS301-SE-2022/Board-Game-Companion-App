@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 const oAuthConfig:AuthConfig={
   issuer:'https://accounts.google.com',
   strictDiscoveryDocumentValidation: false,
-  redirectUri:window.location.origin + "/home",
+  redirectUri:window.location.origin,
   clientId: '604714721717-e6t4ksto7fdoqmd26l7t2psvggd38la2.apps.googleusercontent.com',
   scope:'openid profile email',
   requestAccessToken:true,
