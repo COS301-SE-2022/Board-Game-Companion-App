@@ -1,6 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ModelsService } from '../../shared/services/models/models.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
 import { EditorModelsComponent } from './editor-models.component';
+import 'fake-indexeddb/auto';
+import { EditorService } from '../../shared/services/editor/editor.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 describe('EditorModelsComponent', () => {
   let component: EditorModelsComponent;
@@ -8,7 +13,9 @@ describe('EditorModelsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorModelsComponent],
+      declarations: [EditorModelsComponent,NotificationComponent],
+      providers: [ModelsService,StorageService,EditorService],
+      imports: [HttpClientTestingModule]
     }).compileComponents();
   });
 

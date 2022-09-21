@@ -15,7 +15,6 @@ describe('EditorEntityComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorEntityComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

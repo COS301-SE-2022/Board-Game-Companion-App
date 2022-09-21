@@ -1,28 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/compiler';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
-import { EditorBodyVisualComponent } from './editor-body-visual.component';
 import { ElementTemplateComponent } from './element-template';
-import { PlayerTemplateComponent } from './player-template';
 
 describe('EditorBodyVisualComponent', () => {
-  let component: EditorBodyVisualComponent;
-  let fixture: ComponentFixture<EditorBodyVisualComponent>;
+  let component: ElementTemplateComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorBodyVisualComponent,ElementTemplateComponent,PlayerTemplateComponent],
+    declarations: [ElementTemplateComponent],
       providers: [DragulaService],
       imports: [DragulaModule,BrowserModule,CommonModule],
-      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
   });
 
   it('should create', () => {
-    component = new EditorBodyVisualComponent();
+    component = new ElementTemplateComponent();
     expect(component).toBeTruthy();
   });
 });
