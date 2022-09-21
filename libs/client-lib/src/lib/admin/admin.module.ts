@@ -4,10 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminReportsComponent } from './admin-reports/admin-reports.component';
+import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
+import { AdminOthersComponent } from './admin-others/admin-others.component';
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    AdminUsersComponent,
+    AdminReportsComponent,
+    AdminScriptsComponent,
+    AdminOthersComponent
   ],
   imports: [
     CommonModule,
