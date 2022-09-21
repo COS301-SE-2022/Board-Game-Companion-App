@@ -40,6 +40,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <!--List of variables create-->
                     <select *ngIf = "item.title === 'Set'">
                         <option>
+                            {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let vars of Variables">
                             {{vars.name}}
@@ -65,17 +66,17 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
-                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[0]">
                     <div>
-                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[1]">
                     </div>
-                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[2]">
                     <!--If Statement-->
-                    <input id = "ifInput1" *ngIf = "item.title === 'If'">
+                    <input id = "ifInput1" *ngIf = "item.title === 'If'" [value]="item.inputs[0]">
                     <div>
-                        <input id = "ifCompare" *ngIf = "item.title === 'If'">
+                        <input id = "ifCompare" *ngIf = "item.title === 'If'" [value]="item.inputs[1]">
                     </div>
-                    <input id = "ifInput2" *ngIf = "item.title === 'If'">
+                    <input id = "ifInput2" *ngIf = "item.title === 'If'" [value]="item.inputs[2]">
                 </div>
             </div>
         </div>
@@ -86,7 +87,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
                 <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
-            <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
+            <div *ngIf="dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
                 <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
         </div>

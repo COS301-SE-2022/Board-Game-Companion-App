@@ -38,25 +38,23 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
   count = 0
+  @Input() eID = 0
 
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
     
   }
 
   ngOnInit(): void {
-
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
+      console.log(this.count)
       console.log(this.editorVisual.Players)
-      console.log(this.editorVisual.Endgame)
-      console.log(target.id)
       if(source !== target)
       {
-        console.log(document.getElementById("players")?.contains(target))
-        this.count++
         if(document.getElementById("endGame")?.contains(target))
         {
+          this.count++
           //Endgame Container
           //need to find which loop it belongs to
           let recent = this.editorVisual.Endgame.findIndex((obj) => {
@@ -147,7 +145,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         }
         else if(document.getElementById("player")?.contains(target))
         {
-          console.log("player")
           //Players
           let player = 0
           let position = 0
@@ -178,7 +175,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             {
               break
             }
-
             //Go through that players conditions
             for(let i = 0; i < this.editorVisual.Players[j].conditions.length; i++)
             {
@@ -188,6 +184,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
               if(recent !== -1)
               {
+                console.log(this.editorVisual.Players[j].conditions[i])
                 player = j
                 position = i
                 property = "condition"
@@ -200,7 +197,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               break
             }
 
-            console.log(this.editorVisual.Players[j])
             //Go through players turn
             recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
               return obj.id === "e" + this.count.toString()
@@ -277,7 +273,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     const dest = [
                       {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
-                    console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
                   }
                   break
@@ -288,11 +283,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     const dest = [
                       {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                     ]
-                    console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
                     this.editorVisual.playersLoopIndex++
                     this.editorVisual.Players[player].actions[position][recent].false = this.editorVisual.playersLoopIndex
-                    console.log("Turn General")
                     this.editorVisual.PlayersLoops.push(dest)
                     break
                   }
@@ -317,6 +310,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   case "visualIf":
                   {
                     this.editorVisual.playersLoopIndex++
+                    console.log(this.editorVisual.Players[player].conditions[position][recent])
                     this.editorVisual.Players[player].conditions[position][recent].true = this.editorVisual.playersLoopIndex
                     const dest = [
                       {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
@@ -726,30 +720,33 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   {
     this.editorVisual.clear()
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    console.log(lines)
     let method = ""
     let openPlayer = 0
     let openState = 0
     let openAction = 0
     let openCondition = 0
     let openTurn = 0
+    let openIf = 0
+    let totalIf = 0
+    const ifContains = [
+      {numberOfIf: 0, open: 0}
+    ]
     let player = -1
     let action = 0
     let open = 0
     let d = 0
     for(let j = 0; j < lines.length; j++)
     {
-      if(lines[j].includes("{"))
+      //console.log("line " + j + ":" + lines[j])
+      if((lines[j].includes("state") && lines[j].includes("{")) || (lines[j].includes("state") && lines[j + 1].includes("{")))
       {
         open++
-      }
-      if(lines[j].includes("state"))
-      {
         method = "state"
         openState = open
       }
-      else if(lines[j].includes("player"))
+      else if((lines[j].includes("player") && lines[j].includes("{")) || (lines[j].includes("player") && lines[j + 1].includes("{")))
       {
+        open++
         method = "player"
         openPlayer = open
         player++
@@ -761,25 +758,63 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         const l = lines[j].split(/\s+/)
         this.editorVisual.Players[player].name = l[1].replace(/{/g, "")
       }
-      else if(lines[j].includes("action"))
+      else if((lines[j].includes("action") && lines[j].includes("{")) || (lines[j].includes("action") && lines[j + 1].includes("{")))
       {
+        open++
         method = "action"
         openAction = open
         const l = lines[j].split(/\s+/)
         this.editorVisual.Players[player].actionNames[action] = l[2].substring(0, l[2].indexOf("("))
         this.editorVisual.Players[player].actionParams[action][0] = l[2].substring(l[2].indexOf("(") + 1, l[2].indexOf(")"))
       }
-      else if(lines[j].includes("condition"))
+      else if((lines[j].includes("condition") && lines[j].includes("{")) || (lines[j].includes("condition") && lines[j + 1].includes("{")))
       {
+        open++
         method = "condtiion"
         openCondition = open
         const l = lines[j].split(/\s+/)
         this.editorVisual.Players[player].conditionParams[action] = l[1].substring(l[1].indexOf("(") + 1, l[1].indexOf(")"))
       }
-      else if (lines[j].includes("turn"))
+      else if ((lines[j].includes("turn") && lines[j].includes("{")) || (lines[j].includes("turn") && lines[j + 1].includes("{")))
       {
+        open++
         method = "turn"
         openTurn = open
+      }
+      else if((lines[j].includes("if") && lines[j].includes("{")) || (lines[j].includes("if") && lines[j + 1].includes("{")))
+      {
+        open++
+        openIf++
+        if(totalIf == 0)
+        {
+          totalIf++
+        }
+        else
+        {
+          totalIf = totalIf + 2
+        }
+        ifContains.push({numberOfIf: totalIf, open: openIf})
+
+        
+      }
+      else if((lines[j].includes("else") && lines[j].includes("{")) || (lines[j].includes("else") && lines[j + 1].includes("{")))
+      {
+        open++
+        openIf++
+      }
+      else if((lines[j].includes("for") && lines[j].includes("{")) || (lines[j].includes("for") && lines[j + 1].includes("{")))
+      {
+        open++
+      }
+      else if((lines[j].includes("while") && lines[j].includes("{")) || (lines[j].includes("while") && lines[j + 1].includes("{")))
+      {
+        open++
+       
+      }
+      else if((lines[j].includes("do") && lines[j].includes("{")) || (lines[j].includes("do") && lines[j + 1].includes("{")))
+      {
+        open++
+        
       }
       else if(lines[j].includes("}"))
       {
@@ -804,9 +839,27 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           openTurn = 0
         }
+        else if (openIf > -1 )
+        {
+          if(openIf != 0)
+          {
+            const place = ifContains.findIndex(obj => obj.open == openIf)
+            if(place != -1)
+            {
+              if(!lines[j + 1].includes("else"))
+              {
+                const index = ifContains[place].numberOfIf + 1
+                this.editorVisual.PlayersLoops.splice(index,1,[{title: '', class: '' , id: '', inputs: ["","","","",""], pos: 0, true: 0, false: 0}])
+              }
+              ifContains.splice(place,1)   
+            }
+            openIf--
+          }
+        }
         open--
       }
-      else if(open == 0)
+      
+      if(open == 0)
       {
         method = ""
       }
@@ -814,7 +867,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       switch(method)
       {
         case "state":
-          if(!lines[j].includes("state") && openState != 0)
+          if(!lines[j].includes("state") && !lines[j].includes("{") && openState != 0)
           {
             const l = lines[j].split(/\s+/)
             if(l[1].includes("create"))
@@ -856,51 +909,85 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           break
         case "action":
           {
-            if(!lines[j].includes("action") && openAction != 0)
+            if(!lines[j].includes("action") && !lines[j].includes("{") && openAction != 0)
             {
               const l = lines[j].split(/\s+/)
               //Create
               if(l[1] == "let")
               {
-                this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: '', inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
+                this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
                 this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
               }
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
                 const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
                 if(set != null)
-                this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: '', inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                {
+                  
+                  this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                  
+                  
+                }
+                
               }
               //Output
               else if (l[1].includes('output('))
               {
-                this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: '', inputs: [l[1].substring(7,l[1].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
+                
+                this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: id, inputs: [lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
+                
               }
               //Input
               else if(l[1].includes('input('))
               {
-                this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: '', inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
+                
+                this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: id, inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                
+                
               }
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
                 const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
                 if(call != null)
                 {
                   if(call.arguments === 1)
                   {
-                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                    
+                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                    
+                    
                   }
                   else
                   {
-                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: '', inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                    
+                    this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                    
                   }
                 }
               }
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
               {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
                 let params = [""]
                 let operator = ""
                 if(lines[j].includes(">") && !lines[j].includes("="))
@@ -934,17 +1021,28 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   operator = "<="
                 }
                 this.editorVisual.playersLoopIndex++
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1), "","","","",""], pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.PlayersLoops.push(dest)
-                this.editorVisual.PlayersLoops.push(dest)
+                this.editorVisual.playersLoopIndex++
+                const dest2 = [
+                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+                ]
+                this.editorVisual.PlayersLoops.push(dest2)
+                this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: id, inputs: [params[0], operator, params[1].substring(0,params[1].length-1), "","","","",""], pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+              }
+              //Else portion
+              else if(lines[j].includes("else") && lines[j].includes("{") || lines[j].includes("else") && lines[j+1].includes("{"))
+              {
+                this.editorVisual.PlayersLoops[this.editorVisual.playersLoopIndex][0].inputs[0] = ""
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
               {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
                 const loop = lines[j].split(";")
                 const num = loop[1].replace(/\D/g, '')
                 let n = +num
@@ -962,7 +1060,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   by = +loop[1].replace(/\D/g, '')
                 }
                 this.editorVisual.playersLoopIndex++    
-                this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: '', inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
@@ -976,6 +1074,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //While/do While Loops
               else if(lines[j].includes("while(") || lines[j].includes("while ("))
               {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
                 let params = [""]
                 let operator = ""
                 if(lines[j].includes(">") && !lines[j].includes("="))
@@ -1011,12 +1112,12 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.playersLoopIndex++
                 if(d === 1)
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                   d = 0
                 } 
                 else
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: '', inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: id, inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
@@ -1034,6 +1135,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           break
       }
     }
+    console.log(this.editorVisual)
   }
 
 }
