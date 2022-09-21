@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, KeyValueDiffer, KeyValueDiffers, OnInit,OnDestroy , ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, Input, KeyValueDiffer, KeyValueDiffers, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { GoogleAuthService, userDetails} from '../../../google-login/GoogleAuth/google-auth.service';
@@ -14,13 +14,12 @@ import { automataScript } from '../../models/scripts/automata-script';
 import { downloadScript } from '../../models/scripts/download-script';
 import { oldScript } from '../../models/scripts/old-script';
 import { CollectionService } from '../../services/collections/collection.service';
-import { Subscription } from 'rxjs';
 @Component({
   selector: 'board-game-companion-app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   // @ViewChild('menu', {static: false, read: ElementRef}) 
   // burgerbtn: any; //similar to getElementById
   ShowMenu = false; 
@@ -39,7 +38,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   differ: KeyValueDiffer<string, any>;
   profile = "assets/images/no-profile.png";
   alerts:alertInfo[] = [];
-  alertSubscription!:Subscription;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly router:Router,
@@ -63,17 +61,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
         sessionStorage.setItem("img",value.info.picture);
         this.getAlerts();
         this.createFavouritesCollection();
-
       },
       error:(err)=>{     
         console.log(err);
       }      
     })
     this.differ = this.differs.find({}).create();
-  }
-
-  ngOnDestroy(): void {
-      this.alertSubscription.unsubscribe();
   }
 
   online(): boolean{
@@ -107,7 +100,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.createFavouritesCollection();
     }
     
-    this.router.navigate(['/home']);
+    this.router.navigate(['/board-game-search']);
    
     document.addEventListener('editor-page',(event)=>{
       this.showHeader = false;
@@ -166,7 +159,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("image");
         this.profile = "assets/images/no-profile.png";
-        this.alertSubscription.unsubscribe();
         this.router.navigate(['/home']);
       }
     }
@@ -267,97 +259,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log(err);
       }
     });
-  }
-
-  receiveAlerts(): void{
-    this.alertSubscription = this.alertService.receiveAlerts().subscribe({
-      next:(value:alert) => {
-        switch(value.alertType){
-          case alertType.Collection:{
-            const [scriptId,boardgameId] = value.link.split("@");
-            this.scriptService.getAutomataById(scriptId).subscribe({
-              next:(script:automataScript | oldScript) => {
-                this.bggSearch.getBoardGameById(boardgameId).subscribe({
-                  next:(gameInfo:any) => {
-                    const game = this.bggSearch.parseGetBoardGameById(gameInfo);
-                    this.alerts.push({
-                      subject: "Collection",
-                      message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been released for ${game.name}`,
-                      alert: value
-                    })
-                  },
-                  error:(err) => {
-                    console.log(err)
-                  }
-                })
-              },
-              error:(err) => {
-                console.log(err)
-              }
-            })
-          }break;
-          case alertType.Comment:{
-            const [name,scriptId] = value.link.split("@");
-            this.scriptService.getAutomataById(scriptId).subscribe({
-              next:(script:automataScript | oldScript) => {
-
-                this.alerts.push({
-                  subject: "Comment",
-                  message: `${name} commented on ${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch}`,
-                  alert: value
-                })
-              },
-              error:(err) => {
-                console.log(err)
-              }
-            })
-          }break;
-          case alertType.Update:{
-            const [scriptId,downloadId] = value.link.split("@");
-            this.scriptService.getAutomataById(scriptId).subscribe({
-              next:(script:automataScript | oldScript) => {
-                this.scriptService.getDownloadedScript(downloadId).subscribe({
-                  next:(download:downloadScript) => {
-                    this.alerts.push({
-                      subject: "Update",
-                      message: `${download.name} v${download.version.major}.${download.version.minor}.${download.version.patch} has new version v${script.version.major}.${script.version.minor}.${script.version.patch}`,
-                      alert: value
-                    })
-                  },
-                  error:(err) => {
-                    console.log(err);
-                  }
-                });
-
-    
-              },
-              error:(err) => {
-                console.log(err)
-              }
-            })
-          }break;
-          case alertType.Flagged:{
-            console.log("flagged")
-          }break;
-          case alertType.Reply:{
-            const [name,scriptId] = value.link.split("@");
-            this.scriptService.getAutomataById(scriptId).subscribe({
-              next:(script:automataScript | oldScript) => {
-
-                this.alerts.push({
-                  subject: "Reply",
-                  message: `${name} replied to your comment on ${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch}`,
-                  alert: value
-                })
-              },
-              error:(err) => {
-                console.log(err)
-              }
-            })
-          }break;
-        }
-      }
-    })
   }
 
   getAlerts(): void{

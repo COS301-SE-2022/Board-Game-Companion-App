@@ -11,9 +11,6 @@ import { environment } from '../environments/environment.prod';
 import { NbThemeModule, NbMenuModule } from '@nebular/theme';
 import { SharedModule } from '@board-game-companion-app/client-lib';
 import { DragulaModule } from 'ng2-dragula';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-
-const config: SocketIoConfig = { url: 'http://localhost:3333', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +28,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3333', options: {} };
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    SocketIoModule.forRoot(config)
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],

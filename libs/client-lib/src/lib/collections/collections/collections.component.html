@@ -1,9 +1,9 @@
 <div class = "row mt-2 w-4/5 mx-auto">
     <div id = "board-games" class = "offset-sm-2 col-sm-10 flex flex-row mb-2 p-1 ">
-        <div (click) = "back()" class = "back h-20 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+        <div (click) = "back()" class = "back h-20 text-gray-600 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
             <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
         </div>
-        <div class = "middle h-20 space-x-2 p-1 flex flex-row border-2 rounded-sm" [style.width.%] = '92'>
+        <div class = "middle h-20 space-x-2 p-1 flex flex-row" [style.width.%] = '92'>
             <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
                 <img class = "w-full h-full" [src] = "value.image">
 
@@ -19,24 +19,21 @@
                     <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
                 </div>
             </div>
-            <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-white text-center flex items-center">
-                <p class = "mx-auto">No Board Games</p>
-            </div>
         </div>
-        <div (click) = "next()" class = "forward h-20 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+        <div (click) = "next()" class = "forward h-20 text-gray-600 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
             <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
         </div>
     </div>
-    <div id = "collections" class = "col-sm-2 p-1 ">
+    <div id = "collections" class = "col-sm-2 p-1">
         <div data-bs-toggle="modal" data-bs-target="#create-collection" class = "new-collection text-white font-medium text-center cursor-pointer rounded-sm px-1 py-1.5 mb-4"> 
             <i class="fas fa-plus"></i>
         </div>
 
         <div *ngFor = "let value of collections" [ngClass] = "{'bg-gray-700':selectedCollection.includes(value),'bg-lime-500':!selectedCollection.includes(value)}" class = "collection rounded-sm mt-1 overflow-hidden text-white text-center cursor-pointer font-medium flex flex-row">
-            <div (click) = "selectCollection(value)" class = "collection-name h-full  bg-inherit py-1.5  text-xs capitalize" [ngClass] = "{'border-r-2 w-4/5':value.name !== 'favourites','w-full':value.name === 'favourites'}">
+            <div (click) = "selectCollection(value)" class = "collection-name h-full w-4/5 bg-inherit py-1.5 border-r-2 text-xs capitalize">
                 {{value.name}}
             </div>
-            <div *ngIf = "value.name !== 'favourites'" (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
+            <div (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
                 <i class="fas fa-times"></i>
             </div>
         </div>
