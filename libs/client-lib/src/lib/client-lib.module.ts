@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ClientLibRoutingModule } from './client-lib-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { NbThemeModule,NbMenuModule } from '@nebular/theme';
+import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
-  imports: [CommonModule, ClientLibRoutingModule,NbThemeModule.forRoot(),NbMenuModule.forRoot()],
+  imports: [CommonModule, ClientLibRoutingModule,NbThemeModule.forRoot(),NbMenuModule.forRoot(),BrowserModule],
   exports: [SharedModule],
 })
 export class ClientLibModule {}
