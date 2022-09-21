@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { automataScript } from '../../shared/models/scripts/automata-script';
 import { myScript } from '../../shared/models/scripts/my-script';
-// import { script } from '../../shared/models/script';
 
 @Injectable({
   providedIn: 'root'

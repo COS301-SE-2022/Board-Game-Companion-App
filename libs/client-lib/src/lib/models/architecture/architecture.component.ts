@@ -14,7 +14,7 @@ export class ArchitectureComponent implements OnInit {
   @Output()checkEvent = new EventEmitter();
 
   ngOnInit(): void{
-    console.log("models")
+    // console.log("models")
   }
 
   getHiddenLayers():layer[]{

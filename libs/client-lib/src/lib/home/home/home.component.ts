@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 	      .pipe(filter((e) => e instanceof NavigationEnd))
 	      .subscribe((e: any) => {
 		    // this.showHideTabs();
-		    console.log(e.url);
+		    // console.log(e.url);
 	});
   }
 
