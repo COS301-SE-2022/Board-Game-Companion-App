@@ -7,9 +7,8 @@ const oAuthConfig:AuthConfig={
   strictDiscoveryDocumentValidation: false,
   redirectUri:window.location.origin,
   clientId: '604714721717-e6t4ksto7fdoqmd26l7t2psvggd38la2.apps.googleusercontent.com',
-  scope:'openid profile email',
-  requestAccessToken:true,
-  useSilentRefresh:true
+  scope:'openid profile email'
+
 }
 export interface userDetails
 {
