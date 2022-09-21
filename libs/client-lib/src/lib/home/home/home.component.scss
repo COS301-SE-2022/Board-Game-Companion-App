@@ -23,6 +23,10 @@
     font-weight: bold;
 }
 
+.wrapper{
+    background-color: $Pcolour-2;
+}
+
 #carousels{
     float: right;
     height: 100%;
@@ -53,11 +57,11 @@
     border-radius: 0 0 10px 0;
 }
 
-img{
-    height: 160px;
-    width: 235px;
-    padding-top: 16px;
-}
+// img{
+//     height: 160px;
+//     width: 235px;
+//     padding-top: 16px;
+// }
 
 table{
     margin: auto;

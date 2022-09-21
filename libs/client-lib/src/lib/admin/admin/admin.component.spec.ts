@@ -6,21 +6,27 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AdminComponent } from './admin.component';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { of } from 'rxjs';
-import { script } from '../../shared/models/scripts/script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
+import { report } from '../../shared/models/scripts/report';
+import { ReportService } from '../../shared/services/reports/report.service';
+import { myScript } from '../../shared/models/scripts/my-script';
+// import { script } from '../../shared/models/scripts/script';
 import { FormsModule } from '@angular/forms';
+import { empty } from '../../shared/models/editor/entity';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
-  let service: AdminService;
+  let Adminservice: AdminService;
+  let Reportservice: ReportService;
+   
   let router: Router;
   // let route: ActivatedRoute;
   let httpTestingController: HttpTestingController;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminComponent],
-      providers: [AdminService],
+      providers: [AdminService,ReportService],
       imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule,FormsModule]
     }).compileComponents();
   });
@@ -30,108 +36,105 @@ describe('AdminComponent', () => {
     component = fixture.componentInstance;
     component.scripts = [];
     fixture.detectChanges();
-    service = TestBed.inject(AdminService);
+    Adminservice = TestBed.inject(AdminService);
+    Reportservice = TestBed.inject(ReportService);
     router = TestBed.inject(Router);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  const Response: script[] = [{
-      _id: "2",
-      name: "tictactoe",
-      author: {name:"Njabulo",email:"jsjs@gmail.com"},
-      owner: {name:"",email:""},
-      boardgame: "",
-      description: "",
-      created: new Date("05-03-19"),
-      release: new Date("15-08-19"),
-      downloads: 500,
-      lastdownload: new Date("05-07-22"),
-      lastupdate: new Date("13-12-21"),
-      public: true,
-      export: false,
-      size: 344,
-      status: {value: 1, message: "Active and running"},
-      comments: [],
-      source: {name:"",location:"",awsKey:""},
-      build: {name:"",location:"",awsKey:""},
-      icon: {name:"",location:"",awsKey:""},
-      __v: 0
-    },{
-      _id: "1",
-      name: "chess",
-      author: {name:"PRO",email:"kid@yahoo.com"},
-      owner: {name:"",email:""},
-      boardgame: "",
-      description: "",
-      created: new Date(0),
-      release: new Date(0),
-      downloads: 32,
-      lastdownload: new Date(0),
-      lastupdate: new Date(0),
-      public: false,
-      export: false,
-      size: 233,
-      status: {value: 0, message: "flagged"},
-      comments: [],
-      source: {name:"",location:"",awsKey:""},
-      build: {name:"",location:"",awsKey:""},
-      icon: {name:"",location:"",awsKey:""},
-      __v: 0
-    },{
-      _id: "3",
-      name: "root",
-      author: {name:"Master",email:"masterInd@gmail.com"},
-      owner: {name:"",email:""},
-      boardgame: "",
-      description: "",
-      created: new Date("01-04-20"),
-      release: new Date("13-09-20"),
-      downloads: 0,
-      lastdownload: new Date("07-07-22"),
-      lastupdate: new Date("12-10-21"),
-      public: false,
-      export: false,
-      size: 320,
-      status: {value: 2, message: "In progress"},
-      comments: [],
-      source: {name:"",location:"",awsKey:""},
-      build: {name:"",location:"",awsKey:""},
-      icon: {name:"",location:"",awsKey:""},
-      __v: 0
+  const Res1: myScript[] = [{
+    name: "",
+    author: {name:"",email:""},
+    boardgame: "",
+    description:"",
+    version:{major:0,minor:0,patch:0},
+    size: 0,
+    icon: {name:"",location:"",key:""},
+    build: {name:"",location:"",key:""},
+    models: [],
+    _id: "",
+    created: new Date(0),
+    lastUpdate: new Date(0),
+    status:{value:0,message:""},
+    export: false,
+    programStructure:empty,
+    source: { name: "", location: "", key: ""}
+    }];
+  const Res2: report[]=[{
+    _id: "",
+    user: {name:"",email:""},
+    script: "",
+    message:"",
+    dateIssued: new Date(0)
+    }];
+  const Res3: automataScript[]=[{
+    _id:"",
+    dateReleased: new Date(0),
+    downloads:0,
+    lastDownload: new Date(0),
+    export: false,
+    comments: [],
+    source: { name: "", key: "", location: ""},
+    previous: [],
+    name: "",
+    author:{name:"",email:""},
+    boardgame:"",
+    description:"",
+    version:{major:0,minor:0,patch:0},
+    size: 0,
+    icon: {name:"",location:"",key:""},
+    build: {name:"",location:"",key:""},
+    models: [],
+    rating:0,
     }];
 
     it('should load all scripts when ngOnInit()', ()=>{
-      jest.spyOn(service,'getScripts'); //Spy when it's called
-      
+      jest.spyOn(Adminservice,'getScripts'); //Spy when it's called
+      jest.spyOn(Adminservice,'getUserOwnedScripts'); //
+      jest.spyOn(Reportservice,'getAll');
+
       expect(component.scripts).toStrictEqual([]);
+      expect(component.inProgressScripts).toStrictEqual([]);
+      expect(component.reports).toStrictEqual([]);
 
       component.ngOnInit();
 
-      expect(service.getScripts).toBeCalledTimes(1);
-     
+      expect(Adminservice.getScripts).toBeCalledTimes(1);
+      expect(Adminservice.getUserOwnedScripts).toBeCalledTimes(1);
+      expect(Reportservice.getAll).toBeCalledTimes(1);
+
       expect(component.scripts).toBeTruthy();
+      expect(component.inProgressScripts).toBeTruthy();
+      expect(component.reports).toBeTruthy();
 
       fixture.detectChanges();
 
-      const req = httpTestingController.match('http://localhost:3333/api/scripts/retrieve/all');
-      expect(req[0].request.method).toBe('GET');
-      req[0].flush(Response);
+      const reqScripts = httpTestingController.match('http://localhost:3333/api/automata-scripts/retreive-all');
+      expect(reqScripts[0].request.method).toBe('GET');
+      reqScripts[0].flush(Res1);
 
       fixture.detectChanges();
 
-      const Scripts = fixture.nativeElement.querySelectorAll('tr');
-      expect(Scripts.length-1).toEqual(Response.length); //minus first row
 
-      const navigateSpy = jest.spyOn(router,'navigate');
+      const reqInProgr = httpTestingController.match('http://localhost:3333/api/my-scripts/all-scripts');
+      expect(reqInProgr[0].request.method).toBe('GET');
+      reqInProgr[0].flush(Res3);
 
-      const btnEdit = fixture.nativeElement.querySelector('.btn-success');
-      btnEdit.click();
       
-      expect(navigateSpy).toBeCalled();
-    });
+      const reqRep = httpTestingController.match('http://localhost:3333/api/reports/retrieve-all');
+      expect(reqRep[0].request.method).toBe('GET');
+      reqRep[0].flush(Res2);
+      // const Scripts = fixture.nativeElement.querySelectorAll('tr');
+      // expect(Scripts.length-1).toEqual(Response.length); //minus first row
 
+      // const navigateSpy = jest.spyOn(router,'navigate');
+
+      // const btnEdit = fixture.nativeElement.querySelector('.btn-success');
+      // btnEdit.click();
+      
+      // expect(navigateSpy).toBeCalled();
+    });
 });

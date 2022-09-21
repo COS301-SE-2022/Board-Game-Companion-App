@@ -10,20 +10,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { OAuthService, UrlHelperService, OAuthLogger, DateTimeProvider } from 'angular-oauth2-oidc';
 import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service';
 // import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-// import { Observable } from 'rxjs';
+import 'fake-indexeddb/auto';
 import { ScriptService } from './shared/services/scripts/script.service';
 import { ModelsService } from './shared/services/models/models.service';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
-
-// import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service';
-// class TestHttpRequestInterceptor implements HttpInterceptor {
-//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//       return new Observable<any>(observer => {
-//         observer.next({} as HttpEvent<any>);
-//       })
-//   }
-// }
 describe('Router: Module', () => {
 
     let location: Location;
@@ -66,10 +57,6 @@ describe('Router: Module', () => {
       tick();
       expect(location.path()).toBe('/board-game-search');
   }));
-  it('navigate to "login" redirects you to /login',() => {
-    router.navigate(['login']);
-    expect(location.path()).toBe('/home');
-  });
 
   it('navigate to "collections" redirects you to /collections',fakeAsync(() => {
     router.navigate(['collections']);
@@ -90,15 +77,15 @@ describe('Router: Module', () => {
   }));
 
   it('navigate to "script-detail" redirects you to /script-detail',fakeAsync(() => {
-    router.navigate(['script-detail']);
-    tick();
-    expect(location.path()).toBe('/script-detail');
+    const navSpy = jest.spyOn(router,'navigate');
+    router.navigate(['/script-detail']);
+    expect(navSpy).toHaveBeenCalledWith(['/script-detail']);
   }));
   
   it('navigate to "viewCollection" redirects you to /viewCollection',fakeAsync(() => {
-    router.navigate(['viewCollection']);
-    tick();
-    expect(location.path()).toBe('/viewCollection');
+    const navSpy = jest.spyOn(router,'navigate');
+    router.navigate(['/viewCollection']);
+    expect(navSpy).toHaveBeenCalledWith(['/viewCollection']);
   }));
 
   it('navigate to "scripts" redirects you to /scripts',fakeAsync(() => {
@@ -125,10 +112,18 @@ describe('Router: Module', () => {
     expect(location.path()).toBe('/models');
   }));
 
-  // it('navigate to "executor" redirects you to /executor',fakeAsync(() => {
-  //   router.navigate(['executor']);
-  //   tick();
-  //   expect(location.path()).toBe('/executor');
-  // }));
+  it('navigate to "executor" redirects you to /executor',fakeAsync(() => {
+    const navSpy = jest.spyOn(router,'navigate');
+    const spyRoute = jest.spyOn(router,'getCurrentNavigation');
+    spyRoute.mockReturnValue({extras: {state: {value: 3454}}} as any);
+    router.navigate(['/script-exec']);
+    expect(navSpy).toHaveBeenCalledWith(['/script-exec']);
+  }));
+
+  it('navigate to "board-game-details" redirects you to /board-game-details',fakeAsync(() => {
+    router.navigate(['board-game-details']);
+    tick();
+    expect(location.path()).toBe('/board-game-details');
+  }));
 
 });
