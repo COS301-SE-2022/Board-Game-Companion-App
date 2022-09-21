@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 import { EditorEditFeaturesComponent } from './editor-edit-features.component';
 
@@ -8,7 +10,8 @@ describe('EditorEditFeaturesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditorEditFeaturesComponent],
+      declarations: [EditorEditFeaturesComponent,NotificationComponent],
+      imports: [FormsModule]
     }).compileComponents();
   });
 

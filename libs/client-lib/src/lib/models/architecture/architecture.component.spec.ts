@@ -1,26 +1,18 @@
-// describe('Test editor',()=>{
-//   it('testing testing',()=>{
-//     expect("1").toBe("1");
-//   })
-// })
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ArchitectureComponent } from './architecture.component';
-
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-// import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
+import { FormsModule } from '@angular/forms';
 describe('ArchitectureComponent', () => {
   let component: ArchitectureComponent;
   let fixture: ComponentFixture<ArchitectureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
       declarations: [ArchitectureComponent,GeneralComponent],
       providers:[ModelsService]
     }).compileComponents(); 

@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin-service/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { script } from '../../shared/models/scripts/script';
 import { automataScript } from '../../shared/models/scripts/automata-script';
-// import { user } from '../../shared/models/general/user';
 import { report } from '../../shared/models/scripts/report';
-// import { TestPassService } from '../../test-pass.service';
 import { ReportService } from '../../shared/services/reports/report.service';
 import { myScript } from '../../shared/models/scripts/my-script';
-// import { ScriptService } from '../../shared/services/scripts/script.service';
 
 @Component({
   selector: 'board-game-companion-app-admin',

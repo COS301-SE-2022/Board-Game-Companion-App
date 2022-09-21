@@ -143,7 +143,7 @@ export class CommentComponent implements OnInit {
     const today = new Date(); 
     const current = new Date(this.currentComment.created);
 
-    console.log(this.currentComment.created);
+    // console.log(this.currentComment.created);
 
     temp = today.getFullYear() - current.getFullYear();
 

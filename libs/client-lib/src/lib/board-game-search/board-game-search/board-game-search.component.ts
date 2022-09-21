@@ -37,7 +37,7 @@ export class BoardGameSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("----->::"+ this.mostActive.length);
+    // console.log("----->::"+ this.mostActive.length);
     if(this.mostActive.length == 0){
       this.searchService.getMostActive().subscribe(result =>{
         this.contentType = "Most Active";
@@ -81,7 +81,7 @@ export class BoardGameSearchComponent implements OnInit {
                     
                 });
 
-                console.log(url);
+                // console.log(url);
                 
                 if (parseXml.querySelectorAll("image").length ==0)
                 {
@@ -128,7 +128,7 @@ export class BoardGameSearchComponent implements OnInit {
   }
 
   changePage(page:number):void{
-    console.log("------:: in change: "+page);
+    // console.log("------:: in change: "+page);
     this.show = this.mostActive.slice((page - 1) * 14,page * 14);
   }
 

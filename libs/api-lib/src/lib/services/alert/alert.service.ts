@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Alert, AlertDocument } from '../../schemas/alert.schema';
-import mongoose from 'mongoose';
 import { user } from '../../models/general/user';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
-import { create } from 'domain';
-import { string } from '@tensorflow/tfjs';
 import { alertType } from '../../models/general/alertType';
-import { userInfo } from 'os';
 import { alertDto } from '../../models/dto/alertDto';
+import {WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect} from '@nestjs/websockets';
+import { Server } from 'http';
 
+@WebSocketGateway()
 @Injectable()
 export class AlertService {
+    @WebSocketServer()server: Server;
+
     constructor(@InjectModel(Alert.name) private readonly alertModel: Model<AlertDocument>,
                 @InjectModel(AutomataScript.name) private readonly automataModel: Model<AutomataScriptDocument>,
                 @InjectModel(OldScript.name) private readonly oldModel: Model<OldScriptDocument>){}
@@ -30,7 +31,10 @@ export class AlertService {
         }
 
         const created = new this.alertModel(dto);
-        return created.save();
+        
+        const result = await created.save();
+        this.server.emit("alert." + result.recepient.name + "." + result.recepient.email,result);
+        return result;
     }
 
     async getAllUserMessages(recepient:user):Promise<AlertDocument[]>{

@@ -1,25 +1,19 @@
-// describe('Test editor',()=>{
-//   it('testing testing',()=>{
-//     expect("1").toBe("1");
-//   })
-// })
-
-// describe('Test editor',()=>{
-//   it('testing testing',()=>{
-//     expect("1").toBe("1");
-//   })
-// })
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TrainComponent } from './train.component';
 import { ModelsService } from '../../shared/services/models/models.service';
-
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule } from '@angular/forms';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
+import { UploadComponent } from '../upload/upload.component';
+import { ArchitectureComponent } from '../architecture/architecture.component';
+import { ConfigureComponent } from '../configure/configure.component';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { OnlineStatusService } from 'ngx-online-status';
+import { LoadDataComponent } from '../load-data/load-data.component';
 describe('TrainComponent', () => {
   let component: TrainComponent;
   //let modService: ModelsService;
@@ -28,8 +22,9 @@ describe('TrainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
-      declarations: [TrainComponent],
-      providers:[ModelsService]
+      declarations: [TrainComponent,UploadComponent,ArchitectureComponent,ConfigureComponent,
+        NotificationComponent,LoadDataComponent],
+      providers:[ModelsService,StorageService,OnlineStatusService]
     }).compileComponents(); 
     //check if component created
     fixture = TestBed.createComponent(TrainComponent);
