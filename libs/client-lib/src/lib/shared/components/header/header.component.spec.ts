@@ -7,6 +7,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BggSearchService } from '../../services/bgg-search/bgg-search.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { FormsModule } from '@angular/forms';
+import { OnlineStatusService } from 'ngx-online-status';
+import { AlertService } from '../../services/alert/alert.service';
+import { ScriptService } from '../../services/scripts/script.service';
+import { CollectionService } from '../../services/collections/collection.service';
+import { NotificationComponent } from '../notification/notification.component';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
@@ -14,8 +19,8 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
-      declarations: [HeaderComponent],
-      providers:[BggSearchService]
+      declarations: [HeaderComponent,NotificationComponent],
+      providers:[BggSearchService,OnlineStatusService,AlertService,ScriptService,CollectionService]
     }).compileComponents();
   });
 

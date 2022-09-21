@@ -141,7 +141,7 @@ describe('AdminComponent', () => {
     router = TestBed.inject(Router);
     const navigateSpy = jest.spyOn(router,'navigate');
     component.getDetails('12345');
-    expect(navigateSpy).toBeCalledWith(['board-game-details'],{queryParams: {my_object: '12345'}}); 
+    expect(navigateSpy).toBeCalledWith(['board-game-details'],{state: {value: '12345'}}); 
   });
 
   it('should change Search Mode', ()=>{

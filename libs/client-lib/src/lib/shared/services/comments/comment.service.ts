@@ -18,7 +18,7 @@ export class CommentService {
   countComments(id:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("id",id);
-    console.log("countComments");
+    // console.log("countComments");
     return this.httpClient.get<number>(this.api + "comments/count-comments",{params:param});
   }
 

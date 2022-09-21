@@ -23,9 +23,11 @@ const mockScript:script = {
   size: 344,
   status: {value: 1, message: "Active and running"},
   comments: [],
-  source: {name:"",location:"",awsKey:""},
-  build: {name:"",location:"",awsKey:""},
-  icon: {name:"",location:"",awsKey:""},
+  programStructure: {type:"root",name:"root",endLine:0,endPosition:0,startLine:0,startPosition:0,properties:[],children:[]},
+  source: {name:"",location:"",key:""},
+  build: {name:"",location:"",key:""},
+  icon: {name:"",location:"",key:""},
+  models: [],
   __v: 0
 }
 
