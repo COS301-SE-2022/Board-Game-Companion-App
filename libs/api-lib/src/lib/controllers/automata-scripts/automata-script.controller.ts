@@ -59,7 +59,7 @@ export class ApiAutomataScriptController {
     }
 
     @Get('average-rating')
-    async averateRating(@Query('script')script:string): Promise<number>{
+    async averageRating(@Query('script')script:string): Promise<number>{
         return this.ratingService.average(script);
     }
 

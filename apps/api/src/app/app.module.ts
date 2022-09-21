@@ -8,7 +8,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 
-
 @Module({
   imports: [
     ApiLibModule,
@@ -18,9 +17,10 @@ import { join } from 'path';
     }),
     ConfigModule.forRoot(),
 
-    MongooseModule.forRoot(process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD)
-    //
-   
+    MongooseModule.forRoot(process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD),
+    // MongooseModule.forRootAsync({
+    //   useFactory: async () => (process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD),
+    // })
   ],
   controllers: [AppController],
   providers: [AppService],
