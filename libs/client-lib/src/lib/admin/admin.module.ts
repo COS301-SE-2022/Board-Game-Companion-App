@@ -8,6 +8,7 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminReportsComponent } from './admin-reports/admin-reports.component';
 import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
 import { AdminOthersComponent } from './admin-others/admin-others.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AdminOthersComponent } from './admin-others/admin-others.component';
     CommonModule,
     FormsModule,
     NgxPaginationModule,
+    NgChartsModule,
     RouterModule.forChild([{path:'',component:AdminComponent}])
   ]
 })
