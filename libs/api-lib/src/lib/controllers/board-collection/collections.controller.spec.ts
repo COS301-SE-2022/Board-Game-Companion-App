@@ -72,65 +72,65 @@ describe('CollectionsController',()=>{
     service =  moduleRef.get<CollectionsService>(CollectionsService);
   });
 
-  // it('should be defined', () => {
-  //   expect(controller).toBeDefined();
-  // });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 
-  // describe('getCollectionsForUser', ()=>{
-  //   it('should get a collection for specific User', ()=>{
-  //     expect(controller.getCollectionsForUser("owner's Name", "owner's email")).resolves.toEqual({
-  //       owner: {name:"owner's Name", email:"owner's email"},
-  //       name: "Collection1",
-  //       boardgames: ["chess" ,"roots", "snakes and ladders"]
-  //     });
-  //   });
-  // });
+  describe('getCollectionsForUser', ()=>{
+    it('should get a collection for specific User', ()=>{
+      expect(controller.getCollectionsForUser("owner's Name", "owner's email")).resolves.toEqual({
+        owner: {name:"owner's Name", email:"owner's email"},
+        name: "Collection1",
+        boardgames: ["chess" ,"roots", "snakes and ladders"]
+      });
+    });
+  });
 
-  // describe('createCollection', ()=>{
-  //   it('should create a collection', ()=>{
-  //     const newUser: user ={
-  //       name: "newUser",
-  //       email: "newUser@gmail.com"
-  //     };
-  //       expect(controller.createCollection("Collection3", newUser)).resolves.toEqual({
-  //         owner: newUser,
-  //         name: "Collection3",
-  //         boardgames: ["30 seconds" ,"roots", "monopoly"]  
-  //       });
-  //   });
-  // });
+  describe('createCollection', ()=>{
+    it('should create a collection', ()=>{
+      const newUser: user ={
+        name: "newUser",
+        email: "newUser@gmail.com"
+      };
+        expect(controller.createCollection("Collection3", newUser)).resolves.toEqual({
+          owner: newUser,
+          name: "Collection3",
+          boardgames: ["30 seconds" ,"roots", "monopoly"]  
+        });
+    });
+  });
 
-  // describe('removeCollection', ()=>{
-  //   it ('should remove a collection', ()=>{
-  //     expect(controller.removeCollection("FaveCollection","James","JamesJennifer@gmail.com")).resolves.toEqual(2)
-  //   });
-  // });
+  describe('removeCollection', ()=>{
+    it ('should remove a collection', ()=>{
+      expect(controller.removeCollection("FaveCollection","James","JamesJennifer@gmail.com")).resolves.toEqual(2)
+    });
+  });
 
-  // describe('removeBoardGame', ()=>{
-  //   it('should remove a board game', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     };
-  //     expect(controller.removeBoardGame("30 seconds","Collection4",newUser.name,newUser.email)).resolves.toEqual(2)
-  //   });
-  // });
+  describe('removeBoardGame', ()=>{
+    it('should remove a board game', ()=>{
+      const newUser: user ={
+        name: "Jennifer",
+        email: "jenniferaustin@gmail.com"
+      };
+      expect(controller.removeBoardGame("30 seconds","Collection4",newUser.name,newUser.email)).resolves.toEqual(2)
+    });
+  });
 
-  // describe('removeCollectionById', ()=>{
-  //   it('should remove a collection by its id', ()=>{
-  //     expect(controller.removeCollectionById("string ID")).resolves.toEqual(2)
-  //   });
-  // });
+  describe('removeCollectionById', ()=>{
+    it('should remove a collection by its id', ()=>{
+      expect(controller.removeCollectionById("string ID")).resolves.toEqual(2)
+    });
+  });
 
-  // describe('addGameToCollection', ()=>{
-  //   it('should add a board game to a collection', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     }
-  //     expect(controller.addGameToCollection(newUser,"ChessCollection","Chess")).resolves.toEqual(true)
-  //   });
-  // }); 
+  describe('addGameToCollection', ()=>{
+    it('should add a board game to a collection', ()=>{
+      const newUser: user ={
+        name: "Jennifer",
+        email: "jenniferaustin@gmail.com"
+      }
+      expect(controller.addGameToCollection(newUser,"ChessCollection","Chess")).resolves.toEqual(true)
+    });
+  }); 
 
   describe('getScripts', ()=>{
     it('should get all scripts', ()=>{
@@ -159,13 +159,13 @@ describe('CollectionsController',()=>{
     });
   });
 
-  // describe('alreadyExists', ()=>{
-  //   it('should check if there is already a collection', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     };
-  //     expect(controller.alreadyExists(newUser.name, newUser.email,"Collection20")).resolves.toEqual(true)
-  //   });
-  // });
+  describe('alreadyExists', ()=>{
+    it('should check if there is already a collection', ()=>{
+      const newUser: user ={
+        name: "Jennifer",
+        email: "jenniferaustin@gmail.com"
+      };
+      expect(controller.alreadyExists(newUser.name, newUser.email,"Collection20")).resolves.toEqual(true)
+    });
+  });
 })
