@@ -14,14 +14,13 @@ import { NeuralNetwork } from '../../schemas/neural-network.schema';
 import { File } from '../../schemas/file.schema'
 import { createMock } from '@golevelup/ts-jest';
 
-
 /*************************************************unit test**********************************************/
-
 describe('AutomataService', ()=>{
   let service: AutomataService; 
   
   let dbService : MongoDbStorageService;
   let automataModel:  Model<AutomataScriptDocument>;
+  let oldModel : Model<OldScriptDocument>;
   
 
   const userAuth : user ={
@@ -124,6 +123,7 @@ describe('AutomataService', ()=>{
      service= moduleRef.get<AutomataService>(AutomataService); 
      dbService= moduleRef.get<MongoDbStorageService>(MongoDbStorageService);
      automataModel=  moduleRef.get<Model<AutomataScriptDocument>>(getModelToken(AutomataScript.name));
+     oldModel = moduleRef.get<Model<OldScriptDocument>>(getModelToken(OldScript.name));
      
 
   });
@@ -140,6 +140,13 @@ describe('AutomataService', ()=>{
         const response = await service.getAll();
         expect(response).toEqual([mockAutomata]);
   });
+
+  it('should return all scripts by game id', async()=>{
+    jest.spyOn(automataModel, 'find').mockReturnValue(([mockAutomata]) as any);
+        const response = await service.getByGame("Monopoly");
+        expect(response).toEqual([mockAutomata]);
+  });
+  
   
   it('should get script by One script ', async()=>{
     jest.spyOn(automataModel, 'findOne').mockReturnValueOnce((mockAutomata) as any);
