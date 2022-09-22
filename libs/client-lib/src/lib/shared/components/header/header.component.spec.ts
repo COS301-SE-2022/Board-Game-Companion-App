@@ -12,13 +12,15 @@ import { AlertService } from '../../services/alert/alert.service';
 import { ScriptService } from '../../services/scripts/script.service';
 import { CollectionService } from '../../services/collections/collection.service';
 import { NotificationComponent } from '../notification/notification.component';
+import { SocketIoModule } from 'ngx-socket-io';
+// import { WrappedSocket } from 'ngx-socket-io/src/socket-io.service';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule,SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
       declarations: [HeaderComponent,NotificationComponent],
       providers:[BggSearchService,OnlineStatusService,AlertService,ScriptService,CollectionService]
     }).compileComponents();

@@ -15,6 +15,8 @@ import { ScriptService } from './shared/services/scripts/script.service';
 import { ModelsService } from './shared/services/models/models.service';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
+import { SocketIoModule } from 'ngx-socket-io';
 describe('Router: Module', () => {
 
     let location: Location;
@@ -34,8 +36,9 @@ describe('Router: Module', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule],
-        providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider,ScriptService,ModelsService],
+        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule,ServiceWorkerModule.register('', {enabled: false}),SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
+        providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,
+          DateTimeProvider,ScriptService,ModelsService,SwUpdate],
         declarations: [AppComponent]
     });
     location = TestBed.inject(Location);
