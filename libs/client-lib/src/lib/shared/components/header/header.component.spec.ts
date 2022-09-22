@@ -17,21 +17,18 @@ import { SocketIoModule } from 'ngx-socket-io';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule,SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
       declarations: [HeaderComponent,NotificationComponent],
-      providers:[BggSearchService,OnlineStatusService,AlertService,ScriptService,CollectionService]
+      providers:[BggSearchService,OnlineStatusService,AlertService,ScriptService,CollectionService],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+ 
   it('should create', () => {
     expect(component).toBeTruthy();
   });

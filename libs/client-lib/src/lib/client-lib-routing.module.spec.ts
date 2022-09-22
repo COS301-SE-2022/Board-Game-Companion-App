@@ -39,13 +39,15 @@ describe('Router: Module', () => {
         imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule,ServiceWorkerModule.register('', {enabled: false}),SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
         providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,
           DateTimeProvider,ScriptService,ModelsService,SwUpdate],
-        declarations: [AppComponent]
+        declarations: [AppComponent],
+        teardown: { destroyAfterEach: false },
     });
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
     fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     router.initialNavigation();
+
   });
 
 
