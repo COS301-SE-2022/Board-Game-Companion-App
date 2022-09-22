@@ -40,6 +40,7 @@ import { Alert, AlertSchema } from './schemas/alert.schema';
 import { AlertService } from './services/alert/alert.service';
 import { SocketGateway } from './services/socket/socket.gateway';
 import { ApiAlertController } from './controllers/alert/alert.controller';
+import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
 
 @Module({
   imports:[
@@ -55,7 +56,8 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
                                 { name: OldScript.name, schema: OldScriptSchema},
                                 { name: DownloadScript.name, schema: DownloadScriptSchema},
                                 { name: File.name, schema: FileSchema},
-                                { name: Alert.name, schema: AlertSchema}
+                                { name: Alert.name, schema: AlertSchema},
+                                { name: Moderator.name, schema: ModeratorSchema}
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
