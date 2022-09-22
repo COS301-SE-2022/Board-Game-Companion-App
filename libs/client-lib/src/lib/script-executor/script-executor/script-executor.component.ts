@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { Router } from '@angular/router';
+  import { Router } from '@angular/router';
 import { script } from '../../shared/models/scripts/script';
 import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
@@ -26,6 +26,7 @@ export class ScriptExecutorComponent implements OnInit {
   s = 0;
   sec = "sec";
   gameName = ""
+  currPlayer = ""
   showInput = false;
   showOutput = false;
   inputBlock = false;
@@ -175,7 +176,7 @@ export class ScriptExecutorComponent implements OnInit {
       {
         outputElem.innerHTML = value + "<br>Press Enter to continue";
       }
-      this.history.push(value);
+      this.history.push(this.currPlayer+": "+value);
       this.recentPrompt = value + "<br>Press Enter to continue";
 
       const pause = new Promise((resolve)=>{
@@ -190,7 +191,12 @@ export class ScriptExecutorComponent implements OnInit {
       await pause;
     })
   }
-
+  setCurrPlayer(){
+    return (async(value:string) => {
+      //
+      this.currPlayer = value;
+    });
+  }
   input(){
     
     return (async(prompt:string,type:string,options?:string[])=>{
@@ -199,7 +205,7 @@ export class ScriptExecutorComponent implements OnInit {
       const elem = document.getElementById("TextOutput");
       if(elem)
         elem.innerHTML += prompt+"\n";
-      this.history.push(prompt);
+      this.history.push(this.currPlayer+": "+prompt);
       this.recentPrompt = prompt;
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
@@ -253,7 +259,7 @@ export class ScriptExecutorComponent implements OnInit {
     {
       outputElem.innerHTML = "";
     }
-    this.history.push(this.inputResult) ;
+    this.history.push(this.currPlayer+": "+this.inputResult) ;
     this.showInput = false;
     this.inputBlock = false;
   }
@@ -300,7 +306,8 @@ export class ScriptExecutorComponent implements OnInit {
       model: await this.neuralnetworks(),
       input: this.input(),
       inputGroup: this.inputGroup(),
-      output: this.output()
+      output: this.output(),
+      setCurrPlayer: this.setCurrPlayer()
 
     }
   }
