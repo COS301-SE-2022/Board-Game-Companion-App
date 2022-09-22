@@ -10,6 +10,7 @@ import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visua
 import { Subscription } from 'rxjs';
 import { ConsoleLogger } from '@nestjs/common';
 import { NgForOf } from '@angular/common';
+import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
@@ -972,13 +973,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.count++
                 this.eID++
                 const id = "e" + this.eID.toString()
+                let input = [""]
+                if(lines[j].match(/"(.*?)"/g) != null)
+                {
+                  input = lines[j].match(/"(.*?)"/g) || []
+                }
+                else if(lines[j].match(/'(.*?)'/g) != null)
+                {
+                  input = lines[j].match(/'(.*?)'/g) || []
+                }
                 if(openIf > 0)
                 {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Output', class: 'visualO', id: id, inputs: [lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
                 }
                 else
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: id, inputs: [lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(")")).replace(/'/g, ""),"","","","","","",""], pos: 0, true: 0, false: 0})
+                  this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
                 } 
               }
               //Input
@@ -987,13 +997,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.count++
                 this.eID++
                 const id = "e" + this.eID.toString()
+                let input = [""]
+                if(lines[j].match(/"(.*?)"/g) != null)
+                {
+                  input = lines[j].match(/"(.*?)"/g) || []
+                }
+                else if(lines[j].match(/'(.*?)'/g) != null)
+                {
+                  input = lines[j].match(/'(.*?)'/g) || []
+                }
                 if(openIf > 0)
                 {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Input', class: 'visualIn', id: id, inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
                 }
                 else
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: id, inputs: [lines[j].substring(lines[j].indexOf("'") + 1, lines[j].indexOf(",") -1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                  this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
                 }
                                 
               }
@@ -1041,7 +1060,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 const conditions = (lines[j].match(/&&/g) || []).length + (lines[j].match(/\|\|/g) || []).length + 1
                 const AndOr = lines[j].match(/&& | \|\|/g)
                 let aoIndex = 0
-                console.log(AndOr)
                 const condi = lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(")")).replace(/\s/g, '').split(/[&&,||]/)
                 params.push(conditions.toString())
                 //console.log(lines[j].split("&&"))
@@ -1131,8 +1149,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     }
                   }
                 })
-               
-                console.log(params)
                 this.editorVisual.playersLoopIndex++
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
@@ -1152,8 +1168,24 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   openInitial++
                   this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
                 }
-                //console.log(conditions)
                 
+              }
+              //Return statements
+              else if(lines[j].includes("return"))
+              {
+                this.count++
+                this.eID++
+                const id = "e" + this.eID.toString()
+                const input = lines[j].split(' ').join('');
+                input.substring(input.indexOf("n") + 1)
+                if(openIf > 0)
+                {
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                }
+                else
+                {
+                  this.editorVisual.Players[player].actions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+                }
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))

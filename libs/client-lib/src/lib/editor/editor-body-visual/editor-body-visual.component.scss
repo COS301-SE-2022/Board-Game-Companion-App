@@ -151,8 +151,14 @@
     margin: 2em;
 }
 
-.visualIf{
-    overflow: none;
+.visualIf #content{
+    overflow-y: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+.visualIf #content::-webkit-scrollbar{
+    width: 0 !important
 }
 
 .AndOr{
@@ -161,5 +167,6 @@
     border: solid 3px black;
     border-radius: 15px;
     margin-top: 1em;
+    margin-bottom: 1em;
     text-align: center;
 }
