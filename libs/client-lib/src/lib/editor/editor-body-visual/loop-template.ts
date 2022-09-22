@@ -32,7 +32,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                         </div>
                     </div>
                     <!--Return-->
-                    <input id = "return" *ngIf = "item.title === 'Return'">
+                    <input id = "return" *ngIf = "item.title === 'Return'" [value]="item.inputs[0]">
                     <!--Title displayed for certain visuals-->
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->

@@ -718,6 +718,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.cut();
   }
 
+  getEID()
+  {
+    this.count++
+    this.eID++
+    return ("e" + this.eID.toString())
+  }
+
   updateVDSL()
   {
     this.editorVisual.clear()
@@ -735,6 +742,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     const ifContains = [
       {numberOfIf: 0, open: 0}
     ]
+    let createdIf = false
+    let createdFor = false
     let player = -1
     let action = 0
     let open = 0
@@ -797,11 +806,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           totalIf++
         }
+        else if(createdFor)
+        {
+          totalIf++
+        }
         else
         {
           totalIf = totalIf + 2
         }
         ifContains.push({numberOfIf: totalIf, open: openIf})
+        createdIf = true
         inElse = false
         
       }
@@ -814,6 +828,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       else if((lines[j].includes("for") && lines[j].includes("{")) || (lines[j].includes("for") && lines[j + 1].includes("{")))
       {
         open++
+        openIf++
+        if(openIf == 0)
+        {
+          openInitial = 0
+        }
+        if(createdIf)
+        {
+          totalIf = totalIf + 2
+        }
+        else
+        {
+          totalIf++
+        }
+        createdFor = true
+        ifContains.push({numberOfIf: totalIf, open: openIf})
+        createdIf = false
       }
       else if((lines[j].includes("while") && lines[j].includes("{")) || (lines[j].includes("while") && lines[j + 1].includes("{")))
       {
@@ -855,7 +885,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             const place = ifContains.findIndex(obj => obj.open == openIf)
             if(place != -1)
             {
-              if(!lines[j + 1].includes("else") && !inElse)
+              if(!lines[j + 1].includes("else") && !inElse && createdIf)
               {
                 const index = ifContains[place].numberOfIf + 1
                 this.editorVisual.PlayersLoops[index][0].inputs = ["","","","",""]
@@ -864,7 +894,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               {
                 ifContains.push({numberOfIf: ifContains[ifContains.length-1].numberOfIf + 1, open: openIf})
               }
-              else
+              else if(inElse)
               {
                 inElse = false
               }
@@ -932,9 +962,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Create
               if(l[1] == "let")
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                
+                const id = this.getEID()
                 if(openIf > 0)
                 {
                   this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
@@ -949,19 +978,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
                 if(set != null)
                 {
                   if(openIf > 0)
                   {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
                   }
                   else
                   {
-                    this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, l[3].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+                    this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
                   }
                      
                 }
@@ -970,9 +997,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Output
               else if (l[1].includes('output('))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 let input = [""]
                 if(lines[j].match(/"(.*?)"/g) != null)
                 {
@@ -994,9 +1019,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Input
               else if(l[1].includes('input('))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 let input = [""]
                 if(lines[j].match(/"(.*?)"/g) != null)
                 {
@@ -1019,9 +1042,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
                 if(call != null)
                 {
@@ -1053,9 +1074,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 const params = []
                 const conditions = (lines[j].match(/&&/g) || []).length + (lines[j].match(/\|\|/g) || []).length + 1
                 const AndOr = lines[j].match(/&& | \|\|/g)
@@ -1161,7 +1180,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.editorVisual.PlayersLoops.push(dest2)
                 if(openIf > 0 && openInitial > 0)
                 {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  if(createdFor)
+                  {
+                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                    createdFor = false
+                  }
+                  else
+                  {
+                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  }
+                  
                 }
                 else
                 {
@@ -1173,11 +1201,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Return statements
               else if(lines[j].includes("return"))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 const input = lines[j].split(' ').join('');
-                input.substring(input.indexOf("n") + 1)
                 if(openIf > 0)
                 {
                   this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
@@ -1190,9 +1215,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 const loop = lines[j].split(";")
                 const num = loop[1].replace(/\D/g, '')
                 let n = +num
@@ -1209,8 +1232,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 {
                   by = +loop[1].replace(/\D/g, '')
                 }
-                this.editorVisual.playersLoopIndex++    
-                this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                this.editorVisual.playersLoopIndex++
+                if(openIf > 0 && openInitial > 0) 
+                {
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }
+                else
+                {
+                  openInitial++
+                  this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }    
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
@@ -1224,9 +1255,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //While/do While Loops
               else if(lines[j].includes("while(") || lines[j].includes("while ("))
               {
-                this.count++
-                this.eID++
-                const id = "e" + this.eID.toString()
+                const id = this.getEID()
                 let params = [""]
                 let operator = ""
                 if(lines[j].includes(">") && !lines[j].includes("="))
