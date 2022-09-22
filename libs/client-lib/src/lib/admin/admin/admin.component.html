@@ -44,8 +44,21 @@
             </div>
         </div>
 
+        <div class = "col-sm-12 mt-2" *ngIf = "tab===0">
+            <board-game-companion-app-admin-scripts></board-game-companion-app-admin-scripts>
+        </div>
 
+        <div class = "col-sm-12 mt-2" *ngIf = "tab===1">
+            <board-game-companion-app-admin-users></board-game-companion-app-admin-users>
+        </div>
 
+        <div class = "col-sm-12 mt-2" *ngIf = "tab===2">
+            <board-game-companion-app-admin-reports></board-game-companion-app-admin-reports>
+        </div>
+
+        <div class = "col-sm-12 mt-2" *ngIf = "tab===3">
+            <board-game-companion-app-admin-others></board-game-companion-app-admin-others>
+        </div>
     </div>
 </div>
 

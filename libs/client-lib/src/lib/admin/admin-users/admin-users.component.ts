@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'board-game-companion-app-admin-others',
+  selector: 'board-game-companion-app-admin-users',
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.scss'],
 })
