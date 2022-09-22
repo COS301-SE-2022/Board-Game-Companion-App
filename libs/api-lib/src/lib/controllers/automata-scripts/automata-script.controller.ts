@@ -35,7 +35,7 @@ export class ApiAutomataScriptController {
         return this.automataService.getAll();
     }
 
-    @Get('retrieve-all')
+    @Get('retrieve-all-old')
     async getAllOld():Promise<OldScript[]>{
         return this.automataService.getAllOld();
     }

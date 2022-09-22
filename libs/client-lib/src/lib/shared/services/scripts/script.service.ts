@@ -127,6 +127,10 @@ export class ScriptService {
     return this.httpClient.get<myScript[]>(this.api + "my-scripts/all-my-script",{params:param});
   }
 
+  getAllMyScript():Observable<myScript[]>{
+    return this.httpClient.get<myScript[]>(this.api + "my-scripts/all-scripts");
+  }
+
   update(id:string,exp:boolean,description:string): Observable<myScript>{
     return this.httpClient.put<myScript>(this.api + "my-scripts/update",{id:id,export:exp,description:description});
   }
@@ -143,6 +147,14 @@ export class ScriptService {
 
   getAutomataScripts():Observable<automataScript[]>{
     return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-all");
+  }
+
+  getOldScripts():Observable<oldScript[]>{
+    return this.httpClient.get<oldScript[]>(this.api + "automata-scripts/retrieve-all-old");
+  }
+
+  getAllDownloadScripts():Observable<downloadScript[]>{
+    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/all");
   }
 
   getDownloadScripts():Observable<downloadScript[]>{

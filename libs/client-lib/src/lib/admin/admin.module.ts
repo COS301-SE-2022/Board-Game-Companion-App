@@ -9,6 +9,7 @@ import { AdminReportsComponent } from './admin-reports/admin-reports.component';
 import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
 import { AdminOthersComponent } from './admin-others/admin-others.component';
 import { NgChartsModule } from 'ng2-charts';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgChartsModule } from 'ng2-charts';
     FormsModule,
     NgxPaginationModule,
     NgChartsModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:AdminComponent}])
   ]
 })
