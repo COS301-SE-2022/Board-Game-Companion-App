@@ -72,11 +72,18 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     </div>
                     <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[2]">
                     <!--If Statement-->
-                    <input id = "ifInput1" *ngIf = "item.title === 'If'" [value]="item.inputs[0]">
-                    <div>
-                        <input id = "ifCompare" *ngIf = "item.title === 'If'" [value]="item.inputs[1]">
+                    <div *ngIf = "item.title === 'If'">
+                        <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
+                            <input id = "ifInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <div>
+                                <input id = "ifCompare"  [value]="item.inputs[i * 4 + 2]">
+                            </div>
+                            <input id = "ifInput2" [value]="item.inputs[i * 4 + 3]">
+                            <div>
+                                <input *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                            </div>  
+                        </div>
                     </div>
-                    <input id = "ifInput2" *ngIf = "item.title === 'If'" [value]="item.inputs[2]">
                 </div>
             </div>
         </div>
@@ -107,6 +114,11 @@ export class LoopTemplateComponent{
       ]
     
     arguments = []
+
+    conditions(con: number)
+    {
+        return new Array(con)
+    }
     methodInputs(event: any)
     {
         const m = this.methods.find(obj => obj.name === event.target.value)
