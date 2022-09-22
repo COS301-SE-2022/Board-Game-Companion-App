@@ -744,10 +744,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     ]
     let createdIf = false
     let createdFor = false
+    let doCreated = -1
     let player = -1
     let action = 0
     let open = 0
-    let d = 0
     for(let j = 0; j < lines.length; j++)
     {
       //console.log("line " + j + ":" + lines[j])
@@ -800,23 +800,26 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           openInitial = 0
         }
-        open++
-        openIf++
-        if(totalIf == 0)
+        if(doCreated != openIf)
         {
-          totalIf++
+          open++
+          openIf++
+          if(totalIf == 0)
+          {
+            totalIf++
+          }
+          else if(createdFor)
+          {
+            totalIf++
+          }
+          else
+          {
+            totalIf = totalIf + 2
+          }
+          ifContains.push({numberOfIf: totalIf, open: openIf})
+          createdIf = true
+          inElse = false
         }
-        else if(createdFor)
-        {
-          totalIf++
-        }
-        else
-        {
-          totalIf = totalIf + 2
-        }
-        ifContains.push({numberOfIf: totalIf, open: openIf})
-        createdIf = true
-        inElse = false
         
       }
       else if((lines[j].includes("else") && lines[j].includes("{")) || (lines[j].includes("else") && lines[j + 1].includes("{")))
@@ -827,12 +830,12 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       }
       else if((lines[j].includes("for") && lines[j].includes("{")) || (lines[j].includes("for") && lines[j + 1].includes("{")))
       {
-        open++
-        openIf++
         if(openIf == 0)
         {
           openInitial = 0
         }
+        open++
+        openIf++
         if(createdIf)
         {
           totalIf = totalIf + 2
@@ -847,12 +850,46 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       }
       else if((lines[j].includes("while") && lines[j].includes("{")) || (lines[j].includes("while") && lines[j + 1].includes("{")))
       {
+        if(openIf == 0)
+        {
+          openInitial = 0
+        }
         open++
+        openIf++
+        if(createdIf)
+        {
+          totalIf = totalIf + 2
+        }
+        else
+        {
+          totalIf++
+        }
+        createdFor = true
+        ifContains.push({numberOfIf: totalIf, open: openIf})
+        createdIf = false
+        
        
       }
       else if((lines[j].includes("do") && lines[j].includes("{")) || (lines[j].includes("do") && lines[j + 1].includes("{")))
       {
+        if(openIf == 0)
+        {
+          openInitial = 0
+        }
         open++
+        openIf++
+        doCreated = openIf
+        if(createdIf)
+        {
+          totalIf = totalIf + 2
+        }
+        else
+        {
+          totalIf++
+        }
+        createdFor = true
+        ifContains.push({numberOfIf: totalIf, open: openIf})
+        createdIf = false
         
       }
       else if(lines[j].includes("}"))
@@ -1250,58 +1287,155 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Do
               else if(lines[j].includes("do{") || lines[j].includes("do"))
               {
-                d = 1
-              }
-              //While/do While Loops
-              else if(lines[j].includes("while(") || lines[j].includes("while ("))
-              {
                 const id = this.getEID()
-                let params = [""]
-                let operator = ""
-                if(lines[j].includes(">") && !lines[j].includes("="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">")
-                  operator = ">"
-                }
-                else if(lines[j].includes("<") && !lines[j].includes("="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<")
-                  operator = "<"
-                }
-                else if(lines[j].includes("=="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("==")
-                  operator = "=="
-                }
-                else if(lines[j].includes("!="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("!=")
-                  operator = "!="
-                }
-                else if(lines[j].includes(">="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split(">=")
-                  operator = ">="
-                }
-                else if(lines[j].includes("<="))
-                {
-                  params = lines[j].substring(lines[j].indexOf("(") + 1).split("<=")
-                  operator = "<="
-                }
                 this.editorVisual.playersLoopIndex++
-                if(d === 1)
-                {
-                  this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
-                  d = 0
-                } 
+                if(openIf > 0 && openInitial > 0) 
+                { 
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }
                 else
                 {
-                  this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: id, inputs: [params[0], operator, params[1].substring(0,params[1].length-1),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
-                }
+                  openInitial++
+                  this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }    
+                
                 const dest = [
                   {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
                 ]
                 this.editorVisual.PlayersLoops.push(dest)
+              }
+              //While/do While Loops
+              else if(lines[j].includes("while(") || lines[j].includes("while ("))
+              {
+                  const id = this.getEID()
+                  const params = []
+                  const conditions = (lines[j].match(/&&/g) || []).length + (lines[j].match(/\|\|/g) || []).length + 1
+                  const AndOr = lines[j].match(/&& | \|\|/g)
+                  let aoIndex = 0
+                  const condi = lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(")")).replace(/\s/g, '').split(/[&&,||]/)
+                  params.push(conditions.toString())
+                  //console.log(lines[j].split("&&"))
+                  condi.forEach((line) => {
+                    if(line.includes(">") && !line.includes("="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push(">")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                    else if(line.includes("<") && !line.includes("="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push("<")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                    else if(line.includes("=="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push("==")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                    else if(line.includes("!="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push("!=")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                    else if(line.includes(">="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push(">=")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                    else if(line.includes("<="))
+                    {
+                      params.push(line.substring(0,1))
+                      params.push("<=")
+                      params.push(line.substring(line.length-1))
+                      if(AndOr != null)
+                      {
+                        if(AndOr[aoIndex] != null)
+                        {
+                          params.push(AndOr[aoIndex])
+                          aoIndex++
+                        }
+                      }
+                    }
+                  })
+                  if(doCreated == openIf + 1)
+                  {
+                    if(openIf > 0 && openInitial > 0) 
+                    {
+                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf][this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].length - 1].inputs = params
+                    }
+                    else
+                    {
+                      openInitial++
+                      console.log("yes")
+                      this.editorVisual.Players[player].actions[action][this.editorVisual.Players[player].actions[action].length-1].inputs = params
+                    }
+                    doCreated = -1    
+                  }
+                  else
+                  {
+                    this.editorVisual.playersLoopIndex++
+                    if(openIf > 0 && openInitial > 0) 
+                    {
+                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                    }
+                    else
+                    {
+                      openInitial++
+                      console.log("yes")
+                      this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                    }    
+                    
+                    const dest = [
+                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+                    ]
+                    this.editorVisual.PlayersLoops.push(dest)
+                  }
+                  
+                
               }
             }
           }

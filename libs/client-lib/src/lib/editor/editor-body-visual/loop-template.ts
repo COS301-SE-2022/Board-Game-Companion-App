@@ -66,11 +66,18 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
-                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[0]">
-                    <div>
-                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[1]">
+                    <div *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                        <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
+                            <input id = "whileInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <div>
+                                <input id = "whileCompare" [value]="item.inputs[i * 4 + 2]">
+                            </div>
+                            <input id = "whileInput2" [value]="item.inputs[i * 4 + 3]">
+                            <div>
+                                <input *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                            </div>  
+                        </div>
                     </div>
-                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[2]">
                     <!--If Statement-->
                     <div *ngIf = "item.title === 'If'">
                         <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
