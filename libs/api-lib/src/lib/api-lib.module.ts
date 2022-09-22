@@ -38,7 +38,7 @@ import { MongoDbStorageService } from './services/mongodb-storage/mongodb-storag
 import { ApiFileManagerController } from './controllers/file-manager/file-manager.controller';
 import { Alert, AlertSchema } from './schemas/alert.schema';
 import { AlertService } from './services/alert/alert.service';
-import { AlertGateway } from './services/alert/alert.gateway';
+import { SocketGateway } from './services/socket/socket.gateway';
 import { ApiAlertController } from './controllers/alert/alert.controller';
 
 @Module({
@@ -86,7 +86,7 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
     AutomataService,
     MongoDbStorageService,
     AlertService,
-    AlertGateway
+    SocketGateway
   ],
   exports: [
     CollectionsService,
