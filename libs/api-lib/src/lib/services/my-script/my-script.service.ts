@@ -171,6 +171,10 @@ export class MyScriptService {
         return result;
     }
 
+    async getAll():Promise<MyScript[]>{
+        return this.myScriptModel.find({});
+    }
+
     async getAllMyScript(author:user):Promise<MyScript[]>{
         return this.myScriptModel.find({"author.name":author.name,"author.email":author.email});
     }
