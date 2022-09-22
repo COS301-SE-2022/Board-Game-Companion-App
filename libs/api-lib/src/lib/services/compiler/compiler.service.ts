@@ -1870,6 +1870,9 @@ function visitPlayer(cstOutput:CstNode)
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//players")), "class "+token.image+ " extends player ", jsScript.slice(jsScript.indexOf("//players"))].join('');
                         //write to add players
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//add players")), "new "+token.image+ "(),", jsScript.slice(jsScript.indexOf("//add players"))].join('');
+                        //write to list
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//playerList")), "\""+token.image+ "\",", jsScript.slice(jsScript.indexOf("//playerList"))].join('');
+                        
                         //write to get players
                         jsScript = [jsScript.slice(0, jsScript.indexOf("//playerIndexes")), "case \""+token.image+ "\": \n return "+playerCount+"\nbreak\n", jsScript.slice(jsScript.indexOf("//playerIndexes"))].join('');
                         playerCount++;
