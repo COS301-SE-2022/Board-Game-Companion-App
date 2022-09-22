@@ -27,14 +27,14 @@ describe('ApiCommentController', ()=>{
               replies: [],
             }),
           ),
-          //alertComment: jest.fn().mockImplementation(),
-          //alertReply: jest.fn().mockImplementation(),
+          
           countComments: jest.fn().mockImplementation((id:string)=>
           Promise.resolve(5)),
-          getComments: jest.fn().mockImplementation((commentsId:string)=>{
+          getComments: jest.fn().mockImplementation((arr:string[]) =>
             Promise.resolve([
               {
-                user:{name:commentsId, email:"user1@gmail.com"},
+                _id:arr[0],
+                user:{name:"user1", email:"user1@gmail.com"},
                 image:"board1.png",
                 created: new Date("30-05-20"),
                 script: "Board1Script",
@@ -42,7 +42,8 @@ describe('ApiCommentController', ()=>{
                 replies: []
               },
               {
-                user:{name:commentsId, email:"user1@gmail.com"},
+                _id:arr[1],
+                user:{name:"user1", email:"user1@gmail.com"},
                 image:"board2.png",
                 created: new Date("10-08-20"),
                 script: "Board2Script",
@@ -50,16 +51,17 @@ describe('ApiCommentController', ()=>{
                 replies: []
               },
               {
-                user:{name:commentsId, email:"user1@gmail.com"},
+                _id:arr[2],
+                user:{name:"user1", email:"user1@gmail.com"},
                 image:"board3.png",
                 created: new Date("15-01-21"),
                 script: "Board3Script",
                 content: "This is board game 3 comment",
                 replies: []
-              },
-            ]);
-          }),
-          addReply: jest.fn().mockImplementation((commentId:string,replyId:string) =>{
+              }
+            ]),
+          ),
+          addReply: jest.fn().mockImplementation((commentId:string,replyId:string) =>
             Promise.resolve({
               user: {new:commentId, email:"cocochanel@gmail.com"},
               image: "boardgame33.png",
@@ -67,8 +69,8 @@ describe('ApiCommentController', ()=>{
               script: "boardgame33Script",
               content: "Wow this is so cool", 
               replies: [{replyId, ref:'Comment'}]
-            });
-          }),
+            }),
+          ),
           like: jest.fn().mockImplementation((comment:string,user:user,like:boolean) =>{
              Promise.resolve({
               comment: comment, 
@@ -84,13 +86,7 @@ describe('ApiCommentController', ()=>{
               like: true 
             });
           }),
-          removeLike: jest.fn().mockImplementation((id:string) =>{
-            Promise.reject({
-              comment :id,
-              user:{name:"Sandy", email:"SandyBraxton@gmail.com"},
-              like:true
-            });
-          }),
+         
           count: jest.fn().mockImplementation((comment:string)=>{
             Promise.resolve({
               likes: 7,
@@ -112,16 +108,21 @@ describe('ApiCommentController', ()=>{
 
   describe('createComment', ()=>{
     it('should create a comment', ()=>{
-      expect(controller.createComment("Jack","Jack&Jill@gmail.com", "gameboard.png", "Script4","I love this game")).resolves.toEqual(
-        [{
-          user: {name: "Jack", email:"Jack&Jill@gmail.com"},
+      controller.createComment("Jack","Jack&Jill@gmail.com", "gameboard.png", "Script4","I love this game").then(function(response){
+        const newUser: user={
+          name: "Jack",
+          email:"Jack&Jill@gmail.com"
+        };
+        expect(response).toEqual(
+        {
+          user: newUser,
           image: "gameboard.png", 
           created: new Date("13-02-18"),
           script: "Script4", 
           content: "I love this game", 
           replies: []
-        }]
-      );
+        })
+      })
     });
   });
 
@@ -133,9 +134,11 @@ describe('ApiCommentController', ()=>{
 
   describe('getComments', ()=>{
     it('should get all comments of script', ()=>{
-      expect(controller.getComments("comment15")).resolves.toEqual([
+      controller.getComments("comment15").then(function(response){
+      expect(response.toString()).toEqual(([
         {
-          user:{name:"comment15", email:"user1@gmail.com"},
+          _id: "comment15",
+          user:{name:"user1", email:"user1@gmail.com"},
           image:"board1.png",
           created: new Date("30-05-20"),
           script: "Board1Script",
@@ -143,7 +146,8 @@ describe('ApiCommentController', ()=>{
           replies: []
         },
         {
-          user:{name:"comment15", email:"user1@gmail.com"},
+          _id: "comment15",
+          user:{name:"user1", email:"user1@gmail.com"},
           image:"board2.png",
           created: new Date("10-08-20"),
           script: "Board2Script",
@@ -151,16 +155,19 @@ describe('ApiCommentController', ()=>{
           replies: []
         },
         {
-          user:{name:"comment15", email:"user1@gmail.com"},
+          _id: "comment15",
+          user:{name:"user1", email:"user1@gmail.com"},
           image:"board3.png",
           created: new Date("15-01-21"),
           script: "Board3Script",
           content: "This is board game 3 comment",
           replies: []
-        },
-      ]);
+        }
+      ]).toString())
+    })
     });
   });
+  
 
   describe('addReply', ()=>{
     it('should add a reply to a comment', ()=>{
@@ -199,15 +206,6 @@ describe('ApiCommentController', ()=>{
     });
   });
 
-  describe('removeLike', ()=>{
-    it('should remove this like', ()=>{
-      expect(controller.removeLike("someID")).rejects.toEqual({
-        comment :"someID",
-        user:{name:"Sandy", email:"SandyBraxton@gmail.com"},
-        like:true
-      });
-    });
-  });
 
   describe('getLike', ()=>{
     it('should get likes of user', ()=>{
