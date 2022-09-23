@@ -79,5 +79,7 @@ export class EditorBodyVisualComponent {
       }
     }
     this.Variables.splice(0)
+    this.PlayersLoops.splice(1)
+    this.playersLoopIndex = 0
   }
 }
