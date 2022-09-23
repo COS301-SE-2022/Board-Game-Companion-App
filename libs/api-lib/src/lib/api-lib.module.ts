@@ -41,6 +41,8 @@ import { AlertService } from './services/alert/alert.service';
 import { SocketGateway } from './services/socket/socket.gateway';
 import { ApiAlertController } from './controllers/alert/alert.controller';
 import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
+import { ApiAdminController } from './controllers/admin/admin.controller';
+import { AdminService } from './services/admin/admin.service';
 
 @Module({
   imports:[
@@ -71,7 +73,8 @@ import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
     ApiEditorController,
     ApiDownloadScriptController,
     ApiFileManagerController,
-    ApiAlertController
+    ApiAlertController,
+    ApiAdminController
   ],
   providers: [
     CollectionsService,
@@ -88,7 +91,8 @@ import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
     AutomataService,
     MongoDbStorageService,
     AlertService,
-    SocketGateway
+    SocketGateway,
+    AdminService
   ],
   exports: [
     CollectionsService,

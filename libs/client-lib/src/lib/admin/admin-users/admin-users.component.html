@@ -1,5 +1,5 @@
 <div class = "row">
-    <div class = "col-sm-4">
+    <div class = "col-sm-5">
         <div class = "rounded-sm px-4 py-3 bg-white shadow-sm">
             <div class = "mb-2">
                 <label class = "font-medium text-gray-700 text-xl">Active Accounts</label>
@@ -10,8 +10,30 @@
                 <div class = "ml-2 text-base text-gray-400 font-medium">0</div>
             </div>
         </div>
+        
+        <div class = "rounded-sm px-4 py-3 mt-4 bg-white shadow-sm">
+            <label for="data-partition" class="form-label font-medium"><b>Input</b></label>
+                
+            <div class="w-full">
+                <div class="input-group relative w-full mb-4">
+                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                    <button (click) = "addModerator()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                        <i class="far fa-plus fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
+                    <p>{{value}}</p>
+                    <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class = "col-sm-8">
+    <div class = "col-sm-7">
         <div class = "rounded-sm bg-white p-2">
             <div class="chart">
                 <canvas baseChart

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Collection, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { user } from '../../models/general/user';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
-import { CollectionDocument } from '../../schemas/collection.schema';
+import { Collection, CollectionDocument } from '../../schemas/collection.schema';
 import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
 import { MyScript, MyScriptDocument } from '../../schemas/my-script.schema';
 import { Moderator, ModeratorDocument } from '../../schemas/moderator.schema';
