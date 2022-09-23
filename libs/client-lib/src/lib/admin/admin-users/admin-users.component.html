@@ -15,7 +15,7 @@
             </div>
         </div>
         
-        <div class = "rounded-sm px-4 py-3 mt-4 bg-white shadow-sm">
+        <div class = "rounded-sm px-3 py-3 mt-4 bg-white shadow-sm">
             <div class="w-full">
                 <div class="input-group relative w-full mb-4">
                     <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
@@ -25,33 +25,33 @@
                 </div>
             </div>
             
-            <div class="w-full row">
-                <div class = "col-sm-5 mt-1">
+            <div class="w-full flex flex-wrap space-x-1">
+                <div class = "w-44 mt-1">
                     <div class = "w-full text-sm font-medium text-gray-700">Admin</div>
                     <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
-                        <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
-                            <p>{{value}}</p>
+                        <div (click) = "setAdmin(value)" [ngClass] = "{'bg-gray-700  text-white':selectAdmin===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row cursor-pointer" *ngFor = "let value of getAdmin()">
+                            <p>{{value.email}}</p>
                             <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
                                 <i class="fas fa-times"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class = "col-sm-2 mt-1">
+                <div class = "mt-1">
                     <div class = "h-32 w-6 text-center">
-                        <div class = "w-full mt-6 rounded-md border-2 bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer">
+                        <div (click) = "moveAdmin()" [ngClass] = "{'bg-gray-400':selectAdmin===undefined,'bg-green-800':selectAdmin !== undefined}" class = "w-full mt-6 rounded-md shadow-sm hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer">
                             <i class="fas fa-angle-right"></i>
                         </div>
-                        <div class = "w-full rounded-md border-2 bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer mt-2">
+                        <div (click) = "moveModerator()" [ngClass] = "{'bg-gray-400':selectModerator===undefined,'bg-green-800':selectModerator !== undefined}" class = "w-full rounded-md shadow-sm bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer mt-2">
                             <i class="fas fa-angle-left"></i>
                         </div>
                     </div>
                 </div>
-                <div class = "col-sm-5 mt-1">
+                <div class = "w-44 mt-1">
                     <div class = "w-full text-sm font-medium text-gray-700">Moderator</div>
                     <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
-                        <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
-                            <p>{{value}}</p>
+                        <div (click) = "setModerator(value)" [ngClass] = "{'bg-gray-700 text-white':selectModerator===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-xs relative cursor-pointer flex flex-row" *ngFor = "let value of getModerators()">
+                            <p>{{value.email}}</p>
                             <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
                                 <i class="fas fa-times"></i>
                             </div>
@@ -81,14 +81,14 @@
                 </button>
             </div>
             <div class = "row mt-4">
-                <div class = "col-sm-4 col-md-3 col-lg-2">
+                <div class = "col-sm-4 col-md-3 col-lg-2" *ngFor = "let value of searchResults">
                     <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2">
                         <div class = "mx-1 my-0.5">
                             <div class = "font-medium">
                                 Names:
                             </div>
                             <div class = "text-xs text-white">
-                                Matome Joseph
+                                {{value.name}}
                             </div>
                         </div>
                         <div class = "mx-1 my-0.5">
@@ -96,7 +96,7 @@
                                 Email:
                             </div>
                             <div class = "text-xs text-white">
-                                u18166793@tuks.co.za
+                                {{value.email}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -104,7 +104,7 @@
                                 Downloads:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                0
+                                {{value.downloads}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -112,7 +112,7 @@
                                 Collections:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                0
+                                {{value.collections}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -120,7 +120,7 @@
                                 Authored:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                0
+                                {{value.authored}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -128,11 +128,11 @@
                                 Models:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                0
+                                {{value.models}}
                             </div>
                         </div>
-                        <div class = "flex flex-row justify-end mx-1 mt-4">
-                            <div data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
+                        <div *ngIf = "!isAdmin(value)" class = "flex flex-row justify-end mx-1 mt-4">
+                            <div (click) = "ban(value)" data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
                                 <i class="fas fa-exclamation-triangle"></i>
                             </div>
                             <div data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">

@@ -41,8 +41,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('logout')
   async newLogOut(client,message) {
-    if(!this.loggedInUsers.includes(message))
-      this.loggedInUsers.push(message);
+    this.loggedInUsers = this.loggedInUsers.filter((value:string) => value != message)
     
     this.server.emit('logout-count',this.loggedInUsers.length)
   }

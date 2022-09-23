@@ -1,7 +1,7 @@
 import { Controller, Body,  Get, Query, Post, Put, Delete, Req ,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AdminService } from '../../services/admin/admin.service';
 import { AlertDocument } from '../../schemas/alert.schema';
-import { user } from '../../models/general/user';
+import { userSearch } from '../../models/general/userSearch';
 import { Moderator } from '../../schemas/moderator.schema';
 
 
@@ -36,7 +36,7 @@ export class ApiAdminController {
     }
 
     @Get('search')
-    async search(@Query('term')term:string):Promise<user[]>{
+    async search(@Query('term')term:string):Promise<userSearch[]>{
         return this.adminService.search(term);
     }
 

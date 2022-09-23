@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Socket } from 'ngx-socket-io';
 import { moderator } from '../../models/admin/moderator';
-import { user } from '../../models/general/user';
+import { userSearch } from '../../models/admin/userSearch';
 
 @Injectable()
 export class AdminService {
@@ -35,11 +35,11 @@ export class AdminService {
       return this.httpClient.delete<moderator>(this.api + "admin/remove",{params: param});
   }
 
-  search(term:string):Observable<user[]>{
+  search(term:string):Observable<userSearch[]>{
       let param = new HttpParams();
       param = param.set("term",term);
 
-      return this.httpClient.get<user[]>(this.api + "admin/search",{params: param});
+      return this.httpClient.get<userSearch[]>(this.api + "admin/search",{params: param});
   }
 
   countDownloaders():Observable<number>{

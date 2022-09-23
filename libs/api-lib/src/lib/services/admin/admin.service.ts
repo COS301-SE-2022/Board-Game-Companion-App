@@ -6,10 +6,12 @@ import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-s
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { Collection, CollectionDocument } from '../../schemas/collection.schema';
 import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
+import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
 import { MyScript, MyScriptDocument } from '../../schemas/my-script.schema';
 import { Moderator, ModeratorDocument } from '../../schemas/moderator.schema';
 import { moderatorDto } from '../../models/dto/moderatorDto';
 import { SocketGateway } from '../socket/socket.gateway';
+import { userSearch } from '../../models/general/userSearch';
 
 @Injectable()
 export class AdminService {
@@ -20,10 +22,16 @@ export class AdminService {
                 @InjectModel(OldScript.name) private readonly oldModel: Model<OldScriptDocument>,
                 @InjectModel(Collection.name) private readonly collectionModel: Model<CollectionDocument>,
                 @InjectModel(Moderator.name) private readonly moderatorModel: Model<ModeratorDocument>,
+                @InjectModel(NeuralNetwork.name)private readonly networkModel: Model<NeuralNetworkDocument>,
                 private readonly socket:SocketGateway){}
 
 
     async create(email:string):Promise<Moderator>{
+        const check = await this.moderatorModel.find({"email":email});
+        
+        if(check === null || check === undefined)
+            return null;
+
         const dto:moderatorDto = {
             email: email,
             admin: false
@@ -55,19 +63,63 @@ export class AdminService {
         return this.moderatorModel.findByIdAndRemove(id);
     }
 
-    async search(term:string):Promise<user[]>{
-        const collectionOwners = await this.collectionModel.find({},{"owner":1});
-        const Downloaders = await this.downloadModel.find({},{"owner":1});
-        const Authors = await this.myscriptModel.find({},{"author":1});
-        const result:user[] = [];
+    async search(term:string):Promise<userSearch[]>{
+        let collectionOwners = await this.collectionModel.find({},{"owner":1});
+        let downloaders = await this.downloadModel.find({},{"owner":1});
+        let authors = await this.myscriptModel.find({},{"author":1});
+        const result:userSearch[] = [];
         term = term.toLowerCase();
+        
+        collectionOwners = collectionOwners.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1);
+        downloaders = downloaders.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1);
+        authors = authors.filter((value) => value.author.name.toLowerCase().indexOf(term) !== -1 || value.author.email.toLowerCase().indexOf(term) !== -1);
+        
+        const temp:string[] = [];
 
-        console.log(collectionOwners);
-        // collectionOwners.forEach((value:user) => {
-        //     if(value.name.toLowerCase().indexOf(term) !== -1 || value.email.toLowerCase().indexOf(term) !== -1){
-        //         result.push(value);
-        //     }
-        // })
+        collectionOwners.forEach(async(value) => {
+            if(temp.includes(value.owner.email))
+                return;
+
+            temp.push(value.owner.email);
+            result.push({
+                name: value.owner.name,
+                email: value.owner.email,
+                collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
+                downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
+                authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
+                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments()
+            })
+        })
+
+        downloaders.forEach(async(value) => {
+            if(temp.includes(value.owner.email))
+                return;
+
+            temp.push(value.owner.email);
+            result.push({
+                name: value.owner.name,
+                email: value.owner.email,
+                collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
+                downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
+                authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
+                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments()
+            })
+        })
+
+        authors.forEach(async(value) => {
+            if(temp.includes(value.author.email))
+                return;
+
+            temp.push(value.author.email);
+            result.push({
+                name: value.author.name,
+                email: value.author.email,
+                collections: await this.collectionModel.find({"owner.email":value.author.email}).countDocuments(),
+                downloads: await this.downloadModel.find({"owner.email":value.author.email}).countDocuments(),
+                authored: await this.automataModel.find({"author.email":value.author.email}).countDocuments(),
+                models: await this.networkModel.find({"creator.email":value.author.email}).countDocuments()
+            })
+        });
 
         return result;
     }

@@ -6,6 +6,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 import { user } from '../../shared/models/general/user';
 import { moderator } from '../../shared/models/admin/moderator';
 import { Subscription } from 'rxjs';
+import { userSearch } from '../../shared/models/admin/userSearch';
 
 @Component({
   selector: 'board-game-companion-app-admin-users',
@@ -38,12 +39,17 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   totalAccount = 0;
   moderators:moderator[] = []
   subscriptions:Subscription = new Subscription();
-  
+  selectAdmin:moderator | undefined;
+  selectModerator:moderator | undefined;
+  searchResults:userSearch[] = [];
+
   constructor(private readonly adminService:AdminService){}
 
   ngOnInit(): void {
+    this.loadModerators();
     this.initData();
     this.getInitialActiveUsers();
+    this.getInitialLoggedInUsers();
     this.getActiveAccounts();
     this.getTotalAccounts();
   }
@@ -140,13 +146,34 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     }
 
     this.adminService.search(this.searchValue).subscribe({
-      next:(value) => {
-        console.log(value);
+      next:(value:userSearch[]) => {
+        this.searchResults = value;
       },
       error:() => {
         this.notifications.add({type:"danger",message:"Search Failed."});
       }
     })
+  }
+
+
+  validateEmail(): boolean{
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
+      return true
+
+    return false;
+  }
+
+  isAdmin(value:userSearch): boolean{
+    const emails = this.moderators.map((value)=>value.email);
+    return emails.includes(value.email);
+  }
+
+  getAdmin(): moderator[]{
+    return this.moderators.filter((value:moderator) => value.admin)
+  }
+
+  getModerators(): moderator[]{
+    return this.moderators.filter((value:moderator) => !value.admin)
   }
 
   addModerator(): void{
@@ -155,8 +182,19 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if(!this.validateEmail()){
+      this.notifications.add({type:"danger",message:"Invalid email."});
+      return;
+    }
+
     this.adminService.create(this.email).subscribe({
       next:(value:moderator) => {
+        if(value === null){
+          this.notifications.add({type:"warning",message:`Moderators with email '${this.email}' already exists.`});
+          this.email = "";
+          return;
+        }
+
         this.moderators.push(value);
         this.email = "";
         this.notifications.add({type:"success",message:`Successfully created new moderator with email '${this.email}'`})
@@ -201,6 +239,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         this.notifications.add({type:"warning",message:"Failed to count collections"});
       }
     })
+    
 
     this.adminService.countScriptAuthors().subscribe({
       next:(value:number) => {
@@ -219,6 +258,61 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       },
       error:()=>{
         this.notifications.add({type:"warning",message:"Failed to count downloaders"});
+      }
+    })
+  }
+
+
+  setModerator(value:moderator): void{
+    if(value === this.selectModerator){
+      this.selectModerator = undefined;
+      return
+    }
+
+    this.selectModerator = value;
+  }
+
+  setAdmin(value:moderator): void{
+    if(value === this.selectAdmin){
+      this.selectAdmin = undefined;
+      return;
+    }
+
+    this.selectAdmin = value;
+  }
+
+  moveAdmin(): void{
+    if(this.selectAdmin === undefined)
+      return;
+
+    this.adminService.setAdmin(this.selectAdmin._id,false).subscribe({
+      next:(value:moderator) => {
+        if(this.selectAdmin !== undefined)
+          this.selectAdmin.admin = value.admin;
+
+        this.notifications.add({type:"success",message:`Successfully moved '${this.selectAdmin?.email}' to moderator`})
+        this.selectAdmin = undefined;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
+      }
+    })
+  }
+
+  moveModerator(): void{
+    if(this.selectModerator === undefined)
+      return;
+
+    this.adminService.setAdmin(this.selectModerator._id,true).subscribe({
+      next:(value:moderator) => {
+        if(this.selectModerator !== undefined)
+          this.selectModerator.admin = value.admin;
+
+        this.notifications.add({type:"success",message:`Successfully moved '${this.selectModerator?.email}' to admin`})
+        this.selectModerator = undefined;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
       }
     })
   }
