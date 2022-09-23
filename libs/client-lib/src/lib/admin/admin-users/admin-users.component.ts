@@ -42,13 +42,15 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initData();
+    this.getInitialActiveUsers();
     this.getActiveAccounts();
+    this.getTotalAccounts();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  
+
   checkInputOnEnter(value:any): void{
 
     if(value.key === "Enter"){
@@ -62,6 +64,25 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       value?.preventDefault();
       this.search();
     }
+  }
+
+  getTotalAccounts(): void{
+    this.adminService.getTotalAccounts().subscribe({
+      next:(value:number) => {
+        this.totalAccount = value;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:"Failed to count total accounts"});
+      }
+    })
+  }
+
+  getInitialActiveUsers(): void{
+    this.adminService.getInitialActiveAccounts().subscribe({
+      next:(value:number) => {
+        this.activeAccount = value;
+      }
+    })
   }
 
   getActiveAccounts(): void{

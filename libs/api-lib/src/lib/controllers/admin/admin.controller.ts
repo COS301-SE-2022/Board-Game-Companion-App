@@ -25,6 +25,11 @@ export class ApiAdminController {
         return this.adminService.getAll();
     }
 
+    @Get('count-total-accounts')
+    async getTotalAccounts():Promise<number>{
+        return this.adminService.getTotalAccounts();
+    }
+
     @Delete('remove')
     async remove(@Query('id')id:string):Promise<Moderator>{
         return this.adminService.remove(id);
@@ -43,6 +48,11 @@ export class ApiAdminController {
     @Get('count-collection-owners')
     async countCollectionOwners():Promise<number>{
         return this.adminService.countCollectionOwners();
+    }
+
+    @Get('count-active-accounts')
+    async getActiveAccounts():Promise<number>{
+        return this.adminService.getActiveAccounts();
     }
 
     @Get('count-script-authors')

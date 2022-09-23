@@ -58,4 +58,12 @@ export class AdminService {
   activeUsers():Observable<number>{
     return this.socket.fromEvent("users");
   }
+
+  getTotalAccounts():Observable<number>{
+    return this.httpClient.get<number>(this.api + "admin/count-total-accounts");
+  }
+
+  getInitialActiveAccounts():Observable<number>{
+    return this.httpClient.get<number>(this.api + "admin/count-active-accounts");
+  }
 }

@@ -84,5 +84,19 @@ export class AdminService {
         return (await this.myscriptModel.distinct("author.email")).length
     }
 
-    //async isAdmin()
+    getActiveAccounts():number{
+        return this.socket.getUsers();
+    }
+
+    async getTotalAccounts():Promise<number>{
+
+        const downloaders = await this.downloadModel.distinct("owner.email");
+        const authors = await this.myscriptModel.distinct("author.email");
+        const collectors = await this.collectionModel.distinct("owner.email");
+        
+        const temp  = downloaders.concat(...authors).concat(...collectors);
+        const result = Array.from(new Set(temp));
+
+        return result.length;
+    }
 }
