@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { AdminService } from '../../shared/services/admin/admin.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { user } from '../../shared/models/general/user';
 import { moderator } from '../../shared/models/admin/moderator';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'board-game-companion-app-admin-users',
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.scss'],
 })
-export class AdminUsersComponent implements OnInit {
+export class AdminUsersComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   pieChartOptions: ChartConfiguration['options'] = {
@@ -32,14 +33,22 @@ export class AdminUsersComponent implements OnInit {
   pieChartType: ChartType = 'pie';
   email = "";
   searchValue = "";
+  activeAccount = 0;
+  totalAccount = 0;
   moderators:moderator[] = []
-
+  subscriptions:Subscription = new Subscription();
+  
   constructor(private readonly adminService:AdminService){}
 
   ngOnInit(): void {
     this.initData();
+    this.getActiveAccounts();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+  
   checkInputOnEnter(value:any): void{
 
     if(value.key === "Enter"){
@@ -53,6 +62,19 @@ export class AdminUsersComponent implements OnInit {
       value?.preventDefault();
       this.search();
     }
+  }
+
+  getActiveAccounts(): void{
+    const subscription =  this.adminService.activeUsers().subscribe({
+      next:(value:number) => {
+        this.activeAccount = value;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:"Failed to count active accounts."})
+      }
+    })
+
+    this.subscriptions.add(subscription);
   }
 
   search(): void{

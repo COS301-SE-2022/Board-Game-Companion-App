@@ -54,4 +54,8 @@ export class AdminService {
   countScriptAuthors():Observable<number>{
       return this.httpClient.get<number>(this.api + "admin/count-script-authors");
   }
+
+  activeUsers():Observable<number>{
+    return this.socket.fromEvent("users");
+  }
 }
