@@ -191,7 +191,6 @@
 
 .visualF {
     width: 140px;
-    min-width: 140px;
     height: 150px;
     border: solid 5px black;
     border-radius: 40px 0 0 40px;
@@ -206,6 +205,11 @@
     background: #fff;
     position: relative;
     z-index: 1;
+}
+
+.visualF #content{
+    width: 140px;
+    height: 150px;
 }
 
 .visualW {
@@ -342,6 +346,7 @@ textarea{
     border: solid 3px black;
     border-radius: 15px;
     margin-top: 0.5em;
+    margin-bottom: 2em;
     text-align: center;
 }
   
