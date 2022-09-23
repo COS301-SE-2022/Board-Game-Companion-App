@@ -12,9 +12,24 @@ export class EditorBodyVisualComponent {
   playersLoopIndex = 0
   cardsLoopIndex = 0
 
-  Tiles = [
-    {variable: '', id: '', name: '', type: ''}
+  Properties = [
+    {Property: "", Value: ""}
   ]
+
+  listProperties = [
+    "id", "name", "type"
+  ]
+
+  tile = this.listProperties.reduce((o, key) => ({ ...o, [key]: ""}), {})
+
+  Tiles = [
+    this.tile
+  ]
+
+  constructor(){
+    this.Properties.splice(0)
+    this.Tiles.splice(0)
+  }
 
   Variables = [{name: "", value: ""} ]
 
@@ -57,14 +72,39 @@ export class EditorBodyVisualComponent {
     this.Cards.push({effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
   }
 
+  addProperty()
+  {
+    this.Properties.push({Property: "", Value: ""})
+  }
+
+  removeProperty(i: number)
+  {
+    this.Properties.splice(i, 1)
+    this.listProperties.splice(3 + i, 1)
+  }
+
   addTileToBoard()
   {
-    this.Tiles.push({variable: '', id: '', name: '', type: ''})
+    console.log(this.Tiles)
+    this.Tiles.push(this.tile)
   }
 
   removeTile(i: number)
   {
     this.Tiles.splice(i, 1)
+  }
+
+  updateProperties(event: any, i:number)
+  {
+    if(this.listProperties[3 + i] == null && !this.listProperties.includes(event.target.value))
+    {
+      this.listProperties.push(event.target.value)
+    }
+    else
+    {
+      this.listProperties[3 + i] = event.target.value
+    }
+    
   }
 
   clear()

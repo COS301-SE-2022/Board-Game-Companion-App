@@ -961,7 +961,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               {
                 for(let k = 0; k < +num[0]; k++)
                 {
-                  this.editorVisual.Tiles.push({variable: '', id: '', name: '', type: ''})
+                  //this.editorVisual.Tiles.push({variable: '', id: '', name: '', type: ''})
                 }
               }
             }
@@ -970,7 +970,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               const num = l[1].match(/(\d+)/)
               if(num != null)
               {
-                this.editorVisual.Tiles[+num[0]].name = l[3].replace(/'/g, "")
+                //this.editorVisual.Tiles[+num[0]].name = l[3].replace(/'/g, "")
               }
             }
             else if(l[1].includes("type"))
@@ -978,7 +978,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               const num = l[1].match(/(\d+)/)
               if(num != null)
               {
-                this.editorVisual.Tiles[+num[0]].type = l[3].replace(/'/g, "")
+                //this.editorVisual.Tiles[+num[0]].type = l[3].replace(/'/g, "")
               }
             }
             else if(l[1].includes("id"))
@@ -986,7 +986,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               const num = l[1].match(/(\d+)/)
               if(num != null)
               {
-                this.editorVisual.Tiles[+num[0]].id = l[3].replace(/'/g, "")
+                //this.editorVisual.Tiles[+num[0]].id = l[3].replace(/'/g, "")
               }
             } 
           }

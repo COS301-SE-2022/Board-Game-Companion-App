@@ -1,3 +1,41 @@
+<div id = "customizeTiles" class = "boardContainers">
+    <details open>
+        <summary class = "list-none flex flex-wrap items-center cursor-pointer">
+            <div class = "title text-2xl font-bold ml-4 mt-2">
+                Customize Tiles
+            </div>
+        </summary>
+    </details>
+    <table class = "table-fixed m-4 mt-2">
+        <thead>
+            <tr>
+                <th>
+                    <button (click)="addProperty()" id = "addTile"><i class="fa-solid fa-plus"></i></button>
+                </th>
+                <th>
+                    Property
+                </th>
+                <th>
+                    Value
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let property of Properties let i = index">
+                <td>
+                    <button (click)="removeProperty(i)" class = "mr-2" id = "removeTile"><i class="fa-solid fa-circle-xmark"></i></button>
+                </td>
+                <td>
+                    <input (change)="updateProperties($event, i)" [value] = "property.Property">
+                </td>
+                <td>
+                    <input [value] = "property.Value">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <div id = "board" class = "boardContainers">
     <details open>
         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
@@ -9,19 +47,10 @@
             <thead>
                 <tr>
                     <th>
-
-                    </th>
-                    <th>
                         <button (click)="addTileToBoard()" id = "addTile"><i class="fa-solid fa-plus"></i></button>
                     </th>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Type
+                    <th *ngFor = "let property of listProperties let i = index">
+                        {{property}}
                     </th>
                 </tr>
             </thead>
@@ -30,17 +59,8 @@
                     <td>
                         <button (click)="removeTile(i)" class = "mr-2" id = "removeTile"><i class="fa-solid fa-circle-xmark"></i></button>
                     </td>
-                    <td>
-                        <input [value]="tile.variable">
-                    </td>
-                    <td>
-                        <input [value]="tile.id">
-                    </td>
-                    <td>
-                        <input [value]="tile.name">
-                    </td>
-                    <td>
-                        <input [value]="tile.type">
+                    <td *ngFor = "let property of listProperties let i = index">
+                        <input>
                     </td>
                 </tr>
             </tbody>
