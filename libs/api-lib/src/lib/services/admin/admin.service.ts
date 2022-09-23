@@ -88,6 +88,10 @@ export class AdminService {
         return this.socket.getUsers();
     }
 
+    getLoggedInUsers():number{
+        return this.socket.getLoggedInUsers();
+    }
+
     async getTotalAccounts():Promise<number>{
 
         const downloaders = await this.downloadModel.distinct("owner.email");

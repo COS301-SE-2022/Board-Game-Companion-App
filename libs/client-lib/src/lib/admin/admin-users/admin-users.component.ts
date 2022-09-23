@@ -34,6 +34,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   email = "";
   searchValue = "";
   activeAccount = 0;
+  loggedInUsers = 0;
   totalAccount = 0;
   moderators:moderator[] = []
   subscriptions:Subscription = new Subscription();
@@ -83,6 +84,40 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         this.activeAccount = value;
       }
     })
+  }
+
+  getInitialLoggedInUsers(): void{
+    this.adminService.getInitialLoggedUsers().subscribe({
+      next:(value:number) => {
+        this.loggedInUsers = value;
+      }
+    })
+  }
+
+  loginEvent(): void{
+    const subscription = this.adminService.login().subscribe({
+      next:(value:number) => {
+        this.loggedInUsers = value;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:"Failed to count logged in accounts."})
+      }
+    })
+
+    this.subscriptions.add(subscription);
+  }
+
+  logoutEvent(): void{
+    const subscription = this.adminService.logout().subscribe({
+      next:(value:number) => {
+        this.loggedInUsers = value;
+      },
+      error:() => {
+        this.notifications.add({type:"warning",message:"Failed to count logged in accounts."})
+      }
+    })
+
+    this.subscriptions.add(subscription);
   }
 
   getActiveAccounts(): void{

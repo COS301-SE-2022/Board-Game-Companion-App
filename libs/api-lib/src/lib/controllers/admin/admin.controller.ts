@@ -55,6 +55,11 @@ export class ApiAdminController {
         return this.adminService.getActiveAccounts();
     }
 
+    @Get('count-loggedIn-users')
+    async getLoggedInUsers():Promise<number>{
+        return this.adminService.getLoggedInUsers();
+    }
+
     @Get('count-script-authors')
     async countScriptAuthors():Promise<number>{
         return this.adminService.countScriptAuthors();

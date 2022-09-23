@@ -7,7 +7,7 @@ import { Server } from 'http';
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   users = 0;
-  loggedInUsers = 0;
+  loggedInUsers:string[] = [];
 
   async handleConnection(){
     this.users++;
@@ -28,19 +28,23 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   getLoggedInUsers(): number{
-    return this.loggedInUsers;
+    return this.loggedInUsers.length;
   }
 
   @SubscribeMessage('login')
-  async newLogIn(client, message) {
-    this.loggedInUsers++;
-    this.server.emit('login-count',this.loggedInUsers);
+  async newLogIn(client,message) {
+    if(!this.loggedInUsers.includes(message))
+      this.loggedInUsers.push(message);
+
+    this.server.emit('login-count',this.loggedInUsers.length);
   }
 
   @SubscribeMessage('logout')
-  async newLogOut(client, message) {
-    this.loggedInUsers--;
-    this.server.emit('logout-count',this.loggedInUsers)
+  async newLogOut(client,message) {
+    if(!this.loggedInUsers.includes(message))
+      this.loggedInUsers.push(message);
+    
+    this.server.emit('logout-count',this.loggedInUsers.length)
   }
 }
   

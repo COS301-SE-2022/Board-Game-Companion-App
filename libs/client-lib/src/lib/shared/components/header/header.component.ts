@@ -15,6 +15,8 @@ import { downloadScript } from '../../models/scripts/download-script';
 import { oldScript } from '../../models/scripts/old-script';
 import { CollectionService } from '../../services/collections/collection.service';
 import { Subscription } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+
 @Component({
   selector: 'board-game-companion-app-header',
   templateUrl: './header.component.html',
@@ -49,7 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private readonly alertService:AlertService,
               private readonly scriptService:ScriptService,
               private readonly bggSearch:BggSearchService,
-              private readonly collectionService:CollectionService) {
+              private readonly collectionService:CollectionService,
+              private readonly socket: Socket) {
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
               }); 
@@ -64,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.getAlerts();
         this.receiveAlerts();
         this.createFavouritesCollection();
-
+        this.socket.emit('login',value.info.email);
       },
       error:(err)=>{     
         console.log(err);
@@ -163,12 +166,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         this.loggedIn = false;
         this.gapi.signOut();
+        this.socket.emit("logout",sessionStorage.getItem("email"))
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("image");
         this.profile = "assets/images/no-profile.png";
         this.alertSubscription.unsubscribe();
         this.router.navigate(['/home']);
+        this.socket.emit("logout",sessionStorage.getItem("email"))
       }
     }
     else if(path==="board-game-search")

@@ -59,11 +59,23 @@ export class AdminService {
     return this.socket.fromEvent("users");
   }
 
+  login():Observable<number>{
+    return this.socket.fromEvent("login-count")
+  }
+
+  logout():Observable<number>{
+    return this.socket.fromEvent("logout-count")
+  }
+
   getTotalAccounts():Observable<number>{
     return this.httpClient.get<number>(this.api + "admin/count-total-accounts");
   }
 
   getInitialActiveAccounts():Observable<number>{
     return this.httpClient.get<number>(this.api + "admin/count-active-accounts");
+  }
+
+  getInitialLoggedUsers():Observable<number>{
+    return this.httpClient.get<number>(this.api + "admin/count-loggedIn-users");
   }
 }
