@@ -12,28 +12,52 @@
         </div>
         
         <div class = "rounded-sm px-4 py-3 mt-4 bg-white shadow-sm">
-            <label for="data-partition" class="form-label font-medium"><b>Input</b></label>
-                
             <div class="w-full">
                 <div class="input-group relative w-full mb-4">
-                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
-                    <button (click) = "addModerator()" class="btn inline-block px-3 py-1 bg-gray-300 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                    <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
+                    <button (click) = "addModerator()" class="btn inline-block px-3 py-1 bg-green-800 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                         <i class="far fa-plus fa-2x"></i>
                     </button>
                 </div>
             </div>
             
-            <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
-                <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
-                    <p>{{value}}</p>
-                    <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
-                        <i class="fas fa-times"></i>
+            <div class="w-full row">
+                <div class = "col-sm-5 mt-1">
+                    <div class = "w-full text-sm font-medium text-gray-700">Admin</div>
+                    <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                        <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
+                            <p>{{value}}</p>
+                            <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class = "col-sm-2 mt-1">
+                    <div class = "h-32 w-6 text-center">
+                        <div class = "w-full mt-6 rounded-md border-2 bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer">
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class = "w-full rounded-md border-2 bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer mt-2">
+                            <i class="fas fa-angle-left"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class = "col-sm-5 mt-1">
+                    <div class = "w-full text-sm font-medium text-gray-700">Moderator</div>
+                    <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
+                        <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let value of moderators">
+                            <p>{{value}}</p>
+                            <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class = "col-sm-7">
+    <div class = "col-sm-6 offset-sm-1">
         <div class = "rounded-sm bg-white p-2">
             <div class="chart">
                 <canvas baseChart
@@ -42,6 +66,70 @@
                         [options]="pieChartOptions">
                 </canvas>
               </div>
+        </div>
+    </div>
+    <div class = "col-sm-12 mt-4">
+        <div class = "w-full rounded-sm bg-white p-2">
+            <div class="input-group relative w-full">
+                <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input border-2 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
+                <button (click) = "search()" class="bg-green-800 btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class = "row mt-4">
+                <div class = "col-sm-4 col-md-3 col-lg-2">
+                    <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2">
+                        <div class = "mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Names:
+                            </div>
+                            <div class = "text-xs text-white">
+                                Matome Joseph
+                            </div>
+                        </div>
+                        <div class = "mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Email:
+                            </div>
+                            <div class = "text-xs text-white">
+                                u18166793@tuks.co.za
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Downloads:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                0
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Collections:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                0
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Authored:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                0
+                            </div>
+                        </div>
+                        <div class = "flex flex-row justify-end mx-1 mt-4">
+                            <div data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ export class AdminUsersComponent implements OnInit {
     plugins: {
       legend: {
         display: true,
-        position: 'left',
+        position: 'bottom',
       }
     }
   };
@@ -31,6 +31,7 @@ export class AdminUsersComponent implements OnInit {
   };
   pieChartType: ChartType = 'pie';
   email = "";
+  searchValue = "";
   moderators:moderator[] = []
 
   constructor(private readonly adminService:AdminService){}
@@ -45,6 +46,29 @@ export class AdminUsersComponent implements OnInit {
       value?.preventDefault();
       this.addModerator();
     }
+  }
+
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
+    }
+  }
+
+  search(): void{
+    if(this.searchValue === ""){
+      this.notifications.add({type:"warning",message:"Search value is empty."});
+      return;
+    }
+
+    this.adminService.search(this.searchValue).subscribe({
+      next:(value) => {
+        console.log(value);
+      },
+      error:() => {
+        this.notifications.add({type:"danger",message:"Search Failed."});
+      }
+    })
   }
 
   addModerator(): void{
@@ -88,6 +112,7 @@ export class AdminUsersComponent implements OnInit {
       }
     });
   }
+
   initData(): void{
     this.adminService.countCollectionOwners().subscribe({
       next:(value:number) => {
