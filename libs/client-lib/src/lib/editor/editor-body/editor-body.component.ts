@@ -848,6 +848,158 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.editorVisual.PlayersLoops.push(dest)
   }
 
+  letCreation(l : string[], openIf : number, player : number, action : number, ifContains : number, method : string)
+  {
+    const id = this.getEID()
+    if(openIf > 0)
+    {
+      this.editorVisual.PlayersLoops[ifContains].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+    }
+    else
+    {
+      switch(method)
+      {
+        case "action":
+          this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "condition":
+          this.editorVisual.Players[player].conditions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      }
+      
+    }
+    this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
+  }
+
+  setCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string)
+  {
+    const id = this.getEID()
+    const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
+    if(set != null)
+    {
+      if(openIf > 0)
+      {
+        this.editorVisual.PlayersLoops[ifContains].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+      }
+      else
+      {
+        switch(method)
+        {
+          case "action":
+            this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+          case "condition":
+            this.editorVisual.Players[player].conditions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+        }
+       
+      }  
+    }
+  }
+
+  ioCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string, title : string, classes : string)
+  {
+    const id = this.getEID()
+    let input = [""]
+    if(lines[j].match(/"(.*?)"/g) != null)
+    {
+      input = lines[j].match(/"(.*?)"/g) || []
+    }
+    else if(lines[j].match(/'(.*?)'/g) != null)
+    {
+      input = lines[j].match(/'(.*?)'/g) || []
+    }
+    if(openIf > 0)
+    {
+      this.editorVisual.PlayersLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+    }
+    else
+    {
+      switch(method)
+      {
+        case "action":
+          this.editorVisual.Players[player].actions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "condition":
+          this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      }
+      
+    } 
+  }
+
+  methodCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string)
+  {
+    const id = this.getEID()
+    const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
+    if(call != null)
+    {
+      if(call.arguments === 1)
+      {
+        if(openIf > 0)
+        {
+          this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+        }
+        else
+        {
+          switch(method)
+          {
+            case "action":
+              this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "condition":
+              this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
+          }
+        }
+      }
+      else
+      {
+        if(openIf > 0)
+        {
+          this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+        }
+        else
+        {
+          switch(method)
+          {
+            case "action":
+              this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "condition":
+              this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+          } 
+        }
+      }
+    }
+  }
+
+  returnCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string)
+  {
+    const id = this.getEID()
+    const input = lines[j].split(' ').join('');
+    if(openIf > 0)
+    {
+      this.editorVisual.PlayersLoops[ifContains].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+    }
+    else
+    {
+      switch(method)
+      {
+        case "action":
+          this.editorVisual.Players[player].actions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "condition":
+          this.editorVisual.Players[player].conditions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      } 
+     
+    }
+  }
+
+
+  
   updateVDSL()
   {
     this.editorVisual.clear()
@@ -1142,120 +1294,33 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           }
           break
         case "action":
-          
             if(!lines[j].includes("action") && !lines[j].includes("{") && openAction != 0)
             {
               const l = lines[j].split(/\s+/)
               //Create
               if(l[1] == "let")
               {
-                const id = this.getEID()
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-                }
-  
-                this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
-              }
+                this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+              } 
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
-                const id = this.getEID()
-                const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
-                if(set != null)
-                {
-                  if(openIf > 0)
-                  {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
-                  }
-                  else
-                  {
-                    this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
-                  }
-                     
-                }
-                
+                this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //Output
               else if (l[1].includes('output('))
               {
-                const id = this.getEID()
-                let input = [""]
-                if(lines[j].match(/"(.*?)"/g) != null)
-                {
-                  input = lines[j].match(/"(.*?)"/g) || []
-                }
-                else if(lines[j].match(/'(.*?)'/g) != null)
-                {
-                  input = lines[j].match(/'(.*?)'/g) || []
-                }
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                } 
+                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
               }
               //Input
               else if(l[1].includes('input('))
               {
-                const id = this.getEID()
-                let input = [""]
-                if(lines[j].match(/"(.*?)"/g) != null)
-                {
-                  input = lines[j].match(/"(.*?)"/g) || []
-                }
-                else if(lines[j].match(/'(.*?)'/g) != null)
-                {
-                  input = lines[j].match(/'(.*?)'/g) || []
-                }
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                                
+                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
               }
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
-                const id = this.getEID()
-                const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
-                if(call != null)
-                {
-                  if(call.arguments === 1)
-                  {
-                    if(openIf > 0)
-                    {
-                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
-                    }
-                    else
-                    {
-                      this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
-                    }
-     
-                  }
-                  else
-                  {
-                    if(openIf > 0)
-                    {
-                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
-                    }
-                    else
-                    {
-                      this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
-                    }
-                  }
-                }
+                this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
@@ -1287,16 +1352,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Return statements
               else if(lines[j].includes("return"))
               {
-                const id = this.getEID()
-                const input = lines[j].split(' ').join('');
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].actions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
+                this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
@@ -1389,113 +1445,27 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Create
               if(l[1] == "let")
               {
-                const id = this.getEID()
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].conditions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
-                }
-  
-                this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
-              }
+                this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+              } 
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
-                const id = this.getEID()
-                const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
-                if(set != null)
-                {
-                  if(openIf > 0)
-                  {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
-                  }
-                  else
-                  {
-                    this.editorVisual.Players[player].conditions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
-                  }
-                     
-                }
-                
+                this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //Output
               else if (l[1].includes('output('))
               {
-                const id = this.getEID()
-                let input = [""]
-                if(lines[j].match(/"(.*?)"/g) != null)
-                {
-                  input = lines[j].match(/"(.*?)"/g) || []
-                }
-                else if(lines[j].match(/'(.*?)'/g) != null)
-                {
-                  input = lines[j].match(/'(.*?)'/g) || []
-                }
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].conditions[action].push({title: 'Output', class: 'visualO', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                } 
+                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
               }
               //Input
               else if(l[1].includes('input('))
               {
-                const id = this.getEID()
-                let input = [""]
-                if(lines[j].match(/"(.*?)"/g) != null)
-                {
-                  input = lines[j].match(/"(.*?)"/g) || []
-                }
-                else if(lines[j].match(/'(.*?)'/g) != null)
-                {
-                  input = lines[j].match(/'(.*?)'/g) || []
-                }
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].conditions[action].push({title: 'Input', class: 'visualIn', id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                                
+                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
               }
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
-                const id = this.getEID()
-                const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
-                if(call != null)
-                {
-                  if(call.arguments === 1)
-                  {
-                    if(openIf > 0)
-                    {
-                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
-                    }
-                    else
-                    {
-                      this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
-                    }
-     
-                  }
-                  else
-                  {
-                    if(openIf > 0)
-                    {
-                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
-                    }
-                    else
-                    {
-                      this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
-                    }
-                  }
-                }
+                this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
@@ -1527,16 +1497,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Return statements
               else if(lines[j].includes("return"))
               {
-                const id = this.getEID()
-                const input = lines[j].split(' ').join('');
-                if(openIf > 0)
-                {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-1].numberOfIf].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
-                else
-                {
-                  this.editorVisual.Players[player].conditions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
-                }
+                this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
