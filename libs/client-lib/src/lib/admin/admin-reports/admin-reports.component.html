@@ -1,7 +1,7 @@
 <div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto">
     <div class = "col-sm-12 text-2xl w-full font-medium text-gray-700">Scripts</div>
 
-    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(scriptReports.length)">
+    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
         <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
             <div class = "font-medium">
                 Issued By
@@ -38,13 +38,15 @@
         </div>
     </div>
 
-    <!-- <pagination-controls *ngIf = "searchResults.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls> -->
+    <pagination-controls *ngIf = "scriptReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="scriptPage = $event"></pagination-controls>
+</div>
 
+<div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto my-4">
     <div class = "col-sm-12 text-2xl w-full font-medium text-gray-700">
         Comments
     </div>
 
-    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(commentReports.length)">
+    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(commentReports.length) | paginate: { itemsPerPage: 8, currentPage: commentPage }">
         <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
             <div class = "font-medium">
                 Issued By
@@ -77,6 +79,7 @@
             </div>
         </div>
     </div>
-</div>
 
+    <pagination-controls *ngIf = "commentReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="commentPage = $event"></pagination-controls>
+</div>
 <board-game-companion-app-notification></board-game-companion-app-notification>

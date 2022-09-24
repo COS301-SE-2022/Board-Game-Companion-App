@@ -17,6 +17,8 @@ export class AdminReportsComponent implements OnInit {
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   scriptReports:report[] = [];
   commentReports:report[] = [];
+  scriptPage = 1;
+  commentPage = 1;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   constructor(private readonly reportService:ReportService,
