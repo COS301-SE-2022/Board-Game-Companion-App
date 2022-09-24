@@ -3,6 +3,7 @@ import { AdminService } from '../../services/admin/admin.service';
 import { AlertDocument } from '../../schemas/alert.schema';
 import { userSearch } from '../../models/general/userSearch';
 import { Moderator } from '../../schemas/moderator.schema';
+import { Ban } from '../../schemas/ban.schema';
 
 
 @Controller('admin')
@@ -33,6 +34,11 @@ export class ApiAdminController {
     @Delete('remove')
     async remove(@Query('id')id:string):Promise<Moderator>{
         return this.adminService.remove(id);
+    }
+
+    @Post('ban')
+    async ban(@Body('name')name:string,@Body('email')email:string):Promise<Ban>{
+        return this.adminService.ban({name:name,email:email})
     }
 
     @Get('search')
