@@ -46,6 +46,11 @@ export class ApiAdminController {
         return this.adminService.banned({name:name,email:email});
     }
 
+    @Get('isAdmin')
+    async isAdmin(@Query('email')email:string):Promise<boolean>{
+        return this.adminService.isAdmin(email);
+    }
+
     @Post('unban')
     async unban(@Body('email')email:string):Promise<Ban>{
         return this.adminService.unban(email);
