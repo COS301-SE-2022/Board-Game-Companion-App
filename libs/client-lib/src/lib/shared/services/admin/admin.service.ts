@@ -31,7 +31,14 @@ export class AdminService {
 
     return this.httpClient.get<boolean>(this.api + "admin/banned",{params: param});
   }
-  
+
+  isAdmin():Observable<boolean>{
+    let param = new HttpParams();
+    param = param.set("email",sessionStorage.getItem("email") as string);
+
+    return this.httpClient.get<boolean>(this.api + "admin/isAdmin",{params: param});
+  }
+
   unban(email:string):Observable<ban>{
     return this.httpClient.post<ban>(this.api + "admin/unban",{email:email});
   }
