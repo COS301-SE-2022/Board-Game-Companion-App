@@ -1054,11 +1054,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           if(openIf != 0)
           {
-            console.log("zzzzzzzzzzzzzzzzzz")
+           /*  console.log("zzzzzzzzzzzzzzzzzz")
             ifContains.forEach((element) => {
               console.log(element)
             })
-            console.log("zzzzzzzzzzzzzzzzzz")
+            console.log("zzzzzzzzzzzzzzzzzz") */
             const place = ifContains.findIndex(obj => obj.open == openIf)
             if(place != -1)
             {
@@ -1083,11 +1083,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               }
               ifContains.splice(place,1)
               
-              console.log("------------------")
+              /* console.log("------------------")
               ifContains.forEach((element) => {
                 console.log(element)
               })
-              console.log("------------------")   
+              console.log("------------------")    */
             }
             
             openIf--
@@ -1280,6 +1280,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 {
                   openInitial++
                   this.editorVisual.Players[player].actions[action].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  createdFor = false
                 }
                 
               }
@@ -1519,6 +1520,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 {
                   openInitial++
                   this.editorVisual.Players[player].conditions[action].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  createdFor = false
                 }
                 
               }
