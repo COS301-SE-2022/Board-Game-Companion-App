@@ -1,35 +1,77 @@
-<div class = "row p-4 bg-white rounded-sm w-full mx-auto">
-    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(reports.length)">
+<div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto">
+    <div class = "col-sm-12 text-2xl w-full font-medium text-gray-700">Scripts</div>
+
+    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(scriptReports.length)">
         <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
             <div class = "font-medium">
                 Issued By
             </div>
             <div class = "text-white text-xs">
-                {{reports[sub].user.name}}
+                {{scriptReports[sub].user.name}}
             </div>
 
             <div class = "font-medium">
                 Date Issued
             </div>
             <div class = "text-white text-xs">
-                {{formatDate(reports[sub].dateIssued)}}
+                {{formatDate(scriptReports[sub].dateIssued)}}
             </div>
 
             <div class = "font-medium">
                 Message
             </div>
             <div class = "text-white text-xs">
-                {{reports[sub].message}}
+                {{scriptReports[sub].message}}
             </div>
 
             <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
                 <div class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
                     Flag
                 </div>
-                <div (click) = "view(reports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                <div (click) = "view(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
                     View
                 </div>
-                <div (click) = "ignore(reports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                <div (click) = "ignore(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                    Ignore
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <pagination-controls *ngIf = "searchResults.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls> -->
+
+    <div class = "col-sm-12 text-2xl w-full font-medium text-gray-700">
+        Comments
+    </div>
+
+    <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(commentReports.length)">
+        <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+            <div class = "font-medium">
+                Issued By
+            </div>
+            <div class = "text-white text-xs">
+                {{commentReports[sub].user.name}}
+            </div>
+
+            <div class = "font-medium">
+                Date Issued
+            </div>
+            <div class = "text-white text-xs">
+                {{formatDate(commentReports[sub].dateIssued)}}
+            </div>
+
+            <div class = "font-medium">
+                Message
+            </div>
+            <div class = "text-white text-xs">
+                {{commentReports[sub].message}}
+            </div>
+
+            <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
+                <div class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                    Flag
+                </div>
+                <div (click) = "ignore(commentReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
                     Ignore
                 </div>
             </div>

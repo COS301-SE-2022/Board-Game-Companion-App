@@ -11,7 +11,10 @@ export class Report{
     user: user;
 
     @Prop({required:true})
-    script: string;
+    script: boolean;
+    
+    @Prop({required:true})
+    link: string;
 
     @Prop({required: true})
     message: string;
