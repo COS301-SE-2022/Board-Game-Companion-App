@@ -10,6 +10,7 @@ import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
 import { AdminOthersComponent } from './admin-others/admin-others.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SharedModule } from '../shared/shared.module';
+import { WarnFormComponent } from './warn-form/warn-form.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SharedModule } from '../shared/shared.module';
     AdminUsersComponent,
     AdminReportsComponent,
     AdminScriptsComponent,
-    AdminOthersComponent
+    AdminOthersComponent,
+    WarnFormComponent
   ],
   imports: [
     CommonModule,

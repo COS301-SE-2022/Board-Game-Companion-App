@@ -70,7 +70,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           next:(response:boolean) => {
             if(response){
               this.notifications.add({type:"danger",message:"Your account has been blocked."});
+              this.loggedIn = false;
               this.gapi.signOut();
+              sessionStorage.removeItem("name");
+              sessionStorage.removeItem("email");
+              sessionStorage.removeItem("image");
+              this.profile = "assets/images/no-profile.png";
               return;
             }else{
               this.checkIfAdmin();
@@ -373,6 +378,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
               }
             })
           }break;
+          case alertType.Warning:{
+            this.alerts.push({
+              subject: "Warning",
+              message: value.link,
+              alert: value
+            })
+          }break;
         }
       }
     })
@@ -465,6 +477,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 error:(err) => {
                   console.log(err)
                 }
+              })
+            }break;            
+            case alertType.Warning:{
+              this.alerts.push({
+                subject: "Warning",
+                message: value.link,
+                alert: value
               })
             }break;
           }

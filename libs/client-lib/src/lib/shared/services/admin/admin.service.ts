@@ -22,7 +22,7 @@ export class AdminService {
   }
 
   warn(account:user,message:string):Observable<void>{
-    return this.httpClient.post<void>(this.api + "admin/warn",{account:account,message:message});
+    return this.httpClient.post<void>(this.api + "admin/warn",{name:account.name,email:account.email,message:message});
   }
 
   ban(name:string,email:string):Observable<ban>{

@@ -4,7 +4,7 @@ import { AlertDocument } from '../../schemas/alert.schema';
 import { userSearch } from '../../models/general/userSearch';
 import { Moderator } from '../../schemas/moderator.schema';
 import { Ban } from '../../schemas/ban.schema';
-
+import { user } from '../../models/general/user';
 
 @Controller('admin')
 export class ApiAdminController {
@@ -42,7 +42,7 @@ export class ApiAdminController {
     }
 
     @Get('banned')
-    async banned(@Query('name')name:string,@Body('email')email:string):Promise<boolean>{
+    async banned(@Query('name')name:string,@Query('email')email:string):Promise<boolean>{
         return this.adminService.banned({name:name,email:email});
     }
 
@@ -54,6 +54,11 @@ export class ApiAdminController {
     @Post('unban')
     async unban(@Body('email')email:string):Promise<Ban>{
         return this.adminService.unban(email);
+    }
+
+    @Post('warn')
+    async warn(@Body('name')name:string,@Body('email')email:string,@Body('message')message:string):Promise<void>{
+        this.adminService.warn({name:name,email:email},message);
     }
 
     @Get('search')

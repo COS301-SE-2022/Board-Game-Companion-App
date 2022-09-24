@@ -13,8 +13,8 @@ import { AdminService } from '../../shared/services/admin/admin.service';
   templateUrl: './warn-form.component.html',
   styleUrls: ['./warn-form.component.scss'], 
 })
-export class ReportFormComponent{
-  @Input() user!:user;
+export class WarnFormComponent{
+  @Input() account!:user;
   @Output() reportEvent = new EventEmitter();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   content = "";
@@ -29,7 +29,7 @@ export class ReportFormComponent{
   }
 
   send(): void{
-    this.adminService.warn(this.user,this.content).subscribe({
+    this.adminService.warn(this.account,this.content).subscribe({
       next:() => {
         this.notifications.add({type:'success',message:"Warning was successfully sent."});
       },

@@ -14,6 +14,8 @@ import { SocketGateway } from '../socket/socket.gateway';
 import { userSearch } from '../../models/general/userSearch';
 import { Ban, BanDocument } from '../../schemas/ban.schema';
 import { banDto } from '../../models/dto/banDto';
+import { AlertService } from '../alert/alert.service';
+import { alertType } from '../../models/general/alertType';
 
 @Injectable()
 export class AdminService {
@@ -26,6 +28,7 @@ export class AdminService {
                 @InjectModel(Moderator.name) private readonly moderatorModel: Model<ModeratorDocument>,
                 @InjectModel(NeuralNetwork.name)private readonly networkModel: Model<NeuralNetworkDocument>,
                 @InjectModel(Ban.name)private readonly banModel: Model<BanDocument>,
+                private readonly alertService:AlertService,
                 private readonly socket:SocketGateway){}
 
 
@@ -49,9 +52,9 @@ export class AdminService {
     }
 
     async ban(user:user):Promise<Ban>{
-        const check = await this.banModel.find({"user.email":user.email});
-        
-        if(check !== null || check !== undefined)
+        const check = await this.banModel.findOne({"user.email":user.email});
+
+        if(check !== null)
             return null;
 
         const dto:banDto = {
@@ -60,11 +63,13 @@ export class AdminService {
 
         const created = new this.banModel(dto);
         
-        created.save();
+        return created.save();
     }
 
     async banned(account:user): Promise<boolean>{
-        return (await this.banModel.exists({"account.name":account.name,"account.email":account.email})) !== null;
+        const temp = await this.banModel.exists({"account.name":account.name,"account.email":account.email})
+
+        return temp !== null;
     }
 
     async unban(email:string):Promise<Ban>{
@@ -73,12 +78,12 @@ export class AdminService {
         return result;
     }
 
-    // async warn(user:user,message:string):Promise<boolean>{
-        
-    // }
+    async warn(account:user,message:string):Promise<void>{
+        this.alertService.create(account,message,alertType.Warning);
+    }
 
     async isAdmin(email:string):Promise<boolean>{
-        return (await this.moderatorModel.exists({"email":email,"admin":true})) !== null;
+        return (await this.moderatorModel.exists({"email":email})) !== null;
     }
 
     async setAdmin(id:string,admin:boolean):Promise<Moderator>{
@@ -165,7 +170,7 @@ export class AdminService {
             result[count].downloads = await this.downloadModel.find({"owner.email": result[count].email}).countDocuments();
             result[count].authored = await this.automataModel.find({"author.email": result[count].email}).countDocuments();
             result[count].models = await this.networkModel.find({"creator.email": result[count].email}).countDocuments();
-            result[count].banned = (await this.banModel.exists({"user.email": result[count].email})) !== null;
+            result[count].banned = (await this.banModel.exists({"account.email": result[count].email})) !== null;
         }
 
         return result;

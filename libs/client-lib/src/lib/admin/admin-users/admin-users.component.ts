@@ -43,6 +43,9 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   selectAdmin:moderator | undefined;
   selectModerator:moderator | undefined;
   searchResults:userSearch[] = [];
+  banning:string[] = [];
+  page = 1;
+  selectAccount!:user;
 
   constructor(private readonly adminService:AdminService){}
 
@@ -57,6 +60,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  setAccount(value:userSearch): void{
+    this.selectAccount = value;
   }
 
   checkInputOnEnter(value:any): void{
@@ -191,17 +198,25 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   ban(value:userSearch): void{
+    if(this.banning.includes(value.email))
+      return;
+
+    this.banning.push(value.email);
+
     this.adminService.ban(value.name,value.email).subscribe({
       next:(response:ban) => {
         if(response === null){
           this.notifications.add({type:"warning",message:`${value.name} already banned`});
+          this.banning = this.banning.filter((email:string) => email !== value.email);
           return;
         }
         this.notifications.add({type:"warning",message:`Successfully banned ${response.account.name}`});
         value.banned = true;
+        this.banning = this.banning.filter((email:string) => email !== value.email);
       },
       error:()=>{
         this.notifications.add({type:"danger",message:`Failed to ban ${value.name}`})
+        this.banning = this.banning.filter((email:string) => email !== value.email);
       }
     })
   }
