@@ -97,7 +97,8 @@ export class AdminReportsComponent implements OnInit {
               return;
             }
             
-            this.router.navigate(['editor'],{ state: { value: value } });
+            
+            this.router.navigate(['editor'],{ state: { value: response } });
           },
           error:()=>{
             this.notifications.add({type:"danger",message:"Failed to load script"});
