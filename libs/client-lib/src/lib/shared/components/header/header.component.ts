@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   UserDetails: any | undefined;
   log = "login";
   loggedIn = false;
-  admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com","u19062665@tuks.co.za"];
+  adminAccount = false;
   searchValue = "";
   showHeader = true;
   @Input()height = 0;
@@ -73,6 +73,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               this.gapi.signOut();
               return;
             }else{
+              this.checkIfAdmin();
               this.getAlerts();
               this.receiveAlerts();
               this.createFavouritesCollection();
@@ -94,6 +95,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   online(): boolean{
     return this.status === OnlineStatusType.ONLINE;
+  }
+
+
+  checkIfAdmin(): void{
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) =>{
+        this.adminAccount = response
+      }
+    })
   }
 
   getStatus(): string{
@@ -146,16 +156,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.ShowMenu = !this.ShowMenu;
   }
 
-  isAdmin():boolean{
-    let result = false;
-    
-    for(let count = 0; count < this.admin.length && !result; count++){
-     if(this.admin[count] === this.UserDetails?.info.email)
-        result = true;
-    }
-
-    return result;
-  }
 
   isLoggedIn():boolean{
     return this.gapi.isLoggedIn();

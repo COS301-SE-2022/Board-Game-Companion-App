@@ -5,27 +5,21 @@ import { ReportService } from '../../shared/services/reports/report.service';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { report } from '../../shared/models/scripts/report';
+import { user } from '../../shared/models/general/user';
+import { AdminService } from '../../shared/services/admin/admin.service';
 
 @Component({
-  selector: 'board-game-companion-app-report-form',
-  templateUrl: './report-form.component.html',
-  styleUrls: ['./report-form.component.scss'], 
+  selector: 'board-game-companion-app-warn-form',
+  templateUrl: './warn-form.component.html',
+  styleUrls: ['./warn-form.component.scss'], 
 })
-export class ReportFormComponent implements OnInit {
-  @Input() id = "";
-  @Input() reported = false;
+export class ReportFormComponent{
+  @Input() user!:user;
   @Output() reportEvent = new EventEmitter();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   content = "";
   
-
-  constructor(private readonly commentService:CommentService,
-              private readonly gapi: GoogleAuthService,
-              private readonly reportService:ReportService) {}
-
-  ngOnInit(): void {
-    console.log("comment-form");
-  }
+  constructor(private readonly adminService:AdminService) {}
 
   onEnter(value:any): void{
     if(value.key === "Enter"){
@@ -35,24 +29,12 @@ export class ReportFormComponent implements OnInit {
   }
 
   send(): void{
-    if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"primary",message:"You must be logged In to report on the script."});
-      return;
-    }
-
-    if(this.reported){
-      this.notifications.add({type:"primary",message:"Your previous report has not been resolved yet."})
-      return
-    }
-
-    this.reportService.report(this.id,this.content).subscribe({
-      next:(value:report) => {
-        this.content = "";
-        this.reportEvent.emit();
+    this.adminService.warn(this.user,this.content).subscribe({
+      next:() => {
+        this.notifications.add({type:'success',message:"Warning was successfully sent."});
       },
-      error:(err) => {
-        console.log(err);
-        this.notifications.add({type:"danger",message:"Failed to report script.If this error persist, you can contact the administrator."});
+      error:() => {
+        this.notifications.add({type:"danger",message:"Failed to send warning."});
       }
     })
     

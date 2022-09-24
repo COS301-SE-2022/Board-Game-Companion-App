@@ -5,6 +5,7 @@ import { Socket } from 'ngx-socket-io';
 import { moderator } from '../../models/admin/moderator';
 import { userSearch } from '../../models/admin/userSearch';
 import { ban } from '../../models/admin/ban';
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class AdminService {
@@ -18,6 +19,10 @@ export class AdminService {
 
   create(email:string):Observable<moderator>{
       return this.httpClient.post<moderator>(this.api + "admin/create",{email:email});
+  }
+
+  warn(account:user,message:string):Observable<void>{
+    return this.httpClient.post<void>(this.api + "admin/warn",{account:account,message:message});
   }
 
   ban(name:string,email:string):Observable<ban>{
