@@ -29,30 +29,30 @@ describe('Test script service',()=>{
     expect(service).toBeTruthy();
   });
 
-  // it('should return api URL',()=>{
-  //   const url = service.getApiUrl();
-  //   expect(url).toBe('http://localhost:3333/api/');
-  // });
+  it('should return api URL',()=>{
+    const url = service.getApiUrl();
+    expect(url).toBe('http://localhost:3333/api/');
+  });
 
-  // it('should return Bbg URL',()=>{
-  //   const url = service.getBbgUrl();
-  //   expect(url).toBe('https://api.geekdo.com/xmlapi2/');
-  // });
-  // const text = '<items total="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">'
-  // +'<item type="boardgame" id="171">'
-  // +'<name type="primary" value="Chess"/>'
-  // +'<yearpublished value="1475"/>'
-  // +'</item>'
-  // +'</items>';
+  it('should return Bbg URL',()=>{
+    const url = service.getBbgUrl();
+    expect(url).toBe('https://api.geekdo.com/xmlapi2/');
+  });
+  const text = '<items total="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">'
+  +'<item type="boardgame" id="171">'
+  +'<name type="primary" value="Chess"/>'
+  +'<yearpublished value="1475"/>'
+  +'</item>'
+  +'</items>';
 
-  // it('should get BoardGame by name', ()=>{
-  //   service.getBoardGameByName('chess',true).subscribe((data)=>{
-  //     expect(data).toEqual(text);
-  //   });
-  //   const req = httpTestingController.expectOne('https://api.geekdo.com/xmlapi2/search?query=chess&type=boardgame&exact=1');
-  //   expect(req.request.method).toBe('GET');
-  //   req.flush(text);
-  // });
+  it('should get BoardGame by name', ()=>{
+    service.getBoardGameByName('chess',true).subscribe((data)=>{
+      expect(data).toEqual(text);
+    });
+    const req = httpTestingController.expectOne('https://api.geekdo.com/xmlapi2/search?query=chess&type=boardgame&exact=1');
+    expect(req.request.method).toBe('GET');
+    req.flush(text);
+  });
 
   const exScript: script = {
     _id: '171',
