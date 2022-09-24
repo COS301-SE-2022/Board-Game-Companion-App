@@ -103,6 +103,10 @@ export class DownloadsService {
         return this.downloadsModel.find({"owner.name":owner.name,"owner.email":owner.email});
     }
     
+    async getAll():Promise<DownloadScript[]>{
+        return this.downloadsModel.find({});
+    }
+
     async retrieveById(id:string):Promise<DownloadScript>{
         return this.downloadsModel.findById(id).exec();
     }

@@ -12,6 +12,7 @@ import { myScript } from '../../shared/models/scripts/my-script';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  tab = 0;
 
   public currentPub = 0 ; // Total number of scripts posted this month.
   public totalPub = 0 ; // Total number of scripts.
