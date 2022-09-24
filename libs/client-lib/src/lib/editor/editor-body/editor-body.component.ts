@@ -730,6 +730,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.editorVisual.clear()
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let method = ""
+    let openAttribute = 0
     let openPlayer = 0
     let openState = 0
     let openAction = 0
@@ -751,7 +752,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     for(let j = 0; j < lines.length; j++)
     {
       //console.log("line " + j + ":" + lines[j])
-      if((lines[j].includes("state") && lines[j].includes("{")) || (lines[j].includes("state") && lines[j + 1].includes("{")))
+      if((lines[j].includes("tileAttribute") && lines[j].includes("{")) || (lines[j].includes("tileAttribute") && lines[j + 1].includes("{")))
+      {
+        open++
+        method = "tileAttribute"
+        openAttribute = open
+      } 
+      else if((lines[j].includes("state") && lines[j].includes("{")) || (lines[j].includes("state") && lines[j + 1].includes("{")))
       {
         open++
         method = "state"
@@ -950,45 +957,43 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
       switch(method)
       {
+        case "tileAttribute":
+          if(!lines[j].includes("tileAttribute") && !lines[j].includes("{") && openAttribute != 0)
+          {
+            const l = lines[j].replace(/\s/g, '')
+            const le = l.split(/=/)
+            this.editorVisual.Properties.push({Property: le[0], Value: le[1]})
+            this.editorVisual.listProperties.push(le[0])
+          } 
+          break
         case "state":
           if(!lines[j].includes("state") && !lines[j].includes("{") && openState != 0)
           {
-            const l = lines[j].split(/\s+/)
-            if(l[1].includes("create"))
+            if(lines[j].includes("create"))
             {
-              const num = l[1].match(/(\d+)/)
+              const num = lines[j].match(/(\d+)/)
               if(num != null)
               {
                 for(let k = 0; k < +num[0]; k++)
                 {
-                  //this.editorVisual.Tiles.push({variable: '', id: '', name: '', type: ''})
+                  this.editorVisual.Tiles.push({values: new Array<string>(this.editorVisual.listProperties.length)})
                 }
               }
             }
-            else if(l[1].includes("name"))
+            else
             {
-              const num = l[1].match(/(\d+)/)
-              if(num != null)
-              {
-                //this.editorVisual.Tiles[+num[0]].name = l[3].replace(/'/g, "")
-              }
+              const num = lines[j].match(/(\d+)/)
+              const l = lines[j].replace(/\s/g, '')
+              const le = l.split(/=/)
+              const property = le[0].substring(le[0].indexOf(".") +1)
+              this.editorVisual.listProperties.forEach((element, i) => {
+                if(element == property)
+                {
+                  if(num != null)
+                  this.editorVisual.Tiles[+num[0]].values[i] = le[1]
+                }
+              })
             }
-            else if(l[1].includes("type"))
-            {
-              const num = l[1].match(/(\d+)/)
-              if(num != null)
-              {
-                //this.editorVisual.Tiles[+num[0]].type = l[3].replace(/'/g, "")
-              }
-            }
-            else if(l[1].includes("id"))
-            {
-              const num = l[1].match(/(\d+)/)
-              if(num != null)
-              {
-                //this.editorVisual.Tiles[+num[0]].id = l[3].replace(/'/g, "")
-              }
-            } 
           }
           break
         case "action":

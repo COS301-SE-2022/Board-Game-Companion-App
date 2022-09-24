@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { any } from '@tensorflow/tfjs';
 
 
 @Component({
@@ -20,10 +21,8 @@ export class EditorBodyVisualComponent {
     "id", "name", "type"
   ]
 
-  tile = this.listProperties.reduce((o, key) => ({ ...o, [key]: ""}), {})
-
   Tiles = [
-    this.tile
+    {values: new Array<string>(this.listProperties.length)} 
   ]
 
   constructor(){
@@ -86,7 +85,7 @@ export class EditorBodyVisualComponent {
   addTileToBoard()
   {
     console.log(this.Tiles)
-    this.Tiles.push(this.tile)
+    this.Tiles.push({values: new Array<string>(this.listProperties.length)})
   }
 
   removeTile(i: number)
@@ -121,5 +120,7 @@ export class EditorBodyVisualComponent {
     this.Variables.splice(0)
     this.PlayersLoops.splice(1)
     this.playersLoopIndex = 0
+    this.listProperties.splice(2)
+    this.Properties.splice(0)
   }
 }

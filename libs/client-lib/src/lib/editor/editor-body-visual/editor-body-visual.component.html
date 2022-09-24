@@ -6,7 +6,7 @@
             </div>
         </summary>
     </details>
-    <table class = "table-fixed m-4 mt-2">
+    <table class = "table-fixed  m-4 mt-2">
         <thead>
             <tr>
                 <th>
@@ -49,6 +49,9 @@
                     <th>
                         <button (click)="addTileToBoard()" id = "addTile"><i class="fa-solid fa-plus"></i></button>
                     </th>
+                    <th>
+                        Tile Number
+                    </th>
                     <th *ngFor = "let property of listProperties let i = index">
                         {{property}}
                     </th>
@@ -59,8 +62,12 @@
                     <td>
                         <button (click)="removeTile(i)" class = "mr-2" id = "removeTile"><i class="fa-solid fa-circle-xmark"></i></button>
                     </td>
-                    <td *ngFor = "let property of listProperties let i = index">
-                        <input>
+                    <td class = "text-center">
+                        <b>{{i + 1}}</b>
+                    </td>
+                    <td class = "mx-4" *ngFor = "let property of listProperties let k = index">
+                        <input *ngIf = "tile.values[k] !== undefined" [value] = "tile.values[k]">
+                        <input  *ngIf = "tile.values[k] === undefined">
                     </td>
                 </tr>
             </tbody>
