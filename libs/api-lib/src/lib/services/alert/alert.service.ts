@@ -8,16 +8,15 @@ import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { alertType } from '../../models/general/alertType';
 import { alertDto } from '../../models/dto/alertDto';
 import {WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection, OnGatewayDisconnect} from '@nestjs/websockets';
-import { Server } from 'http';
+import { SocketGateway } from '../socket/socket.gateway';
 
-@WebSocketGateway()
 @Injectable()
 export class AlertService {
-    @WebSocketServer()server: Server;
 
     constructor(@InjectModel(Alert.name) private readonly alertModel: Model<AlertDocument>,
                 @InjectModel(AutomataScript.name) private readonly automataModel: Model<AutomataScriptDocument>,
-                @InjectModel(OldScript.name) private readonly oldModel: Model<OldScriptDocument>){}
+                @InjectModel(OldScript.name) private readonly oldModel: Model<OldScriptDocument>,
+                private readonly socket:SocketGateway){}
 
     
 
@@ -33,7 +32,8 @@ export class AlertService {
         const created = new this.alertModel(dto);
         
         const result = await created.save();
-        this.server.emit("alert." + result.recepient.name + "." + result.recepient.email,result);
+        this.socket.send("alert." + result.recepient.name + "." + result.recepient.email,result);
+        
         return result;
     }
 

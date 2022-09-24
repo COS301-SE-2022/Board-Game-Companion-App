@@ -4,15 +4,29 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminReportsComponent } from './admin-reports/admin-reports.component';
+import { AdminScriptsComponent } from './admin-scripts/admin-scripts.component';
+import { AdminOthersComponent } from './admin-others/admin-others.component';
+import { NgChartsModule } from 'ng2-charts';
+import { SharedModule } from '../shared/shared.module';
+import { WarnFormComponent } from './warn-form/warn-form.component';
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    AdminUsersComponent,
+    AdminReportsComponent,
+    AdminScriptsComponent,
+    AdminOthersComponent,
+    WarnFormComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgxPaginationModule,
+    NgChartsModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:AdminComponent}])
   ]
 })
