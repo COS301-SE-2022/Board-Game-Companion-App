@@ -133,6 +133,11 @@ export class EditorComponent implements OnInit{
     this.loadModels();
   }
 
+  ngOnDestroy() : void
+  {
+    this.dragulaService.destroy("COPYABLE")
+  }
+
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
