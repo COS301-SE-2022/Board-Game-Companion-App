@@ -195,6 +195,10 @@ export class MyScriptService {
         return result;
     }
 
+    async getMyScriptById(id:string):Promise<MyScriptDocument>{
+        return this.myScriptModel.findById(id);
+    }
+
     async alertCollection(script: AutomataScriptDocument): Promise<void>{
         const collections = await this.collectionService.getAllCollections();
         
