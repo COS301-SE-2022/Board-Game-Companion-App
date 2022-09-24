@@ -113,4 +113,17 @@ export class AdminReportsComponent implements OnInit {
       }
     })
   }
+
+  flag(value:report): void{
+    this.reportService.flag(value._id).subscribe({
+      next:()=>{
+        this.notifications.add({type:"success",message:"Successfully flagged " + (value.script ? "script" : "comment")})
+        this.scriptReports = this.scriptReports.filter((val:report) => val._id !== value._id);
+        this.commentReports = this.commentReports.filter((val:report) => val._id !== value._id);
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:"Failed to flag " + (value.script ? "script" : "comment")})
+      }
+    })
+  }
 }

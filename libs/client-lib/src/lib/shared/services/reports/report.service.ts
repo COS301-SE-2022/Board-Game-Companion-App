@@ -50,4 +50,11 @@ export class ReportService {
       return this.httpClient.get<number>(this.api + "reports/count-reported");
   }   
 
+  flag(id:string):Observable<void>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<void>(this.api + "reports/flag",{params: param});
+  }
+
 }

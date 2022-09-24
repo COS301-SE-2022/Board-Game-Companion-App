@@ -25,7 +25,7 @@
             </div>
 
             <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
-                <div class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                <div (click) = "flag(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
                     Flag
                 </div>
                 <div (click) = "view(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
@@ -68,7 +68,7 @@
             </div>
 
             <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
-                <div class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                <div (click) = "flag(commentReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
                     Flag
                 </div>
                 <div (click) = "ignore(commentReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
