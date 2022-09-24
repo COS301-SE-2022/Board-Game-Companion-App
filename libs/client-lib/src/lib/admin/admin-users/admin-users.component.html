@@ -6,7 +6,7 @@
                 <div class = "ml-2 text-base text-gray-400 font-medium">{{activeAccount}}</div>
             </div>
             <div class = "mb-2">
-                <label class = "font-medium text-gray-700 text-xl">logged-In Accounts</label>
+                <label class = "font-medium text-gray-700 text-xl">Logged-In Accounts</label>
                 <div class = "ml-2 text-base text-gray-400 font-medium">{{loggedInUsers}}</div>
             </div>
             <div class = "">
@@ -81,22 +81,22 @@
                 </button>
             </div>
             <div class = "row mt-4">
-                <div class = "col-sm-4 col-md-3 col-lg-2" *ngFor = "let value of searchResults">
-                    <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2">
+                <div class = "col-sm-4 col-md-3 col-lg-2 mt-2" *ngFor = "let sub of enumerate(searchResults.length)">
+                    <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
                         <div class = "mx-1 my-0.5">
                             <div class = "font-medium">
                                 Names:
                             </div>
                             <div class = "text-xs text-white">
-                                {{value.name}}
+                                {{searchResults[sub].name}}
                             </div>
                         </div>
                         <div class = "mx-1 my-0.5">
                             <div class = "font-medium">
                                 Email:
                             </div>
-                            <div class = "text-xs text-white">
-                                {{value.email}}
+                            <div class = "text-xs text-white overflow-hidden">
+                                {{searchResults[sub].email}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -104,7 +104,7 @@
                                 Downloads:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                {{value.downloads}}
+                                {{searchResults[sub].downloads}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -112,7 +112,7 @@
                                 Collections:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                {{value.collections}}
+                                {{searchResults[sub].collections}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -120,7 +120,7 @@
                                 Authored:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                {{value.authored}}
+                                {{searchResults[sub].authored}}
                             </div>
                         </div>
                         <div class = "flex flex-wrap mx-1 my-0.5">
@@ -128,15 +128,18 @@
                                 Models:
                             </div>
                             <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                {{value.models}}
+                                {{searchResults[sub].models}}
                             </div>
                         </div>
-                        <div *ngIf = "!isAdmin(value)" class = "flex flex-row justify-end mx-1 mt-4">
-                            <div (click) = "ban(value)" data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
+                        <div class = "flex flex-row justify-end mx-1 mt-4">
+                            <div data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
                                 <i class="fas fa-exclamation-triangle"></i>
                             </div>
-                            <div data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
-                                <i class="fas fa-ban"></i>
+                            <div *ngIf = "!searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "ban(searchResults[sub])" data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
+                                <i class="fa fa-lock"></i>
+                            </div>
+                            <div *ngIf = "searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "unban(searchResults[sub])" data-toggle="tooltip" title="unban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
+                                <i class="fa fa-unlock"></i>
                             </div>
                         </div>
                     </div>

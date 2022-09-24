@@ -24,6 +24,10 @@ export class AdminService {
     return this.httpClient.post<ban>(this.api + "admin/ban",{name:name,email:email});
   }
 
+  unban(email:string):Observable<ban>{
+    return this.httpClient.post<ban>(this.api + "admin/unban",{email:email});
+  }
+
   setAdmin(id:string,admin:boolean):Observable<moderator>{
       return this.httpClient.put<moderator>(this.api + "admin/set-admin",{id:id,admin:admin}); 
   }

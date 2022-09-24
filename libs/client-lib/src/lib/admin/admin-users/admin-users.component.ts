@@ -101,6 +101,15 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     })
   }
 
+  enumerate(x:number): number[]{
+    const result:number[] = [];
+
+    for(let count = 0; count < x; count++)
+      result.push(count);
+
+    return result;
+  }
+
   loginEvent(): void{
     const subscription = this.adminService.login().subscribe({
       next:(value:number) => {
@@ -141,11 +150,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   search(): void{
-    if(this.searchValue === ""){
-      this.notifications.add({type:"warning",message:"Search value is empty."});
-      return;
-    }
-
     this.adminService.search(this.searchValue).subscribe({
       next:(value:userSearch[]) => {
         this.searchResults = value;
@@ -167,6 +171,23 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   isAdmin(value:userSearch): boolean{
     const emails = this.moderators.map((value)=>value.email);
     return emails.includes(value.email);
+  }
+
+  unban(value:userSearch): void{
+    this.adminService.unban(value.email).subscribe({
+      next:(response:ban) =>{
+        if(response === null){
+          this.notifications.add({type:"warning",message:"Could not find banned account"});
+          return;
+        }
+
+        this.notifications.add({type:"success",message:`Successfully unbanned the account belonging to '${value.name}'`});
+        value.banned = false;
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:'Failed to unban account'})
+      }
+    })
   }
 
   ban(value:userSearch): void{

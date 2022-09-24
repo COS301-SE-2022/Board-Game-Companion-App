@@ -63,6 +63,16 @@ export class AdminService {
         created.save();
     }
 
+    async unban(email:string):Promise<Ban>{
+        const result = await this.banModel.findOneAndRemove({"user.email":email});
+
+        return result;
+    }
+
+    // async warn(user:user,message:string):Promise<boolean>{
+        
+    // }
+
     async setAdmin(id:string,admin:boolean):Promise<Moderator>{
         const result = await this.moderatorModel.findById(id);
         
@@ -88,13 +98,13 @@ export class AdminService {
         const result:userSearch[] = [];
         term = term.toLowerCase();
         
-        collectionOwners = collectionOwners.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1);
-        downloaders = downloaders.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1);
-        authors = authors.filter((value) => value.author.name.toLowerCase().indexOf(term) !== -1 || value.author.email.toLowerCase().indexOf(term) !== -1);
+        collectionOwners = collectionOwners.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === "");
+        downloaders = downloaders.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === "");
+        authors = authors.filter((value) => value.author.name.toLowerCase().indexOf(term) !== -1 || value.author.email.toLowerCase().indexOf(term) !== -1 || term === "");
         
         const temp:string[] = [];
 
-        collectionOwners.forEach(async(value) => {
+        collectionOwners.forEach((value) => {
             if(temp.includes(value.owner.email))
                 return;
 
@@ -102,11 +112,11 @@ export class AdminService {
             result.push({
                 name: value.owner.name,
                 email: value.owner.email,
-                collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
-                downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
-                authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments(),
-                banned: (await this.banModel.exists({"user.email":value.owner.email})) !== null
+                collections: 0,
+                downloads: 0,
+                authored: 0,
+                models: 0,
+                banned: false
             })
         })
 
@@ -118,11 +128,11 @@ export class AdminService {
             result.push({
                 name: value.owner.name,
                 email: value.owner.email,
-                collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
-                downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
-                authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments(),
-                banned: (await this.banModel.exists({"user.email":value.owner.email})) !== null
+                collections: 0,
+                downloads: 0,
+                authored: 0,
+                models: 0,
+                banned: false
             })
         })
 
@@ -134,13 +144,21 @@ export class AdminService {
             result.push({
                 name: value.author.name,
                 email: value.author.email,
-                collections: await this.collectionModel.find({"owner.email":value.author.email}).countDocuments(),
-                downloads: await this.downloadModel.find({"owner.email":value.author.email}).countDocuments(),
-                authored: await this.automataModel.find({"author.email":value.author.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.author.email}).countDocuments(),
-                banned: (await this.banModel.exists({"user.email":value.author.email})) !== null
+                collections: 0,
+                downloads: 0,
+                authored: 0,
+                models: 0,
+                banned: false
             })
         });
+
+        for(let count = 0; count < result.length; count++){
+            result[count].collections = await this.collectionModel.find({"owner.email": result[count].email}).countDocuments();
+            result[count].downloads = await this.downloadModel.find({"owner.email": result[count].email}).countDocuments();
+            result[count].authored = await this.automataModel.find({"author.email": result[count].email}).countDocuments();
+            result[count].models = await this.networkModel.find({"creator.email": result[count].email}).countDocuments();
+            result[count].banned = (await this.banModel.exists({"user.email": result[count].email})) !== null;
+        }
 
         return result;
     }
