@@ -43,6 +43,7 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
 import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
 import { ApiAdminController } from './controllers/admin/admin.controller';
 import { AdminService } from './services/admin/admin.service';
+import { Ban, BanSchema } from './schemas/ban.schema';
 
 @Module({
   imports:[
@@ -59,7 +60,8 @@ import { AdminService } from './services/admin/admin.service';
                                 { name: DownloadScript.name, schema: DownloadScriptSchema},
                                 { name: File.name, schema: FileSchema},
                                 { name: Alert.name, schema: AlertSchema},
-                                { name: Moderator.name, schema: ModeratorSchema}
+                                { name: Moderator.name, schema: ModeratorSchema},
+                                { name: Ban.name, schema: BanSchema }
                               ]),
                               HttpModule,NestjsFormDataModule
   ],

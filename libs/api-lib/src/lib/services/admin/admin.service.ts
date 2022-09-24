@@ -12,6 +12,8 @@ import { Moderator, ModeratorDocument } from '../../schemas/moderator.schema';
 import { moderatorDto } from '../../models/dto/moderatorDto';
 import { SocketGateway } from '../socket/socket.gateway';
 import { userSearch } from '../../models/general/userSearch';
+import { Ban, BanDocument } from '../../schemas/ban.schema';
+import { banDto } from '../../models/dto/banDto';
 
 @Injectable()
 export class AdminService {
@@ -23,6 +25,7 @@ export class AdminService {
                 @InjectModel(Collection.name) private readonly collectionModel: Model<CollectionDocument>,
                 @InjectModel(Moderator.name) private readonly moderatorModel: Model<ModeratorDocument>,
                 @InjectModel(NeuralNetwork.name)private readonly networkModel: Model<NeuralNetworkDocument>,
+                @InjectModel(Ban.name)private readonly banModel: Model<BanDocument>,
                 private readonly socket:SocketGateway){}
 
 
@@ -43,6 +46,21 @@ export class AdminService {
         this.socket.send("new-moderator",result);
         
         return result;
+    }
+
+    async ban(user:user):Promise<Ban>{
+        const check = await this.banModel.find({"user.email":user.email});
+        
+        if(check === null || check === undefined)
+            return null;
+
+        const dto:banDto = {
+            user: user
+        }
+
+        const created = new this.banModel(dto);
+        
+        created.save();
     }
 
     async setAdmin(id:string,admin:boolean):Promise<Moderator>{
@@ -87,7 +105,8 @@ export class AdminService {
                 collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
                 downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
                 authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments()
+                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments(),
+                banned: (await this.banModel.exists({"user.email":value.owner.email})) !== null
             })
         })
 
@@ -102,7 +121,8 @@ export class AdminService {
                 collections: await this.collectionModel.find({"owner.email":value.owner.email}).countDocuments(),
                 downloads: await this.downloadModel.find({"owner.email":value.owner.email}).countDocuments(),
                 authored: await this.automataModel.find({"author.email":value.owner.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments()
+                models: await this.networkModel.find({"creator.email":value.owner.email}).countDocuments(),
+                banned: (await this.banModel.exists({"user.email":value.owner.email})) !== null
             })
         })
 
@@ -117,7 +137,8 @@ export class AdminService {
                 collections: await this.collectionModel.find({"owner.email":value.author.email}).countDocuments(),
                 downloads: await this.downloadModel.find({"owner.email":value.author.email}).countDocuments(),
                 authored: await this.automataModel.find({"author.email":value.author.email}).countDocuments(),
-                models: await this.networkModel.find({"creator.email":value.author.email}).countDocuments()
+                models: await this.networkModel.find({"creator.email":value.author.email}).countDocuments(),
+                banned: (await this.banModel.exists({"user.email":value.author.email})) !== null
             })
         });
 
