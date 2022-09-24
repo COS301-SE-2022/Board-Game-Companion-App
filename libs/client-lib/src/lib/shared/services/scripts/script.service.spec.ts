@@ -2,10 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { script } from '../../models/scripts/script';
 import { rating } from '../../models/scripts/rating';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
+import { empty } from '../../models/editor/entity';
 import { ScriptService } from './script.service';
 import { HttpParams } from '@angular/common/http';
+import { downloadScript } from '../../models/scripts/download-script';
+import { automataScript } from '../../models/scripts/automata-script';
+import { myScript } from '../../models/scripts/my-script';
 
+/************************************************** Unit Tests ***********************************************/
 describe('Test script service',()=>{
 
   let service: ScriptService;
@@ -21,34 +25,34 @@ describe('Test script service',()=>{
     httpTestingController.verify();
   });
 
-  it('testing testing',()=>{
+  it('should create',()=>{
     expect(service).toBeTruthy();
   });
 
-  it('should return api URL',()=>{
-    const url = service.getApiUrl();
-    expect(url).toBe('http://localhost:3333/api/');
-  });
+  // it('should return api URL',()=>{
+  //   const url = service.getApiUrl();
+  //   expect(url).toBe('http://localhost:3333/api/');
+  // });
 
-  it('should return Bbg URL',()=>{
-    const url = service.getBbgUrl();
-    expect(url).toBe('https://api.geekdo.com/xmlapi2/');
-  });
-  const text = '<items total="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">'
-  +'<item type="boardgame" id="171">'
-  +'<name type="primary" value="Chess"/>'
-  +'<yearpublished value="1475"/>'
-  +'</item>'
-  +'</items>';
+  // it('should return Bbg URL',()=>{
+  //   const url = service.getBbgUrl();
+  //   expect(url).toBe('https://api.geekdo.com/xmlapi2/');
+  // });
+  // const text = '<items total="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">'
+  // +'<item type="boardgame" id="171">'
+  // +'<name type="primary" value="Chess"/>'
+  // +'<yearpublished value="1475"/>'
+  // +'</item>'
+  // +'</items>';
 
-  it('should get BoardGame by name', ()=>{
-    service.getBoardGameByName('chess',true).subscribe((data)=>{
-      expect(data).toEqual(text);
-    });
-    const req = httpTestingController.expectOne('https://api.geekdo.com/xmlapi2/search?query=chess&type=boardgame&exact=1');
-    expect(req.request.method).toBe('GET');
-    req.flush(text);
-  });
+  // it('should get BoardGame by name', ()=>{
+  //   service.getBoardGameByName('chess',true).subscribe((data)=>{
+  //     expect(data).toEqual(text);
+  //   });
+  //   const req = httpTestingController.expectOne('https://api.geekdo.com/xmlapi2/search?query=chess&type=boardgame&exact=1');
+  //   expect(req.request.method).toBe('GET');
+  //   req.flush(text);
+  // });
 
   const exScript: script = {
     _id: '171',
@@ -160,16 +164,6 @@ describe('Test script service',()=>{
       location: 'https://aws.'}));
   });
 
-  // it('should update file and return message in an object',()=>{
-  //   service.updateFile('12345','chess chess chess').subscribe((data)=>{
-  //     expect(data).toBe({message:'update was successful'});
-  //   });
-  //   const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update-file');
-  //   expect(req.request.method).toBe('PUT');
-  //   expect(req.request.body).toStrictEqual({id:'12345',name:name,content:'chess chess chess'});
-
-  //   req.flush({message:'update was successful'});
-  // });
   const exRating: rating ={
     _id: '25',
     user: {name:'NN',email: 'NN@zak.uk.co'},
@@ -204,7 +198,6 @@ describe('Test script service',()=>{
     param = param.set('userEmail','NN@zak.uk.co');
     param = param.set('script','chessMaster');
 
-    // expect(req.request.params).toBe({params:param});
     req.flush(exRating);
   });
 
@@ -216,7 +209,6 @@ describe('Test script service',()=>{
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
     param = param.set('script','chessMaster');
-    // expect(req.request.params).toEqual({params:param});
 
     req.flush(1);
   });
@@ -229,9 +221,217 @@ describe('Test script service',()=>{
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
     param = param.set('script','chessMaster');
-    // expect(req.request.params).toEqual({params:param});
 
     req.flush(4);
   });
 
+  it('should update Script Model',()=>{
+    service.updateScriptModels('6304be14c0a7933d955d3ecf',['6304be14c0a7933d955d3ecf']).subscribe((data)=>{
+      expect(data).resolves;
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update-models');
+    expect(req.request.method).toBe('PUT');
+    req.flush(exScript);
+  });
+
+  it('should update status',()=>{
+    service.updateStatus('6304be14c0a7933d955d3ecf',1,'It is faulty').subscribe((data)=>{
+      expect(data).resolves;
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update/status');
+    expect(req.request.method).toBe('PUT');
+    req.flush(exScript);
+  });
+
+  const myDownloaded:downloadScript[]=[{
+    _id: '6304be14c0a7933d955d3ecf',
+    link:'',
+    owner:{name:'Certe',email:'Ezee@gmail.com'},
+    dateDownloaded: new Date(0),
+    name:'popOff',
+    author: {name:'Njabulo',email:'njabulo@gmail.com'},
+    boardgame:'',
+    description:'',
+    version: {major:1,minor:1,patch:0},
+    size:0,
+    icon: {name:'',location:'',key:''},
+    build: {name:'',location:'',key:''},
+    models: [],}];
+
+  it('should check the name',()=>{
+    window.sessionStorage.setItem('name','James');
+    window.sessionStorage.setItem('email','james@yahoo.com')
+      service.checkName('board-chess').subscribe((data)=>{
+      expect(data).toBeTruthy();
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/check-name?name=board-chess&userEmail=james@yahoo.com&userName=James');
+    expect(req.request.method).toBe('GET');
+    req.flush(true);
+  });
+
+  it('should return true if already downloaded',()=>{
+    window.sessionStorage.setItem('name','James');
+    window.sessionStorage.setItem('email','james@yahoo.com')
+    service.alreadyDownloaded({name:'Njabulo',email:'njabulo@gmail.com'},'board-chess',{major:1,minor:0,patch:2}).subscribe((data)=>{
+    expect(data).toBeTruthy();
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/already-downloaded?authorName=Njabulo&authorEmail=njabulo@gmail.com&ownerEmail=james@yahoo.com&ownerName=James&name=board-chess&vMajor=1&vMinor=0&vPatch=2');
+    expect(req.request.method).toBe('GET');
+    req.flush(true);
+  });
+
+  it('should return downloaded',()=>{
+    service.getDownloadedScript('6304be14c0a7933d955d3ecf').subscribe((data)=>{
+      expect(data).toBeDefined();
+    });
+
+      const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/retrieve-id?id=6304be14c0a7933d955d3ecf');
+      expect(req.request.method).toBe('GET');
+      req.flush(myDownloaded[0]);
+  });
+
+  const mockAutScripts:automataScript[]=[{
+    _id:'6304be14c0a7933d955d3ecf',
+    dateReleased:  new Date('14-07-2022'),
+    downloads: 334,
+    lastDownload: new Date('23-09-2022'),
+    export: true,
+    comments: ['Wow! Good!'],
+    rating:0,
+    source: { name: '', key: '', location: ''},
+    previous: [],
+    name: 'killer-type',
+    author:{name:'John',email:'Smith@gmail.com'},
+    boardgame:'',
+    description: "",
+    version:{major:1,minor:1,patch:1},
+    size: 0,
+    icon: {name:'',location:'',key:''},
+    build: {name:'',location:'',key:''},
+    models: [],
+  }];
+
+  const mockMyScripts:myScript[]=[{
+    _id: '',
+    created:new Date(0),
+    lastUpdate: new Date(0),
+    status:{value:0,message:''},
+    export: false,
+    programStructure:empty,
+    source:{ name: '', location: '', key: ''},
+    name:'',
+    author: {name:'',email:''},
+    boardgame: '',
+    description: '',
+    version: {major:4,minor:0,patch:3},
+    size: 0,
+    icon: {name:'',location:'',key:''},
+    build: {name:'',location:'',key:''},
+    models: [],
+  }];
+  it('release a script',()=>{
+    service.release('6304be14c0a7933d955d3ecf',{major:23,minor:1,patch:3}).subscribe((data)=>{
+      expect(data.success).toBeTruthy();
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/release?id=6304be14c0a7933d955d3ecf&vMajor=23&vMinor=1&vPatch=3');
+    expect(req.request.method).toBe('GET');
+    req.flush({sucess:true});
+  });
+
+  it('should get download script',()=>{
+    window.sessionStorage.setItem('name','Njabulo');
+    window.sessionStorage.setItem('email','Convo@forE.co.za');
+    service.getDownloadScripts().subscribe((data)=>{
+      expect(data).toBeTruthy();
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/retrieve-all?ownerName=Njabulo&ownerEmail=Convo@forE.co.za');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockAutScripts);
+  });
+  
+  it('should remove download script',()=>{
+    service.removeDownload('6304be14c0a7933d955d3ecf').subscribe((data)=>{
+      expect(data).toBeTruthy();
+    });
+
+    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/remove?id=6304be14c0a7933d955d3ecf');
+    expect(req.request.method).toBe('DELETE');
+    req.flush(true);
+  });
+
+  it('get other scripts',()=>{
+    service.getOther({name:'njabulo',email:'skoS@gmial.com'}).subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/other?ownerName=njabulo&ownerEmail=skoS@gmial.com');
+    expect(req.request.method).toBe('GET');
+    req.flush([exScript]);
+  });
+  it('get downloaded bY ME scripts',()=>{
+    service.getScriptsDownloadedByMe({name:'njabulo',email:'skoS@gmial.com'}).subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/downloadedByMe?ownerName=njabulo&ownerEmail=skoS@gmial.com');
+    expect(req.request.method).toBe('GET');
+    req.flush([exScript]);
+  });
+  it('import Automatascript',()=>{
+    window.sessionStorage.setItem('name','James');
+    window.sessionStorage.setItem('email','james@yahoo.com')
+    service.importAutomata('42ehd433h41graew54').subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/import?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
+    expect(req.request.method).toBe('GET');
+    req.flush(true);
+  });
+
+  it('Update download script',()=>{
+    service.updateDownloadedScript({oldId: '42ehd433h41graew54',newId: '6304be14c0a7933d955d3ecf'}).subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/update');
+    expect(req.request.method).toBe('PUT');
+    req.flush(myDownloaded[0]);
+  });
+
+  it('download script',()=>{
+    window.sessionStorage.setItem('name','James');
+    window.sessionStorage.setItem('email','james@yahoo.com')
+    service.download('42ehd433h41graew54').subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/download?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
+    expect(req.request.method).toBe('GET');
+    req.flush(myDownloaded[0]);
+  });
+
+  it('created By ME script',()=>{
+    window.sessionStorage.setItem('name','James');
+    window.sessionStorage.setItem('email','james@yahoo.com')
+    service.getScriptsCreatedByMe().subscribe(
+      (data)=>{
+        expect(data).resolves;
+      }
+    );
+    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/all-my-script?userName=James&userEmail=james@yahoo.com');
+    expect(req.request.method).toBe('GET');
+    req.flush([mockMyScripts]);
+  });
 });
