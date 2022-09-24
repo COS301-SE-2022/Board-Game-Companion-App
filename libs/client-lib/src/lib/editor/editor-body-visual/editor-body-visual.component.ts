@@ -115,6 +115,7 @@ export class EditorBodyVisualComponent {
       for(let i = 0; i < this.Players[j].actions.length; i++)
       {
         this.Players[j].actions[i].splice(0)
+        this.Players[j].conditions[i].splice(0)
       }
     }
     this.Variables.splice(0)
