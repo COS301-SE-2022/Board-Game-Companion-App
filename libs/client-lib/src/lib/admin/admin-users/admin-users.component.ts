@@ -7,6 +7,7 @@ import { user } from '../../shared/models/general/user';
 import { moderator } from '../../shared/models/admin/moderator';
 import { Subscription } from 'rxjs';
 import { userSearch } from '../../shared/models/admin/userSearch';
+import { ban } from '../../shared/models/admin/ban';
 
 @Component({
   selector: 'board-game-companion-app-admin-users',
@@ -166,6 +167,22 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   isAdmin(value:userSearch): boolean{
     const emails = this.moderators.map((value)=>value.email);
     return emails.includes(value.email);
+  }
+
+  ban(value:userSearch): void{
+    this.adminService.ban(value.name,value.email).subscribe({
+      next:(response:ban) => {
+        if(response === null){
+          this.notifications.add({type:"warning",message:`${value.name} already banned`});
+          return;
+        }
+        this.notifications.add({type:"warning",message:`Successfully banned ${response.user.name}`});
+        value.banned = true;
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:`Failed to ban ${value.name}`})
+      }
+    })
   }
 
   getAdmin(): moderator[]{

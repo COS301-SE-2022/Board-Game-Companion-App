@@ -5,4 +5,5 @@ export interface userSearch{
     collections:number;
     authored:number;
     models:number;
+    banned:boolean;
 }
