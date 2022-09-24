@@ -197,7 +197,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
           this.notifications.add({type:"warning",message:`${value.name} already banned`});
           return;
         }
-        this.notifications.add({type:"warning",message:`Successfully banned ${response.user.name}`});
+        this.notifications.add({type:"warning",message:`Successfully banned ${response.account.name}`});
         value.banned = true;
       },
       error:()=>{

@@ -51,16 +51,20 @@ export class AdminService {
     async ban(user:user):Promise<Ban>{
         const check = await this.banModel.find({"user.email":user.email});
         
-        if(check === null || check === undefined)
+        if(check !== null || check !== undefined)
             return null;
 
         const dto:banDto = {
-            user: user
+            account: user
         }
 
         const created = new this.banModel(dto);
         
         created.save();
+    }
+
+    async banned(account:user): Promise<boolean>{
+        return (await this.banModel.exists({"account.name":account.name,"account.email":account.email})) !== null;
     }
 
     async unban(email:string):Promise<Ban>{
