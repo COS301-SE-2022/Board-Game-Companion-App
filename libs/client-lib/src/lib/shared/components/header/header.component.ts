@@ -16,6 +16,7 @@ import { oldScript } from '../../models/scripts/old-script';
 import { CollectionService } from '../../services/collections/collection.service';
 import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
+import { AdminService } from '../../services/admin/admin.service';
 
 @Component({
   selector: 'board-game-companion-app-header',
@@ -52,7 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private readonly scriptService:ScriptService,
               private readonly bggSearch:BggSearchService,
               private readonly collectionService:CollectionService,
-              private readonly socket: Socket) {
+              private readonly socket: Socket,
+              private readonly adminService: AdminService) {
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
               }); 
@@ -64,10 +66,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         sessionStorage.setItem("name",value.info.name);
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
-        this.getAlerts();
-        this.receiveAlerts();
-        this.createFavouritesCollection();
-        this.socket.emit('login',value.info.email);
+        this.adminService.banned().subscribe({
+          next:(response:boolean) => {
+            if(response){
+              this.notifications.add({type:"danger",message:"Your account has been blocked."});
+              this.gapi.signOut();
+              return;
+            }else{
+              this.getAlerts();
+              this.receiveAlerts();
+              this.createFavouritesCollection();
+              this.socket.emit('login',value.info.email);
+            }
+          }
+        })
       },
       error:(err)=>{     
         console.log(err);

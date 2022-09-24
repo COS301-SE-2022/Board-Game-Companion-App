@@ -77,6 +77,10 @@ export class AdminService {
         
     // }
 
+    async isAdmin(email:string):Promise<boolean>{
+        return (await this.moderatorModel.exists({"email":email,"admin":true})) !== null;
+    }
+
     async setAdmin(id:string,admin:boolean):Promise<Moderator>{
         const result = await this.moderatorModel.findById(id);
         
