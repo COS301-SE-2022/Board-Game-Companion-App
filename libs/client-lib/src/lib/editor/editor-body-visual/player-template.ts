@@ -36,6 +36,7 @@ import { Component, Input} from "@angular/core";
                         </details>
                     </div>
                 </div>
+                <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="PlayerCode[0]" [dest] = "PlayerCode[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                 <div id = "turn" class = "playerContainers">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
@@ -54,15 +55,17 @@ import { Component, Input} from "@angular/core";
 export class PlayerTemplateComponent{
     @Input() Actions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]] 
     @Input() Conditions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() Turn = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]  
+    @Input() Turn = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
+    @Input() PlayerCode = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]    
     @Input() PlayerLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() Players = [{name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]}]
+    @Input() Players = [{name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]}]
     @Input() Index = 0
     @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
-        {name: 'addToArr', arguments: 2}
+        {name: 'addToArr', arguments: 2},
+        {name: 'movePiece', arguments: 2}
       ]
 
     addAction(){

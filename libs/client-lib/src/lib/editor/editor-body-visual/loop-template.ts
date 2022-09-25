@@ -117,7 +117,8 @@ export class LoopTemplateComponent{
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
-        {name: 'addToArr', arguments: 2}
+        {name: 'addToArr', arguments: 2},
+        {name: 'movePiece', arguments: 2}
       ]
     
     arguments = []
