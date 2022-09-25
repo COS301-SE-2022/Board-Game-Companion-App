@@ -17,6 +17,7 @@
     border-radius: 0 40px 40px 0;
     display: flex;
     padding: 2em;
+    overflow-x: auto;
 }
 
 #doArea{
@@ -151,6 +152,36 @@
     margin: 2em;
 }
 
-.visualIf{
-    top: 25%;
+.visualIf #content, .visualW #content, .visualD #content{
+    overflow-y: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
 }
+
+.visualIf #content::-webkit-scrollbar, .visualW #content::-webkit-scrollbar, .visualD #content::-webkit-scrollbar{
+    width: 0 !important
+}
+
+.AndOr{
+    width: 35px;
+    height: 35px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+#whileInput1{
+    margin-top: 1.3em;
+}
+  
+#whileInput2{
+    margin-bottom: 1.3em;
+}
+
+table{
+    border-collapse: separate;
+    border-spacing: 1em 0;
+}
+  

@@ -154,7 +154,9 @@ class script
     players = [
         //add players
     ]
-    
+    listOfPlayers = [
+        //playerList
+    ]
     async getPlayer(s)
     {
         let i = await indexOfPlayer(s)
@@ -170,6 +172,7 @@ class script
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
+            
         }
         //get player turn order
         let order = []
@@ -177,16 +180,11 @@ class script
         
         for(let i =0;i< this.players.length;i++)
         {
-            //if(inputElement)
-            //{
-                //ask using input and output methods
-                order.push(await input("when will player "+this.players[i].constructor.name + " move"), "text")
-            //}
-            //else
-            //{
-                //use default order
-                //order.push(i)
-            //}
+            
+            //ask using input and output methods
+            let pIndex =await input("when will player "+this.players[i].constructor.name + " move", "text")
+            pIndex = +pIndex
+            order.push(pIndex)
         }
         //re order 
         for(let i =0;i< this.players.length;i++)
@@ -197,12 +195,15 @@ class script
                 {
                     let temp = order[i]
                     let tempP = this.players[i]
+                    let tempPL = this.listOfPlayers[i]
 
                     order[i] = order[j]
                     this.players[i] = this.players[j]
+                    this.listOfPlayers[i] = this.listOfPlayers[j]
 
                     order[j] = temp
                     this.players[j] = tempP
+                    this.listOfPlayers[j] = tempPL
                 }
             }
         }
@@ -210,6 +211,7 @@ class script
         {
             for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
+                await setCurrPlayer(this.listOfPlayers[i])
                 await this.players[i].turn();
             }
         }

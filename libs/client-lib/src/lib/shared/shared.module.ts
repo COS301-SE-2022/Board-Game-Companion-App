@@ -20,6 +20,7 @@ import { EditorService } from './services/editor/editor.service';
 import { CollectionService } from './services/collections/collection.service';
 import { OnlineStatusModule } from 'ngx-online-status';
 import { AlertService } from './services/alert/alert.service';
+import { AdminService } from './services/admin/admin.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { AlertService } from './services/alert/alert.service';
     ReportService,
     EditorService,
     CollectionService,
-    AlertService
+    AlertService,
+    AdminService
   ],
   exports: [
     HeaderComponent,

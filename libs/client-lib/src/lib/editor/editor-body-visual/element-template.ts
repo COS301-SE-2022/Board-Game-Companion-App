@@ -67,17 +67,31 @@ import { Component, Input} from "@angular/core";
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
-                    <input id = "whileInput1" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[0]">
-                    <div>
-                        <input id = "whileCompare" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[1]">
+                    <div *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                        <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
+                            <input id = "whileInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <div>
+                                <input id = "whileCompare" [value]="item.inputs[i * 4 + 2]">
+                            </div>
+                            <input id = "whileInput2" [value]="item.inputs[i * 4 + 3]">
+                            <div>
+                                <input *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                            </div>  
+                        </div>
                     </div>
-                    <input id = "whileInput2" *ngIf = "item.title === 'While' || item.title === 'doWhile'" [value]="item.inputs[2]">
                     <!--If Statement-->
-                    <input id = "ifInput1" *ngIf = "item.title === 'If'" [value]="item.inputs[0]">
-                    <div>
-                        <input id = "ifCompare" *ngIf = "item.title === 'If'" [value]="item.inputs[1]">
+                    <div *ngIf = "item.title === 'If'">
+                        <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
+                            <input id = "ifInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <div>
+                                <input id = "ifCompare"  [value]="item.inputs[i * 4 + 2]">
+                            </div>
+                            <input id = "ifInput2" [value]="item.inputs[i * 4 + 3]">
+                            <div>
+                                <input *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                            </div>  
+                        </div>
                     </div>
-                    <input id = "ifInput2" *ngIf = "item.title === 'If'" [value]="item.inputs[2]">
                 </div>
             </div>
         </div>
@@ -88,7 +102,7 @@ import { Component, Input} from "@angular/core";
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
                 <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
-            <div class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
+            <div *ngIf="dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
                 <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
         </div>
@@ -106,8 +120,10 @@ export class ElementTemplateComponent{
         {name: 'addToArr', arguments: 2}
       ]
     arguments = []
-    constructor(){
-       console.log()
+
+    conditions(con: number)
+    {
+        return new Array(con)
     }
 
     methodInputs(event: any)

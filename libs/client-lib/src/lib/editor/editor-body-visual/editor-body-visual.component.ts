@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { any } from '@tensorflow/tfjs';
 
 
 @Component({
@@ -12,9 +13,22 @@ export class EditorBodyVisualComponent {
   playersLoopIndex = 0
   cardsLoopIndex = 0
 
-  Tiles = [
-    {variable: '', id: '', name: '', type: ''}
+  Properties = [
+    {Property: "", Value: ""}
   ]
+
+  listProperties = [
+    "id", "name", "type"
+  ]
+
+  Tiles = [
+    {values: new Array<string>(this.listProperties.length)} 
+  ]
+
+  constructor(){
+    this.Properties.splice(0)
+    this.Tiles.splice(0)
+  }
 
   Variables = [{name: "", value: ""} ]
 
@@ -57,14 +71,39 @@ export class EditorBodyVisualComponent {
     this.Cards.push({effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
   }
 
+  addProperty()
+  {
+    this.Properties.push({Property: "", Value: ""})
+  }
+
+  removeProperty(i: number)
+  {
+    this.Properties.splice(i, 1)
+    this.listProperties.splice(3 + i, 1)
+  }
+
   addTileToBoard()
   {
-    this.Tiles.push({variable: '', id: '', name: '', type: ''})
+    console.log(this.Tiles)
+    this.Tiles.push({values: new Array<string>(this.listProperties.length)})
   }
 
   removeTile(i: number)
   {
     this.Tiles.splice(i, 1)
+  }
+
+  updateProperties(event: any, i:number)
+  {
+    if(this.listProperties[3 + i] == null && !this.listProperties.includes(event.target.value))
+    {
+      this.listProperties.push(event.target.value)
+    }
+    else
+    {
+      this.listProperties[3 + i] = event.target.value
+    }
+    
   }
 
   clear()
@@ -76,8 +115,13 @@ export class EditorBodyVisualComponent {
       for(let i = 0; i < this.Players[j].actions.length; i++)
       {
         this.Players[j].actions[i].splice(0)
+        this.Players[j].conditions[i].splice(0)
       }
     }
     this.Variables.splice(0)
+    this.PlayersLoops.splice(1)
+    this.playersLoopIndex = 0
+    this.listProperties.splice(2)
+    this.Properties.splice(0)
   }
 }

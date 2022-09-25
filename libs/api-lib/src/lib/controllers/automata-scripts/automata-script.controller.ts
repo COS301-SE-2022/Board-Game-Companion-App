@@ -34,6 +34,12 @@ export class ApiAutomataScriptController {
     async getAll():Promise<AutomataScript[]>{
         return this.automataService.getAll();
     }
+
+    @Get('retrieve-all-old')
+    async getAllOld():Promise<OldScript[]>{
+        return this.automataService.getAllOld();
+    }
+
     @Get('retreive-by-id')
     async getById(@Query('id')id:string):Promise<AutomataScriptDocument | OldScriptDocument>{
         return this.automataService.getScriptById(id);

@@ -56,6 +56,7 @@ export class EditorComponent implements OnInit{
   inputBlock = false;
   outputBlock = false;
   inputResult:any[] = [];
+  currPlayer = "";
   parameters:inputParameters[] = [];
   outputMessage = "";
   statusMessages:string[] = [];
@@ -130,6 +131,11 @@ export class EditorComponent implements OnInit{
 
     document.dispatchEvent(new Event('editor-page'));
     this.loadModels();
+  }
+
+  ngOnDestroy() : void
+  {
+    this.dragulaService.destroy("COPYABLE")
   }
 
 
@@ -297,10 +303,16 @@ export class EditorComponent implements OnInit{
       model: await this.neuralnetworks(),
       input: this.input(),
       inputGroup: this.inputGroup(),
-      output: this.output()
+      output: this.output(),
+      setCurrPlayer: this.setCurrPlayer()
     }
   }
-
+setCurrPlayer(){
+    return (async(value:string) => {
+      //
+      this.currPlayer = value;
+    });
+  }
   async interpreter(source:string){
     const strCode = 'with (sandbox) { ' + source + '}';
     const code = new Function('sandbox', strCode);
