@@ -562,7 +562,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
-          this.updateVDSL()
+          //this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
             this.sendChanges();
@@ -690,7 +690,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           if(value.status === "success"){
             //UpdateLineArray()
-            this.updateVDSL()
+            //this.updateVDSL()
             this.changesTracker.emit(2);
             this.newProgramStructureEvent.emit(value.programStructure);
           }else{
