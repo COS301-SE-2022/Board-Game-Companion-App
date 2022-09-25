@@ -177,7 +177,7 @@ class script
         //get player turn order
         let order = []
         //let inputElement = document.getElementById("TextOutput");
-        
+        await setCurrPlayer("GAME SETUP")
         for(let i =0;i< this.players.length;i++)
         {
             
