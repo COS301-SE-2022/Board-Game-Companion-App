@@ -973,6 +973,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           case "turn":
             this.editorVisual.Players[player].turn[0].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
             break
+          case "playerCodeArea":
+            this.editorVisual.Players[player].playerCode[0].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
           case "effect":
             this.editorVisual.Cards[card].effect.push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
             break
@@ -1187,6 +1190,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let openTurn = 0
     let openEffect = 0
     let openIfPlayer = 0
+    let playerCodeArea = 0
     let openIfCard = 0
     let openInitial = 0
     let inElse = false
@@ -1260,6 +1264,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         open++
         method = "action"
         openAction = open
+        playerCodeArea = 0
         const l = lines[j].replace(/\s+/,"")
         if(this.editorVisual.Players[player].actions[action] == null)
         {
@@ -1282,6 +1287,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         open++
         method = "condition"
         openCondition = open
+        playerCodeArea = 0
         const l = lines[j].replace(/\s+/,"")
         switch(parent)
         {
@@ -1302,6 +1308,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         open++
         method = "turn"
         openTurn = open
+        playerCodeArea = 0
       }
       else if((lines[j].includes("effect") && lines[j].includes("{")) || (lines[j].includes("effect") && lines[j + 1].includes("{")))
       {
@@ -1543,18 +1550,24 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         else if (open === openAction)
         {
           openAction = 0
+          playerCodeArea = 1
+          method = "playerCodeArea"
         }
         else if (open === openCondition)
         {
           openCondition = 0
           if(parent == "player")
           {
+            playerCodeArea = 1
+            method = "playerCodeArea"
             action++
           }
         }
         else if (open === openTurn)
         {
           openTurn = 0
+          playerCodeArea = 1
+          method = "playerCodeArea"
         }
         else if (open === openCard)
         {
@@ -2272,6 +2285,24 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 }    
                 this.loopCreation(parent)
               }
+            }
+          }
+          break
+        case "playerCodeArea":
+          if(playerCodeArea != 0)
+          {
+            const l = lines[j].split(/\s+/)
+            //Set
+            if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            {
+              if(l[1] !== "let" && l[2] == "=")
+              {
+                this.editorVisual.Variables.push({name: l[1], value: l[2]})
+                this.editorVisual.listProperties.forEach((element) => {
+                  this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
+                })
+              }
+              this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
           }
           break
