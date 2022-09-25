@@ -26,7 +26,7 @@ import { Component, Input} from "@angular/core";
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
-                                Condition <input>
+                                Condition
                             </div>
                         </summary>
                         <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>

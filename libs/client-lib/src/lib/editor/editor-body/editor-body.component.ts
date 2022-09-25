@@ -826,34 +826,74 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     return params
   }
 
-  ifCreation()
+  ifCreation(parent : string)
   {
-    this.editorVisual.playersLoopIndex++
+    switch(parent)
+    {
+      case "player":
+        {
+          this.editorVisual.playersLoopIndex++
+          const dest = [
+            {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+          ]
+          this.editorVisual.PlayersLoops.push(dest)
+          this.editorVisual.playersLoopIndex++
+          const dest2 = [
+            {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+          ]
+          this.editorVisual.PlayersLoops.push(dest2)
+        }
+        break
+      case "card":
+        {
+          this.editorVisual.cardsLoopIndex++
+          const dest = [
+            {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+          ]
+          this.editorVisual.CardsLoop.push(dest)
+          this.editorVisual.cardsLoopIndex++
+          const dest2 = [
+            {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+          ]
+          this.editorVisual.CardsLoop.push(dest2)
+        }
+        break
+    }
+    
+  }
+
+  loopCreation(parent : string)
+  {
     const dest = [
       {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
     ]
-    this.editorVisual.PlayersLoops.push(dest)
-    this.editorVisual.playersLoopIndex++
-    const dest2 = [
-      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-    ]
-    this.editorVisual.PlayersLoops.push(dest2)
+    switch(parent)
+    {
+      case "player":
+        this.editorVisual.PlayersLoops.push(dest)
+        break
+      case "card":
+        this.editorVisual.CardsLoop.push(dest)
+        break
+    }
+   
   }
 
-  loopCreation()
-  {
-    const dest = [
-      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-    ]
-    this.editorVisual.PlayersLoops.push(dest)
-  }
-
-  letCreation(l : string[], openIf : number, player : number, action : number, ifContains : number, method : string)
+  letCreation(l : string[], openIf : number, player : number, action : number, ifContains : number, method : string, parent : string, card : number)
   {
     const id = this.getEID()
     if(openIf > 0)
     {
-      this.editorVisual.PlayersLoops[ifContains].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+      switch(parent)
+      {
+        case "player":
+          this.editorVisual.PlayersLoops[ifContains].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "card":
+          this.editorVisual.CardsLoop[ifContains].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      }
+      
     }
     else
     {
@@ -863,10 +903,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           this.editorVisual.Players[player].actions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
           break
         case "condition":
-          this.editorVisual.Players[player].conditions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          switch(parent)
+          {
+            case "player":
+              this.editorVisual.Players[player].conditions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "card":
+              this.editorVisual.Cards[card].condition.push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+              break
+          }    
           break
         case "turn":
           this.editorVisual.Players[player].turn[0].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "effect":
+          this.editorVisual.Cards[card].effect.push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
           break
       }
       
@@ -874,7 +925,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
   }
 
-  setCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string)
+  setCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string, parent : string, card : number)
   {
     const id = this.getEID()
     const set = this.editorVisual.Variables.find(vars => vars.name === l[1])
@@ -882,7 +933,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     {
       if(openIf > 0)
       {
-        this.editorVisual.PlayersLoops[ifContains].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+        switch(parent)
+        {
+          case "player":
+            this.editorVisual.PlayersLoops[ifContains].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+          case "card":
+            this.editorVisual.CardsLoop[ifContains].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+        }
       }
       else
       {
@@ -892,10 +951,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             this.editorVisual.Players[player].actions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
             break
           case "condition":
-            this.editorVisual.Players[player].conditions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            switch(parent)
+            {
+              case "player":
+                this.editorVisual.Players[player].conditions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+                break
+              case "card":
+                this.editorVisual.Cards[card].condition.push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+                break
+            }
             break
           case "turn":
             this.editorVisual.Players[player].turn[0].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+          case "effect":
+            this.editorVisual.Cards[card].effect.push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
             break
         }
        
@@ -903,7 +973,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     }
   }
 
-  ioCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string, title : string, classes : string)
+  ioCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string, title : string, classes : string, parent : string, card : number)
   {
     const id = this.getEID()
     let input = [""]
@@ -917,7 +987,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     }
     if(openIf > 0)
     {
-      this.editorVisual.PlayersLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+      switch(parent)
+      {
+        case "player":
+          this.editorVisual.PlayersLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "card":
+          this.editorVisual.CardsLoop[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      }
     }
     else
     {
@@ -927,17 +1005,28 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           this.editorVisual.Players[player].actions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
           break
         case "condition":
-          this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          switch(parent)
+          {
+            case "player":
+              this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "card":
+              this.editorVisual.Cards[card].condition.push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+              break
+          }
           break
         case "turn":
           this.editorVisual.Players[player].turn[0].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "effect":
+          this.editorVisual.Cards[card].effect.push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
           break
       }
       
     } 
   }
 
-  methodCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string)
+  methodCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string, parent : string, card : number)
   {
     const id = this.getEID()
     const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
@@ -947,7 +1036,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       {
         if(openIf > 0)
         {
-          this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+          switch(parent)
+          {
+            case "player":
+              this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "card":
+              this.editorVisual.CardsLoop[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
+          } 
         }
         else
         {
@@ -957,10 +1054,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
               break
             case "condition":
-              this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              switch(parent)
+              {
+                case "player":
+                  this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                  break
+                case "card":
+                  this.editorVisual.Cards[card].condition.push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+                  break
+              }
               break
             case "turn":
               this.editorVisual.Players[player].turn[0].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "effect":
+              this.editorVisual.Cards[card].effect.push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
               break
           }
         }
@@ -969,7 +1077,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       {
         if(openIf > 0)
         {
-          this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+          switch(parent)
+          {
+            case "player":
+              this.editorVisual.PlayersLoops[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "card":
+              this.editorVisual.CardsLoop[ifContains].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+          }
         }
         else
         {
@@ -979,10 +1095,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.editorVisual.Players[player].actions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
               break
             case "condition":
-              this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              switch(parent)
+              {
+                case "player":
+                  this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                  break
+                case "card":
+                  this.editorVisual.Cards[card].condition.push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+                  break
+              }
               break
             case "turn":
               this.editorVisual.Players[player].turn[0].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "effect":
+              this.editorVisual.Cards[card].effect.push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
               break
           } 
         }
@@ -990,13 +1117,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     }
   }
 
-  returnCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string)
+  returnCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string, parent : string, card : number)
   {
     const id = this.getEID()
     const input = lines[j].split(' ').join('');
     if(openIf > 0)
     {
-      this.editorVisual.PlayersLoops[ifContains].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+      switch(parent)
+      {
+        case "player":
+          this.editorVisual.PlayersLoops[ifContains].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "card":
+          this.editorVisual.CardsLoop[ifContains].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+      }
     }
     else
     {
@@ -1006,10 +1141,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           this.editorVisual.Players[player].actions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
           break
         case "condition":
-          this.editorVisual.Players[player].conditions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          switch(parent)
+          {
+            case "player":
+              this.editorVisual.Players[player].conditions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "card":
+              this.editorVisual.Cards[card].condition.push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+              break
+          }   
           break
         case "turn":
           this.editorVisual.Players[player].turn[0].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "effect":
+          this.editorVisual.Cards[card].effect.push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
           break
       } 
      
@@ -1030,11 +1176,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let openAction = 0
     let openCondition = 0
     let openTurn = 0
-    let openIf = 0
+    let openEffect = 0
+    let openIfPlayer = 0
+    let openIfCard = 0
     let openInitial = 0
     let inElse = false
     let inElseValue = 0
-    let totalIf = 0
+    let totalIfPlayer = 0
+    let totalIfCard = 0
     const ifContains = [
       {numberOfIf: 0, open: 0}
     ]
@@ -1046,6 +1195,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let card = -1
     let action = 0
     let open = 0
+    let parent = ""
     for(let j = 0; j < lines.length; j++)
     {
       //console.log("line " + j + ":" + lines[j])
@@ -1068,6 +1218,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         openPlayer = open
         player++
         action = 0
+        parent = "player"
         if(this.editorVisual.Players[player] == null)
         {
           this.editorVisual.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
@@ -1079,6 +1230,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       {
         open++
         method = "card"
+        parent = "card"
         openCard = open
         card++
         if(this.editorVisual.Cards[card] == null)
@@ -1104,7 +1256,12 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         method = "condition"
         openCondition = open
         const l = lines[j].replace(/\s+/,"")
-        this.editorVisual.Players[player].conditionParams[action] = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
+        switch(parent)
+        {
+          case "player":
+            this.editorVisual.Players[player].conditionParams[action] = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
+            break
+        }
       }
       else if((lines[j].includes("turn") && lines[j].includes("{")) || (lines[j].includes("turn") && lines[j + 1].includes("{")))
       {
@@ -1112,104 +1269,230 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         method = "turn"
         openTurn = open
       }
+      else if((lines[j].includes("effect") && lines[j].includes("{")) || (lines[j].includes("effect") && lines[j + 1].includes("{")))
+      {
+        open++
+        method = "effect"
+        openEffect = open
+      }
       else if((lines[j].includes("if") && lines[j].includes("{")) || (lines[j].includes("if") && lines[j + 1].includes("{")))
       {
-        if(openIf == 0)
+        switch(parent)
         {
-          openInitial = 0
+          case "player":
+            if(openIfPlayer == 0)
+            {
+              openInitial = 0
+            }
+            if(doCreated != openIfPlayer + 1)
+            {
+              open++
+              openIfPlayer++
+              if(totalIfPlayer == 0)
+              {
+                totalIfPlayer++
+              }
+              else if(createdFor)
+              {
+                totalIfPlayer++
+              }
+              else
+              {
+                totalIfPlayer = totalIfPlayer + 2
+              }
+              ifContains.push({numberOfIf: totalIfPlayer, open: openIfPlayer})
+              createdIf = true
+              inElse = false
+            }
+            break
+          case "card":
+            if(openIfCard == 0)
+            {
+              openInitial = 0
+            }
+            if(doCreated != openIfCard + 1)
+            {
+              open++
+              openIfCard++
+              if(totalIfCard == 0)
+              {
+                totalIfCard++
+              }
+              else if(createdFor)
+              {
+                totalIfCard++
+              }
+              else
+              {
+                totalIfCard = totalIfCard + 2
+              }
+              ifContains.push({numberOfIf: totalIfCard, open: openIfCard})
+              createdIf = true
+              inElse = false
+            }
+            break
         }
-        if(doCreated != openIf + 1)
-        {
-          open++
-          openIf++
-          if(totalIf == 0)
-          {
-            totalIf++
-          }
-          else if(createdFor)
-          {
-            totalIf++
-          }
-          else
-          {
-            totalIf = totalIf + 2
-          }
-          ifContains.push({numberOfIf: totalIf, open: openIf})
-          createdIf = true
-          inElse = false
-        }
+        
         
       }
       else if((lines[j].includes("else") && lines[j].includes("{")) || (lines[j].includes("else") && lines[j + 1].includes("{")))
       {
         open++
-        openIf++
+        switch(parent)
+        {
+          case "player":
+            openIfPlayer++
+            break
+          case "card":
+            openIfCard++
+            break
+        }
         inElse = true
       }
       else if((lines[j].includes("for") && lines[j].includes("{")) || (lines[j].includes("for") && lines[j + 1].includes("{")))
       {
-        if(openIf == 0)
+        switch(parent)
         {
-          openInitial = 0
+          case "player":
+            if(openIfPlayer == 0)
+            {
+              openInitial = 0
+            }
+            open++
+            openIfPlayer++
+            if(createdIf)
+            {
+              totalIfPlayer = totalIfPlayer + 2
+            }
+            else
+            {
+              totalIfPlayer++
+            }
+            createdFor = true
+            ifContains.push({numberOfIf: totalIfPlayer, open: openIfPlayer})
+            createdIf = false
+            break
+          case "card":
+            if(openIfCard == 0)
+            {
+              openInitial = 0
+            }
+            open++
+            openIfCard++
+            if(createdIf)
+            {
+              totalIfCard = totalIfCard + 2
+            }
+            else
+            {
+              totalIfCard++
+            }
+            createdFor = true
+            ifContains.push({numberOfIf: totalIfCard, open: openIfCard})
+            createdIf = false
+            break
         }
-        open++
-        openIf++
-        if(createdIf)
-        {
-          totalIf = totalIf + 2
-        }
-        else
-        {
-          totalIf++
-        }
-        createdFor = true
-        ifContains.push({numberOfIf: totalIf, open: openIf})
-        createdIf = false
+        
       }
       else if((lines[j].includes("while") && lines[j].includes("{")) || (lines[j].includes("while") && lines[j + 1].includes("{")))
       {
-        if(openIf == 0)
+        switch(parent)
         {
-          openInitial = 0
+          case "player":
+            if(openIfPlayer == 0)
+            {
+              openInitial = 0
+            }
+            if(doCreated != openIfPlayer + 1)
+            {
+              open++
+              openIfPlayer++
+              if(createdIf)
+              {
+                totalIfPlayer = totalIfPlayer + 2
+              }
+              else
+              {
+                totalIfPlayer++
+              }
+              createdFor = true
+              ifContains.push({numberOfIf: totalIfPlayer, open: openIfPlayer})
+              createdIf = false
+            }
+            break
+          case "card":
+            if(openIfCard == 0)
+            {
+              openInitial = 0
+            }
+            if(doCreated != openIfCard + 1)
+            {
+              open++
+              openIfCard++
+              if(createdIf)
+              {
+                totalIfCard = totalIfCard + 2
+              }
+              else
+              {
+                totalIfCard++
+              }
+              createdFor = true
+              ifContains.push({numberOfIf: totalIfCard, open: openIfCard})
+              createdIf = false
+            }
+            break
         }
-        if(doCreated != openIf + 1)
-        {
-          open++
-          openIf++
-          if(createdIf)
-          {
-            totalIf = totalIf + 2
-          }
-          else
-          {
-            totalIf++
-          }
-          createdFor = true
-          ifContains.push({numberOfIf: totalIf, open: openIf})
-          createdIf = false
-        }
+        
       }
       else if((lines[j].includes("do") && lines[j].includes("{")) || (lines[j].includes("do") && lines[j + 1].includes("{")))
       {
-        if(openIf == 0)
+        switch(parent)
         {
-          openInitial = 0
-        }
-        open++
-        openIf++
-        doCreated = openIf
+          case "player":
+            if(openIfPlayer == 0)
+            {
+              openInitial = 0
+            }
+            open++
+            openIfPlayer++
+            doCreated = openIfPlayer
 
-        if(createdIf)
-        {
-          totalIf = totalIf + 2
+            if(createdIf)
+            {
+              totalIfPlayer = totalIfPlayer + 2
+            }
+            else
+            {
+              totalIfPlayer++
+            }
+            createdFor = true
+            ifContains.push({numberOfIf: totalIfPlayer, open: openIfPlayer})
+            createdIf = false
+            break
+          case "card":
+            if(openIfCard == 0)
+            {
+              openInitial = 0
+            }
+            open++
+            openIfCard++
+            doCreated = openIfCard
+
+            if(createdIf)
+            {
+              totalIfCard = totalIfCard + 2
+            }
+            else
+            {
+              totalIfCard++
+            }
+            createdFor = true
+            ifContains.push({numberOfIf: totalIfCard, open: openIfCard})
+            createdIf = false
+            break
         }
-        else
-        {
-          totalIf++
-        }
-        createdFor = true
-        ifContains.push({numberOfIf: totalIf, open: openIf})
-        createdIf = false
+        
       }
       else if(lines[j].includes("}"))
       {
@@ -1233,14 +1516,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           openTurn = 0
         }
-        else if (openIf > -1)
+        else if (open === openCard)
         {
-          if(openIf != 0)
+          openCard = 0
+        }
+        else if (openIfPlayer > -1)
+        {
+          if(openIfPlayer != 0)
           {
-            const place = ifContains.findIndex(obj => obj.open == openIf)
+            const place = ifContains.findIndex(obj => obj.open == openIfPlayer)
             if(place != -1)
             {
-              if(doCreated == openIf)
+              if(doCreated == openIfPlayer)
               {
                 doValue = ifContains[ifContains.length-2].numberOfIf
               }
@@ -1253,7 +1540,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               else if(!inElse && createdIf)
               {
                 inElseValue = ifContains[ifContains.length-1].numberOfIf + 1
-                ifContains.push({numberOfIf: ifContains[ifContains.length-1].numberOfIf + 1, open: openIf})
+                ifContains.push({numberOfIf: ifContains[ifContains.length-1].numberOfIf + 1, open: openIfPlayer})
               }
               else if(inElse && ifContains[ifContains.length-1].numberOfIf == inElseValue)
               {
@@ -1261,15 +1548,46 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               }
               ifContains.splice(place,1)
             }
-            openIf--
+            openIfPlayer--
+          }
+        }
+        else if (openIfCard > -1)
+        {
+          if(openIfCard != 0)
+          {
+            const place = ifContains.findIndex(obj => obj.open == openIfCard)
+            if(place != -1)
+            {
+              if(doCreated == openIfCard)
+              {
+                doValue = ifContains[ifContains.length-2].numberOfIf
+              }
+
+              if(!lines[j + 1].includes("else") && !inElse && createdIf)
+              {
+                const index = ifContains[place].numberOfIf + 1
+                this.editorVisual.CardsLoop[index][0].inputs = ["","","","",""]
+              }
+              else if(!inElse && createdIf)
+              {
+                inElseValue = ifContains[ifContains.length-1].numberOfIf + 1
+                ifContains.push({numberOfIf: ifContains[ifContains.length-1].numberOfIf + 1, open: openIfCard})
+              }
+              else if(inElse && ifContains[ifContains.length-1].numberOfIf == inElseValue)
+              {
+                inElse = false
+              }
+              ifContains.splice(place,1)
+            }
+            openIfCard--
           }
         }
         open--
       }
-      
       if(open == 0)
       {
         method = ""
+        parent = ""
       }
       switch(method)
       {
@@ -1319,35 +1637,35 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Create
               if(l[1] == "let")
               {
-                this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+                this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
               } 
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
-                this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
               //Output
               else if (l[1].includes('output('))
               {
-                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
+                this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
               }
               //Input
               else if(l[1].includes('input('))
               {
-                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
+                this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
               }
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
-                this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
               {
                 const id = this.getEID()
                 const params = this.getConditionParams(lines[j])
-                this.ifCreation()
-                if(openIf > 0 && openInitial > 0)
+                this.ifCreation(parent)
+                if(openIfPlayer > 0 && openInitial > 0)
                 {
                   if(createdFor)
                   {
@@ -1371,7 +1689,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Return statements
               else if(lines[j].includes("return"))
               {
-                this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                this.returnCreation(lines, j, openIfPlayer,  ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
@@ -1394,7 +1712,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   by = +loop[1].replace(/\D/g, '')
                 }
                 this.editorVisual.playersLoopIndex++
-                if(openIf > 0 && openInitial > 0) 
+                if(openIfPlayer > 0 && openInitial > 0) 
                 {
                   this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }
@@ -1403,14 +1721,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   openInitial++
                   this.editorVisual.Players[player].actions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }    
-                this.loopCreation()
+                this.loopCreation(parent)
               }
               //Do
               else if(lines[j].includes("do{") || lines[j].includes("do"))
               {
                 const id = this.getEID()
                 this.editorVisual.playersLoopIndex++
-                if(openIf > 0 && openInitial > 0) 
+                if(openIfPlayer > 0 && openInitial > 0) 
                 { 
                   this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }
@@ -1419,16 +1737,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   openInitial++
                   this.editorVisual.Players[player].actions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }    
-                this.loopCreation()
+                this.loopCreation(parent)
               }
               //While/do While Loops
               else if(lines[j].includes("while(") || lines[j].includes("while ("))
               {
                 const id = this.getEID()
                 const params = this.getConditionParams(lines[j])
-                if(doCreated == openIf + 1)
+                if(doCreated == openIfPlayer + 1)
                 {
-                  if(openIf > 0 && openInitial > 0) 
+                  if(openIfPlayer > 0 && openInitial > 0) 
                   {
                     this.editorVisual.PlayersLoops[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
                     doValue = 0
@@ -1443,7 +1761,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 else
                 {
                   this.editorVisual.playersLoopIndex++
-                  if(openIf > 0 && openInitial > 0) 
+                  if(openIfPlayer > 0 && openInitial > 0) 
                   {
                     this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                   }
@@ -1452,7 +1770,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                     openInitial++
                     this.editorVisual.Players[player].actions[action].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                   }    
-                  this.loopCreation()
+                  this.loopCreation(parent)
                 }
               }
             }
@@ -1464,59 +1782,132 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               //Create
               if(l[1] == "let")
               {
-                this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+                switch(parent)
+                {
+                  case "player":
+                    this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
+                    break
+                  case "card":
+                    this.letCreation(l, openIfCard, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
+                    break
+                } 
               } 
               //Set
               else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
               {
-                this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                switch(parent)
+                {
+                  case "player":
+                    this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                  case "card":
+                    this.setCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                }
               }
               //Output
               else if (l[1].includes('output('))
               {
-                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
+                switch(parent)
+                {
+                  case "player":
+                    this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
+                    break
+                  case "card":
+                    this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
+                    break
+                }
               }
               //Input
               else if(l[1].includes('input('))
               {
-                this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
+                switch(parent)
+                {
+                  case "player":
+                    this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
+                    break
+                  case "card":
+                    this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
+                    break
+                }
               }
               //Methods
               else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
-                this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                switch(parent)
+                {
+                  case "player":
+                    this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                  case "card":
+                    this.methodCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                }
               }
               //If Statements
               else if(lines[j].includes("if(") || lines[j].includes("if ("))
               {
                 const id = this.getEID()
                 const params = this.getConditionParams(lines[j])
-                this.ifCreation()
-                if(openIf > 0 && openInitial > 0)
+                this.ifCreation(parent)
+                switch(parent)
                 {
-                  if(createdFor)
-                  {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
-                    createdFor = false
-                  }
-                  else
-                  {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
-                  }
-                  
+                  case "player":
+                    if(openIfPlayer > 0 && openInitial > 0)
+                    {
+                      if(createdFor)
+                      {
+                        this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                        createdFor = false
+                      }
+                      else
+                      {
+                        this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                      }
+                    }
+                    else
+                    {
+                      openInitial++
+                      this.editorVisual.Players[player].conditions[action].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex}) 
+                      createdFor = false
+                    }
+                    break
+                  case "card":
+                    if(openIfCard > 0 && openInitial > 0)
+                    {
+                      if(createdFor)
+                      {
+                        this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.cardsLoopIndex-1, false: this.editorVisual.cardsLoopIndex})
+                        createdFor = false
+                      }
+                      else
+                      {
+                        this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.cardsLoopIndex-1, false: this.editorVisual.cardsLoopIndex})
+                      }
+                    }
+                    else
+                    {
+                      openInitial++
+                      this.editorVisual.Cards[card].condition.push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.cardsLoopIndex-1, false: this.editorVisual.cardsLoopIndex})
+                      createdFor = false
+                    }
+                    break
                 }
-                else
-                {
-                  openInitial++
-                  this.editorVisual.Players[player].conditions[action].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
-                  createdFor = false
-                }
+                
                 
               }
               //Return statements
               else if(lines[j].includes("return"))
               {
-                this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
+                switch(parent)
+                {
+                  case "player":
+                    this.returnCreation(lines, j, openIfPlayer,  ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                  case "card":
+                    this.returnCreation(lines, j, openIfCard,  ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+                    break
+                }
               }
               //For Loops
               else if(lines[j].includes("for(") || lines[j].includes("for ("))
@@ -1538,66 +1929,163 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 {
                   by = +loop[1].replace(/\D/g, '')
                 }
+                switch(parent)
+                {
+                  case "player":
+                    break
+                  case "card":
+                    break
+                }
                 this.editorVisual.playersLoopIndex++
                 if(openIf > 0 && openInitial > 0) 
                 {
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  switch(parent)
+                    {
+                      case "player":
+                        this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                      case "card":
+                        this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                    }
+                  
                 }
                 else
                 {
                   openInitial++
-                  this.editorVisual.Players[player].conditions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  switch(parent)
+                  {
+                    case "player":
+                      this.editorVisual.Players[player].conditions[action].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                    case "card":
+                      this.editorVisual.Cards[card].condition.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                  }
+                  
                 }    
-                this.loopCreation()
+                this.loopCreation(parent)
               }
               //Do
               else if(lines[j].includes("do{") || lines[j].includes("do"))
               {
                 const id = this.getEID()
                 this.editorVisual.playersLoopIndex++
+                switch(parent)
+                {
+                  case "player":
+                    break
+                  case "card":
+                    break
+                }
                 if(openIf > 0 && openInitial > 0) 
                 { 
-                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  switch(parent)
+                  {
+                    case "player":
+                      this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                    case "card":
+                      this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                  }
                 }
                 else
                 {
                   openInitial++
-                  this.editorVisual.Players[player].conditions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                  switch(parent)
+                  {
+                    case "player":
+                      this.editorVisual.Players[player].conditions[action].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                    case "card":
+                      this.editorVisual.Cards[card].condition.push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                      break
+                  }
+                  
                 }    
-                this.loopCreation()
+                this.loopCreation(parent)
               }
               //While/do While Loops
               else if(lines[j].includes("while(") || lines[j].includes("while ("))
               {
                 const id = this.getEID()
                 const params = this.getConditionParams(lines[j])
+                switch(parent)
+                {
+                  case "player":
+                    break
+                  case "card":
+                    break
+                }
                 if(doCreated == openIf + 1)
                 {
                   if(openIf > 0 && openInitial > 0) 
                   {
-                    this.editorVisual.PlayersLoops[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
+                    switch(parent)
+                    {
+                      case "player":
+                        this.editorVisual.PlayersLoops[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
+                        break
+                      case "card":
+                        this.editorVisual.CardsLoop[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
+                        break
+                    }
                     doValue = 0
                   }
                   else
                   {
                     openInitial++
-                    this.editorVisual.Players[player].conditions[action][this.editorVisual.Players[player].conditions[action].length-1].inputs = params
+                    switch(parent)
+                    {
+                      case "player":
+                        this.editorVisual.Players[player].conditions[action][this.editorVisual.Players[player].conditions[action].length-1].inputs = params
+                        break
+                      case "card":
+                        this.editorVisual.Cards[card].condition[this.editorVisual.Players[player].conditions[action].length-1].inputs = params
+                        break
+                    }
+                    
                   }
                   doCreated = -1    
                 }
                 else
                 {
+                  switch(parent)
+                  {
+                    case "player":
+                      break
+                    case "card":
+                      break
+                  }
                   this.editorVisual.playersLoopIndex++
                   if(openIf > 0 && openInitial > 0) 
                   {
-                    this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                    switch(parent)
+                    {
+                      case "player":
+                        this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                      case "card":
+                        this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                    }
                   }
                   else
                   {
                     openInitial++
-                    this.editorVisual.Players[player].conditions[action].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                    switch(parent)
+                    {
+                      case "player":
+                        this.editorVisual.Players[player].conditions[action].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                      case "card":
+                        this.editorVisual.Cards[card].condition.push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                        break
+                    }
+                    
                   }    
-                  this.loopCreation()
+                  this.loopCreation(parent)
                 }
               }
             }
@@ -1609,35 +2097,35 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             //Create
             if(l[1] == "let")
             {
-              this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+              this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
             else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
             {
-              this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+              this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //Output
             else if (l[1].includes('output('))
             {
-              this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
+              this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
             }
             //Input
             else if(l[1].includes('input('))
             {
-              this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
+              this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
             }
             //Methods
             else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
             {
-              this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+              this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //If Statements
             else if(lines[j].includes("if(") || lines[j].includes("if ("))
             {
               const id = this.getEID()
               const params = this.getConditionParams(lines[j])
-              this.ifCreation()
-              if(openIf > 0 && openInitial > 0)
+              this.ifCreation(parent)
+              if(openIfPlayer > 0 && openInitial > 0)
               {
                 if(createdFor)
                 {
@@ -1661,7 +2149,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             //Return statements
             else if(lines[j].includes("return"))
             {
-              this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
+              this.returnCreation(lines, j, openIfPlayer,  ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //For Loops
             else if(lines[j].includes("for(") || lines[j].includes("for ("))
@@ -1684,7 +2172,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 by = +loop[1].replace(/\D/g, '')
               }
               this.editorVisual.playersLoopIndex++
-              if(openIf > 0 && openInitial > 0) 
+              if(openIfPlayer > 0 && openInitial > 0) 
               {
                 this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
               }
@@ -1693,14 +2181,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 openInitial++
                 this.editorVisual.Players[player].turn[0].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
               }    
-              this.loopCreation()
+              this.loopCreation(parent)
             }
             //Do
             else if(lines[j].includes("do{") || lines[j].includes("do"))
             {
               const id = this.getEID()
               this.editorVisual.playersLoopIndex++
-              if(openIf > 0 && openInitial > 0) 
+              if(openIfPlayer > 0 && openInitial > 0) 
               { 
                 this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
               }
@@ -1709,16 +2197,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 openInitial++
                 this.editorVisual.Players[player].turn[0].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
               }    
-              this.loopCreation()
+              this.loopCreation(parent)
             }
             //While/do While Loops
             else if(lines[j].includes("while(") || lines[j].includes("while ("))
             {
               const id = this.getEID()
               const params = this.getConditionParams(lines[j])
-              if(doCreated == openIf + 1)
+              if(doCreated == openIfPlayer + 1)
               {
-                if(openIf > 0 && openInitial > 0) 
+                if(openIfPlayer > 0 && openInitial > 0) 
                 {
                   this.editorVisual.PlayersLoops[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
                   doValue = 0
@@ -1733,7 +2221,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               else
               {
                 this.editorVisual.playersLoopIndex++
-                if(openIf > 0 && openInitial > 0) 
+                if(openIfPlayer > 0 && openInitial > 0) 
                 {
                   this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }
@@ -1742,7 +2230,152 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                   openInitial++
                   this.editorVisual.Players[player].turn[0].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
                 }    
-                this.loopCreation()
+                this.loopCreation(parent)
+              }
+            }
+          }
+          break
+        case "effect":
+          if(!lines[j].includes("effect") && !lines[j].includes("{") && openEffect != 0)
+          {
+            const l = lines[j].split(/\s+/)
+            //Create
+            if(l[1] == "let")
+            {
+              this.letCreation(l, openIfCard, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
+            } 
+            //Set
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
+            {
+              this.setCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+            }
+            //Output
+            else if (l[1].includes('output('))
+            {
+              this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
+            }
+            //Input
+            else if(l[1].includes('input('))
+            {
+              this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
+            }
+            //Methods
+            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            {
+              this.methodCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+            }
+            //If Statements
+            else if(lines[j].includes("if(") || lines[j].includes("if ("))
+            {
+              const id = this.getEID()
+              const params = this.getConditionParams(lines[j])
+              this.ifCreation(parent)
+              if(openIfCard > 0 && openInitial > 0)
+              {
+                if(createdFor)
+                {
+                  this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  createdFor = false
+                }
+                else
+                {
+                  this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                }
+                
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Cards[card].effect.push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                createdFor = false
+              }
+              
+            }
+            //Return statements
+            else if(lines[j].includes("return"))
+            {
+              this.returnCreation(lines, j, openIfCard,  ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+            }
+            //For Loops
+            else if(lines[j].includes("for(") || lines[j].includes("for ("))
+            {
+              const id = this.getEID()
+              const loop = lines[j].split(";")
+              const num = loop[1].replace(/\D/g, '')
+              let n = +num
+              if(!loop[1].includes("="))
+              {
+                n--
+              }
+              let by = 0
+              if(loop[2].includes("++"))
+              {
+                by = 1
+              }
+              else
+              {
+                by = +loop[1].replace(/\D/g, '')
+              }
+              this.editorVisual.cardsLoopIndex++
+              if(openIfCard > 0 && openInitial > 0) 
+              {
+                this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Cards[card].effect.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }    
+              this.loopCreation(parent)
+            }
+            //Do
+            else if(lines[j].includes("do{") || lines[j].includes("do"))
+            {
+              const id = this.getEID()
+              this.editorVisual.cardsLoopIndex++
+              if(openIfCard > 0 && openInitial > 0) 
+              { 
+                this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Cards[card].effect.push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }    
+              this.loopCreation(parent)
+            }
+            //While/do While Loops
+            else if(lines[j].includes("while(") || lines[j].includes("while ("))
+            {
+              const id = this.getEID()
+              const params = this.getConditionParams(lines[j])
+              if(doCreated == openIfCard + 1)
+              {
+                if(openIfCard > 0 && openInitial > 0) 
+                {
+                  this.editorVisual.CardsLoop[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
+                  doValue = 0
+                }
+                else
+                {
+                  openInitial++
+                  this.editorVisual.Cards[card].effect[this.editorVisual.Players[player].turn[0].length-1].inputs = params
+                }
+                doCreated = -1    
+              }
+              else
+              {
+                this.editorVisual.cardsLoopIndex++
+                if(openIfCard > 0 && openInitial > 0) 
+                {
+                  this.editorVisual.CardsLoop[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }
+                else
+                {
+                  openInitial++
+                  this.editorVisual.Cards[card].effect.push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }    
+                this.loopCreation(parent)
               }
             }
           }
