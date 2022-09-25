@@ -865,6 +865,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         case "condition":
           this.editorVisual.Players[player].conditions[action].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
           break
+        case "turn":
+          this.editorVisual.Players[player].turn[0].push({title: 'Create',  class: 'visualC', id: id, inputs: [l[2],l[4].replace(/'/g, ""),"","","","","",""], pos: 0, true: 0, false: 0})
+          break
       }
       
     }
@@ -890,6 +893,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             break
           case "condition":
             this.editorVisual.Players[player].conditions[action].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
+            break
+          case "turn":
+            this.editorVisual.Players[player].turn[0].push({title: 'Set',  class: 'visualS', id: id, inputs: [set?.name, lines[j].substring(lines[j].indexOf("=") + 1),"","","","","",""], pos: 0, true: 0, false: 0})
             break
         }
        
@@ -923,6 +929,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         case "condition":
           this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
           break
+        case "turn":
+          this.editorVisual.Players[player].turn[0].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
       }
       
     } 
@@ -950,6 +959,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             case "condition":
               this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
               break
+            case "turn":
+              this.editorVisual.Players[player].turn[0].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].length-1),"","","","",""], pos: 0, true: 0, false: 0})
+              break
           }
         }
       }
@@ -968,6 +980,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               break
             case "condition":
               this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
+              break
+            case "turn":
+              this.editorVisual.Players[player].turn[0].push({title: 'Call', class: 'visualM', id: id, inputs: [call.name, call.arguments.toString(), lines[j].substring(lines[j].indexOf("(") + 1, lines[j].indexOf(",")), lines[j].substring(lines[j].indexOf(",") + 1, lines[j].length-1),"","","",""], pos: 0, true: 0, false: 0})
               break
           } 
         }
@@ -992,6 +1007,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           break
         case "condition":
           this.editorVisual.Players[player].conditions[action].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
+          break
+        case "turn":
+          this.editorVisual.Players[player].turn[0].push({title: 'Return', class: 'visualR', id: id, inputs: [input.substring(input.indexOf("n") + 1),"","","","","","",""], pos: 0, true: 0, false: 0})
           break
       } 
      
@@ -1072,7 +1090,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         const l = lines[j].split(/\s+/)
         this.editorVisual.Players[player].conditionParams[action] = l[1].substring(l[1].indexOf("(") + 1, l[1].indexOf(")"))
       }
-      else if ((lines[j].includes("turn") && lines[j].includes("{")) || (lines[j].includes("turn") && lines[j + 1].includes("{")))
+      else if((lines[j].includes("turn") && lines[j].includes("{")) || (lines[j].includes("turn") && lines[j + 1].includes("{")))
       {
         open++
         method = "turn"
@@ -1584,7 +1602,149 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             }
           break
         case "turn":
-          
+          if(!lines[j].includes("turn") && !lines[j].includes("{") && openTurn != 0)
+          {
+            const l = lines[j].split(/\s+/)
+            //Create
+            if(l[1] == "let")
+            {
+              this.letCreation(l, openIf, player, action, ifContains[ifContains.length-1].numberOfIf, method)
+            } 
+            //Set
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null)
+            {
+              this.setCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+            }
+            //Output
+            else if (l[1].includes('output('))
+            {
+              this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO")
+            }
+            //Input
+            else if(l[1].includes('input('))
+            {
+              this.ioCreation(lines, j, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn")         
+            }
+            //Methods
+            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            {
+              this.methodCreation(lines, j, l, openIf, ifContains[ifContains.length-1].numberOfIf, player, action, method)
+            }
+            //If Statements
+            else if(lines[j].includes("if(") || lines[j].includes("if ("))
+            {
+              const id = this.getEID()
+              const params = this.getConditionParams(lines[j])
+              this.ifCreation()
+              if(openIf > 0 && openInitial > 0)
+              {
+                if(createdFor)
+                {
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                  createdFor = false
+                }
+                else
+                {
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                }
+                
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Players[player].turn[0].push({title: 'If', class: 'visualIf', id: id, inputs: params, pos: 0,  true: this.editorVisual.playersLoopIndex-1, false: this.editorVisual.playersLoopIndex})
+                createdFor = false
+              }
+              
+            }
+            //Return statements
+            else if(lines[j].includes("return"))
+            {
+              this.returnCreation(lines, j, openIf,  ifContains[ifContains.length-1].numberOfIf, player, action, method)
+            }
+            //For Loops
+            else if(lines[j].includes("for(") || lines[j].includes("for ("))
+            {
+              const id = this.getEID()
+              const loop = lines[j].split(";")
+              const num = loop[1].replace(/\D/g, '')
+              let n = +num
+              if(!loop[1].includes("="))
+              {
+                n--
+              }
+              let by = 0
+              if(loop[2].includes("++"))
+              {
+                by = 1
+              }
+              else
+              {
+                by = +loop[1].replace(/\D/g, '')
+              }
+              this.editorVisual.playersLoopIndex++
+              if(openIf > 0 && openInitial > 0) 
+              {
+                this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Players[player].turn[0].push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }    
+              this.loopCreation()
+            }
+            //Do
+            else if(lines[j].includes("do{") || lines[j].includes("do"))
+            {
+              const id = this.getEID()
+              this.editorVisual.playersLoopIndex++
+              if(openIf > 0 && openInitial > 0) 
+              { 
+                this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }
+              else
+              {
+                openInitial++
+                this.editorVisual.Players[player].turn[0].push({title: 'doWhile', class: 'visualD', id: id, inputs: ["","","","","","","",""], pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+              }    
+              this.loopCreation()
+            }
+            //While/do While Loops
+            else if(lines[j].includes("while(") || lines[j].includes("while ("))
+            {
+              const id = this.getEID()
+              const params = this.getConditionParams(lines[j])
+              if(doCreated == openIf + 1)
+              {
+                if(openIf > 0 && openInitial > 0) 
+                {
+                  this.editorVisual.PlayersLoops[doValue][this.editorVisual.PlayersLoops[doValue].length - 1].inputs = params
+                  doValue = 0
+                }
+                else
+                {
+                  openInitial++
+                  this.editorVisual.Players[player].turn[0][this.editorVisual.Players[player].turn[0].length-1].inputs = params
+                }
+                doCreated = -1    
+              }
+              else
+              {
+                this.editorVisual.playersLoopIndex++
+                if(openIf > 0 && openInitial > 0) 
+                {
+                  this.editorVisual.PlayersLoops[ifContains[ifContains.length-2].numberOfIf].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }
+                else
+                {
+                  openInitial++
+                  this.editorVisual.Players[player].turn[0].push({title: 'While', class: 'visualW', id: id, inputs: params, pos: this.editorVisual.playersLoopIndex,  true: 0, false: 0})
+                }    
+                this.loopCreation()
+              }
+            }
+          }
           break
       }
     }
