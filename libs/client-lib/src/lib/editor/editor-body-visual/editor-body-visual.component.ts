@@ -111,7 +111,6 @@ export class EditorBodyVisualComponent {
   clear()
   {
     this.Tiles.splice(0)
-    this.Players.splice(0)
     for(let j = 0; j < this.Players.length; j++)
     {
       for(let i = 0; i < this.Players[j].actions.length; i++)
@@ -121,8 +120,16 @@ export class EditorBodyVisualComponent {
         this.Players[j].turn[0].splice(0)
       }
     }
+    this.Players.splice(0)
+    for(let j = 0; j < this.Cards.length; j++)
+    {
+      this.Cards[j].condition.splice(0)
+      this.Cards[j].effect.splice(0)
+    }
+    this.Cards.splice(0)
     this.Variables.splice(0)
     this.PlayersLoops.splice(1)
+    this.CardsLoop.splice(1)
     this.playersLoopIndex = 0
     this.listProperties.splice(2)
     this.Properties.splice(0)
