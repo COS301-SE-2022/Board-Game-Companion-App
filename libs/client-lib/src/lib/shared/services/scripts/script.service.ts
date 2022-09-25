@@ -55,6 +55,12 @@ export class ScriptService {
     return this.httpClient.get<boolean>(this.api + "my-scripts/check-name",{params:param});
   }
 
+  getMyScriptById(id:string):Observable<myScript>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<myScript>(this.api + "my-scripts/retreive-by-id",{params: param});
+  }
   saveScript(formData:FormData):Observable<myScript>{
     return this.httpClient.post<myScript>(this.api + "my-scripts/create-script",formData);
   }
@@ -127,6 +133,10 @@ export class ScriptService {
     return this.httpClient.get<myScript[]>(this.api + "my-scripts/all-my-script",{params:param});
   }
 
+  getAllMyScript():Observable<myScript[]>{
+    return this.httpClient.get<myScript[]>(this.api + "my-scripts/all-scripts");
+  }
+
   update(id:string,exp:boolean,description:string): Observable<myScript>{
     return this.httpClient.put<myScript>(this.api + "my-scripts/update",{id:id,export:exp,description:description});
   }
@@ -143,6 +153,14 @@ export class ScriptService {
 
   getAutomataScripts():Observable<automataScript[]>{
     return this.httpClient.get<automataScript[]>(this.api + "automata-scripts/retrieve-all");
+  }
+
+  getOldScripts():Observable<oldScript[]>{
+    return this.httpClient.get<oldScript[]>(this.api + "automata-scripts/retrieve-all-old");
+  }
+
+  getAllDownloadScripts():Observable<downloadScript[]>{
+    return this.httpClient.get<downloadScript[]>(this.api + "download-scripts/all");
   }
 
   getDownloadScripts():Observable<downloadScript[]>{

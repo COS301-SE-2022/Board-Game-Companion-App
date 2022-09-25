@@ -24,6 +24,10 @@ export class AutomataService {
         return this.automataModel.find({});
     }
 
+    async getAllOld():Promise<OldScript[]>{
+        return this.oldModel.find({});
+    }
+
     async getByGame(id:string):Promise<AutomataScript[]>{
         return this.automataModel.find({"boardgame":id});
     }
