@@ -15,6 +15,9 @@ import { downloadScript } from '../../models/scripts/download-script';
 import { oldScript } from '../../models/scripts/old-script';
 import { CollectionService } from '../../services/collections/collection.service';
 import { Subscription } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { AdminService } from '../../services/admin/admin.service';
+
 @Component({
   selector: 'board-game-companion-app-header',
   templateUrl: './header.component.html',
@@ -28,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   UserDetails: any | undefined;
   log = "login";
   loggedIn = false;
-  admin:string[] = ["u18166793@tuks.co.za","u18080368@tuks.co.za","mattrmarsden@gmail.com","u19062665@tuks.co.za"];
+  adminAccount = false;
   searchValue = "";
   showHeader = true;
   @Input()height = 0;
@@ -49,7 +52,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private readonly alertService:AlertService,
               private readonly scriptService:ScriptService,
               private readonly bggSearch:BggSearchService,
-              private readonly collectionService:CollectionService) {
+              private readonly collectionService:CollectionService,
+              private readonly socket: Socket,
+              private readonly adminService: AdminService) {
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
               }); 
@@ -61,9 +66,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
         sessionStorage.setItem("name",value.info.name);
         sessionStorage.setItem("email",value.info.email);
         sessionStorage.setItem("img",value.info.picture);
-        this.getAlerts();
-        this.createFavouritesCollection();
-
+        this.adminService.banned().subscribe({
+          next:(response:boolean) => {
+            if(response){
+              this.notifications.add({type:"danger",message:"Your account has been blocked."});
+              this.loggedIn = false;
+              this.gapi.signOut();
+              sessionStorage.removeItem("name");
+              sessionStorage.removeItem("email");
+              sessionStorage.removeItem("image");
+              this.profile = "assets/images/no-profile.png";
+              return;
+            }else{
+              this.checkIfAdmin();
+              this.getAlerts();
+              this.receiveAlerts();
+              this.createFavouritesCollection();
+              this.socket.emit('login',value.info.email);
+            }
+          }
+        })
       },
       error:(err)=>{     
         console.log(err);
@@ -78,6 +100,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   online(): boolean{
     return this.status === OnlineStatusType.ONLINE;
+  }
+
+
+  checkIfAdmin(): void{
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) =>{
+        this.adminAccount = response
+      }
+    })
   }
 
   getStatus(): string{
@@ -130,16 +161,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.ShowMenu = !this.ShowMenu;
   }
 
-  isAdmin():boolean{
-    let result = false;
-    
-    for(let count = 0; count < this.admin.length && !result; count++){
-     if(this.admin[count] === this.UserDetails?.info.email)
-        result = true;
-    }
-
-    return result;
-  }
 
   isLoggedIn():boolean{
     return this.gapi.isLoggedIn();
@@ -162,12 +183,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         this.loggedIn = false;
         this.gapi.signOut();
+        this.socket.emit("logout",sessionStorage.getItem("email"))
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("image");
         this.profile = "assets/images/no-profile.png";
         this.alertSubscription.unsubscribe();
         this.router.navigate(['/home']);
+        this.socket.emit("logout",sessionStorage.getItem("email"))
       }
     }
     else if(path==="board-game-search")
@@ -355,6 +378,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
               }
             })
           }break;
+          case alertType.Warning:{
+            this.alerts.push({
+              subject: "Warning",
+              message: value.link,
+              alert: value
+            })
+          }break;
         }
       }
     })
@@ -447,6 +477,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 error:(err) => {
                   console.log(err)
                 }
+              })
+            }break;            
+            case alertType.Warning:{
+              this.alerts.push({
+                subject: "Warning",
+                message: value.link,
+                alert: value
               })
             }break;
           }

@@ -21,6 +21,11 @@ export class ApiDownloadScriptController {
         return this.downloadsService.getMyDownloads({name:ownerName, email:ownerEmail});
     }
 
+    @Get('all')
+    async getAll():Promise<DownloadScript[]>{
+        return this.downloadsService.getAll();
+    }
+
     @Get('retrieve-id')
     async retrieveById(@Query('id')id:string):Promise<DownloadScript>{
         return this.downloadsService.retrieveById(id);

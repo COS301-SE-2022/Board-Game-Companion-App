@@ -1,6 +1,6 @@
 import { Controller, Body,  Get, Query, Post, Put, Delete, Req ,UploadedFile, UseInterceptors, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { MyScriptService } from '../../services/my-script/my-script.service';
-import { MyScript } from '../../schemas/my-script.schema';
+import { MyScript,MyScriptDocument } from '../../schemas/my-script.schema';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -63,5 +63,10 @@ export class ApiMyScriptController {
     @Get('all-scripts')
     async RetrieveAllScripts():Promise<MyScript[]>{
         return this.myScriptService.retrieveAllScripts();
+    }
+
+    @Get('retreive-by-id')
+    async getMyScriptById(@Query('id')id:string):Promise<MyScriptDocument>{
+        return this.myScriptService.getMyScriptById(id);
     }
 }
