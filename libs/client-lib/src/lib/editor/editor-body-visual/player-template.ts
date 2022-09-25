@@ -10,7 +10,7 @@ import { Component, Input} from "@angular/core";
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
                         Player <input [value]="Players[Index].name"> 
                     </div>
-                    <button *ngIf="Players.length > 2" (click)="removePlayer()" id = "removePlayer"><i class="fa-solid fa-circle-xmark"></i></button>
+                    <button (click)="removePlayer()" id = "removePlayer"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
                 <button (click)="addAction()" id = "addAction">Add Action</button>
                 <div class = "ActionConditionPairs" *ngFor = "item of Actions let i = index">

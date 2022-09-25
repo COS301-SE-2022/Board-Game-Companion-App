@@ -1025,6 +1025,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let method = ""
     let openAttribute = 0
     let openPlayer = 0
+    let openCard = 0
     let openState = 0
     let openAction = 0
     let openCondition = 0
@@ -1042,6 +1043,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     let doCreated = -1
     let doValue = 0
     let player = -1
+    let card = -1
     let action = 0
     let open = 0
     for(let j = 0; j < lines.length; j++)
@@ -1073,22 +1075,36 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         const l = lines[j].split(/\s+/)
         this.editorVisual.Players[player].name = l[1].replace(/{/g, "")
       }
+      else if((lines[j].includes("card") && lines[j].includes("{")) || (lines[j].includes("card") && lines[j + 1].includes("{")))
+      {
+        open++
+        method = "card"
+        openCard = open
+        card++
+        if(this.editorVisual.Cards[card] == null)
+        {
+          this.editorVisual.Cards.push({name: "", parameter: "",effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
+        }
+        const l = lines[j].replace(/\s+/,"")
+        this.editorVisual.Cards[card].name = l.substring(l.indexOf("d") + 1, l.indexOf("("))
+        this.editorVisual.Cards[card].parameter = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
+      }
       else if((lines[j].includes("action") && lines[j].includes("{")) || (lines[j].includes("action") && lines[j + 1].includes("{")))
       {
         open++
         method = "action"
         openAction = open
-        const l = lines[j].split(/\s+/)
-        this.editorVisual.Players[player].actionNames[action] = l[2].substring(0, l[2].indexOf("("))
-        this.editorVisual.Players[player].actionParams[action][0] = l[2].substring(l[2].indexOf("(") + 1, l[2].indexOf(")"))
+        const l = lines[j].replace(/\s+/,"")
+        this.editorVisual.Players[player].actionNames[action] = l.substring(l.indexOf("n") + 1, l.indexOf("("))
+        this.editorVisual.Players[player].actionParams[action][0] = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
       }
       else if((lines[j].includes("condition") && lines[j].includes("{")) || (lines[j].includes("condition") && lines[j + 1].includes("{")))
       {
         open++
         method = "condition"
         openCondition = open
-        const l = lines[j].split(/\s+/)
-        this.editorVisual.Players[player].conditionParams[action] = l[1].substring(l[1].indexOf("(") + 1, l[1].indexOf(")"))
+        const l = lines[j].replace(/\s+/,"")
+        this.editorVisual.Players[player].conditionParams[action] = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
       }
       else if((lines[j].includes("turn") && lines[j].includes("{")) || (lines[j].includes("turn") && lines[j + 1].includes("{")))
       {
@@ -1172,9 +1188,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           ifContains.push({numberOfIf: totalIf, open: openIf})
           createdIf = false
         }
-        
-        
-       
       }
       else if((lines[j].includes("do") && lines[j].includes("{")) || (lines[j].includes("do") && lines[j + 1].includes("{")))
       {
@@ -1224,11 +1237,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         {
           if(openIf != 0)
           {
-           /*  console.log("zzzzzzzzzzzzzzzzzz")
-            ifContains.forEach((element) => {
-              console.log(element)
-            })
-            console.log("zzzzzzzzzzzzzzzzzz") */
             const place = ifContains.findIndex(obj => obj.open == openIf)
             if(place != -1)
             {
@@ -1252,14 +1260,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 inElse = false
               }
               ifContains.splice(place,1)
-              
-              /* console.log("------------------")
-              ifContains.forEach((element) => {
-                console.log(element)
-              })
-              console.log("------------------")    */
             }
-            
             openIf--
           }
         }

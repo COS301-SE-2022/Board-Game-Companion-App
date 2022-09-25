@@ -28,6 +28,8 @@ export class EditorBodyVisualComponent {
   constructor(){
     this.Properties.splice(0)
     this.Tiles.splice(0)
+    this.Players.splice(0)
+    this.Cards.splice(0)
   }
 
   Variables = [{name: "", value: ""} ]
@@ -45,7 +47,7 @@ export class EditorBodyVisualComponent {
     [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
   ]
 
-  Cards = [{effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
+  Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
 
   CardsLoop = [
     [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
@@ -68,7 +70,7 @@ export class EditorBodyVisualComponent {
 
   addNewCard()
   {
-    this.Cards.push({effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
+    this.Cards.push({name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
   }
 
   addProperty()
@@ -109,13 +111,14 @@ export class EditorBodyVisualComponent {
   clear()
   {
     this.Tiles.splice(0)
-    this.Players.splice(2)
+    this.Players.splice(0)
     for(let j = 0; j < this.Players.length; j++)
     {
       for(let i = 0; i < this.Players[j].actions.length; i++)
       {
         this.Players[j].actions[i].splice(0)
         this.Players[j].conditions[i].splice(0)
+        this.Players[j].turn[0].splice(0)
       }
     }
     this.Variables.splice(0)

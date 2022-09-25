@@ -8,7 +8,7 @@ import { Component, Input} from "@angular/core";
             <details open>
                 <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
-                        Card <input><input> 
+                        Card <input [value]="Name"><input [value]="Parameter"> 
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
@@ -38,7 +38,9 @@ import { Component, Input} from "@angular/core";
 })
 
 export class CardTemplateComponent{
-    @Input() Cards = [{effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
+    @Input() Name = ""
+    @Input() Parameter = ""
+    @Input() Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
     @Input() CardsLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
     @Input() Effect = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
     @Input() Condition = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
