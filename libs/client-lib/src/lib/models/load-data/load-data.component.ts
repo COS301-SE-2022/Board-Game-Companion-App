@@ -9,7 +9,6 @@ import { StorageService } from '../../shared/services/storage/storage.service';
 })
 export class LoadDataComponent implements OnInit {
   trainingData = 80;
-  fileType = "application/json";
   data:any = null;
   dataStore:any = null;
   inputFeature = "";
@@ -36,10 +35,6 @@ export class LoadDataComponent implements OnInit {
     return this.data;
   }
 
-  getFileType(): string{
-    return this.fileType;
-  }
-
   getInputs(): string[]{
     return this.inputs;
   }
@@ -58,32 +53,8 @@ export class LoadDataComponent implements OnInit {
     reader.readAsText(value.target.files[0]);
     const type = value.target.files[0].type;
 
-    if(this.fileType !== type){
-      this.fileType = type;
-      this.inputs = [];
-      this.outputs = [];
-    }
-
-
-    if(this.fileType === undefined)
-      this.notifications.add({type:"danger",message:"Unsupported file type."});
-    else if(this.fileType === "application/json"){
-      reader.onload = (event)=>{
-        if(event.target !== null){
-          if(typeof(event.target.result) == "string"){
-            try{
-              this.dataStore = this.data = JSON.parse(event.target.result);
-              this.checkEvent.emit();
-            }catch(error){
-              this.notifications.add({type:"danger",message:"Error parsing json file " + value.target.files[0].name});
-            }
-          }else
-            this.notifications.add({type:"danger",message:"Expecting " + value.target.files[0].name + " to contain string data but contains " + typeof(event.target.result)});
-        }else
-          this.notifications.add({type:"danger",message:"Something went wrong when loading json file"});
-        
-      }
-    }else if(this.fileType === "text/csv"){
+   
+   if(type === "text/csv"){
       reader.onload = (event)=>{
         if(event.target !== null){
           if(typeof(event.target.result) == "string"){
@@ -112,10 +83,9 @@ export class LoadDataComponent implements OnInit {
             this.notifications.add({type:"danger",message:"Expecting " + value.target.files[0].name + " to contain string data but contains " + typeof(event.target.result)});
         }else
           this.notifications.add({type:"danger",message:"Something went wrong when loading csv file"});
-
       }
     }else
-      this.notifications.add({type:"danger",message:"Unsupported file type."});
+      this.notifications.add({type:"danger",message:`Unsupported file type '${type}'.`});
   }
 
   checkTrainingDataPercentage(): void{
@@ -215,40 +185,11 @@ export class LoadDataComponent implements OnInit {
     if(this.dataStore === null){
       this.notifications.add({type:"danger",message:"No data provided."});
       result = false;
-    }else if(typeof this.dataStore !== "object"){
-      this.notifications.add({type:"danger",message:"The input file does not contain array of data."});
-      result = false;
-    }else{
-      if(this.fileType === "application/json" && Array.isArray(this.dataStore) === false){
-        this.notifications.add({type:"danger",message:"The input file does not contain array of data."});
-        result = false;
-      }
     }
 
     return result;
   }
 
-  cleanJsonData(): void{
-    let temp = true;
-
-    this.data = [];
-
-    for(let count = 0; count < this.dataStore.length; count++){
-      if(typeof this.dataStore[count] === "object"){
-        if(Array.isArray(this.dataStore[count]) === false){
-          temp = true;
-          
-          this.inputs.forEach((value:string)=>{
-            if(this.dataStore[count][value] === null || this.dataStore[count][value] === undefined)
-              temp = false;
-          });
-
-          if(temp)
-            this.data.push(this.dataStore[count])
-        }
-      }
-    }
-  }
 
   cleanCsvData(): void{
     this.data = [];
@@ -261,21 +202,11 @@ export class LoadDataComponent implements OnInit {
     }
   }
 
-  cleanData(): void{
-    if(this.fileType === "application/json")
-      this.cleanJsonData();
-    else if(this.fileType === "text/csv")
-      this.cleanCsvData();
-  }
-
   analyse():void{
     this.analysis = [];
     
     if(this.preCheckData()){
-      if(this.fileType === "application/json")
-        this.cleanJsonData();
-      else
-        this.cleanCsvData();
+      this.cleanCsvData();
 
       const removed = this.dataStore.length - this.data.length;
       this.analysis.push("Removed " + removed + " invalid data " + (removed === 1 ? "entry":"entries"))

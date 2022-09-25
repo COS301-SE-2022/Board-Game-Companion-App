@@ -7,15 +7,12 @@ import { layer } from '../../shared/models/neuralnetwork/layer';
   styleUrls: ['./architecture.component.scss'],
   
 })
-export class ArchitectureComponent implements OnInit {
+export class ArchitectureComponent{
   hiddenLayers:layer[] = []
   activation = "none";
   nodes = 1;  
   @Output()checkEvent = new EventEmitter();
 
-  ngOnInit(): void{
-    // console.log("models")
-  }
 
   getHiddenLayers():layer[]{
     return this.hiddenLayers;

@@ -193,16 +193,20 @@ export class ModelsService {
             })
 
             const labels = [...new Set(data.map(item => item[label]))];
-            const labelsTensor = tf.tensor1d(labels);
-
+            
             const outputs = data.map(obj => labels.indexOf(obj[label]))
-
+            
             const inputTensor = tf.tensor2d(inputs,[data.length,features.length]);
-            const outputTensor = tf.tensor1d(outputs,"int32");
+            const outputTensor = tf.oneHot(tf.tensor1d(outputs,'int32'),labels.length);
+            console.log(inputTensor.shape);
+            inputTensor.max().print();
+
             const inputMaximum = inputTensor.max();
-            //inputMax.print();
+            
+
             const inputMinimum = inputTensor.min();
-            //inputMin.print();
+            inputMinimum.print();
+
             const outputMaximum = outputTensor.max();
             //outputMax.print();
             const outputMinimum = outputTensor.min();
@@ -215,7 +219,6 @@ export class ModelsService {
             
             return { 
                 labels: labels,
-                labelsTensor: labelsTensor,
                 inputs: normalizedInputs,
                 outputs: normalizedOutputs,
                 inputMax: inputMaximum,

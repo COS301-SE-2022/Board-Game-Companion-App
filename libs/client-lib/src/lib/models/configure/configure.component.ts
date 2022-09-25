@@ -167,20 +167,20 @@ export class ConfigureComponent implements OnInit {
       return;
     }
 
-    if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"primary",message:"You must be logged In to train model."});
-      return;
-    }
+    // if(!this.gapi.isLoggedIn()){
+    //   this.notifications.add({type:"primary",message:"You must be logged In to train model."});
+    //   return;
+    // }
 
     if(!this.validate())
       return;
 
-    const nameCheck = await this.modelService.alreadyStored(this.name);
+    // const nameCheck = await this.modelService.alreadyStored(this.name);
 
-    if(nameCheck){
-      this.notifications.add({type:"danger",message:`Model with name ${this.name} already exists.`})
-      return;
-    }
+    // if(nameCheck){
+    //   this.notifications.add({type:"danger",message:`Model with name ${this.name} already exists.`})
+    //   return;
+    // }
 
     let result = true;
 

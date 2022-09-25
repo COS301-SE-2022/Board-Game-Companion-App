@@ -92,9 +92,9 @@ export class TrainComponent implements OnInit{
     if(!this.dataLoader.preCheckData())
       return;
 
-    this.dataLoader.cleanData();
+    this.dataLoader.cleanCsvData();
     
-    if(this.dataLoader.getData().length === ""){
+    if(this.dataLoader.getData().length === 0){
       this.notifications.add({type:"warning",message:"No valid training data found."})
       return;
     }
@@ -111,19 +111,19 @@ export class TrainComponent implements OnInit{
     const [trainXs, testXs] = tf.split(xs,dataDivider);
     const [trainYs, testYs] = tf.split(ys,dataDivider);
 
-    this.trainEvent.emit({
-      name: this.configuration.getName(),
-      model: model,
-      type: this.configuration.getType(),
-      optimizer: optimizer,
-      epochs: this.configuration.getEpoch(),
-      trainXs: trainXs,
-      trainYs: trainYs,
-      testXs: testXs,
-      testYs: testYs,
-      labels: tensorData.labels,
-      min: tensorData.inputMin,
-      max: tensorData.inputMax
-    });
+    // this.trainEvent.emit({
+    //   name: this.configuration.getName(),
+    //   model: model,
+    //   type: this.configuration.getType(),
+    //   optimizer: optimizer,
+    //   epochs: this.configuration.getEpoch(),
+    //   trainXs: trainXs,
+    //   trainYs: trainYs,
+    //   testXs: testXs,
+    //   testYs: testYs,
+    //   labels: tensorData.labels,
+    //   min: tensorData.inputMin,
+    //   max: tensorData.inputMax
+    // });
   }
 }
