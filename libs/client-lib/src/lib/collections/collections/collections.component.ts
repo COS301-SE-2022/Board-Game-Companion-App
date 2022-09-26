@@ -65,6 +65,7 @@ export class CollectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCollections();
+    this.onScreenResize();
   }
 
   sortScripts(): void{

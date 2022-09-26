@@ -1,6 +1,7 @@
 import { Controller, Body, Put } from '@nestjs/common';
 import { EditorService } from '../../services/editor/editor.service';
 import { MyScript } from '../../schemas/my-script.schema';
+import { transpilationResponse } from '../../models/general/transpilationResponse';
 
 @Controller('editor')
 export class ApiEditorController {
@@ -12,7 +13,7 @@ export class ApiEditorController {
     }
 
     @Put("update-file")
-    async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<any>{
+    async updateFile(@Body('id')id:string,@Body('content')content:string):Promise<transpilationResponse>{
         return this.editorService.updateFile(id,content);
     }
 }

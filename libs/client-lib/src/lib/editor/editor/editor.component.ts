@@ -440,9 +440,9 @@ setCurrPlayer(){
     }
   }
 
-  newMessage(message:string): void{
+  newMessage(message:string[]): void{
     this.statusMessages = [];
-    this.statusMessages.push(message);
+    this.statusMessages = message;
   }
 
   printStatusMessages(): void{

@@ -68,6 +68,10 @@ export class ModelsService {
         return this.networkModel.findOne({"creator.email":user.email,"creator.name":user.name,"_id":id});
     }
 
+    async getModelByName(user:user,name:string):Promise<NeuralNetwork>{
+        return this.networkModel.findOne({"creator.email":user.email,"creator.name":user.name,"name":name})
+    }
+
     async getModels(user:user,idList:string[]):Promise<NeuralNetwork[]>{
         return this.networkModel.find({"creator.name":user.name,"creator.email":user.email}).where('_id').in(idList);
     }
