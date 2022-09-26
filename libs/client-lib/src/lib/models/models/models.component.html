@@ -4,13 +4,13 @@
             <div class="sidebar text-center font-medium">
                 <a (click)="changeTab(0)" [ngClass]="{'active':tab===0}">General</a>
                 <a (click)="changeTab(1)" [ngClass]="{'active':tab===1}">Train</a>
-                <a (click)="changeTab(2)" [ngClass]="{'active':tab===2}">Upload</a>
+                <!-- <a (click)="changeTab(2)" [ngClass]="{'active':tab===2}">Upload</a> -->
             </div>
         </div>
         <div class = "col-sm-9 p-2">
             <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
             <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
-            <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload>
+            <!-- <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload> -->
         </div>
     </div>        
 </div>

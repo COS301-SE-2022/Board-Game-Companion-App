@@ -101,29 +101,27 @@ export class TrainComponent implements OnInit{
 
     const tensorData = this.modelsService.convertToTensors(this.dataLoader.getData(),this.dataLoader.getInputs(),this.dataLoader.getOutputs()[0]);
     const model = this.modelsService.createModel(this.dataLoader.getInputs().length,tensorData.labels.length,this.architectureSetup.getHiddenLayers());
-    const xs = tensorData.inputs;
     
-    const ys = tf.oneHot(tensorData.outputs,tensorData.labels.length);
+
     const left = Math.ceil((this.dataLoader.getTrainingPercentage() / 100) * this.dataLoader.getData().length);
     const right = this.dataLoader.getData().length - left;
     const dataDivider = [left,right];
 
-    const [trainXs, testXs] = tf.split(xs,dataDivider);
-    const [trainYs, testYs] = tf.split(ys,dataDivider);
+    const [trainXs, testXs] = tf.split(tensorData.inputs,dataDivider);
+    const [trainYs, testYs] = tf.split(tensorData.outputs,dataDivider);
 
-    // this.trainEvent.emit({
-    //   name: this.configuration.getName(),
-    //   model: model,
-    //   type: this.configuration.getType(),
-    //   optimizer: optimizer,
-    //   epochs: this.configuration.getEpoch(),
-    //   trainXs: trainXs,
-    //   trainYs: trainYs,
-    //   testXs: testXs,
-    //   testYs: testYs,
-    //   labels: tensorData.labels,
-    //   min: tensorData.inputMin,
-    //   max: tensorData.inputMax
-    // });
+    this.trainEvent.emit({
+      name: this.configuration.getName(),
+      model: model,
+      optimizer: optimizer,
+      epochs: this.configuration.getEpoch(),
+      trainXs: trainXs,
+      trainYs: trainYs,
+      testXs: testXs,
+      testYs: testYs,
+      labels: tensorData.labels,
+      min: tensorData.inputMin,
+      max: tensorData.inputMax
+    });
   }
 }

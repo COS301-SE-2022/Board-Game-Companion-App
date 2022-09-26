@@ -10,7 +10,7 @@ import { NotificationComponent } from '../../shared/components/notification/noti
 interface progressTracker{
   name: string;
   trainProgress: number;
-  testProgress: number;
+  loss: number;
 }
 
 @Component({
@@ -23,6 +23,7 @@ export class GeneralComponent implements OnInit {
   networks:neuralnetwork[] = [];
   progress:progressTracker[] = [];
   months: string[] = [];
+  training: string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){
@@ -37,80 +38,92 @@ export class GeneralComponent implements OnInit {
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
     this.modelService.getAll().subscribe({
-      next:(value:any) => {
-        value.forEach((sub:any) => {
-          this.networks.push({
-            created: sub.created,
-            loss: sub.loss,
-            accuracy: sub.accuracy,
-            setup: {
-              name: sub.name,
-              type: sub.type,
-              labels: sub.labels,
-              min: tf.tensor(sub.min),
-              max: tf.tensor(sub.max)     
-            }
-          })
-        })
+      next:(value:neuralnetwork[]) => {
+        this.networks = value;
       },
-      error:(err:any) => {
-        console.log(err)
+      error:() => {
+        this.notifications.add({type:"danger",message:"Failed to load models"})
       }
     })
-  
   }
 
   async train(setup:modelData){
-    this.networks.unshift({setup:setup});
+    this.networks.unshift({
+      _id: "",
+      name: setup.name,
+      created: new Date(),
+      labels: setup.labels,
+      max: Array.from(setup.max.dataSync()),
+      min: Array.from(setup.min.dataSync())
+    });
+
     this.progress.unshift({
       name: setup.name,
       trainProgress: 0,
-      testProgress: 0
+      loss: 0
     })
+    let tuningRequired = false;
 
-    await this.modelService.train(setup.model as tf.Sequential,setup.trainXs as tf.Tensor,setup.trainYs as tf.Tensor,setup.optimizer as tf.Optimizer,{
+    const trainYs = tf.oneHot(setup.trainYs as tf.Tensor,setup.labels.length);
+    this.training.push(setup.name);
+    
+    this.modelService.train(setup.model as tf.Sequential,setup.trainXs as tf.Tensor,trainYs,setup.optimizer as tf.Optimizer,{
       epochs: setup.epochs,
       shuffle: true,
       callbacks:{
-        onTrainEnd:async()=>{
+        onTrainEnd:async() => {
+          this.progress = this.progress.filter((value) => value.name !== setup.name);
+          
           for(let count = 0; count < this.networks.length; count++){
-            if(this.networks[count].setup.name === setup.name){
-              for(let count = 0; count < this.progress.length; count++){
-                if(this.progress[count].name === setup.name){
-                  const timer = await this.test(this.networks[count],this.progress[count]);
-                  clearInterval(timer)
-                  break;
-                }
-              }
-
-              this.networks[count].created = new Date();
-
-              this.upload(this.networks[count]);
-
+            if(this.networks[count].name === setup.name){
+              this.upload(this.networks[count],setup.model as tf.Sequential);
               break;
             }
           }
+
+          this.training = this.training.filter((name:string) => name !== setup.name)
+          this.test(setup.model as tf.Sequential,setup);
         },
-        onEpochEnd:(epochs,logs)=>{
+        onEpochEnd:async(epochs,logs) => {
           for(let count = 0; count < this.progress.length; count++){
             if(this.progress[count].name === setup.name){
               const max = setup.epochs as number;
               this.progress[count].trainProgress = Math.ceil((epochs / max) * 100);
-              break;
-            }
-          }
-
-          for(let count = 0; count < this.networks.length; count++){
-            if(this.networks[count].setup.name === setup.name){
-              if(logs !== undefined)
-                this.networks[count].loss = logs['loss'];
               
+              if(isNaN((logs as tf.Logs)['loss']) && !tuningRequired){
+                this.notifications.add({type:"danger",message:"Parameter tuning required."})
+                tuningRequired = true;
+              }
+
               break;
             }
           }
         }
       }
-    })
+    });
+  }
+
+  test(model:tf.Sequential,setup:modelData): void{
+    const xs = setup.testXs as tf.Tensor;
+
+    const result = model.predict(xs) as tf.Tensor;
+
+    result.print();
+    result.argMax(1).print();
+    const prediction = Array.from(result.argMax(1).dataSync());
+
+    let correct = 0;
+    const ys = Array.from((setup.testYs as tf.Tensor).dataSync());
+    
+    for(let count = 0; count < ys.length; count++){
+  
+      if(prediction[count] === ys[count])
+        correct++;
+    }
+
+    const accuracy = (correct / ys.length) * 100;
+
+    this.notifications.add({type:"primary",message:`Accuracy: ${accuracy.toFixed(2)}`});
   }
 
   formatDate(value:Date): string{
@@ -118,87 +131,59 @@ export class GeneralComponent implements OnInit {
     return date.getDate() + " " + this.months[date.getMonth()] + " " + date.getFullYear();
   }
 
-  async test(network:neuralnetwork,tracker:progressTracker): Promise<number>{
-    return new Promise((resolve)=>{
-      const len = network.setup.testXs?.shape[0] as number;
-      const testXs = network.setup.testXs?.split(len,0) as unknown as tf.Tensor[];
-      const testYs = network.setup.testYs?.split(len,0) as unknown as tf.Tensor[];
-      let result:tf.Tensor;
-      let correct = 0;
-      tracker.testProgress = 0;
-      let count = 0;
+  remove(network:neuralnetwork): void{
 
-      const timer = window.setInterval(()=>{
-        if(count < len){
-          result = network.setup.model?.predict(testXs[count]) as tf.Tensor;
-
-          console.log("==============================");
-          result.print();
-          testYs[count].print();
-          console.log("==============================");
-          if(result.equal(testYs[count])){
-            correct++;
-            network.accuracy = (correct / len) * 100;
-          }
-  
-          tracker.testProgress = (count / len) * 100;
-
-          count++;
+    this.modelService.remove(network._id).subscribe({
+      next: (value:boolean) =>{
+        if(value){
+          this.notifications.add({type:"success",message: `Successfully removed ${network.name}.`})
+          this.networks = this.networks.filter((value:neuralnetwork) => value._id !== network._id)
         }else{
-          resolve(timer);
-        } 
-      },Math.floor(1000/len));
+          this.notifications.add({type:"warning",message:`Failed to remove ${network.name}`})
+        }
+      },
+      error: () => {
+        this.notifications.add({type:"danger",message:`Failed to remove ${network.name}.`})
+      }
     })
   }
 
-  getProgress(name:string,sub:string):number{
-    let result = 0;
-
+  getProgress(name:string): number{
+    
     for(let count = 0; count < this.progress.length; count++){
       if(this.progress[count].name === name){
-        result = this.progress[count][(sub === "train" ? "trainProgress":"testProgress")];
+        return this.progress[count].trainProgress;
       }
     }
 
-    return result;
+    return 100;
   }
 
-  remove(network:neuralnetwork): void{
 
-    this.modelService.remove(network.setup.name).subscribe({
-      next: (value:boolean) =>{
-        if(value){
-          this.notifications.add({type:"success",message: `Successfully removed ${network.setup.name}.`})
-          this.networks = this.networks.filter((value:neuralnetwork) => value.setup.name !== network.setup.name)
-        }else{
-          this.notifications.add({type:"warning",message:`Failed to remove ${network.setup.name}`})
-        }
-      },
-      error: (err) => {
-        this.notifications.add({type:"danger",message:`Failed to remove ${network.setup.name}.`})
-      }
-    })
-  }
-
-  async upload(network:neuralnetwork): Promise<void>{
+  async upload(network:neuralnetwork,model:tf.Sequential): Promise<void>{
     try{
       const user:user = {
         name: sessionStorage.getItem("name") as string,
         email: sessionStorage.getItem("email") as string
       }
       
-      const minimum = Array.from(network.setup.min.dataSync());
-      const maximum = Array.from(network.setup.max.dataSync());
+      const minimum = network.min;
+      const maximum = network.max;
 
-      network.setup.model?.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.setup.name}&created=${network.created?.toString()}&accuracy=${network.accuracy}&loss=${network.loss}&type=${network.setup.type}&labels=${JSON.stringify(network.setup.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
+      model.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.name}&created=${network.created?.toString()}&labels=${JSON.stringify(network.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
       then((value:tf.io.SaveResult) => {
-        this.notifications.add({type:"success",message:`${network.setup.name} was successfully uploaded.`}); 
+        (value.responses as Response[])[0].json().then((res) => {
+          network._id = res._id;
+          console.log(network);
+        })
+
+        this.notifications.add({type:"success",message:`${network.name} was successfully uploaded.`}); 
       }).catch(()=>{
-        this.notifications.add({type:"danger",message:`Failed to upload ${network.setup.name}`})
+        this.notifications.add({type:"danger",message:`Failed to upload ${network.name}`})
       })
     
     }catch(error){
-      this.notifications.add({type:"danger",message:`Failed to upload model '${network.setup.name}'. Could not find in local storage`})
+      this.notifications.add({type:"danger",message:`Failed to upload model '${network.name}'. Could not find in local storage`})
     }
   }
 }

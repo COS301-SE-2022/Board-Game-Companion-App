@@ -19,6 +19,8 @@ export class AdminReportsComponent implements OnInit {
   commentReports:report[] = [];
   scriptPage = 1;
   commentPage = 1;
+  showComments = false;
+  showScripts = true;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   constructor(private readonly reportService:ReportService,

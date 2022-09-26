@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { StorageService } from '../../shared/services/storage/storage.service';
+import { feature } from '../../shared/models/neuralnetwork/feature';
 
 @Component({
   selector: 'board-game-companion-app-load-data',
@@ -13,7 +14,7 @@ export class LoadDataComponent implements OnInit {
   dataStore:any = null;
   inputFeature = "";
   outputLabel = "";
-  inputs:string[] = []
+  inputs:feature[] = []
   outputs:string[] = []
   analysis:string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
@@ -35,7 +36,7 @@ export class LoadDataComponent implements OnInit {
     return this.data;
   }
 
-  getInputs(): string[]{
+  getInputs(): feature[]{
     return this.inputs;
   }
 
@@ -112,10 +113,20 @@ export class LoadDataComponent implements OnInit {
     }
   }
 
+  enumerate(x:number): number[]{
+    const result:number[] = [];
+
+    for(let count = 0; count < x; count++){
+      result.push(count);
+    }
+
+    return result;
+  }
+
   addInputFeature(): void{
     if(this.inputFeature !== ""){
       if(!this.alreadyExists(this.inputFeature)){
-        this.inputs.push(this.inputFeature);
+        this.inputs.push({value:this.inputFeature,minimum:0,maximum:1});
         this.checkEvent.emit();
       }else
         this.notifications.add({type:'warning',message:'Duplicate features not allowed.'});
@@ -128,7 +139,7 @@ export class LoadDataComponent implements OnInit {
     let result = false;
 
     for(let count = 0; count < this.inputs.length && !result; count++){
-      if(this.inputs[count] === value)
+      if(this.inputs[count].value === value)
         result = true;
     }
 
@@ -156,10 +167,10 @@ export class LoadDataComponent implements OnInit {
 
 
   removeInput(value:string): void{
-    const temp:string[] = [];
+    const temp:feature[] = [];
 
     for(let count = 0; count < this.inputs.length; count++){
-      if(value!== this.inputs[count])
+      if(value!== this.inputs[count].value)
         temp.push(this.inputs[count]);
     }
 
@@ -193,7 +204,7 @@ export class LoadDataComponent implements OnInit {
 
   cleanCsvData(): void{
     this.data = [];
-    const temp = this.inputs.concat(this.outputs).map(value => parseFloat(value));
+    const temp = this.inputs.map(value => value.value).concat(this.outputs).map(value => parseFloat(value));
     const max:number = Math.max(...temp);
 
     for(let count = 0; count < this.dataStore.length; count++){

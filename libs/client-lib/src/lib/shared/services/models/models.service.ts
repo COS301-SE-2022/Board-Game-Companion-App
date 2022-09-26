@@ -6,6 +6,8 @@ import { layer } from '../../models/neuralnetwork/layer';
 import { optimizerArgs } from '../../models/neuralnetwork/optimizerArgs';
 import { user } from '../../models/general/user';
 import { StorageService } from '../storage/storage.service';
+import { feature } from '../../models/neuralnetwork/feature';
+import { neuralnetwork } from '../../models/neuralnetwork/neuralnetwork';
 
 
 @Injectable()
@@ -34,12 +36,12 @@ export class ModelsService {
     })
   }
 
-  getAll(): Observable<any>{
+  getAll(): Observable<neuralnetwork[]>{
     let param = new HttpParams();
     param = param.set("userName",sessionStorage.getItem("name") as string);
     param = param.set("userEmail",sessionStorage.getItem("email") as string);  
 
-    return this.httpClient.get<any>(this.api + "models/all",{params:param});
+    return this.httpClient.get<neuralnetwork[]>(this.api + "models/all",{params:param});
   }
 
   getModel(id:string): Observable<any>{
@@ -67,12 +69,9 @@ export class ModelsService {
     return this.httpClient.get<any>(this.api + "models/retrieve-subset-by-id-only",{params:param});
   }
 
-  remove(name:string): Observable<boolean>{
+  remove(id: string): Observable<boolean>{
     let param = new HttpParams();
-    param = param.set("userName",sessionStorage.getItem("name") as string);
-    param = param.set("userEmail",sessionStorage.getItem("email") as string);  
-    param = param.set("name",name); 
-
+    param = param.set("id",id);
     return this.httpClient.delete<boolean>(this.api + "models/remove",{params:param});
   }
 
@@ -173,10 +172,11 @@ export class ModelsService {
         activation: 'softmax'
     }));
 
+
     return model;
   }
 
-  convertToTensors(data:any[],features:string[],label:string){
+  convertToTensors(data:any[],features:feature[],label:string){
      return tf.tidy(()=>{
             
             tf.util.shuffle(data);
@@ -184,7 +184,7 @@ export class ModelsService {
             const inputs = data.map(obj => {
                 const result:any[] = [];
                 
-                features.forEach((value)=>{
+                features.map(value => value.value).forEach((value)=>{
                     if(obj[value] !== undefined && obj[value] !== null)
                         result.push(obj[value]);
                 })
@@ -197,34 +197,24 @@ export class ModelsService {
             const outputs = data.map(obj => labels.indexOf(obj[label]))
             
             const inputTensor = tf.tensor2d(inputs,[data.length,features.length]);
-            const outputTensor = tf.oneHot(tf.tensor1d(outputs,'int32'),labels.length);
-            console.log(inputTensor.shape);
-            inputTensor.max().print();
+            const outputTensor = tf.tensor1d(outputs,'int32');
+            //const outputTensor = tf.oneHot(tf.tensor1d(outputs,'int32'),labels.length);
 
-            const inputMaximum = inputTensor.max();
-            
+            inputTensor.print();
+            outputTensor.print();
 
-            const inputMinimum = inputTensor.min();
-            inputMinimum.print();
+            const inputMaximum = tf.tensor1d(features.map(value => value.maximum));
+            const inputMinimum = tf.tensor1d(features.map(value => value.minimum));
 
-            const outputMaximum = outputTensor.max();
-            //outputMax.print();
-            const outputMinimum = outputTensor.min();
-            //outputMin.print();
 
             const normalizedInputs = inputTensor.sub(inputMinimum).div(inputMaximum.sub(inputMinimum));
-            //normalizedInputs.print();
-            const normalizedOutputs = outputTensor.sub(outputMinimum).div(outputMaximum.sub(outputMinimum));
-            //normalizedOutputs.print();
-            
+
             return { 
                 labels: labels,
                 inputs: normalizedInputs,
-                outputs: normalizedOutputs,
+                outputs: outputTensor,
                 inputMax: inputMaximum,
-                inputMin: inputMinimum,
-                outputMax: outputMaximum,
-                outputMin: outputMinimum
+                inputMin: inputMinimum
             }
         });    
     }
@@ -236,6 +226,7 @@ export class ModelsService {
         }else if(optimizer === 1){
             return tf.train.adagrad(values.learningRate as number,values.initialAccumulatorValue);
         }else if(optimizer === 2){
+            console.log(values)
             return tf.train.adam(values.learningRate,values.beta1,values.beta2,values.epsilon);
         }else if(optimizer === 3){
             return tf.train.adamax(values.learningRate,values.beta1,values.beta2,values.epsilon,values.decay);

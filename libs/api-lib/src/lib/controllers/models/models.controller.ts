@@ -16,9 +16,6 @@ export class ApiModelsController {
             @Query('userEmail')userEmail: string,
             @Query('name')name: string,
             @Query('created')created: Date,
-            @Query('accuracy')accuracy: number,
-            @Query('loss')loss: number,
-            @Query('type')type: string,
             @Query('labels')labels: string,
             @Query('min')min: string,
             @Query('max')max: string,
@@ -43,11 +40,8 @@ export class ApiModelsController {
                                         {name:userName,email:userEmail},
                                         name,
                                         created,
-                                        type,
                                         minimum,
                                         maximum,
-                                        accuracy,
-                                        loss,
                                         categories                                       
                                         )
     }
@@ -63,8 +57,8 @@ export class ApiModelsController {
     }
 
     @Delete('remove')
-    async remove(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('name')name:string){
-       return this.modelsService.remove({name:userName,email:userEmail},name); 
+    async remove(@Query('id')id:string){
+       return this.modelsService.remove(id); 
     }
 
     @Get('retrieve-by-id')

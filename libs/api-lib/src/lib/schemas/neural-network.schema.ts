@@ -17,15 +17,6 @@ export class NeuralNetwork{
     created: Date;
 
     @Prop()
-    accuracy: number;
-
-    @Prop()
-    loss: number;
-
-    @Prop({required: true})
-    type: string;
-
-    @Prop()
     labels: string[];
 
     @Prop()

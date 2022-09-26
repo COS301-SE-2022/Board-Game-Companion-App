@@ -43,9 +43,7 @@ export class ReportService {
     }
 
     async remove(id:string):Promise<Report>{
-        const result = await this.reportModel.findById(id);
-        this.reportModel.findByIdAndDelete(id);
-        return result;
+        return this.reportModel.findByIdAndRemove(id);
     }
 
     async getByScript(id:string):Promise<Report[]>{

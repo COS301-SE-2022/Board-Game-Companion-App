@@ -26,8 +26,8 @@
             
             <div class = "input-feature-display w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
                 <div class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row" *ngFor = "let feature of inputs">
-                    <p>{{feature}}</p>
-                    <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeInput(feature)">
+                    <p>{{feature.value}}</p>
+                    <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeInput(feature.value)">
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                     <div class = "" [style.width.%] = "40">Maximum</div>                    
                 </div>
                 <div class = "w-full text-sm flex flex-row hover:bg-gray-500 hover:text-white" *ngFor = "let feature of inputs">
-                    <div class = "" [style.width.%] = "20">{{feature}}</div>
-                    <div class = "" [style.width.%] = "40"><input class = "w-full h-full normalization-input" type="text" autocomplete="off" placeholder="Enter Min" value = "0"></div>
-                    <div class = "" [style.width.%] = "40"><input class = "w-full h-full normalization-input" type="text" autocomplete="off" placeholder="Enter Max" value = "1"></div>
+                    <div class = "" [style.width.%] = "20">{{feature.value}}</div>
+                    <div class = "" [style.width.%] = "40"><input class = "w-full h-full normalization-input" [(ngModel)] = "feature.minimum" name = "minimum" type="number" autocomplete="off" placeholder="Enter Min" value = "0"></div>
+                    <div class = "" [style.width.%] = "40"><input class = "w-full h-full normalization-input" [(ngModel)] = "feature.maximum" name = "maximum" type="number" autocomplete="off" placeholder="Enter Max" value = "1"></div>
                 </div>
             </div>
         </div>
