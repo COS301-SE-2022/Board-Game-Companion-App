@@ -13,7 +13,7 @@
     min-height: 150px;
     height: fit-content;
     background-color: lightgray;
-    border: 5px solid black;
+    border: 5px solid lightgray;
     border-radius: 0 40px 40px 0;
     display: flex;
     padding: 2em;
@@ -25,11 +25,12 @@
     min-height: 150px;
     height: fit-content;
     background-color:lightgray;
-    border: 5px solid black;
+    border: 5px solid lightgray;
     border-radius: 40px 0 0 40px;
     display: flex;
     padding: 2em;
 }
+
 
 #listItems{
     padding: 1em;
@@ -48,6 +49,42 @@
     margin-bottom: 2em;
     color: white;
     overflow-x: auto;
+    transition: border-color 0.6s linear;
+}
+
+.boardContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+.playerContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+.boardContainers::-webkit-scrollbar {
+    height: 12px;
+}
+
+.boardContainers::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 12px;      
+}
+  
+.boardContainers::-webkit-scrollbar-thumb {
+    background-color: $Background;   
+    border-radius: 25px;      
+    border: 3px solid $Background;  
+}
+
+.boardContainers .name{
+    width: 150px;
+    height: 37px;
+}
+
+.boardContainers .param{
+    height: 37px;
 }
 
 .playerContainers{
@@ -62,44 +99,33 @@
     margin-right: 2em;
     margin-bottom: 2em;
     color: white;
+    transition: border-color 0.6s linear;
 }
 
-.playerContainers input{
-   
+.playerContainers #paName{
+    width: 125px;
+    height: 30px;
 }
 
-#addNewPlayer{
-    font-size: 1em;
-    padding: 0.5em;
-    color: white;
-    background-color: black;
-    border: 3px solid grey;
-    margin-left: 2em;
-    margin-bottom: 1em;
-    font-weight: bold;
-    border-radius: 2em;
+.playerContainers .wrapper::-webkit-scrollbar, .cardContainers .wrapper::-webkit-scrollbar, #endGame .wrapper::-webkit-scrollbar {
+    height: 20px;
 }
 
-#addAction{
-    padding: 0.5em;
-    color: white;
-    background-color: black;
-    border: 3px solid grey;
-    margin-left: 2em;
-    margin-bottom: 1em;
-    font-weight: bold;
-    border-radius: 2em;
+.playerContainers .wrapper::-webkit-scrollbar-track, .cardContainers .wrapper::-webkit-scrollbar-track, #endGame .wrapper::-webkit-scrollbar-track{
+    background: white;
+    border: 3px solid white;
+    border-radius: 35px; 
+    margin-bottom: 1em;     
+}
+  
+.playerContainers .wrapper::-webkit-scrollbar-thumb, .cardContainers .wrapper::-webkit-scrollbar-thumb, #endGame .wrapper::-webkit-scrollbar-thumb{
+    background: $Background;   
+    border-radius: 55px;      
+    border: 3px solid $Background;  
 }
 
-#removeAction{
-    font-size: 1.5em;
-    margin-left: 1em;
-    margin-right: 1em;
-}
-
-#removePlayer{
-    font-size: 2em;
-    margin-left: 2em;
+.playerContainers .wrapper{
+    max-height: 450px;
 }
 
 .cardContainers{
@@ -114,7 +140,68 @@
     margin-right: 2em;
     margin-bottom: 2em;
     color: white;
+    transition: border-color 0.6s linear;
 }
+
+.cardContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+#addNewPlayer{
+    font-size: 1em;
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid black;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addNewPlayer:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addAction{
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid black;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addAction:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#removeAction{
+    font-size: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#removePlayer{
+    font-size: 2em;
+    margin-left: 2em;
+}
+
 
 #removeCard{
     font-size: 2em;
@@ -126,11 +213,21 @@
     padding: 0.5em;
     color: white;
     background-color: black;
-    border: 3px solid grey;
+    border: 3px solid black;
     margin-left: 2em;
     margin-bottom: 1em;
     font-weight: bold;
     border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addNewCard:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
 }
 
 .tfSection{
@@ -142,7 +239,7 @@
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: lightgray;
+    background-color: $Pcolour-2;
     border: 5px solid $Pcolour-2;
     display: flex;
     padding: 2em;
@@ -150,11 +247,28 @@
     margin-top: 0;
 }
 
+#trueSection::-webkit-scrollbar, #falseSection::-webkit-scrollbar {
+    height: 10px;
+}
+
+#trueSection::-webkit-scrollbar-track, #falseSection::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 35px; 
+    margin-bottom: 1em;     
+}
+  
+#trueSection::-webkit-scrollbar-thumb, #falseSection::-webkit-scrollbar-thumb {
+    background: $Background;   
+    border-radius: 55px;      
+    border: 3px solid $Background;  
+}
+
 #falseSection{
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: lightgray;
+    background-color: $Pcolour-4;
     border: 5px solid $Pcolour-4;
     display: flex;
     padding: 2em;

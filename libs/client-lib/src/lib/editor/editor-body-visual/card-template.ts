@@ -8,7 +8,7 @@ import { Component, Input} from "@angular/core";
             <details open>
                 <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
-                        Card <input [value]="Name"><input [value]="Parameter"> 
+                        Card <input class = "name" [value]="Name"><input class = "param" [value]="Parameter"> 
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>

@@ -16,7 +16,14 @@
     border-radius: 1em;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
   }
+
+.visualC:hover, .visualS:hover, .visualIn:hover, .visualO:hover, .visualM:hover, .visualIf:hover, .visualR:hover, .visualF:hover, .visualW:hover, .visualD:hover{
+    transform: translateZ(0) scale(1.05, 1.05);
+    transition: transform 0.2s linear;
+}
 
 .visualC #content{
     margin-top: 1.5em;
@@ -38,6 +45,8 @@
     border-radius: 1em;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
 
 .visualS #content{
@@ -59,6 +68,8 @@
     align-items: center;
     text-align: center;
     background: #50d0ff;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
   
 .visualIn #content{
@@ -93,6 +104,8 @@
     align-items: center;
     text-align: center;
     background: #ff4842;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
   }
   
 .visualO #content{
@@ -104,7 +117,7 @@
     -webkit-clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
     clip-path: polygon(18% 0%, 82% 0%, 100% 76%, 50% 100%, 0% 76%);
     cursor: move;
-    background: $Background;
+    background: #ff4842;
 }
   
 .visualO #title{
@@ -127,6 +140,8 @@
     align-items: center;
     text-align: center;
     background: #7f50ff;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
   
 .visualM #content{
@@ -138,7 +153,7 @@
     -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
     clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
     cursor: move;
-    background: $Background;
+    background: #7f50ff;
 }
 
 .visualM select{
@@ -160,7 +175,9 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: black;
+    background: $Background;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
   
 .visualIf #content{
@@ -188,9 +205,11 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background:$Background;
+    background:#ffd650;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
 
 .visualR #return{
@@ -200,7 +219,7 @@
 .visualF {
     width: 140px;
     height: 150px;
-    border: solid 5px black;
+    border: solid 5px $Background;
     border-radius: 40px 0 0 40px;
     margin-bottom: 1em;
     margin-right: 0;
@@ -214,6 +233,8 @@
     background:$Background;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
 }
 
 .visualF #content{
@@ -224,7 +245,7 @@
 .visualW {
     width: 140px;
     height: 150px;
-    border: solid 5px black;
+    border: solid 5px $Background;
     border-radius: 40px 0 0 40px;
     margin-bottom: 1em;
     margin-right: 0;
@@ -238,6 +259,8 @@
     background: $Background;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
   
 }
    
@@ -267,13 +290,13 @@
     -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
     clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
     cursor: move;
-    background: $Background;
+    background: black;
 }
 
 .visualD {
     width: 140px;
     height: 150px;
-    border: solid 5px black;
+    border: solid 5px $Background;
     border-radius: 0 40px 40px 0;
     margin-bottom: 1em;
     margin-left: 0;
@@ -287,6 +310,8 @@
     background: $Background;
     position: relative;
     z-index: 1;
+    transform: scale(1.0);
+    transition: transform 0.2s linear;
   
 }
   
@@ -317,7 +342,7 @@
     -webkit-clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
     clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
     cursor: move;
-    background: $Background;
+    background: black;
 }
 
 input{
