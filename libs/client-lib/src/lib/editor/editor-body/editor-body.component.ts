@@ -562,7 +562,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
-          //this.updateVDSL()
+          this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
             this.sendChanges();
@@ -690,7 +690,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         next:(value)=>{
           if(value.status === "success"){
             //UpdateLineArray()
-            //this.updateVDSL()
+            this.updateVDSL()
             this.changesTracker.emit(2);
             this.newProgramStructureEvent.emit(value.programStructure);
           }else{
@@ -968,9 +968,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       
     }
     this.editorVisual.Variables.push({name: l[2], value: l[4].replace(/'/g, "")})
-    this.editorVisual.listProperties.forEach((element) => {
-      this.editorVisual.Variables.push({name: l[2] + "." + element, value: ""})
-    })
   }
 
   setCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string, parent : string, card : number)
@@ -1325,9 +1322,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         this.editorVisual.Cards[card].name = l.substring(l.indexOf("d") + 1, l.indexOf("("))
         this.editorVisual.Cards[card].parameter = l.substring(l.indexOf("(") + 1, l.indexOf(")"))
         this.editorVisual.Variables.push({name: this.editorVisual.Cards[card].parameter, value: ""})
-        this.editorVisual.listProperties.forEach((element) => {
-          this.editorVisual.Variables.push({name:  this.editorVisual.Cards[card].parameter + "." + element, value: ""})
-        })
         
       }
       else if((lines[j].includes("endgame") && lines[j].includes("{")) || (lines[j].includes("endgame") && lines[j + 1].includes("{")))
@@ -1354,9 +1348,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         if(this.editorVisual.Players[player].actionParams[action][0] != null)
         {
           this.editorVisual.Variables.push({name: this.editorVisual.Players[player].actionParams[action][0], value: ""})
-          this.editorVisual.listProperties.forEach((element) => {
-            this.editorVisual.Variables.push({name:  this.editorVisual.Players[player].actionParams[action][0] + "." + element, value: ""})
-          })
         }
         
       }
@@ -1374,9 +1365,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             if(this.editorVisual.Players[player].conditionParams[action] != null)
             {
               this.editorVisual.Variables.push({name: this.editorVisual.Players[player].conditionParams[action], value: ""})
-              this.editorVisual.listProperties.forEach((element) => {
-                this.editorVisual.Variables.push({name:  this.editorVisual.Players[player].conditionParams[action] + "." + element, value: ""})
-              })
             }
             break
         }
@@ -1900,9 +1888,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 if(l[1] !== "let" && l[2] == "=")
                 {
                   this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                  this.editorVisual.listProperties.forEach((element) => {
-                    this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                  })
                 }
                 this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
@@ -2060,9 +2045,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 if(l[1] !== "let" && l[2] == "=")
                 {
                   this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                  this.editorVisual.listProperties.forEach((element) => {
-                    this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                  })
                 }
                 switch(parent)
                 {
@@ -2350,9 +2332,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               if(l[1] !== "let" && l[2] == "=")
               {
                 this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                this.editorVisual.listProperties.forEach((element) => {
-                  this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                })
               }
               this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2497,9 +2476,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               if(l[1] !== "let" && l[2] == "=")
               {
                 this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                this.editorVisual.listProperties.forEach((element) => {
-                  this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                })
               }
               this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2520,9 +2496,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               if(l[1] !== "let" && l[2] == "=")
               {
                 this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                this.editorVisual.listProperties.forEach((element) => {
-                  this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                })
               }
               this.setCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2672,9 +2645,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               if(l[1] !== "let" && l[2] == "=")
               {
                 this.editorVisual.Variables.push({name: l[1], value: l[2]})
-                this.editorVisual.listProperties.forEach((element) => {
-                  this.editorVisual.Variables.push({name:  l[1] + "." + element, value: ""})
-                })
               }
               this.setCreation(lines, j, l, openIfEndGame, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2811,6 +2781,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           break
       }
     }
+    console.log(this.editorVisual.Variables)
   }
 
 }
