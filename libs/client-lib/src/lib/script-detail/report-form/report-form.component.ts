@@ -45,7 +45,7 @@ export class ReportFormComponent implements OnInit {
       return
     }
 
-    this.reportService.report(this.id,this.content).subscribe({
+    this.reportService.report(true,this.id,this.content).subscribe({
       next:(value:report) => {
         this.content = "";
         this.reportEvent.emit();
