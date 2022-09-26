@@ -5,7 +5,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { user } from '../../models/general/user';
 import { collection } from '../../models/collection/collection';
 import { automataScript } from '../../models/scripts/automata-script';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class CollectionService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
     //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
 

@@ -6,14 +6,15 @@ import { moderator } from '../../models/admin/moderator';
 import { userSearch } from '../../models/admin/userSearch';
 import { ban } from '../../models/admin/ban';
 import { user } from '../../models/general/user';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 @Injectable()
 export class AdminService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient,
               private readonly socket: Socket) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
     //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
 
