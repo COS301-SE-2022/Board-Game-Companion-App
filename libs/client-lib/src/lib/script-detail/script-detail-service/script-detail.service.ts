@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../apps/client/src/environments/environment';
 
 export interface script{
   _id: string;
@@ -41,7 +42,7 @@ export class ScriptDetailService {
   private url = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.url = "http://localhost:3333/api/scripts/";
+    this.url = environment.baseUrl+"scripts/";
   }
 
   getScriptById(id:string):Observable<script>{
