@@ -8,14 +8,15 @@ import { user } from '../../models/general/user';
 import { StorageService } from '../storage/storage.service';
 import { feature } from '../../models/neuralnetwork/feature';
 import { neuralnetwork } from '../../models/neuralnetwork/neuralnetwork';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 @Injectable()
 export class ModelsService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient,private readonly storageService:StorageService){
-    this.api = "http://localhost:3333/api/"
+    this.api = environment.baseUrl;
   }
 
   alreadyStored(model:string): Promise<boolean>{

@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { user } from '../../models/general/user';
 import { report } from '../../models/scripts/report';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 @Injectable()
 export class ReportService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
   }
 
   report(script:boolean,link:string,message:string): Observable<report>{

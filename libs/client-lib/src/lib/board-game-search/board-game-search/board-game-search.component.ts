@@ -74,7 +74,8 @@ export class BoardGameSearchComponent implements OnInit {
                 const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
               
                 parseXml.querySelectorAll("name").forEach(n=>{
-                  name = n.getAttribute("value") || "";
+                  if(name == "")
+                    name = n.getAttribute("value") || "";
                 });
                 parseXml.querySelectorAll("image").forEach(imgUrl=>{
                     url = imgUrl.innerHTML;

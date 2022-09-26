@@ -12,7 +12,8 @@ import { version } from '../../models/scripts/version';
 import { automataScript } from '../../models/scripts/automata-script';
 import { downloadScript } from '../../models/scripts/download-script';
 import { update } from '../../models/scripts/update';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 @Injectable()
 export class ScriptService {
   private url = "";
@@ -20,7 +21,8 @@ export class ScriptService {
 
   constructor(private readonly httpClient:HttpClient) { 
     this.url = "https://api.geekdo.com/xmlapi2/"
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
+    console.log(this.api)
     //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
  

@@ -152,13 +152,13 @@
     margin: 2em;
 }
 
-.visualIf #content{
+.visualIf #content, .visualW #content, .visualD #content{
     overflow-y: auto;
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
 }
 
-.visualIf #content::-webkit-scrollbar{
+.visualIf #content::-webkit-scrollbar, .visualW #content::-webkit-scrollbar, .visualD #content::-webkit-scrollbar{
     width: 0 !important
 }
 
@@ -171,3 +171,17 @@
     margin-bottom: 1em;
     text-align: center;
 }
+
+#whileInput1{
+    margin-top: 1.3em;
+}
+  
+#whileInput2{
+    margin-bottom: 1.3em;
+}
+
+table{
+    border-collapse: separate;
+    border-spacing: 1em 0;
+}
+  

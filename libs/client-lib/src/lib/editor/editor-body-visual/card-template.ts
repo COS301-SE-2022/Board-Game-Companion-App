@@ -8,7 +8,7 @@ import { Component, Input} from "@angular/core";
             <details open>
                 <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
-                        Card <input><input> 
+                        Card <input [value]="Name"><input [value]="Parameter"> 
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
@@ -26,7 +26,7 @@ import { Component, Input} from "@angular/core";
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
-                                Condition <input>
+                                Condition
                             </div>
                         </summary>
                         <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
@@ -38,7 +38,9 @@ import { Component, Input} from "@angular/core";
 })
 
 export class CardTemplateComponent{
-    @Input() Cards = [{effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
+    @Input() Name = ""
+    @Input() Parameter = ""
+    @Input() Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
     @Input() CardsLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
     @Input() Effect = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
     @Input() Condition = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
@@ -47,7 +49,11 @@ export class CardTemplateComponent{
     @Input() methods = [
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
-        {name: 'addToArr', arguments: 2}
+        {name: 'addToArr', arguments: 2},
+        {name: 'movePiece', arguments: 2},
+        {name: 'activate', arguments: 2},
+        {name: 'removeFromArr', arguments: 2},
+        {name: 'chooseAction', arguments: 2},
       ]
 
     removeCard()
