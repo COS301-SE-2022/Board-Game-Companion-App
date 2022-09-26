@@ -17,6 +17,7 @@ import { CollectionService } from '../../services/collections/collection.service
 import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { AdminService } from '../../services/admin/admin.service';
+import { myScript } from '../../models/scripts/my-script';
 
 @Component({
   selector: 'board-game-companion-app-header',
@@ -461,7 +462,48 @@ export class HeaderComponent implements OnInit, OnDestroy {
               })
             }break;
             case alertType.Flagged:{
-              console.log("flagged")
+              const [type,id] = value.link.split("@");
+              
+              if(type === "download-script"){
+                this.scriptService.getDownloadedScript(id).subscribe({
+                  next:(script: downloadScript) => {
+                    this.alerts.push({
+                      subject: "Flagged download",
+                      message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                      alert: value
+                    })                    
+                  },
+                  error:(err) => {
+                    console.log(err);
+                  }
+                })
+              }else if(type === "my-script"){
+                this.scriptService.getMyScriptById(id).subscribe({
+                  next:(script: myScript) => {
+                    this.alerts.push({
+                      subject: "Flagged release",
+                      message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                      alert: value
+                    })                    
+                  },
+                  error:(err) => {
+                    console.log(err);
+                  }
+                })
+              }else if(type === "comment"){
+                this.scriptService.getAutomataById(id).subscribe({
+                  next:(script: automataScript | oldScript) => {
+                    this.alerts.push({
+                      subject: "Flagged comment",
+                      message: `Your comment on ${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                      alert: value
+                    })                    
+                  },
+                  error:(err) => {
+                    console.log(err);
+                  }
+                })
+              }
             }break;
             case alertType.Reply:{
               const [name,scriptId] = value.link.split("@");
@@ -542,7 +584,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
             })
           }break;
           case alertType.Flagged:{
-            console.log("")
+            const [type,id] = alert.alert.link.split("@");
+              
+            if(type === "download-script"){
+              this.router.navigate(['scripts']);
+            }else if(type === "my-script"){
+              this.router.navigate(['scripts']);
+            }else if(type === "comment"){
+              this.scriptService.getAutomataById(id).subscribe({
+                next:(script: automataScript | oldScript) => {
+                  this.router.navigate(['script-detail'], { state: { value: script } });                   
+                },
+                error:(err) => {
+                  this.notifications.add({type:"warning",message:"Failed to the script."})
+                }
+              })
+            }
           }break;
         }
       },

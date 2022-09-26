@@ -7,8 +7,8 @@ export class ApiReportsController{
     constructor(private readonly reportsService:ReportService){}
 
     @Post('report')
-    async report(@Body('userName')userName:string,@Body('userEmail')userEmail:string,@Body('script')script:string,@Body('message')message:string): Promise<Report>{
-        return this.reportsService.report({name:userName,email:userEmail},script,message);       
+    async report(@Body('userName')userName:string,@Body('userEmail')userEmail:string,@Body('script')script:boolean,@Body('link')link:string,@Body('message')message:string): Promise<Report>{
+        return this.reportsService.report({name:userName,email:userEmail},script,link,message);       
     }
 
 
@@ -28,12 +28,17 @@ export class ApiReportsController{
     }
 
     @Get('already-issued')
-    async alreadyIssued(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('script')script:string):Promise<boolean>{
-        return this.reportsService.alreadyIssued({name:userName,email:userEmail},script);
+    async alreadyIssued(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('link')link:string):Promise<boolean>{
+        return this.reportsService.alreadyIssued({name:userName,email:userEmail},link);
     }
 
     @Get('count-reported')
     async countReportedScripts():Promise<number>{
         return this.reportsService.countReportedScripts();
     }   
+
+    @Get('flag')
+    async flag(@Query('id')id:string):Promise<void>{
+        this.reportsService.flag(id);
+    }
 }

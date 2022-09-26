@@ -33,17 +33,6 @@
             </div>
         </div>
 
-        <div class = "col-sm-3 mt-1">
-            <div (click) = "tab=3" class = "rounded-md p-3 text-white font-medium text-lg bg-blue-800 cursor-pointer hover:scale-105 shadow-sm" [ngClass] = "{'scale-110':tab===3}">
-                <h1>Others</h1>
-                <div class = "flex flex-row space-between text-base mt-2 justify-end">
-                    <div>
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class = "col-sm-12 mt-4" *ngIf = "tab===0">
             <board-game-companion-app-admin-scripts></board-game-companion-app-admin-scripts>
         </div>
@@ -54,10 +43,6 @@
 
         <div class = "col-sm-12 mt-4" *ngIf = "tab===2">
             <board-game-companion-app-admin-reports></board-game-companion-app-admin-reports>
-        </div>
-
-        <div class = "col-sm-12 mt-4" *ngIf = "tab===3">
-            <board-game-companion-app-admin-others></board-game-companion-app-admin-others>
         </div>
     </div>
 </div>

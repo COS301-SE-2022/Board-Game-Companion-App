@@ -46,6 +46,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   banning:string[] = [];
   page = 1;
   selectAccount!:user;
+  section = 0;
 
   constructor(private readonly adminService:AdminService){}
 
@@ -56,6 +57,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.getInitialLoggedInUsers();
     this.getActiveAccounts();
     this.getTotalAccounts();
+  }
+
+  tab(value:number): void{
+    this.section = value;
   }
 
   ngOnDestroy(): void {

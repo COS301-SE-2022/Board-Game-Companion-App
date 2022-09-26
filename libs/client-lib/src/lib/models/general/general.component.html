@@ -1,38 +1,22 @@
-<h1 class = "text-gray-900 text-xl font-medium mb-4">General</h1>
-
-<div class="px-2 pt-4 wrapper text-white overflow-y-scroll overflow-x-hidden">
-    <div class="mb-4">
-        <label for="neural-network" class="form-label font-medium"><b>Neural Networks</b></label>
-    </div>
-    
+<div class="px-2 pt-4 wrapper text-white overflow-y-scroll overflow-x-hidden" *ngIf = "networks.length > 0">
     <div class = " border-2 py-1 mb-4 text-xs" *ngFor = "let network of networks">
         <div class = "row">
             <div class = "col-sm-3">
-                {{network.setup.name}}
+                {{network.name}}
             </div>
-            <div class = "col-sm-3">
-                <div *ngIf = "network.created !== undefined" >
+            <div class = "col-sm-8">
+                <div *ngIf = "!training.includes(network.name)" >
                     {{formatDate(network.created)}}
                 </div>
                 
-                <div *ngIf = "network.created === undefined" class = "flex flex-col">
+                <div *ngIf = "training.includes(network.name)" class = "flex flex-col">
                     <div class="w-full bg-gray-200 rounded-full">
-                        <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "getProgress(network.setup.name,'train')"> {{getProgress(network.setup.name,'train')}}%</div>
+                        <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "getProgress(network.name)"> {{getProgress(network.name)}}%</div>
                     </div>
-
-                    <div class="w-full bg-gray-200 rounded-full mt-2">
-                        <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "getProgress(network.setup.name,'test')"> {{getProgress(network.setup.name,'test')}}%</div>
-                    </div>
-                </div>
-            </div>
-            <div class = "col-sm-5">
-                <div class = "flex text-xs" [ngClass] = "{'flex-col':network.created === undefined,'flex-row':network.created !== undefined}">
-                    <div>Loss: <span class = "data-values">{{network.loss?.toFixed(4)}}</span></div>
-                    <div [ngClass] = "{'mt-2':network.created === undefined,'ml-2':network.created !== undefined}">Accuracy: <span class = "data-values">{{network.accuracy?.toFixed(2)}}</span></div>
                 </div>
             </div>
             <div class = "col-sm-1 text-center">
-                <button (click) = "remove(network)" class="hover:scale-110 hover:text-red-800" data-toggle="modal">
+                <button *ngIf = "!training.includes(network.name)" (click) = "remove(network)" class="hover:scale-110 hover:text-red-800" data-toggle="modal">
                     <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
                 </button>
             </div>

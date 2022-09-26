@@ -15,7 +15,12 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 })
 export class AdminReportsComponent implements OnInit {
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
-  reports:report[] = [];
+  scriptReports:report[] = [];
+  commentReports:report[] = [];
+  scriptPage = 1;
+  commentPage = 1;
+  showComments = false;
+  showScripts = true;
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   constructor(private readonly reportService:ReportService,
@@ -29,7 +34,8 @@ export class AdminReportsComponent implements OnInit {
   loadReports(): void{
     this.reportService.getAll().subscribe({
       next:(response:report[])=>{
-        this.reports = response;
+        this.scriptReports = response.filter((value:report) => value.script);
+        this.commentReports = response.filter((value:report) => !value.script);
       },error:()=>{
         this.notifications.add({type:"danger",message:"Failed to load reports."})
       }
@@ -67,7 +73,8 @@ export class AdminReportsComponent implements OnInit {
         }
 
         this.notifications.add({type:"success",message:"Successfully removed report"});
-        this.reports = this.reports.filter((val:report) => val._id !== value._id);
+        this.scriptReports = this.scriptReports.filter((val:report) => val._id !== value._id);
+        this.commentReports = this.commentReports.filter((val:report) => val._id !== value._id);
       },
       error:() => {
         this.notifications.add({type:"danger",message:"Failed to remove report."});
@@ -77,7 +84,7 @@ export class AdminReportsComponent implements OnInit {
 
 
   view(value:report): void{
-    this.scriptService.getAutomataById(value.script).subscribe({
+    this.scriptService.getAutomataById(value.link).subscribe({
       next:(response:automataScript | oldScript)=>{
         if(response === null){
           this.notifications.add({type:"warning",message:"Could not find script on the server"});
@@ -107,6 +114,19 @@ export class AdminReportsComponent implements OnInit {
       },
       error:()=>{
         this.notifications.add({type:"danger",message:"Failed to load script"});
+      }
+    })
+  }
+
+  flag(value:report): void{
+    this.reportService.flag(value._id).subscribe({
+      next:()=>{
+        this.notifications.add({type:"success",message:"Successfully flagged " + (value.script ? "script" : "comment")})
+        this.scriptReports = this.scriptReports.filter((val:report) => val._id !== value._id);
+        this.commentReports = this.commentReports.filter((val:report) => val._id !== value._id);
+      },
+      error:()=>{
+        this.notifications.add({type:"danger",message:"Failed to flag " + (value.script ? "script" : "comment")})
       }
     })
   }

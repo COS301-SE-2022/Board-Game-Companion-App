@@ -184,19 +184,6 @@
                 <input type="number" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epochs" name = "epochs" id="epochs" min = "1" placeholder="epochs">
             </div>
         </div>
-
-        <div class = "w-full mt-4 mb-3">
-            <label for="exampleFormControlInput1" class="form-label"><b>Type</b></label>
-            <div class = "activation-funtion-menu w-60">
-                <button class = "menu-btn bg-gray-300 p-1 text-sm rounded-md">
-                    {{type}}
-                </button>
-                <div class = "menu-content absolute rounded-md overflow-hidden">
-                    <a (click)="type='classification'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">classification</a>
-                    <a (click)="type='regression'" class = "bg-gray-400 text-xs py-1 px-2 hover:bg-green-600 cursor-pointer">regression</a>
-                </div>
-            </div>
-        </div>
         
         <div class = "w-full mt-4 text-center">    
             <button (click)="train()" type="button" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">

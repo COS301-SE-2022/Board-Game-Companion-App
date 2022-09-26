@@ -2,7 +2,8 @@ import { user } from '../general/user';
 
 export interface reportDto{   
     user: user;
-    script: string;
+    script: boolean;
+    link: string;
     message: string;
     dateIssued: Date;
 };
