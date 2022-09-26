@@ -171,6 +171,10 @@ export class MyScriptService {
         return result;
     }
 
+    async getAll():Promise<MyScript[]>{
+        return this.myScriptModel.find({});
+    }
+
     async getAllMyScript(author:user):Promise<MyScript[]>{
         return this.myScriptModel.find({"author.name":author.name,"author.email":author.email});
     }
@@ -189,6 +193,10 @@ export class MyScriptService {
         
         result.save();
         return result;
+    }
+
+    async getMyScriptById(id:string):Promise<MyScriptDocument>{
+        return this.myScriptModel.findById(id);
     }
 
     async alertCollection(script: AutomataScriptDocument): Promise<void>{

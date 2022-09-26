@@ -38,8 +38,12 @@ import { MongoDbStorageService } from './services/mongodb-storage/mongodb-storag
 import { ApiFileManagerController } from './controllers/file-manager/file-manager.controller';
 import { Alert, AlertSchema } from './schemas/alert.schema';
 import { AlertService } from './services/alert/alert.service';
-import { AlertGateway } from './services/alert/alert.gateway';
+import { SocketGateway } from './services/socket/socket.gateway';
 import { ApiAlertController } from './controllers/alert/alert.controller';
+import { Moderator, ModeratorSchema } from './schemas/moderator.schema';
+import { ApiAdminController } from './controllers/admin/admin.controller';
+import { AdminService } from './services/admin/admin.service';
+import { Ban, BanSchema } from './schemas/ban.schema';
 
 @Module({
   imports:[
@@ -55,7 +59,9 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
                                 { name: OldScript.name, schema: OldScriptSchema},
                                 { name: DownloadScript.name, schema: DownloadScriptSchema},
                                 { name: File.name, schema: FileSchema},
-                                { name: Alert.name, schema: AlertSchema}
+                                { name: Alert.name, schema: AlertSchema},
+                                { name: Moderator.name, schema: ModeratorSchema},
+                                { name: Ban.name, schema: BanSchema }
                               ]),
                               HttpModule,NestjsFormDataModule
   ],
@@ -69,7 +75,8 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
     ApiEditorController,
     ApiDownloadScriptController,
     ApiFileManagerController,
-    ApiAlertController
+    ApiAlertController,
+    ApiAdminController
   ],
   providers: [
     CollectionsService,
@@ -86,7 +93,8 @@ import { ApiAlertController } from './controllers/alert/alert.controller';
     AutomataService,
     MongoDbStorageService,
     AlertService,
-    AlertGateway
+    SocketGateway,
+    AdminService
   ],
   exports: [
     CollectionsService,

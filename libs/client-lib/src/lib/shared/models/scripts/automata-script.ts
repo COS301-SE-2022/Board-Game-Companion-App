@@ -5,6 +5,7 @@ export class automataScript extends baseScript {
     _id = "";
     dateReleased =  new Date(0);
     downloads = 0;
+    link = "";
     lastDownload = new Date(0);
     export = false;
     comments: string[] = [];

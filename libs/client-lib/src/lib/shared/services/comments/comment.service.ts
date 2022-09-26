@@ -5,14 +5,15 @@ import { comment } from '../../models/comments/comment';
 import { like } from '../../models/comments/like';
 import { commentCount } from '../../models/comments/commentCount';
 import { user } from '../../models/general/user';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 @Injectable()
 export class CommentService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
   }
 
   countComments(id:string):Observable<number>{
