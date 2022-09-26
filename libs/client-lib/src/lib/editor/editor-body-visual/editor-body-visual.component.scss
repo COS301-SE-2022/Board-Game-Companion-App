@@ -12,7 +12,7 @@
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: white;
+    background-color: lightgray;
     border: 5px solid black;
     border-radius: 0 40px 40px 0;
     display: flex;
@@ -24,7 +24,7 @@
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: white;
+    background-color:lightgray;
     border: 5px solid black;
     border-radius: 40px 0 0 40px;
     display: flex;
@@ -36,7 +36,7 @@
 }
 
 .boardContainers{
-    background-color: white;
+    background-color: grey;
     border: 8px solid grey;
     min-height: 20%;
     min-width: 20%;
@@ -46,11 +46,13 @@
     margin-left: 2em;
     margin-right: 2em;
     margin-bottom: 2em;
+    color: white;
+    overflow-x: auto;
 }
 
 .playerContainers{
-    background-color: white;
-    border: 6px solid grey;
+    background-color: darkgray;
+    border: 6px solid darkgray;
     min-height: 15%;
     min-width: 15%;
     max-width: 90%;
@@ -59,6 +61,11 @@
     margin-left: 2em;
     margin-right: 2em;
     margin-bottom: 2em;
+    color: white;
+}
+
+.playerContainers input{
+   
 }
 
 #addNewPlayer{
@@ -96,8 +103,8 @@
 }
 
 .cardContainers{
-    background-color: white;
-    border: 6px solid grey;
+    background-color: darkgray;
+    border: 6px solid darkgray;
     min-height: 25%;
     min-width: 25%;
     max-width: 90%;
@@ -106,6 +113,7 @@
     margin-left: 2em;
     margin-right: 2em;
     margin-bottom: 2em;
+    color: white;
 }
 
 #removeCard{
@@ -127,14 +135,15 @@
 
 .tfSection{
     display:block;
+    margin-right: 2em;
 }
 
 #trueSection{
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: white;
-    border: 5px solid black;
+    background-color: lightgray;
+    border: 5px solid $Pcolour-2;
     display: flex;
     padding: 2em;
     margin: 2em;
@@ -145,8 +154,8 @@
     min-width: 400px;
     min-height: 150px;
     height: fit-content;
-    background-color: white;
-    border: 5px solid black;
+    background-color: lightgray;
+    border: 5px solid $Pcolour-4;
     display: flex;
     padding: 2em;
     margin: 2em;
@@ -183,5 +192,13 @@
 table{
     border-collapse: separate;
     border-spacing: 1em 0;
+}
+
+#customizeTiles input{
+    width: fit-content;
+}
+
+#board input{
+    width: fit-content;
 }
   

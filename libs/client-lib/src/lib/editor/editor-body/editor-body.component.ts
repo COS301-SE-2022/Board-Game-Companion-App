@@ -1883,7 +1883,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -2040,7 +2040,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 } 
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -2327,7 +2327,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2471,7 +2471,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           {
             const l = lines[j].split(/\s+/)
             //Set
-            if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2491,7 +2491,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfCard, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2640,7 +2640,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfEndGame, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {

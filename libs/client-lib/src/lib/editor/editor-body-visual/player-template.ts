@@ -18,7 +18,7 @@ import { Component, Input} from "@angular/core";
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
-                                    Action <input [value]="Players[Index].actionNames[i]"> <input [value]="Players[Index].actionParams[i][0]">
+                                    Action <input [value]="Players[Index].actionNames[i]"> <input *ngIf="Players[Index].actionParams[i][0] !== null" [value]="Players[Index].actionParams[i][0]"><input *ngIf="Players[Index].actionParams[i][0] === null" [value]="">
                                 </div>
                                 <button *ngIf="Actions.length > 1" (click)="removeAction(i)" id = "removeAction"><i class="fa-solid fa-circle-xmark"></i></button>
                             </summary>
