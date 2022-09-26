@@ -24,10 +24,6 @@ export const routes: Routes = [
     loadChildren: () => import('./collections/collections.module').then(m=>m.CollectionsModule),
   },
   {
-    path: 'addGame',
-    loadChildren: () => import('./add-to-collection/add-to-collection.module').then(m=>m.AddToCollectionModule),
-  },
-  {
     path: 'script-detail',
     loadChildren: () => import('./script-detail/script-detail.module').then(m=>m.ScriptDetailModule),
   }
