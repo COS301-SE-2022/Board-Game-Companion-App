@@ -8,14 +8,15 @@ import { User } from 'aws-sdk/clients/budgets';
 import { entity } from '../../models/editor/entity';
 import { myScript } from '../../models/scripts/my-script';
 import { version } from '../../models/scripts/version';
-
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 @Injectable()
 export class EditorService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = environment.baseUrl;
     //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
   }
 
