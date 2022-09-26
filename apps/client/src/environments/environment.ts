@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   name: "DEV",
   baseUrl: "http://localhost:3333/api/",
+  domain: "http://localhost:3333"
 };
 
 /*
