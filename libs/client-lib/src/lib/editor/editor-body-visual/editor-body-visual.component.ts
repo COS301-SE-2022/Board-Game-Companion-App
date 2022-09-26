@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { any } from '@tensorflow/tfjs';
 
 
 @Component({
@@ -28,6 +27,8 @@ export class EditorBodyVisualComponent {
   constructor(){
     this.Properties.splice(0)
     this.Tiles.splice(0)
+    this.Players.splice(0)
+    this.Cards.splice(0)
   }
 
   Variables = [{name: "", value: ""} ]
@@ -37,15 +38,14 @@ export class EditorBodyVisualComponent {
   ]
 
   Players = [
-    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]},
-    {name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""],actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]}
+    {name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], playerCode: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]},
   ]
 
   PlayersLoops = [
     [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
   ]
 
-  Cards = [{effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
+  Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
 
   CardsLoop = [
     [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
@@ -58,17 +58,21 @@ export class EditorBodyVisualComponent {
   methods = [
     {name: 'addToBoard', arguments: 1},
     {name: 'addPieceToTile', arguments: 2},
-    {name: 'addToArr', arguments: 2}
+    {name: 'addToArr', arguments: 2},
+    {name: 'movePiece', arguments: 2},
+    {name: 'activate', arguments: 2},
+    {name: 'removeFromArr', arguments: 2},
+    {name: 'chooseAction', arguments: 2},
   ]
 
   addNewPlayer()
   {
-    this.Players.push({name: "", actionNames: [""], actionParams: [[""]], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
+    this.Players.push( {name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], playerCode: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
   }
 
   addNewCard()
   {
-    this.Cards.push({effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
+    this.Cards.push({name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]})
   }
 
   addProperty()
@@ -109,19 +113,32 @@ export class EditorBodyVisualComponent {
   clear()
   {
     this.Tiles.splice(0)
-    this.Players.splice(2)
     for(let j = 0; j < this.Players.length; j++)
     {
       for(let i = 0; i < this.Players[j].actions.length; i++)
       {
         this.Players[j].actions[i].splice(0)
         this.Players[j].conditions[i].splice(0)
+        this.Players[j].turn[0].splice(0)
+        this.Players[j].playerCode[0].splice(0)
       }
     }
+    this.Players.splice(0)
+    for(let j = 0; j < this.Cards.length; j++)
+    {
+      this.Cards[j].condition.splice(0)
+      this.Cards[j].effect.splice(0)
+    }
+    this.Cards.splice(0)
     this.Variables.splice(0)
     this.PlayersLoops.splice(1)
+    this.CardsLoop.splice(1)
     this.playersLoopIndex = 0
+    this.cardsLoopIndex = 0
+    this.endLoopIndex = 0
     this.listProperties.splice(2)
     this.Properties.splice(0)
+    this.EndgameLoops.splice(1)
+    this.Endgame.splice(0)
   }
 }
