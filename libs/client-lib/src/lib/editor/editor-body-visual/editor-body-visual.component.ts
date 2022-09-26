@@ -59,7 +59,10 @@ export class EditorBodyVisualComponent {
     {name: 'addToBoard', arguments: 1},
     {name: 'addPieceToTile', arguments: 2},
     {name: 'addToArr', arguments: 2},
-    {name: 'movePiece', arguments: 2}
+    {name: 'movePiece', arguments: 2},
+    {name: 'activate', arguments: 2},
+    {name: 'removeFromArr', arguments: 2},
+    {name: 'chooseAction', arguments: 2},
   ]
 
   addNewPlayer()
@@ -132,7 +135,10 @@ export class EditorBodyVisualComponent {
     this.CardsLoop.splice(1)
     this.playersLoopIndex = 0
     this.cardsLoopIndex = 0
+    this.endLoopIndex = 0
     this.listProperties.splice(2)
     this.Properties.splice(0)
+    this.EndgameLoops.splice(1)
+    this.Endgame.splice(0)
   }
 }

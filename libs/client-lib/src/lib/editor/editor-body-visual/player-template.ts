@@ -65,7 +65,10 @@ export class PlayerTemplateComponent{
         {name: 'addToBoard', arguments: 1},
         {name: 'addPieceToTile', arguments: 2},
         {name: 'addToArr', arguments: 2},
-        {name: 'movePiece', arguments: 2}
+        {name: 'movePiece', arguments: 2},
+        {name: 'activate', arguments: 2},
+        {name: 'removeFromArr', arguments: 2},
+        {name: 'chooseAction', arguments: 2},
       ]
 
     addAction(){
