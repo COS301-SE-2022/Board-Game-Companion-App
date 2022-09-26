@@ -50,7 +50,6 @@ export class EditorComponent implements OnInit{
   @ViewChild(EditorSideBarComponent,{static:true}) editorSideBar: EditorSideBarComponent = new EditorSideBarComponent();
   @ViewChild(NotificationComponent,{static:true}) notification!: NotificationComponent;
   currentScript:myScript = new myScript();
-  location = "https://board-game-companion-app.s3.amazonaws.com/development/scripts/test/file.js";
   showInput = false;
   showOutput = false;
   inputBlock = false;

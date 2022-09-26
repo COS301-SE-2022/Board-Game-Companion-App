@@ -196,7 +196,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     else if(path==="board-game-search")
     {
-      this.router.navigate(['/board-game-search',{value:this.searchValue}]);
+      this.router.navigate(['/board-game-search']);
     }
     else{
       this.router.navigate(['/' + path]);
