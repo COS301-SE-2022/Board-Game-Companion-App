@@ -39,6 +39,7 @@ export class ScriptExecutorComponent implements OnInit {
   programStructure!:entity;
   count = 0;
   history:string[] = [];
+  playerAtHistory:string[] = [];
   recentPrompt = "";
   historyVisible = false;
 
@@ -176,7 +177,8 @@ export class ScriptExecutorComponent implements OnInit {
       {
         outputElem.innerHTML = value + "<br>Press Enter to continue";
       }
-      this.history.push(this.currPlayer+": "+value);
+      this.history.push(">>>> "+value);
+      this.playerAtHistory.push(this.currPlayer);
       this.recentPrompt = value + "<br>Press Enter to continue";
 
       const pause = new Promise((resolve)=>{
@@ -205,7 +207,8 @@ export class ScriptExecutorComponent implements OnInit {
       const elem = document.getElementById("TextOutput");
       if(elem)
         elem.innerHTML += prompt+"\n";
-      this.history.push(this.currPlayer+": "+prompt);
+      this.history.push(">>>> "+prompt);
+      this.playerAtHistory.push(this.currPlayer)
       this.recentPrompt = prompt;
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
@@ -259,32 +262,49 @@ export class ScriptExecutorComponent implements OnInit {
     {
       outputElem.innerHTML = "";
     }
-    this.history.push(this.currPlayer+": "+this.inputResult) ;
+    this.history.push("<<<< "+this.inputResult) ;
+    this.playerAtHistory.push(this.currPlayer);
     this.showInput = false;
     this.inputBlock = false;
   }
   showHistory(): void{
     const elem = document.getElementById("TextOutput");
-    
+    const button = document.getElementById("hDiv");
     
     if(this.historyVisible)
     {
+      
       if(elem)
       {
-        if(elem)
-        {
-          elem.innerHTML = this.recentPrompt;
-        }
+        elem.innerHTML = this.recentPrompt;
+      }
+      
+      if(button)
+      {
+        button.innerHTML = "History";
       }
     }
     else
     {
+      const button = document.getElementById("hDiv");
+      if(button)
+      {
+        button.innerHTML = "Back";
+      }
       if(elem)
       {
         elem.innerHTML = "";
+        let cPlayer = "";
         for(let i = 0; i< this.history.length;i++)
         {
-          elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"historyElement\">" +this.history[i]+"</div>";
+          console.log(this.playerAtHistory[i])
+          if(cPlayer != this.playerAtHistory[i])
+          {
+            
+            elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"bg-green-700 text-center font-bold\">" +this.playerAtHistory[i]+"</div>";
+            cPlayer = this.playerAtHistory[i];
+          }
+          elem.innerHTML += "<div class= \"bg-grey-200\">" +this.history[i]+"</div>";
         }
         
       }
