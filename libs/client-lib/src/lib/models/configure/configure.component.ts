@@ -27,7 +27,6 @@ export class ConfigureComponent implements OnInit {
   useNesterov = false;
   centered = false;
   epochs = 32;
-  type = "classification"
   status: OnlineStatusType = OnlineStatusType.ONLINE;
 
   constructor(private readonly modelService:ModelsService,
@@ -52,10 +51,6 @@ export class ConfigureComponent implements OnInit {
 
   getName(): string{
     return this.name;
-  }
-
-  getType(): string{
-    return this.type;
   }
 
   getRho(): string{

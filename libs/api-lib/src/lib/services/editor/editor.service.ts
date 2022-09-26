@@ -48,7 +48,6 @@ export class EditorService {
 
     async updateModels(script:string,networks:string[]):Promise<MyScript>{
         const result:MyScriptDocument = await this.myScriptModel.findById(script);
-        let size = 0;
 
         if(result === null || undefined)
             throw new HttpException('Script Not Found', HttpStatus.NOT_FOUND);
@@ -59,16 +58,10 @@ export class EditorService {
             
             if(temp === null || undefined)
                 throw new HttpException(`Model with id ${value} does not exist`,HttpStatus.BAD_REQUEST);
-            
-            size += await fileSize(temp.model.location).catch(console.error);
-            size += await fileSize(temp.weights.location).catch(console.error);
+
         }
 
         result.models = networks;
-
-        result.size = size;
-        result.size += await fileSize(result.build.location).catch(console.error);
-        result.size += await fileSize(result.icon.location).catch(console.error);
 
         result.save();
 

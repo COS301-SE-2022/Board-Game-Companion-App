@@ -13,11 +13,11 @@ export class ReportService {
     this.api = environment.baseUrl;
   }
 
-  report(script:string,message:string): Observable<report>{
+  report(script:boolean,link:string,message:string): Observable<report>{
     const userName = sessionStorage.getItem("name") as string;
     const userEmail = sessionStorage.getItem("email") as string;
 
-    return this.httpClient.post<report>(this.api + "reports/report",{userName:userName,userEmail:userEmail,script:script,message:message});       
+    return this.httpClient.post<report>(this.api + "reports/report",{userName:userName,userEmail:userEmail,script:script,link:link,message:message});       
   }
 
   getAll():Observable<report[]>{
@@ -38,11 +38,11 @@ export class ReportService {
     return this.httpClient.get<report[]>(this.api + "reports/retrieve-by-id",{params:param});
   }
 
-  alreadyIssued(script:string):Observable<boolean>{
+  alreadyIssued(link:string):Observable<boolean>{
     let param = new HttpParams();
     param = param.set("userName",sessionStorage.getItem("name") as string);
     param = param.set("userEmail",sessionStorage.getItem("email") as string);
-    param = param.set("script",script);
+    param = param.set("link",link);
 
     return this.httpClient.get<boolean>(this.api + "reports/already-issued",{params:param});
   }
@@ -50,5 +50,12 @@ export class ReportService {
   countReportedScripts():Observable<number>{
       return this.httpClient.get<number>(this.api + "reports/count-reported");
   }   
+
+  flag(id:string):Observable<void>{
+    let param = new HttpParams();
+    param = param.set("id",id);
+
+    return this.httpClient.get<void>(this.api + "reports/flag",{params: param});
+  }
 
 }

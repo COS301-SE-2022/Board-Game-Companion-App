@@ -16,14 +16,11 @@ export class ModelsService {
     constructor(@InjectModel(NeuralNetwork.name) private networkModel: Model<NeuralNetworkDocument>,
                 private readonly storageService:MongoDbStorageService){}
 
-    async create(model:MemoryStoredFile,weights:MemoryStoredFile,user:user,name:string,created:Date,type:string,min:number[],max:number[],accuracy?:number,loss?:number,labels?:string[]): Promise<NeuralNetwork>{
+    async create(model:MemoryStoredFile,weights:MemoryStoredFile,user:user,name:string,created:Date,min:number[],max:number[],labels:string[]): Promise<NeuralNetwork>{
         const dto:neuralnetworkDto = {
             creator: user,
             name: name,
             created: created,
-            accuracy: accuracy,
-            loss: loss,
-            type: type,
             labels: labels,
             min: min,
             max: max,
@@ -57,10 +54,10 @@ export class ModelsService {
         return this.networkModel.find({"creator.name":user.name,"creator.email":user.email,"discriminator":NeuralNetworkDiscriminator.None}).exec();
     }
 
-    async remove(user:user,name:string):Promise<boolean>{
-        const result = await this.networkModel.deleteOne({"creator.email":user.email,"name":name});
+    async remove(id:string):Promise<boolean>{
+        const result = await this.networkModel.findByIdAndRemove(id);
         
-        return result.deletedCount === 1;
+        return result !== null && result !== undefined;
     }
 
     async removeById(id:string):Promise<NeuralNetwork>{
@@ -92,9 +89,6 @@ export class ModelsService {
             creator: current.creator,
             name: current.name,
             created: new Date(),
-            accuracy: current.accuracy,
-            loss: current.loss,
-            type: current.type,
             labels: current.labels,
             min: current.min,
             max: current.max,

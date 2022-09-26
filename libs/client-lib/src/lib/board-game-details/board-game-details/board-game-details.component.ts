@@ -91,7 +91,9 @@ export class BoardGameDetailsComponent implements OnInit {
             
               //get information
               parseXml.querySelectorAll("name").forEach(n=>{
-                this.name = n.getAttribute("value") || "";
+                if(this.name == "")
+                  this.name = n.getAttribute("value") || "";
+                
               });
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   this.url = imgUrl.innerHTML;

@@ -24,17 +24,8 @@ export const routes: Routes = [
     loadChildren: () => import('./collections/collections.module').then(m=>m.CollectionsModule),
   },
   {
-    path: 'addGame',
-    loadChildren: () => import('./add-to-collection/add-to-collection.module').then(m=>m.AddToCollectionModule),
-  },
-  {
     path: 'script-detail',
     loadChildren: () => import('./script-detail/script-detail.module').then(m=>m.ScriptDetailModule),
-  }
-  ,
-  {
-    path: 'viewCollection',
-    loadChildren: () => import('./view-collection/view-collection.module').then(m=>m.ViewCollectionModule),
   },
   {
     path: 'editor',
@@ -51,11 +42,6 @@ export const routes: Routes = [
   {
     path: 'gameSessions',
     loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
-  },
-  {
-    path: 'session',
-    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
-
   },
   {
     path: 'models',
