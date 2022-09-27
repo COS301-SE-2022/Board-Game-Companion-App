@@ -69,17 +69,11 @@ describe('Router: Module', () => {
     expect(location.path()).toBe('/collections');
   }));
 
-  it('navigate to "addGame" redirects you to /addGame',fakeAsync(() => {
-    router.navigate(['addGame']);
-    tick();
-    expect(location.path()).toBe('/addGame');
-  }));
-
-  it('navigate to "admin" redirects you to /admin',fakeAsync(() => {
-    router.navigate(['admin']);
-    tick();
-    expect(location.path()).toBe('/admin');
-  }));
+  // it('navigate to "admin" redirects you to /admin',fakeAsync(() => {
+  //   const navSpy = jest.spyOn(router,'navigate');
+  //   router.navigate(['/admin'])
+  //   expect(navSpy).toHaveBeenCalledWith(['/admin']);
+  // }));
 
   it('navigate to "script-detail" redirects you to /script-detail',fakeAsync(() => {
     const navSpy = jest.spyOn(router,'navigate');
@@ -87,12 +81,6 @@ describe('Router: Module', () => {
     expect(navSpy).toHaveBeenCalledWith(['/script-detail']);
   }));
   
-  it('navigate to "viewCollection" redirects you to /viewCollection',fakeAsync(() => {
-    const navSpy = jest.spyOn(router,'navigate');
-    router.navigate(['/viewCollection']);
-    expect(navSpy).toHaveBeenCalledWith(['/viewCollection']);
-  }));
-
   it('navigate to "scripts" redirects you to /scripts',fakeAsync(() => {
     router.navigate(['scripts']);
     tick();
@@ -105,11 +93,11 @@ describe('Router: Module', () => {
     expect(location.path()).toBe('/gameSessions');
   }));
 
-  it('navigate to "session" redirects you to /session',fakeAsync(() => {
-    router.navigate(['session']);
-    tick();
-    expect(location.path()).toBe('/session');
-  }));
+  // it('navigate to "session" redirects you to /session',fakeAsync(() => {
+  //   router.navigate(['session']);/* The path to the route no longer exists... */
+  //   tick();
+  //   expect(location.path()).toBe('/session');
+  // }));
 
   it('navigate to "models" redirects you to /models',fakeAsync(() => {
     router.navigate(['models']);
