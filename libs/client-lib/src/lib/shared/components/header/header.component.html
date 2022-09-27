@@ -17,7 +17,7 @@
         <div *ngIf = "showOptions  || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'scripts','hover:bg-slate-400 header-bar-link':focus !== 'scripts'}" (click)="moveTo('scripts')">
             Scripts
         </div>
-        <div class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'models','hover:bg-slate-400 header-bar-link':focus !== 'models'}" (click)="moveTo('models')" *ngIf = "(showOptions  || width > breakpoint)"> <!-- *ngIf = "isLoggedIn() && (showOptions  || width > breakpoint)" -->
+        <div class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'models','hover:bg-slate-400 header-bar-link':focus !== 'models'}" (click)="moveTo('models')" *ngIf = "(showOptions  || width > breakpoint) && !isMobileOS()"> <!-- *ngIf = "isLoggedIn() && (showOptions  || width > breakpoint) && !isMobileOS()" -->
             Models
         </div>
         <div *ngIf = "showOptions  || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'gameSessions','hover:bg-slate-400 header-bar-link':focus !== 'gameSessions'}" (click)="moveTo('gameSessions')">

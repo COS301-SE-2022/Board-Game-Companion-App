@@ -13,6 +13,7 @@ import { NgForOf } from '@angular/common';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { Console } from 'console';
 import { CollectionsModule } from '../../collections/collections.module';
+import { transpilationResponse } from '../../shared/models/editor/transpilationResponse';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
@@ -26,7 +27,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   @Input() margin = 0;
   @Input() top = 0;
   @Output() changesTracker = new EventEmitter<number>();
-  @Output() newMessageEvent = new EventEmitter<string>();
+  @Output() newMessageEvent = new EventEmitter<string[]>();
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
   @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
   @ViewChild(EditorBodyVisualComponent) editorVisual: EditorBodyVisualComponent = new EditorBodyVisualComponent();
@@ -39,6 +40,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showFindCheck = true;
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
+  editorId!:Date;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
   count = 0
@@ -49,6 +51,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
+    this.editorId = new Date();
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
@@ -552,6 +555,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
   ngOnDestroy(): void {
     clearInterval(this.cursorCheckerTimer);    
+    this.codeEditor.destroy();
+    this.codeEditor.container.remove();
   }
 
   ngOnChanges(): void{
@@ -687,18 +692,21 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.sendChangesTimer = window.setTimeout(()=>{
       //Console.log happens
       this.editorService.updateFile(this.scriptId,this.codeEditor.getValue()).subscribe({
-        next:(value)=>{
+        next:(value:transpilationResponse)=>{
           if(value.status === "success"){
             //UpdateLineArray()
             this.updateVDSL()
             this.changesTracker.emit(2);
-            this.newProgramStructureEvent.emit(value.programStructure);
+            this.newProgramStructureEvent.emit(value.structure as entity);
+            this.newMessageEvent.emit([value.message]);
           }else{
             this.changesTracker.emit(0);
+            
+            if(value.errors.length === 0)
+              this.newMessageEvent.emit([value.message]);
+            else
+              this.newMessageEvent.emit(value.errors);
           }
-
-          console.log(value)
-          this.newMessageEvent.emit(value.message);
         },
         error:(e)=>{
           //console.log(e);

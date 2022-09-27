@@ -14,7 +14,7 @@
                     <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
                     </button>
-                    <button (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
+                    <button *ngIf = "!isMobileOS()" (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
                         <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
                     </button>
                 
