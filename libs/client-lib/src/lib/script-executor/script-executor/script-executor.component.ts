@@ -54,8 +54,8 @@ export class ScriptExecutorComponent implements OnInit {
 
                 const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
                 parseXml.querySelectorAll("name").forEach(n=>{
-                    
-                    this.gameName = n.getAttribute("value") || "";
+                    if(this.gameName == "")
+                      this.gameName = n.getAttribute("value") || "";
                  
                 });
               })
