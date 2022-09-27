@@ -41,7 +41,7 @@
 .listItems:not(:first-child, :nth-child(2)):before {
     content: '';
     position: relative;
-    top: 2.5%;
+    top: 7px;
     width: 0;
     height: 0;
     border-style: solid;
@@ -74,6 +74,11 @@
 .playerContainers:hover{
     border-color: white;
     transition: border-color 0.6s linear;
+}
+
+.boardContainers::-webkit-scrollbar-button:end, .boardContainers::-webkit-scrollbar-button:start, .playerContainers .wrapper::-webkit-scrollbar-button:start, .playerContainers .wrapper::-webkit-scrollbar-button:end, .cardContainers .wrapper::-webkit-scrollbar-button:start, .cardContainers .wrapper::-webkit-scrollbar-button:end, #endGame .wrapper::-webkit-scrollbar-button:start, #endGame .wrapper::-webkit-scrollbar-button:end,.wrapper::-webkit-scrollbar-button:start, .wrapper::-webkit-scrollbar-button:end{
+    height: 12px; 
+    width: 5%;
 }
 
 .boardContainers::-webkit-scrollbar {
@@ -121,18 +126,23 @@
     height: 30px;
 }
 
-.playerContainers .wrapper::-webkit-scrollbar, .cardContainers .wrapper::-webkit-scrollbar, #endGame .wrapper::-webkit-scrollbar {
-    height: 10px;
+.playerContainers .wrapper::-webkit-scrollbar-corner, .cardContainers .wrapper::-webkit-scrollbar-corner, #endGame .wrapper::-webkit-scrollbar-corner, .wrapper::-webkit-scrollbar-corner{
+    background: transparent;
 }
 
-.playerContainers .wrapper::-webkit-scrollbar-track, .cardContainers .wrapper::-webkit-scrollbar-track, #endGame .wrapper::-webkit-scrollbar-track{
+.playerContainers .wrapper::-webkit-scrollbar, .cardContainers .wrapper::-webkit-scrollbar, #endGame .wrapper::-webkit-scrollbar, .wrapper::-webkit-scrollbar{
+    height: 10px;
+    width: 10px;
+}
+
+.playerContainers .wrapper::-webkit-scrollbar-track, .cardContainers .wrapper::-webkit-scrollbar-track, #endGame .wrapper::-webkit-scrollbar-track, .wrapper::-webkit-scrollbar-track{
     background: white;
     border: 3px solid white;
     border-radius: 35px; 
     margin-bottom: 1em;     
 }
   
-.playerContainers .wrapper::-webkit-scrollbar-thumb, .cardContainers .wrapper::-webkit-scrollbar-thumb, #endGame .wrapper::-webkit-scrollbar-thumb{
+.playerContainers .wrapper::-webkit-scrollbar-thumb, .cardContainers .wrapper::-webkit-scrollbar-thumb, #endGame .wrapper::-webkit-scrollbar-thumb, .wrapper::-webkit-scrollbar-thumb{
     background: $Background;   
     border-radius: 55px;      
     border: 3px solid $Background;  
