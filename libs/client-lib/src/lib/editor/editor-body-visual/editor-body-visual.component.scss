@@ -11,7 +11,6 @@
 .container{
     min-width: 400px;
     min-height: 150px;
-    height: fit-content;
     background-color: lightgray;
     border: 5px solid lightgray;
     border-radius: 0 40px 40px 0;
@@ -31,10 +30,25 @@
     padding: 2em;
 }
 
-
-#listItems{
-    padding: 1em;
+.listItems:not(:first-child, :last-child):after {
+    content: '';
+    height: 3px;
+    background: white;
+    width: 100px;
+    position: relative;
 }
+
+.listItems:not(:first-child, :nth-child(2)):before {
+    content: '';
+    position: relative;
+    top: 2.5%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width:  7px 0 7px 20px;
+    border-color: transparent transparent transparent white;
+    transform: translateY(-50%);
+  }
 
 .boardContainers{
     background-color: grey;
@@ -108,7 +122,7 @@
 }
 
 .playerContainers .wrapper::-webkit-scrollbar, .cardContainers .wrapper::-webkit-scrollbar, #endGame .wrapper::-webkit-scrollbar {
-    height: 20px;
+    height: 10px;
 }
 
 .playerContainers .wrapper::-webkit-scrollbar-track, .cardContainers .wrapper::-webkit-scrollbar-track, #endGame .wrapper::-webkit-scrollbar-track{
@@ -315,4 +329,6 @@ table{
 #board input{
     width: fit-content;
 }
+
+
   
