@@ -8,8 +8,6 @@ import { User } from 'aws-sdk/clients/budgets';
 import { entity } from '../../models/editor/entity';
 import { myScript } from '../../models/scripts/my-script';
 import { version } from '../../models/scripts/version';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { environment } from '../../../../../../../apps/client/src/environments/environment';
 import { transpilationResponse } from '../../models/editor/transpilationResponse';
 
 @Injectable()
@@ -17,8 +15,8 @@ export class EditorService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = environment.baseUrl;
-    //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
+    // this.api = environmen;
+    this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
 
   getFileData(file:string):Observable<any>{

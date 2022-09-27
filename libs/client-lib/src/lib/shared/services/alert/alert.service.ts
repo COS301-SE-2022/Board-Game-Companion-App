@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { alert } from '../../models/alert/alert';
 import { Socket } from 'ngx-socket-io';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 @Injectable()
 export class AlertService {
@@ -12,8 +10,8 @@ export class AlertService {
 
   constructor(private readonly httpClient:HttpClient,
               private readonly socket: Socket) { 
-    this.api = environment.baseUrl;
-    //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
+    // this.api = environment.baseUrl;
+    this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
 
   getAllUserMessages():Observable<alert[]>{
