@@ -1,6 +1,6 @@
-<div id="outerDiv" class="script-detail__wrapper w-full h-full sm:px-20 py-4 flex flex-col sm:flex-row">
-  <div class="order-2 sm:order-1 sm:w-3/4 sm:p-4">
-    <div id="info" class="script-information bg-white">
+<div id="outerDiv" class="script-detail__wrapper w-full h-max sm:px-20 py-4 flex flex-col sm:flex-row ">
+  <div class="order-2 sm:order-2 sm:w-3/4 sm:p-4">
+    <div id="info" class="script-information bg-white ">
       <h1 class="script-title text-xl w-full p-2"><b>{{current.name}}</b></h1>
       
       <div class="flex flex-row name-value-pair text-sm p-2">
@@ -28,10 +28,12 @@
         <p class="script-field-value">{{convertBytes(current.size)}}</p>
       </div>
 
-      <div class="flex flex-row name-value-pair text-sm p-2">
+      <div class="flex flex-row name-value-pair text-sm p-2 ">
         <label class="script-field-name">Downloads: </label>
         <p class="script-field-value">{{current.downloads}}</p>
-        <label *ngIf="current.lastDownload!==null" class="script-field-name" style="margin-left:120px">Last downloads:
+      </div>
+      <div class="flex flex-row name-value-pair text-sm p-2 ">
+        <label *ngIf="current.lastDownload!==null" class="script-field-name" >Last downloads:
         </label>
         <p *ngIf="current.lastDownload!==null" class="script-field-value">{{formatDate(current.lastDownload)}}</p>
       </div>
@@ -53,7 +55,7 @@
     </div>
   </div>
 
-  <div id="coverDownload" class="order-1 w-1/4 sm:p-4 sm:order-2">
+  <div id="coverDownload" class="order-1 w-1/4 sm:p-4 sm:order-2 ">
 
     <div id="cover" class="script-cover mb-4 bg-white relative">
       <div class="script-cover-header w-full p-2 mb-2 text-xl"><b>Cover</b></div>
@@ -82,8 +84,8 @@
       </div>
     </div>
 
-    <div id="downrate" class = "mb-4">
-      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center">
+    <div id="downrate" class = "mb-4 flex flex-col ">
+      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center ">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
         <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
@@ -93,7 +95,7 @@
 
 
         <button *ngIf="downloading" type="button"
-          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out m-auto">
           <i id="downIcon" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="downloading"></i>
           <p id="down" class="text-lg"><b>DOWNLOADING</b></p>
         </button>
@@ -116,7 +118,7 @@
         </button>
       </div>
 
-      <div id="rate" class="script-rate text-center mb-4">
+      <div id="rate" class="script-rate text-center mb-4 h-3/3 ">
         <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
 
         <div id="outerStar">
