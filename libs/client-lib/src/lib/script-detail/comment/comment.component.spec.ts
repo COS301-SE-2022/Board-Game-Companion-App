@@ -8,7 +8,7 @@ import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.ser
 import { OnlineStatusService } from 'ngx-online-status';
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
-// import { comment,empty } from '../../shared/models/comment';
+import { ReportService } from '../../shared/services/reports/report.service';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
@@ -16,11 +16,12 @@ describe('CommentComponent', () => {
   let commentService: CommentService;
   let gapiService: GoogleAuthService;
   let networkService : OnlineStatusService;
-
+  let reportService : ReportService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CommentComponent,NotificationComponent],
-      providers: [CommentService,GoogleAuthService,OnlineStatusService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider],
+      providers: [CommentService,GoogleAuthService,OnlineStatusService,OAuthService,UrlHelperService,
+        OAuthLogger,DateTimeProvider,ReportService],
       imports: [HttpClientTestingModule,RouterTestingModule,FormsModule]
     }).compileComponents();
   });
@@ -32,15 +33,16 @@ describe('CommentComponent', () => {
     commentService = TestBed.inject(CommentService);
     gapiService = TestBed.inject(GoogleAuthService);
     networkService = TestBed.inject(OnlineStatusService);
+    reportService = TestBed.inject(ReportService);
   });
 
   it('should create', () => {
-    component  = new CommentComponent(commentService,networkService,gapiService);
+    component  = new CommentComponent(commentService,networkService,gapiService,reportService);
     expect(component).toBeTruthy();
   });
 
   it('should verify initial variables', () => {
-    component  = new CommentComponent(commentService,networkService,gapiService);
+    component  = new CommentComponent(commentService,networkService,gapiService,reportService);
     expect(component.depth).toEqual(0);
     expect(component.width).toEqual(0);
     expect(component.script).toBe("");
