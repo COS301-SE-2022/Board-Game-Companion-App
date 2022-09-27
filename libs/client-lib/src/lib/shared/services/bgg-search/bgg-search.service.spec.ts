@@ -7,7 +7,7 @@ export const mockMostActive : MostActive ={
   name:"3rd Millennium Chess",
   image:"https://cf.geekdo-images.com/LQa7DiMcfR6PPxbTaKjDXA__thumb/img/H1Vra1AuINeZKHKwh2b7nXyWrys=/fit-in/200x150/filters:strip_icc()/pic2518692.jpg",
 };
-
+/******************************************* Unit tests ***************************************/
 describe('BggSearchService', ()=> {
   let httpTestingController: HttpTestingController;
   let service: BggSearchService;
