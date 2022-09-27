@@ -35,7 +35,7 @@
         </button>
         <div class = "menu-content absolute">
             <a data-bs-toggle="modal" data-bs-target="#themeModal"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600" style = "border-bottom:1px solid gray">Theme</a>
-            <a (click) = "toggleDisplay()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600"  style = "border-bottom:1px solid gray">{{VDSL === true ? "Visual" : "Text"}}</a>
+            <a (click) = "toggleDisplay()" class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600"  style = "border-bottom:1px solid gray">{{VDSL === true ? "Text" : "Visual"}}</a>
             <a (click) = "toggleSideBar()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{sideBar === true ? "Hide" : "Show"}} side bar</a>
             <a (click) = "toggleConsole()"  class = "cursor-pointer bg-zinc-800 text-white text-xs py-1 px-2 hover:bg-green-600">{{console === true ? "Hide" : "Show"}} console</a>     
         </div>

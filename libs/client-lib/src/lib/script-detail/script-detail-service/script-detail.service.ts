@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { environment } from '../../../../../../apps/client/src/environments/environment';
 
 export interface script{
   _id: string;
@@ -42,7 +40,7 @@ export class ScriptDetailService {
   private url = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.url = environment.baseUrl+"scripts/";
+    this.url = "https://board-game-companion-app.herokuapp.com/api/scripts/";
   }
 
   getScriptById(id:string):Observable<script>{

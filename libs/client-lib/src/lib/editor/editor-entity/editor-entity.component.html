@@ -9,6 +9,9 @@
         <i class="fas fa-project-diagram" *ngIf = "current.type==='state'" data-toggle="tooltip" title="state"></i>
         <i class="fas fa-gamepad" *ngIf = "current.type==='turn'" data-toggle="tooltip" title="turn"></i>
         <i class="fas fa-tasks" *ngIf = "current.type==='condition'" data-toggle="tooltip" title="condition"></i>
+        <i class="fas fa-diamond" *ngIf = "current.type==='card'" data-toggle="tooltip" title="card"></i>
+        <i class="fas fa-bullseye" *ngIf = "current.type==='effect'" data-toggle="tooltip" title="effect"></i>
+        <i class="fas fa-th-large" *ngIf = "current.type==='attributes'" data-toggle="tooltip" title="attributes"></i>
     </div>
     <div (click) = "highlight()" class = "col-sm-7 text-left hover:text-slate-600 hover:underline underline-offset-2 cursor-pointer">
         {{current.name}}

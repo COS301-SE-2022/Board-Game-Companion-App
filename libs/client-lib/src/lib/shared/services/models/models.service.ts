@@ -8,15 +8,13 @@ import { user } from '../../models/general/user';
 import { StorageService } from '../storage/storage.service';
 import { feature } from '../../models/neuralnetwork/feature';
 import { neuralnetwork } from '../../models/neuralnetwork/neuralnetwork';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { environment } from '../../../../../../../apps/client/src/environments/environment';
 
 @Injectable()
 export class ModelsService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient,private readonly storageService:StorageService){
-    this.api = environment.baseUrl;
+    this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
 
   alreadyStored(model:string): Promise<boolean>{
@@ -52,6 +50,15 @@ export class ModelsService {
     param = param.set("id",id);  
 
     return this.httpClient.get<any>(this.api + "models/retrieve-by-id",{params:param});
+  }
+
+  getModelByName(name:string): Observable<neuralnetwork>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+
+    return this.httpClient.get<any>(this.api + "models/retrieve-by-name",{params:param});
   }
 
   getModels(idList:string[]):Observable<any>{

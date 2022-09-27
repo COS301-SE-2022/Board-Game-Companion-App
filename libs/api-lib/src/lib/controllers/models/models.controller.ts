@@ -66,6 +66,11 @@ export class ApiModelsController {
       return this.modelsService.getModel({name:userName,email:userEmail},id);
     }
 
+    @Get('retrieve-by-name')
+    async getModelByName(@Query('name')name:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<NeuralNetwork>{
+      return this.modelsService.getModelByName({name:userName,email:userEmail},name);
+    }
+
     @Get('retrieve-subset')
     async getModels(@Query('userName')userName:string,@Query('userEmail')userEmail:string,@Query('idList')idList:string):Promise<NeuralNetwork[]>{
         

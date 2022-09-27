@@ -12,7 +12,7 @@ import { NbThemeModule, NbMenuModule } from '@nebular/theme';
 import { SharedModule } from '@board-game-companion-app/client-lib';
 import { DragulaModule } from 'ng2-dragula';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-const config: SocketIoConfig = { url: environment.domain, options: {} };
+const config: SocketIoConfig = { url: 'https://board-game-companion-app.herokuapp.com', options: {} };
 
 @NgModule({
   declarations: [AppComponent],

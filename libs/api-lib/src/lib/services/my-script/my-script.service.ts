@@ -6,7 +6,6 @@ import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-netwo
 import { myScriptDto } from '../../models/dto/myScriptDto';
 import fs = require('fs');
 import { status } from '../../models/general/status';
-import { S3Service } from '../aws/s3.service'
 import { file } from '../../models/general/files';
 import { v4 as uuidv4 } from 'uuid';
 import { upload } from '../../models/general/upload';
