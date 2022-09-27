@@ -20,7 +20,8 @@ describe('CommentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CommentComponent,NotificationComponent],
-      providers: [CommentService,GoogleAuthService,OnlineStatusService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider],
+      providers: [CommentService,GoogleAuthService,OnlineStatusService,OAuthService,UrlHelperService,
+        OAuthLogger,DateTimeProvider,ReportService],
       imports: [HttpClientTestingModule,RouterTestingModule,FormsModule]
     }).compileComponents();
   });
