@@ -1,18 +1,17 @@
-import { routes } from './libs/client-lib/src/lib/client-lib-routing.module';
+import { routes } from './client-lib-routing.module';
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { AppComponent } from './apps/client/src/app/app.component';
-import { BggSearchService } from './libs/client-lib/src/lib/shared/services/bgg-search/bgg-search.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { AppComponent } from '../../../../apps/client/src/app/app.component';
+import { BggSearchService } from './shared/services/bgg-search/bgg-search.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OAuthService, UrlHelperService, OAuthLogger, DateTimeProvider } from 'angular-oauth2-oidc';
-import { GoogleAuthService } from './libs/client-lib/src/lib/google-login/GoogleAuth/google-auth.service';
-// import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { GoogleAuthService } from './google-login/GoogleAuth/google-auth.service';
 import 'fake-indexeddb/auto';
-import { ScriptService } from './libs/client-lib/src/lib/shared/services/scripts/script.service';
-import { ModelsService } from './libs/client-lib/src/lib/shared/services/models/models.service';
+import { ScriptService } from './shared/services/scripts/script.service';
+import { ModelsService } from './shared/services/models/models.service';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
