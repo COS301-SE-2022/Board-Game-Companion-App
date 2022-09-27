@@ -145,9 +145,76 @@ export class CompilerService {
                                 for(sub in child.children){
                                     const node = child.children[sub][0] as chevrotain.CstNode;
                                     const token = child.children[sub][0] as IToken;
-
+                                    
                                     if(node.name){
-                                        treeTraversal(node,current)
+                                        if(node.name === "CardEffect"){
+                                            const turn:entity = {
+                                                type: "effect",
+                                                name: "effect",
+                                                startLine: 0,
+                                                endLine: 0,
+                                                startPosition: 0,
+                                                endPosition: 0,
+                                                children: [],
+                                                properties: []
+                                            }
+                
+                                            current.children.push(turn);
+                
+                                            for(sub in node.children){
+                                                const effectNode = node.children[sub][0] as chevrotain.CstNode;
+                                                const token = node.children[sub][0] as IToken;
+                
+                                                if(effectNode.name){
+                                                    treeTraversal(effectNode,turn);
+                                                }else if(token.tokenType){
+                                                    switch(token.image){
+                                                        case "effect":{
+                                                            turn.startLine = token.startLine;
+                                                            turn.startPosition = token.startColumn;
+                                                        }break;
+                                                        case "}":{
+                                                            turn.endLine = token.endLine;
+                                                            turn.endPosition = token.endColumn;
+                                                        }break;
+                                                    }
+                                                }
+                                            }         
+                                        }else if(node.name === "CardCondition"){
+                                            const turn:entity = {
+                                                type: "condition",
+                                                name: "condition",
+                                                startLine: 0,
+                                                endLine: 0,
+                                                startPosition: 0,
+                                                endPosition: 0,
+                                                children: [],
+                                                properties: []
+                                            }
+                
+                                            current.children.push(turn);
+                
+                                            for(sub in node.children){
+                                                const conditionNode = node.children[sub][0] as chevrotain.CstNode;
+                                                const token = node.children[sub][0] as IToken;
+                
+                                                if(conditionNode.name){
+                                                    treeTraversal(conditionNode,turn);
+                                                }else if(token.tokenType){
+                                                    switch(token.image){
+                                                        case "condition":{
+                                                            turn.startLine = token.startLine;
+                                                            turn.startPosition = token.startColumn;
+                                                        }break;
+                                                        case "}":{
+                                                            turn.endLine = token.endLine;
+                                                            turn.endPosition = token.endColumn;
+                                                        }break;
+                                                    }
+                                                }
+                                            }
+                                        }else
+                                            treeTraversal(node,current);
                                     }else if(token.tokenType){
                                         if(token.tokenType.name === "UserDefinedIdentifier")
                                             current.name = token.image;
@@ -181,7 +248,6 @@ export class CompilerService {
                             parent.children.push(current);
 
                             for(sub in child.children){
-                                //console.log(child.children[sub][0])
                                 const node = child.children[sub][0] as chevrotain.CstNode;
                                 const token = child.children[sub][0] as IToken;
 
@@ -352,70 +418,6 @@ export class CompilerService {
                                 }
                             }
                         }break;
-                        case "CardEffect":{
-                            const current:entity = {
-                                type: "effect",
-                                name: "effect",
-                                startLine: 0,
-                                endLine: 0,
-                                startPosition: 0,
-                                endPosition: 0,
-                                children: [],
-                                properties: []
-                            }
-
-                            parent.children.push(current);
-
-                            for(sub in child.children){
-                                const token = child.children[sub][0] as IToken;
-
-                                if(token.tokenType){
-
-                                    switch(token.image){
-                                        case "effect":{
-                                            current.startLine = token.startLine;
-                                            current.startPosition = token.startColumn;
-                                        }break;
-                                        case "}":{
-                                            current.endLine = token.endLine;
-                                            current.endPosition = token.endColumn;
-                                        }
-                                    }
-                                }
-                            } 
-                        }break;
-                        case "CardCondition":{
-                            const current:entity = {
-                                type: "condition",
-                                name: "condition",
-                                startLine: 0,
-                                endLine: 0,
-                                startPosition: 0,
-                                endPosition: 0,
-                                children: [],
-                                properties: []
-                            }
-
-                            parent.children.push(current);
-
-                            for(sub in child.children){
-                                const token = child.children[sub][0] as IToken;
-
-                                if(token.tokenType){
-
-                                    switch(token.image){
-                                        case "condition":{
-                                            current.startLine = token.startLine;
-                                            current.startPosition = token.startColumn;
-                                        }break;
-                                        case "}":{
-                                            current.endLine = token.endLine;
-                                            current.endPosition = token.endColumn;
-                                        }
-                                    }
-                                }
-                            } 
-                        }break;
                     }
                 }
             }
@@ -461,8 +463,6 @@ export class CompilerService {
 
         if(tokens.errors.length !== 0){
             result.success = false;
-            //result.errors = tokens.errors;
-            console.log(tokens.errors)
         }
 
         return result;

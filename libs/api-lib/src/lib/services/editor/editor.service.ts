@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
-import { S3Service } from '../aws/s3.service';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
@@ -27,7 +26,6 @@ export class EditorService {
     
     constructor(@InjectModel(MyScript.name) private myScriptModel: Model<MyScriptDocument>,
     @InjectModel(NeuralNetwork.name) private networksModel: Model<NeuralNetworkDocument>,
-    private readonly s3Service:S3Service,
     private readonly compilerService:CompilerService,
     private readonly httpService: HttpService,
     private readonly storageService:MongoDbStorageService){
