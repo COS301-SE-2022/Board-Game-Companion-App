@@ -10,6 +10,7 @@ import { myScript } from '../../models/scripts/my-script';
 import { version } from '../../models/scripts/version';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { environment } from '../../../../../../../apps/client/src/environments/environment';
+import { transpilationResponse } from '../../models/editor/transpilationResponse';
 
 @Injectable()
 export class EditorService {
@@ -24,8 +25,8 @@ export class EditorService {
     return this.httpClient.get(file,{responseType:'text'});
   }
 
-  updateFile(id:string,content:string):Observable<{status:string,message:string,programStructure:entity}>{
-    return this.httpClient.put<{status:string,message:string,programStructure:entity}>(this.api + "editor/update-file",{id:id,content:content});
+  updateFile(id:string,content:string):Observable<transpilationResponse>{
+    return this.httpClient.put<transpilationResponse>(this.api + "editor/update-file",{id:id,content:content});
   }
 
   updateScriptModels(script:string,networks:string[]):Observable<myScript>{

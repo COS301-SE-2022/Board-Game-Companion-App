@@ -249,6 +249,19 @@ export class MyScriptsComponent implements OnInit{
     
   }
 
+  isMobileOS(): boolean{
+    if(navigator.userAgent.indexOf("Android") != -1)
+      return true;
+
+    if(navigator.userAgent.indexOf("iPhone") != -1)
+      return true;
+
+    if(window.screen.width < 800)
+      return true;
+
+    return false;
+  }
+  
   showEditor(value:myScript){
     this.router.navigate(['editor'],{ state: { value: value } });
   }

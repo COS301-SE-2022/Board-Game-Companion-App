@@ -54,6 +54,15 @@ export class ModelsService {
     return this.httpClient.get<any>(this.api + "models/retrieve-by-id",{params:param});
   }
 
+  getModelByName(name:string): Observable<neuralnetwork>{
+    let param = new HttpParams();
+    param = param.set("name",name);
+    param = param.set("userName",sessionStorage.getItem("name") as string);
+    param = param.set("userEmail",sessionStorage.getItem("email") as string);
+
+    return this.httpClient.get<any>(this.api + "models/retrieve-by-name",{params:param});
+  }
+
   getModels(idList:string[]):Observable<any>{
     let param = new HttpParams();
     param = param.set("userName",sessionStorage.getItem("name") as string);

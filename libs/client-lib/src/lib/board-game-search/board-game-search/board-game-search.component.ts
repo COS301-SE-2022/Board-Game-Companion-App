@@ -29,11 +29,6 @@ export class BoardGameSearchComponent implements OnInit {
   exactMatch = false;
 
   constructor(private readonly searchService:BggSearchService, private router:Router, private route:ActivatedRoute) {
-              // if it is a global search from header, move to function...
-    if(this.route.snapshot.paramMap.get("value")!==null){
-      this.searchValue = this.route.snapshot.paramMap.get("value")||"";
-      this.search();
-    } // otherwise load most active...
   }
 
   ngOnInit(): void {

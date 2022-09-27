@@ -70,7 +70,7 @@ define("ace/mode/automatascript_highlight_rules",["require","exports","module","
                 "JSON|Math|"                                                               + // Other
                 "this|arguments|prototype|window|document"                                 , // Pseudo
             "keyword":
-                "const|player|condition|state|turn|endgame|effect|consider|action|await|async|" +
+                "const|player|card|tileAttribute|condition|state|turn|endgame|effect|consider|action|await|async|" +
                 "break|case|catch|continue|default|delete|do|else|finally|for|function|" +
                 "if|in|of|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|" +
                 "__parent__|__count__|escape|unescape|with|__proto__|" +

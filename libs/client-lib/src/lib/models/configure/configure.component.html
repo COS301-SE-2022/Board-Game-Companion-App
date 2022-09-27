@@ -1,8 +1,8 @@
-<div class="model-block w-full shadow-sm text-white p-2 mt-2">
+<div class="bg-white w-full shadow-sm text-gray-700 p-2 mt-2">
     <div class = "mb-4">
         <label for="data-partition" class="form-label font-medium"><b>Optimizer</b></label>
-        <div class = "row p-2 border-2 mx-1 rounded-md">
-            <div class = "col-sm-4" style="border-right:1px solid white">
+        <div class = "row p-2 border-2 border-green-800 bg-slate-300 mx-1 rounded-md">
+            <div class = "col-sm-4 border-r-2 border-green-800">
                 <div class="form-check">
                     <input (click)="setOptimizer(0)" [checked] = "optimizer === 0" class="form-check-input" type="radio" name="adadelta" id="adadelta">
                     <label class="form-check-label" for="adadelta">
@@ -186,7 +186,7 @@
         </div>
         
         <div class = "w-full mt-4 text-center">    
-            <button (click)="train()" type="button" class="w-1/2 inline-block px-3 py-2 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">
+            <button (click)="train()" type="button" class="w-1/2 inline-block px-3 py-2 bg-green-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-green-600 hover:shadow-sm focus:bg-green-800 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-sm transition duration-150 ease-in-out">
                 <i class="fas fa-cog"></i>
                 train
             </button>

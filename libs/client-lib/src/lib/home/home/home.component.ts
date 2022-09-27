@@ -58,7 +58,8 @@ export class HomeComponent implements OnInit {
 
   viewSession(n:string)
   {
-    this.router.navigate(['session', {my_object: n}] )
+    
+    this.router.navigate(['gameSessions', {my_object: n}] )
   }
 
   viewCollection(n:string)

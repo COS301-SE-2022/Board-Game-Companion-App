@@ -1,6 +1,5 @@
 import { Controller, Body, Get, Post, Query, Delete, Param, Put } from '@nestjs/common';
 import { DownloadsService } from '../../services/downloads/downloads.service';
-import { Script } from '../../schemas/script.schema';
 import { DownloadScript } from '../../schemas/download-script.schema';
 import { update } from '../../models/general/update';
 import { AutomataScript } from '../../schemas/automata-script.schema';
