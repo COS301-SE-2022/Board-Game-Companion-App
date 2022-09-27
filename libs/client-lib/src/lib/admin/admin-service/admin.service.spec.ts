@@ -63,7 +63,7 @@ describe('AdminService', () => {
       expect(data).not.toBe(null);
       expect(data).toBe(mockAutomata);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retreive-all');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/retreive-all');
     expect(req.request.method).toBe('GET');
     req.flush(mockAutomata);
   });

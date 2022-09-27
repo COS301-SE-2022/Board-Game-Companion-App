@@ -45,7 +45,6 @@ describe('HeaderComponent', () => {
 
   it('isAdmin??',()=>{
     expect(component.isLoggedIn()).toBeFalsy();
-    expect(component.isAdmin()).toBeFalsy();
   });
 
   it('moveTo(path)',()=>{

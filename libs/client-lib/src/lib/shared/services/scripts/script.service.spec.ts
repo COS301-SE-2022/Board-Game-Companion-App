@@ -31,7 +31,7 @@ describe('Test script service',()=>{
 
   it('should return api URL',()=>{
     const url = service.getApiUrl();
-    expect(url).toBe('http://localhost:3333/api/');
+    expect(url).toBe('https://board-game-companion-app.herokuapp.com/api/');
   });
 
   it('should return Bbg URL',()=>{
@@ -83,7 +83,7 @@ describe('Test script service',()=>{
     service.getScriptById('171').subscribe((data)=>{
       expect(data).toEqual(exScript);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/byid?id=171');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/retrieve/byid?id=171');
     expect(req.request.method).toBe('GET');
     req.flush(exScript);
   });
@@ -92,7 +92,7 @@ describe('Test script service',()=>{
     service.saveScript(new FormData()).subscribe((data)=>{
       expect(data).toEqual(exScript);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/create-script');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/my-scripts/create-script');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(new FormData());
     req.flush(exScript);
@@ -101,7 +101,7 @@ describe('Test script service',()=>{
   it('should add a comment', ()=>{
     service.addComment('171','12345');
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/add-comment');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/add-comment');
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual({scriptId:'171',commentId:'12345'});
   });
@@ -109,7 +109,7 @@ describe('Test script service',()=>{
   it('should remove a script', ()=>{
     service.removeScript('171').subscribe();
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/remove/171');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/remove/171');
     expect(req.request.method).toBe('DELETE');
   });
 
@@ -123,7 +123,7 @@ describe('Test script service',()=>{
       expect(data).toEqual(exScript);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/update');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({
       id:'171',
@@ -141,7 +141,7 @@ describe('Test script service',()=>{
       expect(data).toEqual([exScript]);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/all');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/retrieve/all');
     expect(req.request.method).toBe('GET');
     // expect(req.request.body).toBe({});
 
@@ -149,14 +149,14 @@ describe('Test script service',()=>{
   });
 
   it('should return a file data given a url',()=>{
-    service.getFileData('http://localhost:3333/api/scripts/file').subscribe((data)=>{
+    service.getFileData('https://board-game-companion-app.herokuapp.com/api/scripts/file').subscribe((data)=>{
       expect(data).toEqual({ 
         name: 'chess',
         awsKey: '',
         location: 'https://aws.'});
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/file');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/file');
     expect(req.request.method).toBe('GET');
     expect(req.flush({ 
       name: 'chess',
@@ -176,7 +176,7 @@ describe('Test script service',()=>{
       expect(data).toBe(exRating);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/rate');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/rate');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toStrictEqual({
       user:{name:'NN',email: 'NN@zak.uk.co'},
@@ -191,7 +191,7 @@ describe('Test script service',()=>{
       expect(data).toBe(exRating);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/retrieve-rating?userName=NN&userEmail=NN@zak.uk.co&script=chessMaster');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/retrieve-rating?userName=NN&userEmail=NN@zak.uk.co&script=chessMaster');
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
     param = param.set('userName','NN');
@@ -205,7 +205,7 @@ describe('Test script service',()=>{
     service.countRating('chessRating').subscribe((data)=>{
       expect(data).toBe(1);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/count-rating?script=chessRating');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/count-rating?script=chessRating');
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
     param = param.set('script','chessMaster');
@@ -217,7 +217,7 @@ describe('Test script service',()=>{
     service.averageRating('chessMaster').subscribe((data)=>{
       expect(data).toBe(4);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/average-rating?script=chessMaster');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/average-rating?script=chessMaster');
     expect(req.request.method).toBe('GET');
     let param = new HttpParams();
     param = param.set('script','chessMaster');
@@ -230,7 +230,7 @@ describe('Test script service',()=>{
       expect(data).resolves;
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update-models');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/update-models');
     expect(req.request.method).toBe('PUT');
     req.flush(exScript);
   });
@@ -240,7 +240,7 @@ describe('Test script service',()=>{
       expect(data).resolves;
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/update/status');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/update/status');
     expect(req.request.method).toBe('PUT');
     req.flush(exScript);
   });
@@ -267,7 +267,7 @@ describe('Test script service',()=>{
       expect(data).toBeTruthy();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/check-name?name=board-chess&userEmail=james@yahoo.com&userName=James');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/my-scripts/check-name?name=board-chess&userEmail=james@yahoo.com&userName=James');
     expect(req.request.method).toBe('GET');
     req.flush(true);
   });
@@ -279,7 +279,7 @@ describe('Test script service',()=>{
     expect(data).toBeTruthy();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/already-downloaded?authorName=Njabulo&authorEmail=njabulo@gmail.com&ownerEmail=james@yahoo.com&ownerName=James&name=board-chess&vMajor=1&vMinor=0&vPatch=2');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/download-scripts/already-downloaded?authorName=Njabulo&authorEmail=njabulo@gmail.com&ownerEmail=james@yahoo.com&ownerName=James&name=board-chess&vMajor=1&vMinor=0&vPatch=2');
     expect(req.request.method).toBe('GET');
     req.flush(true);
   });
@@ -289,7 +289,7 @@ describe('Test script service',()=>{
       expect(data).toBeDefined();
     });
 
-      const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/retrieve-id?id=6304be14c0a7933d955d3ecf');
+      const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/download-scripts/retrieve-id?id=6304be14c0a7933d955d3ecf');
       expect(req.request.method).toBe('GET');
       req.flush(myDownloaded[0]);
   });
@@ -338,7 +338,7 @@ describe('Test script service',()=>{
       expect(data.success).toBeTruthy();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/release?id=6304be14c0a7933d955d3ecf&vMajor=23&vMinor=1&vPatch=3');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/my-scripts/release?id=6304be14c0a7933d955d3ecf&vMajor=23&vMinor=1&vPatch=3');
     expect(req.request.method).toBe('GET');
     req.flush({sucess:true});
   });
@@ -350,7 +350,7 @@ describe('Test script service',()=>{
       expect(data).toBeTruthy();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/retrieve-all?ownerName=Njabulo&ownerEmail=Convo@forE.co.za');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/download-scripts/retrieve-all?ownerName=Njabulo&ownerEmail=Convo@forE.co.za');
     expect(req.request.method).toBe('GET');
     req.flush(mockAutScripts);
   });
@@ -360,7 +360,7 @@ describe('Test script service',()=>{
       expect(data).toBeTruthy();
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/remove?id=6304be14c0a7933d955d3ecf');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/download-scripts/remove?id=6304be14c0a7933d955d3ecf');
     expect(req.request.method).toBe('DELETE');
     req.flush(true);
   });
@@ -371,7 +371,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/other?ownerName=njabulo&ownerEmail=skoS@gmial.com');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/retrieve/other?ownerName=njabulo&ownerEmail=skoS@gmial.com');
     expect(req.request.method).toBe('GET');
     req.flush([exScript]);
   });
@@ -381,7 +381,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/scripts/retrieve/downloadedByMe?ownerName=njabulo&ownerEmail=skoS@gmial.com');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/scripts/retrieve/downloadedByMe?ownerName=njabulo&ownerEmail=skoS@gmial.com');
     expect(req.request.method).toBe('GET');
     req.flush([exScript]);
   });
@@ -393,7 +393,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/import?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/my-scripts/import?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
     expect(req.request.method).toBe('GET');
     req.flush(true);
   });
@@ -404,7 +404,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/download-scripts/update');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/download-scripts/update');
     expect(req.request.method).toBe('PUT');
     req.flush(myDownloaded[0]);
   });
@@ -417,7 +417,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/automata-scripts/download?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/automata-scripts/download?id=42ehd433h41graew54&userEmail=james@yahoo.com&userName=James');
     expect(req.request.method).toBe('GET');
     req.flush(myDownloaded[0]);
   });
@@ -430,7 +430,7 @@ describe('Test script service',()=>{
         expect(data).resolves;
       }
     );
-    const req = httpTestingController.expectOne('http://localhost:3333/api/my-scripts/all-my-script?userName=James&userEmail=james@yahoo.com');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/my-scripts/all-my-script?userName=James&userEmail=james@yahoo.com');
     expect(req.request.method).toBe('GET');
     req.flush([mockMyScripts]);
   });

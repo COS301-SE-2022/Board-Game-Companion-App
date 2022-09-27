@@ -10,7 +10,7 @@ describe('Test service',()=>{
 
   let service: AlertService;
   beforeEach(()=>{
-    TestBed.configureTestingModule({imports:[HttpClientModule,SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
+    TestBed.configureTestingModule({imports:[HttpClientModule,SocketIoModule.forRoot({ url: 'https://board-game-companion-app.herokuapp.com', options: { transports: ['websocket'], reconnection: true } })],
     providers:[AlertService]});
     service = TestBed.inject(AlertService);
     window.sessionStorage.clear();
