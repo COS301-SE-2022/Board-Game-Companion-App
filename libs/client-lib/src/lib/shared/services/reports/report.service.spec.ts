@@ -2,8 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ReportService } from './report.service';
 import { ScriptService } from '../scripts/script.service';
-// import { response } from 'express';
-// import { script } from '../../models/scripts/script';
 
 /************************************ Integration Tests ************************************/
 describe('Test service',()=>{
@@ -43,15 +41,21 @@ describe('Test service',()=>{
   });
 
   it('Script by Id',(done)=>{
-    reportService.getByScript('63057d312899d807ab3051b9').subscribe((response)=>{
-      expect(response).resolves;
-      done();
+      reportService.getByScript('63057d312899d807ab3051b9').subscribe((response)=>{
+        expect(response).resolves;
+        done();
+      },
+      (error)=>{
+        expect(error.error).toStrictEqual({ statusCode: 500, message: 'Internal server error' });
+        done();
+      },
+      ()=>{done();});
     });
-  });
 
   it('Is the report issued already?',(done)=>{
     window.sessionStorage.setItem('name','Njabulo Ntuli');
     window.sessionStorage.setItem('email','u19062665@tuks.co.za')
+    
     reportService.alreadyIssued('63057d312899d807ab3051b9').subscribe((response)=>{
       expect(response).toBeDefined();
       done();
@@ -64,4 +68,5 @@ describe('Test service',()=>{
       done();
     });
   });
+
 });
