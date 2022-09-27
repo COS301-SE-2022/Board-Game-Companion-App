@@ -50,6 +50,10 @@ export const routes: Routes = [
   {
     path: 'script-exec',
     loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
+  },
+  {
+    path: 'session',
+    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
   }
 ];
 
