@@ -17,7 +17,6 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { SocketIoModule } from 'ngx-socket-io';
-import { SharedModule } from './libs/client-lib/src/lib/shared/shared.module';
 
 describe('Router: Module', () => {
 
