@@ -54,6 +54,41 @@ export class CompilerService {
 
                 if(child.name){
                     switch(child.name){
+                        case "rTileAttributes":{
+                            const current:entity = {
+                                type: "attributes",
+                                name: "attributes",
+                                startLine: 0,
+                                endLine: 0,
+                                startPosition: 0,
+                                endPosition: 0,
+                                children: [],
+                                properties: []
+                            }
+
+                            
+                            parent.children.push(current);
+                            
+                            for(sub in child.children){
+                                const node = child.children[sub][0] as chevrotain.CstNode;
+                                const token = child.children[sub][0] as IToken;
+
+                                if(node.name){
+                                    treeTraversal(node,current)
+                                }else if(token.tokenType){
+                                    switch(token.image){
+                                        case "tileAttribute":{
+                                            current.startLine = token.startLine;
+                                            current.startPosition = token.startColumn;
+                                        }break;
+                                        case "}":{
+                                            current.endLine = token.endLine;
+                                            current.endPosition = token.endColumn;
+                                        }
+                                    }
+                                }
+                            }
+                        }break;
                         case "GameState":{
                                 const current:entity = {
                                     type: "state",
@@ -110,9 +145,76 @@ export class CompilerService {
                                 for(sub in child.children){
                                     const node = child.children[sub][0] as chevrotain.CstNode;
                                     const token = child.children[sub][0] as IToken;
-
+                                    
                                     if(node.name){
-                                        treeTraversal(node,current)
+                                        if(node.name === "CardEffect"){
+                                            const turn:entity = {
+                                                type: "effect",
+                                                name: "effect",
+                                                startLine: 0,
+                                                endLine: 0,
+                                                startPosition: 0,
+                                                endPosition: 0,
+                                                children: [],
+                                                properties: []
+                                            }
+                
+                                            current.children.push(turn);
+                
+                                            for(sub in node.children){
+                                                const effectNode = node.children[sub][0] as chevrotain.CstNode;
+                                                const token = node.children[sub][0] as IToken;
+                
+                                                if(effectNode.name){
+                                                    treeTraversal(effectNode,turn);
+                                                }else if(token.tokenType){
+                                                    switch(token.image){
+                                                        case "effect":{
+                                                            turn.startLine = token.startLine;
+                                                            turn.startPosition = token.startColumn;
+                                                        }break;
+                                                        case "}":{
+                                                            turn.endLine = token.endLine;
+                                                            turn.endPosition = token.endColumn;
+                                                        }break;
+                                                    }
+                                                }
+                                            }         
+                                        }else if(node.name === "CardCondition"){
+                                            const turn:entity = {
+                                                type: "condition",
+                                                name: "condition",
+                                                startLine: 0,
+                                                endLine: 0,
+                                                startPosition: 0,
+                                                endPosition: 0,
+                                                children: [],
+                                                properties: []
+                                            }
+                
+                                            current.children.push(turn);
+                
+                                            for(sub in node.children){
+                                                const conditionNode = node.children[sub][0] as chevrotain.CstNode;
+                                                const token = node.children[sub][0] as IToken;
+                
+                                                if(conditionNode.name){
+                                                    treeTraversal(conditionNode,turn);
+                                                }else if(token.tokenType){
+                                                    switch(token.image){
+                                                        case "condition":{
+                                                            turn.startLine = token.startLine;
+                                                            turn.startPosition = token.startColumn;
+                                                        }break;
+                                                        case "}":{
+                                                            turn.endLine = token.endLine;
+                                                            turn.endPosition = token.endColumn;
+                                                        }break;
+                                                    }
+                                                }
+                                            }
+                                        }else
+                                            treeTraversal(node,current);
                                     }else if(token.tokenType){
                                         if(token.tokenType.name === "UserDefinedIdentifier")
                                             current.name = token.image;
@@ -146,7 +248,6 @@ export class CompilerService {
                             parent.children.push(current);
 
                             for(sub in child.children){
-                                //console.log(child.children[sub][0])
                                 const node = child.children[sub][0] as chevrotain.CstNode;
                                 const token = child.children[sub][0] as IToken;
 
@@ -245,15 +346,6 @@ export class CompilerService {
                             }
                         }break;
                         case "DefAction":{
-                            // this.CONSUME(tokensStore.tAction)
-                            // this.CONSUME(tokensStore.tUserDefinedIdentifier)
-                            // this.CONSUME(tokensStore.tOpenBracket)
-                            // this.SUBRULE(this.FormalParameters)
-                            // this.CONSUME(tokensStore.tCloseBracket)
-                            // this.CONSUME(tokensStore.tOpenBrace)  
-                            // this.SUBRULE(this.statements )
-                            // this.CONSUME(tokensStore.tCloseBrace)  
-                            
                             const current:entity = {
                                 type: "action",
                                 name: "action",
@@ -291,14 +383,6 @@ export class CompilerService {
                             } 
                         }break;
                         case "DefCondition":{
-                            // this.CONSUME(tokensStore.tCondition)
-                            // this.CONSUME1(tokensStore.tOpenBracket)
-                            // this.SUBRULE1(this.FormalParameters)
-                            // this.CONSUME1(tokensStore.tCloseBracket)
-                            // this.CONSUME1(tokensStore.tOpenBrace)
-                            // this.SUBRULE1(this.Consideration)
-                            // this.SUBRULE1(this.statements)
-                            // this.CONSUME1(tokensStore.tCloseBrace)
                             const current:entity = {
                                 type: "condition",
                                 name: "condition",
@@ -379,8 +463,6 @@ export class CompilerService {
 
         if(tokens.errors.length !== 0){
             result.success = false;
-            //result.errors = tokens.errors;
-            console.log(tokens.errors)
         }
 
         return result;
@@ -407,27 +489,36 @@ export class CompilerService {
     {
         playerCount = 0;
         this.errorLog = "";
+        const banned = ["window","document"];
+        const lexeme = this.scanHelper(input);
+        const errors:string[] = [];
         
-        this.DSLparser.input = this.scanHelper(input).tokens;
+        lexeme.tokens.forEach((value:chevrotain.IToken) => {
+            if(banned.includes(value.image))
+                errors.push("SecurityRisk-[" + value.startLine + ", " + value.endColumn + "]: '" + value.image + "' is not allowed as a " + value.tokenType);
+        });
+
+        lexeme.errors.forEach((error) => {
+            errors.push("LexicalError-[" + error.line + ", " + error.column + "]: " + error.message);
+        })
+
+        this.DSLparser.input = lexeme.tokens;
         const cstOutput = this.DSLparser.Program();
         
-        if(this.DSLparser.errors.length!=0)
-        {
-            const errMessage = (this.DSLparser.errors.toString()+" at line " +this.DSLparser.errors[0].token.startLine);
+        this.DSLparser.errors.forEach((error:chevrotain.IRecognitionException) => {
+            errors.push("SyntaxError-[" + error.token.startLine + ", "+ error.token.startColumn+"]: " + error.message); 
+        })
+
             
-            throw errMessage;
-        }
-        else
-        {
-            //read in template file
-            jsScript = scriptTemplate;
-            //begin transpilation
-            visit(cstOutput)
-            
-            //fs.writeFileSync("templates/tokens.json",JSON.stringify(this.getProgramStructure(cstOutput)));
-            const programStructure = this.getProgramStructure(cstOutput)
-            return {build:jsScript,programStructure:programStructure};
-        }
+        if(errors.length !== 0)
+            throw errors;
+
+        //read in template file
+        jsScript = scriptTemplate;
+        //begin transpilation
+        visit(cstOutput)
+        const programStructure = this.getProgramStructure(cstOutput)
+        return {build:jsScript,programStructure:programStructure};
     }
 }
 

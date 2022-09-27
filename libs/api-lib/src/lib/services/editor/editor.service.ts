@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
-import { S3Service } from '../aws/s3.service';
 import { CompilerService } from '../compiler/compiler.service';
 import fileSize = require("url-file-size");
 import { user } from '../../models/general/user';
@@ -11,6 +10,7 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 import { entity } from '../../models/general/entity';
 import { MyScript, MyScriptDocument } from '../../schemas/my-script.schema';
 import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
+import { transpilationResponse } from '../../models/general/transpilationResponse';
 
 interface programResult{
     build:string;
@@ -26,7 +26,6 @@ export class EditorService {
     
     constructor(@InjectModel(MyScript.name) private myScriptModel: Model<MyScriptDocument>,
     @InjectModel(NeuralNetwork.name) private networksModel: Model<NeuralNetworkDocument>,
-    private readonly s3Service:S3Service,
     private readonly compilerService:CompilerService,
     private readonly httpService: HttpService,
     private readonly storageService:MongoDbStorageService){
@@ -69,12 +68,20 @@ export class EditorService {
     }
 
 
-    async updateFile(id:string,content:string):Promise<any>{
+    async updateFile(id:string,content:string):Promise<transpilationResponse>{
         const script:MyScriptDocument = await this.myScriptModel.findById(id);
-        let result:any = {status:"success",message:""}
+        let result:transpilationResponse = {
+            status: "success",
+            message: "",
+            errors: []
+        }
 
         if(script === null)
-            result = {status:"failed",message: "invalid script id"};
+            result = { 
+                status: "failed",
+                message: "Could not find script to update.",
+                errors: []
+            };
         else{
             try{
                 const compiledCode = this.compilerService.transpile(content);
@@ -82,7 +89,8 @@ export class EditorService {
                 result = {
                             status: "success",
                             message: "successfully updated script on " + (new Date()).toString(),
-                            programStructure: compiledCode.programStructure
+                            errors: [],
+                            structure: compiledCode.programStructure
                         };
                 
                 
@@ -103,8 +111,12 @@ export class EditorService {
 
                 script.save();
             
-            }catch(e){
-                result = {status:"failed",message:e};
+            }catch(errors){
+                result = {
+                    status: "failed",
+                    message: Array.isArray(errors) ? "Errors where found in the source code." : errors,
+                    errors: Array.isArray(errors) ? errors : []
+                };
             }
         }
         

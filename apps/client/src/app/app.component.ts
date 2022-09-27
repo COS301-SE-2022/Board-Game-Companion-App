@@ -8,7 +8,7 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'client';
+  title = 'board-game-companion';
   headerHeight = 8;
   contentHeight = 84;
   footerHeight = 8;

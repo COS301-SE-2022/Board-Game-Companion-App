@@ -152,6 +152,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
+
     this.width = window.innerWidth;
   }
 
@@ -196,7 +197,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     else if(path==="board-game-search")
     {
-      this.router.navigate(['/board-game-search',{value:this.searchValue}]);
+      this.router.navigate(['/board-game-search']);
     }
     else{
       this.router.navigate(['/' + path]);
@@ -232,6 +233,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       } 
     }
     }
+  }
+
+  isMobileOS(): boolean{
+    if(navigator.userAgent.indexOf("Android") != -1)
+      return true;
+
+    if(navigator.userAgent.indexOf("iPhone") != -1)
+      return true;
+
+    if(window.screen.width < 800)
+      return true;
+
+    return false;
   }
 
   getTime(date:Date): string{
@@ -536,6 +550,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     })
   }
+  
 
   processAlert(alert:alertInfo): void{
     this.alertService.markAsRead(alert.alert._id).subscribe({
