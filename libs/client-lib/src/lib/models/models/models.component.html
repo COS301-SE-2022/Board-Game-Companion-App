@@ -1,4 +1,21 @@
-<div class = "w-full" style = "padding:5rem 10rem;">
+<div class = "w-full h-full">
+    <div class = "row w-4/5 mx-auto mt-4">
+        <div class = "col-sm-3 p-2">
+            <div class="sidebar text-center font-medium">
+                <a (click)="changeTab(0)" [ngClass]="{'active':tab===0}">General</a>
+                <a (click)="changeTab(1)" [ngClass]="{'active':tab===1}">Train</a>
+                <!-- <a (click)="changeTab(2)" [ngClass]="{'active':tab===2}">Upload</a> -->
+            </div>
+        </div>
+        <div class = "col-sm-9 p-2">
+            <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
+            <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
+            <!-- <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload> -->
+        </div>
+    </div>        
+</div>
+
+<!-- <div class = "w-full" style = "padding:5rem 10rem;">
     <div class = "models-wrapper w-full">
         <div class="row p-5">
             <div class="col-md-2 mb-3">
@@ -24,4 +41,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

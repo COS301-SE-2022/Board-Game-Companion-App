@@ -1,8 +1,12 @@
-import { modelData } from './modelData';
+import { file } from '../general/file';
 
 export interface neuralnetwork{
-    created?:Date,
-    loss?: number,
-    accuracy?: number,
-    setup: modelData
+    _id: string;
+    name: string;
+    created: Date;
+    labels: string[];
+    min: number[];
+    max: number[];
+    model?: file;
+    weights?: file;
 }
