@@ -313,6 +313,7 @@ describe('Test script service',()=>{
     icon: {name:'',location:'',key:''},
     build: {name:'',location:'',key:''},
     models: [],
+    link: "http://localhost:3333/api/"
   }];
 
   const mockMyScripts:myScript[]=[{
