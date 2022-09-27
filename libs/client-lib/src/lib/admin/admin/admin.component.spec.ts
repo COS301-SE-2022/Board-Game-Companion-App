@@ -12,7 +12,7 @@ describe('AdminComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AdminComponent],
-      providers: [AdminService,ReportService],
+      providers: [],
       imports: [HttpClientTestingModule,RouterTestingModule,NgxPaginationModule,FormsModule]
     }).compileComponents();
   });
@@ -20,7 +20,6 @@ describe('AdminComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
-    component.scripts = [];
     fixture.detectChanges();
   });
   it('should create', () => {
