@@ -14,7 +14,10 @@ import 'fake-indexeddb/auto';
 import { ScriptService } from './libs/client-lib/src/lib/shared/services/scripts/script.service';
 import { ModelsService } from './libs/client-lib/src/lib/shared/services/models/models.service';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from './libs/client-lib/src/lib/shared/shared.module';
+import { SharedModule } from './shared/shared.module';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
+import { SocketIoModule } from 'ngx-socket-io';
+
 describe('Router: Module', () => {
 
     let location: Location;
@@ -34,15 +37,18 @@ describe('Router: Module', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule],
-        providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider,ScriptService,ModelsService],
-        declarations: [AppComponent]
+        imports: [RouterTestingModule.withRoutes(routes),HttpClientTestingModule,FormsModule,SharedModule,ServiceWorkerModule.register('', {enabled: false}),SocketIoModule.forRoot({ url: 'http://localhost:3333/api', options: { transports: ['websocket'], reconnection: true } })],
+        providers: [BggSearchService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,
+          DateTimeProvider,ScriptService,ModelsService,SwUpdate],
+        declarations: [AppComponent],
+        teardown: { destroyAfterEach: false },
     });
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
     fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     router.initialNavigation();
+
   });
 
 

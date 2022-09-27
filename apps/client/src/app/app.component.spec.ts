@@ -2,12 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 
 // 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
+    imports: [RouterTestingModule,ServiceWorkerModule.register('', {enabled: false})],
+    providers:[SwUpdate],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
