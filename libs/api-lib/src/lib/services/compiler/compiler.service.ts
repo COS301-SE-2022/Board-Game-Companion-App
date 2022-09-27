@@ -1410,6 +1410,8 @@ class parser extends CstParser
                     this.OPTION(() => {
                         this.SUBRULE(this.Field )
                     })
+                    this.SUBRULE(this.dotContinuation)
+                    
             }}
     ])
     });
@@ -1861,10 +1863,10 @@ function visitCards(cstOutput:CstNode)
                 switch(token.tokenType.name)
                 {
                     case "UserDefinedIdentifier":
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")), "async "+token.image+"(parameters){", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardActivation")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardActivation"))].join('');
-                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardUsable")), "case \""+token.image+"\":\n await"+token.image+"(parameters)\n", jsScript.slice(jsScript.indexOf("//cardUsable"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardEffect")), "async "+token.image+"(//cparameters){", jsScript.slice(jsScript.indexOf("//cardEffect"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardCondition")), "async "+token.image+"Cond(//cCparameters){", jsScript.slice(jsScript.indexOf("//cardCondition"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardActivation")), "case \""+token.image+"\":\n await this."+token.image+"(parameters)\nbreak\n", jsScript.slice(jsScript.indexOf("//cardActivation"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cardUsable")), "case \""+token.image+"\":\n await this."+token.image+"Cond(parameters)\nbreak\n", jsScript.slice(jsScript.indexOf("//cardUsable"))].join('');
                         
                         break;
                     case "tCards":
@@ -1880,7 +1882,9 @@ function visitCards(cstOutput:CstNode)
             switch(node.name)
                 {
                     case "nParameters":
-                        visitParams(node)
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cparameters")),getCode(node) , jsScript.slice(jsScript.indexOf("//cparameters"))].join('');
+                        jsScript = [jsScript.slice(0, jsScript.indexOf("//cCparameters")),getCode(node) , jsScript.slice(jsScript.indexOf("//cCparameters"))].join('');
+                        
                         break;
                     case "CardEffect":
                         visitEffect(node)
@@ -1891,13 +1895,11 @@ function visitCards(cstOutput:CstNode)
                 }
         }
     }
-    
+    jsScript=jsScript.replace('//cparameters', '');
+    jsScript=jsScript.replace('//cCparameters', '');
     
 }
-function visitParams(cstOutput:CstNode)
-{
-    //
-}
+
 function visitEffect(cstOutput:CstNode)
 {
     //
@@ -1911,6 +1913,7 @@ function visitEffect(cstOutput:CstNode)
 
         if(node.name)
             {
+                
                 visitPlayerStatements(node, "//cardEffect");
             }
 
@@ -2562,7 +2565,7 @@ function visitRCreateCard(cstOutput:CstNode, place:string)
         }
 
     }
-    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ')\n', jsScript.slice(jsScript.indexOf(place))].join('');
+    jsScript = [jsScript.slice(0, jsScript.indexOf(place)), ', this.State)\n', jsScript.slice(jsScript.indexOf(place))].join('');
          
 }
 function visitRCreateBoard(cstOutput:CstNode, place:string)
@@ -2701,22 +2704,13 @@ function visitRAddToArre(cstOutput:CstNode, place:string)
         {
             if(node.name == "Value")
             {
-                let i: keyof typeof node.children;
-                for (i in node.children) {
-                    const child = node.children[i];
-                    const tokeni = child[0] as unknown as IToken;
-                    if(tokeni.tokenType)
-                    {
-                        if(tokeni.tokenType.name == "UserDefinedIdentifier")
-                        {
-                            code = tokeni.image+code
-                        }
-                    }
-
-                }
+                
+                code = getCode(node)+code
+                        
+                
             }
         }
-        }
+    }
 
 
         

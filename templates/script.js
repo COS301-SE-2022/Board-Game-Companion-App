@@ -2,9 +2,10 @@ class cards
 {
     name = "";
     State = null
-    constructor(n)
+    constructor(n, s)
     {
         this.name = n;
+        this.State = s;
     }
     //cardEffect
     
