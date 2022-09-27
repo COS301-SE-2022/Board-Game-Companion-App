@@ -40,6 +40,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showFindCheck = true;
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
+  editorId!:Date;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
   count = 0
@@ -50,6 +51,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
+    this.editorId = new Date();
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
@@ -553,6 +555,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
   ngOnDestroy(): void {
     clearInterval(this.cursorCheckerTimer);    
+    this.codeEditor.destroy();
+    this.codeEditor.container.remove();
   }
 
   ngOnChanges(): void{
