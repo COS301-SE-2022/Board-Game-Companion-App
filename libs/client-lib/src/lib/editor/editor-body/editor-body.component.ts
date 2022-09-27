@@ -31,7 +31,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
   @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
   @ViewChild(EditorBodyVisualComponent) editorVisual: EditorBodyVisualComponent = new EditorBodyVisualComponent();
-  @ViewChild('anchor', {read: ViewContainerRef}) anchor !: ViewContainerRef;
   codeEditor!:ace.Ace.Editor;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -726,6 +725,52 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   remove(value:selection): void{
     this.highlight(value);
     this.cut();
+  }
+
+
+  updateProperty(event: any): void
+  {
+    const property = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    if(lines.length === 0)
+    {
+      const sc = "tileAttribute\n{\n" + "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value + "\n" +"}\nstate\n{\n}\n"
+      this.codeEditor.setValue(sc)
+    }
+    else
+    {
+      
+      const found = lines.find(element => element.includes(this.editorVisual.Properties[+property[3]].Property));
+      if(!found)
+      {
+        console.log(this.editorVisual.Properties[+property[3]])
+        let line = lines[+property[2]].split(/\s/)
+        line = line.filter((element) => {
+          return element !== '';
+        })
+      }
+      else
+      {
+        let line = lines[+property[2]].split(/\s/)
+        line = line.filter((element) => {
+          return element !== '';
+        })
+        switch(property[1])
+        {
+          case "name":
+            line[0] = "\t" + property[0]
+            lines[+property[2]] = line.join(" ")
+            break
+          case "value":
+            line[2] = "\t" + property[0]
+            lines[+property[2]] = line.join(" ")
+            break
+        }
+        this.codeEditor.setValue(lines.join("\n"))
+      }
+      
+
+    }
   }
 
   getEID()
@@ -1847,7 +1892,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           {
             const l = lines[j].replace(/\s/g, '')
             const le = l.split(/=/)
-            this.editorVisual.Properties.push({Property: le[0], Value: le[1]})
+            this.editorVisual.Properties.push({Property: le[0], Value: le[1], Line: j.toString()})
             this.editorVisual.listProperties.push(le[0])
           } 
           break

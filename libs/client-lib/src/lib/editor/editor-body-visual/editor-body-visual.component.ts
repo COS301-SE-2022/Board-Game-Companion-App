@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 
 
 @Component({
@@ -11,9 +11,10 @@ export class EditorBodyVisualComponent {
   endLoopIndex = 0
   playersLoopIndex = 0
   cardsLoopIndex = 0
+  @Output() propertyName = new EventEmitter<string>()
 
   Properties = [
-    {Property: "", Value: ""}
+    {Property: "", Value: "", Line: ""}
   ]
 
   listProperties = [
@@ -77,7 +78,8 @@ export class EditorBodyVisualComponent {
 
   addProperty()
   {
-    this.Properties.push({Property: "", Value: ""})
+    this.Properties.push({Property: "", Value: "", Line: ""})
+
   }
 
   removeProperty(i: number)
@@ -97,17 +99,31 @@ export class EditorBodyVisualComponent {
     this.Tiles.splice(i, 1)
   }
 
-  updateProperties(event: any, i:number)
+  updatePropertyName(event: any, i : number)
   {
-    if(this.listProperties[3 + i] == null && !this.listProperties.includes(event.target.value))
+    if(this.Properties[i].Value == '')
     {
-      this.listProperties.push(event.target.value)
+      this.Properties[i].Property = event.target.value
     }
     else
     {
-      this.listProperties[3 + i] = event.target.value
+      this.Properties[i].Property = event.target.value
+      this.propertyName.emit(event.target.value + " name " + this.Properties[i].Line + " " + i.toString())
     }
-    
+   
+  }
+
+  updatePropertyValue(event: any, i : number)
+  {
+    if(this.Properties[i].Property == '')
+    {
+      this.Properties[i].Value = event.target.value
+    }
+    else
+    {
+      this.Properties[i].Value = event.target.value
+      this.propertyName.emit(event.target.value + " value " + this.Properties[i].Line + " " + i.toString())
+    }
   }
 
   clear()

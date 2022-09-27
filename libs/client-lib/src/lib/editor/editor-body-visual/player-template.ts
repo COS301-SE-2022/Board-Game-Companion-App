@@ -18,7 +18,7 @@ import { Component, Input} from "@angular/core";
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
-                                    Action <input id = "paName" [value]="Players[Index].actionNames[i]"> <input *ngIf="Players[Index].actionParams[i][0] !== null" [value]="Players[Index].actionParams[i][0]"><input *ngIf="Players[Index].actionParams[i][0] === null" [value]="">
+                                    Action <input *ngIf="Players[Index].actionNames[i] !== undefined" id = "paName" [value]="Players[Index].actionNames[i]"><input *ngIf="Players[Index].actionNames[i] === undefined" id = "paName" [value]=""> <input *ngIf="Players[Index].actionParams[i][0] !== undefined" [value]="Players[Index].actionParams[i][0]"><input *ngIf="Players[Index].actionParams[i][0] === undefined" [value]="">
                                 </div>
                                 <button *ngIf="Actions.length > 1" (click)="removeAction(i)" id = "removeAction"><i class="fa-solid fa-circle-xmark"></i></button>
                             </summary>
@@ -74,6 +74,9 @@ export class PlayerTemplateComponent{
     addAction(){
         this.Actions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
         this.Conditions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
+        this.Players[this.Index].actionNames.push("")
+        this.Players[this.Index].actionParams.push("")
+        this.Players[this.Index].conditionParams.push("")
     }
 
     removeAction(i: number)
