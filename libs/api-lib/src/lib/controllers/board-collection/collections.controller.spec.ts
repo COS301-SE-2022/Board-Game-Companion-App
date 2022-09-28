@@ -1,4 +1,3 @@
-//import { createMock } from '@golevelup/ts-jest';
 import { Test, TestingModule } from "@nestjs/testing"
 import { user } from '../../models/general/user';
 import { CollectionsService } from '../../services/collection/collections.service';
@@ -42,7 +41,8 @@ describe('CollectionsController',()=>{
             removeBoardGame: jest.fn().mockImplementation((boardgame:string,name:string,owner:user)=>Promise.resolve(2)),
             removeCollectionById: jest.fn().mockImplementation((id:string)=>Promise.resolve(2)),
             removeCollection: jest.fn().mockImplementation((owner:user,name:string)=> Promise.resolve(2)),
-            getScripts: jest.fn().mockImplementation((id:string)=>Promise.resolve({
+            getScripts: jest.fn().mockImplementation((id:string)=>
+            Promise.resolve([{
               name: id,
               author: {name:"Mark", email:"MarkDavids@gmail.com"},
               boardgame: "Chess",
@@ -61,7 +61,8 @@ describe('CollectionsController',()=>{
               export: true,
               comments: [],
               source: {name:"fileName3", key:"key313", location:"filelocation3"}
-            }))
+            }]),
+            )
           }
         }
       ]
@@ -133,7 +134,8 @@ describe('CollectionsController',()=>{
 
   describe('getScripts', ()=>{
     it('should get all scripts', ()=>{
-      expect(controller.getScripts("ScriptId")).resolves.toEqual({
+      controller.getScripts("ScriptId").then(function(response){
+        expect(response.toString()).toEqual(([{
         name: "ScriptId",
         author: {name:"Mark", email:"MarkDavids@gmail.com"},
         boardgame: "Chess",
@@ -152,6 +154,7 @@ describe('CollectionsController',()=>{
         export: true,
         comments: [],
         source: {name:"fileName3", key:"key313", location:"filelocation3"}
+        }]).toString())
       })
     });
   });
