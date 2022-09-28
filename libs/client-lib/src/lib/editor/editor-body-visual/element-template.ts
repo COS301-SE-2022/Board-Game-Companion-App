@@ -4,9 +4,9 @@ import { Component, Input} from "@angular/core";
     selector: 'board-game-companion-app-element-template',
     styleUrls:['./editor-body-visual.component.scss'],
     template: `
-    <div  style = "display: flex;" id = "listItems" *ngFor = "let item of dest let j = index">
+    <div  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dest let j = index">
         <div id = "doArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'doWhile'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
         <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
@@ -96,17 +96,18 @@ import { Component, Input} from "@angular/core";
             </div>
         </div>
         <div class="container"  id = "codeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
-            <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
         <div class = "tfSection" *ngIf = "item.title === 'If'">
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
             <div *ngIf="dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
-                <board-game-companion-app-loop-template  style = "display: flex;" id = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
         </div>
     </div>
+    
     `
 })
 
