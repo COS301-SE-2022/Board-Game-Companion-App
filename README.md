@@ -67,14 +67,14 @@ The following are the presentation videos for the respectives demonstrations.
 
 ### Architectural Design
   - Demo 2: [ARCHITECTURAL_DESIGN_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
-  - Demo 4: : [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
  
 ### Coding Standards
   - Demo 2: [CODING_STANDARDS_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
   - Demo 3: [CODING_STANDARDS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
 
 ### User Manual
-  - Dem 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
+  - Demo 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
   - Demo 3: [USER_MANUAL_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
 
 ### Technical Installation Manuual
