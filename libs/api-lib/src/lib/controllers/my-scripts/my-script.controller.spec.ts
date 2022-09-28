@@ -6,6 +6,8 @@ import { ApiMyScriptController } from '../../controllers/my-scripts/my-script.co
 import { FileInterceptor } from '@nestjs/platform-express';
 import { status as stat} from '../../models/general/status';
 import { emptyEntity } from "../../models/general/entity";
+import { UploadedFile, UseInterceptors } from "@nestjs/common";
+import { any } from "@tensorflow/tfjs";
 
 
 jest.mock('../../services/compiler/compiler.service');
@@ -68,17 +70,7 @@ describe('ApiMyScriptController',()=>{
     it ('should release a script', ()=>{
       expect(controller.release("id",2,3,4,)).resolves.toEqual(true);
     });
-  });
-
-  // describe('removeBoardGame', ()=>{
-  //   it('should remove a board game', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     };
-  //     expect(controller.removeBoardGame("30 seconds","Collection4",newUser.name,newUser.email)).resolves.toEqual(2)
-  //   });
-  // });
+  }); 
 
   describe('removeMyScript', ()=>{
     it('should remove a collection by its id', ()=>{
@@ -86,50 +78,68 @@ describe('ApiMyScriptController',()=>{
     });
   });
 
-  // describe('addGameToCollection', ()=>{
-  //   it('should add a board game to a collection', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     }
-  //     expect(controller.addGameToCollection(newUser,"ChessCollection","Chess")).resolves.toEqual(true)
-  //   });
-  // }); 
+ describe('update', ()=>{
+  it('should get all the users scripts', ()=>{
+    expect(controller.update("string ID",true,"some description")).resolves.toEqual({
+      name:"Script12", 
+      author:{name:"user", email:"user@gmail.com"},
+      boardgame: "Monopoly",
+      description: "This is monopoly script",
+      version: {major: 2, minor:1, patch:3},
+      size: 28,
+      icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+      build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+      models:["Model1", "Model2", "Model3"],
+      iconSize: 8,//basescript 
+      created : new Date ("01-01-20"),
+      lastUpdated: new Date ("01-01-20"),
+      status: {value:0, message:""},
+      export: true, 
+      programStructure: {type: emptyEntity},
+      source: {name:"sourceFile", key:"sourceKey", location:"sourceLocation"},
+    });
+  });
+ });
 
-  // describe('getScripts', ()=>{
-  //   it('should get all scripts', ()=>{
-  //     controller.getScripts("ScriptId").then(function(response){
-  //       expect(response.toString()).toEqual(([{
-  //       name: "ScriptId",
-  //       author: {name:"Mark", email:"MarkDavids@gmail.com"},
-  //       boardgame: "Chess",
-  //       description: "This is a roots board game", 
-  //       version: {major:2, minor:8, patch:8},
-  //       size: 32, 
-  //       icon:{name:"thisIcon3",key:"icon80",location:"Iconlocation3"},
-  //       build:{name:"thisBuild",key:"key134",location:"thislocation3"},
-  //       models:["thisisaModel3", "thisisanothermodel3"],
-  //       iconSize:10, //basescript
-  //       previous: ["Script1.2.5"],
-  //       link:"www.thisisalink2.com",
-  //       dateReleased: new Date("18-02-16"), 
-  //       downloads: 8, 
-  //       lastDownload: new Date("20-05-22"),
-  //       export: true,
-  //       comments: [],
-  //       source: {name:"fileName3", key:"key313", location:"filelocation3"}
-  //       }]).toString())
-  //     })
-  //   });
-  // });
 
-  // describe('alreadyExists', ()=>{
-  //   it('should check if there is already a collection', ()=>{
-  //     const newUser: user ={
-  //       name: "Jennifer",
-  //       email: "jenniferaustin@gmail.com"
-  //     };
-  //     expect(controller.alreadyExists(newUser.name, newUser.email,"Collection20")).resolves.toEqual(true)
-  //   });
-  // });
+ describe('#icon',()=>{
+  it('should create a script', async ()=>{
+    
+    expect(controller.createScript("user1", "user1@gmail.com", "Script24", "Monopoly", "somee Description",any)).resolves.toEqual({
+      name:"Script12", 
+      author:{name:"author1", email:"author1@gmail.com"},
+      boardgame: "Monopoly",
+      description: "This is monopoly script",
+      version: {major: 2, minor:1, patch:3},
+      size: 28,
+      icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+      build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+      models:["Model1", "Model2", "Model3"],
+      iconSize: 8,//basescript 
+    });
+  });
+ });
+
+ describe('RetrieveAllScripts', ()=>{
+  it('should get all scripts', ()=>{
+  expect(controller.RetrieveAllScripts()).resolves.toEqual([{
+      name:"Script12", 
+      author:{name:"user", email:"user@gmail.com"},
+      boardgame: "Monopoly",
+      description: "This is monopoly script",
+      version: {major: 2, minor:1, patch:3},
+      size: 28,
+      icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+      build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+      models:["Model1", "Model2", "Model3"],
+      iconSize: 8,//basescript 
+      created : new Date ("01-01-20"),
+      lastUpdated: new Date ("01-01-20"),
+      status: {value:0, message:""},
+      export: true, 
+      programStructure: {type: emptyEntity},
+      source: {name:"sourceFile", key:"sourceKey", location:"sourceLocation"},
+  }]);
+  });
+ });
 })
