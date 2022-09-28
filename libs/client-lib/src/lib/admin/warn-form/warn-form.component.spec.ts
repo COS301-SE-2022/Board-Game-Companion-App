@@ -1,27 +1,24 @@
-import { ReportFormComponent } from './warn-form.component';
+import { WarnFormComponent } from './warn-form.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-import { CommentService } from '../../shared/services/comments/comment.service';
-import { ReportService } from '../../shared/services/reports/report.service';
-import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
-import { OAuthLogger, OAuthService, UrlHelperService, DateTimeProvider } from 'angular-oauth2-oidc';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { AdminService } from '../../shared/services/admin/admin.service';
+import { SocketIoModule } from 'ngx-socket-io';
 describe('ReportFormComponent', () => {
-  let component: ReportFormComponent;
-  let fixture: ComponentFixture<ReportFormComponent>;
+  let component: WarnFormComponent;
+  let fixture: ComponentFixture<WarnFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReportFormComponent,NotificationComponent],
-      providers: [CommentService,ReportService,OAuthLogger,OAuthService,
-        GoogleAuthService,DateTimeProvider,UrlHelperService],
-      imports: [HttpClientTestingModule,FormsModule]
+      declarations: [WarnFormComponent,NotificationComponent],
+      providers: [AdminService],
+      imports: [HttpClientTestingModule,FormsModule,SocketIoModule.forRoot({ url: 'https://board-game-companion-app.herokuapp.com/api/', options: { transports: ['websocket'], reconnection: true } })]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportFormComponent);
+    fixture = TestBed.createComponent(WarnFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
