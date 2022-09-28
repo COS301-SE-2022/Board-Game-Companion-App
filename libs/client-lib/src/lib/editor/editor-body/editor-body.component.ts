@@ -782,7 +782,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   {
     const property = event.split(/\s/)
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    if(lines.length === 0)
+    if(this.codeEditor.getValue().length === 0)
     {
       const sc = "tileAttribute\n{\n" + "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value + "\n" +"}\nstate\n{\n}\n"
       this.codeEditor.setValue(sc)
