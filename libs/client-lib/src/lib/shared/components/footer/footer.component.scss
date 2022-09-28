@@ -5,3 +5,16 @@ footer{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
 }
+
+@media (max-width: 640px)
+{
+    #c{
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    #b{
+        display: none;
+    }
+}
