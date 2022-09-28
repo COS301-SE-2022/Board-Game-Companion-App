@@ -16,7 +16,6 @@ describe('Test service',()=>{
   it('create service',()=>{
     expect(service).toBeTruthy();
   });
-
   it('constructor and one line functions',()=>{
     service = new StorageService();
     expect(service.getSupported()).toBeTruthy();
@@ -45,4 +44,5 @@ describe('Test service',()=>{
     
     await expect(service.getById('download-scripts','09876543321002')).resolves.toBeUndefined();
   });
+
 });

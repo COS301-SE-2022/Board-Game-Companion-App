@@ -204,25 +204,7 @@ describe('AutomataScriptController',()=>{
         comments: [],
         source: {name:"Source3", key:"key2323", location:"location254"}
       })),
-      // remove: jest.fn().mockImplementation((id:string)=>
-      // Promise.reject({
-      //   name: id,
-      //   author: {name:"David", email:"Davidjones@gmail.com"},
-      //   boardgame: "monopoly",
-      //   description: "This is a monopoly board game", 
-      //   version: {major:8, minor:8, patch:8},
-      //   size: 32, 
-      //   icon:{name:"thisIcon2",key:"icon890",location:"Iconlocation2"},
-      //   build:{name:"thisBuild",key:"key1234",location:"thislocation2"},
-      //   models:["thisisaModel2", "thisisanothermodel2"],
-      //   iconSize:10, //baseScript
-      //   dateReleased: new Date("11-02-16"),
-      //   downloads: 5,
-      //   lastDownload: new Date("10-09-21"),
-      //   export: false,
-      //   comments: [],
-      //   source: {name:"Source3", key:"key2323", location:"location254"}
-      // })),
+      
       checkVersion: jest.fn().mockReturnValue({result:true}),
       checkForUpdatesForOne: jest.fn().mockImplementation((id:string) =>
         Promise.resolve("This "+id+" is found!")
