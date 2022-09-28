@@ -2,16 +2,16 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Comment } from '../../schemas/comment.schema';
 import { Like } from '../../schemas/like.schema';
-import { ModelsService } from './models.service';
+import { ModelsService } from '../models/models.service';
 
 describe('CommentService', () => {
-  let service: ModelsService;
+   let service: ModelsService;
 
-  const mockRepository = {
-    find() {
-      return {};
-    }
-  };
+   const mockRepository = {
+     find() {
+       return {};
+     }
+   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

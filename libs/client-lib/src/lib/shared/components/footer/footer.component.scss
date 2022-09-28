@@ -5,3 +5,9 @@ footer{
     background-color: $Pcolour-2;
     color: $Pcolour-3;
 }
+
+@media(max-width:639px){
+    footer{
+        display:none;
+    }
+}
