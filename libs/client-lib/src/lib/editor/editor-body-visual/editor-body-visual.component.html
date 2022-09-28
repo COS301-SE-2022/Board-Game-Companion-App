@@ -26,10 +26,10 @@
                     <button (click)="removeProperty(i)" class = "mr-2" id = "removeTile"><i class="fa-solid fa-circle-xmark"></i></button>
                 </td>
                 <td>
-                    <input (change)="updateProperties($event, i)" [value] = "property.Property">
+                    <input (change)="updatePropertyName($event, i)" [value] = "property.Property">
                 </td>
                 <td>
-                    <input [value] = "property.Value">
+                    <input (change)="updatePropertyValue($event, i)" [value] = "property.Value">
                 </td>
             </tr>
         </tbody>

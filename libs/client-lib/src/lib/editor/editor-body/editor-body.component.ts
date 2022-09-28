@@ -31,7 +31,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   @Output() newProgramStructureEvent = new EventEmitter<entity>();
   @Output() cursorChangeEvent = new EventEmitter<ace.Ace.Point>();
   @ViewChild(EditorBodyVisualComponent) editorVisual: EditorBodyVisualComponent = new EditorBodyVisualComponent();
-  @ViewChild('anchor', {read: ViewContainerRef}) anchor !: ViewContainerRef;
   codeEditor!:ace.Ace.Editor;
   themeEditor = "Dracula";
   @Input()scriptId = "";
@@ -726,6 +725,107 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   remove(value:selection): void{
     this.highlight(value);
     this.cut();
+  }
+
+  removeTiles(event : any) : void
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    const index = lines.findIndex((element) => element.includes("createBoard("))
+    const n = lines[index].match(/\d+/)
+    if(n != null)
+    {
+      lines[index] = "\tcreateBoard(" + (+n - 1) + ")"
+      this.codeEditor.setValue(lines.join("\n"))
+    }
+    
+  }
+
+  addTiles(event : any) : void
+  {
+    if(!this.codeEditor.getValue().includes("createBoard("))
+    {
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      for(let j = 0; j < lines.length; j++)
+      {
+        if(lines[j].includes("state") && lines[j].includes("{"))
+        {
+          lines.splice(j+1,0, "\tcreateBoard(" + event + ")")
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        }
+        else if(lines[j].includes("state") && lines[j + 1].includes("{"))
+        {
+          lines.splice(j+2,0, "\tcreateBoard(" + event + ")")
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        }
+      }
+    }
+    else
+    {
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      const index = lines.findIndex((element) => element.includes("createBoard("))
+      lines[index] = "\tcreateBoard(" + event + ")"
+      this.codeEditor.setValue(lines.join("\n"))
+    }
+  }
+
+  removeProperty(event: any): void
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    lines.splice(+event,1)
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
+
+  updateProperty(event: any): void
+  {
+    const property = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    if(this.codeEditor.getValue().length === 0)
+    {
+      const sc = "tileAttribute\n{\n" + "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value + "\n" +"}\nstate\n{\n}\n"
+      this.codeEditor.setValue(sc)
+    }
+    else
+    {
+      
+      if(this.editorVisual.Properties[+property[3]].Line == '')
+      {
+        if(this.editorVisual.Properties[+property[3]-1] !== undefined)
+        {
+          lines.splice(+this.editorVisual.Properties[+property[3]-1].Line + 1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        }
+        else
+        {
+          const index = lines.findIndex((element) => element.includes("{"))
+          lines.splice(index+1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        }
+        this.codeEditor.setValue(lines.join("\n"))
+      }
+      else
+      {
+        let line = lines[+property[2]].split(/\s/)
+        line = line.filter((element) => {
+          return element !== '';
+        })
+        switch(property[1])
+        {
+          case "name":
+            line[0] = "\t" + property[0]
+            lines[+property[2]] = line.join(" ")
+            break
+          case "value":
+            line[0] = "\t" + line[0]
+            line[2] = property[0]
+            lines[+property[2]] = line.join(" ")
+            break
+        }
+        this.codeEditor.setValue(lines.join("\n"))
+      }
+      
+
+    }
   }
 
   getEID()
@@ -1847,7 +1947,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           {
             const l = lines[j].replace(/\s/g, '')
             const le = l.split(/=/)
-            this.editorVisual.Properties.push({Property: le[0], Value: le[1]})
+            this.editorVisual.Properties.push({Property: le[0], Value: le[1], Line: j.toString()})
             this.editorVisual.listProperties.push(le[0])
           } 
           break
@@ -1891,7 +1991,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -2048,7 +2148,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
                 } 
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -2335,7 +2435,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2479,7 +2579,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
           {
             const l = lines[j].split(/\s+/)
             //Set
-            if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2499,7 +2599,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfCard, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2648,7 +2748,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
               this.letCreation(l, openIfEndGame, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=")
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
