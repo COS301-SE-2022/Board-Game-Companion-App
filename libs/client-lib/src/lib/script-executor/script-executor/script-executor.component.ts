@@ -85,6 +85,8 @@ export class ScriptExecutorComponent implements OnInit {
       const now = new Date();
       session.push(now.toLocaleDateString())
       session.push(this.current.boardgame)
+      session.push(this.history)
+      session.push(this.playerAtHistory)
       localStorage.setItem(name, JSON.stringify(session))
     }
     else
@@ -106,6 +108,8 @@ export class ScriptExecutorComponent implements OnInit {
       const now = new Date();
       session.push(now.toLocaleDateString())
       session.push(this.current.boardgame)
+      session.push(this.history)
+      session.push(this.playerAtHistory)
       localStorage.setItem(name, JSON.stringify(session))
     }
 

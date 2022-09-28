@@ -17,10 +17,8 @@ import * as ace from 'ace-builds/src-noconflict/ace';
 ace.config.set('basePath', '/assets/ui/');
 ace.config.set('modePath', '');
 ace.config.set('themePath', '');
-import 'brace/ext/language_tools';
 import 'brace/mode/json';
 import { Router } from '@angular/router';
-
 describe('EditorToolBarComponent', () => {
   let component: EditorToolBarComponent;
   // let fixture: ComponentFixture<EditorToolBarComponent>;

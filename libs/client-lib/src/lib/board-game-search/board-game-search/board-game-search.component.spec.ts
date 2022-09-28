@@ -17,7 +17,7 @@ export const mockMostActive : MostActive[]  = [{
 
 
 const mockStorage: any = {recentlyVisited:JSON.stringify(['367498'])};
-describe('AdminComponent', () => {
+describe('Board Game Search Component', () => {
   let component: BoardGameSearchComponent;
   let fixture: ComponentFixture<BoardGameSearchComponent>;
   let service: BggSearchService;
@@ -70,7 +70,7 @@ describe('AdminComponent', () => {
     expect(component.right).toBe(3);
     expect(component.size).toBe(1);
     expect(component.boardsPerPage).toBe(14);
-    expect(component.searchValue).toBe("chess");
+    expect(component.searchValue).toBe("");
     expect(component.exactMatch).toBe(false);
   });
   jest.mock('../bgg-search-service/bgg-search.service');

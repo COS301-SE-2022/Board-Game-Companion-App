@@ -1,4 +1,4 @@
-import { async, ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { AutomataScriptComponent } from './automata-scripts.component';
@@ -39,6 +39,7 @@ describe('AutomataScriptComponent', () => {
     icon: {name:'',location:'',key:''},
     build: {name:"",location:"",key:""},
     models: [],
+    link: "http://localhost:3333/api/scripts/example",
   }];
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,14 +53,6 @@ describe('AutomataScriptComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
-  // jest.mock('../../google-login/GoogleAuth/google-auth.service');
-  // GoogleAuthService.prototype.isLoggedIn = function(){
-  //   return true;
-  // }
-  // GoogleAuthService.prototype.signOut = function(){
-  //   return true;
-  // }
 
   it('should create',() => {
     expect(component).toBeTruthy();
