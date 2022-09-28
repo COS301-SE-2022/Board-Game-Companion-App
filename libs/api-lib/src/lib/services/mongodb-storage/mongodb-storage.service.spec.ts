@@ -4,12 +4,24 @@ import { File, FileDocument } from '../../schemas/file.schema';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { user } from '../../models/general/user';
+import { upload } from '../../models/general/upload';
 describe('MongoDbStorageService', () => {
    let service: MongoDbStorageService;
    let model: Model<FileDocument>;
     const user1: user ={
         name:"user1", 
         email: "user1@tuks.co.za",
+    };
+
+    const mockFileDoc= (mock?:Partial<File>): Partial<FileDocument>=>({
+        name: mock?.name || "myFile",
+        mimeType: mock?.mimeType || ".json",
+        data: mock?.data|| "someData"
+    });
+
+    const myUpload : upload ={
+        location: "iconLocation",
+        key: "iconKey" 
     };
 
    beforeEach(async () => {
@@ -46,10 +58,6 @@ describe('MongoDbStorageService', () => {
     ],
     }).compile();
 
-    const intModule: TestingModule = await Test.createTestingModule({
-
-    }).compile();
-
     service = module.get<MongoDbStorageService>(MongoDbStorageService);
     model =module.get<Model<FileDocument>>(getModelToken(File.name));
    });
@@ -59,21 +67,35 @@ describe('MongoDbStorageService', () => {
         expect(model).toBeDefined();
     });
 
-    it('should get a file', async ()=>{
-        expect(await service.retrieve("key123")).toEqual({
-            name: "key123",
-            mimeType: ".json",
-            data: "File data"
+    describe('retrieve', ()=>{
+        it('should retrive the storage service', ()=>{
+            expect(service.retrieve("key")).resolves.toEqual(mockFileDoc)
+        })
+    });
+    describe('upload', ()=>{
+        it('should upload the storage', ()=>{
+            expect(service.upload("script12", "script", "data")).resolves.toEqual(myUpload)
         })
     });
 
-    // it('should a copy a file', async ()=>{
-    //         expect(await service.copy("sourceKey")).toEqual({
-    //             name: "sourceKey",
-    //             mimeType: ".json",
-    //             data: "File data"
-    //         })
-        
-    // });
+    describe('update', ()=>{
+        it('should update the storage', ()=>{
+            expect(service.update("scrp1123", "data")).resolves.toEqual(true);
+        });
+    });
 
+    describe('remove', ()=>{
+        it('should remove the storage', ()=>{
+            expect(service.remove("scrp1123")).resolves.toEqual(true);
+        });
+    });
+
+    describe('copy', ()=>{
+        it('should copy the storage', ()=>{
+            expect(service.copy("scrp1123")).resolves.toEqual(myUpload);
+        });
+    });
+
+    
+  
 });
