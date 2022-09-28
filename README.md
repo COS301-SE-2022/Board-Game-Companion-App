@@ -61,11 +61,9 @@ The following are the presentation videos for the respectives demonstrations.
 ## Documentation:
 ### Software Requirements Specification
 
-<ul> 
-  <li>Demonstration 1 SRS_VERSION_1: [SRS VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)</li>
-  <li>Demonstration 2 SRS_VERSION_2: [SRS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)</li>
-  <li>Demonstration :[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)</li>
-</ul>
+ - Demonstration 1 SRS_VERSION_1: [SRS_VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
+ - Demonstration 2 SRS_VERSION_2: [SRS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
+ - Demonstration 3 SRS_VERSION_3: [SRS_VERSION_3](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
 
 ## Demo 2 Documentation: 
 ### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
