@@ -37,28 +37,52 @@ describe('AutomataService', ()=>{
     location: "thisLocation"
   };
 
-  const mockAutomata =( 
-    name="Script12", 
-    author={name:"author1", email:"author1@gmail.com"},
-    boardgame= "Monopoly",
-    description= "This is monopoly script",
-    version= {major: 2, minor:1, patch:3},
-    size= 28,
-    icon= {name:"iconFile", key:"iconKey", location:"iconLocation"},
-    build= {name:"buildFile", key:"iconKey", location:"iconLocation"},
-    models=["Model1", "Model2", "Model3"],
-    iconSize= 8,//basescript 
-    previous= ["Script10","Script11", "Script09"],
-    link= "www.somelink.com", 
-    dateReleased= new Date("02-09-21"),
-    downloads= 11,
-    lastDownload= new Date("13-01-22"),
-    //export= true, 
-    comments= [],
-    rating= 4,
-    source= mySource,
-   ) : AutomataScript =>({name, author, boardgame, description, version, size, icon, build, models,iconSize, previous, link,dateReleased, downloads,lastDownload, export:true,comments,rating,source});
+  const oldVersion: version={major: 1, minor:0, patch:3};
 
+  const newVersion: version={major: 2, minor:1, patch:3}; 
+
+  const mockAutomata : AutomataScript = {
+    name:"Script12", 
+    author:{name:"author1", email:"author1@gmail.com"},
+    boardgame: "Monopoly",
+    description: "This is monopoly script",
+    version: {major: 2, minor:1, patch:3},
+    size: 28,
+    icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+    build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+    models:["Model1", "Model2", "Model3"],
+    iconSize: 8,//basescript 
+    previous: ["Script10","Script11", "Script09"],
+    link: "www.somelink.com", 
+    dateReleased: new Date("02-09-21"),
+    downloads: 11,
+    lastDownload: new Date("13-01-22"),
+    export: true, 
+    comments: [],
+    rating: 4,
+    source: mySource,
+  }
+
+  const mockOld : OldScript ={
+    name:"Script10", 
+    author:{name:"author1", email:"author1@gmail.com"},
+    boardgame: "Monopoly",
+    description: "This is monopoly script",
+    version: {major: 1, minor:0, patch:3},
+    size: 28,
+    icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+    build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+    models:["Model1", "Model2", "Model3"],
+    iconSize: 8,//basescript
+    previous: ["Script09"],
+    dateReleased: new Date("02-07-17"),
+    downloads: 11,
+    lastDownload: new Date("13-09-17"),
+    export: true, 
+    comments: [],
+    rating: 3,
+    source: {name:"sourceFile", key:"scrp4555", location:"./desktop/scripts/old"}, 
+  }
   const mockAutDoc = (mock?: Partial<AutomataScript>): Partial<AutomataScriptDocument> => ({
     name: mock?.name || "Script12", 
     author: mock?.author || {name:"author1", email:"author1@gmail.com"},
@@ -81,21 +105,21 @@ describe('AutomataService', ()=>{
     source:mock?.source||mySource,
   });
 
-  const MockDownloaded =( 
-    name="Script12", 
-    author={name:"author1", email:"author1@gmail.com"},
-    boardgame= "Monopoly",
-    description= "This is monopoly script",
-    version= {major: 2, minor:1, patch:3},
-    size= 28,
-    icon= {name:"iconFile", key:"iconKey", location:"iconLocation"},
-    build= {name:"buildFile", key:"iconKey", location:"iconLocation"},
-    models=["Model1", "Model2", "Model3"],
-    iconSize= 8,//basescript 
-    owner= userAuth,
-    link= "thisLink.com",
-    dateDownloaded= new Date("03-04-21"),
-   ): DownloadScript =>({name, author, boardgame, description, version, size, icon, build, models,iconSize, owner, link,dateDownloaded});
+  const MockDownloaded : DownloadScript ={
+    name:"Script12", 
+    author:{name:"author1", email:"author1@gmail.com"},
+    boardgame: "Monopoly",
+    description: "This is monopoly script",
+    version: {major: 2, minor:1, patch:3},
+    size: 28,
+    icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
+    build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
+    models: ["Model1", "Model2", "Model3"],
+    iconSize: 8,//basescript 
+    owner: userAuth,
+    link: "thisLink.com",
+    dateDownloaded: new Date("03-04-21"),
+  }
   
   beforeEach(async ()=>{
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -104,9 +128,11 @@ describe('AutomataService', ()=>{
         {
           provide: getModelToken(AutomataScript.name), 
           useValue:{
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
-            find: jest.fn(),
+            new: jest.fn(),
+            constructor: jest.fn(),
+            find: jest.fn(()=>{
+              return mockAutomata
+            }),
             findOne: jest.fn(),
             findById: jest.fn(),
             findByIdAndRemove: jest.fn(),
@@ -115,26 +141,22 @@ describe('AutomataService', ()=>{
         {
           provide:getModelToken(OldScript.name), 
           useValue:{
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
-            find: jest.fn(),
-            findById: jest.fn().mockResolvedValue(mockAutomata()),
+            new: jest.fn(),
+            constructor: jest.fn(),
+            find: jest.fn(()=>{
+              return mockOld
+            }),
+            findById: jest.fn(),
             update: jest.fn(),
           }
         },
         {
           provide: getModelToken(DownloadScript.name),
-          useValue: {
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
-            
-          }
+          useValue: {}
         },
         {
           provide: getModelToken(NeuralNetwork.name),
           useValue: {
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
             find: jest.fn(),
             findOne: jest.fn(),
             findByIdAndRemove: jest.fn(),
@@ -148,8 +170,6 @@ describe('AutomataService', ()=>{
         {
           provide: getModelToken(File.name),
           useValue: {
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
             find: jest.fn(),
             findOne: jest.fn(),
             findByIdAndRemove: jest.fn(),
@@ -163,8 +183,6 @@ describe('AutomataService', ()=>{
         {
           provide: getModelToken(DownloadScript.name),
           useValue: {
-            new: jest.fn().mockResolvedValue(mockAutomata()),
-            constructor: jest.fn().mockResolvedValue(mockAutomata()),
             find: jest.fn(),
             findOne: jest.fn(),
             findByIdAndRemove: jest.fn(),
@@ -198,115 +216,70 @@ describe('AutomataService', ()=>{
     jest.clearAllMocks();
   });
 
-  it('should return all scripts', async()=>{
-    jest.spyOn(automataModel, 'find').mockReturnValue(([mockAutomata]) as any);
-        const response = await service.getAll();
-        expect(response).toEqual([mockAutomata]);
+  describe('getAll', ()=>{
+    it('should return all scripts', async()=>{
+      expect(service.getAll()).resolves.toEqual([mockAutomata])
+    });
   });
 
-  it('should return all scripts by game id', async()=>{
-    jest.spyOn(automataModel, 'find').mockReturnValue(([mockAutomata]) as any);
-        const response = await service.getByGame("Monopoly");
-        expect(response).toEqual([mockAutomata]);
+  describe('getAllOld', ()=>{
+    it('should return all old scripts', async()=>{
+      expect(service.getAllOld()).resolves.toEqual([mockOld])
+    });
   });
 
-  it('should get one script by id', async () => {
-    jest.spyOn(automataModel, 'findOne').mockReturnValueOnce(
-      createMock<Query<AutomataScriptDocument, AutomataScriptDocument>>({
-        exec: jest
-          .fn()
-          .mockResolvedValueOnce(mockAutDoc({ name: 'Script12' })),
-      }) as any,
-    );
-      const findMockAut = mockAutomata('Script12');
-      jest.spyOn(service, 'getScriptById').mockImplementation(
-      createMock<Query<AutomataScriptDocument, AutomataScriptDocument>>({
-        exec: jest.fn().mockResolvedValueOnce(mockAutDoc({ name: 'Script12' })),})as any,);
+  describe('getByGame', ()=>{
+    it('should return a game', async()=>{
+      expect(service.getByGame("some ID")).resolves.toEqual(mockAutomata);
+    });
+  });
 
+  describe('download', ()=>{
+    it('should download a script', async()=>{
+      expect(service.download("some ID", userAuth)).resolves.toEqual(MockDownloaded);
+    });
+  });
+ 
+  describe('getOldVersions', ()=>{
+    it('should get versions of the older scripts', async()=>{
+      expect(service.getOldVersions(["Script10"])).resolves.toEqual([mockOld])
+    });
+  });
 
-     const result = service.getByGame("Script12").then(function(response){
-      expect(response.toString()).toEqual(([{
-        name:"Script12", 
-      author:{name:"author1", email:"author1@gmail.com"},
-      boardgame: "Monopoly",
-      description: "This is monopoly script",
-      version: {major: 2, minor:1, patch:3},
-      size: 28,
-      icon: {name:"iconFile", key:"iconKey", location:"iconLocation"},
-      build: {name:"buildFile", key:"iconKey", location:"iconLocation"},
-      models:["Model1", "Model2", "Model3"],
-      iconSize:8,//basescript 
-      previous: ["Script10","Script11", "Script09"],
-      link: "www.somelink.com", 
-      dateReleased: new Date("02-09-21"),
-      downloads: 11,
-      lastDownload: new Date("13-01-22"),
-      export: true, 
-      comments: [],
-      rating: 4,
-      source: mySource,
-      }]).toString());
-      expect(findMockAut).toBeDefined();
-      expect(findMockAut).toBeTruthy();
-      expect(findMockAut).toContainEqual(result);
+  describe('getAutomataScript', ()=>{
+    it('should get specified automata', async()=>{
+      expect(service.getAutomataScript("script12", userAuth)).resolves.toEqual(mockAutomata)
+    });
+  });
+
+  describe('addComment', ()=>{
+    it('should add a comment', async()=>{
+      expect(service.addComment).toBeTruthy();
     })
-  })
+  });
 
-  it('should download script', async ()=>{
-    const thisUser: user ={
-      name:"author1", email:"author1@gmail.com"
-    }
-    expect(service.download("Script12",thisUser)).resolves.toEqual(MockDownloaded);
-  })
+  describe('getScriptById', ()=>{
+    it('should get specified script', async()=>{
+      expect(service.getScriptById("some ID")).resolves.toEqual(mockAutomata);
+    });
+  });
 
-  it('should check for updates', async()=>{
-    const result = jest.spyOn(automataModel,'find')
-    expect(result).toBeDefined();
-    
-  })
+  describe('remove', ()=>{
+    it('should remove automata scriots', async()=>{
+      expect(service.remove("some ID")).resolves.toBeDefined()
+    });
+  });
 
-  it('should check for the version', async()=>{
-    const oldV : version ={
-      major: 2,
-      minor: 3,
-      patch: 4,
-    };
+  describe('checkVersion', ()=>{
+    it('should check for version type', ()=>{
+      expect(service.checkVersion(oldVersion,newVersion)).toEqual(true)
+    });
+  });
 
-    const newV: version ={
-      major: 3,
-      minor: 1,
-      patch: 0,
-    };
-
-      jest.spyOn(service, 'checkVersion').mockImplementation((oldV:version,newV:version )=>{
-        expect(oldV).toHaveProperty("major"); 
-        expect(newV).toHaveProperty("major"); 
-        if (newV.major < oldV.major)
-        {return false}
-        else{
-          if(newV.major === oldV.major){
-            if(newV.minor < oldV.minor){
-              return false
-            }
-            else{
-              if(newV.minor === oldV.minor){
-                if(newV.patch <= oldV.patch){
-                  return false
-                }
-              }
-            }
-          }
-      }});
-
-        expect(oldV).toBeDefined();
-        expect(newV).toBeDefined();
-        try{
-          const respone =await service.checkVersion(oldV,newV)
-          expect(respone).toEqual(true)
-        }
-        catch(e){
-          expect(false).toEqual(false)
-        }
+  describe('checkForUpdatesForOne', ()=>{
+    it('should check for updated version', async()=>{
+      expect(service.checkForUpdatesForOne("some ID")).resolves.toEqual("This is the newest version")
+    });
   });
 })
 
