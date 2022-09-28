@@ -2,7 +2,6 @@ import { HttpService } from '@nestjs/axios';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model, Query } from 'mongoose';
-import { createMock } from '@golevelup/ts-jest';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
 import { DownloadScript, DownloadScriptDocument } from '../../schemas/download-script.schema';
 import { FileDocument, File } from '../../schemas/file.schema';
@@ -12,8 +11,9 @@ import { ModelsService } from '../models/models.service';
 import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 import { DownloadsService } from './downloads.service';
 import { user } from '../../models/general/user';
-import { NonNullableFormBuilder } from '@angular/forms';
 import { upload } from '../../models/general/upload';
+import { version } from '../../models/general/version';
+import { update } from '../../models/general/update';
 
 describe('DownloadsService', () => {
   let service: DownloadsService;
@@ -30,6 +30,13 @@ describe('DownloadsService', () => {
     name: "Beyonce", 
     email: "BeyonceKnowles@gmail.com"
   }
+
+  const authUser: user ={
+    name:"author1" ,
+    email: "author1@gmail.com",
+  }
+
+  const myVersion: version = {major: 2, minor:1, patch:3}
 
   const mockDownload : DownloadScript = {
     name:"Script12", 
@@ -69,35 +76,20 @@ describe('DownloadsService', () => {
     source: {name:"sourceFile", key:"src123", location:"thisLcation"}
   };
     
-  const mockDownloadDoc = (mock?: Partial<DownloadScript>): Partial<DownloadScriptDocument> => ({
-    //_id: mock?.id || 'a uuid',
-    name: mock?.name || "Script12", 
-    author: mock?.author || {name:"author1", email:"author1@gmail.com"},
-    boardgame: mock?.boardgame || "Monopoly",
-    description: mock?.description || "This is monopoly script",
-    version: mock?.version || {major: 2, minor:1, patch:3},
-    size: mock?.size || 28,
-    icon: mock?.icon || {name:"iconFile", key:"iconKey", location:"iconLocation"},
-    build: mock?.build || {name:"buildFile", key:"iconKey", location:"iconLocation"},
-    models: mock?.models|| ["Model1", "Model2", "Model3"],
-    iconSize: mock?.iconSize || 8,//basescript 
-    owner: mock?.owner || newUser,
-    link : mock?.link || 'www.link.com',
-    dateDownloaded: mock?.dateDownloaded || new Date("13-09-20"),
-  });
-
   const myUpload : upload ={
     location: "iconLocation",
     key: "iconKey" 
   };
 
+  const myUpdate : update ={
+    oldId: "oldID",
+    newId: "newID"
+  }
+
   const myNeural : NeuralNetwork={
     creator: newUser,
     name: "Script12",
     created: new Date("29-01-19"),
-    accuracy: 60,
-    loss: 10,
-    type: "script",
     labels: [],
     min: [1,2],
     max: [8,9],
@@ -217,75 +209,45 @@ describe('DownloadsService', () => {
     jest.clearAllMocks();
   });
   
-  it('get downloaded scripts by Id', async()=>{
-      jest.spyOn(downloadsModel, 'findById').mockReturnValueOnce(
-        createMock<Query<DownloadScriptDocument, DownloadScriptDocument>>({
-          exec: jest
-            .fn()
-            .mockResolvedValueOnce(
-              mockDownloadDoc({ name: "Script12" })),
-        }) as any,
-      );
-      const foundScript = await service.retrieveById('Script12');
-      expect(JSON.stringify(foundScript)).toEqual(JSON.stringify(mockDownload));
+  describe('alreadyDownloaded', ()=>{
+    it('should check for already downloaded scripts', async()=>{
+      expect(service.alreadyDownloaded(newUser,authUser, "script12",myVersion )).resolves.toEqual(true)
+    });
+  });
+ 
+  describe('update', ()=>{
+    it('should update the downloads', async()=>{
+      expect(service.update(myUpdate)).resolves.toEqual(mockDownload)
+    });
   });
 
-  it('should get the users downloads', async()=>{
-    const foundDownload = await service.getMyDownloads(newUser);
-    expect(JSON.stringify(foundDownload)).toEqual(JSON.stringify(mockDownload));
+  describe('getDownloadInfo', ()=>{
+    it('should return download information', async()=>{
+      expect(service.getDownloadInfo("some ID")).resolves.toEqual(mockScript)
+    });
   });
 
-  it('should get download information', async()=>{
-    const foundInfo = await service.getDownloadInfo("Script12");
-    if (foundInfo === undefined || foundInfo === null){
-      expect(JSON.stringify(foundInfo)).toBeNull();
-    }
-    else{
-      expect(JSON.stringify(foundInfo)).toEqual(JSON.stringify(mockScript));
-    }
+  describe('getMyDownloads', ()=>{
+    it('should get all downloads', async()=>{
+      expect(service.getMyDownloads(newUser)).resolves.toEqual([mockDownload])
+    });
   });
 
-  it('should update an old script', async()=>{
-      const updateThis = await service.update({oldId:"Script12",newId:"Script12"});
-      
-      expect(updateThis).toEqual(mockDownload);
-      
-      const newScript = await automataModel.findById("Script12");
+  describe('getAll', ()=>{
+    it('should get all downloads', async()=>{
+      expect(service.getAll()).resolves.toEqual([mockDownload])
+    });
+  }); 
 
-      jest.spyOn(newScript, 'save')
-
-      // if(old === undefined || newScript === undefined || old === null || newScript === null){
-      //   expect(old).toBeNull();
-      //   expect(newScript).toBeNull();
-      // }
-      // expect(old).toBeDefined();
-      // expect(newScript).toBeDefined();
-      // expect(old.description).toEqual(newScript.description);
-      // expect(old.version.major).toEqual(newScript.version.major);
-      // expect(old.version.minor).toEqual(newScript.version.minor);
-      // expect(old.version.patch).toEqual(newScript.version.patch);
-      // expect(old.size).toEqual(newScript.size);
-      //old.link = newScript._id;
-      //expect(old.link).toEqual(newScript._id);
-     
-      // const buildCopy = await storageService.copy(newScript.build.key);
-      // expect(buildCopy).toBeDefined(); 
-      //expect(old.build.key).toEqual(buildCopy.key);
-      //expect(old.build.location).toEqual(buildCopy.location);
-
-      //for(let x=0; x< old.models.length; x++){
-        //const value = old.models;
-        //const model = await modelService.removeById(value);
-        //expect(model).toBeDefined();
-
-        // if(model !== null || model !== undefined){
-        //   expect(storageService.remove(model.model.key)).toBeDefined();
-        //   expect(storageService.remove(model.weights.key)).toBeDefined();
-        // }
-      //}
-
-      
+  describe('retrieveById', ()=>{
+    it('should get a download by ID', async()=>{
+      expect(service.retrieveById("some ID")).resolves.toEqual(mockDownload)
+    });
   });
 
-
+  describe('removeScript', ()=>{
+    it('should remove a script', async()=>{
+      expect(service.removeScript("some ID")).resolves.toBeDefined();
+    })
+  });
 });
