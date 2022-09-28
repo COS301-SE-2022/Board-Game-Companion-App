@@ -15,6 +15,7 @@ import { AlertService } from '../alert/alert.service';
 import { SocketGateway } from '../socket/socket.gateway';
 import { alertType } from '../../models/general/alertType';
 import { Alert, AlertDocument } from '../../schemas/alert.schema';
+import { userSearch } from '../../models/general/userSearch';
 
 
 /*************************************************unit test**********************************************/
@@ -37,6 +38,16 @@ describe('AlertService', ()=>{
     name: "user1",
     email: "user1@gmail.com"
   };
+
+  const userSearch: userSearch={
+    name: "script12",
+    email:"user1@gmail.com",
+    downloads:3,
+    collections:4,
+    authored:5,
+    models:6,
+    banned:false,
+  }
 
   const mockModerator : Moderator ={
     email: "user1@gmail.com",
@@ -214,13 +225,25 @@ describe('AlertService', ()=>{
 
   describe('create', ()=>{
     it('should create admin', async()=>{
-        expect(service.create("user1@gmail.com")).resolves.toEqual(mockModerator)
-    });
+        const result = service.create("user1@gmail.com");
+        if (result === null || undefined){
+          expect(service.create("user1@gmail.com")).resolves.toEqual(null)
+
+        }
+        else{
+          expect(service.create("user1@gmail.com")).resolves.toEqual(mockModerator)
+        }
+      });
   });
 
   describe('ban', ()=>{
     it('should ban unauthorised user', async()=>{
-        expect(service.ban(user1)).resolves.toEqual(mockBan)
+        const result = service.ban(user1);
+        if (result === null || result === undefined){
+          expect(result).resolves.toEqual(null)
+        }else{
+        expect(result).resolves.toEqual(mockBan)
+        }
     });
   });
 
@@ -284,22 +307,28 @@ describe('AlertService', ()=>{
     });
   });
 
-  describe('getActiveAccounts', ()=>{
-    it('should get Active users', async()=>{
-        expect(service.getActiveAccounts()).resolves.toEqual(1)
-    })
-  });
-
-  describe('getLoggedInUsers', ()=>{
-    it('should get all logged in users', async()=>{
-        expect(service.getLoggedInUsers()).resolves.toEqual(3)
+  describe('getActiveAccounts',()=>{
+    it('should get the number of active users', ()=>{
+    expect(service.getActiveAccounts()).toEqual(1)
     });
   });
 
-  //4
-    describe('getTotalAccounts',()=>{
+  describe('getLoggedInUsers',()=>{
+    it('should get the number users logged in', ()=>{
+    expect(service.getLoggedInUsers()).toEqual(3)
+    });
+  });
+      
+  describe('getTotalAccounts',()=>{
         it('should count the number of accounts', async()=>{
             expect(service.getTotalAccounts()).resolves.toEqual(4)
         });
-    });
+  });
+
+  describe('search', ()=>{
+    it('should  search through the admin page', async()=>{
+    const result = service.search("a term")
+    expect(result).resolves.toEqual([userSearch]);
+  });
+  });
 })

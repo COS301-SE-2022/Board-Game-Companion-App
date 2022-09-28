@@ -13,6 +13,16 @@ describe('RatingService', () => {
   let automataModel: Model<AutomataScriptDocument>; 
   let oldModel: Model<OldScriptDocument>; 
 
+  const user1: user={
+    name: "user1", 
+    email: "user1@gmail,com"
+  }
+
+  const myRating: Rating ={
+    user: user1,
+    script: "script12",
+    value: 2,
+  }
   const mockRepository = {
     find() {
       return {}
@@ -55,51 +65,28 @@ describe('RatingService', () => {
     expect(automataModel).toBeDefined();
     expect(oldModel).toBeDefined();
   });
-});
 
-/************************************intergration test*********************************************/
-describe('RatingService', ()=>{
-  let service2: RatingService;
-  let automataModel2: Model<AutomataScriptDocument>;
-  let oldModel2: Model<OldScriptDocument>;
-  let ratingModel2: Model<RatingDocument>;
-  // let Dom ;
-  beforeEach(async () => {
-    // Dom = new DomManipulation()
-    const module2: TestingModule = await Test.createTestingModule({
-      //imports:[MongooseModule.forRoot(process.env.PROJECT_STATUS == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD)],
-      providers: [RatingService, 
-      { 
-        provide: getModelToken(Rating.name),
-        useValue: {}
-      }, 
-      {
-        provide: getModelToken(AutomataScript.name),
-        useValue:{}
-      }, 
-      {
-        provide: getModelToken(OldScript.name),
-        useValue:{}
-      }]
-    }).compile();
-
-    service2 = module2.get<RatingService>(RatingService); 
-    automataModel2= module2.get<Model<AutomataScriptDocument>>(getModelToken(AutomataScript.name));
-    oldModel2= module2.get<Model<OldScriptDocument>>(getModelToken(OldScript.name));
-    ratingModel2= module2.get<Model<RatingDocument>>(getModelToken(Rating.name));
+  describe('rate', ()=>{
+    it('should rate the script', async()=>{
+        expect(service.rate(user1, "scrip12", 2)).resolves.toEqual(myRating)
+    });
   });
 
-  it('return the rating of the sript', async()=>{
-    const result = jest.spyOn(service2, 'rate');
-    //await authenticationService.getRating('user@email.com', 'strongPassword');
-    expect(result).toBeDefined();
-    const thisUser : user = {
-      name: "Nasiphi",
-      email: "nasiphi@gmail.com"
-    }
-    //const findThat = jest.spyOn(ratingModel2, 'findOne');
-    await service2.getRating(thisUser, "myScript"); //call function
-    expect(ratingModel2.findOne<Rating>)
+  describe('getRating', ()=>{
+    it('should get rating of the script', async()=>{
+        expect(service.getRating(user1, "scrip12")).resolves.toEqual(myRating)
+    });
+  });
+  
+  describe('average', ()=>{
+    it('should show the average rating', async()=>{
+        expect(service.average("scrip12")).resolves.toEqual(88)
+    });
+  });
 
+  describe('countRating', ()=>{
+    it('should count the rating', async()=>{
+        expect(service.countRating("scrip12")).resolves.toEqual(12)
+    });
   });
 });
