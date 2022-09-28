@@ -727,6 +727,56 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     this.cut();
   }
 
+  removeTiles(event : any) : void
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    const index = lines.findIndex((element) => element.includes("createBoard("))
+    const n = lines[index].match(/\d+/)
+    if(n != null)
+    {
+      lines[index] = "\tcreateBoard(" + (+n - 1) + ")"
+      this.codeEditor.setValue(lines.join("\n"))
+    }
+    
+  }
+
+  addTiles(event : any) : void
+  {
+    if(!this.codeEditor.getValue().includes("createBoard("))
+    {
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      for(let j = 0; j < lines.length; j++)
+      {
+        if(lines[j].includes("state") && lines[j].includes("{"))
+        {
+          lines.splice(j+1,0, "\tcreateBoard(" + event + ")")
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        }
+        else if(lines[j].includes("state") && lines[j + 1].includes("{"))
+        {
+          lines.splice(j+2,0, "\tcreateBoard(" + event + ")")
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        }
+      }
+    }
+    else
+    {
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      const index = lines.findIndex((element) => element.includes("createBoard("))
+      lines[index] = "\tcreateBoard(" + event + ")"
+      this.codeEditor.setValue(lines.join("\n"))
+    }
+  }
+
+  removeProperty(event: any): void
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    lines.splice(+event,1)
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
 
   updateProperty(event: any): void
   {
@@ -742,7 +792,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
       
       if(this.editorVisual.Properties[+property[3]].Line == '')
       {
-        lines.splice(+this.editorVisual.Properties[+property[3]-1].Line + 1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        if(this.editorVisual.Properties[+property[3]-1] !== undefined)
+        {
+          lines.splice(+this.editorVisual.Properties[+property[3]-1].Line + 1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        }
+        else
+        {
+          const index = lines.findIndex((element) => element.includes("{"))
+          lines.splice(index+1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        }
         this.codeEditor.setValue(lines.join("\n"))
       }
       else

@@ -12,6 +12,9 @@ export class EditorBodyVisualComponent {
   playersLoopIndex = 0
   cardsLoopIndex = 0
   @Output() propertyName = new EventEmitter<string>()
+  @Output() removeProperties = new EventEmitter<string>()
+  @Output() addTile = new EventEmitter<number>()
+  @Output() removeTiles = new EventEmitter<number>()
 
   Properties = [
     {Property: "", Value: "", Line: ""}
@@ -84,19 +87,23 @@ export class EditorBodyVisualComponent {
 
   removeProperty(i: number)
   {
+    const obj = this.Properties[i]
     this.Properties.splice(i, 1)
-    this.listProperties.splice(3 + i, 1)
+    this.listProperties.splice(2 + i, 1)
+    this.removeProperties.emit(obj.Line)
   }
 
   addTileToBoard()
   {
-    console.log(this.Tiles)
     this.Tiles.push({values: new Array<string>(this.listProperties.length)})
+    this.addTile.emit(this.Tiles.length)
   }
 
   removeTile(i: number)
   {
+    const obj = this.Properties[i]
     this.Tiles.splice(i, 1)
+    this.removeTiles.emit(i)
   }
 
   updatePropertyName(event: any, i : number)
