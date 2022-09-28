@@ -740,14 +740,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
     else
     {
       
-      const found = lines.find(element => element.includes(this.editorVisual.Properties[+property[3]].Property));
-      if(!found)
+      if(this.editorVisual.Properties[+property[3]].Line == '')
       {
-        console.log(this.editorVisual.Properties[+property[3]])
-        let line = lines[+property[2]].split(/\s/)
-        line = line.filter((element) => {
-          return element !== '';
-        })
+        lines.splice(+this.editorVisual.Properties[+property[3]-1].Line + 1, 0, "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value)
+        this.codeEditor.setValue(lines.join("\n"))
       }
       else
       {
@@ -762,7 +758,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
             lines[+property[2]] = line.join(" ")
             break
           case "value":
-            line[2] = "\t" + property[0]
+            line[0] = "\t" + line[0]
+            line[2] = property[0]
             lines[+property[2]] = line.join(" ")
             break
         }
