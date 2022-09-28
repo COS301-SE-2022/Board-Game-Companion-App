@@ -17,11 +17,22 @@ describe('CollectionsService', ()=>{
   let collectionModel: Model<CollectionDocument>;
   let automataModel:  Model<AutomataScriptDocument>; 
 
-  const mockCollection = (
-    owner= {name:"user1", email:"user1@tuks.com"},
-    name= "MyCollection",
-    boardgames= ["Chess", "Monopoly", "roots"]
-  ):Collection =>({owner, name, boardgames});
+  const newUser : user ={
+    name: "user1",
+    email: "user1@tuks.com",
+  }
+
+  const mockCollection : Collection ={
+    owner: {name:"user1", email:"user1@tuks.com"},
+    name: "MyCollection",
+    boardgames: ["Chess", "Monopoly", "roots"]
+  };
+
+  const mockCollDoc = (mock?: Partial<Collection>): Partial<CollectionDocument> => ({
+    owner: mock?.owner || {name:"user1", email:"user1@tuks.com"}, 
+    name: mock?.name || "MyCollection",
+    boardgames: mock?.boardgames || ["Chess", "Monopoly", "roots"],
+  });
 
   const mockScript : AutomataScript ={
       name:"Script12", 
@@ -96,20 +107,59 @@ describe('CollectionsService', ()=>{
     jest.clearAllMocks();
   });
 
-  it('should create a collection',  ()=>{
-    const newUser : user = {name:"user2", email:"user2@tuks.com"};
-    service.create("MyCollection2",newUser).then(function(response){
-      expect(response.toString()).toEqual(({
-        owner: {name:"user2", email:"user2@tuks.com"},
-        name: "MyCollection2",
-        boardgames: ["Chess", "checkers", "roots"]
-      }).toString())
-    }) 
-    // expect()
+  describe('create', ()=>{
+    it('should create a collection',  async()=>{
+      expect(service.create("script12",newUser)).resolves.toEqual(mockCollection)
+    });
+  });
 
+  describe('alreadyExist', ()=>{
+    it('should check if the collection already exists', async()=>{
+      expect(service.alreadyExist(newUser,"script12")).resolves.toEqual(true)
+    });
+  });
 
+  describe('getCollectionsByUser', ()=>{
+    it('should get the users collection', async()=>{
+      expect(service.getCollectionsByUser(newUser)).resolves.toEqual([mockCollection])
+    });
   });
 
 
+  describe('getAllCollections', ()=>{
+    it('should get all collections', async()=>{
+      expect(service.getAllCollections()).resolves.toEqual([mockCollDoc])
+    });
+  });
 
+
+  describe('addBoardGame', ()=>{
+    it('should add a board game to a collection', async()=>{
+      expect(service.addBoardGame("chess", "script20", newUser)).resolves.toEqual(true)
+    });
+  });
+
+  describe('removeBoardGame', ()=>{
+    it('should remove a board game', async()=>{
+      expect(service.removeBoardGame("chess","script20", newUser)).resolves.toEqual(1)
+    });
+  });
+
+  describe('removeCollectionById', ()=>{
+    it('should remove the specified collection', async()=>{
+      expect(service.removeCollectionById("some ID")).resolves.toEqual(1)
+    })
+  });
+
+  describe('removeCollection', ()=>{
+    it('remove a collection', async()=>{
+      expect(service.removeCollection(newUser,"script12")).resolves.toEqual(1)
+    });
+  });
+
+  describe('getScripts', ()=>{
+    it('should get all scripts', async()=>{
+      expect(service.getScripts("some ID")).resolves.toEqual([mockScript])
+    });
+  });
 })
