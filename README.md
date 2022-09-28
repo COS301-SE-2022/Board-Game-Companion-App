@@ -58,11 +58,14 @@ The following are the presentation videos for the respectives demonstrations.
 - Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
 - Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
 
-## Documentation
+## Documentation:
+### Software Requirements Specification
 
-- Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
-
-- Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
+<ul> 
+  <li>Demonstration 1 SRS_VERSION_1: [SRS VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)</li>
+  <li>Demonstration 2 SRS_VERSION_2: [SRS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)</li>
+  <li>Demonstration :[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)</li>
+</ul>
 
 ## Demo 2 Documentation: 
 ### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
@@ -70,7 +73,6 @@ The following are the presentation videos for the respectives demonstrations.
 ### User Manual: [User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
 
 
-### SRS: [Capstone_SRS.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
 
 ### Architectural Design: [Capstone_Architectural_Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
 
@@ -86,10 +88,10 @@ The following are the presentation videos for the respectives demonstrations.
 ### Technical User Manual: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
 
 
-### SRS Documentation:[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
 
 
-
+##Demo 4 Documentation
+##
 
 ### Architectural Design: [Frontend Forerunners Architectural Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
 
