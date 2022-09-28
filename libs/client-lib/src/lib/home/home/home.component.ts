@@ -6,6 +6,9 @@ import { elementAt, filter } from 'rxjs';
 import { CollectionService } from '../../shared/services/collections/collection.service';
 import { collection } from '../../shared/models/collection/collection';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 interface Game{
   collectionId: string;
@@ -30,15 +33,21 @@ export class HomeComponent implements OnInit {
   collections:collection[] = [];
   widthPerGame = 16;
   @ViewChild(NotificationComponent,{static:true}) notifications!: NotificationComponent;
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
 
   constructor(private bggSearch:BggSearchService,
               private router:Router,
-              private readonly collectionService:CollectionService) {
+              private readonly collectionService:CollectionService,
+              private readonly networkService: OnlineStatusService,
+              private readonly gapi: GoogleAuthService,
+              private readonly storageService: StorageService) {
     this.router.events
 	      .pipe(filter((e) => e instanceof NavigationEnd))
 	      .subscribe((e: any) => {
-		    // this.showHideTabs();
-		    // console.log(e.url);
+          this.networkService.status.subscribe((status: OnlineStatusType) =>{
+            this.status = status;
+            this.loadCollections();            
+          });
 	});
   }
 
@@ -241,15 +250,22 @@ export class HomeComponent implements OnInit {
   }
 
   loadCollections(): void{
-    this.collectionService.getCollectionsForUser().subscribe({
-      next:(response:collection[]) => {
+    if(this.status === OnlineStatusType.OFFLINE || !this.gapi.isLoggedIn()){
+      this.storageService.getAll("collections").then((response:collection[]) => {
         this.collections = response;
         this.loadGames();
-      },
-      error:()=>{
-        this.notifications.add({type: "warning",message: "Failed to load collections"});
-      }
-    })
+      })
+    }else{
+      this.collectionService.getCollectionsForUser().subscribe({
+        next:(response:collection[]) => {
+          this.collections = response;
+          this.loadGames();
+        },
+        error:()=>{
+          this.notifications.add({type: "warning",message: "Failed to load collections"});
+        }
+      })
+    }
   }
 
   loadGames(): void{
