@@ -8,6 +8,14 @@ import { Report, ReportDocument } from '../../schemas/report.schema';
 import { createMock } from '@golevelup/ts-jest';
 import { ReportService } from './report.service';
 import { any } from '@tensorflow/tfjs';
+import { MyScript } from '../../schemas/my-script.schema';
+import { AutomataScript } from '../../schemas/automata-script.schema';
+import { DownloadScript } from '../../schemas/download-script.schema';
+import { OldScript } from '../../schemas/old-script.schema';
+import { Comment, CommentDocument } from '../../schemas/comment.schema';
+import { AlertService } from '../alert/alert.service';
+import { Alert } from '../../schemas/alert.schema';
+import { SocketGateway } from '../socket/socket.gateway';
 
 /********************************************************Unit Test***************************************/
 describe('ReportService', () => {
@@ -22,10 +30,17 @@ describe('ReportService', () => {
         name: "user2",
         email: "user2@gmail.com",
     }
+    const myReport: Report ={
+        user: user1,
+        script: true,
+        link: "www.link.com",
+        message: "This is a message",
+        dateIssued: new Date("11-04-19")
+    }
 
    beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-        providers: [ReportService,
+        providers: [ReportService, AlertService,SocketGateway,
             {
                 provide: getModelToken(Report.name),
                 useValue :
@@ -43,6 +58,22 @@ describe('ReportService', () => {
                     exec: jest.fn(),
                     save:jest.fn()
                 },
+            }, {
+                provide: getModelToken(MyScript.name), useValue:{}
+            }, {
+                provide: getModelToken(AutomataScript.name), useValue:{}
+            }, 
+            {
+                provide: getModelToken(DownloadScript.name), useValue:{}
+            }, 
+            {
+                provide: getModelToken(Comment.name), useValue:{}
+            },
+            {
+                provide: getModelToken(OldScript.name), useValue:{}
+            },
+            {
+                provide: getModelToken(Alert.name), useValue:{}
             }
         ]
     }).compile();
@@ -56,55 +87,59 @@ describe('ReportService', () => {
         expect(model).toBeDefined();
     });
 
-    it('should return all reports', async()=>{
-        jest.spyOn(model, 'find').mockReturnValue({
-            exec: jest.fn().mockResolvedValueOnce([{
-                user: user1, 
-                script: "script1", 
-                message:"user1 message",
-                dateIssued: new Date("12-02-18")
-            },
-            {
-             user: user2, 
-            script: "script2", 
-            message:"user2 message",
-            dateIssued: new Date("12-03-19")
-            }]),
-        }as any);
-        const result = await service.getAll();
-        expect(model).toBeTruthy();
-        expect(result).toEqual([{
-            user: user1, 
-            script: "script1", 
-            message:"user1 message",
-            dateIssued: new Date("12-02-18")
-        },
-        {   
-            user: user2, 
-            script: "script2", 
-            message:"user2 message",
-            dateIssued: new Date("12-03-19")
-        }])
+    describe('report', ()=>{
+        it('should create a report', async()=>{
+            expect(service.report(user1,true,"ww.link.com","This is a message")).resolves.toEqual(myReport)
+        })
     });
 
-    it('should return a script with a specific id', async()=>{
-
-       const result =  service.getByScript("someID");
-       
-       expect(result).toBeDefined();
-       //expect(await model.find({"script":"someID"})).toContain(result)
+    describe('getAll', ()=>{
+        it('should get all report', async()=>{
+            expect(service.getAll()).resolves.toEqual([myReport])
+        })
     });
 
-    it('should return if user is already assigned', async()=>{
-        const result = jest.spyOn(service,'getAll');
-        if(result === undefined){
-            expect(service.alreadyIssued).toBeFalsy();
-        }
-    });
-
-    it('should return counted scripts', async()=>{
-        const result = model.distinct('field');
-        expect(result).toHaveLength;
+    describe('remove', ()=>{
+        it('should remove script', async()=>{
+            expect(service.remove("some ID")).resolves.toEqual(myReport)
+        })
     }); 
+
+    describe('getAll', ()=>{
+        it('should get all reports', async()=>{
+            expect(service.getAll()).resolves.toEqual([myReport])
+        });
+    });
+
+    describe('remove', ()=>{
+        it('should remove all reports', async()=>{
+            expect(service.remove("some ID")).resolves.toEqual(myReport)
+        });
+    });
+
+    describe('getByScript', ()=>{
+        it('should remove report by ID', async()=>{
+            expect(service.getByScript("some ID")).resolves.toEqual([myReport])
+        });
+    });
+
+    describe('alreadyIssued', ()=>{
+        it('should check if report already exits', async()=>{
+            expect(service.alreadyIssued(user1, "www.link.com")).resolves.toEqual(true)
+        });
+    });
+
+    describe('countReportedScripts', ()=>{
+        it('should check if report already exits', async()=>{
+            expect(service.countReportedScripts()).resolves.toEqual(3)
+        });
+    });
+
+    describe('flag', ()=>{
+        it('should flag the reported script', async()=>{
+            expect(service.flag("some ID")).resolves.toBeDefined()
+        });
+    });
+
 
 });

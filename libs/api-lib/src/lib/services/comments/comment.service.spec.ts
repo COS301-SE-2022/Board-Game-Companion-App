@@ -1,8 +1,10 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import e = require('express');
 import { Model } from 'mongoose';
 import { commentDto } from '../../models/dto/commentDto';
 import { alertType } from '../../models/general/alertType';
+import { commentCount } from '../../models/general/commentCount';
 import { user } from '../../models/general/user';
 import { Alert, AlertDocument } from '../../schemas/alert.schema';
 import { AutomataScript, AutomataScriptDocument } from '../../schemas/automata-script.schema';
@@ -10,6 +12,7 @@ import { Comment, CommentDocument } from '../../schemas/comment.schema';
 import { Like, LikeDocument } from '../../schemas/like.schema';
 import { OldScript, OldScriptDocument } from '../../schemas/old-script.schema';
 import { AlertService } from '../alert/alert.service';
+import { SocketGateway } from '../socket/socket.gateway';
 import { CommentService } from './comment.service';
 
 /*************************************************unit test**********************************************/
@@ -22,7 +25,40 @@ describe('CommentService', () => {
   let alertService: AlertService;
   let alertModel: Model<AlertDocument>;
   let commentModel: Model<CommentDocument>;
+
+  const newUser : user ={
+    name: "user",
+    email: "user@gmail.com"
+  }
   
+  const newAlert = (mock?: Partial<Alert>): Partial<AlertDocument> => ({
+    recepient: newUser,
+    date: new Date("01-03-19"),
+    link: "www.AlertLink.com",
+    alertType: 3,
+    read: true,
+  }); 
+
+  const newComment : Comment ={
+    user: newUser, 
+    image: "coolimage.png",
+    created: new Date("01-02-16"),
+    script: "Script12", 
+    content: "soome content",
+    replies: []
+  }
+
+  const countComments : commentCount ={
+    likes: 2,
+    dislikes: 0,
+    replies: 3
+  }
+
+  const newLike: Like ={
+    comment: "some ID", 
+    user: newUser, 
+    like: true
+  }
 
   const mockRepository = {
     find() {
@@ -32,10 +68,12 @@ describe('CommentService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CommentService, AlertService, 
+      providers: [CommentService, AlertService, SocketGateway,
         { 
           provide: getModelToken(AutomataScript.name),
-          useValue: mockRepository
+          useValue: {
+            findById: jest.fn()
+          }
       },  
       { 
         provide: getModelToken(Like.name),
@@ -43,7 +81,9 @@ describe('CommentService', () => {
     },
     {
       provide: getModelToken(OldScript.name),
-      useValue: mockRepository
+      useValue: {
+        findById: jest.fn()
+      }
     },
     {
       provide: getModelToken(Alert.name),
@@ -51,7 +91,12 @@ describe('CommentService', () => {
     },
     {
       provide: getModelToken(Comment.name),
-      useValue: mockRepository
+      useValue: {
+        find: jest.fn(), 
+        countDocuments: jest.fn(),
+        findById: jest.fn(),
+        save: jest.fn(),
+      }
     }
   ],
     }).compile();
@@ -63,12 +108,8 @@ describe('CommentService', () => {
     alertModel= module.get<Model<AlertDocument>>(getModelToken(Alert.name));
     alertService=module.get<AlertService>(AlertService);
     commentModel= module.get<Model<CommentDocument>>(getModelToken(Comment.name));
-  });
+  }); 
 
-  const newUser : user ={
-    name: "user",
-    email: "user@gmail.com"
-  }
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(likeModel).toBeDefined();
@@ -79,57 +120,63 @@ describe('CommentService', () => {
     expect(commentModel).toBeDefined();
   });
 
-  it('should create a comment', async ()=>{
-    expect(service.createComment(newUser,"image","script","content")).resolves.toEqual({
-      user: newUser, 
-        image: "image", 
-        created: new Date("25-12-19"),
-        script:"script", 
-        content:"content",
-        replies:[],
-    })
+  describe('alertComment', ()=>{
+    it('shouls show alert comments', async()=>{
+      expect(service.alertComment(newComment)).resolves.toBeDefined();
+    });
   });
 
-  it('should get comments',()=>{
-    jest.spyOn(service,'getComments').mockImplementation((commentsId:string[])=>
-      Promise.resolve([{
-        user: newUser, 
-        image: "image", 
-        created: new Date("25-12-19"),
-        script:"script", 
-        content:"content",
-        replies:[],
-      }])
-    )
+  describe('createComment', ()=>{
+    it('should create a comment', async()=>{
+      expect(service.createComment(newUser, "coolimage.png","Script12","soome content")).resolves.toEqual(newComment);
+    });
   });
 
-  it('should like comment',()=>{
-    jest.spyOn(service,'like').mockImplementation((comment:string,user:user,like:boolean)=>
-    Promise.resolve({
-      comment:comment,
-      user: user,
-      like:like,
-    }));
+  describe('alertReply', ()=>{
+    it('should alert a reply', async()=>{
+      expect(service.alertReply("some ID", "another ID")).resolves.toBeDefined()
+    });
+  }); 
+
+  describe('countComments', ()=>{
+    it('should count the number comments', async()=>{
+      expect(service.countComments("some ID")).resolves.toEqual(3)
+    });
   });
 
-  it('should get like', ()=>{
-    jest.spyOn(service,'getLike').mockImplementation((comment:string,user:user)=>
-      Promise.resolve({
-        comment:comment,
-        user:user,
-        like:false
-      })
-    );
+  describe('getComments', ()=>{
+    it('should get all comments', async()=>{
+      expect(service.getComments(["some ID"])).resolves.toEqual([newComment])
+    });
   });
 
-  it('should count the number of comments', ()=>{
-    jest.spyOn(service,'count').mockImplementation(()=>
-      Promise.resolve({
-        likes: 0,
-        dislikes: 0,
-        replies: 0,
-      }));
+  describe('addReply', ()=>{
+    it('should add a reply', async()=>{
+      expect(service.addReply("some ID", "another ID")).resolves.toBeDefined();
+    });
   });
 
+  describe('like', ()=>{
+    it('should like comment', async()=>{
+      expect(service.like("some ID", newUser, true)).resolves.toEqual(newLike);
+    });
+  });
 
+  describe('getLike', ()=>{
+    it('should get likes on a specific comment', async()=>{
+      expect(service.getLike("some ID", newUser)).resolves.toEqual(newLike);
+    });
+  });
+
+  describe('removeLike', ()=>{
+    it('should remove like on comment', async()=>{
+      expect(service.removeLike("some ID")).resolves.toBeDefined();
+    });
+  });
+
+  describe('count', ()=>{
+    it('should count the number of comments', async()=>{
+      expect(service.count("some ID")).resolves.toEqual(countComments)
+    });
+  });
 });

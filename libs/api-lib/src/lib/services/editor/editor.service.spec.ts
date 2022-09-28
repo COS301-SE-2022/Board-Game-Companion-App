@@ -1,38 +1,30 @@
-import { TestBed } from '@angular/core/testing';
 import { EditorService } from './editor.service';
-import { HttpClient } from '@angular/common/http';
 import { MyScript, MyScriptDocument } from '../../schemas/my-script.schema';
-import { Model, Query } from 'mongoose';
+import { Model} from 'mongoose';
 import { NeuralNetwork, NeuralNetworkDocument } from '../../schemas/neural-network.schema';
-import { S3Service } from '../aws/s3.service';
 import { CompilerService } from '../compiler/compiler.service';
-import { of } from 'rxjs';
 import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
 import { HttpService } from '@nestjs/axios';
-import { AxiosResponse } from 'axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { status as stat} from '../../models/general/status';
 import { file } from '../../models/general/files';
 import { entity } from '../../models/general/entity';
-import { attribute } from '../../models/general/entity';
-import { File, FileDocument } from '../../schemas/file.schema';
-import { fileDto } from '../../models/dto/fileDto';
+import { File} from '../../schemas/file.schema';
 import { Script } from 'vm';
-import { createMock } from '@golevelup/ts-jest';
+import { transpilationResponse } from '../../models/general/transpilationResponse';
+
 /*************************************************unit test**********************************************/
 const expectedUrl = "http://localhost:3333/api/";
 //this.api = "https://board-game-companion-app-api.herokuapp.com/api/"
 describe('EditorService',()=>{
   let service: EditorService;
-  let s3service: S3Service;
   let myScriptModel : Model<MyScriptDocument>;
   let networksModel : Model<NeuralNetworkDocument>;
   let compilerService: CompilerService;
   let  httpService: HttpService;
   let storageService:MongoDbStorageService;
-  let filemodel :  Model<FileDocument>;
-
+ 
   const mystat : stat = {
     value: 0, 
     message: "some message",
@@ -55,6 +47,23 @@ describe('EditorService',()=>{
     location: "filelocation",
   };
 
+  const thisEntity : entity ={
+    type: "string",
+    name: "script12",
+    startLine: 3,
+    endLine: 12,
+    startPosition: 12,
+    endPosition: 19,
+    properties: [],
+    children: [],
+  }
+
+  const myTranspilation : transpilationResponse={
+    status: "up",
+    message: "this script is up",
+    errors: [],
+    structure: thisEntity,
+  }
   const mockmyScritDoc = (mock?: Partial<MyScript>): Partial<MyScriptDocument> => ({
     name: mock?.name || "Script12", 
     author: mock?.author || {name:"author1", email:"author1@gmail.com"},
@@ -92,13 +101,11 @@ describe('EditorService',()=>{
     programStructure:myentity,
     source: myFile,
   };
-
- // const dto : fileDto
   
 
   beforeEach(async ()=>{
     const module: TestingModule = await Test.createTestingModule({
-      providers:[EditorService, S3Service,CompilerService, MongoDbStorageService,
+      providers:[EditorService,CompilerService, MongoDbStorageService,
       {
         provide: HttpService,
         useValue: {
@@ -143,7 +150,6 @@ describe('EditorService',()=>{
     }).compile();
 
     service= module.get<EditorService>(EditorService);
-    s3service= module.get<S3Service>(S3Service);
     myScriptModel = module.get<Model<MyScriptDocument>>(getModelToken(MyScript.name));
     networksModel = module.get<Model<NeuralNetworkDocument>>(getModelToken(NeuralNetwork.name));
     compilerService= module.get<CompilerService>(CompilerService);
@@ -154,34 +160,35 @@ describe('EditorService',()=>{
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-    expect(s3service).toBeDefined();
     expect(myScriptModel).toBeDefined();
     expect(networksModel).toBeDefined();
     expect(compilerService).toBeDefined();
     expect(storageService).toBeDefined();
   });
 
-  it('should create a service',()=>{
-    expect(service).toBeTruthy();
+  describe('updateBuild', ()=>{
+    it('should update the script build', async()=>{
+      const result =service.updateBuild("some ID", "compiled code");
+      // try{
 
+      // }catch(e){
+      //   status = false 
+      // } 
+      expect(result).resolves.toEqual(mockmyScritDoc);
+    });
   });
 
-    it('should find a script', async()=>{
-      // jest.spyOn(myScriptModel, 'findById').mockReturnValueOnce(
-      //   createMock<Query<MyScriptDocument, MyScriptDocument>>({
-      //     exec: jest
-      //       .fn()
-      //       .mockResolvedValueOnce(
-      //         mockmyScritDoc({ name: "Script12" })),
-      //   }) as any, 
-      // );
-      const foundScript = await myScriptModel.findById('Script12').exec();
-      expect(JSON.stringify(foundScript)).toEqual(JSON.stringify(mockScript));
-
+  describe('updateModels', ()=>{
+    it('should update models', async()=>{
+      expect(service.updateModels("script12", ["myNetwork"])).resolves.toEqual(mockScript);
     });
+  });
 
-   
-
+  describe('updateFile', ()=>{
+    it('should update script file', async()=>{
+      expect(service.updateFile("some ID", "script content")).resolves.toEqual(myTranspilation);
+    });
+  });
 
 
 });
