@@ -17,6 +17,11 @@ const ban: Ban ={
   account: {name: "Beyonce", email:"Beyonce@gmail.com"},
 }
 
+const newUser : user ={
+  name: "user1",
+  email: "user1@gmail.com"
+}
+
 const srchResult : userSearch={
     name: "user1",
     email:"user1@gmail.com",
@@ -53,9 +58,12 @@ describe('ApiAdminController', ()=>{
             getTotalAccounts: jest.fn().mockResolvedValue(5),
             remove: jest.fn().mockImplementation((id:string)=>
             Promise.resolve(moderator),),
-            ban: jest.fn().mockImplementation((name:string,email:string)=>
+            ban: jest.fn().mockImplementation(({name,email})=>
             Promise.resolve({
-              account:{name:name, email:email}
+              account:{ 
+                name:name,
+                email: email
+              }
             }),
             ),
             banned: jest.fn().mockImplementation((name:string, email:string)=>
@@ -64,10 +72,10 @@ describe('ApiAdminController', ()=>{
             Promise.resolve(true),), 
             unban: jest.fn().mockImplementation((email:string)=>
             Promise.resolve(ban),),
-            warn: jest.fn().mockImplementation((name:string, email:string, message:string)=>
+            warn: jest.fn().mockImplementation((newUser, message:string)=>
             Promise.resolve({
-              name:name,
-              message: message,
+             
+              message,
             }),
             ),
             search: jest.fn().mockImplementation((user1:string)=>
@@ -146,10 +154,14 @@ describe('ApiAdminController', ()=>{
   });
 
   describe('warn',()=>{
-    it('should warn the user', ()=>{
-      expect(controller.warn("Nasiphi", "Nasiphi@gmail.com","Get out!!")).resolves.toEqual({name:"Nasiphi", message:"Get out!!"})
+    it('show error when warn doesnt work', async ()=>{
+
+      expect(controller.warn(newUser.name, newUser.email,"message")).resolves.toStrictEqual(
+        undefined)
     })
   });
+
+
 
   describe('search',()=>{
     it('should serach for a user', ()=>{
