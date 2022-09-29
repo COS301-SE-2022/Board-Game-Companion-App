@@ -44,47 +44,47 @@ describe('',()=>{
     component.validateAndSave();
   });
 });
-// describe('',()=>{
-//   it('should validateAndSave last branch',(done)=>{
-//     searchService = TestBed.inject(BggSearchService);
-//     serviceScript = TestBed.inject(ScriptService);
-//     component = new CreateScriptComponent(searchService,serviceScript);
+describe('',()=>{
+  it('should validateAndSave last branch',(done)=>{
+    searchService = TestBed.inject(BggSearchService);
+    serviceScript = TestBed.inject(ScriptService);
+    component = new CreateScriptComponent(searchService,serviceScript);
 
-//     window.sessionStorage.setItem('name','Njabulo Ntuli');
-//     window.sessionStorage.setItem('email','u19062665@tuks.co.za');
-//     component.scriptname = 'decider';
-//     component.boardgame = 'monopoly';
-//     component.description = 'basic description';
-//     component.validateAndSave();
-//     setTimeout(()=>{
-//       done();
-//     },5000)
+    window.sessionStorage.setItem('name','Njabulo Ntuli');
+    window.sessionStorage.setItem('email','u19062665@tuks.co.za');
+    component.scriptname = 'decider';
+    component.boardgame = 'monopoly';
+    component.description = 'basic description';
+    component.validateAndSave();
+    setTimeout(()=>{
+      done();
+    },5000)
     
-//   });
-// });
+  });
+});
 
-//   describe('',()=>{
-//   it('should save given id', (done)=>{
+  describe('',()=>{
+  it('should save given id', (done)=>{
 
-//     const fixture = TestBed.createComponent(CreateScriptComponent);
-//     const component = fixture.debugElement.componentInstance;
+    const fixture = TestBed.createComponent(CreateScriptComponent);
+    const component = fixture.debugElement.componentInstance;
     
-//     window.sessionStorage.setItem('name','Njabulo Ntuli');
-//     window.sessionStorage.setItem('email','u19062665@tuks.co.za');
-//     component.scriptname = 'decider';
-//     component.boardgame = 'monopoly';
-//     component.description = 'basic description';
+    window.sessionStorage.setItem('name','Njabulo Ntuli');
+    window.sessionStorage.setItem('email','u19062665@tuks.co.za');
+    component.scriptname = 'decider';
+    component.boardgame = 'monopoly';
+    component.description = 'basic description';
 
-//     jest.spyOn(component.newScript,'emit');
-//     // fixture.detectChanges();
+    jest.spyOn(component.newScript,'emit');
+    // fixture.detectChanges();
 
-//     component.save('1406');
-//     setTimeout(()=>{
-//       expect(component.newScript.emit).toHaveBeenCalled();
-//     },3000)
-//     done();
-//   });
-// });
+    component.save('1406');
+    setTimeout(()=>{
+      expect(component.newScript.emit).toHaveBeenCalled();
+    },3000)
+    done();
+  });
+});
 describe('',()=>{
   it(' load Seggestions', (done)=>{
     searchService = TestBed.inject(BggSearchService);
