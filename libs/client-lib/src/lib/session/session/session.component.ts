@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { disableDebugTools } from '@angular/platform-browser';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { ScriptService } from '../../shared/services/scripts/script.service';
+
 
 @Component({
   selector: 'board-game-companion-app-session',
@@ -9,20 +11,27 @@ import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.se
   styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
-  name:string = "";
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router,private readonly scriptService: ScriptService) {}
+  name = "";
+  id = "";
+  game = "";
+  script = "";
+  num = "";
+  score = "";
+  time = "";
+  result = "";
+  date = "";
+  gameId = "";
+  img = "";
+  //filter:automataScript = undefined
 
-  id:string = "";
-  game:string = "";
-  script:string = "";
-  num:string = "";
-  score:string = "";
-  time:string = "";
-  result:string = "";
-  date:string = "";
-  gameId:string = "";
-  img:string = "";
+  getDetails(id:string): void{
+    this.router.navigate(['board-game-details'], { state: { value: id } });
+  }
 
+  /* showInfo(value:automataScript){
+    this.router.navigate(['script-detail'], { state: { value: value } });
+  } */
 
   ngOnInit(): void 
   {
@@ -66,8 +75,8 @@ export class SessionComponent implements OnInit {
       .subscribe(
         data=>{
           //
-          let res:string = data.toString();
-          let parseXml = new window.DOMParser().parseFromString(res, "text/xml");
+          const res:string = data.toString();
+          const parseXml = new window.DOMParser().parseFromString(res, "text/xml");
           parseXml.querySelectorAll("thumbnail").forEach(imgUrl=>{
             this.img = imgUrl.innerHTML;
           });

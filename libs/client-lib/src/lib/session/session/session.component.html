@@ -53,6 +53,7 @@
                             </th>
                             <td class="py-2 px-4">
                                 {{script}}
+                                <i  class="fa-solid fa-circle-info text-xl cursor-pointer"></i>
                             </td>
                         </tr>
                         <tr>
@@ -67,7 +68,7 @@
                 </table>
             </div>
             <div class = "m-4 mr-8 w-1/2 h-full" id = "image">
-                <img [src] = 'img'>
+                <img class = "cursor-pointer" (click)="getDetails(gameId)" [src] = 'img'>
             </div>
         </div>
     </div>
