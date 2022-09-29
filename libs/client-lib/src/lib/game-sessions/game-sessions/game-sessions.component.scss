@@ -8,3 +8,20 @@
 thead{
     background-color: $Pcolour-3;
 }
+
+#table::-webkit-scrollbar {
+    height: 5px;
+}
+
+#table::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 12px;      
+}
+  
+#table::-webkit-scrollbar-thumb {
+    background-color: gray;   
+    border-radius: 25px;      
+    border: 3px solid gray;  
+}
+

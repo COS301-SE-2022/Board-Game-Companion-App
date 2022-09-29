@@ -2,7 +2,7 @@
     <div id = "title" class = "w-full text-white p-6 text-3xl font-bold">
         Game Sessions
     </div>
-    <div class="overflow-x-auto relative">
+    <div id = "table" class="overflow-x-auto overflow-y-auto relative">
         <table class="w-full text-left">
             <thead class="text">
                 <tr>
@@ -36,18 +36,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-b">
-                    <th scope="row" class="py-4 px-6 font-medium whitespace-nowrap">
-                        Apple MacBook Pro 17"
-                    </th>
-                    <td class="py-4 px-6">
-                        Sliver
+                <tr *ngFor="let results of listResults" class="border-b">
+                    <td scope="row" class="py-4 px-6 font-medium whitespace-nowrap">
+                        {{results.getID()}}
                     </td>
-                    <td class="py-4 px-6">
-                        Laptop
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getBoardGame()}}
                     </td>
-                    <td class="py-4 px-6">
-                        $2999
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getScript()}}
+                    </td>
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getScore()}}
+                    </td>
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getTimePlayed()}}
+                    </td>
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getNumOpponents()}}
+                    </td>
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getResult()}}
+                    </td>
+                    <td class="py-4 px-6 whitespace-nowrap">
+                        {{results.getDate()}}
+                    </td>
+                    <td scope="row" class="py-4 px-6 text-2xl">
+                        <button (click)="viewSession(results.getID())" id="explore"><i class="fa-solid fa-circle-info"></i></button>
                     </td>
                 </tr>
             </tbody>
