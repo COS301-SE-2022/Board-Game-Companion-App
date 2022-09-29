@@ -122,7 +122,7 @@
         <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
 
         <div id="outerStar">
-          <ul id="stars" class="w-full sm:h-full mb-2 sm:space-x-1">
+          <ul id="stars" class="w-full mb-2 sm:space-x-1">
             <i (click)="rateScript(1)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
               [ngClass]="{'text-orange-500':rate.value>=1,'text-white':rate.value < 1}" data-toggle="tooltip" title="1 star"></i>
             <i (click)="rateScript(2)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"

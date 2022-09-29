@@ -1,8 +1,23 @@
-<div  class = "w-4/5 h-4/5 bg-white mt-12 mb-12 mx-auto">
-    <div id = "title" class = "w-full text-white p-6 text-3xl font-bold">
-        Game Sessions
+<div  class = "w-4/5 h-4/5 my-12 mx-auto">
+    <div id = "title" class = "flex justify-between w-full text-white p-6 text-3xl font-bold overflow-x-auto">
+        <div class = "flex mx-2">
+            Game Sessions
+        </div>
+        <div id="searchDiv" class = "flex mx-2 h-1/2">
+            <input id = "textInput" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)] = "search">
+            <button id = "search" (click)="Onsearch()" class="px-2 py-1 font-bold text-lg"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div id = "sortDiv" class = "flex mx-2 h-1/2">
+            <select id="sorting" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)]="selected"  (change)="onSort()">
+                <option value="" disabled selected>Sort By..</option>
+                <option value="alphabetical">Alphabet</option>
+                <option value="score">Score</option>
+                <option value="date">Date</option>
+            </select>
+            <button id ="sort" class="px-2 py-1 font-bold text-lg">Sort</button>
+        </div>
     </div>
-    <div id = "table" class="overflow-x-auto overflow-y-auto relative">
+    <div id = "table" class=" h-full overflow-y-auto overflow-x-auto relative bg-white">
         <table class="w-full text-left">
             <thead class="text">
                 <tr>
@@ -69,93 +84,3 @@
         </table>
     </div>
 </div>
-
-
-<!-- <div id="container">
-    <div id="headInput">
-        <div id="searchSortDiv">
-            <div id="sortingDiv">   
-                <select id="sorting" class="btn px-2 py-0.5 font-bold" [(ngModel)]="selected"  (change)="onSort()">
-                    <option value="" disabled selected>Sort By..</option>
-                    <option value="alphabetical">Alphabet</option>
-                    <option value="score">Score</option>
-                    <option value="date">Date</option>
-                </select>
-                <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
-            </div>
-            <div id="searchDiv">
-                <input id = "textInput" [(ngModel)] = "search">
-                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
-            </div>
-        </div>
-        <div id="headingDiv">
-            <h1 id="heading">Your Game Sessions</h1>
-        </div>
-    </div>
-    <div id="content">
-        <table class="table-auto">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Session:
-                    </th>
-                    <th scope="col">
-                        Game:
-                    </th>
-                    <th scope="col">
-                        Script:
-                    </th>
-                    <th scope="col">
-                        Score:
-                    </th>
-                    <th scope="col">
-                        Play Time:
-                    </th>
-                    <th scope="col">
-                        Players
-                    </th>
-                    <th scope="col">
-                        Result:
-                    </th>
-                    <th scope="col">
-                        Date:
-                    </th>
-                    <th scope="col">
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody class = "overflow-x-auto">
-                <tr *ngFor="let results of listResults">
-                    <td scope="row" data-label="Session">
-                        {{results.getID()}}
-                    </td>
-                    <td scope="row" data-label="Game">
-                        {{results.getBoardGame()}}
-                    </td>
-                    <td scope="row" data-label="Script">
-                        {{results.getScript()}}
-                    </td>
-                    <td scope="row" data-label="Score">
-                        {{results.getScore()}}
-                    </td>
-                    <td scope="row" data-label="Play Time">
-                        {{results.getTimePlayed()}}
-                    </td>
-                    <td scope="row" data-label="Players">
-                        {{results.getNumOpponents()}}
-                    </td>
-                    <td scope="row" data-label="Result">
-                        {{results.getResult()}}
-                    </td>
-                    <td scope="row" data-label="Date">
-                        {{results.getDate()}}
-                    </td>
-                    <td scope="row">
-                        <button (click)="viewSession(results.getID())" id="explore">Explore</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div> -->
