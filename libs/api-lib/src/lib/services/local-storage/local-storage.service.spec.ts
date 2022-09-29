@@ -6,8 +6,8 @@ describe('ScriptService', () => {
   let service: LocalStorageService;
 
   const myUpload: upload ={
-    location:"./desktop/storage",
-    key:"upload22333",
+    location:"http://localhost:3333/uploads/development/././desktop/storagescript12",
+    key:"uploads/development/././desktop/storagescript12",
   }
 
   beforeEach(async () => {
@@ -27,7 +27,6 @@ describe('ScriptService', () => {
       expect(service.upload("script12", "././desktop/storage", "data")).resolves.toEqual(myUpload)
     });
   });
-
   // describe('update', ()=>{
   //   it('should update the file', ()=>{
   //     expect(service.update("someKey", "data")).toBeDefined();
