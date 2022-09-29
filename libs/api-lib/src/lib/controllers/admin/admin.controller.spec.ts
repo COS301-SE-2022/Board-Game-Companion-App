@@ -111,7 +111,7 @@ describe('ApiAdminController', ()=>{
 
   describe('getTotalAccounts', ()=>{
     it('should get the total number of admins', ()=>{
-      expect(controller.getActiveAccounts()).resolves.toEqual(5);
+      expect(controller.getTotalAccounts()).resolves.toEqual(5);
     })
   });
 
