@@ -1,8 +1,88 @@
-<div id = "container" class="block w-4/5 m-auto overflow-x-hidden">
-    <h1 class = "mb-4" id = "sessionName">Session: {{name}}</h1>
-    <div id = "image" class = "float-right">
-        <img [src] = 'img'>
+<div  class = "w-4/5 h-full my-12 mx-auto ">
+    <div class = "w-full bg-white my-4">
+        <div id = "title" class = "flex justify-between w-full text-white p-4 text-3xl font-bold overflow-x-auto">
+            Session Details
+        </div>
+        <div class = "flex flex-row w-full justify-between">
+            <div>
+                <table class="table-auto">
+                    <tbody>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Session:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Game:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{game}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Date:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Play Time:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{time}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Score:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{score}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Script:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{script}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-4">
+                                Players:
+                            </th>
+                            <td class="py-2 px-4">
+                                {{num}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class = "m-4 mr-8 w-1/2 h-full" id = "image">
+                <img [src] = 'img'>
+            </div>
+        </div>
     </div>
+    <div class = "w-full h-1/2 max-h-1/2 bg-white my-4">
+        <div id = "title" class = "flex justify-between w-full text-white p-4 text-3xl font-bold overflow-x-auto">
+            Session History
+        </div>
+        <div class = "h-4/5 overflow-auto bg-white" id = "gameHistory">
+        </div>
+    </div>
+</div>
+
+<!-- <div id = "container" class="block w-4/5 m-auto overflow-x-hidden">
+    <h1 class = "mb-4" id = "sessionName">Session: {{name}}</h1>
+    
     <div id = "details" class="bg-white">
         <h1 id = "d">Details</h1>
         <table class="table-auto ">
@@ -56,4 +136,4 @@
         <h1 id = "ss">Session History</h1>
         <div id = "gameHistory"></div>
     </div>
-</div>
+</div> -->
