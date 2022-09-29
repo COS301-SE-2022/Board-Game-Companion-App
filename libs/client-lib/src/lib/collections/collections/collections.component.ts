@@ -177,11 +177,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.maxGames = 6;
       this.widthPerGame = 16;
     }else if(width >= 450){
-      this.maxGames = 4;
-      this.widthPerGame = 24;
+      this.maxGames = 3;
+      this.widthPerGame = 32;
     }else{
-      this.maxGames = 4;
-      this.widthPerGame = 24;
+      this.maxGames = 2;
+      this.widthPerGame = 48;
     }
   }
 

@@ -1,9 +1,9 @@
 <div class = "row mt-2 w-4/5 mx-auto">
     <div id = "board-games" class = "offset-sm-2 col-sm-10 flex flex-row mb-2 p-1 ">
-        <div (click) = "back()" class = "back h-20 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+        <div (click) = "back()" class = "back h-32 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
             <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
         </div>
-        <div class = "middle h-20 space-x-2 p-1 flex flex-row border-2 rounded-sm" [style.width.%] = '92'>
+        <div class = "middle h-32 space-x-2 p-1 flex flex-row border-2 rounded-sm" [style.width.%] = '92'>
             <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
                 <img class = "w-full h-full" [src] = "value.image">
 
@@ -23,7 +23,7 @@
                 <p class = "mx-auto">No Board Games</p>
             </div>
         </div>
-        <div (click) = "next()" class = "forward h-20 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+        <div (click) = "next()" class = "forward h-32 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
             <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
         </div>
     </div>

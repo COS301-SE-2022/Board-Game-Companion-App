@@ -85,6 +85,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadCollections();
     this.loadRecommendations();
+    this.onScreenResize();
     //This is old carousel code
     //check if there are existing collections
     //collections will be the array which holds the names of the collections on localStorage
@@ -201,8 +202,8 @@ export class HomeComponent implements OnInit {
       this.maxGames = 3;
       this.widthPerGame = 32;
     }else if(width >= 450){
-      this.maxGames = 2;
-      this.widthPerGame = 48;
+      this.maxGames = 3;
+      this.widthPerGame = 32;
     }else{
       this.maxGames = 2;
       this.widthPerGame = 48;
