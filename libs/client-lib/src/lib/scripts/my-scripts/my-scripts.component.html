@@ -1,6 +1,6 @@
 <div *ngIf = "!showOffline && gridView" class = "row">
     <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
-        <div [id] = "value._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+        <div [id] = "value._id" class="parent relative rounded-md overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
             <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
             <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
             <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
