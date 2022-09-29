@@ -15,7 +15,7 @@ export class ModelsService {
 
   constructor(private readonly httpClient:HttpClient,private readonly storageService:StorageService){
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
-  }
+}
 
   alreadyStored(model:string): Promise<boolean>{
     let param = new HttpParams();
@@ -234,7 +234,6 @@ export class ModelsService {
         }else if(optimizer === 1){
             return tf.train.adagrad(values.learningRate as number,values.initialAccumulatorValue);
         }else if(optimizer === 2){
-            console.log(values)
             return tf.train.adam(values.learningRate,values.beta1,values.beta2,values.epsilon);
         }else if(optimizer === 3){
             return tf.train.adamax(values.learningRate,values.beta1,values.beta2,values.epsilon,values.decay);

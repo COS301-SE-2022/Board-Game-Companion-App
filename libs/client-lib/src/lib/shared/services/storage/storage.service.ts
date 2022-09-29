@@ -79,6 +79,49 @@ export class StorageService{
     return this.db;
   }
 
+  clearModels(): Promise<string>{
+    return new Promise((resolve,reject) => {
+      const request = indexedDB.open("tensorflowjs",1);
+
+      request.onerror = (ev:any) => {
+        this.openFailure = true;
+        alert("1")
+        reject(`Failed to clear models. Error: ${ev.target.errorCode}`);
+      }
+
+      request.onsuccess = (ev:any) => {
+        this.openSuccess = true;
+        const db:IDBDatabase = ev.target.result;
+      
+        
+        const transaction = db.transaction("model_info_store",'readwrite');
+        const store = transaction.objectStore("model_info_store");
+        const query = store.clear();
+        query.onerror = (ev:any) => {
+          alert("2")
+          reject(`Failed to clear models. Error: ${ev.target.errorCode}`);
+        }
+
+        query.onsuccess = (ev:any) => {
+          const transaction = db.transaction("models_store",'readwrite');
+          const store = transaction.objectStore("models_store");
+          const second_query = store.clear();
+          
+          second_query.onerror = (ev:any) => {
+            alert("3")
+            reject(`Failed to clear models. Error: ${ev.target.errorCode}`);
+          }
+
+          second_query.onsuccess = (ev:any) => {
+            resolve("Okay");
+          }
+        }
+      }
+    })
+
+    
+  }
+
   clear(storeName:string): Promise<string>{
     const functionality = (resolve:any,reject:any)=>{
       let found = false;

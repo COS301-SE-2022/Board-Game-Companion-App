@@ -16,7 +16,7 @@ export class ModelsService {
     constructor(@InjectModel(NeuralNetwork.name) private networkModel: Model<NeuralNetworkDocument>,
                 private readonly storageService:MongoDbStorageService){}
 
-    async create(model:MemoryStoredFile,weights:MemoryStoredFile,user:user,name:string,created:Date,min:number[],max:number[],labels:string[]): Promise<NeuralNetwork>{
+    async create(model:MemoryStoredFile,weights:MemoryStoredFile,user:user,name:string,created:Date,min:number[],max:number[],labels:string[],loss:number,accuracy:number): Promise<NeuralNetwork>{
         const dto:neuralnetworkDto = {
             creator: user,
             name: name,
@@ -24,6 +24,8 @@ export class ModelsService {
             labels: labels,
             min: min,
             max: max,
+            loss: loss,
+            accuracy: accuracy,
             model: {name:model.originalName,key:"",location:""},
             weights: {name:weights.originalName,key:"",location:""},
             discriminator: NeuralNetworkDiscriminator.None
@@ -96,6 +98,8 @@ export class ModelsService {
             labels: current.labels,
             min: current.min,
             max: current.max,
+            loss: current.loss,
+            accuracy: current.accuracy,
             model: {name: current.model.name,key: "",location: ""},
             weights: {name: current.weights.name,key: "",location: ""},
             discriminator: location

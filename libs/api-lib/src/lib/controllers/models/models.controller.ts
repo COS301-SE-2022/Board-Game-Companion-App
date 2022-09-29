@@ -19,8 +19,10 @@ export class ApiModelsController {
             @Query('labels')labels: string,
             @Query('min')min: string,
             @Query('max')max: string,
-            @Body('model.json')model:MemoryStoredFile,
-            @Body('model.weights.bin')weights:MemoryStoredFile):Promise<NeuralNetwork>{
+            @Body('model.json')model: MemoryStoredFile,
+            @Body('model.weights.bin')weights: MemoryStoredFile,
+            @Query('loss')loss: number,
+            @Query('accuracy')accuracy:number): Promise<NeuralNetwork>{
 
       let minimum: number[] = [];
       let maximum: number[] = [];
@@ -42,7 +44,9 @@ export class ApiModelsController {
                                         created,
                                         minimum,
                                         maximum,
-                                        categories                                       
+                                        categories,
+                                        loss,
+                                        accuracy                                       
                                         )
     }
 

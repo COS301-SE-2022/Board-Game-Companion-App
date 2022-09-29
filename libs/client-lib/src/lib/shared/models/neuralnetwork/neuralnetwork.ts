@@ -7,6 +7,8 @@ export interface neuralnetwork{
     labels: string[];
     min: number[];
     max: number[];
+    loss: number;
+    accuracy: number;
     model?: file;
     weights?: file;
 }
