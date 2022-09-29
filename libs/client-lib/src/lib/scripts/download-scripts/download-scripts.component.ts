@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { ScriptService } from '../../shared/services/scripts/script.service';
@@ -24,6 +24,7 @@ export class DownloadScriptsComponent implements OnInit {
   updatesRequired:string[] = []
   updates:update[] = []
   page = 1;
+  width = window.innerWidth;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
   constructor(private readonly scriptService:ScriptService,
@@ -43,7 +44,15 @@ export class DownloadScriptsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDownloadScripts();
+    this.onScreenResize()
   }
+
+  
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    this.width = window.innerWidth;
+  }
+  
 
   online(): boolean{
     return this.status === OnlineStatusType.ONLINE;
@@ -60,6 +69,9 @@ export class DownloadScriptsComponent implements OnInit {
 
 
   update(value:downloadScript): void{
+    if(this.updating.includes(value._id))
+      return;
+
     this.updates.forEach((val:update) => {
       if(val.oldId === value._id){
         this.updating.push(value._id);

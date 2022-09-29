@@ -48,21 +48,27 @@ export class GeneralComponent implements OnInit {
   }
 
   async train(setup:modelData){
-    this.networks.unshift({
+    const current:neuralnetwork = {
       _id: "",
       name: setup.name,
       created: new Date(),
       labels: setup.labels,
       max: Array.from(setup.max.dataSync()),
-      min: Array.from(setup.min.dataSync())
-    });
+      min: Array.from(setup.min.dataSync()),
+      loss: 0,
+      accuracy: 0      
+    };
+
+    this.networks.unshift(current);
 
     this.progress.unshift({
       name: setup.name,
       trainProgress: 0,
       loss: 0
     })
+
     let tuningRequired = false;
+    let loss = 0;
 
     const trainYs = tf.oneHot(setup.trainYs as tf.Tensor,setup.labels.length);
     this.training.push(setup.name);
@@ -73,23 +79,20 @@ export class GeneralComponent implements OnInit {
       callbacks:{
         onTrainEnd:async() => {
           this.progress = this.progress.filter((value) => value.name !== setup.name);
-          
-          for(let count = 0; count < this.networks.length; count++){
-            if(this.networks[count].name === setup.name){
-              this.upload(this.networks[count],setup.model as tf.Sequential);
-              break;
-            }
-          }
-
           this.training = this.training.filter((name:string) => name !== setup.name)
-          this.test(setup.model as tf.Sequential,setup);
+          current.accuracy = this.test(setup.model as tf.Sequential,setup);
+          current.loss = loss;
+
+          if(!isNaN(current.loss))
+            this.upload(current,setup.model as tf.Sequential);
         },
         onEpochEnd:async(epochs,logs) => {
           for(let count = 0; count < this.progress.length; count++){
             if(this.progress[count].name === setup.name){
               const max = setup.epochs as number;
               this.progress[count].trainProgress = Math.ceil((epochs / max) * 100);
-              
+              loss = (logs as tf.Logs)['loss'];
+
               if(isNaN((logs as tf.Logs)['loss']) && !tuningRequired){
                 this.notifications.add({type:"danger",message:"Parameter tuning required."})
                 tuningRequired = true;
@@ -103,7 +106,7 @@ export class GeneralComponent implements OnInit {
     });
   }
 
-  test(model:tf.Sequential,setup:modelData): void{
+  test(model:tf.Sequential,setup:modelData): number{
     const xs = setup.testXs as tf.Tensor;
 
     const result = model.predict(xs) as tf.Tensor;
@@ -121,9 +124,7 @@ export class GeneralComponent implements OnInit {
         correct++;
     }
 
-    const accuracy = (correct / ys.length) * 100;
-
-    this.notifications.add({type:"primary",message:`Accuracy: ${accuracy.toFixed(2)}`});
+    return (correct / ys.length) * 100;
   }
 
   formatDate(value:Date): string{
@@ -133,19 +134,24 @@ export class GeneralComponent implements OnInit {
 
   remove(network:neuralnetwork): void{
 
-    this.modelService.remove(network._id).subscribe({
-      next: (value:boolean) =>{
-        if(value){
-          this.notifications.add({type:"success",message: `Successfully removed ${network.name}.`})
-          this.networks = this.networks.filter((value:neuralnetwork) => value._id !== network._id)
-        }else{
-          this.notifications.add({type:"warning",message:`Failed to remove ${network.name}`})
+    if(!isNaN(network.loss)){
+      this.modelService.remove(network._id).subscribe({
+        next: (value:boolean) =>{
+          if(value){
+            this.notifications.add({type:"success",message: `Successfully removed ${network.name}.`})
+            this.networks = this.networks.filter((value:neuralnetwork) => value._id !== network._id)
+          }else{
+            this.notifications.add({type:"warning",message:`Failed to remove ${network.name}`})
+          }
+        },
+        error: () => {
+          this.notifications.add({type:"danger",message:`Failed to remove ${network.name}.`})
         }
-      },
-      error: () => {
-        this.notifications.add({type:"danger",message:`Failed to remove ${network.name}.`})
-      }
-    })
+      })
+    }else{
+      this.notifications.add({type:"success",message: `Successfully removed ${network.name}.`})
+      this.networks = this.networks.filter((value:neuralnetwork) => value._id !== network._id)
+    }
   }
 
   getProgress(name:string): number{
@@ -170,11 +176,10 @@ export class GeneralComponent implements OnInit {
       const minimum = network.min;
       const maximum = network.max;
 
-      model.save(`http://localhost:3333/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.name}&created=${network.created?.toString()}&labels=${JSON.stringify(network.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}`).
+      model.save(`https://board-game-companion-app.herokuapp.com/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.name}&created=${network.created?.toString()}&labels=${JSON.stringify(network.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}&loss=${network.loss}&accuracy=${network.accuracy}`).
       then((value:tf.io.SaveResult) => {
         (value.responses as Response[])[0].json().then((res) => {
           network._id = res._id;
-          console.log(network);
         })
 
         this.notifications.add({type:"success",message:`${network.name} was successfully uploaded.`}); 

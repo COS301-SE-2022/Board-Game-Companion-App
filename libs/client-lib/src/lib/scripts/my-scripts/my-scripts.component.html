@@ -1,6 +1,6 @@
 <div *ngIf = "!showOffline && gridView" class = "row">
     <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
-        <div [id] = "value._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+        <div [id] = "value._id" class="parent relative rounded-md overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
             <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
             <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
             <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
@@ -9,20 +9,20 @@
             <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                 <div class = "w-full absolute bottom-20 content-center space-x-4">
                     <button (click) = "play(value)" *ngIf = "value.status.value === 2" class="hover:scale-110 p-1 text-white" data-toggle="modal">
-                        <i class="fas fa-play" data-toggle="tooltip" title="play"></i>
+                        <i class="fas fa-play" data-toggle="tooltip" title="play" [ngClass] = "{'fa-2x':width < 400}"></i>
                     </button>
                     <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
-                        <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                        <i class="fas fa-info-circle" data-toggle="tooltip" title="profile" [ngClass] = "{'fa-2x':width < 400}"></i>
                     </button>
                     <button *ngIf = "!isMobileOS()" (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
-                        <i class="fas fa-edit" data-toggle="tooltip" title="edit"></i>
+                        <i class="fas fa-edit" data-toggle="tooltip" title="edit" [ngClass] = "{'fa-2x':width < 400}"></i>
                     </button>
                 
                     <button (click)="remove(value)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
-                        <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                        <i class="fas fa-trash" data-toggle="tooltip" title="remove" [ngClass] = "{'fa-2x':width < 400}"></i>
                     </button>
                 </div>
-                <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+                <p class = "absolute bottom-0 h-8 text-center w-full" [ngClass] = "{'text-lg':width < 400}"><b>{{value.name}}</b></p>
             </div>
         </div>
     </div>       
@@ -32,7 +32,7 @@
     <div class="accordion" id="scriptList">
         <div class="accordion-item" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
             <h2 class="accordion-header" id="title">
-                <button (click) = "getBoardGameName(value)" class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + value.name" aria-expanded="true" [attr.aria-controls]="value.name">
+                <button (click) = "getBoardGameName(value)" class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + value._id" aria-expanded="true" [attr.aria-controls]="value._id">
                     <div>
                         <img class="w-8 h-8" [src]="value.icon.location" alt=""/>
                     </div>
@@ -42,7 +42,7 @@
                 </button>
             </h2>
 
-            <div [id]="'item_' + value.name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+            <div [id]="'item_' + value._id" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
                 <div class="accordion-body script-body">
                     <div class = "row text-sm">
                         <div class = "col-sm-6">

@@ -97,7 +97,12 @@
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    <div class = "row mt-4">
+                    <div *ngIf = "searching" class="row mt-4">
+                        <div *ngIf = "searching" class = "col-sm-12 h-48 justify-center flex items-center">
+                            <i class="fas fa-spinner fa-pulse fa-10x" data-toggle="tooltip" title="downloading"></i>
+                        </div>
+                    </div>
+                    <div *ngIf = "!searching" class = "row mt-4">
                         <div class = "col-sm-4 col-md-3 col-lg-3 mt-2" *ngFor = "let sub of enumerate(searchResults.length) | paginate: { itemsPerPage: 8, currentPage: page }">
                             <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
                                 <div class = "mx-1 my-0.5">

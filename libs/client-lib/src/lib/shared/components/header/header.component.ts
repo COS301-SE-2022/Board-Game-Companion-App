@@ -169,6 +169,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   moveTo(path:string):void{
+    this.showOptions = false;
     this.focus = path;
 
     if(path == "collection")
