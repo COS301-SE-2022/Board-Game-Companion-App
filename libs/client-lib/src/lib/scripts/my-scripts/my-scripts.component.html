@@ -32,7 +32,7 @@
     <div class="accordion" id="scriptList">
         <div class="accordion-item" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
             <h2 class="accordion-header" id="title">
-                <button (click) = "getBoardGameName(value)" class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + value.name" aria-expanded="true" [attr.aria-controls]="value.name">
+                <button (click) = "getBoardGameName(value)" class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + value._id" aria-expanded="true" [attr.aria-controls]="value._id">
                     <div>
                         <img class="w-8 h-8" [src]="value.icon.location" alt=""/>
                     </div>
@@ -42,7 +42,7 @@
                 </button>
             </h2>
 
-            <div [id]="'item_' + value.name" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+            <div [id]="'item_' + value._id" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
                 <div class="accordion-body script-body">
                     <div class = "row text-sm">
                         <div class = "col-sm-6">

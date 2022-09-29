@@ -69,6 +69,9 @@ export class DownloadScriptsComponent implements OnInit {
 
 
   update(value:downloadScript): void{
+    if(this.updating.includes(value._id))
+      return;
+
     this.updates.forEach((val:update) => {
       if(val.oldId === value._id){
         this.updating.push(value._id);
