@@ -27,30 +27,6 @@ The board game companion app allows its users to keep track of their board game 
 [![tests](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App/branch/develop/graph/badge.svg?token=DKW9SzCsnW)](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App)
 
-## Technologies
-
-### Repository Structure
-
-<img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/> <br/>
-
-### Frontend
-
-<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-### API
-
-<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100">
-
-### Database
-
-<img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-### Hosting
-
-<img src="apps/client/src/assets/images/heroku-logo.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-
-
 ## Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
