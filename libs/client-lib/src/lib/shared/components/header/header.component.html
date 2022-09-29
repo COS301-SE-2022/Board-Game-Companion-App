@@ -4,6 +4,9 @@
             <div (click)="moveTo('home')" class = "h-full w-12 cursor-pointer">
                 <img src="assets/images/logo.png" alt="logo" class=" h-full w-full">
             </div>
+            <div id = "logoName" *ngIf = "width < breakpoint" class = "font-bold justify-items-center text-xl">
+                Board Game Companion
+            </div>
             <div (click) = "showOptions = !showOptions" class = "h-full w-12 flex items-center cursor-pointer hover:text-white" *ngIf = "width <= breakpoint">
                 <i class="fas fa-bars"></i>
             </div>            
