@@ -15,6 +15,10 @@ export class EditorBodyVisualComponent {
   @Output() removeProperties = new EventEmitter<string>()
   @Output() addTile = new EventEmitter<number>()
   @Output() removeTiles = new EventEmitter<number>()
+  @Output() editTiles = new EventEmitter<string>()
+  @Output() updatePlayer = new EventEmitter<string>()
+  @Output() addPlayers = new EventEmitter<number>()
+  @Output() removePlayers = new EventEmitter<number>()
 
   Properties = [
     {Property: "", Value: "", Line: ""}
@@ -72,6 +76,59 @@ export class EditorBodyVisualComponent {
   addNewPlayer()
   {
     this.Players.push( {name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], playerCode: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]})
+    this.addPlayers.emit(this.Players.length-1)
+  }
+
+  removePlayer(event : any)
+  {
+    this.removePlayers.emit(event)
+  }
+
+  playerName(event : any)
+  {
+    const name = event.split(/\s/)
+    if(this.Players[+name[1]].actionNames[0] == "")
+    {
+      this.Players[+name[1]].name = name[0]
+    }
+    else
+    {
+      this.updatePlayer.emit("name " + event)
+    }
+  }
+
+  actionName(event : any)
+  {
+    const name = event.split(/\s/)
+    if(name[0] == "")
+    {
+      name.shift()
+    }
+    if(this.Players[+name[1]].actionNames[0] == "")
+    {
+      this.Players[+name[1]].actionNames[+name[2]] = name[0]
+    }
+    else
+    {
+      this.updatePlayer.emit("action " + event)
+    }
+  }
+
+  actionParam(event : any)
+  {
+    const name = event.split(/\s/)
+    if(name[0] == "")
+    {
+      name.shift()
+    }
+    if(this.Players[+name[1]].actionParams[0] == "")
+    {
+      this.Players[+name[1]].actionParams[+name[2]] = name[0]
+    }
+    else
+    {
+      this.updatePlayer.emit("actionParam " + event)
+    }
   }
 
   addNewCard()
@@ -104,6 +161,12 @@ export class EditorBodyVisualComponent {
     const obj = this.Properties[i]
     this.Tiles.splice(i, 1)
     this.removeTiles.emit(i)
+  }
+
+  editTile(event: any, i: number, property: number)
+  {
+    this.Tiles[i].values[property] = event.target.value
+    this.editTiles.emit(event.target.value + " " + i + " " + property)
   }
 
   updatePropertyName(event: any, i : number)

@@ -1,4 +1,4 @@
-import { Component, Input} from "@angular/core";
+import { Component, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: 'board-game-companion-app-player-template',
@@ -8,7 +8,7 @@ import { Component, Input} from "@angular/core";
             <details open>
                 <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
-                        Player <input class = "name" [value]="Players[Index].name"> 
+                        Player <input (change)="playerName($event)" class = "name" [value]="Players[Index].name"> 
                     </div>
                     <button (click)="removePlayer()" id = "removePlayer"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
@@ -18,7 +18,7 @@ import { Component, Input} from "@angular/core";
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
-                                    Action <input *ngIf="Players[Index].actionNames[i] !== undefined" id = "paName" [value]="Players[Index].actionNames[i]"><input *ngIf="Players[Index].actionNames[i] === undefined" id = "paName" [value]=""> <input *ngIf="Players[Index].actionParams[i][0] !== undefined" [value]="Players[Index].actionParams[i][0]"><input *ngIf="Players[Index].actionParams[i][0] === undefined" [value]="">
+                                    Action <input (change)="actionName($event, i)" *ngIf="Players[Index].actionNames[i] !== undefined" id = "paName" [value]="Players[Index].actionNames[i]"><input (change)="actionName($event, i)" *ngIf="Players[Index].actionNames[i] === undefined" id = "paName" [value]=""> <input (change)="actionParam($event, i)" *ngIf="Players[Index].actionParams[i][0] !== undefined" [value]="Players[Index].actionParams[i][0]"><input (change)="actionParam($event, i)" *ngIf="Players[Index].actionParams[i][0] === undefined" [value]="">
                                 </div>
                                 <button *ngIf="Actions.length > 1" (click)="removeAction(i)" id = "removeAction"><i class="fa-solid fa-circle-xmark"></i></button>
                             </summary>
@@ -70,6 +70,10 @@ export class PlayerTemplateComponent{
         {name: 'removeFromArr', arguments: 2},
         {name: 'chooseAction', arguments: 2},
       ]
+    @Output() playerNames = new EventEmitter<string>()
+    @Output() actionNames = new EventEmitter<string>()
+    @Output() playerRemove = new EventEmitter<number>()
+    @Output() actionParams = new EventEmitter<string>()
 
     addAction(){
         this.Actions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
@@ -77,6 +81,21 @@ export class PlayerTemplateComponent{
         this.Players[this.Index].actionNames.push("")
         this.Players[this.Index].actionParams.push("")
         this.Players[this.Index].conditionParams.push("")
+    }
+
+    playerName(event : any)
+    {
+        this.playerNames.emit(event.target.value + " " + this.Index)
+    }
+
+    actionName(event : any, i : number)
+    {
+        this.actionNames.emit(event.target.value + " " + this.Index + " " + i)
+    }
+
+    actionParam(event : any, i : number)
+    {
+        this.actionParams.emit(event.target.value + " " + this.Index + " " + i)
     }
 
     removeAction(i: number)
@@ -88,6 +107,7 @@ export class PlayerTemplateComponent{
     removePlayer()
     {
         this.Players.splice(this.Index, 1)
+        this.playerRemove.emit(this.Index)
     }
     
 }
