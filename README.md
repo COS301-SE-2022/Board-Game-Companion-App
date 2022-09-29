@@ -44,7 +44,9 @@ The following are the presentation videos for the respectives demonstrations.
 
 ### Architectural Design
   - Demo 2: [ARCHITECTURAL_DESIGN_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
-  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+  - Demo 3: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9679141/Capstone_Architectural_Design.pdf)
+
  
 ### Coding Standards
   - Demo 2: [CODING_STANDARDS_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
@@ -56,7 +58,6 @@ The following are the presentation videos for the respectives demonstrations.
 
 ### Technical Installation Manuual
   - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
-
 ### Burndown Chart 
   - Planning: [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
 
