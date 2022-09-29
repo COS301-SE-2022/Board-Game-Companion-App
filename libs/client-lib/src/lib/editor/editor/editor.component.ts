@@ -25,6 +25,14 @@ interface message{
   class: string;
 }
 
+interface tfModel{
+  name: string;
+  min: number[];
+  max: number[];
+  labels:string[];
+  model: tf.LayersModel;
+}
+
 @Component({
   selector: 'board-game-companion-app-editor',
   templateUrl: './editor.component.html',
@@ -62,7 +70,7 @@ export class EditorComponent implements OnInit{
   warningMessages:string[] = [];
   programStructure!:entity;
   count = 0;
-
+  models:tfModel[] = [];
 
   constructor(private readonly editorService:EditorService,
               private router: Router,
@@ -166,19 +174,19 @@ export class EditorComponent implements OnInit{
 
 
   loadModels(): void{
-    this.storageService.clear("editor-networks").catch(()=>{
-      this.notification.add({type:"warning",message:"Failed to locally stored neural network models"});
-    })
-
     this.currentScript.models.forEach((id:string) => {
       this.modelsService.getModel(id).subscribe({
         next:(network:any) =>{
-          this.storageService.insert("editor-networks",network);
-          tf.loadLayersModel(network.model.location).then((value:tf.LayersModel) =>{ 
-            value.save(`indexeddb://editor-${network.name}`).catch(()=>{
-              this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
+          tf.loadLayersModel(network.model.location).then((value:tf.LayersModel) => {
+            this.models.push({
+              name:network.name,
+              model:value,
+              min:network.min,
+              max:network.max,
+              labels:network.labels
             });
-          }).catch(()=>{
+          }).catch((err) => {
+            console.log(err);
             this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
           })
         },
@@ -192,21 +200,25 @@ export class EditorComponent implements OnInit{
 
   async neuralnetworks():Promise<any>{
       return (async(name:string,input:number[])=>{
-        const info = await this.storageService.getByIndex("editor-networks","name",name);
+        for(let count = 0; count < this.models.length; count++){
+          if(this.models[count].name === name){
+            try{
+              const min = tf.tensor(this.models[count].min);
+              const max = tf.tensor(this.models[count].max);
+      
+              const inputTensor = tf.tensor2d(input,[1,input.length]);
+              const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+              const tensorResult = this.models[count].model.predict(normalizedInput) as tf.Tensor;
+              //tensorResult.print();
+              const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+              return this.models[count].labels[index];
+            }catch(err){
+              console.log(err);
+            }
+          }
+        }
 
-        if(info.name == undefined)
-          return "";
-
-        const model = await tf.loadLayersModel(`indexeddb://editor-${info.name}`);
-        const min = tf.tensor(info.min);
-        const max = tf.tensor(info.max);
-
-        const inputTensor = tf.tensor2d(input,[1,input.length]);
-        const normalizedInput = inputTensor.sub(min).div(max).sub(min);
-        const tensorResult = model.predict(normalizedInput) as tf.Tensor;
-        //tensorResult.print();
-        const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-        return info.labels[index];
+        return "";
       })
   }
 
@@ -344,12 +356,12 @@ setCurrPlayer(){
     this.editorConsole.open();
     
     try{
-      this.editorConsole.clear();
-
+      // this.editorConsole.clear();
+      // const code = new Function("model",this.editorBody.getCode());
+      // code(await this.neuralnetworks());
       this.editorService.getFileData(this.currentScript.build.location).subscribe({
-        next:(value)=>{
-          console.log(value)
-          this.interpreter(value);
+        next:async(value)=>{
+          this.interpreter(value);   
         },
         error:(e)=>{
           console.log(e.message);

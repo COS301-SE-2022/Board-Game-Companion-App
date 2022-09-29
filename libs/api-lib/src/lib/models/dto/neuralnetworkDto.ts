@@ -9,6 +9,8 @@ export interface neuralnetworkDto{
     labels: string[];
     min: number[];
     max: number[];
+    loss: number;
+    accuracy: number;
     model: file;
     weights: file;
     discriminator: NeuralNetworkDiscriminator

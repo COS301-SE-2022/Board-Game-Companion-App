@@ -16,15 +16,21 @@ export class NeuralNetwork{
     @Prop({required: true})
     created: Date;
 
-    @Prop()
+    @Prop({required: true})
     labels: string[];
 
-    @Prop()
+    @Prop({required: true})
     min: number[];
 
-    @Prop()
+    @Prop({required: true})
     max: number[];
 
+    @Prop({required: true})
+    loss: number;
+
+    @Prop({required: true})
+    accuracy: number;
+    
     @Prop({required:true,type:{name:"",key:"",location:""}})
     model: file;
 

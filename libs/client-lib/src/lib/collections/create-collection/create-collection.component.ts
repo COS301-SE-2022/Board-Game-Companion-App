@@ -4,6 +4,7 @@ import { collection } from '../../shared/models/collection/collection';
 import { CollectionService } from '../../shared/services/collections/collection.service';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { StorageService } from '../../shared/services/storage/storage.service';
 
 @Component({
   selector: 'board-game-companion-app-create-collection',
@@ -18,7 +19,8 @@ export class CreateCollectionComponent implements OnInit {
 
   constructor(private readonly collectionService:CollectionService,
               private readonly gapi:GoogleAuthService,
-              private readonly networkService: OnlineStatusService){
+              private readonly networkService: OnlineStatusService,
+              private readonly storageService: StorageService){
                 this.networkService.status.subscribe((status: OnlineStatusType) =>{
                   this.status = status;
                 });
@@ -29,36 +31,41 @@ export class CreateCollectionComponent implements OnInit {
   }  
 
   save(): void{
-    if(this.status === OnlineStatusType.OFFLINE){
-      this.notifications.add({type:"warning",message:"You must be online to create collection."});
-      return;
-    }
-
-    if(!this.gapi.isLoggedIn()){
-      this.notifications.add({type:"warning",message:"You must be logged in to create collection."});
-      return;
-    }
-
-    this.collectionService.alreadyExists(this.name.toLowerCase()).subscribe({
-      next:(value:boolean) => {
-        if(value)
-          this.notifications.add({type:"danger",message:`${this.name} already exists.`})
-        else{
-          this.collectionService.createCollection(this.name.toLowerCase()).subscribe({
-            next:(value:collection) => {
-              this.createCollectionEvent.emit(value);
-              this.notifications.add({type:"success",message:`Successfully created collection ${value.name}`});
-            },
-            error:() => {
-              this.notifications.add({type:"danger",message:`Failed to create collection ${this.name}`});
-            }
-          })
+    if(this.status === OnlineStatusType.ONLINE && this.gapi.isLoggedIn()){
+      this.collectionService.alreadyExists(this.name.toLowerCase()).subscribe({
+        next:(value:boolean) => {
+          if(value)
+            this.notifications.add({type:"danger",message:`${this.name} already exists.`})
+          else{
+            this.collectionService.createCollection(this.name.toLowerCase()).subscribe({
+              next:(value:collection) => {
+                this.createCollectionEvent.emit(value);
+                this.notifications.add({type:"success",message:`Successfully created collection ${value.name}`});
+              },
+              error:() => {
+                this.notifications.add({type:"danger",message:`Failed to create collection ${this.name}`});
+              }
+            })
+          }
+        },
+        error:() => {
+          this.notifications.add({type:"danger",message:"Somethings went wrong when creating collection. Try again later or contact the administrator if the error persists."});
         }
-      },
-      error:() => {
-        this.notifications.add({type:"danger",message:"Somethings went wrong when creating collection. Try again later or contact the administrator if the error persists."});
+      })
+    }else{
+      const temp:collection = {
+        _id: "",
+        name: this.name,
+        boardgames: [],
+        owner: {name: "",email:""}
       }
-    })
+      this.storageService.insert("collections",temp).then(() => {
+        this.createCollectionEvent.emit(temp);
+        this.notifications.add({type:"success",message:`Successfully created collection ${temp.name}`});
+      }).catch(() => {
+        this.notifications.add({type:"danger",message:"Failed to create collection"})
+      })
+    } 
   }
 
   checkOnEnter(value:any): void{

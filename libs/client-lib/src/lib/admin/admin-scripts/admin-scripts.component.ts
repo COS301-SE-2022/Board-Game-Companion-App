@@ -70,7 +70,7 @@ export class AdminScriptsComponent implements OnInit{
           const vDate = new Date(script.dateDownloaded);
 
           if(this.selectedYear === vDate.getFullYear())
-            this.barChartData.datasets[1].data[vDate.getMonth() - 1] += 1;
+            this.barChartData.datasets[1].data[vDate.getMonth()] += 1;
         });
 
         this.pieChartData.datasets[0].data[0] = value.length;
@@ -93,7 +93,7 @@ export class AdminScriptsComponent implements OnInit{
           const vDate = new Date(script.created);
 
           if(this.selectedYear === vDate.getFullYear())
-            this.barChartData.datasets[1].data[vDate.getMonth() - 1] += script.status.value === 1 ? 1 : 0;
+            this.barChartData.datasets[1].data[vDate.getMonth()] += script.status.value === 1 ? 1 : 0;
         
           inProgress += script.status.value === 1 ? 1 : 0;
           Flagged += script.status.value === 0 ? 1 : 0;

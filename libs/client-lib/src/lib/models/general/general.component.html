@@ -4,12 +4,20 @@
             <div class = "col-sm-3">
                 {{network.name}}
             </div>
-            <div class = "col-sm-8">
+            <div class = "col-sm-8 flex flex-row">
                 <div *ngIf = "!training.includes(network.name)" >
                     {{formatDate(network.created)}}
                 </div>
+
+                <div class = "ml-4" *ngIf = "!training.includes(network.name)" >
+                    loss: {{network.loss === undefined ? 'unknown': network.loss.toFixed(5)}}
+                </div>
+
+                <div class = "ml-4" *ngIf = "!training.includes(network.name)" >
+                    accuracy: {{network.accuracy.toFixed(5)}}
+                </div>
                 
-                <div *ngIf = "training.includes(network.name)" class = "flex flex-col">
+                <div *ngIf = "training.includes(network.name)" class = "flex flex-col w-full">
                     <div class="w-full bg-gray-200 rounded-full">
                         <div class="bg-orange-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-l-full" [style.width.%] = "getProgress(network.name)"> {{getProgress(network.name)}}%</div>
                     </div>
