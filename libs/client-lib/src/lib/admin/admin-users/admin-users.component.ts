@@ -47,6 +47,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   page = 1;
   selectAccount!:user;
   section = 0;
+  searching = false;
 
   constructor(private readonly adminService:AdminService){}
 
@@ -162,12 +163,20 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   search(): void{
+    if(this.searching){
+      this.notifications.add({type:"warning",message:"search is still pending"});
+      return;
+    }
+
+    this.searching = true;
     this.adminService.search(this.searchValue).subscribe({
       next:(value:userSearch[]) => {
         this.searchResults = value;
+        this.searching = false;
       },
       error:() => {
         this.notifications.add({type:"danger",message:"Search Failed."});
+        this.searching = false;
       }
     })
   }
@@ -235,43 +244,68 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   addModerator(): void{
-    if(this.email === ""){
-      this.notifications.add({type:"danger",message:"Email is empty."});
-      return;
-    }
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) => {
+        if(response){
+          
+          if(this.email === ""){
+            this.notifications.add({type:"danger",message:"Email is empty."});
+            return;
+          }
 
-    if(!this.validateEmail()){
-      this.notifications.add({type:"danger",message:"Invalid email."});
-      return;
-    }
+          if(!this.validateEmail()){
+            this.notifications.add({type:"danger",message:"Invalid email."});
+            return;
+          }
 
-    this.adminService.create(this.email).subscribe({
-      next:(value:moderator) => {
-        if(value === null){
-          this.notifications.add({type:"warning",message:`Moderators with email '${this.email}' already exists.`});
-          this.email = "";
-          return;
+          this.adminService.create(this.email).subscribe({
+            next:(value:moderator) => {
+              if(value === null){
+                this.notifications.add({type:"warning",message:`Moderators with email '${this.email}' already exists.`});
+                this.email = "";
+                return;
+              }
+
+              this.moderators.push(value);
+              this.email = "";
+              this.notifications.add({type:"success",message:`Successfully created new moderator with email '${this.email}'`})
+            },
+            error:()=>{
+              this.notifications.add({type:"warning",message:`Failed to create moderator with email '${this.email}'`});
+              this.email = "";
+            }
+          })
+        }else{
+          this.notifications.add({type:"warning",message:"You must be an admin to add moderator"})
         }
-
-        this.moderators.push(value);
-        this.email = "";
-        this.notifications.add({type:"success",message:`Successfully created new moderator with email '${this.email}'`})
       },
-      error:()=>{
-        this.notifications.add({type:"warning",message:`Failed to create moderator with email '${this.email}'`});
-        this.email = "";
+      error:() => {
+        this.notifications.add({type:"danger",message:"Failed to check if you are an admin"})
       }
-    })
+    });
+
   }
 
   removeModerator(value:moderator):void{
-    this.adminService.remove(value._id).subscribe({
-      next:(response:moderator) => {
-        this.moderators = this.moderators.filter((val:moderator) => val._id !== response._id);
-        this.notifications.add({type:"success",message:`Successfully removed moderator with email '${this.email}'`});
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) => {
+        if(response){
+
+          this.adminService.remove(value._id).subscribe({
+            next:(response:moderator) => {
+              this.moderators = this.moderators.filter((val:moderator) => val._id !== response._id);
+              this.notifications.add({type:"success",message:`Successfully removed moderator with email '${this.email}'`});
+            },
+            error:() => {
+              this.notifications.add({type:"warning",message:`Failed to remove moderator with email '${value.email}'`});
+            }
+          })
+        }else{
+          this.notifications.add({type:"warning",message:"You must be an admin to remove moderator"})
+        }
       },
       error:() => {
-        this.notifications.add({type:"warning",message:`Failed to remove moderator with email '${value.email}'`});
+        this.notifications.add({type:"danger",message:"Failed to check if you are an admin"})
       }
     })
   }
@@ -340,37 +374,59 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   moveAdmin(): void{
-    if(this.selectAdmin === undefined)
-      return;
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) => {
+        if(response){
+                
+          if(this.selectAdmin === undefined)
+            return;
 
-    this.adminService.setAdmin(this.selectAdmin._id,false).subscribe({
-      next:(value:moderator) => {
-        if(this.selectAdmin !== undefined)
-          this.selectAdmin.admin = value.admin;
+          this.adminService.setAdmin(this.selectAdmin._id,false).subscribe({
+            next:(value:moderator) => {
+              if(this.selectAdmin !== undefined)
+                this.selectAdmin.admin = value.admin;
 
-        this.notifications.add({type:"success",message:`Successfully moved '${this.selectAdmin?.email}' to moderator`})
-        this.selectAdmin = undefined;
-      },
-      error:() => {
-        this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
+              this.notifications.add({type:"success",message:`Successfully moved '${this.selectAdmin?.email}' to moderator`})
+              this.selectAdmin = undefined;
+            },
+            error:() => {
+              this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
+            }
+          })
+        }else{
+          this.notifications.add({type:"warning",message:"You must be an admin to move user from admin to moderator"})
+        }
+      },error:()=> {
+        this.notifications.add({type:"danger",message:"Failed to check if you are an admin"})
       }
     })
   }
 
   moveModerator(): void{
-    if(this.selectModerator === undefined)
-      return;
+    this.adminService.isAdmin().subscribe({
+      next:(response:boolean) => {
+        if(response){
 
-    this.adminService.setAdmin(this.selectModerator._id,true).subscribe({
-      next:(value:moderator) => {
-        if(this.selectModerator !== undefined)
-          this.selectModerator.admin = value.admin;
+          if(this.selectModerator === undefined)
+            return;
 
-        this.notifications.add({type:"success",message:`Successfully moved '${this.selectModerator?.email}' to admin`})
-        this.selectModerator = undefined;
-      },
-      error:() => {
-        this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
+          this.adminService.setAdmin(this.selectModerator._id,true).subscribe({
+            next:(value:moderator) => {
+              if(this.selectModerator !== undefined)
+                this.selectModerator.admin = value.admin;
+
+              this.notifications.add({type:"success",message:`Successfully moved '${this.selectModerator?.email}' to admin`})
+              this.selectModerator = undefined;
+            },
+            error:() => {
+              this.notifications.add({type:"warning",message:`Failed to move '${this.selectAdmin?.email}' to moderator status.`})
+            }
+          })
+        }else{
+          this.notifications.add({type:"warning",message:"You must be an admin to move user from moderator to admin"})
+        }
+      },error:() =>{
+        this.notifications.add({type:"danger",message:"Failed to check if you are an admin."})
       }
     })
   }

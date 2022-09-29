@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, HostListener } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { script, empty } from '../../shared/models/scripts/script';
 import { Router } from '@angular/router';
@@ -29,6 +29,7 @@ export class MyScriptsComponent implements OnInit{
   releasing:string[] = [];
   months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   boardGameName = "";
+  width = window.innerWidth;
   currentRelease!:myScript;
   version:version = {major: 0, minor: 0, patch: 0}
 
@@ -58,6 +59,7 @@ export class MyScriptsComponent implements OnInit{
 
   ngOnInit(): void {
     this.getMyScripts();
+    this.onScreenResize()
   }
 
   getMyScripts():void{
@@ -246,8 +248,14 @@ export class MyScriptsComponent implements OnInit{
         this.notifications.add({type:"danger",message:`Could not find the release version of ${value.name}`})
       }
     });
-    
   }
+
+  
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    this.width = window.innerWidth;
+  }
+  
 
   isMobileOS(): boolean{
     if(navigator.userAgent.indexOf("Android") != -1)

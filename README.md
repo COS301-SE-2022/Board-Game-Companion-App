@@ -54,53 +54,41 @@ The board game companion app allows its users to keep track of their board game 
 ## Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
-- Demo 1: `video presentation link`
-- Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
-- Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
+  - Demo 1: `video presentation link`
+  - Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
+  - Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
 
-## Documentation
+## Documentation:
+### Software Requirements Specification
 
-- Pdf on google drive: [SRS](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
+  - Demo 1: [SRS_VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
+  - Demo 2: [SRS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
+  - Demo 3: [SRS_VERSION_3](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
 
-- Overleaf: [SRS](https://www.overleaf.com/read/tpqfzqmjvnbx)
+### Architectural Design
+  - Demo 2: [ARCHITECTURAL_DESIGN_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
+  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+ 
+### Coding Standards
+  - Demo 2: [CODING_STANDARDS_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
+  - Demo 3: [CODING_STANDARDS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
 
-## Demo 2 Documentation: 
-### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
+### User Manual
+  - Demo 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
+  - Demo 3: [USER_MANUAL_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
 
-### User Manual: [User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
+### Technical Installation Manuual
+  - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
 
-
-### SRS: [Capstone_SRS.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
-
-### Architectural Design: [Capstone_Architectural_Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
-
-### Burndown Chart (Planning): [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
-
-## Demo 3 Documentation:
-### Coding Standards: [Coding Standards.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
-
-
-### User Manual: [FrontendForerunners User Manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
-
-
-### Technical User Manual: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
-
-
-### SRS Documentation:[Frontend_Forerunners_SRS_V3.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
-
-
-
-
-### Architectural Design: [Frontend Forerunners Architectural Design.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
-
-
-
-
+### Burndown Chart 
+  - Planning: [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
 
 ## Project Management Tool
-- Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
+  - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
+
+
 ## Profiles
-- Meet the Frontend Forerunners team:
+  - Meet the Frontend Forerunners team:
 
 <h1><b>Matome Joseph Makgopa</b></h1>
 <img align="left" src="https://user-images.githubusercontent.com/93937047/168194550-fabcbc9a-2554-418f-b4eb-8ffbebfcf59f.jpeg" width="180" height="180" />

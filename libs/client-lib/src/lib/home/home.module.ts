@@ -6,6 +6,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { Carousel1Component } from './carousel1/carousel1.component';
 import { Carousel2Component } from './carousel2/carousel2.component';
 import { SharedModule } from '../shared/shared.module';
+import { OnlineStatusModule } from 'ngx-online-status';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
+    OnlineStatusModule,
     RouterModule.forChild([{ path: '', component: HomeComponent }]),
   ],
 })

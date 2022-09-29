@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
 import { entity } from '../../shared/models/editor/entity';
@@ -20,7 +20,7 @@ import { transpilationResponse } from '../../shared/models/editor/transpilationR
   templateUrl: './editor-body.component.html',
   styleUrls: ['./editor-body.component.scss'],
 })
-export class EditorBodyComponent implements OnInit,OnDestroy{
+export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
  
   @Input() height = 0;
   @Input() width = 0;
@@ -39,18 +39,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   showFindCheck = true;
   showReplaceCheck = true;
   cursorCheckerTimer = 0;
-  editorId!:Date;
   cursorPosition:ace.Ace.Point = {row:1,column:1};
   dragula = new Subscription()
   count = 0
+  showVisual = false;
   @Input() eID = 0
-
+  reinitialized = false;
+  editorId = (new Date()).getTime().toString();
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
     
   }
 
+  ngAfterViewInit(): void{
+    this.createEditor();
+  }
+
   ngOnInit(): void {
-    this.editorId = new Date();
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
@@ -549,7 +553,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
         this.cursorPosition = value;
       }
     },500);
-    
   }
 
   ngOnDestroy(): void {
@@ -581,7 +584,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
   }
 
   createEditor():void{
-    this.codeEditor =  ace.edit("editor-content"); 
+
+    this.codeEditor =  ace.edit(this.editorId); 
     this.codeEditor.setTheme("ace/theme/" + this.themeEditor.toLowerCase());
     this.codeEditor.resize();
     this.codeEditor.session.setMode("ace/mode/automatascript");
@@ -595,20 +599,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy{
 
   changeDisplay(value: boolean): void
   {
-    if(value)
-    {
-      const e = document.getElementById("editor-content") as HTMLElement
-      const v = document.getElementById("visual-content") as HTMLElement
-      e.style.display = "none"
-      v.style.display = "block"
-    }
-    else
-    {
-      const e = document.getElementById("editor-content") as HTMLElement
-      const v = document.getElementById("visual-content") as HTMLElement
-      e.style.display = "block"
-      v.style.display = "none"
-    }
+    this.showVisual = value;
   }
 
   getCode(): string{

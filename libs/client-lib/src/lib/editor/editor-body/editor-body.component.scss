@@ -2,21 +2,21 @@
     border:2px solid rgb(16, 112, 116);
 }
 
-.editor-content::-webkit-scrollbar {
+.editor::-webkit-scrollbar {
     width: 10px;
 }
   
-.editor-content::-webkit-scrollbar-track {
+.editor::-webkit-scrollbar-track {
 background: #f1f1f1;
 }
   
 
-.editor-content::-webkit-scrollbar-thumb {
+.editor::-webkit-scrollbar-thumb {
 background: #888;
 }
   
 
-.editor-content::-webkit-scrollbar-thumb:hover {
+.editor::-webkit-scrollbar-thumb:hover {
 background: #555;
 }
 

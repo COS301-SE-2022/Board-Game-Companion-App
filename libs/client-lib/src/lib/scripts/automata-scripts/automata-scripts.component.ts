@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input, HostListener } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
 import { Router } from '@angular/router';
 import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
@@ -20,6 +20,7 @@ export class AutomataScriptComponent implements OnInit{
   filter:automataScript[] = [];
   status: OnlineStatusType = OnlineStatusType.ONLINE;
   showOffline = false;
+  width = window.innerWidth;
   page = 1;
   downloading:string[] = [];
   importing:string[] = [];
@@ -52,8 +53,14 @@ export class AutomataScriptComponent implements OnInit{
 
   ngOnInit(): void{
     this.getAutomataScripts();
+    this.onScreenResize();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    this.width = window.innerWidth;
+  }
+  
   getAutomataScripts():void{
     if(this.status === OnlineStatusType.OFFLINE){
       return;
