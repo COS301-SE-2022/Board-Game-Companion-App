@@ -68,11 +68,11 @@ export class ScriptExecutorComponent implements OnInit {
     //Timer
     if(localStorage.getItem("sessions") !== null)
     {
-      let c = JSON.parse(localStorage.getItem("sessions")||"")
-      let name = "#" + (c.length + 1);
+      const c = JSON.parse(localStorage.getItem("sessions")||"")
+      const name = "#" + (c.length + 1);
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
-      let session = []
+      const session = []
       session.push(this.gameName)
       session.push(this.current.name)
       session.push("2")
@@ -91,11 +91,11 @@ export class ScriptExecutorComponent implements OnInit {
     }
     else
     {
-      let c = [];
-      let name = "#1";
+      const c = [];
+      const name = "#1";
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
-      let session = []
+      const session = []
       session.push(this.gameName)
       session.push(this.current.name)
       session.push("2")
@@ -115,6 +115,11 @@ export class ScriptExecutorComponent implements OnInit {
 
     //this.router.navigate(['scripts']);
   }
+
+  ngOnDestroy()
+  {
+    this.back()
+  }
   
   ngOnInit(): void {
 
@@ -122,10 +127,9 @@ export class ScriptExecutorComponent implements OnInit {
       this.s++
       if(this.s === 60)
       {
-        
         this.m++
       }
-      if(this.m == 60)
+      if(this.m === 60)
       {
         this.h++
       }
@@ -142,7 +146,6 @@ export class ScriptExecutorComponent implements OnInit {
         },
         complete:()=>{
           console.log("complete")
-          this.back()
         }  
       })
   }
@@ -174,6 +177,7 @@ export class ScriptExecutorComponent implements OnInit {
   }
   output(){
     return (async(value:string) => {
+      console.log("yes please stop")
       this.inputBlock = true;
       this.showOutput = true;
       const outputElem = document.getElementById("TextOutput");
@@ -183,6 +187,7 @@ export class ScriptExecutorComponent implements OnInit {
       }
       this.history.push(">>>> "+value);
       this.playerAtHistory.push(this.currPlayer);
+      console.log(this.history)
       this.recentPrompt = value + "<br>Press Enter to continue";
 
       const pause = new Promise((resolve)=>{
