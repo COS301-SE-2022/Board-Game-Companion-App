@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { disableDebugTools } from '@angular/platform-browser';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { oldScript } from '../../shared/models/scripts/old-script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
 
 
 @Component({
@@ -23,15 +26,25 @@ export class SessionComponent implements OnInit {
   date = "";
   gameId = "";
   img = "";
+  scriptId = "";
   //filter:automataScript = undefined
 
   getDetails(id:string): void{
     this.router.navigate(['board-game-details'], { state: { value: id } });
   }
 
-  /* showInfo(value:automataScript){
-    this.router.navigate(['script-detail'], { state: { value: value } });
-  } */
+  showInfo(scriptId:string){
+    this.scriptService.getDownloadedScript(scriptId).subscribe({
+      next:(value:downloadScript) =>{
+        this.scriptService.getDownloadInfo(value.link).subscribe({
+          next:(value:automataScript | oldScript) =>{
+              console.log(value)
+              this.router.navigate(['script-detail'], { state: { value: value } });
+          }
+        })
+      }
+    })
+  } 
 
   ngOnInit(): void 
   {
@@ -48,6 +61,7 @@ export class SessionComponent implements OnInit {
       this.result = session[5];
       this.date = session[6];
       this.gameId = session[7];
+      this.scriptId = session[10]
       if(session[8])
       {
         const elem = document.getElementById("gameHistory")
