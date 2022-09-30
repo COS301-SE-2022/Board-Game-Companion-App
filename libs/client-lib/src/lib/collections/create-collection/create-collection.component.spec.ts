@@ -7,17 +7,21 @@ import { CollectionService } from '../../shared/services/collections/collection.
 import { CreateCollectionComponent } from './create-collection.component';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import 'fake-indexeddb/auto';
 
 describe('CreateCollectionComponent',()=>{
   let component: CreateCollectionComponent;
   let searchAuth: GoogleAuthService;
   let serviceNetwork: OnlineStatusService;
   let serviceCollection: CollectionService;
+  let storageService: StorageService;
 
   beforeEach(async ()=> {
     await TestBed.configureTestingModule({
       declarations: [CreateCollectionComponent,NotificationComponent],
-      providers: [CollectionService,OnlineStatusService,GoogleAuthService,OAuthService,UrlHelperService,OAuthLogger,DateTimeProvider],
+      providers: [CollectionService,OnlineStatusService,GoogleAuthService,OAuthService,
+        UrlHelperService,OAuthLogger,DateTimeProvider,StorageService],
       imports: [HttpClientTestingModule]
     }).compileComponents();
   });
@@ -26,10 +30,11 @@ describe('CreateCollectionComponent',()=>{
     searchAuth = TestBed.inject(GoogleAuthService);
     serviceCollection = TestBed.inject(CollectionService);
     serviceNetwork = TestBed.inject(OnlineStatusService);
+    storageService = TestBed.inject(StorageService);
     expect(serviceNetwork).toBeDefined();
     expect(serviceCollection).toBeDefined();
     expect(searchAuth).toBeDefined();
-    component = new CreateCollectionComponent(serviceCollection,searchAuth,serviceNetwork);
+    component = new CreateCollectionComponent(serviceCollection,searchAuth,serviceNetwork,storageService);
     expect(component).toBeDefined();
   });
 });
