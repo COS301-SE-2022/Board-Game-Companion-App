@@ -78,9 +78,12 @@ The following are the presentation videos for the respectives demonstrations.
   - Demo 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
   - Demo 3: [USER_MANUAL_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
 
-### Technical Installation Manuual
+### Technical Installation Manual
   - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
-  
+
+### Testing Policy Document 
+- [Testing Policy Document.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9681366/Testing.Policy.Document.pdf)
+
 
 ### Burndown Chart 
   - Planning: [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
