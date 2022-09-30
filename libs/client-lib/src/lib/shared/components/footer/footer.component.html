@@ -1,4 +1,8 @@
-<footer class="hidden sm:flex" *ngIf = "showFooter">
-    <span id = "left">Copyright @FrontendForerunners</span>
-    <span id = "right">Board Game Companion</span>
+<footer class = "w-full flex flex-row space-x-4" *ngIf = "showFooter" [style.height.%] = "height">
+    <div id = "c" class = "w-1/2 justify-end bg-inherit flex items-center">
+        Copyright @FrontendForerunners
+    </div>
+    <div id = "b" class = "w-1/2 justify-start bg-inherit flex items-center sm:visible">
+        Board Game Companion
+    </div>
 </footer>

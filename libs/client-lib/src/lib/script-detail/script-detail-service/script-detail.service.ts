@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-
 export interface script{
   _id: string;
   name: string;
@@ -41,7 +40,7 @@ export class ScriptDetailService {
   private url = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.url = "http://localhost:3333/api/scripts/";
+    this.url = "https://board-game-companion-app.herokuapp.com/api/scripts/";
   }
 
   getScriptById(id:string):Observable<script>{

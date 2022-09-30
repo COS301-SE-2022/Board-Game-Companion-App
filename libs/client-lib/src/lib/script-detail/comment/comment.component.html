@@ -37,9 +37,17 @@
           </button>
       </div>
       <p (click) = "toggleReplies()" class = "flex ml-1 pt-2.5 text-white text-xs cursor-pointer hover:underline hover:underline-offset-2" *ngIf = "depth !== 4">{{ count.replies}} {{count.replies === 1 ? "reply" : "replies"}}</p>
+      
+      <div class="flex ml-4">
+        <button (click) = "reportComment()" type="button" class="inline-block rounded-full text-white leading-normal uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out w-9 h-9">
+          <span class = "fas fa-flag fa-sm hover:text-rose-700"></span>
+        </button>
+    </div>
     </div>
   </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
 
 <board-game-companion-app-comment-form [script] = "script" (newComment)="addNewReply($event)" *ngIf = "showReplyForm" [formType]="'Reply'" [width]="width - 5"></board-game-companion-app-comment-form>
 <div *ngIf = "showReplies">

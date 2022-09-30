@@ -12,6 +12,7 @@ describe('BggSearchService', ()=> {
   let httpTestingController: HttpTestingController;
   let service: BggSearchService;
 
+
   beforeEach(() => {
     TestBed.configureTestingModule({imports:[HttpClientTestingModule]});
     service = TestBed.inject(BggSearchService);
@@ -35,6 +36,7 @@ describe('BggSearchService', ()=> {
       expect(result.name).toBe('3rd Millennium Chess');
       expect(JSON.stringify(result)).toEqual(JSON.stringify(mockMostActive));
     });
+    //get local access of api, for instance a json file , mock database 
     const req = httpTestingController.expectOne('https://api.geekdo.com/xmlapi2/thing?id=154930');
     expect(req.request.method).toEqual('GET');
     req.flush(mockMostActive);

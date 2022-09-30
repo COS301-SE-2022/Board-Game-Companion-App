@@ -1,0 +1,26 @@
+<div  [ngClass] = "{'select':select}" class = "navigation row text-white py-1" [style.width.%] = "100 - depth" [style.margin-left.%] = "depth">
+    <div  class = "col-sm-1 text-left px-1 cursor-pointer hover:text-slate-600" (click) = "caret()">
+        <i class="fas m-0" [ngClass]="{'fa-angle-right':!showChildren,'fa-angle-down':showChildren}" data-toggle="tooltip" [title]="showChildren ? 'collapse':'expand'"></i>
+    </div>
+    <div class = "col-sm-3 text-left hover:text-slate-600">
+        <i class="fas fa-bullseye" *ngIf = "current.type==='action'" data-toggle="tooltip" title="action"></i>
+        <i class="fas fa-flag-checkered" *ngIf = "current.type==='endgame'" data-toggle="tooltip" title="endgame"></i>
+        <i class="fas fa-user" *ngIf = "current.type==='player'" data-toggle="tooltip" title="player"></i>
+        <i class="fas fa-project-diagram" *ngIf = "current.type==='state'" data-toggle="tooltip" title="state"></i>
+        <i class="fas fa-gamepad" *ngIf = "current.type==='turn'" data-toggle="tooltip" title="turn"></i>
+        <i class="fas fa-tasks" *ngIf = "current.type==='condition'" data-toggle="tooltip" title="condition"></i>
+        <i class="fas fa-diamond" *ngIf = "current.type==='card'" data-toggle="tooltip" title="card"></i>
+        <i class="fas fa-bullseye" *ngIf = "current.type==='effect'" data-toggle="tooltip" title="effect"></i>
+        <i class="fas fa-th-large" *ngIf = "current.type==='attributes'" data-toggle="tooltip" title="attributes"></i>
+    </div>
+    <div (click) = "highlight()" class = "col-sm-7 text-left hover:text-slate-600 hover:underline underline-offset-2 cursor-pointer">
+        {{current.name}}
+    </div>
+    <div (click) = "remove()" class = "col-sm-1 remove px-1 text-left cursor-pointer hover:text-slate-600">
+        <i class="fas fa-times" data-toggle="tooltip" title="remove"></i>
+    </div>
+</div>
+
+<div *ngIf ="showChildren">
+    <board-game-companion-app-editor-entity (removeParentSelectEvent)="deselect()" (removeEvent)="propagateRemoveEvent($event)" (selectionEvent)="propagateHighlightEvent($event)" [current]="value" [depth]="depth + 5" *ngFor = "let value of current.children"></board-game-companion-app-editor-entity>
+</div>

@@ -1,13 +1,10 @@
-<board-game-companion-app-editor-tool-bar (toggleConsoleEvent)="toggleConsole($event)" (toggleSideBarEvent)="toggleSideBar($event)" (replaceAllEvent)="replaceAll($event)" (findPreviousEvent)="findPrevious()" (findNextEvent)="findNext()" (findEvent)="find($event)" (replaceEvent)="replace($event)" (copyEvent)="copy()" (cutEvent)="cut()" (pasteEvent)="paste()" (redoEvent)="redo()" (undoEvent)="undo()" (themeEvent)="changeTheme()" (executeEvent)="execute()" [height] = "toolBarHeight"></board-game-companion-app-editor-tool-bar>
-<board-game-companion-app-editor-side-bar (resizeEvent)="sideBarResize($event)" [width]="sideBarWidth" [height] = "sideBarHeight"></board-game-companion-app-editor-side-bar>
-<board-game-companion-app-editor-body (newMessageEvent)="newMessage($event)" (changesTracker)="changesTracker($event)" [fileLocation]="currentScript.source.location" [scriptId]="currentScript._id" [top] = "toolBarHeight" [width] = "bodyWidth" [height] = "bodyHeight" [margin] = "sideBarWidth"></board-game-companion-app-editor-body>
+<board-game-companion-app-editor-tool-bar [current]="currentScript" (updateScriptEvent) = "updateScript($event)" (toggleDisplayEvent)="toggleDisplay($event)" (toggleConsoleEvent)="toggleConsole($event)" (toggleSideBarEvent)="toggleSideBar($event)" (replaceAllEvent)="replaceAll($event)" (findPreviousEvent)="findPrevious()" (findNextEvent)="findNext()" (findEvent)="find($event)" (replaceEvent)="replace($event)" (copyEvent)="copy()" (cutEvent)="cut()" (pasteEvent)="paste()" (redoEvent)="redo()" (undoEvent)="undo()" (themeEvent)="changeTheme()" (executeEvent)="execute()" [height] = "toolBarHeight"></board-game-companion-app-editor-tool-bar>
+<board-game-companion-app-editor-side-bar (removeEvent)="remove($event)" (selectionEvent)="highlight($event)" [current]="currentScript" (resizeEvent)="sideBarResize($event)" [width]="sideBarWidth" [height] = "sideBarHeight"></board-game-companion-app-editor-side-bar>
+<board-game-companion-app-editor-body [eID]="count" (cursorChangeEvent)="cursorChange($event)" (newProgramStructureEvent)="setProgramStructure($event)" (newMessageEvent)="newMessage($event)" (changesTracker)="changesTracker($event)" [fileLocation]="currentScript.source.location" [scriptId]="currentScript._id" [top] = "toolBarHeight" [width] = "bodyWidth" [height] = "bodyHeight" [margin] = "sideBarWidth"></board-game-companion-app-editor-body>
 <board-game-companion-app-editor-console (changeHeightEvent)="updateConsoleHeight($event)" class = "console" [height]="consoleHeight" [width] = "consoleWidth" [margin] = "sideBarWidth" [bottom] = "statusBarHeight"></board-game-companion-app-editor-console>
-<board-game-companion-app-editor-status-bar [height] = "statusBarHeight"></board-game-companion-app-editor-status-bar>
+<board-game-companion-app-editor-status-bar (printWarningMessagesEvent)="printWarningMessages()" (printStatusMessagesEvent)="printStatusMessages()" [height] = "statusBarHeight"></board-game-companion-app-editor-status-bar>
 
-<div id="inputModal" class="inputModal fixed z-30left-0 top-0 text-center"  *ngIf = "showInputModal">
-    <div class="inputBox rounded-sm p-2 text-left">
-            <label for="exampleFormControlInput1" class="form-label font-medium text-white ">{{inputPrompt}}</label>
-            <input type="text" class="form-control p-1 border-2 w-full text-sm" [(ngModel)]="inputValue" name = "inputValue" id="rho" placeholder="value">
-            <button type="button" class="inline-block mt-2 w-full px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">enter</button>
-    </div>
-</div>
+<board-game-companion-app-input-interface (submitEvent)="submitInput($event)" [show]="showInput" [parameters]="parameters"></board-game-companion-app-input-interface>
+<board-game-companion-app-output-interface (okayEvent)="okayOutput()" [show]="showOutput" [output] = "outputMessage"></board-game-companion-app-output-interface>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

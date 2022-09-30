@@ -1,88 +1,166 @@
-<div id="outerDiv" class = "script-detail__wrapper w-full h-full sm:px-20 py-4 flex flex-col sm:flex-row">
-  <div class = "order-2 sm:order-1 sm:w-3/4 sm:p-4">
-    <div id="info" class = "script-information bg-white">
-      <h1 class = "script-title text-xl w-full p-2"><b>{{current.name}}</b></h1>
-      <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Author: </label><p class = "script-field-value">{{current.author.name}}</p>
-      </div>
+<div id="outerDiv" class="script-detail__wrapper w-full h-max sm:px-20 py-4 flex flex-col sm:flex-row ">
+  <div class="order-2 sm:order-2 sm:w-3/4 sm:p-4">
+    <div id="info" class="script-information bg-white ">
+      <h1 class="script-title text-xl w-full p-2"><b>{{current.name}}</b></h1>
       
-      <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Board game: </label><p class = "script-field-value">{{boardGameName}}</p>
+      <div class="flex flex-row name-value-pair text-sm p-2">
+        <label class="script-field-name">Version: </label>
+        <p class="script-field-value">{{'v' + current.version.major + '.' + current.version.minor + '.' + current.version.patch}}</p>
       </div>
-      
-      <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Release date: </label><p class = "script-field-value">{{formatDate(current.release)}}</p>
+
+      <div class="flex flex-row name-value-pair text-sm p-2">
+        <label class="script-field-name">Author: </label>
+        <p class="script-field-value">{{current.author.name}}</p>
       </div>
-      
-      <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Size: </label><p class = "script-field-value">{{convertBytes(current.size)}}</p>
+
+      <div class="flex flex-row name-value-pair text-sm p-2">
+        <label class="script-field-name">Board game: </label>
+        <p class="script-field-value">{{boardGameName}}</p>
       </div>
-      
-      <div class = "flex flex-row name-value-pair text-sm p-2">
-        <label class = "script-field-name">Downloads: </label><p class = "script-field-value">{{current.downloads}}</p>
-        <label *ngIf="current.lastdownload!==null" class = "script-field-name" style="margin-left:120px">Last downloads: </label><p *ngIf="current.lastdownload!==null" class = "script-field-value">{{formatDate(current.lastdownload)}}</p>
+
+      <div class="flex flex-row name-value-pair text-sm p-2">
+        <label class="script-field-name">Release date: </label>
+        <p class="script-field-value">{{formatDate(current.dateReleased)}}</p>
       </div>
-      
-      <div class = "text-sm name-value-pair p-2">
-        <label class = "script-field-name">Description: </label>
-        <p class = "script-field-value mt-2" style = "margin-left: 0px;">{{current.description}}</p>
+
+      <div class="flex flex-row name-value-pair text-sm p-2">
+        <label class="script-field-name">Size: </label>
+        <p class="script-field-value">{{convertBytes(current.size)}}</p>
       </div>
-      
+
+      <div class="flex flex-row name-value-pair text-sm p-2 ">
+        <label class="script-field-name">Downloads: </label>
+        <p class="script-field-value">{{current.downloads}}</p>
+      </div>
+      <div class="flex flex-row name-value-pair text-sm p-2 ">
+        <label *ngIf="current.lastDownload!==null" class="script-field-name" >Last downloads:
+        </label>
+        <p *ngIf="current.lastDownload!==null" class="script-field-value">{{formatDate(current.lastDownload)}}</p>
+      </div>
+
+      <div class="text-sm name-value-pair p-2">
+        <label class="script-field-name">Description: </label>
+        <p class="script-field-value mt-2" style="margin-left: 0px;">{{current.description}}</p>
+      </div>
+
     </div>
 
-    <div class = "script-comments p-2 mt-4">
-      <p (click) = "toggleComments()" class = "script-comment-counter text-md cursor-pointer hover:underline hover:underline-offset-2">{{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
-      <board-game-companion-app-comment-section *ngIf = "showComments" (incrementCommentCounter) = "incrementCommentCounter()" [currentScript]="current" ></board-game-companion-app-comment-section>
+    <div class="script-comments p-2 mt-4">
+      <p (click)="toggleComments()"
+        class="script-comment-counter text-md cursor-pointer hover:underline hover:underline-offset-2">
+        {{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
+      <board-game-companion-app-comment-section *ngIf="showComments"
+        (incrementCommentCounter)="incrementCommentCounter()" [currentScript]="current">
+      </board-game-companion-app-comment-section>
     </div>
   </div>
-  
-  <div id="coverDownload" class = "order-1 w-1/4 sm:p-4 sm:order-2">
-    
-    <div id="cover" class = "script-cover mb-4 bg-white relative">
-      <div class = "script-cover-header w-full p-2 mb-2 text-xl"><b>Cover</b></div>
-      <img [src]="current.icon.location" class = "m-auto p-4">
+
+  <div id="coverDownload" class="order-1 w-1/4 sm:p-4 sm:order-2 ">
+
+    <div id="cover" class="script-cover mb-4 bg-white relative">
+      <div class="script-cover-header w-full p-2 mb-2 text-xl"><b>Cover</b></div>
+      <img [src]="current.icon.location" class="m-auto p-4">
 
 
-      <div *ngIf = "voterCount !== 0" class = "sm:absolute sm:right-0 sm:left-0 sm:bottom-0 sm:h-20" style = "background-color:rgba(0,0,0,0.5)">
-        <ul class="w-full h-10 sm:p-2 sm:space-x-1 text-center">
-          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 1,'text-white':averageRating < 1}"></i>
-          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 2,'text-white':averageRating < 2}"></i>
-          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 3,'text-white':averageRating < 3}"></i>
-          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 4,'text-white':averageRating < 4}"></i>
-          <i class="fas fa-star fa-sm" [ngClass] = "{'text-orange-500':averageRating >= 5,'text-white':averageRating < 5}"></i>
-        </ul>  
-        <div class = "w-full h-10 text-xs text-center text-white">
+      <div *ngIf="voterCount !== 0" class="sm:absolute sm:right-0 sm:left-0 sm:bottom-0 sm:h-20"
+        style="background-color:rgba(0,0,0,0.5)">
+        
+          <ul class="w-full h-10 sm:p-2 sm:space-x-1 text-center">
+            <i class="fas fa-star fa-sm"
+              [ngClass]="{'text-orange-500':averageRating >= 1,'text-white':averageRating < 1}"></i>
+            <i class="fas fa-star fa-sm"
+              [ngClass]="{'text-orange-500':averageRating >= 2,'text-white':averageRating < 2}"></i>
+            <i class="fas fa-star fa-sm"
+              [ngClass]="{'text-orange-500':averageRating >= 3,'text-white':averageRating < 3}"></i>
+            <i class="fas fa-star fa-sm"
+              [ngClass]="{'text-orange-500':averageRating >= 4,'text-white':averageRating < 4}"></i>
+            <i class="fas fa-star fa-sm"
+              [ngClass]="{'text-orange-500':averageRating >= 5,'text-white':averageRating < 5}"></i>
+          </ul>
+        
+        <div class="w-full h-10 text-xs text-center text-white">
           {{voterCount}} user{{voterCount === 1 ? "":"s"}}
-        </div>      
+        </div>
       </div>
     </div>
-    
-    <div id="download" class = "script-download mb-4 bg-white text-center">
-      <div class = "script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
-      <button *ngIf = "!downloading" (click)="download()" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
-        <i id = "downIcon" class="fas fa-download fa-3x"></i>
-        <p id = "down" class = "text-lg"><b>DOWNLOAD</b></p>
-      </button>
-      
-      <button *ngIf = "downloading" type="button" class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
-        <i id = "downIcon" class="fas fa-spinner fa-pulse fa-3x"></i>
-        <p id = "down" class = "text-lg"><b>DOWNLOADING</b></p>
-      </button>
-    </div>
+
+    <div id="downrate" class = "mb-4 flex flex-col">
+      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center ">
+        <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
+        <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          <i id="downIcon" class="fas fa-download fa-3x" data-toggle="tooltip" title="download"></i>
+          <p id="down" class="text-lg"><b>DOWNLOAD</b></p>
+        </button>
 
 
-    <div id="rate" class = "script-rate text-center">
-      <div class = "script-rate-header p-2 text-xl mb-4 text-left"><b>Rate</b></div>
+        <button *ngIf="downloading" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out m-auto">
+          <i id="downIcon" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="downloading"></i>
+          <p id="down" class="text-lg"><b>DOWNLOADING</b></p>
+        </button>
+      </div>
 
-      <ul id="stars" class="w-full sm:h-10 mb-2 sm:space-x-1">
-        <i (click)="rateScript(1)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=1,'text-white':rate.value < 1}"></i>
-        <i (click)="rateScript(2)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=2,'text-white':rate.value < 2}"></i>
-        <i (click)="rateScript(3)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=3,'text-white':rate.value < 3}"></i>
-        <i (click)="rateScript(4)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=4,'text-white':rate.value < 4}"></i>
-        <i (click)="rateScript(5)" class="fas fa-star fa-2xl hover:text-orange-300" [ngClass] = "{'text-orange-500':rate.value>=5,'text-white':rate.value < 5}"></i>
-      </ul>
+
+      <div *ngIf = "updateScript !== ''" id="update" class="script-download mb-4 bg-white text-center">
+        <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Update</b></div>
+        <button id="downloadbtn" *ngIf="!updating" (click)="update()" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          <i id="downIcon" class="fas fa-wrench fa-3x" data-toggle="tooltip" title="update"></i>
+          <p id="down" class="text-lg"><b>UPDATE</b></p>
+        </button>
+
+
+        <button *ngIf="updating" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
+          <i id="downIcon" class="fas fa-spinner fa-pulse fa-3x" data-toggle="tooltip" title="updating"></i>
+          <p id="down" class="text-lg"><b>UPDATING</b></p>
+        </button>
+      </div>
+
+      <div id="rate" class="script-rate text-center mb-4 h-3/3">
+        <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
+
+        <div id="outerStar">
+          <ul id="stars" class="w-full mb-2 sm:space-x-1">
+            <i (click)="rateScript(1)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
+              [ngClass]="{'text-orange-500':rate.value>=1,'text-white':rate.value < 1}" data-toggle="tooltip" title="1 star"></i>
+            <i (click)="rateScript(2)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
+              [ngClass]="{'text-orange-500':rate.value>=2,'text-white':rate.value < 2}" data-toggle="tooltip" title="2 star"></i>
+            <i (click)="rateScript(3)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
+              [ngClass]="{'text-orange-500':rate.value>=3,'text-white':rate.value < 3}" data-toggle="tooltip" title="3 star"></i>
+            <i (click)="rateScript(4)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
+              [ngClass]="{'text-orange-500':rate.value>=4,'text-white':rate.value < 4}" data-toggle="tooltip" title="4 star"></i>
+            <i (click)="rateScript(5)" class="fas fa-star fa-2xl hover:text-orange-300 cursor-pointer"
+              [ngClass]="{'text-orange-500':rate.value>=5,'text-white':rate.value < 5}" data-toggle="tooltip" title="5 star"></i>
+          </ul>
+        </div>
+      </div>
+
+      <div id="download" class="script-download mb-4 bg-white text-center">
+        <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Report</b></div>
+        <button id="downloadbtn" type="button"
+          class="hover:opacity-80 hover:scale-105 w-11/12 inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out"
+          data-bs-toggle="modal" data-bs-target="#reportModal"
+          >
+          <i class="fas fa-flag fa-3x" style = "color: rgb(190,18,60);" data-toggle="tooltip" [title]="alreadyReported?'already flagged':'flag'"></i>
+          <p id="down" class="text-lg" style = "color: rgb(190,18,60);"><b>FLAG</b></p>
+        </button>
+      </div>
+
+      <div id = "download" class="script-download mb-4 bg-white text-center">
+        <div class = "script-download-header p-2 text-xl mb-2 text-left"><b>Old Versions</b></div>
+        <div (click) = "showOldieInfo(script)" class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium cursor-pointer" *ngFor = "let script of oldies">
+          {{'v' + script.version.major + '.' + script.version.minor + '.' + script.version.patch}} 
+        </div>
+      </div>
+
+
+
     </div>
   </div>
 </div>
 
 <board-game-companion-app-notification></board-game-companion-app-notification>
+
+<board-game-companion-app-report-form [id] = "current._id" [reported] = "alreadyReported" (reportEvent) = "alreadyReported = true" ></board-game-companion-app-report-form>

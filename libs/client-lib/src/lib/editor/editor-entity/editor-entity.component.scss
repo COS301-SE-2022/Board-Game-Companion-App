@@ -1,0 +1,21 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.navigation{
+    min-width: 150px;
+}
+
+.navigation:hover{
+    background-color: rgba(21,128,61,0.3);
+}
+
+.select{
+    background-color: rgba(21,128,61,0.8);
+}
+
+.remove{
+    display: none;
+}
+
+.navigation:hover .remove{
+    display: block
+}

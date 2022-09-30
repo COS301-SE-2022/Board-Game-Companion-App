@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { disableDebugTools } from '@angular/platform-browser';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
-import { fetchSessionResults } from '../../shared/models/fetch-session-results';
+import { ScriptService } from '../../shared/services/scripts/script.service';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { oldScript } from '../../shared/models/scripts/old-script';
+import { automataScript } from '../../shared/models/scripts/automata-script';
+
 
 @Component({
   selector: 'board-game-companion-app-session',
@@ -10,20 +14,37 @@ import { fetchSessionResults } from '../../shared/models/fetch-session-results';
   styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
-  name:string = "";
+  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router,private readonly scriptService: ScriptService) {}
+  name = "";
+  id = "";
+  game = "";
+  script = "";
+  num = "";
+  score = "";
+  time = "";
+  result = "";
+  date = "";
+  gameId = "";
+  img = "";
+  scriptId = "";
+  //filter:automataScript = undefined
 
-  id:string = "";
-  game:string = "";
-  script:string = "";
-  num:string = "";
-  score:string = "";
-  time:string = "";
-  result:string = "";
-  date:string = "";
-  gameId:string = "";
-  img:string = "";
+  getDetails(id:string): void{
+    this.router.navigate(['board-game-details'], { state: { value: id } });
+  }
 
+  showInfo(scriptId:string){
+    this.scriptService.getDownloadedScript(scriptId).subscribe({
+      next:(value:downloadScript) =>{
+        this.scriptService.getDownloadInfo(value.link).subscribe({
+          next:(value:automataScript | oldScript) =>{
+              console.log(value)
+              this.router.navigate(['script-detail'], { state: { value: value } });
+          }
+        })
+      }
+    })
+  } 
 
   ngOnInit(): void 
   {
@@ -40,13 +61,36 @@ export class SessionComponent implements OnInit {
       this.result = session[5];
       this.date = session[6];
       this.gameId = session[7];
+      this.scriptId = session[10]
+      if(session[8])
+      {
+        const elem = document.getElementById("gameHistory")
+        const history = session[8];
+        const playerAtHistory = session[9];
+        let cPlayer = "";
+        if(elem)
+        {
+          for(let i = 0; i< history.length;i++)
+          {
+            console.log(playerAtHistory[i])
+            if(cPlayer != playerAtHistory[i])
+            {
+              
+              elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"bg-green-700 text-center font-bold\">" +playerAtHistory[i]+"</div>";
+              cPlayer = playerAtHistory[i];
+            }
+            elem.innerHTML += "<div class= \"bg-grey-200\">" +history[i]+"</div>";
+          }
+        }
+      }
+
 
       this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.gameId)
       .subscribe(
         data=>{
           //
-          let res:string = data.toString();
-          let parseXml = new window.DOMParser().parseFromString(res, "text/xml");
+          const res:string = data.toString();
+          const parseXml = new window.DOMParser().parseFromString(res, "text/xml");
           parseXml.querySelectorAll("thumbnail").forEach(imgUrl=>{
             this.img = imgUrl.innerHTML;
           });

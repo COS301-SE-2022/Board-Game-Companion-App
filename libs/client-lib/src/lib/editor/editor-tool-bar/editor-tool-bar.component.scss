@@ -1,6 +1,7 @@
 // .editor__tool-bar{
 //     height: 35px;
 // }
+@import 'apps/client/src/assets/globalstylesheet/global';
 
 .editor-logo img{
     height: 100%;
@@ -19,14 +20,19 @@
     font-size: 14px;
     border: none;
     height: 100%;
-    width: 40px;
+    width: 60px;
+}
+
+#switch{
+    color: $Pcolour-1;
+    font-weight: bold;
 }
 
 .editor__dropdown-menu{
     position:relative;
     padding: 0px;
     height: 100%;
-    width: 40px;
+    width: 60px;
 }
 
 .menu-content{

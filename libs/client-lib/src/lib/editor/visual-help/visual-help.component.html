@@ -1,0 +1,683 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="visualHelp" data-bs-keyboard="false" tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+    <div class="wrapper p-2 modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-clip-padding rounded-md outline-none text-current">
+        
+        <div class = "row m-2">
+            <div class = "col-sm-4">
+                <div class="h-full shadow-md bg-white rounded-sm">
+                    <ul class="relative">
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "Variables" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#VariablesSubNav" aria-expanded="true" aria-controls="collapseOperatorSubNav">
+                                <span>Variables</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="VariablesSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#Variables">
+                                <li id="creation" (click)="creation()" class="relative">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Variable Declaration</a>
+                                </li>
+                                <li id="set" (click)="setting()" class="relative">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Setting a variable</a>
+                                </li>
+                                <li id="set" (click)="return()" class="relative">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Returning a variable</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "ConditionalStatementsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#ConditionalStatementsSubNav" aria-expanded="true" aria-controls="ConditionalStatementsSubNav">
+                                <span>Conditional Statement</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="ConditionalStatementsSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#ConditionalStatementsNav">
+                                <li class="relative" (click)="showif()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">If Statement</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "FlowControlNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#FlowControlSubNav" aria-expanded="true" aria-controls="FlowControlSubNav">
+                                <span>Flow Control</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="FlowControlSubNav" aria-labelledby="FlowControlSubNav" data-bs-parent="#FlowControlNav">
+                                <li class="relative" (click)="showFor()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">For-Loop</a>
+                                </li>
+                                <li class="relative" (click)="showWhile()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">While-Loop</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "MethodsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#MethodsNav" aria-expanded="true" aria-controls="MethodsNav">
+                                <span>Methods</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="MethodsNav" aria-labelledby="MethodsNav" data-bs-parent="#MethodsNav">
+                                <li class="relative" (click)="func()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>Mathematical Functions</b></a>
+                                </li>
+                                <li class="relative" (click)="preDefined()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>Pre-created Methods</b></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "IONav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#IOSubNav" aria-expanded="true" aria-controls="IOSubNav">
+                                <span>IO</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="IOSubNav" aria-labelledby="IOSubNav" data-bs-parent="#IONav">
+                                <li class="relative" (click)="uInput()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">User Input</a>
+                                </li>
+                                <li class="relative" (click)="uOutput()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">User Output</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "ObjectsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#ObjectsSubNav" aria-expanded="true" aria-controls="ObjectsSubNav">
+                                <span>Objects</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="ObjectsSubNav" aria-labelledby="ObjectsSubNav" data-bs-parent="#ObjectsSubNav">
+                                <li class="relative" (click)="board()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>board</b></a>
+                                </li>
+
+                                <li class="relative sm:text-xs md:text-sm">
+                                    <a id="PlayerSubNav" (click)="player()" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#PlayerSubNav" aria-expanded="true" aria-controls="PlayerSubNav">
+                                        <span><b>player</b></span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                        </svg>
+                                    </a>
+                                
+
+                                    <ul class="relative accordion-collapse collapse" id="PlayerSubNav" aria-labelledby="PlayerSubNav" data-bs-parent="#PlayerSubNav">
+                                        <li id="listlistItem" class="relative" (click)="showActions()">
+                                            <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>action</b></a>
+                                        </li>
+                                        <li id="listlistItem" class="relative" (click)="showConditions()">
+                                            <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>condition</b></a>
+                                        </li>
+                                        <li id="listlistItem" class="relative" (click)="showTurn()">
+                                            <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>turn</b></a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                
+                                <li class="relative" (click)="endgame()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>endgame</b></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <div id="content-area" class = "col-sm-8">
+
+                <!--Variable Creation-->
+                <div *ngIf="isShown.create" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Variable Declaration</h5>
+                    <p class="mb-4">
+                        <!--tbody: text body-->
+                        <a id="tbody"> This section provides an outline of how a user would create a variable using the visual representation of the language.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <a><img src="assets/images/create.PNG"></a>
+                        <br>
+                        <a id="subheading"> Example </a>
+                        <a><img src="assets/images/createExample.PNG"></a>
+                        <a>From the above example we deduce the following information:</a>
+                        <br>
+                        <a><ul>
+                            <li>- The user creates a variable called, <b>t1</b>.</li>
+                            <li>- The user <b>declares</b> the variable <b>t1</b> as a <b>tile</b>.</li>
+                        </ul></a>
+                        <br>
+                    
+                        <a id="subheading"> Code Translation </a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>Let</b> t1 = tile
+                        </code></div></a>
+                    </p>
+                </div>
+
+                <!--Setters-->
+                <div *ngIf="isShown.setting" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Setting a variable</h5>
+                    <p class=" mb-4">
+                        <a id="tbody">The setter method allows the program to <b>write</b> the variable to a value.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/setter.PNG"></a>
+                        <br>
+                        <a id="subheading">Example</a>
+                        <br>
+                        <a><img src="assets/images/setExample.PNG"></a>
+                        <br>
+                        <a>From the above example we deduce the following information:</a>
+                        <br>
+                        <a><ul>
+                            <li>- There exists a declared variable , defined as <b>name</b>.</li>
+                            <li>- This variable is set to the string <b>'start'</b>.</li>
+                        </ul></a>
+                        <br>
+                        <a id="subheading"> Code Translation </a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>name</b> = 'start'
+                        </code></div></a>
+                        
+                    </p>
+                </div>
+
+                <!--Return-->
+                <div *ngIf="isShown.return" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Returning a variable</h5>
+                    <p class=" mb-4">
+                        <a id="tbody">The return method produces <b> a value that a function returns</b> to the calling script (or function) after completing it's task.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/return.PNG"></a>
+                        <br>
+                        <a id="subheading">Example</a>
+                        <br>
+                        <a><img src="assets/images/returnEg.PNG"></a>
+                        <br>
+                        <a>From the above example we deduce the following information:</a>
+                        <br>
+                        <a><ul>
+                            <li>- There exists a variable named <b>count</b>.</li>
+                            <li>- This variable will be returned once the task defined by a function is complete.</li>
+                            <li>- <b>NOTE: return methods are used only within functions.</b></li>
+                        </ul></a>
+                        <br>
+                        <a id="subheading"> Code Translation </a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>return</b> count
+                        </code></div></a>
+                        
+                    </p>
+                </div>
+                
+                <!--If-statement -->
+                <div *ngIf="isShown.visualIf" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual aspect of how the <em>If-Statement</em> will be represented.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/ifstatement.PNG"></a>
+                        <a id="subheading"> Example</a>
+                        <a><img src="assets/images/ifexample.PNG"></a>
+                        <a>From the above example we deduce the following information:</a>
+                        <br>
+                        <a><ul>
+                            <li>- If the variable <b>count</b> is <b>equal to zero</b>.</li>
+                            <li>- The <b>diamond</b> shape encapsulates a conditional statement.</li>
+                        </ul></a>
+                        <br>
+                        <a id="subheading"> Code Translation </a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>If</b> (count == 0) <br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// do Something<br>
+                            &#125;<br>
+                            <b>else</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// do Something<br>
+                            &#125;<br>
+                        </code></div></a>
+                    </p>
+                </div>
+
+            
+                <!--For-Loop-->
+                <div *ngIf="isShown.visualfor" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">For-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A visual represntation of a statement that repeats a section of code under certain condition(s) for a <b>known</b> number of times.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/visualFor.PNG"></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/forexample.PNG"></a>
+                        <br>
+                        <a> From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li>- The <b>code portion</b> that will be provided in the <b>right space</b> &nbsp;&nbsp;&nbsp;will be repeated <b>5 times</b>.</li>
+                            <li>- The number of <b>iterations will range as follows:</b></li>
+                            <li id="listlistItem2">- Iteration 1: j=1</li>
+                            <li id="listlistItem2">- Iteration 2: j=3</li>
+                            <li id="listlistItem2">- Iteration 3: j=5</li>
+                            <li id="listlistItem2">- Iteration 4: j=7</li>
+                            <li id="listlistItem2">- Iteration 5: j=9</li>
+                            <li id="listlistItem2">-  Then <b>stop</b> since <b>9 is less than 10</b> and is the highest number reached.</li>
+                        </ul></a>
+                        <br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>For</b> ( <b> j = 1 </b> ; <b>j < 10</b> ; <b>j+2</b> )<br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;//do Something<br>
+                            &#125;</code></div></a>
+                    </p>
+                </div>
+
+                <!--While-Loop-->
+                <div *ngIf="isShown.visualwhile" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">While-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A statement that repeats a section of code under certain condition(s) for a <b>unknown</b> number of times. </a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/visualWhile.PNG"></a>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/whileexample.PNG"></a>
+                        <br>
+                        <a> From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li>- A portion of code (provided in the right code portion) will be &nbsp;&nbsp;&nbsp;executed as long as the variable <b> var 1 is greater than zero</b>.</li>
+                        </ul></a>
+                        <br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>while</b> ( <b>var1 > 0</b> ) <br>
+                                &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;//do Something<br>
+                            &#125;</code></div></a><br>
+                            <br>
+                    </p>
+                </div>
+
+                <!--Math Function-->
+                <div *ngIf="isShown.math" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Mathematical Function</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is a visual representation of how Mathematical functions should be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/math.PNG"></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a><img src="assets/images/mathExample.PNG"></a>
+                        <br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                        <li>- There exists a variable defined as <b>var1</b>.</li>
+                        <li>- There exists a variable defined as <b>var2</b>.</li>  
+                        <li>- A mathematical operation of <b>addition</b> is done on <b>var1</b> and <b>var2</b>.</li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a>
+                        <a><div id ="syntaxEg"><code>
+                            var1 <b> + </b> var2
+                        </code></div></a>  
+                    </p>
+                </div>
+
+                <!--User Input-->
+                <div *ngIf="isShown.uiInn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 leading-tight font-medium mb-2">User Input</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the user can input their data.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">  Format</a><br>
+                        <a><img src="assets/images/visualinput.PNG"></a><br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img  src="assets/images/inputExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                        <li><div id="listlistItem">- The message <em>'Please choose which piece you want to move'</em> will be displayed to the user.</div></li>
+                        <li><div id="listlistItem">- The user will then <b>input/enter</b> the respective piece they want to move.</div></li>  
+                        <li><div id="listlistItem">- The provided input is then <b>set to</b> the variable <b>input</b>.</div></li>
+                        </ul></a><br>
+                        <br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>Input</b> ('Please choose which piece you want to move', x )<br>
+                            let <b>input</b> = x <br>
+                        </code></div></a>
+                    </p>
+                </div>
+
+                <!--User Output-->
+                <div *ngIf="isShown.uiOut" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">User Output</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how output (feedback) will be formatted by the user.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a><br>
+                        <a><img src="assets/images/visualout.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/outExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- There exists a user defined variable, <b>username</b>.</div></li>
+                            <li><div id="listlistItem">- The <b>value</b> of the variable <b>username</b> can be extracted using <b>[ ]</b> (ie. squared brackets).</div></li>  
+                            <li><div id="listlistItem">- For instance, if <b>username</b> was set to <b>John</b> then, the message displayed to the user would be <em>'Hello There <b>John</b> !'</em> .</div></li>
+                            </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>Print</b> ('Hello There' + username + '!')<br>
+                        </code></div></a>
+                    </p>
+                </div>
+
+                <!--preDefined methods-->
+                <div *ngIf="isShown.predefined" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Pre-created Methods</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how to accomodate <b>pre-existing</b> functions that are already created within the language.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/pre.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/preExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- There exists a variable named <b>t1</b>.</div></li>
+                            <li><div id="listlistItem">- There exists a <b>already existing</b> function called <b>addToBoard()</b> that adds respective objects to the board.</div></li>
+                            <li><div id="listlistItem">- The object <b>t1</b> (which is defined as a <b>tile</b>) is added to the respective <b>Board</b> of the game.</div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>addToBoard</b> (t1)<br>
+                        </code></div></a>
+                    </p>
+                </div>
+
+                <!--Board-->
+                <div *ngIf="isShown.board" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">board</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>board</b> of the game will be defined (ie. how the board will be set out).</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/board.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/boardExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The variables <b>tile1</b> is defined in the <b>first column</b> (ie. under the <b> + </b> sign).</div></li>
+                            <li><div id="listlistItem">- The symbol <b>+</b> allows the user to <b>add</b> more <b>tile variables</b> to the board.</div></li>
+                            <li><div id="listlistItem">- The <b>ID</b> of each respective <b>tile</b> is defined in the <b>second column </b> (ie. for tile1, the ID is <b>1</b> ).</div></li>
+                            <li><div id="listlistItem">- The <b>name</b> of each respective <b>tile</b> would be defined in the <b>third column </b>. Meaning if a tile had a name for instance:</div></li>
+                            <li><div id="listlistItem2">- If the board game played is <b>Monopoly</b>, the <b>name</b> of the tile variabe <b>t1</b> would be <b>CollectSalary</b>.</div></li>
+                            <li><div id="listlistItem2"><img src="assets/images/t1Example.PNG" id="t1Example"></div></li>
+                            <li><div id="listlistItem">- The <b>type</b> of each respective <b>tile</b> would be defined in the <b>fourth column</b>.</div></li>
+                            <li><div id="listlistItem">- The variable <b>tile1</b> is then added to the board game using the, <b>addToBoard()</b> function.</div></li>
+                            <li><div id="listlistItem">- <b>The state() function is being defined within Board object.</b></div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>state</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let tile1 = tile <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; tile1.id = 1 <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; addToBoard(tile1) <br>
+                            &#123;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+                <!--Player-->
+                <div *ngIf="isShown.player" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">player</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>player</b> of the game will be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/visualPlayer.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/playerEg.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The player is defined as <b>Sam</b>.</div></li>
+                            <li><div id="listlistItem">- Each player is composed of the following functions:</div></li>
+                            <li><div id="listlistItem2">- action()</div></li>
+                            <li><div id="listlistItem2">- condition()</div></li>
+                            <li><div id="listlistItem2">- turn()</div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>player</b> Sam <br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; action() <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; condition() <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; turn() <br>
+                            &#125;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+                <!--action-->
+                <div *ngIf="isShown.actions" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">action</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>action</b> of the player will be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a><br> 
+                        <a><img src="assets/images/action.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/actioneg.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The action is defined as <b>placeCross</b> with the parameter <b>t</b>.</div></li>
+                            <li><div id="listlistItem">- The message <em>'The ai places a cross in [tile]'</em>. is displayed to the user. Where <b>[tile]</b> is the ID of the tile.</div></li>
+                            <li><div id="listlistItem">- The variable, <b>p</b> is defined as of type <b>piece</b>.</div></li>
+                            <li><div id="listlistItem">- The <b>ID</b> of the respective piece is declared as <b>-1</b>.</div></li>
+                            <li><div id="listlistItem">- The piece, <b>p</b> is then added to the tile, <b>t</b>.</div></li>
+                            <li><div id="listlistItem">- Thus representing the move taken by the player.</div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>action</b> placeCross(t) <br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let message= 'The ai places a cross in'+t.Id <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; output(message) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let p = piece <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; p.Id = -1 <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; addPieceToTile(p,t) <br>
+                            &#125;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+                <!--condition-->
+                <div *ngIf="isShown.cond" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">condition</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>condtion</b> of the game turn will be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/condition.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/condExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The condition accepts a parameter , <b>t</b> of type <b>tile</b>.</div></li>
+                            <li><div id="listlistItem">- The <b>State</b> of the board game is then evaluated.</div></li>
+                            <li><div id="listlistItem">- If there is no piece on the tile <b>t</b>, then the variable <b>ans</b> is set to <b>true</b>.</div></li>
+                            <li><div id="listlistItem">- The result is then returned using the <b>return method</b>.</div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>condition</b>(t) <br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; consider:this.state.board <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let ans = false <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; if (t.pieces.length < 1) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#123; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ans = true<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#125; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; return ans <br>
+                            &#125;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+                <!--turn-->
+                <div *ngIf="isShown.turn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">turn</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>player's turn</b> will be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/visualTurn.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/turnEg.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The condition accepts a parameter , <b>t</b> of type <b>tile</b>.</div></li>
+                            <li><div id="listlistItem">- The <b>State</b> of the board game is then evaluated.</div></li>
+                            <li><div id="listlistItem">- If there is no piece on the tile <b>t</b>, then the variable <b>ans</b> is set to <b>true</b>.</div></li>
+                            <li><div id="listlistItem">- The result is then returned using the <b>return method</b>.</div></li>
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>condition</b>(t) <br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; consider:this.state.board <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let ans = false <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; if (t.pieces.length < 1) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#123; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ans = true<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#125; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; return ans <br>
+                            &#125;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+                <!--endgame -->
+                <div *ngIf="isShown.endgame" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">endgame</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the visual representation of how the <b>player's turn</b> will be defined.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Format</a>
+                        <br>
+                        <a><img src="assets/images/visualendgame.PNG"></a><br>
+                        <a id="subheading"> Example</a><br>
+                        <a ><img src="assets/images/endgameExample.PNG"></a><br>
+                        <a>From the above example we deduce the following information:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The variable, <b>end</b> is set to false.</div></li>
+                            <li><div id="listlistItem">- The condition, <b>winCondition</b> is evaluated and if it returns a <b>true</b> value then the variable <b>end</b> is set to <b>true</b> as well.</div></li>
+                            <li><div id="listlistItem">- The endgame function then returns the <b>value of end</b>.</div></li>
+                            
+                        </ul></a><br>
+                        <a id="subheading"> Code Interpretation</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>endgame</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; let end = false <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; if (winCondition == true) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#123; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; end = true<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &#125; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; return end <br>
+                            &#125;<br>
+                        </code></div></a>
+
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+  </div>
+</div>

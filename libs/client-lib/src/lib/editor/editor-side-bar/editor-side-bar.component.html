@@ -1,3 +1,8 @@
 <div id = "editor-side-bar" class = "editor-side-bar bg-zinc-500 relative" [style.width.px] = "width" [style.height.px] = "height">
-
+    <div class = "w-full" *ngIf = "VDSL === false">
+        <board-game-companion-app-editor-text-side-bar [current]="current" (removeEvent)="remove($event)" (selectionEvent)="highlight($event)"></board-game-companion-app-editor-text-side-bar>
+    </div>
+    <div class = "w-full" *ngIf = "VDSL === true">
+        <board-game-companion-app-editor-visual-side-bar></board-game-companion-app-editor-visual-side-bar>
+    </div>
 </div>

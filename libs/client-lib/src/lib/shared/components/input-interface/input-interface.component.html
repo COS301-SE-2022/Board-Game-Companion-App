@@ -1,0 +1,39 @@
+<div id="inputModal" class="inputModal fixed z-30 left-0 top-0 text-center"  *ngIf = "show">
+    <div class="inputBox rounded-lg bg-inherit absolute p-2 text-left">
+            
+            <div *ngFor = "let sub of sequence(parameters.length)">
+                <div class = "mb-4" *ngIf = "parameters[sub].type === 'text' || parameters[sub].type === undefined">
+                    <label for="prompt" class="form-label font-medium text-white ">{{parameters[sub].prompt}}</label>
+                    <input (keypress)="onEnter($event)" type="text" class="form-control cursor-pointer p-1 border-2 w-full text-sm" [(ngModel)] = "result[sub]" name = "result" id="result">
+                </div>
+
+                <div class = "mb-4" *ngIf = "parameters[sub].type === 'option' && parameters[sub].options !== undefined">
+                    <div class="dropdown relative">
+                            <button class="dropdown-toggle w-full inline-block px-3 py-1.5 bg-green-800 text-white font-medium text-sm leading-tight uppercase rounded shadow-md hover:bg-green-500 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg active:text-white transition duration-150 ease-in-out text-center whitespace-nowrap" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <span>{{parameters[sub].prompt}}</span>
+                              <i class="fas fa-caret-down fa-sm ml-2"></i>
+                            </button>
+                            <ul class="dropdown-menu w-full absolute max-h-40 overflow-y-scroll hidden text-base z-50 float-left py-1 list-none text-center rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none bg-gray-800">
+                              <li *ngFor = "let option of parameters[sub].options">
+                                <a (click) = "result[sub] = option" [ngClass] = "{'bg-gray-700':result[sub] === option}" class="dropdown-item text-sm px-2 cursor-pointer font-normal block w-full whitespace-nowrap text-white hover:bg-gray-600 hover:text-white focus:text-white focus:bg-gray-700 active:bg-blue-600">{{option}}</a>
+                              </li>
+                            </ul>
+                      </div>
+                </div>
+
+                <div class="form-check mb-4" *ngIf = "parameters[sub].type === 'boolean'">
+                    <input (keypress)="onEnter($event)" [(ngModel)] = "result[sub]" class="form-check-input" type="checkbox" name="result" id="result" value = "false">
+                    <label class="form-check-label font-medium text-white" for="result">
+                        {{parameters[sub].prompt}}
+                    </label>
+                </div>
+
+                <div class = "mb-4" *ngIf = "parameters[sub].type === 'number'">
+                    <label for="prompt" class="form-label font-medium text-white ">{{parameters[sub].prompt}}</label>
+                    <input (keypress)="onEnter($event)" type="number" class="form-control cursor-pointer p-1 border-2 w-full text-sm" [(ngModel)] = "result[sub]" name = "result" id="result">
+                </div>
+            </div>
+
+            <button (click) = "submit()" type="button" class="inline-block mt-2 w-full px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">enter</button>
+    </div>
+</div>

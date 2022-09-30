@@ -1,0 +1,72 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.wrapper{
+    background-color: $Pcolour-2;
+}
+
+#headings{
+    font-size: 34px;
+    font-weight: bold;
+    color: $Pcolour-2;
+}
+
+#subheading{
+    font-size:24px;
+    font-weight:500; 
+    color: $Pcolour-2;
+}
+
+#tbody{
+    font-size:16px;
+}
+
+#symbol{
+    padding-left:10px;
+    // width:40%;
+    // border-left: 1px solid black;
+}
+
+#symbol1{
+    border-top: 1px solid black;
+    // border-left: 1px solid black;
+    padding-left:10px;
+    // width:40%;
+}
+
+code{
+    color: black;
+}
+
+// .img{
+//     width: 60px;
+//     height:
+// }
+
+#syntaxEg{
+    background-color:#E3E5E5;
+}
+
+li.indent{
+    margin-left:30px;
+}
+
+a.indent2{
+    margin-left:60px; 
+}
+
+#sublabel:active{
+    color:green;
+    //background-color:aquamarine;
+}
+
+.tableHeader{
+    border-bottom: 1px solid black;
+}
+
+#listlistItem{
+    margin-left:16px;
+}
+
+#listlistItem2{
+    margin-left:30px; 
+}

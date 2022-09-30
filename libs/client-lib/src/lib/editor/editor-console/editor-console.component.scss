@@ -19,3 +19,11 @@ background: #888;
 .console-messages::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.console-input{
+    outline: none;
+    box-shadow: none;
+    color: white;
+    border: none;
+    background: transparent;
+}

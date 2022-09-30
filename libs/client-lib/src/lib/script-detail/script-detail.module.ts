@@ -8,18 +8,22 @@ import { ScriptDetailService } from './script-detail-service/script-detail.servi
 import { CommentFormComponent } from './comment-form/comment-form.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ReportFormComponent } from './report-form/report-form.component';
+import { OnlineStatusModule } from 'ngx-online-status';
 
 @NgModule({
   declarations: [
     ScriptDetailComponent,
     CommentComponent,
     CommentSectionComponent,
-    CommentFormComponent
+    CommentFormComponent,
+    ReportFormComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     SharedModule,
+    OnlineStatusModule,
     RouterModule.forChild([{path:'',component:ScriptDetailComponent}])
   ],
   providers: [

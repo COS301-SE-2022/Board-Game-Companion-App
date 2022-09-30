@@ -1,0 +1,121 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+#container{
+    width: 100%;
+    margin: auto;
+    margin-top: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper{
+    background-color:$Pcolour-2;
+}
+
+h2{
+    font-size: 32px;
+    border-radius: 5px 5px 0 0;
+}
+
+#newH{
+    background-color: $Pcolour-2;
+}
+
+#collectH{
+    background-color: $Pcolour-3;
+}
+
+#collectionName{
+    border: 1px solid $Pcolour-2;
+    border-radius: 0.5em;
+    display: block;
+    margin: auto;
+    padding: 0.1em;
+}
+
+#Collections{
+    border: 1px solid $Pcolour-3;
+    border-radius: 0.5em;
+    display: block;
+    margin: auto;
+}
+
+button{
+    display: block;
+    border-radius: 5px;
+    background-color: $Pcolour-2;
+    color: white;
+    margin: auto;
+}
+
+#buttonLeft{
+    background-color: $Pcolour-3;
+}
+
+#collect{
+    display: inline-block;
+    width: 460px;
+    height: 260px;
+}
+
+#newCollection{
+    display: inline-block;
+    width: 460px;
+    height: 260px;
+}
+
+@media(max-width:639px){
+    #container{
+        display:flex;
+        flex-direction: column;
+        width:80%;
+        margin-top: 32px;
+        // height:100%;
+    }
+
+    #collect{
+        margin-top:14px;
+        margin-bottom: 24px;
+        border-radius: 25px;
+    }
+
+    #collectH{
+        font-size:x-large;
+        text-align:center;
+    }
+
+    #buttonLeft{
+        width:50%;
+        border-radius: 20px;
+        margin-top: 64px;
+    }
+
+    #Collections{
+        width:53%;
+        font-size: large;
+    }
+
+   
+    #newCollection{
+        margin-top:14px;
+        margin-bottom: 24px;
+        border-radius: 25px;
+    }
+
+    #newH{
+        font-size:x-large;
+        text-align:center;
+    }
+
+    #newSubmit{
+        width:50%;
+        border-radius: 20px;
+        margin-top: 64px;
+    }
+
+    #collectionName{
+        width:53%;
+        font-size: large;
+    }
+
+}

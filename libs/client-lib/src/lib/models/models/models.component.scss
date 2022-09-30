@@ -25,9 +25,27 @@ a:hover {
 .models-wrapper{
     background-color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    min-width: 700px;
 }
 
-#content{
+.sidebar{
+    background-color: $Pcolour-3;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+}
     
+.sidebar a.active {
+    background-color: $Pcolour-2;
+    cursor: pointer;
 }
 
+.sidebar a:hover:not(.active) {
+    background-color: $Pcolour-3;
+    color: $Pcolour-2;
+    cursor: pointer;
+}

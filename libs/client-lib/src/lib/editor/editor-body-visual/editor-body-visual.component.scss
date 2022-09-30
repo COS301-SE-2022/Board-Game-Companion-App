@@ -1,0 +1,344 @@
+@import '../visuals.scss';
+
+.wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 2em;
+    overflow-x: auto;
+}
+
+.container{
+    min-width: 400px;
+    min-height: 150px;
+    background-color: lightgray;
+    border: 5px solid lightgray;
+    border-radius: 0 40px 40px 0;
+    display: flex;
+    padding: 2em;
+    overflow-x: auto;
+}
+
+#doArea{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color:lightgray;
+    border: 5px solid lightgray;
+    border-radius: 40px 0 0 40px;
+    display: flex;
+    padding: 2em;
+}
+
+.listItems:not(:first-child, :last-child):after {
+    content: '';
+    height: 3px;
+    background: white;
+    width: 100px;
+    position: relative;
+}
+
+.listItems:not(:first-child, :nth-child(2)):before {
+    content: '';
+    position: relative;
+    top: 7px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width:  7px 0 7px 20px;
+    border-color: transparent transparent transparent white;
+    transform: translateY(-50%);
+  }
+
+.boardContainers{
+    background-color: grey;
+    border: 8px solid grey;
+    min-height: 20%;
+    min-width: 20%;
+    max-width: 95%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    color: white;
+    overflow-x: auto;
+    transition: border-color 0.6s linear;
+}
+
+.boardContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+.playerContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+.boardContainers::-webkit-scrollbar-button:end, .boardContainers::-webkit-scrollbar-button:start, .playerContainers .wrapper::-webkit-scrollbar-button:start, .playerContainers .wrapper::-webkit-scrollbar-button:end, .cardContainers .wrapper::-webkit-scrollbar-button:start, .cardContainers .wrapper::-webkit-scrollbar-button:end, #endGame .wrapper::-webkit-scrollbar-button:start, #endGame .wrapper::-webkit-scrollbar-button:end,.wrapper::-webkit-scrollbar-button:start, .wrapper::-webkit-scrollbar-button:end{
+    height: 12px; 
+    width: 5%;
+}
+
+.boardContainers::-webkit-scrollbar {
+    height: 12px;
+}
+
+.boardContainers::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 12px;      
+}
+  
+.boardContainers::-webkit-scrollbar-thumb {
+    background-color: $Background;   
+    border-radius: 25px;      
+    border: 3px solid $Background;  
+}
+
+.boardContainers .name{
+    width: 150px;
+    height: 37px;
+}
+
+.boardContainers .param{
+    height: 37px;
+}
+
+.playerContainers{
+    background-color: darkgray;
+    border: 6px solid darkgray;
+    min-height: 15%;
+    min-width: 15%;
+    max-width: 90%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    color: white;
+    transition: border-color 0.6s linear;
+}
+
+.playerContainers #paName{
+    width: 125px;
+    height: 30px;
+}
+
+.playerContainers .wrapper::-webkit-scrollbar-corner, .cardContainers .wrapper::-webkit-scrollbar-corner, #endGame .wrapper::-webkit-scrollbar-corner, .wrapper::-webkit-scrollbar-corner{
+    background: transparent;
+}
+
+.playerContainers .wrapper::-webkit-scrollbar, .cardContainers .wrapper::-webkit-scrollbar, #endGame .wrapper::-webkit-scrollbar, .wrapper::-webkit-scrollbar{
+    height: 10px;
+    width: 10px;
+}
+
+.playerContainers .wrapper::-webkit-scrollbar-track, .cardContainers .wrapper::-webkit-scrollbar-track, #endGame .wrapper::-webkit-scrollbar-track, .wrapper::-webkit-scrollbar-track{
+    background: white;
+    border: 3px solid white;
+    border-radius: 35px; 
+    margin-bottom: 1em;     
+}
+  
+.playerContainers .wrapper::-webkit-scrollbar-thumb, .cardContainers .wrapper::-webkit-scrollbar-thumb, #endGame .wrapper::-webkit-scrollbar-thumb, .wrapper::-webkit-scrollbar-thumb{
+    background: $Background;   
+    border-radius: 55px;      
+    border: 3px solid $Background;  
+}
+
+.playerContainers .wrapper{
+    max-height: 450px;
+}
+
+.cardContainers{
+    background-color: darkgray;
+    border: 6px solid darkgray;
+    min-height: 25%;
+    min-width: 25%;
+    max-width: 90%;
+    width:fit-content;
+    border-radius: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    color: white;
+    transition: border-color 0.6s linear;
+}
+
+.cardContainers:hover{
+    border-color: white;
+    transition: border-color 0.6s linear;
+}
+
+#addNewPlayer{
+    font-size: 1em;
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid black;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addNewPlayer:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addAction{
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid black;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addAction:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#removeAction{
+    font-size: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#removePlayer{
+    font-size: 2em;
+    margin-left: 2em;
+}
+
+
+#removeCard{
+    font-size: 2em;
+    margin-left: 1em;
+}
+
+#addNewCard{
+    font-size: 1em;
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: 3px solid black;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    border-radius: 2em;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+#addNewCard:hover{
+    color: black;
+    background-color: white;
+    border: 3px solid white;
+    transition: background-color 0.6s linear;
+    transition: color 0.6s linear;
+}
+
+.tfSection{
+    display:block;
+    margin-right: 2em;
+}
+
+#trueSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: $Pcolour-2;
+    border: 5px solid $Pcolour-2;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+    margin-top: 0;
+}
+
+#trueSection::-webkit-scrollbar, #falseSection::-webkit-scrollbar {
+    height: 10px;
+}
+
+#trueSection::-webkit-scrollbar-track, #falseSection::-webkit-scrollbar-track {
+    background: white;
+    border: 3px solid white;
+    border-radius: 35px; 
+    margin-bottom: 1em;     
+}
+  
+#trueSection::-webkit-scrollbar-thumb, #falseSection::-webkit-scrollbar-thumb {
+    background: $Background;   
+    border-radius: 55px;      
+    border: 3px solid $Background;  
+}
+
+#falseSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: $Pcolour-4;
+    border: 5px solid $Pcolour-4;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+}
+
+.visualIf #content, .visualW #content, .visualD #content{
+    overflow-y: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+.visualIf #content::-webkit-scrollbar, .visualW #content::-webkit-scrollbar, .visualD #content::-webkit-scrollbar{
+    width: 0 !important
+}
+
+.AndOr{
+    width: 35px;
+    height: 35px;
+    border: solid 3px black;
+    border-radius: 15px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+#whileInput1{
+    margin-top: 1.3em;
+}
+  
+#whileInput2{
+    margin-bottom: 1.3em;
+}
+
+table{
+    border-collapse: separate;
+    border-spacing: 1em 0;
+}
+
+#customizeTiles input{
+    width: fit-content;
+}
+
+#board input{
+    width: fit-content;
+}
+
+
+  

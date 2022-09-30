@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
-import { Router } from '@angular/router';
-import { script } from '../../shared/models/script';
-import { neuralnetwork } from '../../shared/models/neuralnetwork';
+  import { Router } from '@angular/router';
+import { script } from '../../shared/models/scripts/script';
+import { neuralnetwork } from '../../shared/models/neuralnetwork/neuralnetwork';
 import { BggSearchService } from '../../board-game-search/bgg-search-service/bgg-search.service';
 import * as tf from '@tensorflow/tfjs'
+import { entity } from '../../shared/models/editor/entity';
+import { inputParameters } from '../../shared/models/scripts/inputParameters';
+import { StorageService } from '../../shared/services/storage/storage.service';
+
 @Component({
   selector: 'board-game-companion-app-script-executor',
   templateUrl: './script-executor.component.html',
@@ -22,8 +26,24 @@ export class ScriptExecutorComponent implements OnInit {
   s = 0;
   sec = "sec";
   gameName = ""
+  currPlayer = ""
+  showInput = false;
+  showOutput = false;
+  inputBlock = false;
+  outputBlock = false;
+  inputResult = "";
+  parameters:inputParameters[] = [];
+  outputMessage = "";
+  statusMessages:string[] = [];
+  warningMessages:string[] = [];
+  programStructure!:entity;
+  count = 0;
+  history:string[] = [];
+  playerAtHistory:string[] = [];
+  recentPrompt = "";
+  historyVisible = false;
 
-  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router) {
+  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router,private readonly storageService: StorageService) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
     this.searchService.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.current.boardgame)
             .subscribe(
@@ -35,8 +55,8 @@ export class ScriptExecutorComponent implements OnInit {
 
                 const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
                 parseXml.querySelectorAll("name").forEach(n=>{
-                    
-                    this.gameName = n.getAttribute("value") || "";
+                    if(this.gameName == "")
+                      this.gameName = n.getAttribute("value") || "";
                  
                 });
               })
@@ -48,11 +68,11 @@ export class ScriptExecutorComponent implements OnInit {
     //Timer
     if(localStorage.getItem("sessions") !== null)
     {
-      let c = JSON.parse(localStorage.getItem("sessions")||"")
-      let name = "#" + (c.length + 1);
+      const c = JSON.parse(localStorage.getItem("sessions")||"")
+      const name = "#" + (c.length + 1);
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
-      let session = []
+      const session = []
       session.push(this.gameName)
       session.push(this.current.name)
       session.push("2")
@@ -65,15 +85,18 @@ export class ScriptExecutorComponent implements OnInit {
       const now = new Date();
       session.push(now.toLocaleDateString())
       session.push(this.current.boardgame)
+      session.push(this.history)
+      session.push(this.playerAtHistory)
+      session.push(this.current._id)
       localStorage.setItem(name, JSON.stringify(session))
     }
     else
     {
-      let c = [];
-      let name = "#1";
+      const c = [];
+      const name = "#1";
       c.push(name);
       localStorage.setItem("sessions", JSON.stringify(c))
-      let session = []
+      const session = []
       session.push(this.gameName)
       session.push(this.current.name)
       session.push("2")
@@ -86,22 +109,28 @@ export class ScriptExecutorComponent implements OnInit {
       const now = new Date();
       session.push(now.toLocaleDateString())
       session.push(this.current.boardgame)
+      session.push(this.history)
+      session.push(this.playerAtHistory)
+      session.push(this.current._id)
       localStorage.setItem(name, JSON.stringify(session))
     }
 
-    this.router.navigate(['scripts']);
+    //this.router.navigate(['scripts']);
+  }
+
+  ngOnDestroy()
+  {
+    this.back()
   }
   
   ngOnInit(): void {
-
     setInterval(() => {
       this.s++
       if(this.s === 60)
       {
-        
         this.m++
       }
-      if(this.m == 60)
+      if(this.m === 60)
       {
         this.h++
       }
@@ -109,69 +138,37 @@ export class ScriptExecutorComponent implements OnInit {
 
       this.scriptService.getFileData(this.current.build.location).subscribe({
         next:(val)=>{
+          
            this.code = val;
-           this.play();       
+           this.interpreter(val);  
         },
         error:(e)=>{
           console.log(e)
         },
         complete:()=>{
           console.log("complete")
-          this.back()
         }  
       })
   }
   async neuralnetworks():Promise<any>{
-    
-    console.log(name)
-    const modelsInfo = localStorage.getItem("models");
-    const result = new Object();
+    return (async(name:string,input:number[])=>{
+      const info = await this.storageService.getByIndex("networks","name",name);
 
-    if(modelsInfo === null)
-      return null;
-    else{
-      const networks:neuralnetwork[] = JSON.parse(modelsInfo);
-      const models:{name:string,model:tf.LayersModel,min:number[],max:number[],labels:string[]}[] = [];
-      
-      for(let count = 0; count < networks.length; count++){
-        models.push({
-          name: networks[count].name,
-          model: await tf.loadLayersModel('localstorage://' + networks[count].name),
-          min: networks[count].min as number[],
-          max: networks[count].max as number[],
-          labels: networks[count].labels as string[]
-        })
-      }
+      if(info.name == undefined)
+        return "";
 
-      return ((name:string,input:number[])=>{
-        
-        console.log(name,input)
-        let index = -1;
+      const model = await tf.loadLayersModel(`indexeddb://${info.name}`);
+      const min = tf.tensor(info.min);
+      const max = tf.tensor(info.max);
 
-        for(let count = 0; count < models.length && index === -1; count++){
-          if(models[count].name === name)
-            index = count;
-        }
-
-        if(index === -1)
-          return "";
-
-        //console.print(model("color-picker",[0,255,0]))
-        const inputTensor = tf.tensor2d(input,[1,input.length]);
-        const normalizedInput = inputTensor.sub(models[index].min).div(models[index].max).sub(models[index].min);
-        const tensorResult = models[index].model.predict(normalizedInput) as tf.Tensor;
-        tensorResult.print();
-        index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-        console.log(index);
-        console.log(models[index])
-        return models[index].labels[index];
-      })
-
-      
-    }
-
-    return result;
-  }
+      const inputTensor = tf.tensor2d(input,[1,input.length]);
+      const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+      const tensorResult = model.predict(normalizedInput) as tf.Tensor;
+      //tensorResult.print();
+      const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+      return info.labels[index];
+    })
+}
   async play(): Promise<void>{
     this.replay = false;
     const code = new Function("model",this.code);
@@ -179,5 +176,195 @@ export class ScriptExecutorComponent implements OnInit {
     code(model);
     this.replay = true;
   }
+  output(){
+    return (async(value:string) => {
+      console.log("yes please stop")
+      this.inputBlock = true;
+      this.showOutput = true;
+      const outputElem = document.getElementById("TextOutput");
+      if(outputElem)
+      {
+        outputElem.innerHTML = value + "<br>Press Enter to continue";
+      }
+      this.history.push(">>>> "+value);
+      this.playerAtHistory.push(this.currPlayer);
+      console.log(this.history)
+      this.recentPrompt = value + "<br>Press Enter to continue";
 
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+      
+      await pause;
+    })
+  }
+  setCurrPlayer(){
+    return (async(value:string) => {
+      //
+      this.currPlayer = value;
+    });
+  }
+  input(){
+    
+    return (async(prompt:string,type:string,options?:string[])=>{
+      this.inputBlock = true;
+      
+      const elem = document.getElementById("TextOutput");
+      if(elem)
+        elem.innerHTML += prompt+"\n";
+      this.history.push(">>>> "+prompt);
+      this.playerAtHistory.push(this.currPlayer)
+      this.recentPrompt = prompt;
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult;
+    })
+  }
+
+
+  inputGroup(){
+    return (async(parameters:inputParameters[])=>{
+      console.log(parameters);
+      
+      this.inputBlock = true;
+      this.showInput = true;
+      this.parameters = parameters;
+  
+      const pause = new Promise((resolve)=>{
+        const interval = setInterval(()=>{
+            if(!this.inputBlock){
+                clearInterval(interval);
+                resolve("Okay");
+            }
+        },10);
+      });
+  
+      await pause;
+  
+      return this.inputResult;
+    })
+  }
+
+  submitInput(): void{
+    
+    const inputElem = document.getElementById("inputBox") as HTMLInputElement;
+    if(inputElem)
+    {
+      this.inputResult = inputElem.value;
+      inputElem.value = "";
+    }
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
+    this.history.push("<<<< "+this.inputResult) ;
+    this.playerAtHistory.push(this.currPlayer);
+    this.showInput = false;
+    this.inputBlock = false;
+  }
+  showHistory(): void{
+    const elem = document.getElementById("TextOutput");
+    const button = document.getElementById("hDiv");
+    
+    if(this.historyVisible)
+    {
+      
+      if(elem)
+      {
+        elem.innerHTML = this.recentPrompt;
+      }
+      
+      if(button)
+      {
+        button.innerHTML = "History";
+      }
+    }
+    else
+    {
+      const button = document.getElementById("hDiv");
+      if(button)
+      {
+        button.innerHTML = "Back";
+      }
+      if(elem)
+      {
+        elem.innerHTML = "";
+        let cPlayer = "";
+        for(let i = 0; i< this.history.length;i++)
+        {
+          console.log(this.playerAtHistory[i])
+          if(cPlayer != this.playerAtHistory[i])
+          {
+            
+            elem.innerHTML += "<div style=\"border:1px solid black;\" class= \"bg-green-700 text-center font-bold\">" +this.playerAtHistory[i]+"</div>";
+            cPlayer = this.playerAtHistory[i];
+          }
+          elem.innerHTML += "<div class= \"bg-grey-200\">" +this.history[i]+"</div>";
+        }
+        
+      }
+    }
+    this.historyVisible = !this.historyVisible;
+  }
+  okayOutput(): void{
+    const outputElem = document.getElementById("TextOutput");
+    if(outputElem)
+    {
+      outputElem.innerHTML = "";
+    }
+    this.showOutput = false;
+    this.outputBlock = false;
+  }
+  async getSandBox():Promise<any>{
+    return {
+      
+      model: await this.neuralnetworks(),
+      input: this.input(),
+      inputGroup: this.inputGroup(),
+      output: this.output(),
+      setCurrPlayer: this.setCurrPlayer()
+
+    }
+  }
+
+  async interpreter(source:string){
+    const strCode = 'with (sandbox) { ' + source + '}';
+    const code = new Function('sandbox', strCode);
+    const sandbox = await this.getSandBox();
+
+    const proxy = new Proxy(sandbox,{
+      has:(target:any,key:any)=>{
+        return true;
+      },
+      get:(target:any,key:symbol)=>{
+        if(target[key] === undefined && key != Symbol.unscopables){
+          if(Object.keys(window).includes(String(key)) || String(key) === "document"){
+            this.warningMessages.push("Access to " + String(key) + " is not allowed.");
+          }
+          console.log(key)
+          return ()=>{return "Access to " + String(key) + " is not allowed."};
+        }
+
+        return target[key];            
+      }     
+    })
+
+    this.warningMessages = [];
+    code(proxy);
+  }
 }

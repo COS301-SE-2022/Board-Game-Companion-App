@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { comment } from '../../models/comment';
-import { like } from '../../models/like';
-import { commentCount } from '../../models/commentCount';
-import { user } from '../../models/user';
-
+import { comment } from '../../models/comments/comment';
+import { like } from '../../models/comments/like';
+import { commentCount } from '../../models/comments/commentCount';
+import { user } from '../../models/general/user';
 
 @Injectable()
 export class CommentService {
   private api = "";
 
   constructor(private readonly httpClient:HttpClient) { 
-    this.api = "http://localhost:3333/api/";
+    this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
 
   countComments(id:string):Observable<number>{
     let param = new HttpParams();
     param = param.set("id",id);
-    console.log("countComments");
+    // console.log("countComments");
     return this.httpClient.get<number>(this.api + "comments/count-comments",{params:param});
   }
 
   saveComment(formData:FormData):Observable<comment>{
     const data = {
-      user: formData.get("user"),
+      userName: formData.get("userName"),
+      userEmail: formData.get("userEmail"),
       image: formData.get("image"),
       content: formData.get("content"),
       script: formData.get("script")
@@ -43,7 +43,12 @@ export class CommentService {
     return this.httpClient.put(this.api + "comments/add-reply",{commentId:commentId,replyId:replyId});
   }
 
-  like(comment:string,user:user,like:boolean): Observable<like>{
+  like(comment:string,like:boolean): Observable<like>{
+    const user:user = {
+      name: sessionStorage.getItem("name") as string,
+      email: sessionStorage.getItem("email") as string
+    };
+
     return this.httpClient.post<like>(this.api + "comments/like",{comment:comment,user:user,like:like});
   }
 

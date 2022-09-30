@@ -1,0 +1,26 @@
+state{
+    
+}
+
+player agent{
+    action jump(){
+        
+    }
+    
+    condition(){
+        
+    }
+    
+    turn(){
+        
+    }
+}
+
+player human{
+    turn(){
+        
+    }
+}
+endgame{
+    
+}

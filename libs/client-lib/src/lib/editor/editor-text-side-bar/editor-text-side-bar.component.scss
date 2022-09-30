@@ -1,0 +1,31 @@
+.editor-side-bar{
+    position: fixed;
+    width: 50px;
+    left: 0;
+    right: 0;
+    resize: horizontal;
+    overflow: auto;
+    max-width: 250px;
+    min-width: 120px;
+}
+
+.bar-header{
+    text-transform: uppercase;
+    min-width: 150px;
+}
+
+.title-header{
+    background-color: rgb(21,128,61);
+}
+
+.title-header:hover{
+    background-color: rgb(34,197,94);
+}
+
+.model{
+    min-width: 150px;
+}
+
+.model:hover{
+    background-color: rgba(21,128,61,0.3);
+}

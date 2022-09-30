@@ -3,3 +3,9 @@
 .interface{
     background-color: $Pcolour-2;
 }
+
+@media (max-width:639px) {
+    label{
+        color:black;
+    }    
+}

@@ -1,17 +1,24 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-.script-detail__column-0,.script-detail__column-1{
+// .script-detail__column-0,.script-detail__column-1{
     
-}
+// }
 
-.script-information{
+// .script-information{
     
-}
+// }
 
 .script-comments{
     background-color: $Pcolour-2;
 }
 
+.version{
+    background-color: $Pcolour-2;    
+}
+
+.version:hover{
+    background-color: rgba($Pcolour-2,0.7);
+}
 
 .script-title{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -82,30 +89,58 @@ img{
         padding-right: 0px;;
     }
 
+    #downrate{
+        
+        width:100%;
+        //row-gap: 24px;
+    }
+
     #download{
         display:flex;
         float:left;
         flex-direction: column;
-        width:45%;
-        height:20%;
+        width:100%;
+        gap:10px;
+        //height:20%;
     }
 
     #rate{
         display:flex;
         float:right;
         flex-direction: column;
-        width:45%;
-        height:20%;
+        height: 100%;
+        width:100%;
+        margin-bottom:24px;
+        
+       // height:40%;
     }
    
+    #rateHead{
+        height:28%;
+    }
+
+    #outerStar{
+        height:100%;
+        width:100%;
+        //align-items: center;
+        //border: 3px solid yellow;
+        display: flex;
+        padding: 2em;
+        //margin-left: auto;
+        //margin-right: auto;
+        align-items: center;
+        justify-content: center;
+    }
+
+   
+   
     #stars{
-      
-      width:fit-content;
+      width:100%;
+      height:100%;
       display: flex;
       align-items: center;
       transform: scale(0.7);
-      padding-left:0;
-      margin-left: 0px;
+      justify-content: center;
       
     }
     ul#stars li {

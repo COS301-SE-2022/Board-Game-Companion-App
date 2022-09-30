@@ -1,87 +1,83 @@
-<div id="container">
-    <div id="headInput">
-        <div id="searchSortDiv">
-            <div id="sortingDiv">   
-                <select id="sorting" class="btn px-2 py-0.5 font-bold" [(ngModel)]="selected"  (change)="onSort()">
-                    <option value="" disabled selected>Sort By..</option>
-                    <option value="alphabetical">Alphabet</option>
-                    <option value="score">Score</option>
-                    <option value="date">Date</option>
-                </select>
-                <button id ="sort" class="btn px-2 py-1 font-bold">Sort</button>
-            </div>
-            <div id="searchDiv">
-                <input id = "textInput" [(ngModel)] = "search">
-                <button id = "search" (click)="Onsearch()"   class="btn px-2 py-1 font-bold"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i><a id="word">Search</a></button>
-            </div>
+<div  class = "w-4/5 h-4/5 my-12 mx-auto">
+    <div id = "title" class = "flex justify-between w-full text-white p-6 text-3xl font-bold overflow-x-auto">
+        <div class = "flex mx-2">
+            Game Sessions
         </div>
-
-        <div id="headingDiv">
-            <h1 id="heading">Your Game Sessions</h1>
+        <div id="searchDiv" class = "flex mx-2 h-1/2">
+            <input id = "textInput" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)] = "search">
+            <button id = "search" (click)="Onsearch()" class="px-2 py-1 font-bold text-lg"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i></button>
         </div>
-
+        <div id = "sortDiv" class = "flex mx-2 h-1/2">
+            <select id="sorting" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)]="selected"  (change)="onSort()">
+                <option value="" disabled selected>Sort By..</option>
+                <option value="alphabetical">Alphabet</option>
+                <option value="score">Score</option>
+                <option value="date">Date</option>
+            </select>
+            <button id ="sort" class="px-2 py-1 font-bold text-lg">Sort</button>
+        </div>
     </div>
-    <div id="content">
-        <table class="table-auto">
-            <thead>
+    <div id = "table" class=" h-full overflow-y-auto overflow-x-auto relative bg-white">
+        <table class="w-full text-left">
+            <thead class="text">
                 <tr>
-                    <th>
-                        Session:
+                    <th scope="col" class="py-3 px-6">
+                        Session
                     </th>
-                    <th>
-                        Game:
+                    <th scope="col" class="py-3 px-6">
+                        Game
                     </th>
-                    <th>
-                        Script:
+                    <th scope="col" class="py-3 px-6">
+                        Script
                     </th>
-                    <th>
-                        Score:
+                    <th scope="col" class="py-3 px-6">
+                        Score
                     </th>
-                    <th>
-                        Play Time:
+                    <th scope="col" class="py-3 px-6">
+                        Play Time
                     </th>
-                    <th>
+                    <th scope="col" class="py-3 px-6">
                         Players
                     </th>
-                    <th>
-                        Result:
+                    <th scope="col" class="py-3 px-6">
+                        Result
                     </th>
-                    <th>
-                        Date:
+                    <th scope="col" class="py-3 px-6">
+                        Date
                     </th>
-                    <th>
+                    <th scope="col" class="py-3 px-6">
 
                     </th>
                 </tr>
             </thead>
-            <tbody class = "overflow-x-auto">
-                <tr *ngFor="let results of listResults">
-                    <td>
+            <tbody>
+                <tr *ngFor="let results of listResults" class="border-b">
+                    <td scope="row" class="py-4 px-6 font-medium whitespace-nowrap">
                         {{results.getID()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getBoardGame()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getScript()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getScore()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getTimePlayed()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getNumOpponents()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getResult()}}
                     </td>
-                    <td>
+                    <td class="py-4 px-6 whitespace-nowrap">
                         {{results.getDate()}}
                     </td>
-                    <td>
-                        <button (click)="viewSession(results.getID())" id="explore">Explore</button>
+                    <td scope="row" class="py-4 px-6 text-2xl">
+                        <button (click)="viewSession(results.getID())" id="explore"><i class="fa-solid fa-circle-info"></i></button>
                     </td>
                 </tr>
             </tbody>

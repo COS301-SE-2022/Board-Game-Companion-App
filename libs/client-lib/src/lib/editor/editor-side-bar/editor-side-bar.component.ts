@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Ace } from 'ace-builds';
+import { entity } from '../../shared/models/editor/entity';
+import { script, empty } from '../../shared/models/scripts/script';
+import { selection } from '../../shared/models/editor/selection';
+import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
+import { EditorVisualsComponent } from '../editor-visual-side-bar/editor-visual-side-bar.component';
+import { myScript } from '../../shared/models/scripts/my-script';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -7,12 +14,17 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./editor-side-bar.component.scss'],
 })
 export class EditorSideBarComponent implements OnInit{
+  @Input() VDSL = false;
   @Input() height = 0;
   @Input() width = 0;
+  @Input() current!:myScript;
   @Output() resizeEvent = new EventEmitter<number>();
-  
+  @Output() selectionEvent = new EventEmitter<selection>();
+  @Output() removeEvent = new EventEmitter<selection>();
+  @ViewChildren(EditorEntityComponent) entities: QueryList<EditorEntityComponent> = new QueryList<EditorEntityComponent>();
+
+
   ngOnInit(): void {
-    console.log("editor");
     setInterval(()=>{
       const temp = document.getElementById("editor-side-bar")?.style.width;
       const value = parseInt(temp == undefined ? "" : temp);
@@ -23,6 +35,17 @@ export class EditorSideBarComponent implements OnInit{
     },5);
   }
 
+  changeDisplay(value: boolean)
+  {
+    if(value)
+    {
+      this.VDSL = true
+    }
+    else
+    {
+      this.VDSL= false
+    }
+  }
   getMaxWidth(): number{
     return 250;
   }
@@ -35,5 +58,19 @@ export class EditorSideBarComponent implements OnInit{
   close(): void{
     this.width = 0;
     this.resizeEvent.emit(0);
+  }
+
+  highlight(value:selection){
+    this.selectionEvent.emit(value);
+  }
+
+  remove(value:selection){
+    this.removeEvent.emit(value);
+  }
+
+  cursorChange(value:Ace.Point): void{
+    this.entities.forEach((component:EditorEntityComponent)=>{
+      component.cursorChange(value);
+    })
   }
 }

@@ -1,14 +1,47 @@
 class cards
 {
-    parameters;
-    activate()
+    name = "";
+    State = null
+    constructor(n, s)
     {
-        //
+        this.name = n;
+        this.State = s;
     }
-    canUse()
+    //cardEffect
+    
+    //cardCondition
+    
+    async activate()
     {
-        return true;
+        activate("")
     }
+    async canUse()
+    {
+        canUse("")
+    }
+    async activate(parameters)
+    {
+        switch(this.name)
+        {
+            //cardActivation
+        }
+    }
+    async canUse(parameters)
+    {
+        switch(this.name)
+        {
+            //cardUsable
+        }
+        return false;
+    }
+
+    async getPlayer(s)
+    {
+        let i = await indexOfPlayer(s)
+        return this.State.players[i]
+    }
+
+
 }
 //cards
 
@@ -20,8 +53,15 @@ class tile
     pieces = []; //array of pieces on this tile [] by default
     Adjacencies = []; //array of tiles adjacent to this tile [] by default
  
-    //possibly functions to make the scripters life easier like:
-    
+    //tile properties
+    async removePiece(p)
+    {
+        const index = this.pieces.indexOf(p);
+        if (index > -1) 
+        { 
+            this.pieces.splice(index, 1); 
+        }
+    }
 }
 class piece
 {
@@ -31,9 +71,21 @@ class piece
     Tile; //the tile this piece is on
     
 }
+
+async function movePiece(p, t)
+{
+    await p.Tile.removePiece(p)
+    p.Tile = t
+    t.pieces.push(p)
+}
+
+
 class game_state
 {
     board = []
+    players = [
+        
+    ]
     constructor()
     {
         //State
@@ -48,7 +100,7 @@ class game_state
     
 
 //state accessors
-    getTileByID(id)
+    async getTileByID(id)
     {
         for(let i = 0; i<this.board.length;i++)
         {
@@ -58,7 +110,7 @@ class game_state
         return null
     }
 
-    getTilesByType(type)
+    async getTilesByType(type)
     {
         results = []
         for(let i = 0; i<this.board.length;i++)
@@ -73,40 +125,27 @@ class game_state
 
 
 
-
-
 class player
 {
     State = new game_state();
-    chooseAction()
+    async chooseAction()
     {
         //
     }
-    turn()
+    async turn()
     {
         //redefined in subclasses
     }
 }
 //players
 
-function output(message)
+async function indexOfPlayer(s)
 {
-    console_Input(message)
-    
-}
-
-function input(message)
-{
-    
-    return console_Input(message)
-    
-    
-}
-function console_Input(message)
-{
-    
-    i = prompt(message);
-    return i;
+    switch(s)
+    {
+        //playerIndexes
+    }
+    return 0
 }
 
 //
@@ -115,35 +154,38 @@ class script
     State = new game_state();
     players = [
         //add players
-    ];
-    
-    
-
-    play()
+    ]
+    listOfPlayers = [
+        //playerList
+    ]
+    async getPlayer(s)
     {
+        let i = await indexOfPlayer(s)
+        return this.State.players[i]
+    }
 
+    async play()
+    {
+        this.State.players = this.players
         
-        console.log("script-execution begins");
+        //console.log("script-execution begins");
+            
         for(let i =0;i< this.players.length;i++)
         {
             this.players[i].State = this.State
+            
         }
         //get player turn order
         let order = []
-        let inputElement = document.getElementById("TextOutput");
-        
+        //let inputElement = document.getElementById("TextOutput");
+        await setCurrPlayer("GAME SETUP")
         for(let i =0;i< this.players.length;i++)
         {
-            if(inputElement)
-            {
-                //ask using input and output methods
-                order.push(input("when will player "+this.players[i].constructor.name + " move"))
-            }
-            else
-            {
-                //use default order
-                order.push(i)
-            }
+            
+            //ask using input and output methods
+            let pIndex =await input("when will player "+this.players[i].constructor.name + " move", "text")
+            pIndex = +pIndex
+            order.push(pIndex)
         }
         //re order 
         for(let i =0;i< this.players.length;i++)
@@ -154,33 +196,37 @@ class script
                 {
                     let temp = order[i]
                     let tempP = this.players[i]
+                    let tempPL = this.listOfPlayers[i]
 
                     order[i] = order[j]
                     this.players[i] = this.players[j]
+                    this.listOfPlayers[i] = this.listOfPlayers[j]
 
                     order[j] = temp
                     this.players[j] = tempP
+                    this.listOfPlayers[j] = tempPL
                 }
             }
         }
         do
         {
-            for(let i =0;i< this.players.length && !this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame();i++)
             {
-                this.players[i].turn();
+                await setCurrPlayer(this.listOfPlayers[i])
+                await this.players[i].turn();
             }
         }
-        while(!this.endgame())
+        while(!await this.endgame())
 
-
+        
     }
-
-    endgame()
+    
+    async endgame()
     {
         //end_game
+        
     
-    
-        return false
+        return true
     }
     
 

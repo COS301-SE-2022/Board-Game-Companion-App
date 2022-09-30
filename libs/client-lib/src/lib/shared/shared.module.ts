@@ -11,31 +11,52 @@ import { ModelsService } from './services/models/models.service';
 import { FormsModule } from '@angular/forms';
 import { NotificationComponent } from './components/notification/notification.component';
 import { NotificationUnitComponent } from './components/notification-unit/notification-unit.component'; 
+import { InputInterfaceComponent } from './components/input-interface/input-interface.component';
+import { StorageService } from './services/storage/storage.service';
+import { OutputInterfaceComponent } from './components/output-interface/output-interface.component';
+import { DownloadsService } from './services/downloads/downloads.service';
+import { ReportService } from './services/reports/report.service';
+import { EditorService } from './services/editor/editor.service';
+import { CollectionService } from './services/collections/collection.service';
+import { OnlineStatusModule } from 'ngx-online-status';
+import { AlertService } from './services/alert/alert.service';
+import { AdminService } from './services/admin/admin.service';
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
     NotificationComponent,
-    NotificationUnitComponent
+    NotificationUnitComponent,
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    OAuthModule.forRoot(),
-    
+    OnlineStatusModule,
+    OAuthModule.forRoot(),  
   ],
   providers: [
     BggSearchService,
     ScriptService,
     GoogleAuthService,
     CommentService,
-    ModelsService
+    ModelsService,
+    StorageService,
+    DownloadsService,
+    ReportService,
+    EditorService,
+    CollectionService,
+    AlertService,
+    AdminService
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
-    NotificationComponent
+    NotificationComponent,
+    InputInterfaceComponent,
+    OutputInterfaceComponent
   ]
 })
 export class SharedModule { }

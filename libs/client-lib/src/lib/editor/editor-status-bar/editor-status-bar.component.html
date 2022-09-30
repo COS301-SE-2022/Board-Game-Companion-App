@@ -1,8 +1,12 @@
-<div class = "editor-status-bar bg-green-700" [style.height.px] = "height">
-    <div class = "editor-changes-tracker w-16 text-white relative px-1" >
-        <i class="fas fa-check h-full" *ngIf = "statusOfChanges === 2"></i> 
-        <i class="far fa-times-circle h-full" *ngIf = "statusOfChanges === 0"></i>
-        <i class="fas fa-sync fa-spin" *ngIf = "statusOfChanges === 1"></i>
+<div class = "editor-status-bar bg-green-700 flex flex-row" [style.height.px] = "height">
+    <div (click) = "printStatusMessages()" class = "editor-changes-tracker w-16 hover:bg-green-600 h-full cursor-pointer text-white relative px-1" >
+        <i class="fas fa-check h-full mt-1" *ngIf = "statusOfChanges === 2"></i> 
+        <i class="far fa-times-circle h-full mt-1" *ngIf = "statusOfChanges === 0"></i>
+        <i class="fas fa-sync fa-spin mt-1" *ngIf = "statusOfChanges === 1"></i>
         <span class = "text-sm h-full ml-2 mt-0.5 absolute top-0" >{{statusOfChanges === 0? "failed" : (statusOfChanges === 1) ? "saving" : "saved"}}</span>
+    </div>
+    <div (click) = "printWarningMessages()" *ngIf = "warnings !== 0" class = "w-16 hover:bg-green-600 h-full cursor-pointer text-white relative px-1">
+        <i class="fas fa-exclamation-triangle mt-1 ml-2"></i>
+        <span class = "text-sm h-full ml-2 mt-0.5 absolute top-0">{{warnings}}</span>
     </div> 
 </div>

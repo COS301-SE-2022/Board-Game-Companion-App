@@ -1,0 +1,71 @@
+<div class="bg-white w-full shadow-sm text-gray-700 p-2 mt-2">
+    <div class="mb-4">
+        <label for="data-partition" class="form-label font-medium"><b>Hidden Layers</b></label>
+    </div>
+
+    <div class = "row border-2 border-green-800 mx-2 p-2">
+        <div class = "col-sm-6 flex flex-row">
+            <label for="Nodes" class="form-label font-medium mt-2">Nodes</label>
+            <input [(ngModel)] = "nodes" name = "nodes" class="form-control ml-4 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="number" min = "1" max = "200" placeholder="1" aria-label="nodes">
+        </div>
+        <div class = "col-sm-6 flex flex-row">
+            <label for="Activation" class="form-label font-medium mt-2">Activation</label>
+            <div class = "activation-funtion-menu ml-4">
+                <button class = "menu-btn bg-green-800 text-white rounded-md">
+                    {{activation}}
+                </button>
+                <div class = "menu-content absolute rounded-md overflow-hidden">
+                    <a (click)="setActivation('elu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">elu</a>
+                    <a (click)="setActivation('hardSigmoid')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">hardSigmoid</a>
+                    <a (click)="setActivation('linear')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">linear</a>
+                    <a (click)="setActivation('relu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">relu</a>
+                    <a (click)="setActivation('relu6')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">relu6</a>
+                    <a (click)="setActivation('selu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">selu</a>
+                    <a (click)="setActivation('sigmoid')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">sigmoid</a>
+                    <a (click)="setActivation('softmax')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">softmax</a>
+                    <a (click)="setActivation('softplus')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">softplus</a>
+                    <a (click)="setActivation('tanh')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">tanh</a>
+                </div>
+            </div>
+        </div>
+        <div class = "col-sm-12 text-right mt-3">
+            <button (click) = "addLayer()" type="button" class="inline-block px-3 py-1 bg-green-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-green-800 hover:shadow-sm focus:bg-green-800 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-sm transition duration-150 ease-in-out">add</button>        
+        </div>
+    </div>
+
+    <div class = "border-2 border-green-800 p-1 mt-3 mx-2" *ngFor = "let layer of hiddenLayers">
+        <div class = "row mx-0">
+            <div class = "col-sm-3">
+                <label for="Nodes" class="form-label font-medium mt-2">Layer {{layer.index}}</label>
+            </div>
+            <div class = "col-sm-4 flex flex-row">
+                <input [(ngModel)] = "layer.nodes" name = "nodes" class="form-control ml-4 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="number" min="1" max = "200" placeholder="1" aria-label="nodes">
+            </div>
+            <div class = "col-sm-4">
+                <div class = "activation-funtion-menu">
+                    <button class = "menu-btn bg-green-800 text-white text-sm rounded-md">
+                        {{layer.activation}}
+                    </button>
+                    <div class = "menu-content absolute rounded-md overflow-hidden">
+                        <a (click)="setActivationByIndex(layer.index,'elu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">elu</a>
+                        <a (click)="setActivationByIndex(layer.index,'hardSigmoid')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">hardSigmoid</a>
+                        <a (click)="setActivationByIndex(layer.index,'linear')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">linear</a>
+                        <a (click)="setActivationByIndex(layer.index,'relu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">relu</a>
+                        <a (click)="setActivationByIndex(layer.index,'relu6')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">relu6</a>
+                        <a (click)="setActivationByIndex(layer.index,'selu')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">selu</a>
+                        <a (click)="setActivationByIndex(layer.index,'sigmoid')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">sigmoid</a>
+                        <a (click)="setActivationByIndex(layer.index,'softmax')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">softmax</a>
+                        <a (click)="setActivationByIndex(layer.index,'softplus')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">softplus</a>
+                        <a (click)="setActivationByIndex(layer.index,'tanh')" class = "bg-green-600 text-white text-xs py-1 px-2 hover:bg-green-700 active:bg-green-600 cursor-pointer">tanh</a>
+                    </div>
+                </div>
+            </div>
+            <div class = "col-sm-1 text-center">
+                <div (click) = "removeLayer(layer)" class = "py-2 w-full h-full hover:text-red-800 rounded-md">
+                    <i class="fas fa-times fa-2xl"></i>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BggSearchService,MostActive } from '../bgg-search-service/bgg-search.service';
-import { SearchResult } from '../../shared/models/search-result';
+import { SearchResult } from '../../shared/models/general/search-result';
 import { XmlParser } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 
@@ -29,15 +29,10 @@ export class BoardGameSearchComponent implements OnInit {
   exactMatch = false;
 
   constructor(private readonly searchService:BggSearchService, private router:Router, private route:ActivatedRoute) {
-              // if it is a global search from header, move to function...
-    if(this.route.snapshot.paramMap.get("value")!==null){
-      this.searchValue = this.route.snapshot.paramMap.get("value")||"";
-      this.search();
-    } // otherwise load most active...
   }
 
   ngOnInit(): void {
-    console.log("----->::"+ this.mostActive.length);
+    // console.log("----->::"+ this.mostActive.length);
     if(this.mostActive.length == 0){
       this.searchService.getMostActive().subscribe(result =>{
         this.contentType = "Most Active";
@@ -74,14 +69,15 @@ export class BoardGameSearchComponent implements OnInit {
                 const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
               
                 parseXml.querySelectorAll("name").forEach(n=>{
-                  name = n.getAttribute("value") || "";
+                  if(name == "")
+                    name = n.getAttribute("value") || "";
                 });
                 parseXml.querySelectorAll("image").forEach(imgUrl=>{
                     url = imgUrl.innerHTML;
                     
                 });
 
-                console.log(url);
+                // console.log(url);
                 
                 if (parseXml.querySelectorAll("image").length ==0)
                 {
@@ -128,12 +124,12 @@ export class BoardGameSearchComponent implements OnInit {
   }
 
   changePage(page:number):void{
-    console.log("------:: in change: "+page);
+    // console.log("------:: in change: "+page);
     this.show = this.mostActive.slice((page - 1) * 14,page * 14);
   }
 
   getDetails(id:string): void{
-    this.router.navigate(['board-game-details', {my_object: id}] )
+    this.router.navigate(['board-game-details'], { state: { value: id } });
   }
 
   changeSearchMode(value:string):void{
@@ -152,6 +148,13 @@ export class BoardGameSearchComponent implements OnInit {
           this.mostActive[count] = temp;
         }
       }
+    }
+  }
+
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
     }
   }
 

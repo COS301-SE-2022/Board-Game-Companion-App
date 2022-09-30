@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -23,17 +24,8 @@ export const routes: Routes = [
     loadChildren: () => import('./collections/collections.module').then(m=>m.CollectionsModule),
   },
   {
-    path: 'addGame',
-    loadChildren: () => import('./add-to-collection/add-to-collection.module').then(m=>m.AddToCollectionModule),
-  },
-  {
     path: 'script-detail',
     loadChildren: () => import('./script-detail/script-detail.module').then(m=>m.ScriptDetailModule),
-  }
-  ,
-  {
-    path: 'viewCollection',
-    loadChildren: () => import('./view-collection/view-collection.module').then(m=>m.ViewCollectionModule),
   },
   {
     path: 'editor',
@@ -52,22 +44,21 @@ export const routes: Routes = [
     loadChildren: () => import('./game-sessions/game-sessions.module').then(m=>m.GameSessionsModule)
   },
   {
-    path: 'session',
-    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
-
-  },
-  {
     path: 'models',
     loadChildren: () => import('./models/models.module').then(m=>m.ModelsModule)
   },
   {
     path: 'script-exec',
     loadChildren: () => import('./script-executor/script-executor.module').then(m=>m.ScriptExecutorModule)
+  },
+  {
+    path: 'session',
+    loadChildren: () => import('./session/session.module').then(m=>m.SessionModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes),FormsModule],
   exports: [RouterModule]
 })
 export class ClientLibRoutingModule { }

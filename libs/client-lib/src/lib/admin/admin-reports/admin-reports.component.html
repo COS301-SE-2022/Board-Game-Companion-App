@@ -1,0 +1,90 @@
+<div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto">
+    <div (click) = "showScripts = !showScripts" class = "col-sm-12 cursor-pointer hover:underline text-2xl w-full font-medium text-gray-700">Scripts</div>
+
+    <div *ngIf = "showScripts">
+        <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
+            <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+                <div class = "font-medium">
+                    Issued By
+                </div>
+                <div class = "text-white text-xs">
+                    {{scriptReports[sub].user.name}}
+                </div>
+    
+                <div class = "font-medium">
+                    Date Issued
+                </div>
+                <div class = "text-white text-xs">
+                    {{formatDate(scriptReports[sub].dateIssued)}}
+                </div>
+    
+                <div class = "font-medium">
+                    Message
+                </div>
+                <div class = "text-white text-xs">
+                    {{scriptReports[sub].message}}
+                </div>
+    
+                <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
+                    <div (click) = "flag(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                        Flag
+                    </div>
+                    <div (click) = "view(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                        View
+                    </div>
+                    <div (click) = "ignore(scriptReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                        Ignore
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <pagination-controls *ngIf = "scriptReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="scriptPage = $event"></pagination-controls>
+</div>
+
+<div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto my-4">
+    <div (click) = "showComments = !showComments" class = "col-sm-12 text-2xl cursor-pointer hover:underline w-full font-medium text-gray-700">
+        Comments
+    </div>
+
+    <div *ngIf = "showComments">
+        <div  class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(commentReports.length) | paginate: { itemsPerPage: 8, currentPage: commentPage }">
+            <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+                <div class = "font-medium">
+                    Issued By
+                </div>
+                <div class = "text-white text-xs">
+                    {{commentReports[sub].user.name}}
+                </div>
+
+                <div class = "font-medium">
+                    Date Issued
+                </div>
+                <div class = "text-white text-xs">
+                    {{formatDate(commentReports[sub].dateIssued)}}
+                </div>
+
+                <div class = "font-medium">
+                    Message
+                </div>
+                <div class = "text-white text-xs">
+                    {{commentReports[sub].message}}
+                </div>
+
+                <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
+                    <div (click) = "flag(commentReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                        Flag
+                    </div>
+                    <div (click) = "ignore(commentReports[sub])" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                        Ignore
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <pagination-controls *ngIf = "commentReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="commentPage = $event"></pagination-controls>
+</div>
+<board-game-companion-app-notification></board-game-companion-app-notification>

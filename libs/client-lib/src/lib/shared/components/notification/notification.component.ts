@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { notification } from '../../models/notification';
+import { notification } from '../../models/general/notification';
+import { NotificationUnitComponent } from '../notification-unit/notification-unit.component';
 
 @Component({
   selector: 'board-game-companion-app-notification',
@@ -11,7 +12,7 @@ export class NotificationComponent implements OnInit {
   notifications:notification[] = [];
 
   ngOnInit(): void {    
-    console.log("notification");
+    this.notifications = [];
   }
 
   add(value:notification): void{

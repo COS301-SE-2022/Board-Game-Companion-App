@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
 import { Router } from '@angular/router';
+import { automataScript } from '../../shared/models/scripts/automata-script';
+import { ScriptService } from '../../shared/services/scripts/script.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'board-game-companion-app-board-game-details',
@@ -10,8 +13,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./board-game-details.component.scss'],
 })
 export class BoardGameDetailsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private route: ActivatedRoute, private router:Router) {}
-
   id = "1010";
   name = "";
   url = "";
@@ -23,20 +24,20 @@ export class BoardGameDetailsComponent implements OnInit {
   designer = "";
   artist = "";
   publisher = "";
+  showFullDescription = false;
+  showAutomata = false;
+  scripts:automataScript[] = [];
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
-  
-  
-  addToCollection()
-  {
-    this.router.navigate(['addGame', {my_object: this.id}]);
-
-    
-    
+  constructor(private readonly bggSearch:BggSearchService, 
+              private readonly route: ActivatedRoute,
+              private readonly router:Router,
+              private readonly scriptService:ScriptService) {
+    this.id = this.router.getCurrentNavigation()?.extras.state?.['value'];
   }
 
   ngOnInit(): void {
-    //get id
-    this.id = this.route.snapshot.paramMap.get('my_object')||"";
+    this.getScripts();
     console.log(localStorage.getItem("recentlyVisited")?.length)
     //check if recently visited exists
     if (localStorage.getItem("recentlyVisited") === null) 
@@ -72,6 +73,7 @@ export class BoardGameDetailsComponent implements OnInit {
      
     }
     
+    
 
     
     
@@ -80,16 +82,18 @@ export class BoardGameDetailsComponent implements OnInit {
           .subscribe(
             
             data=>{
-              let result:string = data.toString();
+              const result:string = data.toString();
               
-              let parseXml = new window.DOMParser().parseFromString(result, "text/xml");
+              const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
 
               console.log(parseXml)
               
             
               //get information
               parseXml.querySelectorAll("name").forEach(n=>{
-                this.name = n.getAttribute("value") || "";
+                if(this.name == "")
+                  this.name = n.getAttribute("value") || "";
+                
               });
               parseXml.querySelectorAll("image").forEach(imgUrl=>{
                   this.url = imgUrl.innerHTML;
@@ -134,5 +138,20 @@ export class BoardGameDetailsComponent implements OnInit {
                 }
             });
           })
+  }
+
+  getScripts(): void{
+    this.scriptService.getByGame(this.id).subscribe({
+      next:(value:automataScript[])=>{
+        this.scripts = value;
+      },
+      error:(err)=>{
+        this.notifications.add({type:"warning",message:"Failed to load the board game scripts."})
       }
+    })
+  }
+
+  showInfo(value:automataScript){
+    this.router.navigate(['script-detail'], { state: { value: value } });
+  }
 }

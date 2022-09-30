@@ -1,0 +1,1018 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="helpModal" data-bs-keyboard="false" tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+    <div class="wrapper p-2 modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-clip-padding rounded-md outline-none text-current">
+        
+        <div class = "row m-2">
+            <div class = "col-sm-4">
+                <div class="h-full shadow-md bg-white rounded-sm">
+                    <ul class="relative">
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "Variables" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#VariablesSubNav" aria-expanded="true" aria-controls="collapseOperatorSubNav">
+                                <span>Variables</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="VariablesSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#Variables">
+                                <li id="DataType" (click)="showType()" class="relative">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Data Types</a>
+                                </li>
+                                <li id="Declaration" (click)="showDecl()" class="relative">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Declarations</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "OperatorsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#OperatorsSubNav" aria-expanded="true" aria-controls="OperatorsSubNav">
+                                <span>Operators</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="OperatorsSubNav" aria-labelledby="OperatorsSubNav" data-bs-parent="#OperatorsNav">
+                                <li class="relative" (click)="showArithmetic()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Arithmetic Operators</a>
+                                </li>
+                                <li class="relative" (click)="showLogical()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Logical Operators</a>
+                                </li>
+                                <li class="relative" (click)="showCond()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Conditional Operators</a>
+                                </li>
+                                <li class="relative" (click)="showRelation()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Relational Operators</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "ConditionalStatementsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#ConditionalStatementsSubNav" aria-expanded="true" aria-controls="ConditionalStatementsSubNav">
+                                <span>Conditional</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="ConditionalStatementsSubNav" aria-labelledby="sidenavEx1" data-bs-parent="#ConditionalStatementsNav">
+                                <li class="relative" (click)="showif()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if statement</a>
+                                </li>
+                                <li class="relative" (click)="showifelse()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">if-else statement</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "FlowControlNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#FlowControlSubNav" aria-expanded="true" aria-controls="FlowControlSubNav">
+                                <span>Flow Control</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="FlowControlSubNav" aria-labelledby="FlowControlSubNav" data-bs-parent="#FlowControlNav">
+                                <li class="relative" (click)="showFor()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">for-loop</a>
+                                </li>
+                                <li class="relative" (click)="showWhile()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">while-loop</a>
+                                </li>
+                                <li class="relative" (click)="showContinue()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">continue statement</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "IONav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#IOSubNav" aria-expanded="true" aria-controls="IOSubNav">
+                                <span>IO</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="IOSubNav" aria-labelledby="IOSubNav" data-bs-parent="#IONav">
+                                <li class="relative" (click)="uInput()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">User Interface Input</a>
+                                </li>
+                                <li class="relative" (click)="uOutput()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">User Interface Output</a>
+                                </li>
+                                <!-- <li class="relative" (click)="cInput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Console Input</a>
+                                </li>
+                                <li class="relative" (click)="cOuput()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Console Output</a>
+                                </li> -->
+                            </ul>
+                        </li>
+
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "ObjectsNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#ObjectsSubNav" aria-expanded="true" aria-controls="ObjectsSubNav">
+                                <span>Objects</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="ObjectsSubNav" aria-labelledby="ObjectsSubNav" data-bs-parent="#ObjectsSubNav">
+                                <li class="relative" (click)="state()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>state</b></a>
+                                </li>
+
+                                <li class="relative">
+                                    <a id="PlayerSubNav" (click)="player()" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#PlayerSubNav" aria-expanded="true" aria-controls="PlayerSubNav">
+                                        <span><b>player</b></span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                        </svg>
+                                    </a>
+                                
+
+                                    <ul class="relative accordion-collapse collapse" id="PlayerSubNav" aria-labelledby="PlayerSubNav" data-bs-parent="#PlayerSubNav">
+                                        <li id="listlistItem" class="relative" (click)="showActions()">
+                                            <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>actions</b></a>
+                                        </li>
+                                        <li id="listlistItem" class="relative" (click)="showTurn()">
+                                            <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>turn</b></a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="relative" (click)="tile()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>tile</b></a>
+                                </li>
+                                <li class="relative" (click)="piece()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>piece</b></a>
+                                </li>
+                                <li class="relative" (click)="card()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>card</b></a>
+                                </li>
+                                <li class="relative" (click)="endgame()">
+                                    <a id="sublabel" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>endgame</b></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "MLNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#MLSubNav" aria-expanded="true" aria-controls="MLSubNav">
+                                <span>ML</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="MLSubNav" aria-labelledby="MLSubNav" data-bs-parent="#MLNav">
+                                <li class="relative" (click)="neuralNetwork()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Neural Network</a>
+                                </li>
+                                <li class="relative" (click)="DecisionTree()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">Decision Tree</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="relative sm:text-xs md:text-sm">
+                            <a id = "GPNav" class="flex items-center py-4 px-2 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#GPSubNav" aria-expanded="true" aria-controls="GPSubNav">
+                                <span>Game Playing</span>
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                                </svg>
+                            </a>
+
+                            <ul class="relative accordion-collapse collapse" id="GPSubNav" aria-labelledby="GPSubNav" data-bs-parent="#GPNav">
+                                <li class="relative" (click)="minmaxAlgo()">
+                                    <a class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark"><b>minmax</b>  Algorithm</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div id="content-area" class = "col-sm-8">
+                <!--Data Types-->
+                <div *ngIf="isShown.dataType" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Data Types</h5>
+                    <p class="mb-4">
+                        <!--tbody: text body-->
+                        <a id="tbody"> A classification that specifies which type of value a variable has.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>Player</b> identifier<br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; action myaction(x)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#123; &#125; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; declarations <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; turn()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#123; &#125; <br>
+                            &#125;<br>
+                       </code></div></a>
+                       <br>
+                       <a><table style="width:100%">
+                        <tr>
+                        <th id="tbody" class="tableHeader"> The data types are namely:</th>
+                        </tr>
+                        <tr>
+                            <td id="tbody"> 
+                             - player <br>
+                             - root<br>
+                             - state <br>
+                             - condition<br>
+                             - card <br>
+                             - turn<br>
+                             - action<br>
+                             - endgame<br>
+                            </td>
+                        </tr>
+                        </table></a>
+                        <br>
+                        <a id="subheading"> Example </a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/dataType.PNG"></a>
+                        <br>
+                    </p>
+                </div>
+
+                <!--Declarations-->
+                <div *ngIf="isShown.declaration" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Declarations</h5>
+                    <p class=" mb-4">
+                        <a id="tbody">Determines the name and data type of a variable and/or function. The user will declare variables or functions by writing the name of the variable and/or functions, it's data type indicator in the required syntax. The language follows javascript scoping conventions.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a><em> Note: index is either a variable or constant</em></a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            
+                            <b>Variable</b>  *User Defined Name* [ *index* ] <br>
+                            <br>
+                            <b>OR</b> <br>
+                            <br>
+                            <b>Let</b>  *User Defined Name* [ *index* ] <br>
+                             
+                        </code></div></a>
+                        <br>
+                        <a><table style="width:100%">
+                           <tr><th id="tbody" class="tableHeader">The language uses javascript scoping conventions, hence:</th></tr>
+                            <tr>
+                            <td>
+                            1. The declaration of a variable within a function, use the <b>let</b> keyword.<br>
+                            2. Accessing a variable outside the function it is declared in:<br>
+                            <div id="listlistItem">- Given a function <b>turn()</b> that is defined within the <b>player()</b> function, then to access a variable declared in the turn(), use:</div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>this.VariableName</b><br>
+                            </tr>
+                       </table></a>
+                        <br>
+                        <a id="subheading">Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/DECL.PNG"></a>
+                        <br>
+                        <a>In the above example we deduce the following information:</a>
+                        <br>
+                        <a><ul>
+                            <li>- <b>x</b> (variable) is declared as the value  <b>1</b></li>
+                            <li>- <b>name</b> (variable) is declared as the value <b>John</b></li>
+                            <li>- <b>happy</b> (variable) is declared as the value <b>true</b> value</li>
+                        </ul></a>
+                        
+                        
+                    </p>
+                </div>
+
+                <!--Arithmetic Operator-->
+                <div *ngIf="isShown.arithmetic" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Arithmetic Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody">A mathematical operation that takes two operands and performs a calculation </a>
+                        <br>
+                        <br>
+                        <a  id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code> *operand*  <b><em>operator</em></b>  *operand*</code></div></a>
+                        <br>
+                        <a><table style="width:100%">
+                            <tr><th id="tbody" class="tableHeader"> These operators are listed as follows</th></tr>
+                            <tr>
+                                <td>Plus</td>
+                                <td id="symbol1"><b> + </b></td>
+                            </tr>
+                            <tr>
+                                <td>Minus</td>
+                                <td id="symbol"><b> - </b></td>
+                            </tr>
+                            <tr>
+                                <td>Multiply</td>
+                                <td id="symbol"><b> * </b></td>
+                            </tr>
+                            <tr>
+                                <td>Divide</td>
+                                <td id="symbol"><b> / </b></td>
+                            </tr>
+                            <tr>
+                                <td>Mod</td>
+                                <td id="symbol"><b> % </b></td>
+                            </tr>
+                        </table> 
+                        </a>
+                        <br>
+                        <a  id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/arithmetic.PNG"></a> 
+                    </p>
+                </div>
+
+                <!--Logical Operator-->
+                <div *ngIf="isShown.logical" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Logical Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A word or symbol used to connect two or more expressions resulting in a compound expression dependent on the original expressions and the menaing of the operator. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code> *operand*  <b><em>operator</em></b>  *operand*</code></div></a>
+                        <br>
+                        <a ><table style="width:100%"><tr><th id="tbody" class="tableHeader"> A list of the Logical Operators:</th></tr>
+                            <tr>
+                                <td>AND </td>
+                                <td id="symbol1"><b> && </b></td>
+                            </tr>
+                            <tr>
+                                <td>OR </td>
+                                <td id="symbol"><b> || </b></td>
+                            </tr>
+                            <tr>
+                                <td>NOT </td>
+                                <td id="symbol"><b> ! </b></td>
+                            </tr>
+                        </table>
+                        </a>
+                        <br>
+                        <a id="subheading"> Example </a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/AND.PNG"></a>
+                    </p>
+                </div>
+
+                <!--Conditional Operator-->
+                <div *ngIf="isShown.cond" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Conditional Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> Operators used to asses a condition applied to one or two boolean expressions. The result will either be TRUE or FALSE.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a><br>
+                        <br>
+                        <a id="tbody"><table><tr><th id="tbody" class="tableHeader">As mentioned, below are logical operators:</th></tr>
+                        
+                                <tr>
+                                    <td>AND </td>
+                                    <td id="symbol1"><b> && </b></td>
+                                </tr>
+                                <tr>
+                                    <td>OR </td>
+                                    <td id="symbol"><b> || </b></td>
+                                </tr>
+                                <tr>
+                                    <td>NOT </td>
+                                    <td id="symbol"><b> ! </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a id="tbody"> The logical operators <b>AND</b> and <b>OR</b> require <b>TWO</b> operands, of which apply the overall evaluation of the two operands. The logical operator, <b>NOT</b> requires only a single operand.
+                        The logical operators are thereafter used within conditional statements, thus resulting in a single outcome.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/COND.PNG"></a>
+                        <br>
+                        <a>In the above example:<br></a>
+                        <a><ul>
+                            <li>- The variable <b>t1</b> is declared as a tile.</li>
+                            <li>- The variable <b>p1</b> is declared as a piece.</li>
+                            <li>- It is then checked if whether piece is on the tile and if so, a message is displayed.</li>
+                        </ul>
+                        </a>
+                    </p>
+                </div>
+
+                <!--Relational Operators-->
+                <div *ngIf="isShown.relation" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Relational Operators</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> An operator that defines the relation between two operands.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code> *operand*  <b><em>operator</em></b>  *operand*</code></div></a>
+                        <br>
+                        <a id="tbody"><table style="width:100%"><tr><th id="tbody" class="tableHeader">A list of Relational Operators:</th></tr> 
+                                <tr>
+                                    <td>GreaterThanOrEqual </td>
+                                    <td id="symbol1"><b> >= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThanOrEqual </td>
+                                    <td id="symbol"><b> <= </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Equals to</td>
+                                    <td id="symbol"><b> == </b></td>
+                                </tr>
+                                <tr>
+                                    <td>GreaterThan </td>
+                                    <td id="symbol"><b> > </b></td>
+                                </tr>
+                                <tr>
+                                    <td>LessThan </td>
+                                    <td id="symbol"><b> < </b></td>
+                                </tr>
+                            </table>
+                        </a>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/EQUAL.PNG"></a>
+                        <br>
+                        <a>In the above example:<br></a>
+                        <a><ul>
+                            <li>- It is checked if there is <b>1</b> piece on the specific tile <b>t</b>.</li>
+                        </ul></a>
+                    </p>
+                </div>
+
+                <!--If-statement -->
+                <div *ngIf="isShown.ifState" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A decision-making statement that tells the program which decision to make through conditional statements.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>If</b> (condition) <br>
+                        &#123;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;code<br>
+                        &#125;</code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <br>
+                        <a><img src="assets/images/IF.PNG"></a>
+                        <br>
+                        <a>In the above example:<br></a>
+                        <a><ul>
+                            <li>- It is checked whether the player is <b>player 2</b>.</li>
+                            <li>- If so a message will be displayed.</li>
+                        </ul>
+                        </a>
+                    </p>
+                </div>
+
+                <!--if-Else-Statement-->
+                <div *ngIf="isShown.ifelse" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">If-else Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> Just as the IF-statement this is a decision-making statement that tells the program which decision to make through conditional statements, although this particular statement will have an alternative option. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>If</b> (condition)<br>
+                        &#123;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;code<br>
+                        &#125;<br>
+                        <b>else</b><br>
+                        &#123;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;code<br>
+                        &#125;</code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/IFELSE.PNG"></a>
+                        <br>
+                        <a>In the above example:<br></a>
+                        <a><ul>
+                            <li>- It is checked whether the player is <b>player 2</b> .</li>
+                            <li>- If so, <em>'This piece belongs to player 2'</em> will be displayed.</li>
+                            <li>- If not, <em>'This piece does not belong to player 2'</em></li>
+                        </ul>
+                        </a>
+                    </p>
+                </div>
+
+                <!--For-Loop-->
+                <div *ngIf="isShown.for" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">For-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700"> A statement that repeats a section of code under certain condition(s) for a <b>known</b> number of times.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a><em>Assume:</em><br>
+                            <ol>
+                             <li>- <b>x</b> is a declared variable</li>
+                             <li>- <b>val</b> is an integer value ie. 0, 1,2, 3...</li>
+                             <li>- <b>*</b> is an unary operator namely: ++ or --</li>
+                            </ol>
+                        </a>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>for</b> ( <b>x = val </b> ; <b>condition </b> ; <b>x**</b> )<br>
+                        &#123;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;code<br>
+                        &#125;</code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img  id="ifelse" src="assets/images/FOR.PNG"></a>
+                        <br>
+                        <a> In the above example:</a><br>
+                        <a><ul>
+                            <li>- The message <em>'Hello There!'</em> will be displayed <b>twice</b>.</li>
+                        </ul></a>
+                    </p>
+                </div>
+
+                <!--While-Loop-->
+                <div *ngIf="isShown.while" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">While-Loop</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A statement that repeats a section of code under certain condition(s) for a <b>unknown</b> number of times. </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                        <b>while</b> ( <b>condition</b> ) <br>
+                            &#123;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;code<br>
+                        &#125;</code></div></a><br>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+
+                        <a ><img src="assets/images/WHILE.PNG"></a>
+                        <br>
+                        <a>In the example above:</a><br>
+                        <a><ul>
+                            <li>- The following program will output <em>'I am happy you are having a good day'</em> <b>twice</b>.</li>
+                        </ul></a>
+                    </p>
+                </div>
+
+                <!--continue statement-->
+                <div *ngIf="isShown.continue" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 leading-tight font-medium mb-2">Continue Statement</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This statement terminates a loop in current execution.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>The syntax of the continue statement merely the writing the word <b>continue</b> , this is usually done within a condition statement or loop, telling the program to continue executing proceeding lines outside the loop.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img  src="assets/images/CONTINUE.PNG"></a><br>
+                        <a>In the above example:</a>
+                        <a><ul>
+                            <li><div id="listlistItem">- The program will only display the message <em>"I am happy you are having a nice day"</em> only <b>once</b> , as the program is instructed to continue running lines outside of the loop.</div></li>
+                        </ul></a>
+
+                    </p>
+                </div>
+
+                <!--User Interface Input-->
+                <div *ngIf="isShown.uiInn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 leading-tight font-medium mb-2">User Interface Input</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is how the user will give their input to the system. This is the visual aspect of input.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>Input</b> ( <em>expression</em> , <em>'string Literal'</em> )<br>
+                            <b>OR</b><br>
+                        <b>Input</b> ( <em>expression</em> ) </code></div></a>
+                        <br>
+                        <a><em>Note:</em></a><br>
+                        <a><div id="listlistItem">- '<b>expression</b>' refers to the statement in which you would want to display</div></a>
+                        <a><div id="listlistItem">- '<b>string literal</b>' refers to the name of the variable in which you will store the response.</div></a>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a><em>The below is the visual representation of how the user interface input functionality will be presented.</em></a>
+                        <br>
+                        <br>
+                        <a ><img  src="assets/images/input.PNG"></a><br>
+                    </p>
+                </div>
+
+                <!--User Interface Output-->
+                <div *ngIf="isShown.uiOut" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">User Interface Output</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the output display of how output will be presented to the user. This involves the visual representation of how output will be displayed to the user.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a><br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>Print</b> ( <em>expression</em> , <em>const</em> )<br>
+                            <b>OR</b><br>
+                        <b>Print</b> ( <em>expression</em> ) </code></div></a>
+                        <br>
+                        <a><em>Note:</em></a><br>
+                        <a><div id="listlistItem">- '<b>expression</b>': referes to the expression/statement in which you wish to be displayed to the user.</div></a>
+                        <a><div id="listlistItem">- '<b>const</b>': refers to the name of the variable in which you wish to store the expression.</div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <a><em>The below is the visual representation of how information (ie. messages) will be displayed to users.</em></a>
+                        <br>
+                        <br>
+                        <a ><img src="assets/images/output.PNG"></a><br>
+                        <br>
+                    </p>
+                </div>
+
+                <!--Console In-->
+                <!-- <div *ngIf="isShown.cIn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Console Input</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is describes how the user will input their data through the console of the editor.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <a>The syntax of the continue statement merely the writing the word <b>continue</b> , this is usually done within a condition statement or loop, telling the program to continue executing proceeding lines outside the loop.</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a></a>
+                    </p>
+                </div> -->
+
+                <!--Console Out-->
+                <!-- <div *ngIf="isShown.cOut" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Console Output</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is describes how the user will view their output through the console of the editor.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >...</a>
+
+                    </p>
+                </div> -->
+
+                <!--state-->
+                <div *ngIf="isShown.state" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">state</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object describes the <b>state</b> of the board game.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>State</b><br>
+                            &#123; <br> 
+                            &nbsp;&nbsp;&nbsp;&nbsp;Declarations <br>
+                            &#125;<br>
+                            <br>
+                        </code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a><img src="assets/images/state.PNG"></a>
+                        <br>
+                        <a>In the above example:</a><br>
+                        <a><ol>
+                        <li><div id="listlistItem">- It is shown that the state of a board game has <b>6 tiles.</b></div></li>
+                        <li><div id="listlistItem">- As seen in the example it's clear to see that each tile is declared with the naming convention <b>t</b> followed by its <b>ID</b>.</div></li>  
+                        <li><div id="listlistItem">- For instance <b>t1</b> would be a tile with the the ID number <b>1.</b></div></li>
+                        </ol></a>  
+                    </p>
+                </div>
+
+                <!--player-->
+                <div *ngIf="isShown.player" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">player</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>player</b> of the board game.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>Player</b> identifier &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; action myaction(x)&#123; &#125; <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; declarations <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; turn()&#123; &#125; <br>
+                            &#125;
+                       </code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/player.PNG"></a><br>
+                        
+                        <a>In the above example </a><br>
+                        <a><b>Player1</b> is declared we can see from the above code segment that:</a><br>
+                        <a><em>(It is worth noting that the board game of choice is TicTacToe.)</em></a><br>
+                        <br>
+                        <a><ul>
+                        <li><div id="listlistItem">- Player 1's piece is <b>x</b>.</div></li>
+                        <li><div id="listlistItem">- A message is displayed to tell the user in which tile player 1's piece is placed.</div></li>
+                        <li><div id="listlistItem">- The tile of choice is dependent on the user's input. ie. <b>variable , t</b>.</div></li>
+                        <li><div id="listlistItem">- The condition then checks if whether there is a piece on the specified tile <b>t</b>.Returning <b>true</b> if there is a piece on the respective tile and <b>false</b> if there position is available.</div></li>
+                        <li><div id="listlistItem">- The player's turn is then defined where the <b>generateChoices()</b> is called which is a predefined method that produces the available positions.</div></li>
+                        <li><div id="listlistItem">- Furthermore the predefined method <b>chooseAction()</b> is called to generate the appropriate action of the player in their respective turn.</div></li>
+                        </ul></a>
+                      
+                    </p>
+                </div>
+
+                <!--actions-->
+                <div *ngIf="isShown.actions" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">actions</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>tile</b> of the respective board game.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>let var = <b>tile</b></code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a ><img src="assets/images/tile.PNG"></a><br>
+                        <a>In the above example: </a><br>
+                        <a><ul>
+                            <li>&nbsp;- The variable <b>t2</b> is defined as a tile.</li>
+                            <li>&nbsp;- The tile t2 is then assigned the id <b>2</b>, meaning it is the second tile within the board game.</li>
+                            <li>&nbsp;- The tile t2 is then added to the board game.</li>
+                        </ul></a>
+                        <br>
+                    </p>
+                </div>
+
+                <!--turn-->
+                <div *ngIf="isShown.turn" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">turn</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This is the turn function, it specifies the turn of the respective player. Turns are defined within the player function.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>turn ()</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>statement(s)</em><br>
+                            &#125;<br>
+                        </code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/turn.PNG"></a><br>
+                        <a>In the above example: </a><br>
+                        <a><em>(Suppose the board game of choice is TicTacToe></em></a><br>
+                        <br>
+                        <a><ul>
+                            <li><div id="listlistItem">- An input message is displayed asking the user where they would like to place the naught.</div></li>
+                            <li><div id="listlistItem">- The system then stores the input provided by the user as the tile's ID.</div></li>
+                            <li><div id="listlistItem">- The variable <b>'act'</b> then stores the description of the action that has been made.</div></li>
+                            <li><div id="listlistItem">- <b>'ans'</b> is then evaluated to see if whether the move is allowed.</div></li>
+                            <li><div id="listlistItem">- If the move is legal then <b>'ans'</b> becomes <b>true</b>. If not then <b>'ans'</b> remains <b>false</b>.</div></li>
+                        </ul></a>
+                        <br>
+                    </p>
+                </div>
+
+                <!--tile-->
+                <div *ngIf="isShown.tile" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">tile</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>tile</b> of the respective board game.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            let var = <b>tile</b>
+                        </code></div></a>
+                       <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/tile.PNG"></a><br>
+                        <a>In the above example: </a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The variable <b>t2</b> is defined as a tile.</div></li>
+                            <li><div id="listlistItem">- The tile t2 is then assigned the id <b>2</b>, meaning it is the second tile within the board game.</div></li>
+                            <li><div id="listlistItem">- The tile t2 is then added to the board game.</div></li>
+                        </ul></a>
+                        <br>
+                    </p>
+                </div>
+
+                <!--piece-->
+                <div *ngIf="isShown.piece" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">piece </h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>piece</b> of the board game (if the respective board game uses pieces).</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code> let variableName = <b>piece</b></code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/piece.PNG"></a><br>
+                        <br>
+                        <a>In the above example: </a><br>
+                        <a><ul>
+                            <li>- The variable name, <b>p</b> is declared as a Board game piece.</li>
+                            <li>- The board game piece, <b>p</b> has the identifier <b>'x'</b>.</li>
+                        </ul></a>
+                    </p>
+                </div>
+
+                <!--card-->
+                <div *ngIf="isShown.card" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">card</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>card</b> of the board game (if the respective board game uses cards). </a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>Card</b> <em>VariableName</em> ( Parameters ) <br>
+                            &#123;<br> 
+                            &nbsp;&nbsp;&nbsp;<b>Effect</b><br>
+                            &nbsp;&nbsp;&nbsp;&#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement(s) <br>
+                            &nbsp;&nbsp;&nbsp;&#125;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;<b>Condition()</b><br>
+                            &nbsp;&nbsp;&nbsp;&#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement(s)<br>
+                            &nbsp;&nbsp;&nbsp;&#125;<br>
+                            <br>
+                            &#125;<br>  
+                        </code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/Card.PNG"></a>
+                        <br>
+                        <a>In the amove example:</a><br>
+                        <a><ul>
+                            <li>- The card is defined as <b>'GoToJail'</b>, outputs to the user that they are in jail at the moment.</li>
+                        </ul></a>
+
+                    </p>
+                </div>
+
+                <!--endgame-->
+                <div *ngIf="isShown.endgame" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">endgame</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">This object decsribes the <b>'end product'</b> of the board game</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code><b>endgame</b><br>
+                            &#123;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; statement <br>
+                            &#125;<br>
+                        </code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/endgame.PNG"></a><br>
+                        <a>In the above example:</a><br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The end product of the game TicTacToe is displayed.</div></li>
+                            <li><div id="listlistItem">- If the first 3 tiles are occupied and if tile number 1 is identical to tile 2 and tile 2 is identical to tile 3, then:</div></li>
+                            <ul>
+                                <li><div id="listlistItem2">- If the piece is <b>'X'</b>, then <b>Player 1</b> wins.</div></li>
+                                <li><div id="listlistItem2">- If the piece is <b>'0'</b>, then <b>Player 2</b> wins.</div></li>
+                            </ul>
+                        </ul></a>
+
+                    </p>
+                </div>
+
+                <!--neuralnetwork-->
+                <div *ngIf="isShown.nNetwork" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Neural Network</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">A series of algorithms that attempts to recognize the relationships in a set of data through process that imitate how the human brain works.</a><br>
+                        <a>The main intent of the function is to generate the next possible <b>move</b> that the AI opoonent would make depending on the moves made by the user.</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a><div id ="syntaxEg"><code>
+                            <b>model</b> (name, input)
+                        </code></div></a>
+                        <br>
+                        <a id="subheading"> Example</a><br>
+                        <br>
+                        <a ><img src="assets/images/nNetwork.PNG"></a><br>
+                        <a>In the above example:</a><br>
+                        <a><em>Suppose the game played is TicTacToe</em></a><br>
+                        <br>
+                        <a><ul>
+                            <li><div id="listlistItem">- The variable, <b>name</b> is defined as "neural network".</div></li>
+                            <li><div id="listlistItem">- The variable, <b>input</b> stores an array of inputs, representing the tiles within the respective board game.</div></li>
+                            <li><div id="listlistItem">- The variable, <b>network</b> then produces a number between 1 and 9, representing the next position (tile number) of which a piece will be placed (ie. the next move).</div></li>
+                        </ul></a>
+                    </p>
+                </div>
+
+                <!--Decision tree-->
+                <div *ngIf="isShown.DTree" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">Decision Tree</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">...</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >...</a>
+
+                    </p>
+                </div>
+
+                <!--minmaxAlgorithm-->
+                <div *ngIf="isShown.minmax" class="block p-6 rounded-sm shadow-md h-full bg-white">
+                    <h5 id="headings" class="text-gray-900 text-xl leading-tight font-medium mb-2">minmax Algorithm</h5>
+                    <p class="mb-4">
+                        <a id="tbody" class="text-gray-700">...</a>
+                        <br>
+                        <br>
+                        <a id="subheading">Syntax</a>
+                        <br>
+                        <br>
+                        <a id="subheading"> Example</a>
+                        <br>
+                        <a >...</a>
+
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+  </div>
+</div>

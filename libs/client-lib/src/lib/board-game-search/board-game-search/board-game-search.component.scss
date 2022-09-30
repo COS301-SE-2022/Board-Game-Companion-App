@@ -5,6 +5,7 @@
     position: relative;
     width: 100%;
     margin: auto;
+    height: 87%;
 }
 
 #heading{
@@ -14,21 +15,22 @@
 
 #wrapper{
     width:50%;
-    margin: auto;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 3em;
-    margin-bottom: 10em;
+    margin-bottom: 1em!important;
     background-color: white;
 }
 
 #content{
-    height: 23em;
+    height: 69%;
     overflow: hidden;
 }
 
 #left{
     width: 20%;
     float: left;
-    margin-top: 3em;
     margin-bottom: 10em;
     background-color: white;
 }
@@ -36,7 +38,7 @@
 #right{
     width: 20%;
     float: right;
-    margin-top: 3em;
+    height:100%;
     margin-bottom: 10em;
     background-color: white;
 }
@@ -79,6 +81,14 @@
 
 .game-image>a>img{
     height:100%;
+}
+
+.search-btn{
+  background-color: $Pcolour-3;
+}
+
+.search-input{
+  border:2px solid $Pcolour-3
 }
 
 .board-game{ 
@@ -130,20 +140,6 @@
     margin-top: 13px;
 }
 
-#triangle1{
-    border-right: 45px solid transparent;
-    border-bottom: 45px solid $Pcolour-3;
-}
-
-#triangle2{
-    border-left: 45px solid transparent;
-    border-bottom: 45px solid $Pcolour-3;
-    position: absolute;
-    top: 93%;
-    right: 25%;
-    
-}
-
 #leftHeader{
     background-color: $Pcolour-2;
     color: white;
@@ -159,7 +155,7 @@
 }
 
 #leftContent{
-    height: 30em;
+    height: 100%;
 }
 
 #leftImg{
@@ -182,7 +178,7 @@
 }
 
 #rightContent{
-    height: 30em;
+    height: 100%;
 }
 
 #rightImg{
@@ -271,8 +267,10 @@
    }
 
     #leftBlock{
-        display:flex;
+        display:relative;
+        width:90%;
         float:left;
+        order:1;
         flex-direction: column;
         padding-left:6px;
         align-items: center;
@@ -281,6 +279,8 @@
     #leftNames{
         display: inline-block;
         //margin: 0 20px 0 20px;
+        order:2;
+        margin-left:0px;
         padding-right:none;
         padding-left: none;
     }

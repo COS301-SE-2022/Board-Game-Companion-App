@@ -1,0 +1,8 @@
+<div id="inputModal" class="inputModal fixed z-30 left-0 top-0 text-center"  *ngIf = "show">
+    <div class="inputBox rounded-lg bg-inherit absolute p-2 text-left">
+        <div class = "text-white bg-green-800 rounded-md p-2 mb-2">
+            {{output}}
+        </div>
+        <button (click) = "okay()" type="button" class="inline-block mt-2 w-full px-3 py-1 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-sm hover:bg-gray-300 hover:shadow-sm focus:bg-gray-300 focus:shadow-sm focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-sm transition duration-150 ease-in-out">enter</button>
+    </div>
+</div>

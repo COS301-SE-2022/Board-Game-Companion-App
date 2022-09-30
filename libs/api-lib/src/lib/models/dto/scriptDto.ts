@@ -1,3 +1,4 @@
+import { entity } from "../general/entity";
 import { file } from "../general/files";
 import { status } from "../general/status";
 import { user } from '../general/user';
@@ -18,7 +19,9 @@ export interface scriptDto{
     export: boolean;
     size: number;
     comments: string[];
+    programStructure:entity;
     source: file;
     build: file;
     icon: file;
+    models: string[]
 };

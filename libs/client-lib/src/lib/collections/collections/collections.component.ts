@@ -1,158 +1,416 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { Component, HostListener, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { collection } from '../../shared/models/collection/collection';
+import { automataScript } from '../../shared/models/scripts/automata-script';
+import { downloadScript } from '../../shared/models/scripts/download-script';
+import { MostActive } from '../../shared/services/bgg-search/bgg-search.service';
 import { BggSearchService } from '../../shared/services/bgg-search/bgg-search.service';
+import { CollectionService } from '../../shared/services/collections/collection.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { ScriptService } from '../../shared/services/scripts/script.service';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { ModelsService } from '../../shared/services/models/models.service';
+import { StorageService } from '../../shared/services/storage/storage.service';
+import * as tf from '@tensorflow/tfjs';
 
+
+interface Game{
+  collectionId: string;
+  id: string;
+  name: string;
+  image: string;
+}
 
 @Component({
   selector: 'board-game-companion-app-collections',
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
 })
-export class CollectionsComponent implements OnInit {
-  constructor(private bggSearch:BggSearchService, private router:Router) {}
+export class CollectionsComponent implements OnInit, OnDestroy {
+  games:Game[] = [];
+  showGames:Game[] = [];
+  collections:collection[] = [];
+  scripts:automataScript[] = [];
+  filter:automataScript[] = [];
+  @ViewChild(NotificationComponent,{static:true}) notifications!: NotificationComponent;
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
+  page = 1;
+  downloading:string[] = [];
+  importing:string[] = [];
+  downloaded:string[] = [];
+  showImports:string[] = []
+  searchTerm = "";
+  maxGames = 8;
+  digits = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+  carouselPage = 0;
+  widthPerGame = 12;
+  selectedGame:Game[] = [];
+  selectedCollection:collection[] = [];
 
-  collections: collectionList[] = new Array<collectionList>();
-  public selected = "";
-  public searchedValue = "";
-
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  viewCollection(n:String)
-  {
-    //
-    this.router.navigate(['viewCollection', {my_object: n}] )
-  }
-
-  //delete a selected collection
-  deletion(n:string)
-  {
-    localStorage.removeItem(n);
-    const c = JSON.parse(localStorage.getItem("collections")||"")
-    const index = c.indexOf(n, 0);
-    if (index > -1) {
-      c.splice(index, 1);
-    }
-    localStorage.setItem("collections", JSON.stringify(c))
-    window.location.reload()
-  }
+  constructor(private readonly bggSearch:BggSearchService,
+              private readonly route: ActivatedRoute,
+              private readonly router:Router,
+              private readonly collectionService:CollectionService,
+              private readonly networkService: OnlineStatusService,
+              private readonly scriptService: ScriptService,
+              private readonly gapi: GoogleAuthService,
+              private readonly modelsService: ModelsService,
+              private readonly storageService: StorageService){
+                this.networkService.status.subscribe((status: OnlineStatusType) =>{
+                  this.status = status;
+                  this.loadCollections();            
+                });
+              }
 
   ngOnInit(): void {
+    this.loadCollections();
+    this.onScreenResize();
+  }
 
-    //get collections
+  ngOnDestroy(): void {
+      if(this.status == OnlineStatusType.OFFLINE || !this.gapi.isLoggedIn()){
+        this.storageService.clear("collections").then((res:string) => {
+          this.collections.forEach((value:collection) => {
+            this.storageService.insert("collections",value).catch(() => {
+              this.notifications.add({type: "danger",message:`Failed to store '${value.name}' locally.`});
+            })
+          })
+        }).catch(() => {
+          this.notifications.add({type:"danger",message:"Failed to store local collections"});
+        })
+      }
+  }
 
-    //get images for things in collection
+  sortScripts(): void{
+    for(let count = 0; count < this.scripts.length - 1; count++){
+      for(let step = count + 1; step < this.scripts.length; step++){
+        if(this.scripts[count].dateReleased < this.scripts[step].dateReleased){
+          const temp = this.scripts[count];
+          this.scripts[count] = this.scripts[step];
+          this.scripts[step] = temp;
+        }
+      }
+    }  
+  }
 
-    if(localStorage.getItem("collections") === null ||localStorage.getItem("collections") == "[]")
-    {
-      //there are no collections
-    }
+  back(): void{
+    if(this.carouselPage === 0)
+      return;
+
+    this.carouselPage -= 1;
+  }
+
+  next(): void{
+    if((this.carouselPage + 1) * this.maxGames >= this.showGames.length)
+      return;
+
+    this.carouselPage += 1;
+  }
+
+  selectGame(value:Game): void{
+    if(this.selectedGame.includes(value))
+      this.selectedGame = this.selectedGame.filter((val:Game) => val !== value);
     else
-    {
-      const  names:string[] = JSON.parse(localStorage.getItem("collections")||"");
+      this.selectedGame.push(value);
+    
+    this.filterScripts();
+  }
 
-      for(let i=0; i<names.length;i++)
-      {
-        //get the 
-        const ids:string[] = JSON.parse(localStorage.getItem(names[i])||"");
-        const urls:string[] = new Array<string>();
-        for(let j=0; j<ids.length&&j<4;j++)
-        {
-          if(ids[j]!=null)
-          {
-            this.bggSearch.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+ids[j])
-                .subscribe(
-                  data=>{
-                  const result:string = data.toString();
-                  const parseXml = new window.DOMParser().parseFromString(result, "text/xml");
-                  parseXml.querySelectorAll("thumbnail").forEach(imgUrl=>{
-                    urls.push(imgUrl.innerHTML);
-                });
+  selectCollection(value:collection): void{
 
+    if(this.selectedCollection.includes(value))
+      this.selectedCollection = this.selectedCollection.filter((val:collection) => val !== value);
+    else
+      this.selectedCollection.push(value);
 
-          });
+    this.filterScripts();
+  }
+
+  filterScripts(): void{
+    this.filter = this.scripts;
+    this.showGames = this.games;
+
+    if(this.selectedCollection.length !== 0){
+      this.selectedCollection.forEach((cval:collection) => {
+        this.showGames = this.showGames.filter((gval:Game) => cval.boardgames.includes(gval.id))
+      })
+    }
+
+    let tempGames = this.showGames;
+
+    if(this.selectedGame.length !== 0){
+      tempGames = tempGames.filter((gval:Game) => {
+        let result = false;
+
+        for(let count = 0; count < this.selectedGame.length && !result; count++){
+          if(gval.id === this.selectedGame[count].id)
+            result = true;
+        }
+
+        return result;
+      })
+    }
+
+    this.filter = this.filter.filter((script:automataScript) => {
+      let result = false;
+
+      for(let count = 0; count < tempGames.length && !result; count++){
+        if(script.boardgame === tempGames[count].id)
+          result = true;
+      }
+      return result;
+    })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onScreenResize(): void{
+    const width = window.innerWidth;
+    
+    if(width >= 1200){
+      this.maxGames = 10;
+      this.widthPerGame = 10;
+    }else if(width >= 1000){
+      this.maxGames = 8;
+      this.widthPerGame = 12;
+    }else if(width >= 750){
+      this.maxGames = 6;
+      this.widthPerGame = 16;
+    }else if(width >= 450){
+      this.maxGames = 3;
+      this.widthPerGame = 32;
+    }else{
+      this.maxGames = 2;
+      this.widthPerGame = 48;
+    }
+  }
+
+  newCollection(value:collection): void {
+    this.collections.push(value);
+  }
+
+  showGameInfo(value:Game): void{
+    this.router.navigate(['board-game-details'], { state: { value: value.id } });
+  }
+
+  removeCollection(value:collection): void{
+    if(this.status === OnlineStatusType.ONLINE && this.gapi.isLoggedIn()){
+      this.collectionService.removeCollectionById(value._id).subscribe({
+        next:(response:number) => {
+          if(response === 1){
+            this.notifications.add({type:"success",message:`Successfully removed ${value.name}`});
+            this.collections = this.collections.filter((val:collection) => val._id !== value._id);
+            this.showGames = this.showGames.filter((val:Game) => val.collectionId !== value._id);
+            this.games = this.games.filter((val:Game) => val.collectionId !== value._id);
+            this.filterScripts();
+          }else
+            this.notifications.add({type:"warning",message:`Could not find ${value.name} on the server.`});
+        },
+        error:() =>{
+          this.notifications.add({type:"warning",message:`Failed to remove collection '${value.name}'`})        
+        }
+      })
+    }else{
+      this.notifications.add({type:"success",message:`Successfully removed ${value.name}`});
+      this.collections = this.collections.filter((val:collection) => val._id !== value._id);
+      this.showGames = this.showGames.filter((val:Game) => val.collectionId !== value._id);
+      this.games = this.games.filter((val:Game) => val.collectionId !== value._id);
+      this.filterScripts();
+    }
+    
+
+  }
+
+  loadCollections(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.storageService.getAll("collections").then((response:collection[]) => {
+        this.collections = response;
+      }).catch(()=>{
+        this.notifications.add({type:"danger",message:"Failed to load local collections"})
+      })
+    }else{
+      if(!this.gapi.isLoggedIn()){
+        this.storageService.getAll("collections").then((response:collection[]) => {
+          this.collections = response;
+          this.loadGames();
+          this.loadScripts();
+        }).catch(()=>{
+          this.notifications.add({type:"danger",message:"Failed to load local collections"})
+        })        
+      }else{
+        this.collectionService.getCollectionsForUser().subscribe({
+          next:(response:collection[]) => {
+            this.collections = response;
+            this.loadGames();
+            this.loadScripts();
+          },
+          error:()=>{
+            this.notifications.add({type: "warning",message: "Failed to load collections"});
           }
-        }
-
-        this.collections.push(new collectionList(names[i],urls));
-      }
-    }
-    console.log(this.collections)
-  }
-  onSearch(): void
-  {
-    if(this.searchedValue!=="")
-    {
-      this.collections = new Array<collectionList>();
-      this.ngOnInit();
-      if(this.collections.length!==0)
-      {
-        let temp = new Array<collectionList>();
-        temp = this.collections;
-        this.collections = new Array<collectionList>();
-        this.collections = temp.filter((res) => res.name.toLowerCase().includes(this.searchedValue.toLowerCase()));
+        })
       }
     }
   }
 
-  onSort(): void
-  {
-    // this.collections = new Array<collectionList>();
-    // this.ngOnInit();
-    setTimeout(()=>this.doSort(),1000);
+  loadGames(): void{
+    this.collections.forEach((value:collection) => {
+      value.boardgames.forEach((id:string) => {
+        this.bggSearch.getBoardGameById(id).subscribe({
+          next:(gvalue) =>{
+            const game = this.bggSearch.parseGetBoardGameById(gvalue);
+            const temp:Game = {
+              collectionId: value._id,
+              id: game.id,
+              name: game.name,
+              image: game.image
+            }
+
+            this.games.push(temp);
+            this.showGames.push(temp);
+          },
+          error:() => {
+            this.notifications.add({type: "warning",message: `Failed to load board game of ${value.name}.`});
+          }
+        })
+      })
+    })
   }
 
-  doSort(): void
-  {
-    if(this.selected==="alphabetical" && this.collections.length!==0)
-    {
-      this.collections.sort(function(resultA, resultB) 
-      {
-        const nameA = resultA.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = resultB.name.toUpperCase(); // ignore upper and lowercase
-
-        if (nameA < nameB) 
-        {
-          return -1;
-        }
-        if (nameA > nameB) 
-        {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-    else if(this.selected==="amount" && this.collections.length!==0)
-    {
-      this.collections.sort(function(resultA, resultB) 
-      {
-        const numberA = resultA.imgUrls.length;
-        const numberB = resultB.imgUrls.length;
-
-        if (numberA < numberB) 
-        {
-          return -1;
-        }
-        if (numberA > numberB) 
-        {
-          return 1;
-        }
-
-        return 0;
-      });
+  loadScripts(): void{
+    if(this.status === OnlineStatusType.ONLINE && this.gapi.isLoggedIn()){
+      this.collections.forEach((value:collection) => {
+        this.collectionService.getScripts(value._id).subscribe({
+          next:(response:automataScript[]) => {  
+            this.scripts = this.scripts.concat(...response);
+            this.sortScripts();
+            this.filter = this.scripts;
+          },
+          error:() => {
+            this.notifications.add({type: "warning",message: `Failed to load the scripts for ${value.name}.`})
+          }
+        })
+      })
+    }else{
+      this.collections.forEach((value:collection) => {
+        value.boardgames.forEach((id:string) => {
+          this.scriptService.getByGame(id).subscribe({
+            next:(response:automataScript[]) => {
+              this.scripts = this.scripts.concat(...response);
+              this.sortScripts();
+              this.filter = this.scripts;
+            },
+            error: () => {
+              this.notifications.add({type: "warning",message: `Failed to load the scripts for ${value.name}.`})
+            }
+          })
+        })
+      }) 
     }
   }
-}
 
-class collectionList
-{
-    public name = "";
-    public imgUrls:string[] = [];
+  showInfo(value:automataScript){
+    this.router.navigate(['script-detail'], { state: { value: value } });
+  }
 
-    constructor( n:string, i:string[])
-    {
-      this.name=n;
-      this.imgUrls = i;
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
     }
+  }
+
+  removeFromCollection(value:Game): void{
+    let found = false;
+    let temp = this.collections[0];
+    console.log(value);
+
+    for(let count = 0; count < this.collections.length && !found; count++){
+      if(this.collections[count]._id === value.collectionId){
+        found = true;
+        temp = this.collections[count];
+      }
+    }
+
+    if(found){
+      if(this.status === OnlineStatusType.ONLINE && this.gapi.isLoggedIn()){
+        this.collectionService.removeBoardGame(temp.name,value.id).subscribe({
+          next:(response:number) => {
+  
+            if(response === 1){
+              this.notifications.add({type:"success",message:`Successfully removed ${value.name} from ${temp.name}`})
+              temp.boardgames = temp.boardgames.filter((val:string) => val !== value.id);
+              this.showGames = this.showGames.filter((val:Game) =>{
+                if(val.id === value.id){
+                  if(value.collectionId === temp._id)
+                    return false;
+                }
+                return true;
+              });
+  
+              this.games = this.games.filter((val:Game) =>{
+                if(val.id === value.id){
+                  if(value.collectionId === temp._id)
+                    return false;
+                }
+                return true;
+              });
+  
+              this.selectedGame = this.selectedGame.filter((val:Game) => {
+                if(val.id === value.id){
+                  if(value.collectionId === temp._id)
+                    return false;
+                }
+                return true;
+              })
+  
+              this.filterScripts();
+  
+            }else{
+              this.notifications.add({type:"warning",message:`Could not find ${value.name} in ${temp.name}`})
+            }
+          },
+          error:()=>{
+            this.notifications.add({type:"danger",message:`Failed to remove ${value.name} from ${temp.name}`})
+          }
+        })
+      }else{
+        this.notifications.add({type:"success",message:`Successfully removed ${value.name} from ${temp.name}`})
+        temp.boardgames = temp.boardgames.filter((val:string) => val !== value.id);
+        this.showGames = this.showGames.filter((val:Game) =>{
+          if(val.id === value.id){
+            if(value.collectionId === temp._id)
+              return false;
+          }
+          return true;
+        });
+
+        this.games = this.games.filter((val:Game) =>{
+          if(val.id === value.id){
+            if(value.collectionId === temp._id)
+              return false;
+          }
+          return true;
+        });
+
+        this.selectedGame = this.selectedGame.filter((val:Game) => {
+          if(val.id === value.id){
+            if(value.collectionId === temp._id)
+              return false;
+          }
+          return true;
+        })
+
+        this.filterScripts();
+      }
+      
+    
+    }
+  }
+
+  search(): void{
+    if(this.searchTerm === "")
+      this.filter = this.scripts;
+    else
+      this.filter = this.scripts.filter((script:automataScript) => script.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1)
+  }
 }

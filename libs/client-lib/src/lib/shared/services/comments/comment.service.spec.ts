@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
-import { comment } from '../../models/comment';
-import { like } from '../../models/like';
-// import { likeCount } from '../../models/likeCount';
-
+import { comment } from '../../models/comments/comment';
+import { like } from '../../models/comments/like';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommentService } from './comment.service';
-import { commentCount } from '../../models/commentCount';
+import { commentCount } from '../../models/comments/commentCount';
+// import { tNull } from 'libs/api-lib/src/lib/models/general/tokens';
 
 
 describe('Test script service',()=>{
@@ -31,16 +29,17 @@ describe('Test script service',()=>{
     service.countComments('12345').subscribe((data)=>{
       expect(data).toBe(5);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/count-comments?id=12345');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/count-comments?id=12345');
     expect(req.request.method).toBe('GET');
     req.flush(5);
   });
 
   const formData = new FormData();
-  formData.append('user','NN');
-  formData.append('image','img.jpg');
-  formData.append('content','This script is working');
-  formData.append('script','');
+  formData.append('userName','NN');
+  formData.append('userEmail','Arha@gmail.com');
+  formData.append('image','image.jpg');
+  formData.append('content','saved ');
+  formData.append('script','fighter script');
 
   const exComment: comment = {
     _id: '6',
@@ -56,9 +55,9 @@ describe('Test script service',()=>{
     service.saveComment(formData).subscribe((data)=>{
       expect(data).toEqual(exComment);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/create-comment');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/create-comment');
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({user:'NN',image:'img.jpg',content:'This script is working',script:''});
+    expect(req.request.body).toEqual({userName:'NN',userEmail:'Arha@gmail.com',script:'fighter script',image:'image.jpg',content:'saved '});
 
     req.flush(exComment);
   });
@@ -67,7 +66,7 @@ describe('Test script service',()=>{
     service.addReply('5','Sure awesome').subscribe((data)=>{
       expect(data).toBe({message:'reply added'});
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/add-reply');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/add-reply');
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual({commentId:'5',replyId:'Sure awesome'});
 
@@ -80,13 +79,13 @@ describe('Test script service',()=>{
     like:true
   }
   it('should add like and return like object',()=>{
-    service.like('Oh! great awesome',{name:'ZM',email:'Zap.com'},true).subscribe((data)=>{
+    service.like('Oh! great awesome',true).subscribe((data)=>{
       expect(data).toEqual(exLike);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/like');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/like');
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({comment:'Oh! great awesome',user:{name:'ZM',email:'Zap.com'},like:true});
+    expect(req.request.body).toEqual({comment:'Oh! great awesome',like:true,user:{email:null,name:null}});
 
     req.flush(exLike);
   });
@@ -102,7 +101,7 @@ describe('Test script service',()=>{
       expect(data).not.toBe(null);
       expect(data).toEqual(exCountComments);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/count-likes?comment=Dope%20script%20you%20have%20there.');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/count-likes?comment=Dope%20script%20you%20have%20there.');
     expect(req.request.method).toEqual('GET');
     
     req.flush(exCountComments);
@@ -113,7 +112,7 @@ describe('Test script service',()=>{
       expect(data).not.toBe(null);
       expect(data).toEqual(exLike);
     });
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/retrieve-like?comment=Done%20and%20tested&userName=njab.com');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/retrieve-like?comment=Done%20and%20tested&userName=njab.com');
     expect(req.request.method).toEqual('GET');
 
     req.flush(exLike);
@@ -122,7 +121,7 @@ describe('Test script service',()=>{
   it('should delete/remove a like',()=>{
     service.removeLike('12345');
     
-    const req = httpTestingController.expectOne('http://localhost:3333/api/comments/remove-like?id=12345');
+    const req = httpTestingController.expectOne('https://board-game-companion-app.herokuapp.com/api/comments/remove-like?id=12345');
     expect(req.request.method).toBe('DELETE');
   });
 

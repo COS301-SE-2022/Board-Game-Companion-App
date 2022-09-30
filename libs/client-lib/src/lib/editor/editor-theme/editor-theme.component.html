@@ -1,0 +1,30 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="themeModal" tabindex="-1" aria-labelledby="themeModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div class="wrapper modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto text-white bg-clip-padding rounded-md outline-none text-current">
+      
+            <div class="modal-header flex flex-shrink-0 items-center justify-center p-2 border-b border-gray-200 rounded-t-md text-center">
+                <h5 class="text-xl font-medium leading-normal text-center" id="exampleModalLabel">Themes</h5>
+            </div>
+      
+            <div class="editor-themes grid grid-cols-3 gap-2 modal-body relative p-2 overflow-y-auto h-96">
+                <div [ngClass]="{'selection':theme===selection,'non-selection':theme !== selection}" (click) = "select(theme)" *ngFor = "let theme of themes" class = "h-44 hover:opacity-80">
+                    <div [id] = "theme" class = "w-full" style="height:85%;pointer-events:none;">
+
+                    </div>
+                    <div class = "w-full text-center overflow-hidden" >
+                        <strong>{{theme}}</strong>
+                    </div>
+                </div>
+            </div>
+      
+            <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
+                <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                    <i class="fa-solid fa-rectangle-xmark fa-2x"></i>
+                </button>
+                <button data-toggle="tooltip" title="save" (click)="apply()" id = "save-theme" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                    <i class="fa-solid fa-floppy-disk fa-2x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.inputModal{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.0);
+}
+
+.inputBox{
+    width: 35%;
+    margin: 112px auto;
+    border: 1px solid rgba(43, 43, 43, 0.568);
+    left: 32.5%;
+}
+
+.inputBox:before {
+    position: absolute;
+    content: '';
+    background: inherit;
+    height: 90%;
+    width: 90%;
+    z-index: -10;
+    box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
+    filter: blur(20px);
+    border-radius: 15px;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 5px;
+}
+  
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+  
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #888;
+}
+  
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -1,24 +1,87 @@
+<header class = "w-full" [ngClass] = "{'hidden': !showHeader}" [style.height.%] = 'height'>
+    <div class = "header-bar flex h-full w-full py-0.5" [ngClass] = "{'flex-row':width > breakpoint,'flex-col':width<=breakpoint}">
+        <div class = "flex flex-row justify-between" [ngClass] = "{'w-12':width > breakpoint,'w-full':width<=breakpoint}">
+            <div (click)="moveTo('home')" class = "h-full w-12 cursor-pointer">
+                <img src="assets/images/logo.png" alt="logo" class=" h-full w-full">
+            </div>
+            <div id = "logoName" *ngIf = "width < breakpoint" class = "font-bold justify-items-center text-xl">
+                Board Game Companion
+            </div>
+            <div (click) = "showOptions = !showOptions" class = "h-full w-12 flex items-center cursor-pointer hover:text-white" *ngIf = "width <= breakpoint">
+                <i class="fas fa-bars"></i>
+            </div>            
+        </div>
+        <div *ngIf = "showOptions || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'collections','hover:bg-slate-400 header-bar-link':focus !== 'collections'}" (click)="moveTo('collections')">
+            Collections
+        </div>
+        <div *ngIf = "showOptions  || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'board-game-search','hover:bg-slate-400 header-bar-link':focus !== 'board-game-search'}" (click)="moveTo('board-game-search')">
+            Games
+        </div>
+        <div *ngIf = "showOptions  || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'scripts','hover:bg-slate-400 header-bar-link':focus !== 'scripts'}" (click)="moveTo('scripts')">
+            Scripts
+        </div>
+        <div class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'models','hover:bg-slate-400 header-bar-link':focus !== 'models'}" (click)="moveTo('models')" *ngIf = "isLoggedIn() && (showOptions  || width > breakpoint) && !isMobileOS()"> <!-- *ngIf = "isLoggedIn() && (showOptions  || width > breakpoint) && !isMobileOS()" -->
+            Models
+        </div>
+        <div *ngIf = "showOptions  || width > breakpoint" class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'gameSessions','hover:bg-slate-400 header-bar-link':focus !== 'gameSessions'}" (click)="moveTo('gameSessions')">
+            Sessions
+        </div>
+        <div  class = "flex items-center py-1 px-4 font-medium hover:text-white cursor-pointer z-50" [ngClass] = "{'text-white bg-slate-700':focus === 'admin','hover:bg-slate-400 header-bar-link':focus !== 'admin'}" (click)="moveTo('admin')" *ngIf="loggedIn === true && adminAccount && (showOptions || width > breakpoint) && !isMobileOS()"> <!-- loggedIn === true && adminAccount && (showOptions || width > breakpoint) && !isMobileOS() -->
+            Admin
+        </div>
+        <div *ngIf = "(showOptions || width > breakpoint)" class = "header-bar-link z-50" [ngClass] = "{'grow relative ':width>breakpoint,'flex items-center py-1 px-4':width<=breakpoint}">
+            <div data-toggle="tooltip" title="Notifications" class = "h-full w-10 flex items-center text-center hover:text-white cursor-pointer" [ngClass] = "{'absolute right-20':width>breakpoint}">
+                <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full p-0.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bell fa-2x w-full" [ngClass] = "{'fa-shake':alerts.length !== 0}"></i>
+                </a>
+                <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
+                    <li class = "w-full p-0.5" *ngFor = "let value of alerts">
+                        <div (click) = "processAlert(value)" class="border dropdown-item text-sm py-1 px-2 font-normal block w-full whitespace-nowrap text-gray-700 font-medium cursor-pointer" >
+                            <div class = "w-full flex flex-row">
+                                <h1 class = "w-1/2 whitespace-normal font-medium mb-1">{{value.subject}}</h1>
+                                <h1 class = "w-1/2 text-xs text-gray-300 text-right">{{getTime(value.alert.date)}}</h1>
+                            </div>
+                            <p class = "w-full whitespace-normal text-xs text-gray-400">{{value.message}}</p>
+                        </div>
+                    </li>
+                    <li *ngIf = "alerts.length === 0" class = "w-full"><a class="dropdown-item text-sm text-center py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">No Notifications</a></li>
+                </ul>
+            </div>
+            <div data-toggle="tooltip" [title]="getStatus()" class="dropdown h-full w-10 flex items-center" [ngClass] = "{'absolute right-2':width>breakpoint}">
+                <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full border-2 p-0.5" [ngClass] = "{'online':online(),'offline':!online()}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img [src]="profile" class="h-full rounded-full" alt="">
+                </a>
+                <ul class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width':width>breakpoint,'menu-small-width':width<=breakpoint}">
+                    <li><a id = "l" class="dropdown-item text-sm py-1 px-4 font-normal block w-full whitespace-nowrap text-gray-700 hover:bg-gray-100 font-medium cursor-pointer" (click)="moveTo('login')">{{log}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
 
-<header *ngIf = "showHeader" class="relative z-50">
+<board-game-companion-app-notification></board-game-companion-app-notification>
+
+<!-- 
+<header class="relative z-50" [ngClass] = "{'hidden':!showHeader}" [style.height.%] = 'height'>
     <nav class="inline-block align-middle navbar-expand-md flex flex-wrap items-center w-full h-12 justify-between">
         <div class="relative flex w-full h-full flex-wrap items-start flex-row">
 
-            <!-- logo -->
+     
             <div class="h-full cursor-pointer pt-1">
                 <a (click)="moveTo('home')" id="logo"><img id="logs" src="assets/images/logo.png" alt="logo"
                         class="relative left-0"></a>
             </div>
 
-            <!-- div 2 -->
+            
             <div id="menu" class="relative w-full h-full flex-1 flex flex-col items-start sm:relative sm:flex-row mt-0">
-                <!-- primary items -->
+                
                 <div  [ngClass]="{'hidden': !ShowMenu, 'flex': ShowMenu}" class="sm:flex h-full sm:mt-0 ml-auto mt-28" id="listDiv">
                     <ul class="flex list-none flex-col place-content-center sm:flex-row sm:h-full h-auto">
                         <li id="Collections" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block pt-1" (click)="moveTo('collections')">Collections</a>
                         </li>
                         <li id="BoardGames" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Board Games</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('board-game-search')">Games</a>
                         </li>
                         <li id="Scripts" class="nav-item px-4 pt-2.5 cursor-pointer">
                             <a class="nav-link block pt-1" (click)="moveTo('scripts')">Scripts</a>
@@ -27,10 +90,10 @@
                             <a class="nav-link block p-0 pt-1" (click)="moveTo('models')">Models</a>
                         </li>
                         <li *ngIf="loggedIn === true && isAdmin()" class="nav-item px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('admin')">Administration</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('admin')">Admin</a>
                         </li>
                         <li id="GameSession" class="nav-item sm:px-4 pt-2.5 cursor-pointer">
-                            <a class="nav-link block pt-1" (click)="moveTo('gameSessions')">Game Sessions</a>
+                            <a class="nav-link block pt-1" (click)="moveTo('gameSessions')">Sessions</a>
                         </li>
                         <li id="Search" class="nav-item sm:px-4 pt-2.5 sm:hidden cursor-pointer">
 
@@ -39,7 +102,7 @@
                     </ul>
                 </div>
 
-                <!--middle dice-->
+                
                 <div id="con" class="hidden flex-1 sm:flex sm:px-8 items-center justify-between h-full">
                     <div class="w-12 mx-auto">
 
@@ -50,9 +113,9 @@
 
                 <div class="flex flex-row">
                     
-                    <!--second portion-->
+                    
                     <div class="hidden sm:flex items-center justify-between mr-0">
-                        <!--Search & login-->
+                        
                         <ul id="login" class="navbar-nav h-full lg:flex lg:flex-row ">
                             <input class="w-72 h-5" name="searchValue" type="search" [(ngModel)]="searchValue">
                             <button (click)="moveTo('board-game-search')" id="search"
@@ -68,7 +131,7 @@
 
             </div>
 
-            <!--Hamburger Menu button-->
+            
             <div (click)="toggleMenu()" class="flex-0 h-full sm:hidden">
                 <button class="h-full outline-none mobile-btn">
                     <svg class=" w-10 h-full text-white hover:text-green-500 " x-show="!showMenu" fill="none"
@@ -80,4 +143,4 @@
             </div>
         </div>
     </nav>
-</header>
+</header> -->

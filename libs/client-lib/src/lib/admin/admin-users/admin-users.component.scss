@@ -1,0 +1,66 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+
+.input-feature-display::-webkit-scrollbar {
+    width: 3px;
+}
+  
+.input-feature-display::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+.input-feature-display::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+.input-feature-display::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.sidebar{
+    background-color: $Pcolour-3;
+}
+
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+}
+    
+.sidebar a.active {
+background-color: $Pcolour-2;
+// color: $Pcolour-1;
+cursor: pointer;
+}
+
+.sidebar a:hover:not(.active) {
+background-color: $Pcolour-3;
+color: $Pcolour-2;
+cursor: pointer;
+}
+
+  
+.red-fade{
+    background-color: rgba(red,0.4);
+}
+
+.blue-fade{
+    background-color: rgba(blue,0.4)
+}
+
+.green-fade{
+    background-color: rgba(green,0.4);
+}
+
+.magenta-fade{
+    background-color: rbga(magenta,0.4);
+}
+
+.silver-fade{
+    background-color: rgba(maroon,0.4);
+}

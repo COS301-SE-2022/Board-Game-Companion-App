@@ -1,0 +1,68 @@
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="findReplace" tabindex="-1" aria-labelledby="findlabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-md relative w-auto pointer-events-none">
+        <div class="wrapper modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-clip-padding rounded-md outline-none text-current">        
+            <div class="modal-body relative p-1">
+                <div style = "font-family: Verdana, Geneva, Tahoma, sans-serif;" class = "p-1 text-xs">
+                    <div class = "flex flex-row text-white">
+                        <div class="form-check mr-8">
+                            <input class = "form-check-input" type = "checkbox" value = "" id = "regEx" name = "regEx" [(ngModel)] = "regEx">
+                            <label class="form-check-label" for="regex">
+                            Regular Expression
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mr-8">
+                            <input class="form-check-input" type="checkbox" value = "" id="caseSensitive" name = "caseSensitive" [(ngModel)] = "caseSensitive">
+                            <label class="form-check-label" for="case">
+                            Case Sensitive
+                            </label>
+                        </div>
+                        <div class="form-check mr-8">
+                            <input class="form-check-input" type="checkbox" value = "" id="wholeWord" name = "wholeWord" [(ngModel)] = "wholeWord">
+                            <label class="form-check-label" for="ww">
+                            Whole Word
+                            </label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value = "" id = "wrap" name = "wrap" [(ngModel)] = "wrap">
+                            <label class="form-check-label" for="wrap">
+                            Wrap
+                            </label>
+                        </div>
+                    </div>
+                    <div class = "flex flex-row mb-2 w-full">
+                        <div class="w-4/5 mr-2">
+                            <input (change) = "find()" type="text" class=" form-control block w-full px-1 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id = "findText" name = "findText" [(ngModel)] = "findText" placeholder="Find"/>
+                        </div>
+                        
+                        <button (click) = "findPrevious()" type="button" class="mr-2 inline-block w-8 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-angle-left"></i>
+                        </button>
+                        
+                        <button (click) = "findNext()" type="button" class="mr-2 inline-block w-8 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-angle-right"></i>
+                        </button>
+                    </div>
+
+                    <div class = "flex flex-row w-full" *ngIf = "showReplace === true">
+                        <div class="w-4/5 mr-2">
+                            <input type="text" class=" form-control block w-full px-1 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="replaceWithText" name = "replaceWithText" [(ngModel)] = "replaceWithText" placeholder="Replace"/>
+                        </div>
+
+                        <button (click) = "replace()" type="button" class="mr-2 inline-block w-8 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-exchange"></i>
+                        </button>
+
+                        <button (click) = "replaceAll()" type="button" class="mr-2 inline-block w-8 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">
+                            <i class="fas fa-exchange"></i>
+                            <i class="fas fa-exchange"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+      </div>
+    </div>
+</div>

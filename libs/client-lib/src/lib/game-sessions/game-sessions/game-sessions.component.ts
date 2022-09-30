@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
-import { fetchSessionResults } from '../../shared/models/fetch-session-results';
+import { fetchSessionResults } from '../../shared/models/sessions/fetch-session-results';
 import { Router } from '@angular/router';
 
 
@@ -27,7 +27,7 @@ export class GameSessionsComponent implements OnInit {
         
     if(localStorage.getItem("sessions") !== null && localStorage.getItem("sessions") !== '[]')
     {
-      
+      console.log(localStorage.getItem("sessions"))
       const  names:string[] = JSON.parse(localStorage.getItem("sessions")||"");
       for(let i=0; i<names.length;i++)
       {

@@ -1,0 +1,45 @@
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="modelsModal" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+      <div class="wrapper modal-content text-white border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-clip-padding rounded-md outline-none text-current">
+        
+        <div class="modal-header flex flex-shrink-0 items-center justify-center p-2 border-b border-gray-200 rounded-t-md">
+          <h5 class="text-xl font-medium leading-normal text-center" id="modelsLabel">
+            Models
+          </h5>
+        </div>
+
+        <div class="modal-body relative row m-2">
+          <div class = "col-sm-5 rounded-sm border p-2">
+            <h4 class = "text-center text-lg font-medium leading-normal mb-4">Remaining</h4>
+
+            <div data-toggle="tooltip" title="add" (click) = "add(network)" class = "network rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of networks">
+                <div class = "ml-2 font-medium"> {{network.name}}</div>
+            </div>
+          </div>
+
+          <div class = "col-sm-5 offset-sm-2 rounded-sm border p-2">
+            <h4 class = "text-center text-lg font-medium leading-normal mb-4">Accessible</h4>
+            
+            <div class = "text-black bg-white rounded-sm p-1 mb-2 flex flex-row relative shadow-md hover:cursor-pointer" *ngFor = "let network of scriptNetworks">
+                <div class = "ml-2 font-medium"> {{network.name}}</div>
+                <div data-toggle="tooltip" title="remove" (click) = "remove(network)" class = "absolute right-0 mr-2 hover:text-red-800">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md mt-4">
+            <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <i class="fa-solid fa-rectangle-xmark fa-2x"></i>
+            </button>
+            <button data-toggle="tooltip" data-bs-dismiss="modal" title="save" (click)="save()" id = "save-theme" class = "ml-2 script-button bg-transparent py-2 px-4 rounded hover:scale-150 active:shadow-none">
+                <i class="fa-solid fa-floppy-disk fa-2x"></i>
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <board-game-companion-app-notification></board-game-companion-app-notification>

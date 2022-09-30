@@ -1,0 +1,138 @@
+<div *ngIf = "!showOffline && gridView" class = "row">
+    <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
+        <div [id] = "value._id" class="parent relative rounded-md overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
+            <span *ngIf = "value.status.value === 0" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-times-circle" style="color:red"></i></span>
+            <span *ngIf = "value.status.value === 1" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-cogs" style="color:orange"></i></span>
+            <span *ngIf = "value.status.value === 2" class = "absolute right-0 top-0 mr-2 mt-1"><i class="fas fa-check-circle" style="color:green"></i></span>      
+            <img class="w-full h-full" [src]="value.icon.location" alt=""/>
+            
+            <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                <div class = "w-full absolute bottom-20 content-center space-x-4">
+                    <button (click) = "play(value)" *ngIf = "value.status.value === 2" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                        <i class="fas fa-play" data-toggle="tooltip" title="play" [ngClass] = "{'fa-2x':width < 400}"></i>
+                    </button>
+                    <button *ngIf = "value.status.value === 2" (click)="showInfo(value)" class="hover:scale-110 p-1 text-white">
+                        <i class="fas fa-info-circle" data-toggle="tooltip" title="profile" [ngClass] = "{'fa-2x':width < 400}"></i>
+                    </button>
+                    <button *ngIf = "!isMobileOS()" (click)="showEditor(value)" class="hover:scale-110 p-1 text-white">
+                        <i class="fas fa-edit" data-toggle="tooltip" title="edit" [ngClass] = "{'fa-2x':width < 400}"></i>
+                    </button>
+                
+                    <button (click)="remove(value)" class="hover:scale-110 p-1 text-white" data-toggle="modal">
+                        <i class="fas fa-trash" data-toggle="tooltip" title="remove" [ngClass] = "{'fa-2x':width < 400}"></i>
+                    </button>
+                </div>
+                <p class = "absolute bottom-0 h-8 text-center w-full" [ngClass] = "{'text-lg':width < 400}"><b>{{value.name}}</b></p>
+            </div>
+        </div>
+    </div>       
+</div>
+
+<div *ngIf = "!showOffline && !gridView">
+    <div class="accordion" id="scriptList">
+        <div class="accordion-item" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
+            <h2 class="accordion-header" id="title">
+                <button (click) = "getBoardGameName(value)" class="accordion-button collapsed p-2 border-2" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#item_' + value._id" aria-expanded="true" [attr.aria-controls]="value._id">
+                    <div>
+                        <img class="w-8 h-8" [src]="value.icon.location" alt=""/>
+                    </div>
+                    <div class = "ml-2 font-medium">
+                        {{value.name}}
+                    </div>
+                </button>
+            </h2>
+
+            <div [id]="'item_' + value._id" class="accordion-collapse collapse" aria-labelledby="title" data-bs-parent="#scriptList">
+                <div class="accordion-body script-body">
+                    <div class = "row text-sm">
+                        <div class = "col-sm-6">
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Version:</label>
+                                <p class = "info-value ml-2">{{value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</p>
+                            </div>
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Board game:</label>
+                                <p class = "info-value ml-2">{{boardGameName}}</p>
+                            </div>
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Date created:</label>
+                                <p class = "info-value ml-2">{{formatDate(value.created)}}</p>                                
+                            </div>
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Status:</label>
+                                <p class = "info-value ml-2">{{value.status.value === 0 ? 'Flagged' :(value.status.value === 1 ? 'In development' : 'Released')}}</p>
+                            </div>
+                        </div>
+                        <div class = "col-sm-6">
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Last update:</label>
+                                <p class = "info-value ml-2">{{formatDate(value.lastUpdate)}}</p>                                
+                            </div>
+                            <div class = "flex flex-row mb-2">
+                                <label class = "info-label font-medium">Size:</label>
+                                <p class = "info-value ml-2">{{convertBytes(value.size)}}</p>                                
+                            </div>
+                            <!-- <div class="form-check form-switch">
+                                <input [(ngModel)] = "value.export" name = "export" class="form-check-input" type="checkbox">
+                                <label class="info-label font-medium">Export</label>
+                            </div> -->
+                        </div>
+                        <div class = "col-sm-12 mb-2">
+                            <label for="description" class="form-label inline-block mb-2 font-medium info-label">Description</label>
+                            <textarea [(ngModel)]="value.description" class="form-control block w-full px-2 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-600 focus:outline-none" id="script-description" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+                        <div class = "col-sm-12 items-center justify-end space-x-2">
+                            <button *ngIf = "value.status.value === 1" data-bs-toggle="modal" data-bs-target="#versionModal"  (click) = "showVersionPopup(value)" data-toggle="tooltip" title="release"  id = "cancel-save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                <i class="fas fa-rocket" [ngClass] = "{'fa-spin':releasing.includes(value.name)}"></i>
+                            </button>
+                            <button (click) = "update(value)" data-toggle="tooltip" title="update"  id = "save-script" class = "script-button shadow-sm py-2 px-4 rounded hover:scale-105 active:shadow-none">
+                                <i class="fas fa-cog" [ngClass] = "{'fa-spin':updates.includes(value._id)}"></i>
+                            </button>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>
+
+<div *ngIf ="showOffline" class = "w-full h-60 text-center bg-gray-300 shadow-sm font-bold flex items-center">
+    <div class = "text-gray-700 text-2xl grow">
+        You are offline
+    </div>
+</div>
+
+
+<board-game-companion-app-notification></board-game-companion-app-notification>
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="versionModal" tabindex="-1" aria-labelledby="versionModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+        <div class="wrapper text-center modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto text-white bg-clip-padding rounded-md outline-none text-current">
+      
+            <div class="modal-header flex flex-shrink-0 items-center justify-center p-2 border-b border-gray-200 rounded-t-md text-center">
+                <h5 class="text-xl font-medium leading-normal text-center" id="exampleModalLabel">Version</h5>
+            </div>
+            
+            <div class = "modal-body text-center my-2">
+                <div class = "info-value ml-2 flex flex-row space-x-2">
+                    <input [(ngModel)] = "version.major" name = "major" class="form-control form-control relative flex-auto min-w-0 block w-full px-1 text-xs font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="number" min = "1" max = "200" placeholder="1" aria-label="major">
+                    <p class = "text-lg">:</p>
+                    <input [(ngModel)] = "version.minor" name = "minor" class="form-control form-control relative flex-auto min-w-0 block w-full px-1 text-xs font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="number" min = "1" max = "200" placeholder="0" aria-label="minor">
+                    <p class = "text-lg">:</p>
+                    <input [(ngModel)] = "version.patch" name = "patch" class="form-control form-control relative flex-auto min-w-0 block w-full px-1 text-xs font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="number" min = "1" max = "200" placeholder="0" aria-label="patch">
+                </div>                                
+            </div>
+      
+            <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
+                <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
+                    <i class="fa-solid fa-rectangle-xmark"></i>
+                </button>
+                <button  data-bs-dismiss="modal" data-toggle="tooltip" title="release" (click)="release(currentRelease)" id = "save-theme" class = "ml-2 script-button bg-transparent py-1 px-2 rounded hover:scale-150 active:shadow-none">
+                    <i class="fas fa-rocket"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

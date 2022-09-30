@@ -1,0 +1,67 @@
+<div id = "scripts-wrapper">
+    <div id = "scripts-container" class = "container mt-4">
+        <div class = "row">
+            <div class = "col-sm-3 p-2">
+                <div class="sidebar text-center font-medium">
+                    <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
+                    <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
+                    <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
+                </div>
+            </div>
+            <div class = "col-sm-9 p-2 flex flex-col">
+                <div class = "main-header mb-4 p-0">
+                    <div class = "row">
+                        <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                            {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}}
+                        </div>
+                        <div class = "main-control col-sm-8">
+                            <div class = "px-2.5 py-3 flex flex-row">                           
+                                <div class="input-group relative w-full" [style.width.%] = "94">
+                                    <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                                    <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                        <i class="fas fa-search fa-2x"></i>
+                                    </button>
+                                </div>
+                                <div *ngIf = "page !== 2" (click) = "toggleControlMenu()" [style.margin-left.%] = "3" class = "overflow-visible relative hover:cursor-pointer rounded-xl text-center h-full pt-1.5 main-control-btn">
+                                    <i id = "control-menu-btn" class="fas fa-ellipsis-v fa-2xl"></i>
+                                    <div [ngClass] = "{'hidden':!showControlMenu}" id = "script-control-menu" class = "absolute top-1 right-1 z-50 text-left rounded-md shadow-lg text-white bg-gray-700 w-32 py-2 overflow-hidden">
+                                        <div data-bs-toggle="modal" data-bs-target="#create-script" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">New</div>
+                                        <div (click) = "gridView = !gridView" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">{{gridView ? 'List-view' : 'Grid-view'}}</div>
+                                        <div data-bs-toggle="modal" data-bs-target="#clearModal" *ngIf = "page === 0" class = "px-2 py-0.5 control-btn">Clear</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class = "main-content">
+                    <board-game-companion-app-download-scripts [ngClass] = "{'hidden':page !== 0}"></board-game-companion-app-download-scripts>
+                    <board-game-companion-app-my-scripts [gridView]="gridView" [ngClass] = "{'hidden':page !== 1}"> </board-game-companion-app-my-scripts>
+                    <board-game-companion-app-automata-scripts [ngClass] = "{'hidden':page !== 2}"></board-game-companion-app-automata-scripts>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<board-game-companion-app-create-scripts (newScript)="newScript($event)"></board-game-companion-app-create-scripts>
+
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="clearModal" tabindex="-1" aria-labelledby="clearModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm relative w-auto pointer-events-none">
+        <div class="wrapper text-center modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto text-white bg-clip-padding rounded-md outline-none text-current">
+            
+            <div class = "modal-body text-center my-2">
+                Are you sure you want to clear your downloads?                                
+            </div>
+      
+            <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-2 border-t border-gray-200 rounded-b-md">
+                <button data-toggle="tooltip" title="cancel" data-bs-dismiss="modal" id = "cancel-save-theme" class = "script-button bg-gray-600 py-1 px-2 rounded font-medium hover:scale-110 active:shadow-none">
+                    No
+                </button>
+                <button  data-bs-dismiss="modal" data-toggle="tooltip" title="release" (click)="clear()" id = "save-theme" class = "ml-2 script-button bg-gray-600 py-1 px-2 rounded font-medium hover:scale-110 active:shadow-none">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

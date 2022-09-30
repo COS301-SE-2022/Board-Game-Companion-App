@@ -1,0 +1,6 @@
+{
+  "root": "dist/apps/client/",
+  "routes": {
+    "/**/*.html": "index.html"
+  }
+}

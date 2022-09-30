@@ -1,10 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { comment,empty } from '../../shared/models/comment';
-import { like } from '../../shared/models/like';
-import { commentCount } from '../../shared/models/commentCount';
-import { script } from '../../shared/models/script';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { comment,empty } from '../../shared/models/comments/comment';
+import { like } from '../../shared/models/comments/like';
+import { commentCount } from '../../shared/models/comments/commentCount';
+import { script } from '../../shared/models/scripts/script';
 import { CommentService } from '../../shared/services/comments/comment.service';
 import { ScriptService } from '../../shared/services/scripts/script.service';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
+import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { ReportService } from '../../shared/services/reports/report.service';
+import { report } from '../../shared/models/scripts/report';
 
 @Component({
   selector: 'board-game-companion-app-comment',
@@ -23,14 +28,20 @@ export class CommentComponent implements OnInit {
   count:commentCount = {likes: 0,dislikes: 0,replies: 0};
   likeStatus = -1;
   currentLike!:like;
+  status: OnlineStatusType = OnlineStatusType.ONLINE;
+  @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
-  constructor(private readonly commentService:CommentService){
-    console.log("comment-component");
+  constructor(private readonly commentService:CommentService,
+              private readonly networkService: OnlineStatusService,
+              private readonly gapi: GoogleAuthService,
+              private readonly reportService: ReportService){
+
+                this.networkService.status.subscribe((status: OnlineStatusType) =>{
+                  this.status = status;
+                });
   }
 
   ngOnInit(): void {
-    console.log("comment");
-    console.log(this.currentComment);
 
     this.commentService.getComments(this.currentComment.replies).subscribe({
       next:(value)=>{
@@ -62,6 +73,45 @@ export class CommentComponent implements OnInit {
     this.getCount();
   }
 
+  reportComment(): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:"Must be online to report comment"});
+      return;
+    }
+
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"warning",message:"Must be logged-in to report comment"})
+      return;
+    }
+
+    this.reportService.alreadyIssued(this.currentComment._id).subscribe({
+      next:(response:boolean) => {
+        if(response){
+          this.notifications.add({type:"warning",message:"You already have a pending report"});
+          return;
+        }
+        
+        this.reportService.report(false,this.currentComment._id,this.currentComment.content).subscribe({
+          next:(response:report) => {
+            if(response === null){
+              this.notifications.add({type:"warning",message:"Failed to save report"})
+              return;
+            }
+    
+            this.notifications.add({type:"success",message:"Comment was successfully reported"})
+          },
+          error:() => {
+            this.notifications.add({type:"danger",message:"Failed to report comment"})
+          }
+        })
+      },
+      error:() => {
+        this.notifications.add({type:"danger",message:"Failed to check if you have pending reports"})
+      }
+    })
+
+  }
+
   toggleReplyForm(): void{
     this.showReplyForm = !this.showReplyForm;
   }
@@ -90,12 +140,22 @@ export class CommentComponent implements OnInit {
   }
 
   like(value:number): void{
+    if(this.status === OnlineStatusType.OFFLINE){
+      this.notifications.add({type:"warning",message:"You must be online to like comment"});
+      return;
+    }
+
+    if(!this.gapi.isLoggedIn()){
+      this.notifications.add({type:"warning",message:"You must be logged in to like comment"})
+      return;
+    }
+
     if(value === this.likeStatus){
       this.commentService.removeLike(this.currentLike._id);
       this.getCount();
       this.likeStatus = -1;
     }else{
-      this.commentService.like(this.currentComment._id,{name:"Joseph",email:"u18166793@tuks.co.za"},value === 0 ? false : true).subscribe({
+      this.commentService.like(this.currentComment._id,value === 0 ? false : true).subscribe({
         next:(val)=>{
           this.likeStatus = val.like ? 1 : 0;
           this.currentLike = val;
@@ -103,10 +163,7 @@ export class CommentComponent implements OnInit {
         },
         error:(e)=>{
           console.log(e)
-        },
-        complete:()=>{
-          console.log("complete")
-        }          
+        }         
       });
     }
   }
@@ -118,10 +175,7 @@ export class CommentComponent implements OnInit {
       },
       error:(e)=>{
         console.log(e)
-      },
-      complete:()=>{
-        console.log("complete")
-      }          
+      }        
     })
   }
 
@@ -131,7 +185,7 @@ export class CommentComponent implements OnInit {
     const today = new Date(); 
     const current = new Date(this.currentComment.created);
 
-    console.log(this.currentComment.created);
+    // console.log(this.currentComment.created);
 
     temp = today.getFullYear() - current.getFullYear();
 
