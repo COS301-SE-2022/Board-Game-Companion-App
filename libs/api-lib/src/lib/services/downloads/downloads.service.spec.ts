@@ -91,11 +91,13 @@ describe('DownloadsService', () => {
     name: "Script12",
     created: new Date("29-01-19"),
     labels: [],
-    min: [1,2],
-    max: [8,9],
-    model: {name:"thisFile", key:"fileKey", location:"./desktop/models"},
-    weights: {name:"thisWeights", key:"weightKey", location:"./desktop/weights"},
+    min: [1, 2],
+    max: [8, 9],
+    model: { name: "thisFile", key: "fileKey", location: "./desktop/models" },
+    weights: { name: "thisWeights", key: "weightKey", location: "./desktop/weights" },
     discriminator: 5,
+    loss: 0,
+    accuracy: 0
   }
 
   beforeEach(async () => {

@@ -31,11 +31,13 @@ describe('CommentService', () => {
     name: "modelName",
     created: thisDate,
     labels: [],
-    min: [0,1],
-    max: [8,9],
-    model: {name:"memoryName", key:"mem112",location:"./desktop/memory"},
-    weights: {name:"myweight", key:"www112", location:"./desktop/memory"},
+    min: [0, 1],
+    max: [8, 9],
+    model: { name: "memoryName", key: "mem112", location: "./desktop/memory" },
+    weights: { name: "myweight", key: "www112", location: "./desktop/memory" },
     discriminator: 3,
+    loss: 0,
+    accuracy: 0
   }
 
 
