@@ -18,7 +18,6 @@ import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { SocketIoModule } from 'ngx-socket-io';
 
 describe('Router: Module', () => {
-
     let location: Location;
     let router: Router;
     let fixture;
