@@ -33,8 +33,8 @@ export class ModelsService {
         
         const createdNetwork = new this.networkModel(dto);
         const result:NeuralNetworkDocument = await createdNetwork.save();
-        const savedModel:upload = await this.storageService.upload(model.originalName,model.mimetype,model.buffer);
-        const savedWeights:upload = await this.storageService.upload(weights.originalName,weights.mimetype,weights.buffer);
+        const savedModel:upload = await this.storageService.upload(model.originalName,model.mimetype,createdNetwork._id,model.buffer);
+        const savedWeights:upload = await this.storageService.upload(weights.originalName,weights.mimetype,createdNetwork._id,weights.buffer);
         
         result.model.key = savedModel.key;
         result.model.location = savedModel.location;

@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { File, FileDocument } from '../../schemas/file.schema';
 import { Model } from 'mongoose';
 import { fileDto } from '../../models/dto/fileDto';
+import { join } from 'path';
 
 @Injectable()
 export class MongoDbStorageService{
@@ -14,20 +15,23 @@ export class MongoDbStorageService{
         return this.fileModel.findById(key);
     }
 
-    async upload(name:string,type:string,data:any): Promise<upload>{
+    async upload(name:string,type:string,key:string,data:Buffer): Promise<upload>{
 
         const dto:fileDto = {
             name: name,
             mimeType: type,
-            data: Buffer.from(data).toString('base64')
+            data: data
         }
         
         const createdFile = new this.fileModel(dto);
         const savedFile:FileDocument =  await createdFile.save();
+        const path = "temporary/" + key + "/";
+        fs.mkdirSync(join(__dirname, '..', 'client')+ "/" + path,{recursive: true});
+        fs.writeFileSync(join(__dirname, '..', 'client') + "/" + path + name,data);
         
         const result:upload = {
             key : savedFile._id,
-            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + "api/files/" + savedFile._id
+            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + path + name
         }
 
         return result
@@ -40,7 +44,7 @@ export class MongoDbStorageService{
             return false;
         
         try{
-            file.data = Buffer.from(data).toString('base64');
+            file.data = Buffer.from(data);
             await file.save();
         }catch(err){
             return false;
