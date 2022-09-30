@@ -5,7 +5,7 @@
     position: relative;
     width: 100%;
     margin: auto;
-    height: 68%;
+    height: 87%;
 }
 
 #heading{
@@ -15,15 +15,16 @@
 
 #wrapper{
     width:50%;
-    height: 98%;
-    margin: auto;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 3em;
-    margin-bottom: 10em;
+    margin-bottom: 1em!important;
     background-color: white;
 }
 
 #content{
-    height: 23em;
+    height: 69%;
     overflow: hidden;
 }
 
@@ -37,6 +38,7 @@
 #right{
     width: 20%;
     float: right;
+    height:100%;
     margin-bottom: 10em;
     background-color: white;
 }
