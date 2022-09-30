@@ -52,14 +52,14 @@ The board game companion app allows its users to keep track of their board game 
 
 
 
-## Demo-videos
+## :movie_camera: Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
   - Demo 1: `video presentation link`
   - Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
   - Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
 
-## Documentation:
+## :books: Documentation:
 ### Software Requirements Specification
 
   - Demo 1: [SRS_VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
@@ -86,6 +86,9 @@ The following are the presentation videos for the respectives demonstrations.
 
 ## Project Management Tool
   - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
+
+## :memo: DSL Grammar 
+- [DSL_Grammar.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9680530/DSL_Grammar.pdf)
 
 
 ## Profiles
