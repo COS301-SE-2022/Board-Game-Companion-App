@@ -5,7 +5,6 @@ import { ApiCommentController } from "../comments/comment.controller";
 import { version } from "../../models/general/version";
 import { Like, LikeDocument } from '../../schemas/like.schema';
 
-
 jest.mock('../../services/comments/comment.service');
 /***************************************************Unit Test***********************************************/
 describe('ApiCommentController', ()=>{
@@ -94,7 +93,7 @@ describe('ApiCommentController', ()=>{
           name: "Jack",
           email:"Jack&Jill@gmail.com"
         };
-        expect(response.toString()).toStrictEqual((
+        expect(response).toEqual((
         {
           user: newUser,
           image: "gameboard.png", 
@@ -117,6 +116,8 @@ describe('ApiCommentController', ()=>{
     it('should get all comments of script', ()=>{
       controller.getComments(JSON.stringify("comment15")).then(function(response){
       expect(response).toStrictEqual(([
+
+
         {
           user:{name:"user1", email:"user1@gmail.com"},
           image:"board1.png",
@@ -126,15 +127,9 @@ describe('ApiCommentController', ()=>{
           replies: []
         }
       ]).toString())
-    });
+    })
     });
   });
-
-  it('should return error if no comments', ()=>{
-    controller.getComments("not found").then(function(response){
-      expect(response.toString()).toStrictEqual(null);
-    })
-  })
   
 
   // describe('addReply', ()=>{
@@ -199,5 +194,20 @@ describe('ApiCommentController', ()=>{
   // });
 
 
+  // describe('getLike', ()=>{
+  //   it('should get likes of user', ()=>{
+  //     const newUser: user ={
+  //       name: "Jade",
+  //       email: "JadeJacobs@gmail.com"
+  //     }
+  //     controller.getLike("Thiscomment",newUser.name, newUser.email).then(function(response){
+  //     expect(response).resolves.toStrictEqual(({
+  //       comment: "Thiscomment",
+  //       user: newUser,
+  //       like:true
+  //     }));
+  //   });
+  //   });
+  // });
 
 });

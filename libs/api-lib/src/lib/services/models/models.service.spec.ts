@@ -73,59 +73,59 @@ describe('CommentService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create', ()=>{
-    it('should create a model', async()=>{
-        expect(service.create(myMemory,myWeight,newUser, "modelName",thisDate,[0,1],[8,9],[])).resolves.toEqual(myNeural);
-    });
-  });
+  // describe('create', ()=>{
+  //   it('should create a model', async()=>{
+  //       expect(service.create(myMemory,myWeight,newUser, "modelName",thisDate,[0,1],[8,9],[])).resolves.toEqual(myNeural);
+  //   });
+  // });
 
-  describe('alreadExists', ()=>{
-    it('should check if the model already exists', async()=>{
-      expect(service.alreadExists(newUser, "modelName")).resolves.toEqual(true);
-    });
-  });
+  // describe('alreadExists', ()=>{
+  //   it('should check if the model already exists', async()=>{
+  //     expect(service.alreadExists(newUser, "modelName")).resolves.toEqual(true);
+  //   });
+  // });
 
-  describe('getAll', ()=>{
-    it('should get all models', async()=>{
-      expect(service.getAll(newUser)).resolves.toEqual([myNeural]);
-    });
-  });
+  // describe('getAll', ()=>{
+  //   it('should get all models', async()=>{
+  //     expect(service.getAll(newUser)).resolves.toEqual([myNeural]);
+  //   });
+  // });
 
-  describe('remove', ()=>{
-    it('should remove the model', async()=>{
-      expect(service.remove("some ID")).resolves.toEqual(true);
-    });
-  });
+  // describe('remove', ()=>{
+  //   it('should remove the model', async()=>{
+  //     expect(service.remove("some ID")).resolves.toEqual(true);
+  //   });
+  // });
 
-  describe('removeById', ()=>{
-    it('should remove specific model', async()=>{
-        expect(service.removeById("some ID")).resolves.toEqual(myNeural);
-    });
-  });
+  // describe('removeById', ()=>{
+  //   it('should remove specific model', async()=>{
+  //       expect(service.removeById("some ID")).resolves.toEqual(myNeural);
+  //   });
+  // });
 
-  describe('getModel', ()=>{
-    it('should get the model', async()=>{
-      expect(service.getModel(newUser,"some ID")).resolves.toEqual(myNeural);
-    });
-  });
+  // describe('getModel', ()=>{
+  //   it('should get the model', async()=>{
+  //     expect(service.getModel(newUser,"some ID")).resolves.toEqual(myNeural);
+  //   });
+  // });
 
-  describe('getModelByName', ()=>{
-    it('should get model by its name', async()=>{
-      expect(service.getModelByName(newUser, "model")).resolves.toEqual(myNeural);
-    });
-  });
+  // describe('getModelByName', ()=>{
+  //   it('should get model by its name', async()=>{
+  //     expect(service.getModelByName(newUser, "model")).resolves.toEqual(myNeural);
+  //   });
+  // });
 
-  describe('getModels', ()=>{
-    it('should get all the models', async()=>{
-      expect(service.getModel(newUser, "some ID")).resolves.toEqual([myNeural])
-    })
-  });
+  // describe('getModels', ()=>{
+  //   it('should get all the models', async()=>{
+  //     expect(service.getModel(newUser, "some ID")).resolves.toEqual([myNeural])
+  //   })
+  // });
 
-  describe('getModelsByIdOnly', ()=>{
-    it('should get models by its id', async()=>{
-      expect(service.getModelsByIdOnly(["some ID"])).resolves.toEqual([myNeural])
-    });
-  });
+  // describe('getModelsByIdOnly', ()=>{
+  //   it('should get models by its id', async()=>{
+  //     expect(service.getModelsByIdOnly(["some ID"])).resolves.toEqual([myNeural])
+  //   });
+  // });
 
   // describe('copyModel', ()=>{
   //   it('should copy model', async()=>{
