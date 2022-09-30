@@ -117,7 +117,7 @@ export class MyScriptService {
 
         //fileUploadResult = await this.s3Service.upload("main.txt",path,data);
         //fileUploadResult = await this.localStorage.upload("main.txt",path,data);
-        fileUploadResult = await this.storageService.upload("main.txt","text/plain",id,Buffer.from(data));
+        fileUploadResult = await this.storageService.upload("main.txt","text/plain",data);
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
 
@@ -138,7 +138,7 @@ export class MyScriptService {
 
         //fileUploadResult = await this.s3Service.upload("main.js",path,data);
         //fileUploadResult = await this.localStorage.upload("main.js",path,data);
-        fileUploadResult = await this.storageService.upload("main.js","text/javascript",id,Buffer.from(data));
+        fileUploadResult = await this.storageService.upload("main.js","text/javascript",data);
 
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
@@ -152,7 +152,7 @@ export class MyScriptService {
         //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
         //const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
 
-        const result = await this.storageService.upload(icon.originalname,icon.mimetype,id,icon.buffer);
+        const result = await this.storageService.upload(icon.originalname,icon.mimetype,icon.buffer);
 
         return result;
     }
