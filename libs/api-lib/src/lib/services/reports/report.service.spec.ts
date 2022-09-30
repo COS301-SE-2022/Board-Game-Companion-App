@@ -137,7 +137,7 @@ describe('ReportService', () => {
 
     describe('flag', ()=>{
         it('should flag the reported script', async()=>{
-            expect(service.flag("some ID")).resolves.toBeDefined()
+            expect(await service.flag("some ID")).toBeDefined()
         });
     });
 
