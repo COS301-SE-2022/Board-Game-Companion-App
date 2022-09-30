@@ -22,7 +22,6 @@ export class ScriptService {
   constructor(private readonly httpClient:HttpClient) { 
     this.url = "https://api.geekdo.com/xmlapi2/"
     // this.api = environment.baseUrl;
-    console.log(this.api)
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
  
