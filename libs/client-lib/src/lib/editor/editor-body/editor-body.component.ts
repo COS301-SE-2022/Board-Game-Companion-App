@@ -66,619 +66,60 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
       if(target.parentElement?.parentElement != null)
-      switch(target.parentElement?.parentElement.id)
       {
-        case "endGame":
-          console.log(el.id)
-          this.container = "endgame"
-          switch(el.id)
-          {
-            case "visualC":
-              this.created = "create"
-              break
-            case "visualS":
-              this.created = "set"
-              break
-            case "visualIn":
-              this.created = "input"
-              break
-            case "visualO":
-              this.created = "output"
-              break
-            case "visualM":
-              this.created = "method"
-              break
-            case "visualR":
-              this.created = "return"
-              break
-            case "visualF": 
-              this.created = "for"
-              break
-            case "visualW":
-              this.created = "while"
-              break
-            case "visualD":
-              this.created = "do"
-              break
-            case "visualIf":
-              this.created = "if"
-              break 
-          }
-          break
-      }
-      if(source !== target)
-      {
-        if(document.getElementById("endGame")?.contains(target))
+        console.log(target.parentElement?.parentElement.id)
+        switch(target.parentElement?.parentElement.id)
         {
-          this.count++
-          //Endgame Container
-          //need to find which loop it belongs to
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //If not in general area must be in one of the loops.
-          if(recent === -1)
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualC":
-                break
-              case "visualS":
-                break
-              case "visualIn":
-                break
-              case "visualO":
-                break
-              case "visualM":
-                break
-              case "visualR":
-                break
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].true = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].false = this.editorVisual.endLoopIndex
-                this.editorVisual.EndgameLoops.push(dest)
-                break
-              }
-                
-              
-            }
-          }
-          else
-          {
-            switch(el.id)
-            {
-              case "visualC":
-                break
-              case "visualS":
-                break
-              case "visualIn":
-                break
-              case "visualO":
-                break
-              case "visualM":
-                break
-              case "visualR":
-                break
-              case "visualF": 
-              case "visualW":
-              case "VisualD":
-              {
-                if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
-                {
-                  this.editorVisual.endLoopIndex++
-                  this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
-                  const dest = [
-                    {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                  ]
-                  this.editorVisual.EndgameLoops.push(dest)
-                }
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.Endgame[recent].true = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.Endgame[recent].false = this.editorVisual.endLoopIndex
-                this.editorVisual.EndgameLoops.push(dest)
-                break
-              }
-            }
-          }
+          case "endGame":
+            this.container = "endgame"
+            break
+          case "action":
+            this.container = "action"
+            break
+          case "condition":
+            this.container = "condition"
+            break
+          case "turn":
+            this.container = "turn"
+            break
+          case "effect":
+            this.container = "effect"
+            break
         }
-        else if(document.getElementById("player")?.contains(target))
+        switch(el.id)
         {
-          //Players
-          let player = 0
-          let position = 0
-          let property = ""
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //need to find which player it belongs to
-          for(let j = 0; j < this.editorVisual.Players.length; j++)
-          {
-            //Go through that players actions.
-            for(let i = 0; i < this.editorVisual.Players[j].actions.length; i++)
-            {
-              recent = this.editorVisual.Players[j].actions[i].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-
-              if(recent !== -1)
-              {
-                player = j
-                position = i
-                property = "action"
-                break
-              }
-            }
-
-            if(property !== "")
-            {
-              break
-            }
-            //Go through that players conditions
-            for(let i = 0; i < this.editorVisual.Players[j].conditions.length; i++)
-            {
-              recent = this.editorVisual.Players[j].conditions[i].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-
-              if(recent !== -1)
-              {
-                console.log(this.editorVisual.Players[j].conditions[i])
-                player = j
-                position = i
-                property = "condition"
-                break
-              }
-            }
-
-            if(property !== "")
-            {
-              break
-            }
-
-            //Go through players turn
-            recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            if(recent !== -1)
-            {
-              player = j
-              property = "turn"
-              console.log("Turn")
-              break
-            }
-          }
-
-          //If not in general player container else go to loops
-          if(property === "")
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.PlayersLoops.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.PlayersLoops[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualC":
-                break
-              case "visualS":
-                break
-              case "visualIn":
-                break
-              case "visualO":
-                break
-              case "visualM":
-                break
-              case "visualR":
-                break
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].pos = this.editorVisual.playersLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.PlayersLoops.push(dest)
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].true = this.editorVisual.playersLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.PlayersLoops.push(dest)
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].false = this.editorVisual.playersLoopIndex
-                this.editorVisual.PlayersLoops.push(dest)
-                break
-              }
-              
-            }
-          } 
-          else
-          {
-            switch(property)
-            {
-              case "action":
-                switch(el.id)
-                {
-                  case "visualC":
-                    break
-                  case "visualS":
-                    break
-                  case "visualIn":
-                    break
-                  case "visualO":
-                    break
-                  case "visualM":
-                    break
-                  case "visualR":
-                    break
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-              case "condition":
-                switch(el.id)
-                {
-                  case "visualC":
-                    break
-                  case "visualS":
-                    break
-                  case "visualIn":
-                    break
-                  case "visualO":
-                    break
-                  case "visualM":
-                    break
-                  case "visualR":
-                    break
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].conditions[position][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    console.log(this.editorVisual.Players[player].conditions[position][recent])
-                    this.editorVisual.Players[player].conditions[position][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].conditions[position][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-              case "turn":
-                switch(el.id)
-                {
-                  case "visualC":
-                    break
-                  case "visualS":
-                    break
-                  case "visualIn":
-                    break
-                  case "visualO":
-                    break
-                  case "visualM":
-                    break
-                  case "visualR":
-                    break
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-            }
-          }
-        }
-        else if(document.getElementById("card")?.contains(target))
-        {
-          console.log("cards")
-          //Cards
-          let card = 0
-          let property = ""
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //need to find which card it belongs to
-          for(let j = 0; j < this.editorVisual.Cards.length; j++)
-          {
-            //Go through cards effect
-             recent = this.editorVisual.Cards[j].effect.findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            console.log(this.editorVisual.Cards)
-
-            if(recent !== -1)
-            {
-              console.log("yebo")
-              card = j
-              property = "effect"
-              break
-            }
-
-            //Go through cards condition
-            recent = this.editorVisual.Cards[j].condition.findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            if(recent !== -1)
-            {
-              card = j
-              property = "condition"
-              break
-            }
-          }
-
-          //If not in general card container else go to loops
-          if(property === "")
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.CardsLoop.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.CardsLoop[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualC":
-                break
-              case "visualS":
-                break
-              case "visualIn":
-                break
-              case "visualO":
-                break
-              case "visualM":
-                break
-              case "visualR":
-                break
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].pos = this.editorVisual.cardsLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.CardsLoop.push(dest)
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].true = this.editorVisual.cardsLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.CardsLoop.push(dest)
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].false = this.editorVisual.cardsLoopIndex
-                this.editorVisual.CardsLoop.push(dest)
-                break
-              }
-            
-            }
-          }
-          else
-          {
-            switch(property)
-            {
-              case "effect":
-                switch(el.id)
-                {
-                  case "visualC":
-                    break
-                  case "visualS":
-                    break
-                  case "visualIn":
-                    break
-                  case "visualO":
-                    break
-                  case "visualM":
-                    break
-                  case "visualR":
-                    break
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD": 
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].pos = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  case "visualIf":
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].true = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].false = this.editorVisual.cardsLoopIndex
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  
-                }
-                break
-              case "condition":
-                switch(el.id)
-                {
-                  case "visualC":
-                    break
-                  case "visualS":
-                    break
-                  case "visualIn":
-                    break
-                  case "visualO":
-                    break
-                  case "visualM":
-                    break
-                  case "visualR":
-                    break
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD": 
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].pos = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  case "visualIf":
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].true = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].false = this.editorVisual.cardsLoopIndex
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  
-                }
-                break
-            }
-          }
+          case "visualC":
+            this.created = "create"
+            break
+          case "visualS":
+            this.created = "set"
+            break
+          case "visualIn":
+            this.created = "input"
+            break
+          case "visualO":
+            this.created = "output"
+            break
+          case "visualM":
+            this.created = "method"
+            break
+          case "visualR":
+            this.created = "return"
+            break
+          case "visualF": 
+            this.created = "for"
+            break
+          case "visualW":
+            this.created = "while"
+            break
+          case "visualD":
+            this.created = "do"
+            break
+          case "visualIf":
+            this.created = "if"
+            break 
         }
       }
-       
     }));
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
@@ -724,6 +165,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "endgame":
                   this.addToContainer("endgame", "create")
                   break
+                case "action":
+                  this.addToContainer("action", "create")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "create")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "create")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "create")
+                  break
               }
               break
             case "set":
@@ -733,6 +186,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               {
                 case "endgame":
                   this.addToContainer("endgame", "set")
+                  break
+                case "action":
+                  this.addToContainer("action", "set")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "set")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "set")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "set")
                   break
               }
               break
@@ -744,6 +209,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "endgame":
                   this.addToContainer("endgame", "input")
                   break
+                case "action":
+                  this.addToContainer("action", "input")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "input")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "input")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "input")
+                  break
               }
               break
             case "output":
@@ -753,6 +230,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               {
                 case "endgame":
                   this.addToContainer("endgame", "output")
+                  break
+                case "action":
+                  this.addToContainer("action", "output")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "output")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "output")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "output")
                   break
               }
               break
@@ -764,6 +253,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "endgame":
                   this.addToContainer("endgame", "method")
                   break
+                case "action":
+                  this.addToContainer("action", "method")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "method")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "method")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "method")
+                  break
               }
               break
             case "return":
@@ -773,6 +274,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               {
                 case "endgame":
                   this.addToContainer("endgame", "return")
+                  break
+                case "action":
+                  this.addToContainer("action", "return")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "return")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "return")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "return")
                   break
               }
               break
@@ -784,6 +297,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "endgame":
                   this.addToContainer("endgame", "for")
                   break
+                case "action":
+                  this.addToContainer("action", "for")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "for")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "for")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "for")
+                  break
               }
               break
             case "while":
@@ -794,6 +319,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "endgame":
                   this.addToContainer("endgame", "while")
                   break
+                case "action":
+                  this.addToContainer("action", "while")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "while")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "while")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "while")
+                  break
               }
               break
             case "do":
@@ -803,6 +340,40 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               {
                 case "endgame":
                   this.addToContainer("endgame", "do")
+                  break
+                case "action":
+                  this.addToContainer("action", "do")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "do")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "do")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "do")
+                  break
+              }
+              break
+            case "if":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "if")
+                  break
+                case "action":
+                  this.addToContainer("action", "if")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "if")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "if")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "if")
                   break
               }
               break
@@ -837,6 +408,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           if(a > 0 && element == "}")
           {
             end = i
+            console.log(type)
             switch(type)
             {
               case "create":
@@ -864,10 +436,149 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 lines.splice(i,0,"\twhile(x > 0)\n\t{\n\t}\n")
                 break
               case "do":
-                console.log("yes")
                 lines.splice(i,0,"\tdo\n\t{\n\t}\nwhile(x > 0)")
                 break
               case "if":
+                console.log("yes")
+                lines.splice(i,0,"\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                console.log(lines)
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "turn":
+          if (element.includes("turn"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "condition":
+          if (element.includes("condition"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "action":
+          if (element.includes("action"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
                 break
             }
             a = -10

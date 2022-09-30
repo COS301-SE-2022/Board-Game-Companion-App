@@ -44,6 +44,7 @@ export class EditorBodyVisualComponent {
     this.Tiles.splice(0)
     this.Players.splice(0)
     this.Cards.splice(0)
+    this.Endgame.splice(0)
   }
 
   Variables = [{name: "", value: ""} ]
