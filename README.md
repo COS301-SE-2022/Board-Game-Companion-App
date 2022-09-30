@@ -80,6 +80,9 @@ The following are the presentation videos for the respectives demonstrations.
 
 ### Technical Installation Manuual
   - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+  
+### Testing Policy Document
+  - [Testing Policy Document.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9680731/Testing.Policy.Document.pdf)
 
 ### Burndown Chart 
   - Planning: [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
@@ -91,7 +94,7 @@ The following are the presentation videos for the respectives demonstrations.
 - [DSL_Grammar.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9680530/DSL_Grammar.pdf)
 
 
-## Profiles
+## :game_die: Profiles
   - Meet the Frontend Forerunners team:
 
 <h1><b>Matome Joseph Makgopa</b></h1>
