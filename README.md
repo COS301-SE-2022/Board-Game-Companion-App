@@ -29,7 +29,6 @@ The board game companion app allows its users to keep track of their board game 
 [![codecov](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App/branch/develop/graph/badge.svg?token=DKW9SzCsnW)](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App)
 
 ## Demo-videos
->>>>>>> 0d819c53f740bdbfd49685c438b87b749cc92569
 The following are the presentation videos for the respectives demonstrations.
 
   - Demo 1: `video presentation link`
@@ -57,12 +56,17 @@ The following are the presentation videos for the respectives demonstrations.
 ### User Manual
   - Demo 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
   - Demo 3: [USER_MANUAL_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
+  - Demo 4: [USER_MANUAL_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9683332/usermanual.pdf)
+
 
 ### Technical Installation Manuual
-  - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+
+  - Demo 3: [TECHNICAL_INSTALLATION_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+  - Demo 4: [TECHNICAL_INSTALLATION_MANUAL_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9683317/Technical_installation_manual.pdf)
   
 ### Testing Policy Document 
   - [Testing Policy Document.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9681418/Testing.Policy.Document.pdf)
+
 
 
 ### Burndown Chart 
