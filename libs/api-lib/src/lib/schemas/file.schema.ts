@@ -13,7 +13,7 @@ export class File{
     mimeType: string;
 
     @Prop()
-    data: string;
+    data: Buffer;
 }
 
 export const FileSchema = SchemaFactory.createForClass(File);
