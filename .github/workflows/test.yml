@@ -21,4 +21,4 @@ jobs:
 
     - run: npm install yarn -g
     - run: yarn install
-    - run: yarn run test-all --unhandled-rejections=none
+    - run: yarn run test-all 
