@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { ConnectableObservable } from 'rxjs';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class EditorBodyVisualComponent {
   @Output() addCards = new EventEmitter<number>()
   @Output() removeCards = new EventEmitter<number>()
   @Output() updateCards = new EventEmitter<string>()
+
 
   Properties = [
     {Property: "", Value: "", Line: ""}

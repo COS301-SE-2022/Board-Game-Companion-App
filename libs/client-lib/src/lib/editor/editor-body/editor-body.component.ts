@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
 import { entity } from '../../shared/models/editor/entity';
@@ -16,13 +16,14 @@ import { CollectionsModule } from '../../collections/collections.module';
 import { transpilationResponse } from '../../shared/models/editor/transpilationResponse';
 import { threadId } from 'worker_threads';
 import { AnyARecord } from 'dns';
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
   templateUrl: './editor-body.component.html',
   styleUrls: ['./editor-body.component.scss'],
 })
-export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
+export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnChanges{
  
   @Input() height = 0;
   @Input() width = 0;
@@ -47,9 +48,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
   showVisual = false;
   @Input() eID = 0
   reinitialized = false;
+  created = ""
+  container = ""
+  player = 0
+  action = 0
+  condition = 0
   editorId = (new Date()).getTime().toString();
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
-    
   }
 
   ngAfterViewInit(): void{
@@ -60,8 +65,47 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
-      console.log(this.count)
-      console.log(this.editorVisual.Players)
+      if(target.parentElement?.parentElement != null)
+      switch(target.parentElement?.parentElement.id)
+      {
+        case "endGame":
+          console.log(el.id)
+          this.container = "endgame"
+          switch(el.id)
+          {
+            case "visualC":
+              this.created = "create"
+              break
+            case "visualS":
+              this.created = "set"
+              break
+            case "visualIn":
+              this.created = "input"
+              break
+            case "visualO":
+              this.created = "output"
+              break
+            case "visualM":
+              this.created = "method"
+              break
+            case "visualR":
+              this.created = "return"
+              break
+            case "visualF": 
+              this.created = "for"
+              break
+            case "visualW":
+              this.created = "while"
+              break
+            case "visualD":
+              this.created = "do"
+              break
+            case "visualIf":
+              this.created = "if"
+              break 
+          }
+          break
+      }
       if(source !== target)
       {
         if(document.getElementById("endGame")?.contains(target))
@@ -90,6 +134,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
             }
             switch(el.id)
             {
+              case "visualC":
+                break
+              case "visualS":
+                break
+              case "visualIn":
+                break
+              case "visualO":
+                break
+              case "visualM":
+                break
+              case "visualR":
+                break
               case "visualF": 
               case "visualW":
               case "VisualD": 
@@ -124,6 +180,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
           {
             switch(el.id)
             {
+              case "visualC":
+                break
+              case "visualS":
+                break
+              case "visualIn":
+                break
+              case "visualO":
+                break
+              case "visualM":
+                break
+              case "visualR":
+                break
               case "visualF": 
               case "visualW":
               case "VisualD":
@@ -241,6 +309,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
             }
             switch(el.id)
             {
+              case "visualC":
+                break
+              case "visualS":
+                break
+              case "visualIn":
+                break
+              case "visualO":
+                break
+              case "visualM":
+                break
+              case "visualR":
+                break
               case "visualF": 
               case "visualW":
               case "VisualD": 
@@ -276,6 +356,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               case "action":
                 switch(el.id)
                 {
+                  case "visualC":
+                    break
+                  case "visualS":
+                    break
+                  case "visualIn":
+                    break
+                  case "visualO":
+                    break
+                  case "visualM":
+                    break
+                  case "visualR":
+                    break
                   case "visualF": 
                   case "visualW":
                   case "VisualD":
@@ -307,6 +399,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               case "condition":
                 switch(el.id)
                 {
+                  case "visualC":
+                    break
+                  case "visualS":
+                    break
+                  case "visualIn":
+                    break
+                  case "visualO":
+                    break
+                  case "visualM":
+                    break
+                  case "visualR":
+                    break
                   case "visualF": 
                   case "visualW":
                   case "VisualD":
@@ -339,6 +443,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               case "turn":
                 switch(el.id)
                 {
+                  case "visualC":
+                    break
+                  case "visualS":
+                    break
+                  case "visualIn":
+                    break
+                  case "visualO":
+                    break
+                  case "visualM":
+                    break
+                  case "visualR":
+                    break
                   case "visualF": 
                   case "visualW":
                   case "VisualD":
@@ -428,6 +544,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
             }
             switch(el.id)
             {
+              case "visualC":
+                break
+              case "visualS":
+                break
+              case "visualIn":
+                break
+              case "visualO":
+                break
+              case "visualM":
+                break
+              case "visualR":
+                break
               case "visualF": 
               case "visualW":
               case "VisualD": 
@@ -463,6 +591,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               case "effect":
                 switch(el.id)
                 {
+                  case "visualC":
+                    break
+                  case "visualS":
+                    break
+                  case "visualIn":
+                    break
+                  case "visualO":
+                    break
+                  case "visualM":
+                    break
+                  case "visualR":
+                    break
                   case "visualF": 
                   case "visualW":
                   case "VisualD": 
@@ -494,6 +634,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               case "condition":
                 switch(el.id)
                 {
+                  case "visualC":
+                    break
+                  case "visualS":
+                    break
+                  case "visualIn":
+                    break
+                  case "visualO":
+                    break
+                  case "visualM":
+                    break
+                  case "visualR":
+                    break
                   case "visualF": 
                   case "visualW":
                   case "VisualD": 
@@ -525,25 +677,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
             }
           }
         }
-        
-
-        
-        
-        
-        
       }
        
     }));
-    
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
     if(theme != null)
       this.themeEditor = theme;
 
     this.createEditor();
-
-    
-    
     clearInterval(this.cursorCheckerTimer);
     this.codeEditor.navigateTo(0,0);
 
@@ -555,6 +697,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
         this.cursorPosition = value;
       }
     },500);
+    
   }
 
   ngOnDestroy(): void {
@@ -565,12 +708,105 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
 
   ngOnChanges(): void{
     //console.log("changes: " + this.fileLocation);
-
     if(this.fileLocation !== ""){
       this.editorService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
+          console.log(this.created)
+          switch(this.created)
+          {
+            case "create":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "create")
+                  break
+              }
+              break
+            case "set":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "set")
+                  break
+              }
+              break
+            case "input":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "input")
+                  break
+              }
+              break
+            case "output":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "output")
+                  break
+              }
+              break
+            case "method":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "method")
+                  break
+              }
+              break
+            case "return":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "return")
+                  break
+              }
+              break
+            case "for":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "for")
+                  break
+              }
+              break
+            case "while":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "while")
+                  break
+              }
+              break
+            case "do":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "do")
+                  break
+              }
+              break
+          }
           this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
@@ -585,6 +821,65 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     }
   }
 
+  addToContainer(con : string, type : string)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let end = 0
+    let a = 0
+    lines.forEach((element, i) => {
+      switch(con)
+      {
+        case "endgame":
+          if (element.includes("endgame"))
+          {
+            a++
+          }
+          if(a > 0 && element == "}")
+          {
+            end = i
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                console.log("yes")
+                lines.splice(i,0,"\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+      }
+    })
+  }
+
+  
+
   createEditor():void{
 
     this.codeEditor =  ace.edit(this.editorId); 
@@ -596,7 +891,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
       fontSize: '12pt',
       enableLiveAutocompletion: true
     });
+  }
 
+  drop()
+  {
+    console.log("yes")
   }
 
   changeDisplay(value: boolean): void
@@ -726,6 +1025,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     {
       const sc = "state\n{\n}\n"
       this.codeEditor.setValue(sc)
+    }
+  }
+
+  addEndGame()
+  {
+    if(!this.codeEditor.getValue().includes("endgame"))
+    {
+      const sc = "endgame\n{\n}\n"
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      console.log("pain")
+      this.codeEditor.setValue(this.codeEditor.getValue() + sc)
     }
   }
 
@@ -3171,7 +3481,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               else
               {
                 openInitial++
-                this.editorVisual.Cards[card].effect.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.endLoopIndex,  true: 0, false: 0})
+                this.editorVisual.Endgame.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.endLoopIndex,  true: 0, false: 0})
               }    
               this.loopCreation(parent)
             }
@@ -3229,7 +3539,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
           break
       }
     }
-    console.log(this.editorVisual.Variables)
   }
 
 }
