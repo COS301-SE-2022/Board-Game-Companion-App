@@ -66,8 +66,8 @@
                         <b>{{i + 1}}</b>
                     </td>
                     <td class = "mx-4" *ngFor = "let property of listProperties let k = index">
-                        <input *ngIf = "tile.values[k] !== undefined" [value] = "tile.values[k]">
-                        <input  *ngIf = "tile.values[k] === undefined">
+                        <input *ngIf = "tile.values[k] !== undefined" [value] = "tile.values[k]" (change)="editTile($event, i, k)">
+                        <input  *ngIf = "tile.values[k] === undefined" (change)="editTile($event, i, k)">
                     </td>
                 </tr>
             </tbody>
@@ -76,11 +76,11 @@
 </div>
 <div id = "players">
     <button (click)="addNewPlayer()" id = "addNewPlayer">Add New Player</button>
-    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerCode]="player.playerCode" [PlayerLoops]="PlayersLoops" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-player-template>
+    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" (playerRemove)="removePlayer($event)" (playerNames)="playerName($event)" (addActionCondition)="addActionCondition($event)" (removeActionCondition)="removeActionCondition($event)" (actionNames)="actionName($event)" (actionParams)="actionParam($event)" (conditionParams)="conditionParam($event)" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerCode]="player.playerCode" [PlayerLoops]="PlayersLoops" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-player-template>
 </div>
 <div id = "Cards">
     <button (click)="addNewCard()" id = "addNewCard">Add New Card</button>
-    <board-game-companion-app-card-template *ngFor = "let card of Cards let i = index" [id] = "'c'+ i.toString()" [Index]="i" [Cards]="Cards" [Name]="card.name" [Parameter]="card.parameter" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-card-template>
+    <board-game-companion-app-card-template *ngFor = "let card of Cards let i = index" [id] = "'c'+ i.toString()" (updateCard)="updateCard($event)" (removeCards)="removeCard($event)" [Index]="i" [Cards]="Cards" [Name]="card.name" [Parameter]="card.parameter" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-card-template>
 </div>
 <div id = "endGame" class = "boardContainers">
     <details open>

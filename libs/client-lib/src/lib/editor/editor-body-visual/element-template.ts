@@ -1,4 +1,4 @@
-import { Component, Input} from "@angular/core";
+import { Component, Input, OnChanges} from "@angular/core";
 
 @Component({
     selector: 'board-game-companion-app-element-template',
