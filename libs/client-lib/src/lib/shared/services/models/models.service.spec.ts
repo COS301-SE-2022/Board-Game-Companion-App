@@ -3,7 +3,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { StorageService } from '../storage/storage.service';
 import { ModelsService } from './models.service';
 import 'fake-indexeddb/auto';
-import 'jest-canvas-mock';
+// import 'jest-canvas-mock';
 import * as tf from '@tensorflow/tfjs';
 import { layer } from '../../models/neuralnetwork/layer';
 import { optimizerArgs } from '../../models/neuralnetwork/optimizerArgs';
