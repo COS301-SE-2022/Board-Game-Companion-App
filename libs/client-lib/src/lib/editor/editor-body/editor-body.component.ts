@@ -53,6 +53,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   player = 0
   action = 0
   condition = 0
+  parent = ""
   editorId = (new Date()).getTime().toString();
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
   }
@@ -67,7 +68,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       //Check if new element added or swapping elements
       if(target.parentElement?.parentElement != null)
       {
-        console.log(target.parentElement?.parentElement.id)
+        switch(target.parentElement?.parentElement.className)
+        {
+          case "playerContainers":
+            this.parent = "player"
+            break
+          case "cardContainers":
+            this.parent = "card"
+            break
+        }
         switch(target.parentElement?.parentElement.id)
         {
           case "endGame":
@@ -397,6 +406,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let end = 0
     let a = 0
+    let c = 0
     lines.forEach((element, i) => {
       switch(con)
       {
@@ -498,7 +508,12 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           {
             a++
           }
-          if(a > 0 && element == "\t}")
+          if(element.includes(this.parent))
+          {
+            c++
+            a = 0
+          }
+          if(a > 0 && c > 0 && element == "\t}")
           {
             end = i
             console.log(type)
@@ -541,6 +556,52 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           break
         case "action":
           if (element.includes("action"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "effect":
+          if (element.includes("effect"))
           {
             a++
           }
