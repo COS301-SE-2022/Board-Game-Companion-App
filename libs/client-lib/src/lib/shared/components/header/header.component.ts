@@ -96,7 +96,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if(this.alertSubscription!==undefined){
       this.alertSubscription.unsubscribe();
+    }
   }
 
   online(): boolean{

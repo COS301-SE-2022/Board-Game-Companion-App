@@ -354,111 +354,111 @@ describe('MyScriptService', () => {
        
   });
 
-  describe('create', ()=>{
-    it('should create the users script', async()=>{
-      const result = service.create(user1,"script12","monopoly",stat,"some description", "iicon.png");
+  // describe('create', ()=>{
+  //   it('should create the users script', async()=>{
+  //     const result = service.create(user1,"script12","monopoly",stat,"some description", "iicon.png");
      
-      expect(result).resolves.toEqual(mockScript);
-    })
-  });
+  //     expect(result).resolves.toEqual(mockScript);
+  //   })
+  // });
 
-  describe('getMyScriptInfo', ()=>{
-    it('should get script info', async()=>{
-      expect(service.getMyScriptInfo("some Id")).resolves.toEqual(mockAutomata)
-    });
-  });
+  // describe('getMyScriptInfo', ()=>{
+  //   it('should get script info', async()=>{
+  //     expect(service.getMyScriptInfo("some Id")).resolves.toEqual(mockAutomata)
+  //   });
+  // });
 
-  describe("remove", ()=>{
-    it('should remove a script', async()=>{
-      const result = service.remove("some ID");
-      expect(result).resolves.toBeDefined();
+  // describe("remove", ()=>{
+  //   it('should remove a script', async()=>{
+  //     const result = service.remove("some ID");
+  //     expect(result).resolves.toBeDefined();
       
-      if(result === null || result===undefined){
-        expect(result).resolves.toBeNull()
-      }
-    });
-  });
+  //     if(result === null || result===undefined){
+  //       expect(result).resolves.toBeNull()
+  //     }
+  //   });
+  // });
 
 
-  describe('createSourceFile', ()=>{
-    it('should create a source file', async()=>{
-      expect(service.createSourceFile("someID")).resolves.toEqual(myFile);
-    });
-  });
+  // describe('createSourceFile', ()=>{
+  //   it('should create a source file', async()=>{
+  //     expect(service.createSourceFile("someID")).resolves.toEqual(myFile);
+  //   });
+  // });
 
-  describe('createBuildFile', ()=>{
-    it('should create a build file', async()=>{
-      expect(service.createBuildFile("some ID")).resolves.toEqual(myFile);
-    });
-  });
+  // describe('createBuildFile', ()=>{
+  //   it('should create a build file', async()=>{
+  //     expect(service.createBuildFile("some ID")).resolves.toEqual(myFile);
+  //   });
+  // });
 
-  describe('storeIcon', ()=>{
-    it('should store icons', async()=>{
-      expect(service.storeIcon("someID", "icon.png")).resolves.toEqual(mockUpload)
-      expect(service.storeIcon("someID", "icon.png")).toBeDefined();
-    });
-  });
+  // describe('storeIcon', ()=>{
+  //   it('should store icons', async()=>{
+  //     expect(service.storeIcon("someID", "icon.png")).resolves.toEqual(mockUpload)
+  //     expect(service.storeIcon("someID", "icon.png")).toBeDefined();
+  //   });
+  // });
 
-  describe('getAll', ()=>{
-    it('should get all scripts', async()=>{
-      expect(service.getAll()).resolves.toEqual([mockScript])
-    })
-  });
+  // describe('getAll', ()=>{
+  //   it('should get all scripts', async()=>{
+  //     expect(service.getAll()).resolves.toEqual([mockScript])
+  //   })
+  // });
 
-  describe('getAllMyScript', ()=>{
-    it('should get all scripts', async()=>{
-      expect(service.getAllMyScript(user2)).resolves.toEqual([mockScript])
-    })
-  });
+  // describe('getAllMyScript', ()=>{
+  //   it('should get all scripts', async()=>{
+  //     expect(service.getAllMyScript(user2)).resolves.toEqual([mockScript])
+  //   })
+  // });
 
-   describe('formatDate', ()=>{
-    it('should format the date', ()=>{
-      const date = new Date("11-01-18");
-      const result = service.formatDate(date);
-      expect(result).toEqual("1 November 2018, 0:0:0")
-    });
-   });
+  //  describe('formatDate', ()=>{
+  //   it('should format the date', ()=>{
+  //     const date = new Date("11-01-18");
+  //     const result = service.formatDate(date);
+  //     expect(result).toEqual("1 November 2018, 0:0:0")
+  //   });
+  //  });
    
-  describe('checkName', ()=>{
-    it('should chack name of script', async()=>{
-      const result = service.checkName("script12", user2);
-      if (result === null){
-        expect(result).resolves.not.toBeNull();
-      }else{
-        expect(result).resolves.toEqual(true)
-      }
-    })
-  });
+  // describe('checkName', ()=>{
+  //   it('should chack name of script', async()=>{
+  //     const result = service.checkName("script12", user2);
+  //     if (result === null){
+  //       expect(result).resolves.not.toBeNull();
+  //     }else{
+  //       expect(result).resolves.toEqual(true)
+  //     }
+  //   })
+  // });
 
-  describe('update', ()=>{
-    it('should update the script', async()=>{
-      expect(service.update("script12", true,"This is description")).resolves.toEqual(mockScript)
-    })
-  });
+  // describe('update', ()=>{
+  //   it('should update the script', async()=>{
+  //     expect(service.update("script12", true,"This is description")).resolves.toEqual(mockScript)
+  //   })
+  // });
 
-  describe('getMyScriptById', ()=>{
-    it('should update the script', async()=>{
-      expect(service.getMyScriptById("script12")).resolves.toEqual(mockScript)
-    })
-  });
+  // describe('getMyScriptById', ()=>{
+  //   it('should update the script', async()=>{
+  //     expect(service.getMyScriptById("script12")).resolves.toEqual(mockScript)
+  //   })
+  // });
 
-  describe('release', ()=>{
-    it('should release the script', async()=>{
-      expect(service.release("some ID",myVersion )).resolves.toEqual(true);
-    })
-  });
+  // describe('release', ()=>{
+  //   it('should release the script', async()=>{
+  //     expect(service.release("some ID",myVersion )).resolves.toEqual(true);
+  //   })
+  // });
 
-  describe('retrieveAllScripts', ()=>{
-    it('should retrieve all the script', async()=>{
-      expect(service.retrieveAllScripts()).resolves.toEqual([mockScript]);
-    })
-  });
+  // describe('retrieveAllScripts', ()=>{
+  //   it('should retrieve all the script', async()=>{
+  //     expect(service.retrieveAllScripts()).resolves.toEqual([mockScript]);
+  //   })
+  // });
 
-  describe('importAutomata', ()=>{
-    it('should import automata script', async()=>{
-      expect(service.importAutomata("some ID", user2)).resolves.toEqual(mockScript);
-    })
-  });
+  // describe('importAutomata', ()=>{
+  //   it('should import automata script', async()=>{
+  //     expect(service.importAutomata("some ID", user2)).resolves.toEqual(mockScript);
+  //   })
+  // });
 
 
 });

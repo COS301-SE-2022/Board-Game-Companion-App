@@ -9,7 +9,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
-import 'fake-indexeddb/auto';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 describe('ModelsComponent', () => {

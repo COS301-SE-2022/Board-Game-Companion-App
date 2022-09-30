@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit ,Output, OnDestroy, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 import * as ace from "ace-builds";
 import { DragulaService } from 'ng2-dragula';
 import { entity } from '../../shared/models/editor/entity';
@@ -14,13 +14,16 @@ import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { Console } from 'console';
 import { CollectionsModule } from '../../collections/collections.module';
 import { transpilationResponse } from '../../shared/models/editor/transpilationResponse';
+import { threadId } from 'worker_threads';
+import { AnyARecord } from 'dns';
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
   templateUrl: './editor-body.component.html',
   styleUrls: ['./editor-body.component.scss'],
 })
-export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
+export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnChanges{
  
   @Input() height = 0;
   @Input() width = 0;
@@ -45,9 +48,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
   showVisual = false;
   @Input() eID = 0
   reinitialized = false;
+  created = ""
+  container = ""
+  player = 0
+  action = 0
+  condition = 0
+  parent = ""
   editorId = (new Date()).getTime().toString();
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
-    
   }
 
   ngAfterViewInit(): void{
@@ -58,490 +66,76 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
-      console.log(this.count)
-      console.log(this.editorVisual.Players)
-      if(source !== target)
+      if(target.parentElement?.parentElement != null)
       {
-        if(document.getElementById("endGame")?.contains(target))
+        switch(target.parentElement?.parentElement.className)
         {
-          this.count++
-          //Endgame Container
-          //need to find which loop it belongs to
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //If not in general area must be in one of the loops.
-          if(recent === -1)
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.EndgameLoops.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.EndgameLoops[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].pos = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].true = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.EndgameLoops[index][recent].false = this.editorVisual.endLoopIndex
-                this.editorVisual.EndgameLoops.push(dest)
-                break
-              }
-                
-              
-            }
-          }
-          else
-          {
-            switch(el.id)
-            {
-              case "visualF": 
-              case "visualW":
-              case "VisualD":
-              {
-                if(target.parentElement !== null && document.getElementById("endGame")?.contains(target))
-                {
-                  this.editorVisual.endLoopIndex++
-                  this.editorVisual.Endgame[recent].pos = this.editorVisual.endLoopIndex
-                  const dest = [
-                    {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                  ]
-                  this.editorVisual.EndgameLoops.push(dest)
-                }
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.Endgame[recent].true = this.editorVisual.endLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.EndgameLoops.push(dest)
-                this.editorVisual.endLoopIndex++
-                this.editorVisual.Endgame[recent].false = this.editorVisual.endLoopIndex
-                this.editorVisual.EndgameLoops.push(dest)
-                break
-              }
-            }
-          }
+          case "playerContainers":
+            this.parent = "player"
+            break
+          case "cardContainers":
+            this.parent = "card"
+            break
         }
-        else if(document.getElementById("player")?.contains(target))
+        switch(target.parentElement?.parentElement.id)
         {
-          //Players
-          let player = 0
-          let position = 0
-          let property = ""
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //need to find which player it belongs to
-          for(let j = 0; j < this.editorVisual.Players.length; j++)
-          {
-            //Go through that players actions.
-            for(let i = 0; i < this.editorVisual.Players[j].actions.length; i++)
-            {
-              recent = this.editorVisual.Players[j].actions[i].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-
-              if(recent !== -1)
-              {
-                player = j
-                position = i
-                property = "action"
-                break
-              }
-            }
-
-            if(property !== "")
-            {
-              break
-            }
-            //Go through that players conditions
-            for(let i = 0; i < this.editorVisual.Players[j].conditions.length; i++)
-            {
-              recent = this.editorVisual.Players[j].conditions[i].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-
-              if(recent !== -1)
-              {
-                console.log(this.editorVisual.Players[j].conditions[i])
-                player = j
-                position = i
-                property = "condition"
-                break
-              }
-            }
-
-            if(property !== "")
-            {
-              break
-            }
-
-            //Go through players turn
-            recent = this.editorVisual.Players[j].turn[0].findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            if(recent !== -1)
-            {
-              player = j
-              property = "turn"
-              console.log("Turn")
-              break
-            }
-          }
-
-          //If not in general player container else go to loops
-          if(property === "")
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.PlayersLoops.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.PlayersLoops[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].pos = this.editorVisual.playersLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.PlayersLoops.push(dest)
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].true = this.editorVisual.playersLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.PlayersLoops.push(dest)
-                this.editorVisual.playersLoopIndex++
-                this.editorVisual.PlayersLoops[index][recent].false = this.editorVisual.playersLoopIndex
-                this.editorVisual.PlayersLoops.push(dest)
-                break
-              }
-              
-            }
-          } 
-          else
-          {
-            switch(property)
-            {
-              case "action":
-                switch(el.id)
-                {
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].actions[position][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-              case "condition":
-                switch(el.id)
-                {
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].conditions[position][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    console.log(this.editorVisual.Players[player].conditions[position][recent])
-                    this.editorVisual.Players[player].conditions[position][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].conditions[position][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-              case "turn":
-                switch(el.id)
-                {
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].pos = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                  }
-                  break
-                  case "visualIf":
-                  {
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].true = this.editorVisual.playersLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.PlayersLoops.push(dest)
-                    this.editorVisual.playersLoopIndex++
-                    this.editorVisual.Players[player].turn[0][recent].false = this.editorVisual.playersLoopIndex
-                    this.editorVisual.PlayersLoops.push(dest)
-                    break
-                  }
-
-                }
-                break
-            }
-          }
+          case "endGame":
+            this.container = "endgame"
+            break
+          case "action":
+            this.container = "action"
+            break
+          case "condition":
+            this.container = "condition"
+            break
+          case "turn":
+            this.container = "turn"
+            break
+          case "effect":
+            this.container = "effect"
+            break
         }
-        else if(document.getElementById("card")?.contains(target))
+        switch(el.id)
         {
-          console.log("cards")
-          //Cards
-          let card = 0
-          let property = ""
-          let recent = this.editorVisual.Endgame.findIndex((obj) => {
-            return obj.id === "e" + this.count.toString()
-          })
-          //need to find which card it belongs to
-          for(let j = 0; j < this.editorVisual.Cards.length; j++)
-          {
-            //Go through cards effect
-             recent = this.editorVisual.Cards[j].effect.findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            console.log(this.editorVisual.Cards)
-
-            if(recent !== -1)
-            {
-              console.log("yebo")
-              card = j
-              property = "effect"
-              break
-            }
-
-            //Go through cards condition
-            recent = this.editorVisual.Cards[j].condition.findIndex((obj) => {
-              return obj.id === "e" + this.count.toString()
-            })
-
-            if(recent !== -1)
-            {
-              card = j
-              property = "condition"
-              break
-            }
-          }
-
-          //If not in general card container else go to loops
-          if(property === "")
-          {
-            let index = 0
-            for(let j = 0; j < this.editorVisual.CardsLoop.length; j++)
-            {
-              //Check which loop it is in.
-              recent = this.editorVisual.CardsLoop[j].findIndex((obj) => {
-                return obj.id === "e" + this.count.toString()
-              })
-              if(recent !== -1)
-              {
-                index = j
-                break
-              }
-            }
-            switch(el.id)
-            {
-              case "visualF": 
-              case "visualW":
-              case "VisualD": 
-              {
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].pos = this.editorVisual.cardsLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.CardsLoop.push(dest)
-                break
-              }
-              case "visualIf":
-              {
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].true = this.editorVisual.cardsLoopIndex
-                const dest = [
-                  {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                ]
-                this.editorVisual.CardsLoop.push(dest)
-                this.editorVisual.cardsLoopIndex++
-                this.editorVisual.CardsLoop[index][recent].false = this.editorVisual.cardsLoopIndex
-                this.editorVisual.CardsLoop.push(dest)
-                break
-              }
-            
-            }
-          }
-          else
-          {
-            switch(property)
-            {
-              case "effect":
-                switch(el.id)
-                {
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD": 
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].pos = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  case "visualIf":
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].true = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].effect[recent].false = this.editorVisual.cardsLoopIndex
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  
-                }
-                break
-              case "condition":
-                switch(el.id)
-                {
-                  case "visualF": 
-                  case "visualW":
-                  case "VisualD": 
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].pos = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  case "visualIf":
-                  {
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].true = this.editorVisual.cardsLoopIndex
-                    const dest = [
-                      {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
-                    ]
-                    this.editorVisual.CardsLoop.push(dest)
-                    this.editorVisual.cardsLoopIndex++
-                    this.editorVisual.Cards[card].condition[recent].false = this.editorVisual.cardsLoopIndex
-                    this.editorVisual.CardsLoop.push(dest)
-                    break
-                  }
-                  
-                }
-                break
-            }
-          }
+          case "visualC":
+            this.created = "create"
+            break
+          case "visualS":
+            this.created = "set"
+            break
+          case "visualIn":
+            this.created = "input"
+            break
+          case "visualO":
+            this.created = "output"
+            break
+          case "visualM":
+            this.created = "method"
+            break
+          case "visualR":
+            this.created = "return"
+            break
+          case "visualF": 
+            this.created = "for"
+            break
+          case "visualW":
+            this.created = "while"
+            break
+          case "visualD":
+            this.created = "do"
+            break
+          case "visualIf":
+            this.created = "if"
+            break 
         }
-        
-
-        
-        
-        
-        
       }
-       
     }));
-    
     const theme = localStorage.getItem("board-game-companion-script-editor-theme");
 
     if(theme != null)
       this.themeEditor = theme;
 
     this.createEditor();
-
-    
-    
     clearInterval(this.cursorCheckerTimer);
     this.codeEditor.navigateTo(0,0);
 
@@ -553,6 +147,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
         this.cursorPosition = value;
       }
     },500);
+    
   }
 
   ngOnDestroy(): void {
@@ -563,12 +158,235 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
 
   ngOnChanges(): void{
     //console.log("changes: " + this.fileLocation);
-
     if(this.fileLocation !== ""){
       this.editorService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
+          console.log(this.created)
+          switch(this.created)
+          {
+            case "create":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "create")
+                  break
+                case "action":
+                  this.addToContainer("action", "create")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "create")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "create")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "create")
+                  break
+              }
+              break
+            case "set":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "set")
+                  break
+                case "action":
+                  this.addToContainer("action", "set")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "set")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "set")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "set")
+                  break
+              }
+              break
+            case "input":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "input")
+                  break
+                case "action":
+                  this.addToContainer("action", "input")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "input")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "input")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "input")
+                  break
+              }
+              break
+            case "output":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "output")
+                  break
+                case "action":
+                  this.addToContainer("action", "output")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "output")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "output")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "output")
+                  break
+              }
+              break
+            case "method":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "method")
+                  break
+                case "action":
+                  this.addToContainer("action", "method")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "method")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "method")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "method")
+                  break
+              }
+              break
+            case "return":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "return")
+                  break
+                case "action":
+                  this.addToContainer("action", "return")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "return")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "return")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "return")
+                  break
+              }
+              break
+            case "for":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "for")
+                  break
+                case "action":
+                  this.addToContainer("action", "for")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "for")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "for")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "for")
+                  break
+              }
+              break
+            case "while":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "while")
+                  break
+                case "action":
+                  this.addToContainer("action", "while")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "while")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "while")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "while")
+                  break
+              }
+              break
+            case "do":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "do")
+                  break
+                case "action":
+                  this.addToContainer("action", "do")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "do")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "do")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "do")
+                  break
+              }
+              break
+            case "if":
+              this.addState()
+              this.addEndGame()
+              switch(this.container)
+              {
+                case "endgame":
+                  this.addToContainer("endgame", "if")
+                  break
+                case "action":
+                  this.addToContainer("action", "if")
+                  break
+                case "condition":
+                  this.addToContainer("condition", "if")
+                  break
+                case "turn":
+                  this.addToContainer("turn", "if")
+                  break
+                case "effect":
+                  this.addToContainer("effect", "if")
+                  break
+              }
+              break
+          }
           this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
             this.changesTracker.emit(1);
@@ -583,6 +401,257 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     }
   }
 
+  addToContainer(con : string, type : string)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let end = 0
+    let a = 0
+    let c = 0
+    lines.forEach((element, i) => {
+      switch(con)
+      {
+        case "endgame":
+          if (element.includes("endgame"))
+          {
+            a++
+          }
+          if(a > 0 && element == "}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                console.log("yes")
+                lines.splice(i,0,"\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                console.log(lines)
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "turn":
+          if (element.includes("turn"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "condition":
+          if (element.includes("condition"))
+          {
+            a++
+          }
+          if(element.includes(this.parent))
+          {
+            c++
+            a = 0
+          }
+          if(a > 0 && c > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "action":
+          if (element.includes("action"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "effect":
+          if (element.includes("effect"))
+          {
+            a++
+          }
+          if(a > 0 && element == "\t}")
+          {
+            end = i
+            console.log(type)
+            switch(type)
+            {
+              case "create":
+                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                break
+              case "set":
+                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                break
+              case "input":
+                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                break
+              case "output":
+                lines.splice(i,0, "\t\toutput('yes')")
+                break
+              case "method":
+                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                break
+              case "return":
+                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                break
+              case "for":
+                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                break
+              case "while":
+                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                break
+              case "do":
+                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                break
+              case "if":
+                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                break
+            }
+            a = -10
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+      }
+    })
+  }
+
+  
+
   createEditor():void{
 
     this.codeEditor =  ace.edit(this.editorId); 
@@ -594,7 +663,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
       fontSize: '12pt',
       enableLiveAutocompletion: true
     });
+  }
 
+  drop()
+  {
+    console.log("yes")
   }
 
   changeDisplay(value: boolean): void
@@ -718,9 +791,328 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     this.cut();
   }
 
-  removeTiles(event : any) : void
+  addState()
+  {
+    if(!this.codeEditor.getValue().includes("state"))
+    {
+      const sc = "state\n{\n}\n"
+      this.codeEditor.setValue(sc)
+    }
+  }
+
+  addEndGame()
+  {
+    if(!this.codeEditor.getValue().includes("endgame"))
+    {
+      const sc = "endgame\n{\n}\n"
+      const lines = this.codeEditor.getValue().split(/\r?\n/)
+      console.log("pain")
+      this.codeEditor.setValue(this.codeEditor.getValue() + sc)
+    }
+  }
+
+  updateCard(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    switch(value[0])
+    {
+      case "name":
+        lines.forEach((element, i) => {
+          if(element.includes("card "))
+          {
+            c++
+          }
+
+          if(c - 1 == +value[2])
+          {
+            lines[i] = lines[i].replace(this.editorVisual.Cards[+value[2]].name, value[1])
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "param":
+        lines.forEach((element, i) => {
+          if(element.includes("card "))
+          {
+            c++
+          }
+
+          if(c - 1 == +value[2])
+          {
+            if(element.includes("()"))
+            {
+              lines[i] = lines[i].replace("()", "(" + value[1] + ")")
+            }
+            else
+            {
+              lines[i] = lines[i].replace("(" + this.editorVisual.Cards[+value[2]].parameter + ")", "(" + value[1] + ")")
+            }
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+    }
+  }
+
+  removeCard(event : any)
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let start = 0
+    let end = 0
+    lines.forEach((element, i) => {
+      if(element.includes("card "))
+      {
+        c++
+        start = i
+      }
+      if(c - 1 == event &&  element == "}")
+      {
+        end = i
+        c = -100
+      }
+    })
+    lines.splice(start,end - start + 1)
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
+  addCard(event : any)
+  {
+    this.addState()
+    const player = "card Name" + event.toString() +"(t){\n\teffect{\n\n\t}\n\tcondition{\n\n\t}\n}\n"
+    this.codeEditor.setValue(this.codeEditor.getValue() + player)
+  }
+
+  removeActionCondition(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let a = 0
+    let start = 0
+    let end = 0
+    lines.forEach((element, i) => {
+      if(element.includes("player "))
+      {
+        c++
+        a = 0
+      }
+      else if(element.includes("action "))
+      {
+        start = i
+      }
+      else if (element.includes("condition(") || element.includes("condition ("))
+      {
+        a++
+      }
+      else if(element.includes("\t}") && a - 1 == +value[0])
+      {
+        end = i
+      }
+
+      if(c - 1 == +value[1] && a - 1 == +value[0] && end > 0)
+      {
+        lines.splice(start,end - start + 1)
+        this.codeEditor.setValue(lines.join("\n"))
+        c = - 100
+      }
+    })
+  }
+
+  addActionCondition(event : any)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let a = 0
+    let t = 0
+    lines.forEach((element, i) => {
+      if(element.includes("player "))
+      {
+        c++
+        a = 0
+        t = 0
+      }
+      else if (element.includes("action "))
+      {
+        a++
+      }
+      else if(element.includes("turn()") || element.includes("turn ()"))
+      {
+        t++
+      }
+      if(t > 0 && c - 1 == event)
+      {
+        const ac = "\taction " + "aName" + a.toString() + "(){\n\n\t}\n\tcondition(){\n\n\t}\n"
+        lines.splice(i,0,ac)
+        c = - 100
+      }
+    })
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
+  updatePlayer(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let a = 0
+    switch(value[0])
+    {
+      case "name":
+        lines.forEach((element, i) => {
+          if(element.includes("player "))
+          {
+            c++
+          }
+
+          if(c - 1 == +value[2])
+          {
+            lines[i] = lines[i].replace(this.editorVisual.Players[+value[2]].name, value[1])
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "action":
+        lines.forEach((element, i) => {
+          if(element.includes("player "))
+          {
+            c++
+            a = 0
+          }
+          
+          if (element.includes("action "))
+          {
+            a++
+          }
+
+          if(c - 1 == +value[2] && a - 1 == +value[3])
+          {
+            lines[i] = lines[i].replace(this.editorVisual.Players[+value[2]].actionNames[+value[3]], " " + value[1])
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "actionParam":
+        lines.forEach((element, i) => {
+          if(element.includes("player "))
+          {
+            c++
+            a = 0
+          }
+          
+          if (element.includes("action "))
+          {
+            a++
+          }
+
+          if(c - 1 == +value[2] && a - 1 == +value[3])
+          {
+            if(element.includes("()"))
+            {
+              lines[i] = lines[i].replace("()", "(" + value[1] + ")")
+            }
+            else
+            {
+              lines[i] = lines[i].replace("("+ this.editorVisual.Players[+value[2]].actionParams[+value[3]] + ")", "(" + value[1] + ")")
+            }
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "conditionParam":
+        lines.forEach((element, i) => {
+          if(element.includes("player "))
+          {
+            c++
+            a = 0
+          }
+          if (element.includes("condition(") || element.includes("condition ("))
+          {
+            a++
+          }
+
+          if(c - 1 == +value[2] && a - 1 == +value[3])
+          {
+            if(element.includes("()"))
+            {
+              console.log("yes")
+              lines[i] = lines[i].replace("()", "(" + value[1] + ")")
+            }
+            else
+            {
+              lines[i] = lines[i].replace("("+ this.editorVisual.Players[+value[2]].conditionParams[+value[3]] + ")", "(" + value[1] + ")")
+            }
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+    }
+  }
+
+  addPlayer(event : any){
+    this.addState()
+    const player = "player Name" + event.toString() +"{\n\taction aName" + event.toString() + "(){\n\n\t}\n\tcondition(){\n\n\t}\n\tturn(){\n\n\t}\n}\n"
+    this.codeEditor.setValue(this.codeEditor.getValue() + player)
+  }
+  removePlayer(event : any)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let start = 0
+    let end = 0
+    lines.forEach((element, i) => {
+      if(element.includes("player "))
+      {
+        c++
+        start = i
+      }
+      if(c - 1 == event &&  element == "}")
+      {
+        end = i
+        c = -100
+      }
+    })
+    lines.splice(start,end - start + 1)
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
+  removeTiles(event : any) : void
+  {
+    let lines = this.codeEditor.getValue().split(/\r?\n/)
+    lines = lines.filter((element) => {
+      return !element.includes("[" + event + "].")
+    })
+    let state = 0
+    lines.forEach((element, i)=>{
+      if(element.includes("state"))
+      {
+        state++
+      }
+      else if(element.includes("}") && state > 0)
+      {
+        state = -2
+      }
+      else if(element.includes("["))
+      {
+        const num = lines[i].match(/\d/)
+        if(num != null)
+        {
+          if(+num[0] > +event)
+          {
+            const n = +num[0] - 1
+            lines[i] = lines[i].replace(/\[(.+?)\]/g, "["+n.toString()+"]")
+          }
+        }
+      }
+    })
     const index = lines.findIndex((element) => element.includes("createBoard("))
     const n = lines[index].match(/\d+/)
     if(n != null)
@@ -733,6 +1125,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
 
   addTiles(event : any) : void
   {
+    this.addState()
     if(!this.codeEditor.getValue().includes("createBoard("))
     {
       const lines = this.codeEditor.getValue().split(/\r?\n/)
@@ -761,6 +1154,43 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     }
   }
 
+  editTiles(event: any)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    const tile = event.split(/\s/)
+    const property = "[" + tile[1] + "]" + "." + this.editorVisual.listProperties[+tile[2]]
+    console.log(property)
+    let state = 0
+    if(!this.codeEditor.getValue().includes(property))
+    {
+      lines.forEach((element, i)=>{
+        if(element.includes("state"))
+        {
+          state++
+        }
+        if(element.includes("}") && state > 0)
+        {
+          lines.splice(i,0,"\tboard" + property + " = " + tile[0] + "\n")
+          this.codeEditor.setValue(lines.join("\n"))
+          state = 0
+        }
+      })
+    }
+    else
+    {
+      lines.forEach((element, i)=>{
+        if(element.includes(property) && state == 0)
+        {
+          const c = element.split(/=/)
+          c[1] = tile[0]
+          lines.splice(i,1, c.join("= "))
+          this.codeEditor.setValue(lines.join("\n"))
+          state++
+        }
+      })
+    }
+  }
+
   removeProperty(event: any): void
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
@@ -771,11 +1201,12 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
 
   updateProperty(event: any): void
   {
+    this.addState()
     const property = event.split(/\s/)
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    if(this.codeEditor.getValue().length === 0)
+    if(!this.codeEditor.getValue().includes("tileAttribute"))
     {
-      const sc = "tileAttribute\n{\n" + "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value + "\n" +"}\nstate\n{\n}\n"
+      const sc = "tileAttribute\n{\n" + "\t" + this.editorVisual.Properties[+property[3]].Property + " = " + this.editorVisual.Properties[+property[3]].Value + "\n}\n" + this.codeEditor.getValue()
       this.codeEditor.setValue(sc)
     }
     else
@@ -1982,7 +2413,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null  && l[1] != "" || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -1991,17 +2422,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
               //Output
-              else if (l[1].includes('output('))
+              else if (l[1] != undefined && l[1].includes('output('))
               {
                 this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
               }
               //Input
-              else if(l[1].includes('input('))
+              else if(l[1] != undefined && l[1].includes('input('))
               {
                 this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
               }
               //Methods
-              else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+              else if(l[1] != undefined && this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
                 this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
               }
@@ -2139,7 +2570,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 } 
               } 
               //Set
-              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
+              else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null  && l[1] != "" || l[1] !== "let" && l[2] == "=" && !lines[j].includes("for"))
               {
                 if(l[1] !== "let" && l[2] == "=")
                 {
@@ -2156,7 +2587,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 }
               }
               //Output
-              else if (l[1].includes('output('))
+              else if (l[1] != undefined && l[1].includes('output('))
               {
                 switch(parent)
                 {
@@ -2169,7 +2600,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 }
               }
               //Input
-              else if(l[1].includes('input('))
+              else if(l[1] != undefined && l[1].includes('input('))
               {
                 switch(parent)
                 {
@@ -2182,7 +2613,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
                 }
               }
               //Methods
-              else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+              else if(l[1] != undefined && this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
               {
                 switch(parent)
                 {
@@ -2426,7 +2857,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.letCreation(l, openIfPlayer, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null && l[1] != "" || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2435,17 +2866,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.setCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //Output
-            else if (l[1].includes('output('))
+            else if (l[1] != undefined && l[1].includes('output('))
             {
               this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
             }
             //Input
-            else if(l[1].includes('input('))
+            else if( l[1] != undefined && l[1].includes('input('))
             {
               this.ioCreation(lines, j, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
             }
             //Methods
-            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            else if(l[1] != undefined && this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
             {
               this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2590,7 +3021,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.letCreation(l, openIfCard, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null && l[1] != "" || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2599,17 +3030,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.setCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //Output
-            else if (l[1].includes('output('))
+            else if (l[1] != undefined && l[1].includes('output('))
             {
               this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
             }
             //Input
-            else if(l[1].includes('input('))
+            else if(l[1] != undefined && l[1].includes('input('))
             {
               this.ioCreation(lines, j, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
             }
             //Methods
-            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            else if(l[1] != undefined && this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
             {
               this.methodCreation(lines, j, l, openIfCard, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2739,7 +3170,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.letCreation(l, openIfEndGame, player, action, ifContains[ifContains.length-1].numberOfIf, method, parent , card)
             } 
             //Set
-            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null || l[1] !== "let" && l[2] == "="  && !lines[j].includes("for"))
+            else if (this.editorVisual.Variables.find(vars => vars.name === l[1]) != null && l[1] != "" || l[1] !== "let" && l[2] === "="  && !lines[j].includes("for"))
             {
               if(l[1] !== "let" && l[2] == "=")
               {
@@ -2748,17 +3179,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               this.setCreation(lines, j, l, openIfEndGame, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
             //Output
-            else if (l[1].includes('output('))
+            else if (l[1] != undefined && l[1].includes('output('))
             {
               this.ioCreation(lines, j, openIfEndGame, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Output", "visualO", parent , card)
             }
             //Input
-            else if(l[1].includes('input('))
+            else if(l[1] != undefined && l[1].includes('input('))
             {
               this.ioCreation(lines, j, openIfEndGame, ifContains[ifContains.length-1].numberOfIf, player, action, method, "Input", "visualIn", parent , card)         
             }
             //Methods
-            else if(this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
+            else if(l[1] != undefined && this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("("))))
             {
               this.methodCreation(lines, j, l, openIfEndGame, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
             }
@@ -2822,7 +3253,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
               else
               {
                 openInitial++
-                this.editorVisual.Cards[card].effect.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.endLoopIndex,  true: 0, false: 0})
+                this.editorVisual.Endgame.push({title: 'For', class: 'visualF', id: id, inputs: [loop[0].substring(loop[0].length-1),n.toString(),by.toString(),"","","","",""], pos: this.editorVisual.endLoopIndex,  true: 0, false: 0})
               }    
               this.loopCreation(parent)
             }
@@ -2880,7 +3311,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
           break
       }
     }
-    console.log(this.editorVisual.Variables)
   }
 
 }

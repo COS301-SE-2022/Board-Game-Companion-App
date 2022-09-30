@@ -45,7 +45,7 @@ export class CreateScriptComponent implements OnInit {
 
         this.searchService.getBoardGameByName(this.boardgame,true).subscribe({
           next:(value)=>{
-            console.log(value.toString());
+            // console.log(value.toString());
             const response:MostActive[] = this.searchService.parseGetBoardGameByName(value.toString());
             
             if(response.length !== 1)

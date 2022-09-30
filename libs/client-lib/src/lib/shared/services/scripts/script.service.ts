@@ -22,7 +22,6 @@ export class ScriptService {
   constructor(private readonly httpClient:HttpClient) { 
     this.url = "https://api.geekdo.com/xmlapi2/"
     // this.api = environment.baseUrl;
-    console.log(this.api)
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
   }
  
@@ -180,11 +179,11 @@ export class ScriptService {
     return this.httpClient.delete<any>(this.api + "download-scripts/remove",{params: param});
   }
 
-  getDownloadInfo(id:string):Observable<downloadScript | oldScript>{
+  getDownloadInfo(id:string):Observable<automataScript | oldScript>{
     let param = new HttpParams();
     param = param.set("id",id);
 
-    return this.httpClient.get<downloadScript | oldScript>(this.api + "download-scripts/info",{params: param});
+    return this.httpClient.get<automataScript | oldScript>(this.api + "download-scripts/info",{params: param});
   }
 
   removeMyScript(id:string):Observable<any>{

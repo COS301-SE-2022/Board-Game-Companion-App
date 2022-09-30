@@ -32,50 +32,46 @@ describe('SocketGateway', () => {
         expect(service).toBeDefined()
     });
 
-    describe('handleConnection', ()=>{
-        it('should handle connection',  ()=>{
-            const result = service.handleConnection()
+    // describe('handleConnection', ()=>{
+    //     it('should handle connection',  ()=>{
+    //         const result = service.handleConnection()
             
-            expect(result).toBeDefined()
+    //         expect(result).toBeDefined()
             
-        });
-    });
+    //     });
+    // });
 
     //handleDisconnect
-    describe('handleDisconnect', ()=>{
-        it('should handle connection', async ()=>{
-            expect(service.handleDisconnect()).toBeDefined()
-        });
-    });
+    // describe('handleDisconnect', ()=>{
+    //     it('should handle connection', async ()=>{
+    //         expect(service.handleDisconnect()).toBeDefined()
+    //     });
+    // });
 
-    //send
-    describe('send', ()=>{
-        it('should send connection', ()=>{
-            const result =  service.send("www.link", "data");
-            if (result === null || result === undefined){
-                expect(result).resolves.toBeFalsy();
-            }else{
-                expect(result).toBeDefined(); 
-                expect(typeof(result)).toEqual(typeof({}))
-            }
-        });
-    });
-
-
-    describe('getUsers', ()=>{
-        it('should get users', ()=>{
-            expect(typeof(service.getUsers())).toEqual(typeof(2))
-        })
-    })
-
-   
-
-      describe('getLoggedInUsers', ()=>{
-        it('should get logged in users', ()=>{
-            expect(typeof(service.getLoggedInUsers())).toEqual(typeof(2))
-        })
-        })
+    // //send
+    // describe('send', ()=>{
+    //     it('should send connection', ()=>{
+    //         const result =  service.send("www.link", "data");
+    //         if (result === null || result === undefined){
+    //             expect(result).resolves.toBeFalsy();
+    //         }else{
+    //             expect(result).toBeDefined(); 
+    //             expect(typeof(result)).toEqual(typeof({}))
+    //         }
+    //     });
+    // });
 
 
-   
+    // describe('getUsers', ()=>{
+    //     it('should get users', ()=>{
+    //         expect(typeof(service.getUsers())).toEqual(typeof(2))
+    //     })
+    // })
+
+    //   describe('getLoggedInUsers', ()=>{
+    //     it('should get logged in users', ()=>{
+    //         expect(typeof(service.getLoggedInUsers())).toEqual(typeof(2))
+    //     })
+    //     })
+
 });

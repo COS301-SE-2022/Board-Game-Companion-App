@@ -87,6 +87,7 @@ export class ScriptExecutorComponent implements OnInit {
       session.push(this.current.boardgame)
       session.push(this.history)
       session.push(this.playerAtHistory)
+      session.push(this.current._id)
       localStorage.setItem(name, JSON.stringify(session))
     }
     else
@@ -110,6 +111,7 @@ export class ScriptExecutorComponent implements OnInit {
       session.push(this.current.boardgame)
       session.push(this.history)
       session.push(this.playerAtHistory)
+      session.push(this.current._id)
       localStorage.setItem(name, JSON.stringify(session))
     }
 
@@ -122,7 +124,6 @@ export class ScriptExecutorComponent implements OnInit {
   }
   
   ngOnInit(): void {
-
     setInterval(() => {
       this.s++
       if(this.s === 60)

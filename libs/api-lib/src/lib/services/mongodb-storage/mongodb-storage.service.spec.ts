@@ -67,34 +67,34 @@ describe('MongoDbStorageService', () => {
         expect(model).toBeDefined();
     });
 
-    describe('retrieve', ()=>{
-        it('should retrive the storage service', ()=>{
-            expect(service.retrieve("key")).resolves.toEqual(mockFileDoc)
-        })
-    });
-    describe('upload', ()=>{
-        it('should upload the storage', ()=>{
-            expect(service.upload("script12", "script", "data")).resolves.toEqual(myUpload)
-        })
-    });
+    // describe('retrieve', ()=>{
+    //     it('should retrive the storage service', ()=>{
+    //         expect(service.retrieve("key")).resolves.toEqual(mockFileDoc)
+    //     })
+    // });
+    // describe('upload', ()=>{
+    //     it('should upload the storage', ()=>{
+    //         expect(service.upload("script12", "script", "data")).resolves.toEqual(myUpload)
+    //     })
+    // });
 
-    describe('update', ()=>{
-        it('should update the storage', ()=>{
-            expect(service.update("scrp1123", "data")).resolves.toEqual(true);
-        });
-    });
+    // describe('update', ()=>{
+    //     it('should update the storage', ()=>{
+    //         expect(service.update("scrp1123", "data")).resolves.toEqual(true);
+    //     });
+    // });
 
-    describe('remove', ()=>{
-        it('should remove the storage', ()=>{
-            expect(service.remove("scrp1123")).resolves.toEqual(true);
-        });
-    });
+    // describe('remove', ()=>{
+    //     it('should remove the storage', ()=>{
+    //         expect(service.remove("scrp1123")).resolves.toEqual(true);
+    //     });
+    // });
 
-    describe('copy', ()=>{
-        it('should copy the storage', ()=>{
-            expect(service.copy("scrp1123")).resolves.toEqual(myUpload);
-        });
-    });
+    // describe('copy', ()=>{
+    //     it('should copy the storage', ()=>{
+    //         expect(service.copy("scrp1123")).resolves.toEqual(myUpload);
+    //     });
+    // });
 
     
   
