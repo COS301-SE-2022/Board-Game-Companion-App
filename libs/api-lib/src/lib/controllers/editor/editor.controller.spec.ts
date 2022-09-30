@@ -56,7 +56,8 @@ describe('ApiEditorController',()=>{
 
   describe('updateModels', ()=>{
     it('should update the models', ()=>{
-      expect(controller.updateModels("MyScript", ["Model1", "Model2", "Model3"])).resolves.toEqual({
+      controller.updateModels("MyScript", ["Model1", "Model2", "Model3"]).then(data=>{
+      expect(data.toString()).toBe(({
         name: "MyScript",
         author: { name: 'author1', email: 'author1@gmail.com' },
         boardgame: 'Monopoly',
@@ -77,18 +78,19 @@ describe('ApiEditorController',()=>{
           key: 'thisKey',
           location: 'thisLocation',
         },
-      });
+      }).toString());
+    });
     });
   });
 
   describe('updateFile', ()=>{
     it('should update the file', ()=>{
-      expect(controller.updateFile("stringID", "This is file content")).resolves.toEqual({
+      controller.updateFile("stringID", "This is file content").then(data=>{
+      expect(data.toString()).toBe(({
         name:"stringID",
         content:"This is file content"
-      })
+      }).toString());
     });
   });
-  
-
-})
+  });
+});
