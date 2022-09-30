@@ -29,7 +29,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
-                                    Condition <input [value]="Players[Index].conditionParams[i]">
+                                    Condition <input (change)="conditionParam($event, i)" [value]="Players[Index].conditionParams[i]">
                                 </div>
                             </summary>
                             <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Conditions[i]" [dest] = "Conditions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
@@ -74,6 +74,9 @@ export class PlayerTemplateComponent{
     @Output() actionNames = new EventEmitter<string>()
     @Output() playerRemove = new EventEmitter<number>()
     @Output() actionParams = new EventEmitter<string>()
+    @Output() conditionParams = new EventEmitter<string>()
+    @Output() removeActionCondition = new EventEmitter<string>()
+    @Output() addActionCondition =  new EventEmitter<number>()
 
     addAction(){
         this.Actions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
@@ -81,6 +84,7 @@ export class PlayerTemplateComponent{
         this.Players[this.Index].actionNames.push("")
         this.Players[this.Index].actionParams.push("")
         this.Players[this.Index].conditionParams.push("")
+        this.addActionCondition.emit(this.Index)
     }
 
     playerName(event : any)
@@ -98,10 +102,16 @@ export class PlayerTemplateComponent{
         this.actionParams.emit(event.target.value + " " + this.Index + " " + i)
     }
 
+    conditionParam(event : any, i : number)
+    {
+        this.conditionParams.emit(event.target.value + " " + this.Index + " " + i)
+    }
+
     removeAction(i: number)
     {
         this.Actions.splice(i, 1)
         this.Conditions.splice(i,1)
+        this.removeActionCondition.emit(i.toString() + " " + this.Index.toString())
     }
 
     removePlayer()

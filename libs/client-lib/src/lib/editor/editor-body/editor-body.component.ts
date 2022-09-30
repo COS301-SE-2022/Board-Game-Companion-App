@@ -15,6 +15,7 @@ import { Console } from 'console';
 import { CollectionsModule } from '../../collections/collections.module';
 import { transpilationResponse } from '../../shared/models/editor/transpilationResponse';
 import { threadId } from 'worker_threads';
+import { AnyARecord } from 'dns';
 
 @Component({
   selector: 'board-game-companion-app-editor-body',
@@ -728,11 +729,153 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
     }
   }
 
+  updateCard(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    switch(value[0])
+    {
+      case "name":
+        lines.forEach((element, i) => {
+          if(element.includes("card "))
+          {
+            c++
+          }
+
+          if(c - 1 == +value[2])
+          {
+            lines[i] = lines[i].replace(this.editorVisual.Cards[+value[2]].name, value[1])
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "param":
+        lines.forEach((element, i) => {
+          if(element.includes("card "))
+          {
+            c++
+          }
+
+          if(c - 1 == +value[2])
+          {
+            if(element.includes("()"))
+            {
+              lines[i] = lines[i].replace("()", "(" + value[1] + ")")
+            }
+            else
+            {
+              lines[i] = lines[i].replace("(" + this.editorVisual.Cards[+value[2]].parameter + ")", "(" + value[1] + ")")
+            }
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+    }
+  }
+
+  removeCard(event : any)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let start = 0
+    let end = 0
+    lines.forEach((element, i) => {
+      if(element.includes("card "))
+      {
+        c++
+        start = i
+      }
+      if(c - 1 == event &&  element == "}")
+      {
+        end = i
+        c = -100
+      }
+    })
+    lines.splice(start,end - start + 1)
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
+  addCard(event : any)
+  {
+    this.addState()
+    const player = "card Name" + event.toString() +"(t){\n\teffect{\n\n\t}\n\tcondition{\n\n\t}\n}\n"
+    this.codeEditor.setValue(this.codeEditor.getValue() + player)
+  }
+
+  removeActionCondition(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let a = 0
+    let start = 0
+    let end = 0
+    lines.forEach((element, i) => {
+      if(element.includes("player "))
+      {
+        c++
+        a = 0
+      }
+      else if(element.includes("action "))
+      {
+        start = i
+      }
+      else if (element.includes("condition(") || element.includes("condition ("))
+      {
+        a++
+      }
+      else if(element.includes("\t}") && a - 1 == +value[0])
+      {
+        end = i
+      }
+
+      if(c - 1 == +value[1] && a - 1 == +value[0] && end > 0)
+      {
+        lines.splice(start,end - start + 1)
+        this.codeEditor.setValue(lines.join("\n"))
+        c = - 100
+      }
+    })
+  }
+
+  addActionCondition(event : any)
+  {
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    let c = 0
+    let a = 0
+    let t = 0
+    lines.forEach((element, i) => {
+      if(element.includes("player "))
+      {
+        c++
+        a = 0
+        t = 0
+      }
+      else if (element.includes("action "))
+      {
+        a++
+      }
+      else if(element.includes("turn()") || element.includes("turn ()"))
+      {
+        t++
+      }
+      if(t > 0 && c - 1 == event)
+      {
+        const ac = "\taction " + "aName" + a.toString() + "(){\n\n\t}\n\tcondition(){\n\n\t}\n"
+        lines.splice(i,0,ac)
+        c = - 100
+      }
+    })
+    this.codeEditor.setValue(lines.join("\n"))
+  }
+
   updatePlayer(event : any)
   {
     const value = event.split(/\s/)
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    const count = (this.codeEditor.getValue().match(/player /g) || []).length
     let c = 0
     let a = 0
     switch(value[0])
@@ -757,8 +900,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
           if(element.includes("player "))
           {
             c++
+            a = 0
           }
-          else if (element.includes("action "))
+          
+          if (element.includes("action "))
           {
             a++
           }
@@ -776,8 +921,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
           if(element.includes("player "))
           {
             c++
+            a = 0
           }
-          else if (element.includes("action "))
+          
+          if (element.includes("action "))
           {
             a++
           }
@@ -790,7 +937,35 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit{
             }
             else
             {
-              lines[i] = lines[i].replace(this.editorVisual.Players[+value[2]].actionParams[+value[3]], value[1])
+              lines[i] = lines[i].replace("("+ this.editorVisual.Players[+value[2]].actionParams[+value[3]] + ")", "(" + value[1] + ")")
+            }
+            c = - 100
+          }
+        })
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "conditionParam":
+        lines.forEach((element, i) => {
+          if(element.includes("player "))
+          {
+            c++
+            a = 0
+          }
+          if (element.includes("condition(") || element.includes("condition ("))
+          {
+            a++
+          }
+
+          if(c - 1 == +value[2] && a - 1 == +value[3])
+          {
+            if(element.includes("()"))
+            {
+              console.log("yes")
+              lines[i] = lines[i].replace("()", "(" + value[1] + ")")
+            }
+            else
+            {
+              lines[i] = lines[i].replace("("+ this.editorVisual.Players[+value[2]].conditionParams[+value[3]] + ")", "(" + value[1] + ")")
             }
             c = - 100
           }
