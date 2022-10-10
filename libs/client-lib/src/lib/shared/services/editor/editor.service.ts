@@ -17,6 +17,7 @@ export class EditorService {
   constructor(private readonly httpClient:HttpClient) { 
     // this.api = environmen;
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
+    //this.api = "http://localhost:3333/api/"
   }
 
   getFileData(file:string):Observable<any>{

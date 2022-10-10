@@ -63,7 +63,6 @@ export class DownloadsService {
 
             if(model !== null || model !== undefined){
                 this.storageService.remove(model.model.key);
-                this.storageService.remove(model.weights.key);
             }
         }
 
@@ -120,7 +119,6 @@ export class DownloadsService {
         this.modelService.getModelsByIdOnly(script.models).then((networks:NeuralNetwork[])=>{
             networks.forEach((network:NeuralNetwork) => {
                 fs.unlinkSync(network.model.key);
-                fs.unlinkSync(network.weights.key);
             })
         });
 
