@@ -27,6 +27,7 @@ import { CollectionsService } from '../collection/collections.service';
 import { AlertService } from '../alert/alert.service';
 import { alertType } from '../../models/general/alertType';
 import { Collection } from '../../schemas/collection.schema';
+import { fileType } from '../../models/general/fileType';
 
 @Injectable()
 export class MyScriptService {
@@ -117,7 +118,7 @@ export class MyScriptService {
 
         //fileUploadResult = await this.s3Service.upload("main.txt",path,data);
         //fileUploadResult = await this.localStorage.upload("main.txt",path,data);
-        fileUploadResult = await this.storageService.upload("main.txt","text/plain",data);
+        fileUploadResult = await this.storageService.upload("main.txt",fileType.text,[data]);
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
 
@@ -138,7 +139,7 @@ export class MyScriptService {
 
         //fileUploadResult = await this.s3Service.upload("main.js",path,data);
         //fileUploadResult = await this.localStorage.upload("main.js",path,data);
-        fileUploadResult = await this.storageService.upload("main.js","text/javascript",data);
+        fileUploadResult = await this.storageService.upload("main.js",fileType.text,[data]);
 
         result.location = fileUploadResult.location;
         result.key = fileUploadResult.key;
@@ -152,7 +153,8 @@ export class MyScriptService {
         //const result = await this.s3Service.upload(icon.originalname,path,icon.buffer);
         //const result = await this.localStorage.upload(icon.originalname,path,icon.buffer);
 
-        const result = await this.storageService.upload(icon.originalname,icon.mimetype,icon.buffer);
+        
+        const result = await this.storageService.upload(icon.originalname,fileType.image,[Buffer.from(icon.buffer).toString('base64')]);
 
         return result;
     }

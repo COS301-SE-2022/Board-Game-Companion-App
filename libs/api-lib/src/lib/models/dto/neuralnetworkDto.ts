@@ -12,6 +12,5 @@ export interface neuralnetworkDto{
     loss: number;
     accuracy: number;
     model: file;
-    weights: file;
     discriminator: NeuralNetworkDiscriminator
 }
