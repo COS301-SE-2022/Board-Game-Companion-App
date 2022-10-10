@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ScriptService } from '../../shared/services/scripts/script.service';
   import { Router } from '@angular/router';
 import { script } from '../../shared/models/scripts/script';
@@ -8,6 +8,16 @@ import * as tf from '@tensorflow/tfjs'
 import { entity } from '../../shared/models/editor/entity';
 import { inputParameters } from '../../shared/models/scripts/inputParameters';
 import { StorageService } from '../../shared/services/storage/storage.service';
+import { ModelsService } from '../../shared/services/models/models.service';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
+
+interface tfModel{
+  name: string;
+  min: number[];
+  max: number[];
+  labels:string[];
+  model: tf.LayersModel;
+}
 
 @Component({
   selector: 'board-game-companion-app-script-executor',
@@ -42,8 +52,10 @@ export class ScriptExecutorComponent implements OnInit {
   playerAtHistory:string[] = [];
   recentPrompt = "";
   historyVisible = false;
+  models:tfModel[] = [];
+  @ViewChild(NotificationComponent,{static:true}) notification!: NotificationComponent;
 
-  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router,private readonly storageService: StorageService) {
+  constructor(private readonly searchService:BggSearchService, private readonly scriptService:ScriptService, private router:Router,private readonly storageService: StorageService,private modelsService: ModelsService) {
     this.current = this.router.getCurrentNavigation()?.extras.state?.['value'];
     this.searchService.getComments("https://boardgamegeek.com/xmlapi2/thing?id="+this.current.boardgame)
             .subscribe(
@@ -123,7 +135,33 @@ export class ScriptExecutorComponent implements OnInit {
     this.back()
   }
   
+  loadModels(): void{
+    this.current.models.forEach((id:string) => {
+      this.modelsService.getModel(id).subscribe({
+        next:(network:any) =>{
+          tf.loadLayersModel(network.model.location).then((value:tf.LayersModel) => {
+            this.models.push({
+              name:network.name,
+              model:value,
+              min:network.min,
+              max:network.max,
+              labels:network.labels
+            });
+          }).catch((err) => {
+            console.log(err);
+            this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
+          })
+        },
+        error:() => {
+          this.notification.add({type:"danger",message:"Failed to load model."});
+        }
+      })
+    })
+  }
+
   ngOnInit(): void {
+    this.loadModels();
+    
     setInterval(() => {
       this.s++
       if(this.s === 60)
@@ -150,25 +188,31 @@ export class ScriptExecutorComponent implements OnInit {
         }  
       })
   }
+
   async neuralnetworks():Promise<any>{
     return (async(name:string,input:number[])=>{
-      const info = await this.storageService.getByIndex("networks","name",name);
+      for(let count = 0; count < this.models.length; count++){
+        if(this.models[count].name === name){
+          try{
+            const min = tf.tensor(this.models[count].min);
+            const max = tf.tensor(this.models[count].max);
+    
+            const inputTensor = tf.tensor2d(input,[1,input.length]);
+            const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+            const tensorResult = this.models[count].model.predict(normalizedInput) as tf.Tensor;
+            //tensorResult.print();
+            const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
+            return this.models[count].labels[index];
+          }catch(err){
+            console.log(err);
+          }
+        }
+      }
 
-      if(info.name == undefined)
-        return "";
-
-      const model = await tf.loadLayersModel(`indexeddb://${info.name}`);
-      const min = tf.tensor(info.min);
-      const max = tf.tensor(info.max);
-
-      const inputTensor = tf.tensor2d(input,[1,input.length]);
-      const normalizedInput = inputTensor.sub(min).div(max).sub(min);
-      const tensorResult = model.predict(normalizedInput) as tf.Tensor;
-      //tensorResult.print();
-      const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
-      return info.labels[index];
+      return "";
     })
-}
+  }
+
   async play(): Promise<void>{
     this.replay = false;
     const code = new Function("model",this.code);
