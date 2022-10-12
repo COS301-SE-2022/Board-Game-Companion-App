@@ -808,11 +808,16 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     this.cut();
   }
 
-  updateElement(event : any)
+  updateElement(event : string)
   {
-    const value = event.split(/\s/)
+    const value = event.split("+")
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    console.log(lines)
+    let param = ""
+    if(value[1].includes("mvalues"))
+    {
+      param = value[1].substring(value[1].length-1)
+      value[1] = value[1].substring(0, value[1].length-1)
+    }
     switch(value[1])
     {
       case "name":
@@ -823,6 +828,88 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
         } 
+        break
+      case "csvalue":
+        {
+          const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          c[c.length-1] = value[0]
+          c[0] = "\t" + c[0]
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "sname":
+        {
+          const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          c[0] = value[0]
+          c[0] = "\t" + c[0]
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "iovalue":
+        {
+          const c = lines[+value[2]].split(/,/).filter(a => a !== '')
+          if(c[0].includes("input("))
+          {
+            c[0] = "\tinput(" + value[0] + ","
+          }
+          else
+          {
+            c[0] = "\toutput(" + value[0] + ")"
+          }
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "method":
+        {
+          const c = lines[+value[2]].split(/,/).filter(a => a !== '')
+          const o = this.editorVisual.methods.find(a => a.name === value[0])
+          let count = ""
+          if(o != null)
+          {
+            console.log(o?.arguments)
+            for(let j = 0; j  < o?.arguments; j++)
+            {
+              if(j !== 0)
+              {
+                count = count + ", val"
+              }
+            }
+            lines[+value[2]] = "\t" + o.name + "(val1" + count + ")"
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "mvalues":
+        {
+          const c = lines[+value[2]].split(/,/).filter(a => a !== '')
+          console.log(c)
+          if(+param == 0 && c.length != 1)
+          {
+            c[+param] = c[+param].substring(0, c[+param].indexOf("(")+1) + value[0]
+          }
+          else if(c.length == 1)
+          {
+            c[+param] = c[+param].substring(0, c[+param].indexOf("(")+1) + value[0] + ")"
+          }
+          else
+          {
+            c[+param] = value[0] + ")"
+          }
+          lines[+value[2]] = c.join(",")
+          this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "rvalue":
+        {
+          const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          c[0] = "\t" + c[0]
+          c[1] = value[0]
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
+        }
         break
     }
   }
@@ -990,9 +1077,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     this.codeEditor.setValue(lines.join("\n"))
   }
 
-  updatePlayer(event : any)
+  updatePlayer(event : string)
   {
-    const value = event.split(/\s/)
+    const value = event.split(/\s/).filter(a => a !== '')
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let c = 0
     let a = 0
@@ -1021,13 +1108,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             a = 0
           }
           
-          if (element.includes("action "))
+          if(element.includes("action "))
           {
             a++
           }
 
           if(c - 1 == +value[2] && a - 1 == +value[3])
           {
+            console.log(lines[i])
             lines[i] = lines[i].replace(this.editorVisual.Players[+value[2]].actionNames[+value[3]], " " + value[1])
             c = - 100
           }
@@ -1596,27 +1684,31 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   ioCreation(lines: string[], j : number, openIf : number, ifContains: number, player: number, action: number, method : string, title : string, classes : string, parent : string, card : number)
   {
     const id = this.getEID()
-    let input = [""]
-    if(lines[j].match(/"(.*?)"/g) != null)
+    const c = lines[j].split(/,/).filter(a => a !== '')
+    let input = ""
+    switch(classes)
     {
-      input = lines[j].match(/"(.*?)"/g) || []
+      case "visualIn":
+        input = c[0].substring(c[0].indexOf("(") + 1, c[0].length)
+        break
+      case "visualO":
+        input = c[0].substring(c[0].indexOf("(") + 1, c[0].length - 1)
+        break
     }
-    else if(lines[j].match(/'(.*?)'/g) != null)
-    {
-      input = lines[j].match(/'(.*?)'/g) || []
-    }
+    
+    console.log(input)
     if(openIf > 0)
     {
       switch(parent)
       {
         case "player":
-          this.editorVisual.PlayersLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.PlayersLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
         case "card":
-          this.editorVisual.CardsLoop[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.CardsLoop[ifContains].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
         case "endGame":
-          this.editorVisual.EndgameLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.EndgameLoops[ifContains].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
       }
     }
@@ -1625,27 +1717,27 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       switch(method)
       {
         case "action":
-          this.editorVisual.Players[player].actions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.Players[player].actions[action].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
         case "condition":
           switch(parent)
           {
             case "player":
-              this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+              this.editorVisual.Players[player].conditions[action].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
               break
             case "card":
-              this.editorVisual.Cards[card].condition.push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+              this.editorVisual.Cards[card].condition.push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
               break
           }
           break
         case "turn":
-          this.editorVisual.Players[player].turn[0].push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.Players[player].turn[0].push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
         case "endGame":
-          this.editorVisual.Endgame.push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.Endgame.push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
         case "effect":
-          this.editorVisual.Cards[card].effect.push({title: title, class: classes, id: id, inputs: [input[0],"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+          this.editorVisual.Cards[card].effect.push({title: title, class: classes, id: id, inputs: [input,"","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
           break
       }
       
