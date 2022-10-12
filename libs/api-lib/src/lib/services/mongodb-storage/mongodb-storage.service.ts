@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { File, FileDocument } from '../../schemas/file.schema';
 import { Model } from 'mongoose';
 import { fileDto } from '../../models/dto/fileDto';
+import { fileType } from '../../models/general/fileType';
 
 @Injectable()
 export class MongoDbStorageService{
@@ -14,12 +15,12 @@ export class MongoDbStorageService{
         return this.fileModel.findById(key);
     }
 
-    async upload(name:string,type:string,data:any): Promise<upload>{
+    async upload(name:string,type:fileType,data:string[]): Promise<upload>{
 
         const dto:fileDto = {
             name: name,
-            mimeType: type,
-            data: Buffer.from(data).toString('base64')
+            type: type,
+            data: data
         }
         
         const createdFile = new this.fileModel(dto);
@@ -27,20 +28,20 @@ export class MongoDbStorageService{
         
         const result:upload = {
             key : savedFile._id,
-            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + "api/files/" + savedFile._id
+            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + "api/files/" + savedFile._id + "/" + name
         }
 
         return result
     }
 
-    async update(key:string,data:string): Promise<boolean>{
+    async update(key:string, data:string[]): Promise<boolean>{
         const file = await this.fileModel.findById(key);
         
         if(file === null || file === undefined)
             return false;
         
         try{
-            file.data = Buffer.from(data).toString('base64');
+            file.data = data;
             await file.save();
         }catch(err){
             return false;
@@ -60,7 +61,7 @@ export class MongoDbStorageService{
 
         const dto:fileDto = {
             name: file.name,
-            mimeType: file.mimeType,
+            type: file.type,
             data: file.data
         };
 
@@ -69,7 +70,7 @@ export class MongoDbStorageService{
         
         const result:upload = {
             key : savedFile._id,
-            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + "api/files/" + savedFile._id
+            location: (process.env.PROJECT_STATUS == "production" ? process.env.API_DOMAIN_PROD  : process.env.API_DOMAIN_DEV) + "api/files/" + savedFile._id + "/" + file.name
         }
 
         return result;

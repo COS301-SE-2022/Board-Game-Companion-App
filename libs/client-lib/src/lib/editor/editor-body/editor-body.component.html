@@ -3,6 +3,6 @@
 
     </div>
     <div  id = "visual-content" class = "visual-content w-full h-full" [ngClass] = "{'hidden':!showVisual}">
-        <board-game-companion-app-editor-body-visual (removeTiles)="removeTiles($event)" (addTile)="addTiles($event)" (removeProperties)="removeProperty($event)" (propertyName)="updateProperty($event)"></board-game-companion-app-editor-body-visual>
+        <board-game-companion-app-editor-body-visual (updateCards)="updateCard($event)" (removeCards)="removeCard($event)" (addCards)="addCard($event)" (removeActionConditions)="removeActionCondition($event)" (addActionConditions)="addActionCondition($event)" (updatePlayer)="updatePlayer($event)" (removePlayers)="removePlayer($event)" (addPlayers)="addPlayer($event)" (editTiles)="editTiles($event)" (removeTiles)="removeTiles($event)" (addTile)="addTiles($event)" (removeProperties)="removeProperty($event)" (propertyName)="updateProperty($event)"></board-game-companion-app-editor-body-visual>
     </div>
 </div>

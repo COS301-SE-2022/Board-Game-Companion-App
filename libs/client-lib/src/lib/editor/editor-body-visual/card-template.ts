@@ -1,4 +1,4 @@
-import { Component, Input} from "@angular/core";
+import { Component, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: 'board-game-companion-app-card-template',
@@ -8,7 +8,7 @@ import { Component, Input} from "@angular/core";
             <details open>
                 <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                     <div class = "title text-2xl font-bold ml-4 mt-2 mb-4">
-                        Card <input class = "name" [value]="Name"><input class = "param" [value]="Parameter"> 
+                        Card <input (change)="cardName($event)" class = "name" [value]="Name"><input (change)="cardParam($event)" class = "param" [value]="Parameter"> 
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
@@ -55,10 +55,23 @@ export class CardTemplateComponent{
         {name: 'removeFromArr', arguments: 2},
         {name: 'chooseAction', arguments: 2},
       ]
+    @Output() removeCards = new EventEmitter<number>()
+    @Output() updateCard = new EventEmitter<string>()
 
     removeCard()
     {
         this.Cards.splice(this.Index,1)
+        this.removeCards.emit(this.Index)
+    }
+
+    cardName(event : any)
+    {
+        this.updateCard.emit("name " + event.target.value + " " + this.Index.toString())
+    }
+
+    cardParam(event : any)
+    {
+        this.updateCard.emit("param " + event.target.value + " " + this.Index.toString())
     }
     
 }

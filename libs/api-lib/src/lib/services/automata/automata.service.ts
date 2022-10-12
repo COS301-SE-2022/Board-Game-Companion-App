@@ -147,7 +147,6 @@ export class AutomataService {
 
             if(model !== null || model !== undefined){
                 this.storageService.remove(model.model.key);
-                this.storageService.remove(model.weights.key);
             }
         }
     }
