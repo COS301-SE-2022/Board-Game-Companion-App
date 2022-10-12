@@ -1,4 +1,4 @@
-import { Component, Input,ViewContainerRef} from "@angular/core";
+import { Component, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: 'board-game-companion-app-loop-template',
@@ -61,7 +61,7 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
                     </select>
                     <!--Method Inputs-->
                     <div *ngIf = "item.title === 'Call'">
-                        <input class = "mt-1" *ngFor="let argument of [].constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
+                        <input class = "mt-1" *ngFor="let argument of this.arguments.constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
                     </div>
                     <!--Output and Input-->
                     <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
@@ -110,8 +110,8 @@ import { Component, Input,ViewContainerRef} from "@angular/core";
 
 export class LoopTemplateComponent{
     @Input() index = 0
-    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
-    @Input() item = {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}
+    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}] 
+    @Input() item = {title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}
     @Input() dests = [this.dest]
     @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
@@ -125,6 +125,7 @@ export class LoopTemplateComponent{
       ]
     
     arguments = []
+    @Output() updateMethod = new EventEmitter<string>()
 
     conditions(con: number)
     {
@@ -134,6 +135,9 @@ export class LoopTemplateComponent{
     {
         const m = this.methods.find(obj => obj.name === event.target.value)
         if(m != null)
-        this.arguments.length = m?.arguments
+        {
+            this.updateMethod.emit(event.target.value + " " + m?.arguments)
+            this.arguments.length = m.arguments
+        }
     }
 }
