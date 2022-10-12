@@ -63,6 +63,9 @@ export class ApiAdminController {
 
     @Get('search')
     async search(@Query('term')term:string):Promise<userSearch[]>{
+        if(term === undefined || term === null)
+            term = "";
+            
         return this.adminService.search(term);
     }
 
