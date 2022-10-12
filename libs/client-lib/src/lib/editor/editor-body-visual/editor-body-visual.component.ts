@@ -25,6 +25,7 @@ export class EditorBodyVisualComponent {
   @Output() addCards = new EventEmitter<number>()
   @Output() removeCards = new EventEmitter<number>()
   @Output() updateCards = new EventEmitter<string>()
+  @Output() updateElements = new EventEmitter<string>()
 
 
   Properties = [
@@ -249,6 +250,11 @@ export class EditorBodyVisualComponent {
       name.shift()
     }
     this.updateCards.emit(event)
+  }
+
+  updateElement(event : any)
+  {
+    this.updateElements.emit(event)
   }
 
   clear()

@@ -37,8 +37,8 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     <!--Title displayed for certain visuals-->
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->
-                    <input *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
-                    <!--List of variables create-->
+                    <input (change)="updateElements($event, item, 'name')" *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
+                    <!--List of variables created-->
                     <select *ngIf = "item.title === 'Set'">
                         <option>
                             {{item.inputs[0]}}
@@ -126,12 +126,18 @@ export class ElementTemplateComponent{
       ]
     arguments = []
     @Output() updateMethod = new EventEmitter<string>()
+    @Output() updateElement = new EventEmitter<string>()
 
     conditions(con: number)
     {
         return new Array(con)
     }
 
+    updateElements(event : any, item : any, type : string)
+    {
+        this.updateElement.emit(event.target.value + " " + type + " " + item.lineNumber)
+    }
+    
     methodInputs(event: any, item: any)
     {
         console.log(item)

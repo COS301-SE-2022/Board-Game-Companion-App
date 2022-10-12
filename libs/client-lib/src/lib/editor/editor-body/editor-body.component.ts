@@ -808,6 +808,25 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     this.cut();
   }
 
+  updateElement(event : any)
+  {
+    const value = event.split(/\s/)
+    const lines = this.codeEditor.getValue().split(/\r?\n/)
+    console.log(lines)
+    switch(value[1])
+    {
+      case "name":
+        {
+          const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          c[1] = value[0]
+          c[0] = "\t" + c[0]
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
+        } 
+        break
+    }
+  }
+
   addState()
   {
     if(!this.codeEditor.getValue().includes("state"))
