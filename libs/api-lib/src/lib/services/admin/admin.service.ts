@@ -109,6 +109,8 @@ export class AdminService {
         let downloaders = await this.downloadModel.find({},{"owner":1});
         let authors = await this.myscriptModel.find({},{"author":1});
         const result:userSearch[] = [];
+        console.log("term: " + term);
+
         term = term.toLowerCase();
         
         collectionOwners = collectionOwners.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === "");
