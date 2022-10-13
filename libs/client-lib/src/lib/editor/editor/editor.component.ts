@@ -351,6 +351,11 @@ setCurrPlayer(){
     this.editorStatusBar.updateWarningsCount(this.warningMessages.length);
   }
 
+  stopExecution(): void{
+    this.ngOnInit();
+  }
+
+
   async execute(): Promise<void>{
     
     this.editorConsole.open();
