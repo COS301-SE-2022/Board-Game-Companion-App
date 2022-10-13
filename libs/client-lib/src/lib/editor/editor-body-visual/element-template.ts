@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges} from "@angular/core";
+import { Component, Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: 'board-game-companion-app-element-template',
@@ -6,7 +6,15 @@ import { Component, Input, OnChanges} from "@angular/core";
     template: `
     <div  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dest let j = index">
         <div id = "doArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'doWhile'">
-            <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+        </div>
+        <div class = "block text-xl" *ngIf = "item.title === 'If'">
+            <div class = "mb-4">
+                <i (click)="addOperator(item)" class="fa-sharp fa-solid fa-plus cursor-pointer"></i>
+            </div>
+            <div class = "mb-4">
+                <i (click)="removeOperator(item)" class="fa-sharp fa-solid fa-minus cursor-pointer"></i>
+            </div>  
         </div>
         <div [class] = "item.class" [id] = "item.id">
             <div id = "whileBackground">
@@ -33,13 +41,13 @@ import { Component, Input, OnChanges} from "@angular/core";
                         </div>
                     </div>
                     <!--Return-->
-                    <input id = "return" *ngIf = "item.title === 'Return'" [value]="item.inputs[0]">
+                    <input (change)="updateElements($event, item, 'rvalue')" id = "return" *ngIf = "item.title === 'Return'" [value]="item.inputs[0]">
                     <!--Title displayed for certain visuals-->
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->
-                    <input *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
-                    <!--List of variables create-->
-                    <select *ngIf = "item.title === 'Set'">
+                    <input (change)="updateElements($event, item, 'name')" *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
+                    <!--List of variables created-->
+                    <select (change)="updateElements($event, item, 'sname')" *ngIf = "item.title === 'Set'">
                         <option>
                             {{item.inputs[0]}}
                         </option>
@@ -50,9 +58,10 @@ import { Component, Input, OnChanges} from "@angular/core";
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
                     </div>
-                    <input *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
+                    <!--Create and Set values-->
+                    <input (change)="updateElements($event, item, 'csvalue')" *ngIf = "item.title === 'Create' || item.title === 'Set'" [value]="item.inputs[1]">
                     <!--List of pre-made methods-->
-                    <select (change)="methodInputs($event)" *ngIf = "item.title === 'Call'" class = "mb-1">
+                    <select (change)="updateElements($event, item, 'method')" *ngIf = "item.title === 'Call'" class = "mb-1">
                         <option>
                             {{item.inputs[0]}}
                         </option>
@@ -62,10 +71,10 @@ import { Component, Input, OnChanges} from "@angular/core";
                     </select>
                     <!--Method Inputs-->
                     <div *ngIf = "item.title === 'Call'">
-                        <input class = "mt-1" *ngFor="let argument of [].constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
+                        <input (change)="updateElements($event, item, 'mvalues' + i)" class = "mt-1" *ngFor="let argument of this.arguments.constructor(+item.inputs[1]) let i = index" [value]="item.inputs[i + 2]">
                     </div>
                     <!--Output and Input-->
-                    <textarea *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
+                    <textarea (change)="updateElements($event, item, 'iovalue')" *ngIf = "item.title === 'Input' || item.title === 'Output'" [value]="item.inputs[0]"></textarea>
                     <!--While/do While Loop-->
                     <div *ngIf = "item.title === 'While' || item.title === 'doWhile'">
                         <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
@@ -96,14 +105,17 @@ import { Component, Input, OnChanges} from "@angular/core";
             </div>
         </div>
         <div class="container"  id = "codeArea" dragula="COPYABLE" [(dragulaModel)]="dests[item.pos]" *ngIf = "item.title === 'For' || item.title === 'While'">
-            <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.pos] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
         </div>
         <div class = "tfSection" *ngIf = "item.title === 'If'">
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
-                <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+                <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
-            <div *ngIf=" dests[item.false][0].inputs !== undefined && dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
-                <board-game-companion-app-loop-template  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
+            <div *ngIf="dests[item.false][0].inputs.length === 8" class = "ml-8 text-2xl">
+                <i class="fa-sharp fa-solid fa-circle-xmark cursor-pointer"></i>
+            </div>
+            <div *ngIf="dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
+                <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods"></board-game-companion-app-loop-template>
             </div>
         </div>
     </div>
@@ -112,7 +124,7 @@ import { Component, Input, OnChanges} from "@angular/core";
 })
 
 export class ElementTemplateComponent{
-    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}] 
+    @Input() dest = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}] 
     @Input() dests = [this.dest]
     @Input() variables = [{name: "", value: ""}]
     @Input() methods = [
@@ -125,17 +137,31 @@ export class ElementTemplateComponent{
         {name: 'chooseAction', arguments: 2},
       ]
     arguments = []
+    @Output() updateElement = new EventEmitter<string>()
+
+    removeOperator(item : any)
+    {
+        this.updateElement.emit("remove" + "+" + "ifOperator" + "+" + item.lineNumber)
+    }
+
+    addOperator(item : any)
+    {
+        this.updateElement.emit("add" + "+" + "ifOperator" + "+" + item.lineNumber)
+    }
 
     conditions(con: number)
     {
         return new Array(con)
     }
 
-    methodInputs(event: any)
+    updateElementsLoop(event : any)
     {
-        const m = this.methods.find(obj => obj.name === event.target.value)
-        if(m != null)
-        this.arguments.length = m?.arguments
+        this.updateElement.emit(event)
+    }
+
+    updateElements(event : any, item : any, type : string)
+    {
+        this.updateElement.emit(event.target.value + "+" + type + "+" + item.lineNumber)
     }
 
 }

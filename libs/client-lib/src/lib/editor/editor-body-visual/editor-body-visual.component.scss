@@ -30,7 +30,7 @@
     padding: 2em;
 }
 
-.listItems:not(:first-child, :last-child):after {
+.listItems:not(:first-child):not(:last-child):not(:only-child):after {
     content: '';
     height: 3px;
     background: white;
@@ -38,7 +38,7 @@
     position: relative;
 }
 
-.listItems:not(:first-child, :nth-child(2)):before {
+.listItems:not(:first-child):not(:nth-child(2)):before {
     content: '';
     position: relative;
     top: 7px;
@@ -48,7 +48,7 @@
     border-width:  7px 0 7px 20px;
     border-color: transparent transparent transparent white;
     transform: translateY(-50%);
-  }
+}
 
 .boardContainers{
     background-color: grey;
