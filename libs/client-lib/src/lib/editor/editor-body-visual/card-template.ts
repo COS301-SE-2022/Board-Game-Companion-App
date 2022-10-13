@@ -19,7 +19,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                                 Effect
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
                 <div id = "condition" class = "cardContainers">
@@ -29,7 +29,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                                 Condition
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
             </details>
@@ -57,6 +57,12 @@ export class CardTemplateComponent{
       ]
     @Output() removeCards = new EventEmitter<number>()
     @Output() updateCard = new EventEmitter<string>()
+    @Output() updateElements = new EventEmitter<string>()
+
+    updateElement(event : any)
+    {
+        this.updateElements.emit(event)
+    }
 
     removeCard()
     {
