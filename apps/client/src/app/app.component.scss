@@ -26,3 +26,12 @@ background: #888;
 #content::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+@media (max-width: 640px){
+   #content{
+   // background-size: cover !important;
+    height:100% !important;
+    width: 100% !important;
+    padding-right: 0px !important;
+   } 
+}
