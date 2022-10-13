@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class = "col-sm-3 col-xs-6 mt-2 active:bg-gray-700" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
-                <div [id] = "value._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
+                <div [id] = "value._id" class="parent relative rounded-md max-h-48 overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
                     <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span>   
                     <img class="w-full h-full" [src]="value.icon.location" alt=""/>
                     
