@@ -911,6 +911,38 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           this.codeEditor.setValue(lines.join("\n"))
         }
         break
+      case "ifOperator":
+        {
+          switch(value[0])
+          {
+            case "add":
+              {
+                let c = lines[+value[2]]
+                const operator = " && x > 0)"
+                c = c.replace(")",operator)
+                lines[+value[2]] = c
+                this.codeEditor.setValue(lines.join("\n"))
+              }
+              break
+            case "remove":
+              {
+                const and = lines[+value[2]].lastIndexOf("&&")
+                const or =  lines[+value[2]].lastIndexOf("||")
+                if(and > or)
+                {
+                  lines[+value[2]] = lines[+value[2]].substring(0,and) + ")"
+                }
+                else
+                {
+                  lines[+value[2]] = lines[+value[2]].substring(0,or) + ")"
+                }
+                this.codeEditor.setValue(lines.join("\n"))
+              }
+              break
+          }
+          
+        }
+        break
     }
   }
 
@@ -1387,7 +1419,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     const conditions = (l.match(/&&/g) || []).length + (l.match(/\|\|/g) || []).length + 1
     const AndOr = l.match(/&& | \|\|/g)
     let aoIndex = 0
-    const condi = l.substring(l.indexOf("(") + 1, l.indexOf(")")).replace(/\s/g, '').split(/[&&,||]/)
+    const condi = l.substring(l.indexOf("(") + 1, l.indexOf(")")).replace(/\s/g, '').split(/[&&,||]/).filter(a => a !== '')
     params.push(conditions.toString())
     //console.log(lines[j].split("&&"))
     condi.forEach((line) => {
