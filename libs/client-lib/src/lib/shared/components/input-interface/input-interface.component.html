@@ -1,4 +1,8 @@
 <div id="inputModal" class="inputModal fixed z-30 left-0 top-0 text-center"  *ngIf = "show">
+    <div (click) = "stopExecution()" class = "bg-rose-600 px-2 py-1 text-white font-lg rounded-sm shadow-sm hover:border-2 border-gray-700 fixed right-2 top-2 cursor-pointer">
+        <i class="fas fa-times"></i>
+    </div>
+
     <div class="inputBox rounded-lg bg-inherit absolute p-2 text-left">
             
             <div *ngFor = "let sub of sequence(parameters.length)">

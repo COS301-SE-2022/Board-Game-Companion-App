@@ -109,13 +109,10 @@ export class AdminService {
         let downloaders = await this.downloadModel.find({},{"owner":1});
         let authors = await this.myscriptModel.find({},{"author":1});
         const result:userSearch[] = [];
-        console.log("term: " + term);
 
-        term = term.toLowerCase();
-        
-        collectionOwners = collectionOwners.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === "");
-        downloaders = downloaders.filter((value) => value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === "");
-        authors = authors.filter((value) => value.author.name.toLowerCase().indexOf(term) !== -1 || value.author.email.toLowerCase().indexOf(term) !== -1 || term === "");
+        collectionOwners = collectionOwners.filter((value) => value.owner.name !== null && (value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === ""));
+        downloaders = downloaders.filter((value) => value.owner.name !== null && (value.owner.name.toLowerCase().indexOf(term) !== -1 || value.owner.email.toLowerCase().indexOf(term) !== -1 || term === ""));
+        authors = authors.filter((value) => value.author.name !== null && (value.author.name.toLowerCase().indexOf(term) !== -1 || value.author.email.toLowerCase().indexOf(term) !== -1 || term === ""));
         
         const temp:string[] = [];
 

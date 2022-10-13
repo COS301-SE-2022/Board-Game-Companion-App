@@ -89,6 +89,6 @@
                 Endgame
             </div>
         </summary>
-        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" (updateElement)="updateElement($event)" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
     </details>
 </div>
