@@ -116,25 +116,12 @@ export class EditorComponent implements OnInit{
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    this.updateDimensions();
+    this.updateDimensions();    
 
-    this.parameters.push({
-      prompt:"Enter name",
-      type:"text"
-    })
-    
-    this.parameters.push({
-      prompt:"Enter position",
-      type:"number"
-    })
-
-    this.parameters.push({
-      prompt:"choose",
-      type:"option",
-      options:["left","middle","right","top","bottom"]
-    })
-
-    
+    this.showInput = false;
+    this.showOutput = false;
+    this.inputBlock = false;
+    this.outputBlock = false;
 
     document.dispatchEvent(new Event('editor-page'));
     this.loadModels();
@@ -350,6 +337,11 @@ setCurrPlayer(){
     code(proxy);
     this.editorStatusBar.updateWarningsCount(this.warningMessages.length);
   }
+
+  stopExecution(): void{
+    this.ngOnInit();
+  }
+
 
   async execute(): Promise<void>{
     

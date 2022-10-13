@@ -69,7 +69,8 @@ export class ReportService {
 
         if(temp.script){
             const automata = await this.automataModel.findByIdAndRemove(temp.link);
-            
+            this.reportModel.deleteMany({"link":temp.link})
+
             if(automata === null || automata === undefined)
                 return;
 
@@ -90,7 +91,8 @@ export class ReportService {
 
         }else{
             const comment = await this.commentModel.findByIdAndRemove(temp.link);
-
+            this.reportModel.deleteMany({"link":temp.link})
+            
             if(comment === null || comment === undefined)
                 return;
 

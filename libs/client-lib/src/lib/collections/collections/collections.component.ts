@@ -44,6 +44,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   maxGames = 8;
   digits = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
   carouselPage = 0;
+  width = window.innerWidth;
   widthPerGame = 12;
   selectedGame:Game[] = [];
   selectedCollection:collection[] = [];
@@ -165,18 +166,18 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
-    const width = window.innerWidth;
+    this.width = window.innerWidth;
     
-    if(width >= 1200){
+    if(this.width >= 1200){
       this.maxGames = 10;
       this.widthPerGame = 10;
-    }else if(width >= 1000){
+    }else if(this.width >= 1000){
       this.maxGames = 8;
       this.widthPerGame = 12;
-    }else if(width >= 750){
+    }else if(this.width >= 750){
       this.maxGames = 6;
       this.widthPerGame = 16;
-    }else if(width >= 450){
+    }else if(this.width >= 450){
       this.maxGames = 3;
       this.widthPerGame = 32;
     }else{
