@@ -1,14 +1,5 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
-
-// header{
-//     background-color: $Pcolour-2;
-//     color: $Pcolour-3;
-//     width: 100%;
-//     height: 5em;
-// }
-
-
 #logoName{
     margin-top: auto;
     margin-bottom: auto;
@@ -100,27 +91,6 @@ header{
     background-color:$Pcolour-2 ;
 }
 
-// ul{
-//     background-color:$Pcolour-2 ;
-// }
-
-// li{
-//     background-color:$Pcolour-2 ;
-// }
-
-// #login{
-//     margin-left: auto;
-//     float: right;
-// }
-
-// li:hover{
-//     background-color: $Pcolour-3;
-//     color: $Pcolour-2;
-
-// ul{
-//     height: 48px;
-// }
-
 li{
     height: 100%;
     font-size: 16px;
@@ -137,46 +107,6 @@ li{
     background-color: $Pcolour-3;
     color: $Pcolour-2;
 }
-
-// li:hover{
-//     background-color: $Pcolour-3;
-//     color: $Pcolour-2;
-// }
-
-
-// a{
-//     cursor: pointer;
-    
-// }
-
-// a:hover{
-//     color: $Pcolour-2;
-// }
-
-
-
-// #logo{
-//    height: 100%;
-   
-// }
-
-// label #btn, 
-// label #cancel{
-//     color: white;
-//     font-size: 30px;
-//     float: right;
-//     line-height: 78px;
-//     margin-right: 40px;
-//     cursor: pointer;
-//     display: none;
-
-// }
-
-// #check{
-//     display: none;
-// }
-
-
 
 #logs{
    height: 41px;
@@ -218,33 +148,4 @@ input:focus{
     font-size: 14px;
 }
 
-// @media (max-width: 639px){
-//     #Collections{
-//         padding-left: 21.5px;
-//         padding-right: 21.5px;
-//     }
-
-//     #BoardGames{
-//         padding: 13px;
-//     }
-
-//     #Search{
-//         padding-left:38px;
-//         padding-right:37.5px
-//     }
-
-//     #Scripts{
-//         height:100%;
-//         width:100%;
-//     }
-
-//     #GameSession{
-//         padding-right:7.5px;
-//         padding-left:7.5px;
-//     }
-
-//     .a{
-//         text-align: center;
-//     }
-// }
 

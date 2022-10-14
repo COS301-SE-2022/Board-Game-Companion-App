@@ -37,7 +37,7 @@ export class EditorService {
         const script:MyScriptDocument = await this.myScriptModel.findById(id).exec();
         
         try{
-            await this.storageService.update(script.build.key,compiledCode);
+            await this.storageService.update(script.build.key,[compiledCode]);
             await script.save();
         }catch(e){
             status = false;
@@ -104,7 +104,7 @@ export class EditorService {
                 }
 
                 await this.updateBuild(id,compiledCode.build);
-                await this.storageService.update(script.source.key,content);
+                await this.storageService.update(script.source.key,[content]);
                 
                 script.programStructure = compiledCode.programStructure;
                 script.size = script.iconSize + compiledCode.build.length + content.length;

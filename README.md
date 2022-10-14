@@ -28,47 +28,27 @@ The board game companion app allows its users to keep track of their board game 
 [![deployment](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/deploy-api.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/deploy-api.yml)
 [![codecov](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App/branch/develop/graph/badge.svg?token=DKW9SzCsnW)](https://codecov.io/gh/COS301-SE-2022/Board-Game-Companion-App)
 
-## Technologies
-
-### Repository Structure
-
-<img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" alt="logo" width="100" height="100"> <br/> <br/>
-
-### Frontend
-
-<img src="apps/client/src/assets/images/angular-icon.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-### API
-
-<img src="https://nestjs.com/img/logo_text.svg" alt="logo" width="100" height="100">
-
-### Database
-
-<img src="apps/client/src/assets/images/mongodb-log.png?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-### Hosting
-
-<img src="apps/client/src/assets/images/heroku-logo.svg?raw=true" alt="logo" width="100" height="100"> <br/> <br/>
-
-
-
 ## Demo-videos
 The following are the presentation videos for the respectives demonstrations.
 
   - Demo 1: `video presentation link`
   - Demo 2: [Demo2](https://drive.google.com/file/d/1t2zGrtizNcprd2fO6l9r3JMK6PtmsP1E/view)
   - Demo 3: [Demo3](https://drive.google.com/file/d/1G7nzcxje77nO8GkXfKUC6xlKSYnOvWtW/view?usp=sharing)
-
+  - Demo 4: [Demo4](https://drive.google.com/file/d/1HHedA5j9T-u-86fIzCYCgEiI9estrtsK/view?usp=sharing)
+  
 ## Documentation:
 ### Software Requirements Specification
 
   - Demo 1: [SRS_VERSION_1](https://drive.google.com/file/d/1tSqVyGHNXzb36830ZCIaFtKOUB1G7sgG/view?usp=sharing)
   - Demo 2: [SRS_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876302/Capstone_SRS.pdf)
   - Demo 3: [SRS_VERSION_3](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9219045/Frontend_Forerunners_SRS_V3.pdf)
+  - Demo 4: [SRS_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9679133/Capstone_SRS.pdf)
 
 ### Architectural Design
   - Demo 2: [ARCHITECTURAL_DESIGN_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8876323/Capstone_Architectural_Design.pdf)
-  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+  - Demo 3: [ARCHITECTURAL_DESIGN_VERSION 2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217163/Frontend.Forerunners.Architectural.Design.pdf)
+  - Demo 4: [ARCHITECTURAL_DESIGN_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9679141/Capstone_Architectural_Design.pdf)
+
  
 ### Coding Standards
   - Demo 2: [CODING_STANDARDS_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8877387/Coding.Standards.pdf)
@@ -77,9 +57,18 @@ The following are the presentation videos for the respectives demonstrations.
 ### User Manual
   - Demo 2: [USER_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215717/FrontendForerunners.User.Manual.pdf)
   - Demo 3: [USER_MANUAL_VERSION_2](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9215908/FrontendForerunners.User.Manual.pdf)
+  - Demo 4: [USER_MANUAL_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9683332/usermanual.pdf)
+
 
 ### Technical Installation Manuual
-  - Demo 3: [Technical_installation_manual.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+
+  - Demo 3: [TECHNICAL_INSTALLATION_MANUAL_VERSION_1](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9217137/Technical_installation_manual.pdf)
+  - Demo 4: [TECHNICAL_INSTALLATION_MANUAL_VERSION_4](https://github.com/Joseph-Makgopa/Board-Game-Companion-App/files/9683317/Technical_installation_manual.pdf)
+  
+### Testing Policy Document 
+  - [Testing Policy Document.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9681418/Testing.Policy.Document.pdf)
+
+
 
 ### Burndown Chart 
   - Planning: [Burndown_Chart.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/8883407/Burndown_Chart.pdf)
@@ -87,8 +76,11 @@ The following are the presentation videos for the respectives demonstrations.
 ## Project Management Tool
   - Project management: [Github Projects Board](https://github.com/COS301-SE-2022/Board-Game-Companion-App/projects/1)
 
+## :memo: DSL Grammar 
+- [DSL_Grammar.pdf](https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9680530/DSL_Grammar.pdf)
 
-## Profiles
+
+## :game_die: Profiles
   - Meet the Frontend Forerunners team:
 
 <h1><b>Matome Joseph Makgopa</b></h1>

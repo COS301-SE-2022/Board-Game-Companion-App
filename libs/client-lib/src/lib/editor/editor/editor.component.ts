@@ -71,6 +71,7 @@ export class EditorComponent implements OnInit{
   programStructure!:entity;
   count = 0;
   models:tfModel[] = [];
+  interrupt = false;
 
   constructor(private readonly editorService:EditorService,
               private router: Router,
@@ -116,25 +117,12 @@ export class EditorComponent implements OnInit{
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    this.updateDimensions();
+    this.updateDimensions();    
 
-    this.parameters.push({
-      prompt:"Enter name",
-      type:"text"
-    })
-    
-    this.parameters.push({
-      prompt:"Enter position",
-      type:"number"
-    })
-
-    this.parameters.push({
-      prompt:"choose",
-      type:"option",
-      options:["left","middle","right","top","bottom"]
-    })
-
-    
+    this.showInput = false;
+    this.showOutput = false;
+    this.inputBlock = false;
+    this.outputBlock = false;
 
     document.dispatchEvent(new Event('editor-page'));
     this.loadModels();
@@ -315,7 +303,8 @@ export class EditorComponent implements OnInit{
       input: this.input(),
       inputGroup: this.inputGroup(),
       output: this.output(),
-      setCurrPlayer: this.setCurrPlayer()
+      setCurrPlayer: this.setCurrPlayer(),
+      interrupt: () => { return this.interrupt; }
     }
   }
 setCurrPlayer(){
@@ -351,6 +340,12 @@ setCurrPlayer(){
     this.editorStatusBar.updateWarningsCount(this.warningMessages.length);
   }
 
+  stopExecution(): void{
+    this.interrupt = true;
+    this.ngOnInit();
+  }
+
+
   async execute(): Promise<void>{
     
     this.editorConsole.open();
@@ -361,6 +356,7 @@ setCurrPlayer(){
       // code(await this.neuralnetworks());
       this.editorService.getFileData(this.currentScript.build.location).subscribe({
         next:async(value)=>{
+          this.interrupt = false;
           this.interpreter(value);   
         },
         error:(e)=>{

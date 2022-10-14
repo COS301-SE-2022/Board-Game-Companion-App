@@ -4,7 +4,7 @@
 <board-game-companion-app-editor-console (changeHeightEvent)="updateConsoleHeight($event)" class = "console" [height]="consoleHeight" [width] = "consoleWidth" [margin] = "sideBarWidth" [bottom] = "statusBarHeight"></board-game-companion-app-editor-console>
 <board-game-companion-app-editor-status-bar (printWarningMessagesEvent)="printWarningMessages()" (printStatusMessagesEvent)="printStatusMessages()" [height] = "statusBarHeight"></board-game-companion-app-editor-status-bar>
 
-<board-game-companion-app-input-interface (submitEvent)="submitInput($event)" [show]="showInput" [parameters]="parameters"></board-game-companion-app-input-interface>
-<board-game-companion-app-output-interface (okayEvent)="okayOutput()" [show]="showOutput" [output] = "outputMessage"></board-game-companion-app-output-interface>
+<board-game-companion-app-input-interface (stopExecutionEvent)="stopExecution()" (submitEvent)="submitInput($event)" [show]="showInput" [parameters]="parameters"></board-game-companion-app-input-interface>
+<board-game-companion-app-output-interface (stopExecutionEvent)="stopExecution()" (okayEvent)="okayOutput()" [show]="showOutput" [output] = "outputMessage"></board-game-companion-app-output-interface>
 
 <board-game-companion-app-notification></board-game-companion-app-notification>

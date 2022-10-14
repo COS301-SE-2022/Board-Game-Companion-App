@@ -5,7 +5,7 @@
     position: relative;
     width: 100%;
     margin: auto;
-    height: 68%;
+    height: 87%;
 }
 
 #heading{
@@ -15,29 +15,40 @@
 
 #wrapper{
     width:50%;
-    height: 98%;
-    margin: auto;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 3em;
-    margin-bottom: 10em;
+    margin-bottom: 1em!important;
+   // border-radius: 30px;
     background-color: white;
 }
 
 #content{
-    height: 23em;
+    height: 69%;
     overflow: hidden;
 }
 
 #left{
     width: 20%;
     float: left;
+    height: 100%;
     margin-bottom: 10em;
+    //border-radius: 30px;
     background-color: white;
+}
+
+#leftContent{
+    height: 50%;
+    margin-bottom: 10em; 
 }
 
 #right{
     width: 20%;
     float: right;
+    height:100%;
     margin-bottom: 10em;
+    //border-radius: 30px;
     background-color: white;
 }
 
@@ -64,6 +75,7 @@
 #search-tools{
     background-color: $Pcolour-2;
     width: 100%;
+    //border-radius: 15px 15px 0 0;
 }
 
 
@@ -143,6 +155,7 @@
     color: white;
     font-size: 1.5em;
     font-weight: bold;
+   // border-radius: 30px 30px 0 0;
 }
 
 #rightHeader{
@@ -150,6 +163,7 @@
     color: white;
     font-size: 1.5em;
     font-weight: bold;
+    //border-radius: 30px 30px 0 0;
 }
 
 #leftContent{
@@ -170,6 +184,7 @@
 #leftBlock{
     text-overflow: ellipsis;
     width: 100%;
+    // height:100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -199,7 +214,7 @@
     text-overflow: ellipsis;
 }
 
-@media(max-width:639px){
+@media (max-width:639px){
 //    #left{
 //     width:20%;
 //     margin-left: 4px;
@@ -363,13 +378,14 @@
 //     width:60%;
 //    }
 }
-
-@media(min-width:640px){
+@media screen {
     #searchIcon{
         display:none;
     }
-
+    
     #topGames{
         display:none;
+        
     }
+
 }
