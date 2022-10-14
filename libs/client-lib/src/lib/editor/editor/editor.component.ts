@@ -196,8 +196,10 @@ export class EditorComponent implements OnInit{
       
               const inputTensor = tf.tensor2d(input,[1,input.length]);
               const normalizedInput = inputTensor.sub(min).div(max).sub(min);
+              this.models[count].model.layers
               const tensorResult = this.models[count].model.predict(normalizedInput) as tf.Tensor;
-              //tensorResult.print();
+              console.log(input);
+              tensorResult.print();
               const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
               return this.models[count].labels[index];
             }catch(err){
