@@ -44,11 +44,11 @@ export class ModelsService {
     return this.httpClient.get<neuralnetwork[]>(this.api + "models/all",{params:param});
   }
 
-  getModel(id:string): Observable<any>{
+  getModel(id:string): Observable<neuralnetwork>{
     let param = new HttpParams();
     param = param.set("id",id);  
 
-    return this.httpClient.get<any>(this.api + "models/retrieve-by-id",{params:param});
+    return this.httpClient.get<neuralnetwork>(this.api + "models/retrieve-by-id",{params:param});
   }
 
   getModelByName(name:string): Observable<neuralnetwork>{

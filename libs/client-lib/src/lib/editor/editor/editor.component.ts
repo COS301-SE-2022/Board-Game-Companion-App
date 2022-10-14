@@ -19,6 +19,7 @@ import { myScript } from '../../shared/models/scripts/my-script';
 import { EditorService } from '../../shared/services/editor/editor.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import { ModelsService } from '../../shared/services/models/models.service';
+import { file } from '../../shared/models/general/file';
 
 interface message{
   message: string;
@@ -119,11 +120,6 @@ export class EditorComponent implements OnInit{
     this.screenHeight = window.innerHeight;
     this.updateDimensions();    
 
-    this.showInput = false;
-    this.showOutput = false;
-    this.inputBlock = false;
-    this.outputBlock = false;
-
     document.dispatchEvent(new Event('editor-page'));
     this.loadModels();
   }
@@ -163,16 +159,22 @@ export class EditorComponent implements OnInit{
 
   loadModels(): void{
     this.currentScript.models.forEach((id:string) => {
+      //console.log("model-id" + id);
+      
       this.modelsService.getModel(id).subscribe({
-        next:(network:any) =>{
-          tf.loadLayersModel(network.model.location).then((value:tf.LayersModel) => {
-            this.models.push({
+        next:(network:neuralnetwork) =>{
+          const model = network.model as file;
+          console.log(model.location);
+          tf.loadLayersModel(model.location).then((value:tf.LayersModel) => {
+            const temp = {
               name:network.name,
               model:value,
               min:network.min,
               max:network.max,
               labels:network.labels
-            });
+            }
+
+            this.models.push(temp);
           }).catch((err) => {
             console.log(err);
             this.notification.add({type:"warning",message:`Failed to load neural network model '${network.name}'`});
@@ -227,7 +229,7 @@ export class EditorComponent implements OnInit{
       
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.outputBlock){
+            if(!this.outputBlock && this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -250,7 +252,7 @@ export class EditorComponent implements OnInit{
   
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.inputBlock){
+            if(!this.inputBlock && this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -266,7 +268,6 @@ export class EditorComponent implements OnInit{
 
   inputGroup(){
     return (async(parameters:inputParameters[])=>{
-      console.log(parameters);
       
       this.inputBlock = true;
       this.showInput = true;
@@ -274,7 +275,7 @@ export class EditorComponent implements OnInit{
   
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.inputBlock){
+            if(!this.inputBlock && this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -344,7 +345,10 @@ setCurrPlayer(){
 
   stopExecution(): void{
     this.interrupt = true;
-    this.ngOnInit();
+    this.showInput = false;
+    this.showOutput = false;
+    this.inputBlock = false;
+    this.outputBlock = false;
   }
 
 
