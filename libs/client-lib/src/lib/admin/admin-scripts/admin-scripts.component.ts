@@ -50,7 +50,7 @@ export class AdminScriptsComponent implements OnInit{
     }
   };
   pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: [ 'downloads', 'In Progress', 'Flagged', 'Released','Old Versions' ],
+    labels: [ 'Downloads', 'In Progress', 'Flagged', 'Released','Old Versions' ],
     datasets: [ {
       data: [ 0, 0, 0, 0, 0 ]
     } ]

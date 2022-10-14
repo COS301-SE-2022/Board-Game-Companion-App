@@ -179,11 +179,12 @@ class script
         let order = []
         //let inputElement = document.getElementById("TextOutput");
         await setCurrPlayer("GAME SETUP")
-        for(let i =0;i< this.players.length;i++)
+        
+        for(let i =0;i< this.players.length && !interrupt();i++)
         {
             
             //ask using input and output methods
-            let pIndex =await input("when will player "+this.players[i].constructor.name + " move", "text")
+            let pIndex =await input("When will player "+this.players[i].constructor.name + " move?", "text")
             pIndex = +pIndex
             order.push(pIndex)
         }
@@ -216,7 +217,7 @@ class script
                 await this.players[i].turn();
             }
         }
-        while(!await this.endgame())
+        while(!await this.endgame() && !interrupt())
 
         
     }

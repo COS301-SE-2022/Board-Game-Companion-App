@@ -34,9 +34,6 @@ export class NeuralNetwork{
     @Prop({required:true,type:{name:"",key:"",location:""}})
     model: file;
 
-    @Prop({required:true,type:{name:"",key:"",location:""}})
-    weights: file;
-
     @Prop({required:true})
     discriminator: number
 }

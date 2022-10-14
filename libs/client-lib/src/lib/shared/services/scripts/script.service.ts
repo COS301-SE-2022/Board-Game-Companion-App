@@ -23,6 +23,7 @@ export class ScriptService {
     this.url = "https://api.geekdo.com/xmlapi2/"
     // this.api = environment.baseUrl;
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
+    //this.api = "http://localhost:3333/api/"
   }
  
   // createScript(name:string,boardgame:string,files:string[])

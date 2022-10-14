@@ -12,6 +12,7 @@ export class AlertService {
               private readonly socket: Socket) { 
     // this.api = environment.baseUrl;
     this.api = "https://board-game-companion-app.herokuapp.com/api/";
+    //this.api = "http://localhost:3333/api/"
   }
 
   getAllUserMessages():Observable<alert[]>{

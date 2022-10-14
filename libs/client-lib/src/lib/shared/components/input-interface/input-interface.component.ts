@@ -10,10 +10,15 @@ export class InputInterfaceComponent implements OnInit,OnChanges{
   @Input()parameters:inputParameters[] = []
   @Input()show = false;
   @Output()submitEvent = new EventEmitter<any[]>();
+  @Output()stopExecutionEvent = new EventEmitter();
   result:any[] = [];
 
   ngOnInit(): void {
     console.log("input-interface");
+  }
+
+  stopExecution(): void{
+    this.stopExecutionEvent.emit();
   }
 
   ngOnChanges(): void {
