@@ -15,7 +15,15 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                 <i (click)="removeOperator(item)" class="fa-sharp fa-solid fa-minus cursor-pointer"></i>
             </div>  
         </div>
-        <div [class] = "item.class" [id] = "item.id">
+        <div [class] = "item.class" [id] = "item.id" [attr.item-line]="item.lineNumber">
+            <div class = "inline-flex text-xl h-0" *ngIf = "item.title === 'While' || item.title === 'doWhile'">
+                <div class = "mr-6">
+                    <i (click)="addOperator(item)" class="fa-sharp fa-solid fa-plus cursor-pointer"></i>
+                </div>
+                <div class = "ml-6">
+                    <i (click)="removeOperator(item)" class="fa-sharp fa-solid fa-minus cursor-pointer"></i>
+                </div>  
+            </div>
             <div id = "whileBackground">
                 <div id = "content">
                       <!--For Loop-->
@@ -110,8 +118,11 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
             <div class="container" id = "trueSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.true]">
                 <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;" class = "listItems" *ngFor = "let item of dests[item.true] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
             </div>
+            <div *ngIf="dests[item.false][0].inputs.length !== 8" class = "ml-8 text-2xl">
+                <i (click)="addFalse(item)" class="fa-sharp fa-solid fa-plus cursor-pointer"></i>
+            </div>
             <div *ngIf="dests[item.false][0].inputs.length === 8" class = "ml-8 text-2xl">
-                <i class="fa-sharp fa-solid fa-circle-xmark cursor-pointer"></i>
+                <i (click)="removeFalse(item)" class="fa-sharp fa-solid fa-circle-xmark cursor-pointer"></i>
             </div>
             <div *ngIf="dests[item.false][0].inputs.length === 8" class="container" id = "falseSection" dragula="COPYABLE" [(dragulaModel)]="dests[item.false]">
                 <board-game-companion-app-loop-template (updateElement)="updateElementsLoop($event)"  style = "display: flex; align-items: center;"class = "listItems" *ngFor = "let item of dests[item.false] let i = index" [item] = "item" [dest] = "dest" [dests] = "dests" [methods] = "methods" [Variables]="Variables"></board-game-companion-app-loop-template>
@@ -138,6 +149,16 @@ export class LoopTemplateComponent{
     
     arguments = []
     @Output() updateElement = new EventEmitter<string>()
+
+    addFalse(item: any)
+    {
+        this.updateElement.emit("add" + "+" + "else" + "+" + item.lineNumber)
+    }
+
+    removeFalse(item : any)
+    {
+        this.updateElement.emit("remove" + "+" + "else" + "+" + item.lineNumber)
+    }
 
     removeOperator(item : any)
     {

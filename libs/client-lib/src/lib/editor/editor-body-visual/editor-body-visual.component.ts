@@ -254,7 +254,6 @@ export class EditorBodyVisualComponent {
 
   updateElement(event : any)
   {
-    console.log(event)
     this.updateElements.emit(event)
   }
 
