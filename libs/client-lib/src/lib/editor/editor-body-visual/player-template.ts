@@ -22,7 +22,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                                 </div>
                                 <button *ngIf="Actions.length > 1" (click)="removeAction(i)" id = "removeAction"><i class="fa-solid fa-circle-xmark"></i></button>
                             </summary>
-                            <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Actions[i]" [dest] = "Actions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                            <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Actions[i]" [dest] = "Actions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                         </details>
                     </div>
                     <div id = "condition" class = "playerContainers">
@@ -32,11 +32,11 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                                     Condition <input (change)="conditionParam($event, i)" [value]="Players[Index].conditionParams[i]">
                                 </div>
                             </summary>
-                            <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Conditions[i]" [dest] = "Conditions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                            <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Conditions[i]" [dest] = "Conditions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                         </details>
                     </div>
                 </div>
-                <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="PlayerCode[0]" [dest] = "PlayerCode[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="PlayerCode[0]" [dest] = "PlayerCode[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                 <div id = "turn" class = "playerContainers">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
@@ -44,7 +44,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                                 Turn
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Turn[0]" [dest] = "Turn[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Turn[0]" [dest] = "Turn[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
             </details>
@@ -53,12 +53,12 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
 })
 
 export class PlayerTemplateComponent{
-    @Input() Actions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]] 
-    @Input() Conditions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() Turn = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() PlayerCode = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]    
-    @Input() PlayerLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() Players = [{name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]}]
+    @Input() Actions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]] 
+    @Input() Conditions = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]
+    @Input() Turn = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]
+    @Input() PlayerCode = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]    
+    @Input() PlayerLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]
+    @Input() Players = [{name: "", actionNames: [""], actionParams: [""], turnParams: [""], conditionParams: [""], actions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]], conditions: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]], turn: [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]}]
     @Input() Index = 0
     @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
@@ -77,10 +77,16 @@ export class PlayerTemplateComponent{
     @Output() conditionParams = new EventEmitter<string>()
     @Output() removeActionCondition = new EventEmitter<string>()
     @Output() addActionCondition =  new EventEmitter<number>()
+    @Output() updateElements = new EventEmitter<string>()
+
+    updateElement(event : any)
+    {
+        this.updateElements.emit(event)
+    }
 
     addAction(){
-        this.Actions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
-        this.Conditions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}])
+        this.Actions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}])
+        this.Conditions.push([{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}])
         this.Players[this.Index].actionNames.push("")
         this.Players[this.Index].actionParams.push("")
         this.Players[this.Index].conditionParams.push("")
