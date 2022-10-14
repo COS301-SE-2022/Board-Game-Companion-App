@@ -1,20 +1,20 @@
 <div class="px-2 pt-4 bg-white text-gray-700 overflow-y-scroll overflow-x-hidden" *ngIf = "networks.length > 0">
-    <div class = " border-2 border-green-800 py-1 mb-4 text-xs" *ngFor = "let network of networks">
-        <div class = "row">
+    <div class = " border-2 border-green-800 px-2 py-1 mb-4 text-xs" *ngFor = "let network of networks">
+        <div class = "row text-sm">
             <div class = "col-sm-3">
                 {{network.name}}
             </div>
-            <div class = "col-sm-8 flex flex-row">
+            <div class = "col-sm-8 flex flex-row justify-between">
                 <div *ngIf = "!training.includes(network.name)" >
                     {{formatDate(network.created)}}
                 </div>
 
                 <div class = "ml-4" *ngIf = "!training.includes(network.name)" >
-                    loss: {{network.loss === undefined ? 'unknown': network.loss.toFixed(5)}}
+                    <span class = "font-medium">Loss</span>: {{network.loss === undefined ? 'unknown': network.loss.toFixed(5)}}
                 </div>
 
                 <div class = "ml-4" *ngIf = "!training.includes(network.name)" >
-                    accuracy: {{network.accuracy.toFixed(5)}}
+                    <span class = "font-medium">Accuracy</span>: {{network.accuracy.toFixed(5)}}
                 </div>
                 
                 <div *ngIf = "training.includes(network.name)" class = "flex flex-col w-full">

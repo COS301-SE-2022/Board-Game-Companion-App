@@ -179,6 +179,7 @@ class script
         let order = []
         //let inputElement = document.getElementById("TextOutput");
         await setCurrPlayer("GAME SETUP")
+        
         for(let i =0;i< this.players.length;i++)
         {
             
@@ -216,7 +217,7 @@ class script
                 await this.players[i].turn();
             }
         }
-        while(!await this.endgame())
+        while(!await this.endgame() && !interrupt())
 
         
     }

@@ -71,6 +71,7 @@ export class EditorComponent implements OnInit{
   programStructure!:entity;
   count = 0;
   models:tfModel[] = [];
+  interrupt = false;
 
   constructor(private readonly editorService:EditorService,
               private router: Router,
@@ -302,7 +303,8 @@ export class EditorComponent implements OnInit{
       input: this.input(),
       inputGroup: this.inputGroup(),
       output: this.output(),
-      setCurrPlayer: this.setCurrPlayer()
+      setCurrPlayer: this.setCurrPlayer(),
+      interrupt: () => { return this.interrupt; }
     }
   }
 setCurrPlayer(){
@@ -339,6 +341,7 @@ setCurrPlayer(){
   }
 
   stopExecution(): void{
+    this.interrupt = true;
     this.ngOnInit();
   }
 
@@ -353,6 +356,7 @@ setCurrPlayer(){
       // code(await this.neuralnetworks());
       this.editorService.getFileData(this.currentScript.build.location).subscribe({
         next:async(value)=>{
+          this.interrupt = false;
           this.interpreter(value);   
         },
         error:(e)=>{
