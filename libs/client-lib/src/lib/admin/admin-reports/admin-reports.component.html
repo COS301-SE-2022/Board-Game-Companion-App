@@ -1,9 +1,9 @@
 <div class = "px-4 py-2 bg-white rounded-sm w-full">
     <div (click) = "showScripts = !showScripts" class = "col-sm-12 cursor-pointer hover:underline text-2xl w-full font-medium text-gray-700">Scripts</div>
 
-    <div class = "row" *ngIf = "showScripts">
-        <div class = "col-sm-3 col-md-4 relative mt-2" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
-            <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+    <div *ngIf = "showScripts" class="flex-row">
+        <div class = "w-1/3 mt-2 mr-0 inline-flex" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
+            <div class = "w-full mr-4 rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
                 <div class = "font-medium">
                     Issued By
                 </div>

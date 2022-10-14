@@ -214,7 +214,7 @@
     text-overflow: ellipsis;
 }
 
-@media(max-width:639px){
+@media (max-width:639px){
 //    #left{
 //     width:20%;
 //     margin-left: 4px;
@@ -378,14 +378,14 @@
 //     width:60%;
 //    }
 }
-
-@media(min-width:640px){
+@media screen {
     #searchIcon{
         display:none;
     }
-
+    
     #topGames{
         display:none;
+        
     }
 
 }
