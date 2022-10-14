@@ -184,7 +184,7 @@ class script
         {
             
             //ask using input and output methods
-            let pIndex =await input("when will player "+this.players[i].constructor.name + " move", "text")
+            let pIndex =await input("When will player "+this.players[i].constructor.name + " move?", "text")
             pIndex = +pIndex
             order.push(pIndex)
         }
