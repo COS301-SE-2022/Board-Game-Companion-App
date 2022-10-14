@@ -10,7 +10,9 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        
+        'Pcolour1': '#00cf0e', 
+        'Pcolour2': '#28662c',
+        'Pcolour3': '#98d20b',
       }
     },
   },
