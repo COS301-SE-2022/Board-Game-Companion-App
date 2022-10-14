@@ -9,7 +9,7 @@ import { EditorService } from '../../shared/services/editor/editor.service';
 import {EditorBodyVisualComponent} from '../editor-body-visual/editor-body-visual.component';
 import { Subscription } from 'rxjs';
 import { ConsoleLogger } from '@nestjs/common';
-import { NgForOf } from '@angular/common';
+import { LocationStrategy, NgForOf } from '@angular/common';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { Console } from 'console';
 import { CollectionsModule } from '../../collections/collections.module';
@@ -66,6 +66,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
+      switch(target.id)
+      {
+        case "codeArea":
+          this.parent = target.previousElementSibling?.getAttribute('item-line') || ""
+          this.container = target.id
+          break
+        case "doArea":
+          this.parent = target.nextElementSibling?.getAttribute('item-line') || ""
+          this.container = target.id
+          break
+      }
+
       if(target.parentElement?.parentElement != null)
       {
         switch(target.parentElement?.parentElement.className)
@@ -75,6 +87,10 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             break
           case "cardContainers":
             this.parent = "card"
+            break
+          case "listItems":
+            this.parent = target.parentElement?.previousElementSibling?.getAttribute('item-line') || ""
+            this.container = target.id
             break
         }
         switch(target.parentElement?.parentElement.id)
@@ -163,7 +179,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
-          console.log(this.created)
           switch(this.created)
           {
             case "create":
@@ -186,7 +201,19 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "effect":
                   this.addToContainer("effect", "create")
                   break
-              }
+                case "trueSection":
+                  this.addToContainer("trueSection", "create")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "create")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "create")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "create")
+                  break
+            }
               break
             case "set":
               this.addState()
@@ -207,6 +234,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   break
                 case "effect":
                   this.addToContainer("effect", "set")
+                  break
+                case "trueSection":
+                  this.addToContainer("trueSection", "set")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "set")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "set")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "set")
                   break
               }
               break
@@ -230,6 +269,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "effect":
                   this.addToContainer("effect", "input")
                   break
+                case "trueSection":
+                  this.addToContainer("trueSection", "input")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "input")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "input")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "input")
+                  break
               }
               break
             case "output":
@@ -251,6 +302,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   break
                 case "effect":
                   this.addToContainer("effect", "output")
+                  break
+                case "trueSection":
+                  this.addToContainer("trueSection", "output")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "output")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "output")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "output")
                   break
               }
               break
@@ -274,6 +337,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "effect":
                   this.addToContainer("effect", "method")
                   break
+                case "trueSection":
+                  this.addToContainer("trueSection", "method")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "method")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "method")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "method")
+                  break
               }
               break
             case "return":
@@ -295,6 +370,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   break
                 case "effect":
                   this.addToContainer("effect", "return")
+                  break
+                case "trueSection":
+                  this.addToContainer("trueSection", "return")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "return")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "return")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "return")
                   break
               }
               break
@@ -318,6 +405,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "effect":
                   this.addToContainer("effect", "for")
                   break
+                case "trueSection":
+                  this.addToContainer("trueSection", "for")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "for")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "for")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "for")
+                  break
               }
               break
             case "while":
@@ -339,6 +438,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   break
                 case "effect":
                   this.addToContainer("effect", "while")
+                  break
+                case "trueSection":
+                  this.addToContainer("trueSection", "while")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "while")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "while")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "while")
                   break
               }
               break
@@ -362,6 +473,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 case "effect":
                   this.addToContainer("effect", "do")
                   break
+                case "trueSection":
+                  this.addToContainer("trueSection", "do")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "do")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "do")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "do")
+                  break
               }
               break
             case "if":
@@ -383,6 +506,18 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   break
                 case "effect":
                   this.addToContainer("effect", "if")
+                  break
+                case "trueSection":
+                  this.addToContainer("trueSection", "if")
+                  break
+                case "falseSection":
+                  this.addToContainer("falseSection", "if")
+                  break
+                case "codeArea":
+                  this.addToContainer("codeArea", "if")
+                  break
+                case "doArea":
+                  this.addToContainer("doArea", "if")
                   break
               }
               break
@@ -406,7 +541,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let a = 0
-    console.log("yesbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
     lines.forEach((element, i) => {
       switch(con)
       {
@@ -429,9 +563,135 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     let end = 0
     let a = 0
     let c = 0
+    let open = 0
+    let start = 0
+    let elseStart = 0
     lines.forEach((element, i) => {
       switch(con)
       {
+        case "codeArea":
+        case "doArea":
+        case "trueSection":
+          {
+            if(element.includes("{") && start == 1)
+            {
+              open++
+            }
+
+            if(element.includes("}") && start == 1)
+            {
+              open--
+            }
+
+            if(start == 1 && open == 0)
+            {
+              start = 0
+              switch(type)
+              {
+                case "create":
+                  lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                  break
+                case "set":
+                  lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                  break
+                case "input":
+                  lines.splice(i,0, "\t\tinput('yes', 'text')")
+                  break
+                case "output":
+                  lines.splice(i,0, "\t\toutput('yes')")
+                  break
+                case "method":
+                  lines.splice(i,0, "\t\taddToArr(arr,0)")
+                  break
+                case "return":
+                  lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                  break
+                case "for":
+                  lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t\t{\n\t\t}\n")
+                  break
+                case "while":
+                  lines.splice(i,0,"\t\twhile(x > 0)\n\t\t{\n\t\t}\n")
+                  break
+                case "do":
+                  lines.splice(i,0,"\t\tdo\n\t\t{\n\t\t}\nwhile(x > 0)")
+                  break
+                case "if":
+                  lines.splice(i,0,"\t\tif(x > 0)\n\t\t{\n\t\t}\n\telse\n\t\t{\n\t\t}\n")
+                  break
+              }
+            }
+
+            if(+this.parent === i)
+            {
+              start = 1
+            }
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
+        case "falseSection":
+          {
+            
+            if(element.includes("{") && start == 1)
+            {
+              open++
+            }
+
+            if(element.includes("}") && start == 1)
+            {
+              open--
+            }
+
+            if(start == 1 && open == 0 && elseStart == 1)
+            {
+              start = 0
+              elseStart = 0
+              switch(type)
+              {
+                case "create":
+                  lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                  break
+                case "set":
+                  lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                  break
+                case "input":
+                  lines.splice(i,0, "\t\tinput('yes', 'text')")
+                  break
+                case "output":
+                  lines.splice(i,0, "\t\toutput('yes')")
+                  break
+                case "method":
+                  lines.splice(i,0, "\t\taddToArr(arr,0)")
+                  break
+                case "return":
+                  lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                  break
+                case "for":
+                  lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t\t{\n\t\t}\n")
+                  break
+                case "while":
+                  lines.splice(i,0,"\t\twhile(x > 0)\n\t\t{\n\t\t}\n")
+                  break
+                case "do":
+                  lines.splice(i,0,"\t\tdo\n\t\t{\n\t\t}\nwhile(x > 0)")
+                  break
+                case "if":
+                  lines.splice(i,0,"\t\tif(x > 0)\n\t\t{\n\t\t}\n\telse\n\t\t{\n\t\t}\n")
+                  break
+              }
+            }
+
+            if(+this.parent === i)
+            {
+              start = 1
+            }
+
+            if(element.includes("else") && start == 1)
+            {
+              elseStart = 1
+            }
+          }
+          this.codeEditor.setValue(lines.join("\n"))
+          break
         case "endgame":
           if (element.includes("endgame"))
           {
@@ -941,6 +1201,80 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               break
           }
           
+        }
+        break
+      case "else":
+        {
+          switch(value[0])
+          {
+            case "remove":
+              {
+                let open = 0
+                let elseStart = -1
+                let end = 0
+                let exit = true
+                let j = +value[2]
+                while(exit)
+                {
+                  if(lines[j].includes("{"))
+                  {
+                    open++
+                  }
+
+                  if(lines[j].includes("}"))
+                  {
+                    open--
+                  }
+
+                  if(open == 0 && elseStart != -1)
+                  {
+                    end = j
+                    exit = false
+                  }
+                  
+                  if(lines[j].includes("else") && open == 0)
+                  {
+                    elseStart = j
+                  }
+
+                  j++
+                }
+                lines.splice(elseStart, end - elseStart + 1)
+                this.codeEditor.setValue(lines.join("\n"))
+              }
+              break
+            case "add":
+              {
+                let open = 0
+                let elseStart = -1
+                let exit = true
+                let j = +value[2]
+                while(exit)
+                {
+                  if(lines[j].includes("{"))
+                  {
+                    open++
+                  }
+
+                  if(lines[j].includes("}"))
+                  {
+                    open--
+                  }
+
+                  if(open == 0 &&  !lines[j].includes("if") && !lines[j].includes("("))
+                  {
+                    j++
+                    elseStart = j
+                    exit = false
+                  }
+                  
+                  j++
+                }
+                lines.splice(elseStart, 0, "\telse", "\t{" , "\t}")
+                this.codeEditor.setValue(lines.join("\n"))
+              }
+              break
+          }
         }
         break
     }

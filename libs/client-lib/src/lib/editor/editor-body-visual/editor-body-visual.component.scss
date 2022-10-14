@@ -299,6 +299,10 @@
     margin: 2em;
 }
 
+.visualW #whileBackground, .visualD #whileBackground{
+    margin-top: 0;
+}
+
 .visualIf #content, .visualW #content, .visualD #content{
     overflow-y: auto;
     overflow: -moz-scrollbars-none;
