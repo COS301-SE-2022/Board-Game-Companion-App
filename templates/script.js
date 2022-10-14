@@ -180,7 +180,7 @@ class script
         //let inputElement = document.getElementById("TextOutput");
         await setCurrPlayer("GAME SETUP")
         
-        for(let i =0;i< this.players.length;i++)
+        for(let i =0;i< this.players.length && !interrupt();i++)
         {
             
             //ask using input and output methods
