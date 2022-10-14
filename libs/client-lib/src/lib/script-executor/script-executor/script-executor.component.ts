@@ -381,7 +381,8 @@ export class ScriptExecutorComponent implements OnInit {
       input: this.input(),
       inputGroup: this.inputGroup(),
       output: this.output(),
-      setCurrPlayer: this.setCurrPlayer()
+      setCurrPlayer: this.setCurrPlayer(),
+      interrupt: () => { return false}
 
     }
   }
