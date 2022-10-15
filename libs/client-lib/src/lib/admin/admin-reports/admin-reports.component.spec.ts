@@ -43,9 +43,6 @@ describe('AdminReportsComponent', () => {
       },10000);
     });
 
-    it('should format a date',()=>{
-      expect(component.formatDate(new Date())).toBeDefined();
-    });
 
     it('should return an array',()=>{
       expect((component.enumerate(5)).length).toBe(5);

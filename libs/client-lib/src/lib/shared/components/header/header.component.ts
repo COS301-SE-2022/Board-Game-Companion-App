@@ -149,6 +149,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     document.addEventListener('editor-exit',(event)=>{
       this.showHeader = true;
+      this.focus = "scripts";
     })
   }
 

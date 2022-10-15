@@ -2,14 +2,41 @@
     <div class = "col-sm-3 p-2">
         <div class="sidebar text-center font-medium rounded overflow-hidden">
             <a (click)="tab(0)" [ngClass]="{'active':section===0}">General</a>
-            <a (click)="tab(1)" [ngClass]="{'active':section===1}">Search</a>
+            <a (click)="tab(1)" [ngClass]="{'active':section===1}">Moderators</a>
+            <a (click)="tab(2)" [ngClass]="{'active':section===2}">Search</a>
         </div>
     </div>
     <div class = "col-sm-9 p-2">
-        <div *ngIf = "section === 0" class = "row w-full">
-            <div class = "col-sm-7 relative">
-                <div class = "rounded-sm px-4 py-3 mb-4 bg-white shadow-sm w-3/5">
-                    <div class = "font-medium text-gray-700 text-2xl mb-2">
+        <div class = "main-header mb-4 p-0 rounded">
+            <div class = "row mx-0">
+                <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                    {{section === 0 ? 'General' : (section === 1 ? 'Moderators' : 'Search')}}
+                </div>
+                <div class = "main-control col-sm-8">
+                    <div class = "px-2.5 py-3">                           
+                        <div *ngIf = "section===1" class="input-group relative w-full mb-2">
+                            <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
+                            <button (click) = "addModerator()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                <i class="far fa-plus fa-2x"></i>
+                            </button>
+                        </div>
+
+                        <div *ngIf = "section===2" class="input-group relative w-full">
+                            <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input border-2 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
+                            <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf = "section === 0" class = "row w-full mx-0">
+            <div class = "col-sm-5 relative">
+                <div class = "rounded px-4 py-3 mb-4 bg-white shadow-lg w-full">
+                    <div class = "font-medium text-gray-700 text-2xl mb-4">
                         Accounts
                     </div>
                     <table class = "w-full">
@@ -28,8 +55,12 @@
                     </table>
                 </div>
             </div>
-            <div class = "col-sm-5">
-                <div class = "rounded-sm bg-white p-2">
+            <div class = "col-sm-7">
+                <div class = "rounded shadow-lg w-full bg-white px-4 py-2">
+                    <div class = "font-medium text-gray-700 text-2xl mb-4">
+                        Account Types
+                    </div>
+
                     <div class="chart">
                         <canvas baseChart
                                 [data]="pieChartData"
@@ -39,22 +70,16 @@
                       </div>
                 </div>
             </div>
-            <div class = "col-sm-12">
-                <div class = "rounded-sm px-3 py-3 mt-4 bg-white shadow-sm">
-                    <div class="w-full">
-                        <div class="input-group relative w-full mb-2">
-                            <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" min = "0" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
-                            <button (click) = "addModerator()" class="btn inline-block px-3 py-1 bg-green-800 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
-                                <i class="far fa-plus fa-2x"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="w-full flex flex-wrap space-x-4">
-                        <div class = "w-64 mt-1">
-                            <div class = "w-full text-sm font-medium text-gray-700">Admin</div>
+        </div>
+
+        <div *ngIf = "section === 1" class = "row w-full mx-0">
+            <div class = "col-sm-12 w-full">
+                <div class = "row w-full bg-white rounded overflow-hidden shadow-lg p-4 mt-2 mx-0">
+                    <div class="col-sm-5 mt-2">
+                        <div class = "w-full">
+                            <div class = "w-full text-lg font-medium text-gray-800 mb-2">Admin</div>
                             <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
-                                <div (click) = "setAdmin(value)" [ngClass] = "{'bg-gray-700  text-white':selectAdmin===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-sm relative flex flex-row cursor-pointer" *ngFor = "let value of getAdmin()">
+                                <div (click) = "setAdmin(value)" [ngClass] = "{'bg-gray-700  text-white':selectAdmin===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-2 py-1 text-sm relative flex flex-row cursor-pointer" *ngFor = "let value of getAdmin()">
                                     <p>{{value.email}}</p>
                                     <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
                                         <i class="fas fa-times"></i>
@@ -62,20 +87,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "mt-1 flex items-center">
-                            <div class = "w-6 text-center">
-                                <div (click) = "moveAdmin()" [ngClass] = "{'bg-gray-400':selectAdmin===undefined,'bg-green-800':selectAdmin !== undefined}" class = "w-full rounded-md shadow-sm hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer">
+                    </div>
+
+                    <div class="col-sm-2 mt-2">
+                        <div class = "w-full h-full flex items-center text-center">
+                            <div class = "w-6 text-center mx-auto">
+                                <div (click) = "moveAdmin()" [ngClass] = "{'bg-gray-700':selectAdmin===undefined,'bg-green-800':selectAdmin !== undefined}" class = "w-full rounded-md shadow-sm hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer">
                                     <i class="fas fa-angle-right"></i>
                                 </div>
-                                <div (click) = "moveModerator()" [ngClass] = "{'bg-gray-400':selectModerator===undefined,'bg-green-800':selectModerator !== undefined}" class = "w-full rounded-md shadow-sm bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer mt-2">
+                                <div (click) = "moveModerator()" [ngClass] = "{'bg-gray-700':selectModerator===undefined,'bg-green-800':selectModerator !== undefined}" class = "w-full rounded-md shadow-sm bg-green-800 hover:scale-105 hover:bg-green-500 text-white text-sm text-center cursor-pointer mt-2">
                                     <i class="fas fa-angle-left"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class = "w-64 mt-1">
-                            <div class = "w-full text-sm font-medium text-gray-700">Moderator</div>
+                    </div>
+
+                    <div class="col-sm-5 mt-2">
+                        <div class = "w-full">
+                            <div class = "w-full text-lg font-medium text-gray-800 mb-2">Moderator</div>
                             <div class = "w-full bg-white h-32 shadow-sm border-2 overflow-y-scroll">
-                                <div (click) = "setModerator(value)" [ngClass] = "{'bg-gray-700 text-white':selectModerator===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-1 text-xs relative cursor-pointer flex flex-row" *ngFor = "let value of getModerators()">
+                                <div (click) = "setModerator(value)" [ngClass] = "{'bg-gray-700 text-white':selectModerator===value}" class = "hover:bg-gray-500 hover:text-white w-full h-6 text-gray-700 px-2 py-1 text-xs relative cursor-pointer flex flex-row" *ngFor = "let value of getModerators()">
                                     <p>{{value.email}}</p>
                                     <div class = "absolute right-0 mr-2 hover:text-red-800" (click) = "removeModerator(value)">
                                         <i class="fas fa-times"></i>
@@ -88,89 +119,76 @@
             </div>
         </div>
 
-        <div *ngIf = "section === 1" class = "row w-full">
-            <div class = "col-sm-12">
-                <div class = "w-full rounded-sm bg-white p-2">
-                    <div class="input-group relative w-full">
-                        <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input border-2 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
-                        <button (click) = "search()" class="bg-green-800 btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                    <div *ngIf = "searching" class="row mt-4">
-                        <div *ngIf = "searching" class = "col-sm-12 h-48 justify-center flex items-center">
-                            <i class="fas fa-spinner fa-pulse fa-10x" data-toggle="tooltip" title="downloading"></i>
-                        </div>
-                    </div>
-                    <div *ngIf = "!searching" class = "row mt-4">
-                        <div class = "col-sm-4 col-md-3 col-lg-3 mt-2" *ngFor = "let sub of enumerate(searchResults.length) | paginate: { itemsPerPage: 8, currentPage: page }">
-                            <div class = "text-gray-700 text-xs rounded-md shadow-md hover:scale-105 red-fade p-2" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
-                                <div class = "mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Names:
-                                    </div>
-                                    <div class = "text-xs text-white">
-                                        {{searchResults[sub].name}}
-                                    </div>
-                                </div>
-                                <div class = "mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Email:
-                                    </div>
-                                    <div class = "text-xs text-white overflow-hidden">
-                                        {{searchResults[sub].email}}
-                                    </div>
-                                </div>
-                                <div class = "flex flex-wrap mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Downloads:
-                                    </div>
-                                    <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                        {{searchResults[sub].downloads}}
-                                    </div>
-                                </div>
-                                <div class = "flex flex-wrap mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Collections:
-                                    </div>
-                                    <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                        {{searchResults[sub].collections}}
-                                    </div>
-                                </div>
-                                <div class = "flex flex-wrap mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Authored:
-                                    </div>
-                                    <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                        {{searchResults[sub].authored}}
-                                    </div>
-                                </div>
-                                <div class = "flex flex-wrap mx-1 my-0.5">
-                                    <div class = "font-medium">
-                                        Models:
-                                    </div>
-                                    <div class = "ml-2.5 mt-0.5 text-xs text-white">
-                                        {{searchResults[sub].models}}
-                                    </div>
-                                </div>
-                                <div class = "flex flex-row justify-end mx-1 mt-4">
-                                    <div (click) = "setAccount(searchResults[sub])" data-bs-toggle="modal" data-bs-target="#warnModal" data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                    <div *ngIf = "!searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "ban(searchResults[sub])" data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
-                                        <i *ngIf= "!banning.includes(searchResults[sub].email)" class="fa fa-lock"></i>
-                                        <i *ngIf= "banning.includes(searchResults[sub].email)" class = "fas fa-spinner fa-pulse"></i>
-                                    </div>
-                                    <div *ngIf = "searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "unban(searchResults[sub])" data-toggle="tooltip" title="unban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
-                                        <i class="fa fa-unlock"></i>
-                                    </div>
-                                </div>
+        <div *ngIf = "section === 2" class = "row w-full mx-0">
+            <div class = "col-sm-3 mt-2" *ngFor = "let sub of enumerate(searchResults.length) | paginate: { itemsPerPage: 8, currentPage: page }">
+                <div class = "rounded shadow-lg overflow-hidden hover:scale-105 bg-white">
+                    <div class = "w-full rounded shadow-lg overflow-hidden hover:scale-105 p-2 text-xs text-gray-700" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+                        <div class = "mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Names:
+                            </div>
+                            <div class = "text-xs text-white">
+                                {{searchResults[sub].name}}
                             </div>
                         </div>
-        
-                        <pagination-controls *ngIf = "searchResults.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>
+                        <div class = "mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Email:
+                            </div>
+                            <div class = "text-xs text-white overflow-hidden">
+                                {{searchResults[sub].email}}
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Downloads:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                {{searchResults[sub].downloads}}
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Collections:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                {{searchResults[sub].collections}}
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Authored:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                {{searchResults[sub].authored}}
+                            </div>
+                        </div>
+                        <div class = "flex flex-wrap mx-1 my-0.5">
+                            <div class = "font-medium">
+                                Models:
+                            </div>
+                            <div class = "ml-2.5 mt-0.5 text-xs text-white">
+                                {{searchResults[sub].models}}
+                            </div>
+                        </div>
+                        <div class = "flex flex-row justify-end mx-1 mt-4">
+                            <div (click) = "setAccount(searchResults[sub])" data-bs-toggle="modal" data-bs-target="#warnModal" data-toggle="tooltip" title="warn" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-800 text-sm px-2.5 py-0.5">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div *ngIf = "!searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "ban(searchResults[sub])" data-toggle="tooltip" title="ban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
+                                <i *ngIf= "!banning.includes(searchResults[sub].email)" class="fa fa-lock"></i>
+                                <i *ngIf= "banning.includes(searchResults[sub].email)" class = "fas fa-spinner fa-pulse"></i>
+                            </div>
+                            <div *ngIf = "searchResults[sub].banned && !isAdmin(searchResults[sub])" (click) = "unban(searchResults[sub])" data-toggle="tooltip" title="unban" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 text-sm px-2.5 py-0.5 ml-2">
+                                <i class="fa fa-unlock"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div class = "col-sm-12 mt-4">
+                <pagination-controls *ngIf = "searchResults.length > 8" class="d-flex justify-content-center border-2" (pageChange)="page = $event"></pagination-controls>
             </div>
         </div>
     </div>

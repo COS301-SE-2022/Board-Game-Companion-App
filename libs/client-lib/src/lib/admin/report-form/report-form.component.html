@@ -1,5 +1,5 @@
-<div class = "w-full rounded-sm overflow-hidden shadow-sm text-gray-700 h-52 hover:scale-105 text-sm bg-white">
-    <div class = "w-full h-full" [ngClass] = "{'red-fade':index % 5 === 0 || index % 5 === 3,'blue-fade':index % 5 === 1,'green-fade':index % 5 === 2,'silver-fade':index % 5 === 4}">
+<div class = "w-full rounded overflow-hidden shadow-lg text-gray-700 h-52 hover:scale-105 text-sm bg-white">
+    <div class = "w-full h-full relative rounded shadow-lg p-2" [ngClass] = "{'red-fade':index % 5 === 0 || index % 5 === 3,'blue-fade':index % 5 === 1,'green-fade':index % 5 === 2,'silver-fade':index % 5 === 4}">
         <div class = "font-medium">
             Issued By
         </div>
@@ -21,15 +21,15 @@
             {{current.message}}
         </div>
 
-        <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
-            <div (click) = "flag(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
-                Flag
+        <div class = "absolute right-2 left-2 bottom-0 justify-between justify-left flex flex-row py-1.5 px-2 text-xs">
+            <div data-toggle="flag" title="profile" (click) = "flag(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
+                <i class="fas fa-flag"></i>
             </div>
-            <div (click) = "view(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
-                View
+            <div *ngIf = "current.script" data-toggle="view" title="profile" (click) = "view(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
+                <i class="fas fa-eye"></i>
             </div>
-            <div (click) = "ignore(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
-                Ignore
+            <div data-toggle="tooltip" title="ignore" (click) = "ignore(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
+                <i class="fas fa-trash"></i>
             </div>
         </div>
     </div>
