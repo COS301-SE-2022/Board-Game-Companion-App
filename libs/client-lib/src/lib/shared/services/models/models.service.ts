@@ -46,8 +46,6 @@ export class ModelsService {
 
   getModel(id:string): Observable<any>{
     let param = new HttpParams();
-    param = param.set("userName",sessionStorage.getItem("name") as string);
-    param = param.set("userEmail",sessionStorage.getItem("email") as string);
     param = param.set("id",id);  
 
     return this.httpClient.get<any>(this.api + "models/retrieve-by-id",{params:param});
