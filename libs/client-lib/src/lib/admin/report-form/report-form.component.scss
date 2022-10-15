@@ -1,0 +1,29 @@
+@import 'apps/client/src/assets/globalstylesheet/global';
+
+.wrapper{
+	background-color: $Pcolour-2;
+}
+
+.send-button{
+	background-color: $Pcolour-1;
+}
+
+.red-fade{
+    background-color: rgba(red,0.4);
+}
+
+.blue-fade{
+    background-color: rgba(blue,0.4)
+}
+
+.green-fade{
+    background-color: rgba(green,0.4);
+}
+
+.magenta-fade{
+    background-color: rbga(magenta,0.4);
+}
+
+.silver-fade{
+    background-color: rgba(maroon,0.4);
+}
