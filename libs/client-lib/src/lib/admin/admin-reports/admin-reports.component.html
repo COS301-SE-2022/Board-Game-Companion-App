@@ -89,13 +89,13 @@
 </div> -->
 <div class = "row">
     <div class = "col-sm-3 p-2">
-        <div class="sidebar text-center font-medium">
+        <div class="sidebar text-center font-medium rounded overflow-hidden">
             <a (click)="tab(0)" [ngClass]="{'active':section===0}">Scripts</a>
             <a (click)="tab(1)" [ngClass]="{'active':section===1}">Comments</a>
         </div>
     </div>
     <div class = "col-sm-9 py-2 px-4">
-        <div class = "row main-header mb-4 p-0">
+        <div class = "row main-header mb-4 p-0 rounded">
             <div class = "main-header-title py-2.5 col-sm-6 font-bold text-white text-4xl text-left">
                 {{section === 0 ? 'Scripts' : 'Comments'}}
             </div>
