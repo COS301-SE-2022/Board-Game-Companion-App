@@ -80,6 +80,7 @@ export class EditorBodyVisualComponent {
     {name: 'activate', arguments: 2},
     {name: 'removeFromArr', arguments: 2},
     {name: 'chooseAction', arguments: 2},
+    {name: 'consider:', arguments: 1}
   ]
 
   addNewPlayer()

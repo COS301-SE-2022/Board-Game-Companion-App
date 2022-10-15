@@ -63,6 +63,26 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   }
 
   ngOnInit(): void {
+
+    this.dragula.add(this.dragulaService.remove('COPYABLE')
+    .subscribe(({name, el, container, source}) => {
+      let exit = true
+      let j = 0
+      while(exit)
+      {
+        const c = el.childNodes[j] as HTMLElement
+        if(c.nodeName != "#comment" && c.hasAttribute("item-line"))
+        {
+          this.removeFromContainer( c.getAttribute('item-line') || '', c.className)
+          exit = false
+        }
+        j++
+      }
+     
+      
+    }))
+
+
     this.dragula.add(this.dragulaService.drop('COPYABLE')
     .subscribe(({name, el, target, source, sibling}) => {
       //Check if new element added or swapping elements
@@ -537,24 +557,117 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     }
   }
 
-  removeFromContainer(con : string)
+  removeFromContainer(line : string, type : string)
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    let a = 0
-    lines.forEach((element, i) => {
-      switch(con)
-      {
-        case "endgame":
-          if (element.includes("endgame"))
-          {
-            a++
-          }
-          if(a > 0 && element == "}")
-          {
-            lines.splice(i-1,1)
-          }
-      }
-    })
+    let open = 0
+    let start = 0
+    let end = 0
+    switch(type)
+    {
+      case "visualC":
+      case "visualS":
+      case "visualIn":
+      case "visualO":
+      case "visualM":
+      case "visualR":
+        lines.splice(+line,1)
+        this.codeEditor.setValue(lines.join("\n"))
+        break
+      case "visualIf":
+        {
+          lines.forEach((element, i) => {
+            if(element.includes("{") && start == 1)
+            {
+              open++
+            }
+
+            if(element.includes("}") && start == 1)
+            {
+              open--
+            }
+
+            if(open == 0 && start == 1)
+            {
+              end = i
+              start = 0
+            }
+
+            if(element.includes("else"))
+            {
+              start = 1
+            }
+
+            if(+line === i)
+            {
+              start = 1
+            }
+
+          })
+         lines.splice(+line, end - (+line) + 1)
+         this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "visualF":
+      case "visualW":
+        {
+          lines.forEach((element, i) => {
+            if(element.includes("{") && start == 1)
+            {
+              open++
+            }
+
+            if(element.includes("}") && start == 1)
+            {
+              open--
+            }
+
+            if(open == 0 && start == 1)
+            {
+              end = i
+              start = 0
+            }
+
+            if(+line === i)
+            {
+              start = 1
+            }
+
+          })
+         lines.splice(+line, end - (+line) + 1)
+         this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+      case "visualD":
+        {
+          lines.forEach((element, i) => {
+            if(element.includes("{") && start == 1)
+            {
+              open++
+            }
+
+            if(element.includes("}") && start == 1)
+            {
+              open--
+            }
+
+            if(open == 0 && start == 1)
+            {
+              end = i
+              start = 0
+            }
+
+            if(+line === i)
+            {
+              start = 1
+            }
+
+          })
+         lines.splice(+line, end - (+line) + 2)
+         this.codeEditor.setValue(lines.join("\n"))
+        }
+        break
+    }
   }
 
   addToContainer(con : string, type : string)
@@ -1126,6 +1239,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         {
           const c = lines[+value[2]].split(/,/).filter(a => a !== '')
           const o = this.editorVisual.methods.find(a => a.name === value[0])
+          console.log(c)
+          console.log(o)
           let count = ""
           if(o != null)
           {
@@ -1137,7 +1252,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                 count = count + ", val"
               }
             }
-            lines[+value[2]] = "\t" + o.name + "(val1" + count + ")"
+            if(o.name == "consider:")
+            {
+              lines[+value[2]] = "\t" + o.name + "this.State.board"
+            }
+            else
+            {
+              lines[+value[2]] = "\t" + o.name + "(val1" + count + ")"
+            }
+            
           }
           this.codeEditor.setValue(lines.join("\n"))
         }
@@ -2110,11 +2233,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     } 
   }
 
+
+
   methodCreation(lines: string[], j : number, l : string[], openIf : number, ifContains: number, player: number, action: number, method : string, parent : string, card : number)
   {
     const id = this.getEID()
     const call = this.editorVisual.methods.find(method => method.name === l[1].substring(0, l[1].indexOf("(")))
-    if(call != null)
+    if(l[1].includes("consider:"))
+    {
+      this.editorVisual.Players[player].conditions[action].push({title: 'Call', class: 'visualM', id: id, inputs: ["consider:", "1", l[1].substring(l[1].indexOf(":") + 1),"","","","",""], pos: 0, true: 0, false: 0, lineNumber: j.toString()})
+    }
+    else if(call != null)
     {
       if(call.arguments === 1)
       {
@@ -3050,8 +3179,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             if(!lines[j].includes("condition") && !lines[j].includes("{") && openCondition != 0)
             {
               const l = lines[j].split(/\s+/)
+              //Consider
+              if(lines[j].includes("consider:"))
+              {
+                this.methodCreation(lines, j, l, openIfPlayer, ifContains[ifContains.length-1].numberOfIf, player, action, method, parent , card)
+              }
               //Create
-              if(l[1] == "let")
+              else if(l[1] == "let")
               {
                 switch(parent)
                 {
