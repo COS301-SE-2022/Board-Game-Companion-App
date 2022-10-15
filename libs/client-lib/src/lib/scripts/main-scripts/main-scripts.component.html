@@ -2,14 +2,14 @@
     <div id = "scripts-container" class = "container mt-4">
         <div class = "row">
             <div class = "col-sm-3 p-2">
-                <div class="sidebar text-center font-medium">
+                <div class="sidebar text-center font-medium rounded overflow-hidden">
                     <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
                     <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
                     <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
                 </div>
             </div>
             <div class = "col-sm-9 p-2 flex flex-col">
-                <div class = "main-header mb-4 p-0">
+                <div class = "main-header mb-4 p-0 rounded">
                     <div class = "row">
                         <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
                             {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}}

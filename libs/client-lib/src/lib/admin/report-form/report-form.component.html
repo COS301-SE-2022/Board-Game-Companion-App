@@ -1,0 +1,38 @@
+<div class = "w-full rounded-sm overflow-hidden shadow-sm text-gray-700 h-52 hover:scale-105 text-sm bg-white">
+    <div class = "w-full h-full" [ngClass] = "{'red-fade':index % 5 === 0 || index % 5 === 3,'blue-fade':index % 5 === 1,'green-fade':index % 5 === 2,'silver-fade':index % 5 === 4}">
+        <div class = "font-medium">
+            Issued By
+        </div>
+        <div class = "text-white text-xs">
+            {{current.user.name}}
+        </div>
+
+        <div class = "font-medium">
+            Date Issued
+        </div>
+        <div class = "text-white text-xs">
+            {{formatDate(current.dateIssued)}}
+        </div>
+
+        <div class = "font-medium">
+            Message
+        </div>
+        <div class = "text-white text-xs">
+            {{current.message}}
+        </div>
+
+        <div class = "absolute bottom-0 w-full justify-end space-x-2 flex flex-row py-1.5 px-4 text-xs font-medium">
+            <div (click) = "flag(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                Flag
+            </div>
+            <div (click) = "view(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                View
+            </div>
+            <div (click) = "ignore(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2.5 py-0.5">
+                Ignore
+            </div>
+        </div>
+    </div>
+</div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

@@ -8,6 +8,23 @@
     flex-direction: column;
 }
 
+#yourGames{
+    border: 1px solid rgba(43, 43, 43, 0.568);
+}
+
+#yourGames:before {
+    position: absolute;
+    content: '';
+    background: inherit;
+    height: 90%;
+    width: 90%;
+    z-index: -10;
+    box-shadow: inset 0 0 0 3000px rgba(150, 150, 150, 0.192);
+    filter: blur(20px);
+    border-radius: 15px;
+}
+
+
 h1{
     font-size: xxx-large;
     text-decoration: underline;
@@ -194,10 +211,10 @@ i{
         margin-bottom:1em;
     }
 
-    #heading{
-        width:90%;
-        height:60%;
-    }
+    // #heading{
+    //     width:90%;
+    //     height:60%;
+    // }
 
     #explore{
         width: 15%;
