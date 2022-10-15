@@ -66,8 +66,8 @@ export class ApiModelsController {
     }
 
     @Get('retrieve-by-id')
-    async getModel(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<NeuralNetwork>{
-      return this.modelsService.getModel({name:userName,email:userEmail},id);
+    async getModel(@Query('id')id:string):Promise<NeuralNetwork>{
+      return this.modelsService.getModel(id);
     }
 
     @Get('retrieve-by-name')

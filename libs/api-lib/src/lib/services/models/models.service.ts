@@ -65,8 +65,8 @@ export class ModelsService {
         return this.networkModel.findByIdAndRemove(id);
     }
 
-    async getModel(user:user,id:string):Promise<NeuralNetwork>{
-        return this.networkModel.findOne({"creator.email":user.email,"creator.name":user.name,"_id":id});
+    async getModel(id:string):Promise<NeuralNetwork>{
+        return this.networkModel.findById(id);
     }
 
     async getModelByName(user:user,name:string):Promise<NeuralNetwork>{
