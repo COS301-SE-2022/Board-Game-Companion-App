@@ -27,10 +27,7 @@ export class ApiFileManagerController {
                     fs.writeFileSync(tempPath + name,file.data[1],{encoding:'base64'});
             }
 
-            
-            const tempFile = fs.createReadStream(tempPath + file.name);
-
-            return new StreamableFile(tempFile);
+            return new StreamableFile(fs.createReadStream(tempPath + name));
         }else{
             throw new HttpException("Not Found",HttpStatus.NOT_FOUND);
         }
