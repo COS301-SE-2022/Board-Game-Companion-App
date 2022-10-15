@@ -154,6 +154,7 @@ export class EditorComponent implements OnInit{
 
   updateScript(value:myScript): void{
     this.currentScript = value;
+    this.loadModels();
   }
 
 
@@ -200,7 +201,7 @@ export class EditorComponent implements OnInit{
               const normalizedInput = inputTensor.sub(min).div(max).sub(min);
               this.models[count].model.layers
               const tensorResult = this.models[count].model.predict(normalizedInput) as tf.Tensor;
-              console.log(input);
+    
               tensorResult.print();
               const index = Array.from(tf.argMax(tensorResult,1).dataSync())[0];
               return this.models[count].labels[index];
@@ -226,10 +227,10 @@ export class EditorComponent implements OnInit{
       this.outputBlock = true;
       this.showOutput = true;
       this.outputMessage = value;
-      
+
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.outputBlock && this.interrupt){
+            if(!this.outputBlock || this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -252,7 +253,7 @@ export class EditorComponent implements OnInit{
   
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.inputBlock && this.interrupt){
+            if(!this.inputBlock || this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
@@ -275,7 +276,7 @@ export class EditorComponent implements OnInit{
   
       const pause = new Promise((resolve)=>{
         const interval = setInterval(()=>{
-            if(!this.inputBlock && this.interrupt){
+            if(!this.inputBlock || this.interrupt){
                 clearInterval(interval);
                 resolve("Okay");
             }
