@@ -77,16 +77,16 @@ describe('AutomataScriptComponent', () => {
 
   }));
 
-  it('routes tests',()=>{
-    const router = TestBed.inject(Router);
-    const navRoute = jest.spyOn(router,'navigate');
+  // it('routes tests',()=>{
+  //   const router = TestBed.inject(Router);
+  //   const navRoute = jest.spyOn(router,'navigate');
     
-    component.showInfo(autoScript[0]);
-    expect(navRoute).toHaveBeenCalledWith(['script-detail'], { state: { value: autoScript[0] } });
-    component.showEditor(autoScript[0]);
-    expect(navRoute).toHaveBeenCalledWith(['editor'],{ state: { value: autoScript[0] } });
-    component.play(autoScript[0]);
-    expect(navRoute).toHaveBeenCalledWith(['script-exec'], { state: { value: autoScript[0] } });
-  });
+  //   component.showInfo(autoScript[0]);
+  //   expect(navRoute).toHaveBeenCalledWith(['script-detail'], { state: { value: autoScript[0] } });
+  //   component.showEditor(autoScript[0]);
+  //   expect(navRoute).toHaveBeenCalledWith(['editor'],{ state: { value: autoScript[0] } });
+  //   component.play(autoScript[0]);
+  //   expect(navRoute).toHaveBeenCalledWith(['script-exec'], { state: { value: autoScript[0] } });
+  // });
 
 });
