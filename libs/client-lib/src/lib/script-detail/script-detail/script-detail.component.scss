@@ -90,7 +90,8 @@ img{
     }
 
     #downrate{
-        
+        display:flex;
+        flex-direction: row;
         width:100%;
         //row-gap: 24px;
     }
@@ -99,18 +100,19 @@ img{
         display:flex;
         float:left;
         flex-direction: column;
-        width:100%;
+        width:45%;
         gap:10px;
         //height:20%;
     }
 
+    
     #rate{
         display:flex;
         float:right;
         flex-direction: column;
-        height: 100%;
-        width:100%;
+        width:45%;
         margin-bottom:24px;
+        margin-left: 30px;
         
        // height:40%;
     }
@@ -121,15 +123,15 @@ img{
 
     #outerStar{
         height:100%;
-        width:100%;
+        width:60%;
         //align-items: center;
         //border: 3px solid yellow;
         display: flex;
-        padding: 2em;
+        //padding: 2em;
         //margin-left: auto;
         //margin-right: auto;
         align-items: center;
-        justify-content: center;
+       // justify-content: center;
     }
 
    

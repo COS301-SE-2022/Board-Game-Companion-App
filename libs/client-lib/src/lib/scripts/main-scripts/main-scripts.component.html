@@ -1,18 +1,18 @@
 <div id = "scripts-wrapper">
     <div id = "scripts-container" class = "container mt-4">
         <div class = "row">
-            <div class = "col-sm-3 p-2">
+            <div id="sideBar" class = "col-sm-3 p-2">
                 <div class="sidebar text-center font-medium">
                     <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
                     <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
                     <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
                 </div>
             </div>
-            <div class = "col-sm-9 p-2 flex flex-col">
+            <div id="header" class = "col-sm-9 p-2 flex flex-col">
                 <div class = "main-header mb-4 p-0">
                     <div class = "row">
-                        <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
-                            {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}}
+                        <div id="mainHeader" class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                            {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}} <button><i id="symbol" class="fa-solid fa-caret-down"></i></button>
                         </div>
                         <div class = "main-control col-sm-8">
                             <div class = "px-2.5 py-3 flex flex-row">                           

@@ -155,7 +155,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
 
-    this.width = window.innerWidth;
+    this.width = window.innerWidth; //listens for window size 
   }
 
 

@@ -63,3 +63,17 @@
 .wrapper{
   background-color: $Pcolour-2;
 }
+
+@media(min-width:640px){
+  #symbol{
+    display:none;
+  }
+}
+
+@media(max-width:639px){
+  
+
+  #symbol{
+    margin-left : 25px;
+  }
+}
