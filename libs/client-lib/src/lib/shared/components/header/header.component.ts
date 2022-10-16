@@ -188,6 +188,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       else
       {
         this.loggedIn = false;
+        this.alerts = [];
         this.gapi.signOut();
         this.socket.emit("logout",sessionStorage.getItem("email"))
         sessionStorage.removeItem("name");

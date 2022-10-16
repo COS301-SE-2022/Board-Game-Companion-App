@@ -8,6 +8,25 @@
             </div>
         </div>
         <div class = "col-sm-9 p-2">
+            <div class = "main-header mb-4 p-0 rounded">
+                <div class = "row mx-0">
+                    <div class = "main-header-title py-1 col-sm-4 font-bold text-white text-4xl text-center">
+                        {{tab === 0 ? 'General' : 'Train'}}
+                    </div>
+                    <div class = "main-control col-sm-8">
+                        <div class = "px-2.5 py-2.5">                           
+                            <div *ngIf = "tab===0" class="input-group relative w-full mb-2">
+                                <input autocomplete="off" (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="search" aria-describedby="email-input">
+                                <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                    <i class="far fa-plus fa-2x"></i>
+                                </button>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
             <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
             <!-- <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload> -->
