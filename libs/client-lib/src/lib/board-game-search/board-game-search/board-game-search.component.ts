@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BggSearchService,MostActive } from '../bgg-search-service/bgg-search.service';
 import { SearchResult } from '../../shared/models/general/search-result';
 import { XmlParser } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
+import { NotificationComponent } from '../../shared/components/notification/notification.component';
 
 @Component({
   selector: 'board-game-companion-app-board-game-search',
@@ -27,22 +28,69 @@ export class BoardGameSearchComponent implements OnInit {
   boardsPerPage = 14;
   size = 0;
   exactMatch = false;
+  loadingContent = false;
+  countLoadedContent = 0;
+  loadingTopGames = false;
+  countLoadedTopGames = 0;
+  loadingRecentlyViewed = false;
+  countLoadedRecentlyViewed = 0;
+  @ViewChild(NotificationComponent,{static:true}) notifications!: NotificationComponent;
 
   constructor(private readonly searchService:BggSearchService, private router:Router, private route:ActivatedRoute) {
+  }
+
+  doneContent(): void{
+    this.countLoadedContent++;
+    if(this.countLoadedContent === this.show.length)
+      this.loadingContent = false;
+  }
+
+  doneTopGames(): void{
+    this.countLoadedTopGames++;
+
+    if(this.countLoadedTopGames === this.show2.length)
+      this.loadingTopGames = false;
+  }
+
+  doneRecentlyViewed(): void{
+    this.countLoadedRecentlyViewed++;
+
+    if(this.countLoadedRecentlyViewed === this.listResults.length)
+      this.loadingRecentlyViewed = false;
   }
 
   ngOnInit(): void {
     // console.log("----->::"+ this.mostActive.length);
     if(this.mostActive.length == 0){
-      this.searchService.getMostActive().subscribe(result =>{
-        this.contentType = "Most Active";
-        this.mostActive = this.searchService.parseMostActive(result.toString());
-        this.show = this.mostActive.slice(0,this.boardsPerPage);
-        this.show2 = this.mostActive.slice(0,4);
-        this.size = this.mostActive.length;
+      this.loadingContent = true;
+      this.loadingTopGames = true;
+      this.countLoadedContent = 0;
+      this.countLoadedTopGames = 0;
+
+      this.searchService.getMostActive().subscribe({
+        next:(result) => {
+          this.contentType = "Most Active";
+          this.mostActive = this.searchService.parseMostActive(result.toString());
+          this.show = this.mostActive.slice(0,this.boardsPerPage);
+          this.show2 = this.mostActive.slice(0,4);
+          this.size = this.mostActive.length;
+        },
+        error:() => {
+          alert()
+          this.notifications.add({type:"warning",message:"Failed to most popular boardgames"})
+          this.loadingContent = false;
+          this.loadingTopGames = false;
+        }
       });
 
+      this.loadingRecentlyViewed = true;
+      this.countLoadedRecentlyViewed = 0;
+
       this.visited = JSON.parse(localStorage.getItem("recentlyVisited")||"");
+      
+      if(this.visited.length === 0)
+        this.loadingRecentlyViewed = false;
+
       for(let j = 0; j<this.visited.length; j++)
       {
         
@@ -162,42 +210,54 @@ export class BoardGameSearchComponent implements OnInit {
     let retrieved = 0;
     let required = 0;
 
-    this.searchService.getBoardGameByName(this.searchValue,this.exactMatch).subscribe(result=>{
-      const temp:MostActive[] = this.searchService.parseGetBoardGameByName(result.toString());
-      required = temp.length;
-      this.mostActive = [];
+    this.loadingContent = true;
+    this.countLoadedContent = 0;
 
-      for(let count = 0; count < temp.length; count++){
-        this.searchService.getBoardGameById(temp[count].id).subscribe(result=>{
-          retrieved++;
-          this.mostActive.push(this.searchService.parseGetBoardGameById(result));
-          
-          if(this.mostActive[this.mostActive.length - 1].image === ''){
-            this.mostActive[this.mostActive.length - 1].image = 'assets/images/logo.png';
-          }
-
-          if(retrieved == required){
-            this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
-            this.sort();
-            this.show = this.mostActive.slice(0,this.boardsPerPage);
-            this.size = this.mostActive.length;
-
-            dispatchEvent(new Event('reloadPagination'));
-            
-            this.ngOnInit();
-          }
-        },error =>{
-          console.log(error);
-          retrieved++;
-          if(retrieved == required){
-            this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
-            this.sort();
-            this.show = this.mostActive.slice(0,this.boardsPerPage);
-            this.size = this.mostActive.length;
-            dispatchEvent(new Event('reloadPagination'));
-            this.ngOnInit();
-          }
-        });
+    this.searchService.getBoardGameByName(this.searchValue,this.exactMatch).subscribe({
+      next:(result) => {
+        const temp:MostActive[] = this.searchService.parseGetBoardGameByName(result.toString());
+        required = temp.length;
+        this.mostActive = [];
+  
+        for(let count = 0; count < temp.length; count++){
+          this.searchService.getBoardGameById(temp[count].id).subscribe({
+            next:(result) => {
+              retrieved++;
+              this.mostActive.push(this.searchService.parseGetBoardGameById(result));
+              
+              if(this.mostActive[this.mostActive.length - 1].image === ''){
+                this.mostActive[this.mostActive.length - 1].image = 'assets/images/logo.png';
+              }
+    
+              if(retrieved == required){
+                this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
+                this.sort();
+                this.show = this.mostActive.slice(0,this.boardsPerPage);
+                this.size = this.mostActive.length;
+    
+                dispatchEvent(new Event('reloadPagination'));
+                
+                this.ngOnInit();
+              }
+            },
+            error:() => {
+              this.notifications
+              retrieved++;
+              if(retrieved == required){
+                this.contentType = this.mostActive.length + " Result" + (this.mostActive.length == 1 ? "" : "s");
+                this.sort();
+                this.show = this.mostActive.slice(0,this.boardsPerPage);
+                this.size = this.mostActive.length;
+                dispatchEvent(new Event('reloadPagination'));
+                this.ngOnInit();
+              }           
+            }
+        })
+        }
+      },
+      error:() => {
+        this.loadingContent = false;
+        this.notifications.add({type:"danger",message:"Failed to load the search results of '" + this.searchValue + "'"})
       }
     })
   }
