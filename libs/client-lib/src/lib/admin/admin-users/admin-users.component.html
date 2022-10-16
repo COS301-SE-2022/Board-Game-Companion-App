@@ -15,14 +15,14 @@
                 <div class = "main-control col-sm-8">
                     <div class = "px-2.5 py-3">                           
                         <div *ngIf = "section===1" class="input-group relative w-full mb-2">
-                            <input (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
+                            <input autocomplete="off" (keypress)="checkInputOnEnter($event)" [(ngModel)] = "email" name = "email" type = "email" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="email" aria-label="email" aria-describedby="email-input">
                             <button (click) = "addModerator()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                                 <i class="far fa-plus fa-2x"></i>
                             </button>
                         </div>
 
                         <div *ngIf = "section===2" class="input-group relative w-full">
-                            <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input border-2 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
+                            <input autocomplete="off" (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input border-2 form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
                             <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -120,7 +120,7 @@
         </div>
 
         <div *ngIf = "section === 2" class = "row w-full mx-0">
-            <div class = "col-sm-3 mt-2" *ngFor = "let sub of enumerate(searchResults.length) | paginate: { itemsPerPage: 8, currentPage: page }">
+            <div [ngClass] = "{'hidden':searching}" class = "col-sm-3 mt-2" *ngFor = "let sub of enumerate(searchResults.length) | paginate: { itemsPerPage: 8, currentPage: page }">
                 <div class = "rounded shadow-lg overflow-hidden hover:scale-105 bg-white">
                     <div class = "w-full rounded shadow-lg overflow-hidden hover:scale-105 p-2 text-xs text-gray-700" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
                         <div class = "mx-1 my-0.5">
@@ -185,6 +185,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div *ngIf = "searching" class = "w-full h-full font-bold flex items-center">
+                <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
             </div>
 
             <div class = "col-sm-12 mt-4">

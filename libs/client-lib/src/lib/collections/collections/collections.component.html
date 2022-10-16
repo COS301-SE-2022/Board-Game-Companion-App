@@ -9,24 +9,31 @@
                     <div (click) = "back()" class = "back h-32 text-lime-500 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
                         <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
                     </div>
-                    <div class = "middle h-32 space-x-2 p-1 flex flex-row border-2 rounded-sm" [style.width.%] = '92'>
-                        <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
-                            <img class = "w-full h-full" [src] = "value.image">
-    
-                            <div class = "board-game-black-screen absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-xs cursor-pointer" style = "background-color:rgba(0,0,0,0.5)">
-                                <div class = "w-full absolute bottom-10 content-center space-x-4">
-                                    <button (click) = "showGameInfo(value)" class="hover:scale-110 p-1 text-white">
-                                        <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
-                                    </button>
-                                    <button (click) = "removeFromCollection(value)" class="hover:scale-110 p-1 text-white">
-                                        <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
-                                    </button>
+                    <div class = "middle h-32 border-2 rounded-sm" [style.width.%] = '92'>
+                        <div class = "w-full h-full flex flex-row space-x-2 p-1" [ngClass] = "{'hidden':loadingGames}">
+                            <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
+                                <img (load) = "doneGames()" (error) = "doneGames()" class = "w-full h-full" [src] = "value.image">
+        
+                                <div class = "board-game-black-screen absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-xs cursor-pointer" style = "background-color:rgba(0,0,0,0.5)">
+                                    <div class = "w-full absolute bottom-10 content-center space-x-4">
+                                        <button (click) = "showGameInfo(value)" class="hover:scale-110 p-1 text-white">
+                                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                                        </button>
+                                        <button (click) = "removeFromCollection(value)" class="hover:scale-110 p-1 text-white">
+                                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                                        </button>
+                                    </div>
+                                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
                                 </div>
-                                <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+                            </div>
+
+                            <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-lime-500 text-center flex items-center">
+                                <p class = "mx-auto">No Board Games</p>
                             </div>
                         </div>
-                        <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-lime-500 text-center flex items-center">
-                            <p class = "mx-auto">No Board Games</p>
+
+                        <div *ngIf = "loadingGames" class = "w-full h-full font-bold flex items-center text-gray-800">
+                            <i class="fas fa-spinner fa-pulse mx-auto" data-toggle="tooltip" title="loading"></i>
                         </div>
                     </div>
                     <div (click) = "next()" class = "forward h-32 text-lime-500 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
