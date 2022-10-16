@@ -6,6 +6,7 @@ import { BggSearchService } from './bgg-search-service/bgg-search.service';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
+    SharedModule,
     RouterModule.forChild([{path:'',component:BoardGameSearchComponent}])
   ],
   providers: [

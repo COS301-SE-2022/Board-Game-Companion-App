@@ -88,6 +88,7 @@ export class AdminReportsComponent implements OnInit {
   loadReports(): void{
     this.reportService.getAll().subscribe({
       next:(response:report[])=>{
+        console.log("length: " + response.length)
         this.showScriptReports = this.scriptReports = response.filter((value:report) => value.script);
         this.showCommentReports = this.commentReports = response.filter((value:report) => !value.script);
       },error:()=>{

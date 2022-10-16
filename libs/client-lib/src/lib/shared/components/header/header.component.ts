@@ -149,6 +149,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     document.addEventListener('editor-exit',(event)=>{
       this.showHeader = true;
+      this.focus = "scripts";
     })
   }
 
@@ -187,6 +188,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       else
       {
         this.loggedIn = false;
+        this.alerts = [];
         this.gapi.signOut();
         this.socket.emit("logout",sessionStorage.getItem("email"))
         sessionStorage.removeItem("name");

@@ -25,7 +25,7 @@ export class BoardGameDetailsComponent implements OnInit {
   artist = "";
   publisher = "";
   showFullDescription = false;
-  showAutomata = false;
+  showAutomata = true;
   scripts:automataScript[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 

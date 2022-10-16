@@ -76,7 +76,7 @@
 
 <div class = "w-full h-full flex items-center">
     <div class = "w-4/5 mx-auto row">
-        <div class = "col-sm-4">
+        <div [ngClass] = "{'col-sm-4':sessionAvailable,'hidden':!sessionAvailable}">
             <div class = "m-2 p-1 w-full wrapper shadow-sm rounded">
                 <div class = "w-full text-center text-lg font-medium text-white mb-4">
                     Last game played
@@ -142,7 +142,7 @@
             </div>
         </div>
     
-        <div class = "col-sm-8">
+        <div class = "col-sm-8" [ngClass] = "{'offset-sm-2':!sessionAvailable}">
             <div class = "m-2 w-full bg-white rounded overflow-hidden shadow-sm relative">
                 <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
                     Your Games

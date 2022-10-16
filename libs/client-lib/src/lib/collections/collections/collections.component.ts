@@ -48,6 +48,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   widthPerGame = 12;
   selectedGame:Game[] = [];
   selectedCollection:collection[] = [];
+  loadingGames = false;
+  countLoadedGames = 0;
 
   constructor(private readonly bggSearch:BggSearchService,
               private readonly route: ActivatedRoute,
@@ -67,6 +69,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCollections();
     this.onScreenResize();
+  }
+
+  doneGames(): void{
+    this.countLoadedGames++;
+
+    if(this.countLoadedGames === this.collections.length)
+      this.loadingGames = false;
   }
 
   ngOnDestroy(): void {
@@ -231,6 +240,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       })
     }else{
       if(!this.gapi.isLoggedIn()){
+
         this.storageService.getAll("collections").then((response:collection[]) => {
           this.collections = response;
           this.loadGames();
@@ -239,6 +249,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
           this.notifications.add({type:"danger",message:"Failed to load local collections"})
         })        
       }else{
+
         this.collectionService.getCollectionsForUser().subscribe({
           next:(response:collection[]) => {
             this.collections = response;
@@ -254,7 +265,14 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   loadGames(): void{
+    let length = 0;
+
+    this.loadingGames = true;
+    this.countLoadedGames = 0;
+
     this.collections.forEach((value:collection) => {
+      length += value.boardgames.length;
+
       value.boardgames.forEach((id:string) => {
         this.bggSearch.getBoardGameById(id).subscribe({
           next:(gvalue) =>{
@@ -270,11 +288,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
             this.showGames.push(temp);
           },
           error:() => {
+            this.loadingGames = false;
             this.notifications.add({type: "warning",message: `Failed to load board game of ${value.name}.`});
           }
         })
       })
     })
+
+    if(length === 0)
+      this.loadingGames = false;
   }
 
   loadScripts(): void{

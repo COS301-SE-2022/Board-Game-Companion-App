@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
   widthPerGame = 16;
   @ViewChild(NotificationComponent,{static:true}) notifications!: NotificationComponent;
   status: OnlineStatusType = OnlineStatusType.ONLINE;
+  sessionAvailable = true;
 
   constructor(private bggSearch:BggSearchService,
               private router:Router,
@@ -126,6 +127,7 @@ export class HomeComponent implements OnInit {
     //Check if there are game sessions
     if(localStorage.getItem("sessions") == null || localStorage.getItem("sessions") == "[]")
     {
+      this.sessionAvailable = false;
       //If there are none
       //Remove all content and replace with text
       const elem = document.getElementById("lastPlayed") as Element
