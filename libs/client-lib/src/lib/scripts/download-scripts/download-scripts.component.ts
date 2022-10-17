@@ -27,6 +27,8 @@ export class DownloadScriptsComponent implements OnInit {
   page = 1;
   width = window.innerWidth;
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
+  loading = false;
+  countLoads = 0;
 
   constructor(private readonly scriptService:ScriptService,
               private readonly router:Router,
@@ -66,6 +68,14 @@ export class DownloadScriptsComponent implements OnInit {
       if(value.oldId  !== id)
         temp.push(value);
     })
+  }
+
+  done(): void{
+    this.countLoads++;
+    console.log("count: " + this.countLoads);
+
+    if(this.countLoads === this.filter.length)
+      this.loading = false;
   }
 
 
@@ -162,23 +172,33 @@ export class DownloadScriptsComponent implements OnInit {
   getDownloadScripts():void{
     
     if(this.status === OnlineStatusType.OFFLINE){
+      this.loading = true;
+      this.countLoads = 0;
       this.storageService.getAll("download-scripts").then((value:any) => {
         this.filter = this.scripts = value;
       }).catch(()=>{
+        this.loading = false;
         this.notifications.add({type:"danger",message:"Failed to downloaded scripts from local storage."});
       });
       
       return;
     }else if(this.status === OnlineStatusType.ONLINE){
       if(!this.gapi.isLoggedIn()){
+        this.loading = true;
+        this.countLoads = 0;
+
         this.storageService.getAll("download-scripts").then((value:any) => {
           this.filter = this.scripts = value;
         }).catch(()=>{
+          this.loading = false;
           this.notifications.add({type:"danger",message:"Failed to downloaded scripts from local storage."});
         });
         
         return;        
       }else{
+        this.loading = true;
+        this.countLoads = 0;
+
         this.scriptService.getDownloadScripts().subscribe({
           next: (value: downloadScript[]) => {
             this.filter = this.scripts = value;
@@ -215,6 +235,7 @@ export class DownloadScriptsComponent implements OnInit {
             this.checkForUpdates();
           },
           error: (err) => {
+            this.loading = false;
             console.log(err)
             this.notifications.add({type:"danger",message:"An error occurred while trying to retrieve the scripts.You can try again later, or contact the developer if the error persists."})
           }

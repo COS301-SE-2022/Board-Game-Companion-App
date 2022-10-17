@@ -1,5 +1,5 @@
-<div class="px-2 pt-4 bg-white text-gray-700 overflow-y-scroll overflow-x-hidden" *ngIf = "networks.length > 0">
-    <div class = " border-2 border-green-800 px-2 py-1 mb-4 text-xs" *ngFor = "let network of networks">
+<div class="px-2 pt-4 bg-white text-gray-700 rounded overflow-y-scroll overflow-x-hidden" *ngIf = "show.length > 0">
+    <div class = " border-2 border-green-800 px-2 py-1 mb-4 text-xs" *ngFor = "let network of show">
         <div class = "row text-sm">
             <div class = "col-sm-3">
                 {{network.name}}

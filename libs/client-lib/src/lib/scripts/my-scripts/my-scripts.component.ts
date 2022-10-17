@@ -32,6 +32,8 @@ export class MyScriptsComponent implements OnInit{
   width = window.innerWidth;
   currentRelease!:myScript;
   version:version = {major: 0, minor: 0, patch: 0}
+  loading = false;
+  countLoads = 0;
 
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
@@ -72,11 +74,15 @@ export class MyScriptsComponent implements OnInit{
       return;
     }
 
+    this.loading = true;
+    this.countLoads = 0;
+
     this.scriptService.getScriptsCreatedByMe().subscribe({
       next: (value: myScript[]) => {
         this.filter = this.scripts = value;
       },
       error: () => {
+        this.loading = false;
         this.notifications.add({type:"danger",message:"An error occurred while trying to retrieve your scripts.You can try again later, or contact the developer if the error persists."})
       }
     })  
@@ -85,6 +91,14 @@ export class MyScriptsComponent implements OnInit{
   newScript(value:myScript): void{
     this.scripts.push(value);
     this.filter = this.scripts;
+  }
+
+  done(): void{
+    this.countLoads++;
+    console.log("count: " + this.countLoads);
+
+    if(this.countLoads === this.filter.length)
+      this.loading = false;
   }
 
   search(value:string): void{

@@ -1,7 +1,7 @@
 <header class = "w-full" [ngClass] = "{'hidden': !showHeader}" [style.height.%] = 'height'>
     <div class = "header-bar flex h-full w-full py-0.5" [ngClass] = "{'flex-row':width > breakpoint,'flex-col':width<=breakpoint}">
-        <div class = "flex flex-row justify-between" [ngClass] = "{'w-12':width > breakpoint,'w-full':width<=breakpoint}">
-            <div (click)="moveTo('home')" class = "h-full w-12 cursor-pointer">
+        <div class = "flex flex-row justify-between h-full" [ngClass] = "{'w-12':width > breakpoint,'w-full':width<=breakpoint}">
+            <div (click)="moveTo('home')" class = "h-full p-0.5 cursor-pointer">
                 <img src="assets/images/logo.png" alt="logo" class=" h-full w-full">
             </div>
             <div id = "logoName" *ngIf = "width < breakpoint" class = "font-bold justify-items-center text-xl">

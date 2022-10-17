@@ -1,8 +1,8 @@
-<div  class = "row">
+<div  class = "row" [ngClass] = "{'hidden':loading}">
     <div class = "col-sm-3 col-xs-6 mt-2" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
         <div [id] = "value._id" class="parent relative rounded-md overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
             <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span>   
-            <img class="w-full h-full" [src]="value.icon.location" alt=""/>
+            <img class="w-full h-full" [src]="value.icon.location" (load)="done()" (error)="done()" alt=""/>
             
             <div id="child" class = "child absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
                 <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span> 
@@ -25,6 +25,10 @@
             </div>
         </div>
     </div>       
+</div>
+
+<div *ngIf = "loading" class = "w-full h-60 font-bold flex items-center">
+    <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
 </div>
 
 <pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>

@@ -1,6 +1,6 @@
 <div id="outerDiv" class="script-detail__wrapper w-full h-max sm:px-20 py-4 flex flex-col sm:flex-row ">
   <div class="order-2 sm:order-2 sm:w-3/4 sm:p-4">
-    <div id="info" class="script-information bg-white ">
+    <div id="info" class="script-information bg-white rounded overflow-hidden">
       <h1 class="script-title text-xl w-full p-2"><b>{{current.name}}</b></h1>
       
       <div class="flex flex-row name-value-pair text-sm p-2">
@@ -45,7 +45,7 @@
 
     </div>
 
-    <div class="script-comments p-2 mt-4">
+    <div class="script-comments p-2 mt-4 rounded overflow-hidden">
       <p (click)="toggleComments()"
         class="script-comment-counter text-md cursor-pointer hover:underline hover:underline-offset-2">
         {{numberOfComments}} Comment{{ numberOfComments === 1 ? "" : "s"}}</p>
@@ -57,7 +57,7 @@
 
   <div id="coverDownload" class="order-1 w-1/4 sm:p-4 sm:order-2 ">
 
-    <div id="cover" class="script-cover mb-4 bg-white relative">
+    <div id="cover" class="script-cover mb-4 bg-white relative rounded overflow-hidden">
       <div class="script-cover-header w-full p-2 mb-2 text-xl"><b>Cover</b></div>
       <img [src]="current.icon.location" class="m-auto p-4">
 
@@ -85,7 +85,7 @@
     </div>
 
     <div id="downrate" class = "mb-4 flex flex-col">
-      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center ">
+      <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
         <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
@@ -102,7 +102,7 @@
       </div>
 
 
-      <div *ngIf = "updateScript !== ''" id="update" class="script-download mb-4 bg-white text-center">
+      <div *ngIf = "updateScript !== ''" id="update" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Update</b></div>
         <button id="downloadbtn" *ngIf="!updating" (click)="update()" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 text-white inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">
@@ -118,7 +118,7 @@
         </button>
       </div>
 
-      <div id="rate" class="script-rate text-center mb-4 h-3/3">
+      <div id="rate" class="script-rate text-center mb-4 h-3/3 rounded overflow-hidden">
         <div id="rateHead" class="script-rate-header p-2 text-xl sm:mb-4 text-left"><b>Rate</b></div>
 
         <div id="outerStar">
@@ -137,7 +137,7 @@
         </div>
       </div>
 
-      <div id="report" class="script-download mb-4 bg-white text-center">
+      <div id="download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Report</b></div>
         <button id="downloadbtn" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out"
@@ -148,7 +148,7 @@
         </button>
       </div>
 
-      <div id = "download" class="script-download mb-4 bg-white text-center">
+      <div id = "download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class = "script-download-header p-2 text-xl mb-2 text-left"><b>Old Versions</b></div>
         <div (click) = "showOldieInfo(script)" class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium cursor-pointer" *ngFor = "let script of oldies">
           {{'v' + script.version.major + '.' + script.version.minor + '.' + script.version.patch}} 

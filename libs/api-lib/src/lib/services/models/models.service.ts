@@ -41,7 +41,7 @@ export class ModelsService {
         result.model.location = savedModel.location;
 
         result.save();
-
+        
         return result;
     }
 

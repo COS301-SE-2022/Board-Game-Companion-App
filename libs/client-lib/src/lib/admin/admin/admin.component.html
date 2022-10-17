@@ -1,7 +1,7 @@
 <div class = "w-full h-full">
     <div class = "row w-4/5 mx-auto my-4 justify-center">
         <div class = "col-sm-3 mt-1">
-            <div (click) = "tab=0" class = "rounded-md p-3 text-white font-medium text-lg bg-black cursor-pointer hover:scale-105 shadow-sm" [ngClass] = "{'scale-110':tab===0}">
+            <div (click) = "tab=0" class = "rounded-md p-3 text-white font-medium text-lg bg-black cursor-pointer hover:scale-105" [ngClass] = "{'scale-110 shadow-xl':tab===0,'shadow-sm':tab!==0}">
                 <h1>Scripts</h1>
                 <div class = "flex flex-row space-between text-base mt-2 justify-end">
                     <div>
@@ -12,7 +12,7 @@
         </div>
 
         <div class = "col-sm-3 mt-1">
-            <div (click) = "tab=1" class = "rounded-md p-3 text-white font-medium text-lg bg-green-800 cursor-pointer hover:scale-105 shadow-sm" [ngClass] = "{'scale-110':tab===1}">
+            <div (click) = "tab=1" class = "rounded-md p-3 text-white font-medium text-lg bg-blue-800 cursor-pointer hover:scale-105" [ngClass] = "{'scale-110 shadow-xl':tab===1,'shadow-sm':tab!==1}">
                 <h1>Users</h1>
                 <div class = "flex flex-row space-between text-base mt-2 justify-end">
                     <div>
@@ -23,7 +23,7 @@
         </div>
 
         <div class = "col-sm-3 mt-1">
-            <div (click) = "tab=2" class = "rounded-md p-3 text-white font-medium text-lg bg-rose-700 cursor-pointer hover:scale-105 shadow-sm" [ngClass] = "{'scale-110':tab===2}">
+            <div (click) = "tab=2" class = "rounded-md p-3 text-white font-medium text-lg bg-rose-700 cursor-pointer hover:scale-105" [ngClass] = "{'scale-110 shadow-xl':tab===2,'shadow-sm':tab!==2}">
                 <h1>Reports</h1>
                 <div class = "flex flex-row space-between text-base mt-2 justify-end">
                     <div>

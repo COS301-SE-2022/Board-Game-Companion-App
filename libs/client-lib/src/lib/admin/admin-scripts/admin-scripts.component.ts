@@ -56,11 +56,17 @@ export class AdminScriptsComponent implements OnInit{
     } ]
   };
   pieChartType: ChartType = 'pie';
+  section = 0;
   
   constructor(private readonly scriptService:ScriptService){}
 
   ngOnInit(): void {
     this.initData();
+  }
+
+  
+  tab(value:number): void{
+    this.section = value;
   }
 
   initData(): void{
@@ -70,7 +76,7 @@ export class AdminScriptsComponent implements OnInit{
           const vDate = new Date(script.dateDownloaded);
 
           if(this.selectedYear === vDate.getFullYear())
-            this.barChartData.datasets[1].data[vDate.getMonth()] += 1;
+            this.barChartData.datasets[0].data[vDate.getMonth()] += 1;
         });
 
         this.pieChartData.datasets[0].data[0] = value.length;

@@ -1,16 +1,22 @@
 
-<div id = "container" >
+<div id = "container" class = "mt-2">
     <!-- <h1 id = "heading" class="font-bold text-center mt-12">Board Games</h1> -->
-    <div id = "left" class = "ml-8 rounded ">
+    <div id = "left" class = "ml-8 rounded">
         <!-- Top Games -->
         <h1 id = "leftHeader" class = "p-3 pt-2.5 h-14 rounded-t">Top Games</h1>
         <div id = "leftContent" class = "w-full h-full">
-            <div id = "leftContent" class = "w-full">
-            <div id = "leftBlock" class = "p-3 cursor-pointer " *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
-                <img  id = "leftImg" class = "rounded-lg" [src] =  game.image >
-                <h5  id = "leftNames" class = "text-base font-bold pl-2">{{game.name}}</h5>
+            <div [ngClass] = "{'hidden':loadingTopGames}">
+                <div id = "leftContent" class = "w-full">
+                    <div id = "leftBlock" class = "p-3 cursor-pointer " *ngFor = "let game of show2; let i=index" (click)="getDetails(game.id)">
+                        <img  (load) = "doneTopGames()" (error) = "doneTopGames()" id = "leftImg" class = "rounded-lg" [src] =  game.image >
+                        <h5  id = "leftNames" class = "text-base font-bold pl-2">{{game.name}}</h5>
+                    </div>                
+                </div>
             </div>
-        </div>
+            <div *ngIf = "loadingTopGames" class = "w-full h-full font-bold flex items-center">
+                <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
+            </div>
+        
     </div>
 
         
@@ -18,11 +24,18 @@
     <div id = "right" class = "mr-8 rounded">
         <h1 id = "rightHeader" class = "p-3 pt-2.5 h-14 rounded-t">Recently Viewed</h1>
         <div id = "rightContent" class = "w-full h-full">
-            <div id = "rightContent" class = "w-full">
-                <div id = "rightBlock" class = "p-3 cursor-pointer" *ngFor = "let game of listResults.slice().reverse()" (click)="getDetails(game.getID())">
-                    <img  id = "rightImg" class = "rounded-lg" [src] =  game.getimgUrl() >
-                    <h5  id = "rightNames" class = "text-base font-bold pl-2">{{game.getName()}}</h5>
+
+            <div [ngClass] = "{'hidden':loadingRecentlyViewed}">
+                <div id = "rightContent" class = "w-full">
+                    <div id = "rightBlock" class = "p-3 cursor-pointer" *ngFor = "let game of listResults.slice().reverse()" (click)="getDetails(game.getID())">
+                        <img (load) = "doneRecentlyViewed()" (error) = "doneRecentlyViewed()"  id = "rightImg" class = "rounded-lg" [src] =  game.getimgUrl() >
+                        <h5  id = "rightNames" class = "text-base font-bold pl-2">{{game.getName()}}</h5>
+                    </div>
                 </div>
+            </div>
+
+            <div *ngIf = "loadingRecentlyViewed" class = "w-full h-full font-bold flex items-center">
+                <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
             </div>
         </div>
     </div>
@@ -57,13 +70,21 @@
             
         </div>
         <div class = "mb-5" id = "content" > 
-            <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
-                <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-2 mt-3 mb-14" *ngFor = "let game of show">
-                    <img class = "board-game-image rounded-lg" (click)="getDetails(game.id)" [src] =  game.image >
-                    <h5 id = "names" style="text-align:center" class = "text-base font-medium pt-3 pb-3">{{game.name}} </h5>
+            <div [ngClass] = "{'hidden':loadingContent}">
+                <div fxLayout="row wrap" fxLayoutGap = "18px" fsFlexOffset.xs="10px">
+                    <div fxFlex = "1 1 auto" class = "board-game cursor-pointer p-2 mt-3 mb-14" *ngFor = "let game of show">
+                        <img class = "board-game-image rounded-lg" (load) = "doneContent()" (error) = "doneContent()" (click)="getDetails(game.id)" [src] =  game.image >
+                        <h5 id = "names" style="text-align:center" class = "text-base font-medium pt-3 pb-3">{{game.name}} </h5>
+                    </div>
                 </div>
+            </div>
+
+            <div *ngIf = "loadingContent" class = "w-full h-full font-bold flex items-center">
+                <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
             </div>
         </div>
         <board-game-companion-app-board-game-search-pagination class = "pagination justify-center" [boardsPerPage] = boardsPerPage [numberOfBoardGames] = size (newPageEvent)="changePage($event)"></board-game-companion-app-board-game-search-pagination>
     </div>
 </div>
+
+<board-game-companion-app-notification></board-game-companion-app-notification>

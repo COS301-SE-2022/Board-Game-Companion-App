@@ -1,15 +1,15 @@
 <div id = "scripts-wrapper">
     <div id = "scripts-container" class = "container mt-4">
         <div class = "row">
-            <div id="sideBar" class = "col-sm-3 p-2">
-                <div class="sidebar text-center font-medium">
+            <div class = "col-sm-3 p-2">
+                <div class="sidebar text-center font-medium rounded overflow-hidden">
                     <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
                     <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
                     <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
                 </div>
             </div>
-            <div id="header" class = "col-sm-9 p-2 flex flex-col">
-                <div class = "main-header mb-4 p-0">
+            <div class = "col-sm-9 p-2 flex flex-col">
+                <div class = "main-header mb-4 p-0 rounded">
                     <div class = "row">
                         <div id="mainHeader" class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
                             {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}} <button><i id="symbol" class="fa-solid fa-caret-down"></i></button>
@@ -17,7 +17,7 @@
                         <div class = "main-control col-sm-8">
                             <div class = "px-2.5 py-3 flex flex-row">                           
                                 <div class="input-group relative w-full" [style.width.%] = "94">
-                                    <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="add" aria-label="add" aria-describedby="add-input">
+                                    <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="search" aria-describedby="search-input">
                                     <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
                                         <i class="fas fa-search fa-2x"></i>
                                     </button>

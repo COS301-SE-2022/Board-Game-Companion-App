@@ -16,12 +16,17 @@ import { ScriptService } from '../../shared/services/scripts/script.service';
 export class AdminReportsComponent implements OnInit {
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   scriptReports:report[] = [];
+  showScriptReports:report[] = [];
   commentReports:report[] = [];
+  showCommentReports:report[] = [];
   scriptPage = 1;
   commentPage = 1;
   showComments = false;
   showScripts = true;
-  months: string[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  months: string[] = ["None","January","February","March","April","May","June","July","August","September","October","November","December"];
+  section = 0;
+  year = (new Date()).getFullYear();
+  month = this.months[(new Date()).getMonth()];
 
   constructor(private readonly reportService:ReportService,
               private readonly scriptService:ScriptService,
@@ -31,29 +36,67 @@ export class AdminReportsComponent implements OnInit {
     this.loadReports();
   }
 
+  tab(value:number): void{
+    this.section = value;
+    this.scriptPage = 1;
+    this.commentPage = 1;
+  }
+
+  getYears():number[]{
+    const result:number[] = []
+    const current = (new Date()).getFullYear();
+
+    for(let count = 2022; count <= current; count++)
+      result.push(count);
+
+    return result;
+  }
+
+  removeScriptReport(id: string): void{
+    this.showScriptReports = this.showScriptReports.filter((value:report) => value._id !== id)
+    this.scriptReports = this.scriptReports.filter((value:report) => value._id !== id)
+  }
+
+  removeCommentReport(id: string): void{
+    this.showCommentReports = this.showCommentReports.filter((value:report) => value._id !== id)
+    this.commentReports = this.commentReports.filter((value:report) => value._id !== id)
+  }
+
+  filter(): void{
+    this.showScriptReports = [];
+    this.showCommentReports = [];
+
+    this.scriptReports.forEach((value:report) => {
+      const issued = new Date(value.dateIssued);
+
+      if(issued.getFullYear() === this.year){
+        if(this.month === "None" || this.months[issued.getMonth()] === this.month)
+          this.showScriptReports.push(value)
+      }
+    })
+
+    this.commentReports.forEach((value:report) => {
+      const issued = new Date(value.dateIssued);
+
+      if(issued.getFullYear() === this.year){
+        if(this.month === "None" || this.months[issued.getMonth()] === this.month)
+          this.showCommentReports.push(value)
+      }
+    })
+  }
+
   loadReports(): void{
     this.reportService.getAll().subscribe({
       next:(response:report[])=>{
-        this.scriptReports = response.filter((value:report) => value.script);
-        this.commentReports = response.filter((value:report) => !value.script);
+        console.log("length: " + response.length)
+        this.showScriptReports = this.scriptReports = response.filter((value:report) => value.script);
+        this.showCommentReports = this.commentReports = response.filter((value:report) => !value.script);
       },error:()=>{
         this.notifications.add({type:"danger",message:"Failed to load reports."})
       }
     })
   }
 
-  formatDate(date:Date):string{
-    let result = "";
-    
-    const val = new Date(date);
-
-    result = (val.getDate() < 10 ? "0": "") + val.getDate() + " ";
-    result += this.months[val.getMonth()] + " ";
-    result += val.getFullYear() + ", ";
-    result += (val.getHours() < 10 ? "0" : "") + val.getHours() + ":" + (val.getMinutes() < 10 ? "0" : "") + val.getMinutes() + ":" + (val.getSeconds() < 10 ? "0" : "") + val.getSeconds();
-
-    return result;
-  }
 
   enumerate(x:number): number[]{
     const result:number[] = [];
@@ -64,70 +107,4 @@ export class AdminReportsComponent implements OnInit {
     return result;
   }
 
-  ignore(value:report): void{
-    this.reportService.remove(value._id).subscribe({
-      next:(response:report) => {
-        if(response === null){
-          this.notifications.add({type:"warning",message:"Report could not be found"});
-          return;
-        }
-
-        this.notifications.add({type:"success",message:"Successfully removed report"});
-        this.scriptReports = this.scriptReports.filter((val:report) => val._id !== value._id);
-        this.commentReports = this.commentReports.filter((val:report) => val._id !== value._id);
-      },
-      error:() => {
-        this.notifications.add({type:"danger",message:"Failed to remove report."});
-      }
-    })
-  }
-
-
-  view(value:report): void{
-    this.scriptService.getAutomataById(value.link).subscribe({
-      next:(response:automataScript | oldScript)=>{
-        if(response === null){
-          this.notifications.add({type:"warning",message:"Could not find script on the server"});
-          return;
-        }
-        const temp  = response as automataScript;
-
-        if(temp.link === undefined){
-          this.notifications.add({type:"warning",message:"This script has already been updated"});
-          return;
-        }
-
-        this.scriptService.getMyScriptById(temp.link).subscribe({
-          next:(response:myScript) => {
-            if(response === null){
-              this.notifications.add({type:"warning",message:"Could not find script on the server"});
-              return;
-            }
-            
-            
-            this.router.navigate(['editor'],{ state: { value: response } });
-          },
-          error:()=>{
-            this.notifications.add({type:"danger",message:"Failed to load script"});
-          }
-        })
-      },
-      error:()=>{
-        this.notifications.add({type:"danger",message:"Failed to load script"});
-      }
-    })
-  }
-
-  flag(value:report): void{
-    this.reportService.flag(value._id).subscribe({
-      next:()=>{
-        this.notifications.add({type:"success",message:"Successfully flagged " + (value.script ? "script" : "comment")})
-        this.scriptReports = this.scriptReports.filter((val:report) => val._id !== value._id);
-        this.commentReports = this.commentReports.filter((val:report) => val._id !== value._id);
-      },
-      error:()=>{
-        this.notifications.add({type:"danger",message:"Failed to flag " + (value.script ? "script" : "comment")})
-      }
-    })
-  }
 }

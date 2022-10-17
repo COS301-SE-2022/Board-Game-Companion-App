@@ -21,6 +21,7 @@ interface progressTracker{
 })
 export class GeneralComponent implements OnInit {
   networks:neuralnetwork[] = [];
+  show:neuralnetwork[] = []
   progress:progressTracker[] = [];
   months: string[] = [];
   training: string[] = [];
@@ -34,12 +35,24 @@ export class GeneralComponent implements OnInit {
     }
   }
 
+  search(term:string): void{
+    this.show = [];
+    
+    if(term === ""){
+      this.show = this.networks.slice();
+      return;
+    }
+    
+    this.show = this.networks.filter((value:neuralnetwork) => value.name.toLowerCase().indexOf(term.toLowerCase()) !== -1)
+  }
+
   ngOnInit(): void{
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
     this.modelService.getAll().subscribe({
       next:(value:neuralnetwork[]) => {
         this.networks = value;
+        this.show = this.networks.slice();
       },
       error:() => {
         this.notifications.add({type:"danger",message:"Failed to load models"})
@@ -60,6 +73,7 @@ export class GeneralComponent implements OnInit {
     };
 
     this.networks.unshift(current);
+    this.show.unshift(current);
 
     this.progress.unshift({
       name: setup.name,
@@ -168,6 +182,11 @@ export class GeneralComponent implements OnInit {
 
   async upload(network:neuralnetwork,model:tf.Sequential): Promise<void>{
     try{
+      const result = model.predict(tf.tensor2d([[123 / 255,23 / 255, 14 / 255],[245 / 255, 123 / 255, 5 / 255]])) as tf.Tensor
+      const prediction = Array.from(result.argMax(1).dataSync());
+      result.print();
+      console.log(prediction)
+
       const user:user = {
         name: sessionStorage.getItem("name") as string,
         email: sessionStorage.getItem("email") as string
@@ -175,7 +194,8 @@ export class GeneralComponent implements OnInit {
       
       const minimum = network.min;
       const maximum = network.max;
-      
+      //https://board-game-companion-app.herokuapp.com/api/
+
       model.save(`https://board-game-companion-app.herokuapp.com/api/models/create?userName=${user.name}&userEmail=${user.email}&name=${network.name}&created=${network.created?.toString()}&labels=${JSON.stringify(network.labels)}&min=${JSON.stringify(minimum)}&max=${JSON.stringify(maximum)}&loss=${network.loss}&accuracy=${network.accuracy}`).
       then((value:tf.io.SaveResult) => {
         (value.responses as Response[])[0].json().then((res) => {

@@ -189,7 +189,7 @@ class script
             order.push(pIndex)
         }
         //re order 
-        for(let i =0;i< this.players.length;i++)
+        for(let i =0;i< this.players.length && !interrupt();i++)
         {
             for(let j =1;j< this.players.length;j++)
             {
@@ -211,7 +211,7 @@ class script
         }
         do
         {
-            for(let i =0;i< this.players.length && !await this.endgame();i++)
+            for(let i =0;i< this.players.length && !await this.endgame() && !interrupt();i++)
             {
                 await setCurrPlayer(this.listOfPlayers[i])
                 await this.players[i].turn();
