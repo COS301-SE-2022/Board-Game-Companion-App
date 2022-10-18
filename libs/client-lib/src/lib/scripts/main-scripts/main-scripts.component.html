@@ -1,17 +1,17 @@
 <div id = "scripts-wrapper">
     <div id = "scripts-container" class = "container mt-4">
         <div class = "row">
-            <div class = "col-sm-3 p-2">
+            <div id="menu" class = "col-sm-3 p-2">
                 <div class="sidebar text-center font-medium rounded overflow-hidden">
                     <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
                     <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
                     <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
                 </div>
             </div>
-            <div class = "col-sm-9 p-2 flex flex-col">
+            <div id="content" class = "col-sm-9 p-2 flex flex-col">
                 <div class = "main-header mb-4 p-0 rounded">
                     <div class = "row">
-                        <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                        <div id="mainHeader" class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
                             {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}}
                         </div>
                         <div class = "main-control col-sm-8">
@@ -34,12 +34,63 @@
                         </div>
                     </div>
                 </div>
+                <div id="smallscContent" class = "main-content">
+                    <board-game-companion-app-download-scripts [ngClass] = "{'hidden':page !== 0}"></board-game-companion-app-download-scripts>
+                    <board-game-companion-app-my-scripts [gridView]="gridView" [ngClass] = "{'hidden':page !== 1}"> </board-game-companion-app-my-scripts>
+                    <board-game-companion-app-automata-scripts [ngClass] = "{'hidden':page !== 2}"></board-game-companion-app-automata-scripts>
+                </div>
+            </div>
+            
+            <!-- Small Screen Menu -->
+            <div id="smallscreenMenu" class = "col-sm-9 p-2 flex flex-col">
+                <br />
+                <div class = "main-header mb-4 p-0 rounded">
+                <div id="menuTop"  class = "row">
+                <div id="smallBtn" class="btn-group" mdbDropdown>
+                    <button id= "smallBtn" mdbDropdownToggle size="md"
+                            type="button"
+                            mdbBtn style="background-color: #28662c;"
+                            mdbWavesEffect>
+                            <div id="mainHeader" class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                                {{page === 0 ? 'Downloads' : (page === 1 ? 'My Scripts' : 'Scripts')}}<i id="symbol" class="fa-solid fa-caret-down"></i>
+                            </div>
+                    </button>
+                    <div class="dropdown-menu text-center font-medium overflow-hidden">
+                        <a (click)="tab(0)" [ngClass]="{'active':page===0}">Downloads</a>
+                        <a (click)="tab(1)" [ngClass]="{'active':page===1}">My Scripts</a>
+                        <a (click)="tab(2)" [ngClass]="{'active':page===2}">Scripts</a>
+                    </div>
+                </div>
+                <div class = "main-control col-sm-8">
+                    <div class = "px-2.5 py-3 flex flex-row">                           
+                        <div class="input-group relative w-full" [style.width.%] = "94">
+                            <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="search" aria-describedby="search-input">
+                            <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                <i class="fas fa-search fa-2x"></i>
+                            </button>
+                        </div>
+                        <div *ngIf = "page !== 2" (click) = "toggleControlMenu()" [style.margin-left.%] = "3" class = "overflow-visible relative hover:cursor-pointer rounded-xl text-center h-full pt-1.5 main-control-btn">
+                            <i id = "control-menu-btn" class="fas fa-ellipsis-v fa-2xl"></i>
+                            <div [ngClass] = "{'hidden':!showControlMenu}" id = "script-control-menu" class = "absolute top-1 right-1 z-50 text-left rounded-md shadow-lg text-white bg-gray-700 w-32 py-2 overflow-hidden">
+                                <div data-bs-toggle="modal" data-bs-target="#create-script" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">New</div>
+                                <div (click) = "gridView = !gridView" *ngIf = "page === 1" class = "px-2 py-0.5 control-btn">{{gridView ? 'List-view' : 'Grid-view'}}</div>
+                                <div data-bs-toggle="modal" data-bs-target="#clearModal" *ngIf = "page === 0" class = "px-2 py-0.5 control-btn">Clear</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                    
+
+                </div>
                 <div class = "main-content">
                     <board-game-companion-app-download-scripts [ngClass] = "{'hidden':page !== 0}"></board-game-companion-app-download-scripts>
                     <board-game-companion-app-my-scripts [gridView]="gridView" [ngClass] = "{'hidden':page !== 1}"> </board-game-companion-app-my-scripts>
                     <board-game-companion-app-automata-scripts [ngClass] = "{'hidden':page !== 2}"></board-game-companion-app-automata-scripts>
                 </div>
             </div>
+            
+
         </div>
     </div>
 </div>
