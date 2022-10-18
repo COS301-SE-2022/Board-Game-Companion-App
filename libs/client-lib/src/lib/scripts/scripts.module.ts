@@ -12,6 +12,7 @@ import { MyScriptsComponent } from './my-scripts/my-scripts.component'
 import { MainScriptsComponent } from './main-scripts/main-scripts.component';
 import { OnlineStatusModule } from 'ngx-online-status';
 import { AutomataScriptComponent } from './automata-scripts/automata-scripts.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AutomataScriptComponent } from './automata-scripts/automata-scripts.com
     AutomataScriptComponent
   ],
   imports: [
+    MDBBootstrapModule.forRoot(),
     NbContextMenuModule,
     CommonModule,
     PopoverModule,

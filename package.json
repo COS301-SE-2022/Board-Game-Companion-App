@@ -92,6 +92,7 @@
     "@tensorflow/tfjs": "^3.19.0",
     "ace-builds": "^1.6.0",
     "add": "^2.0.6",
+    "angular-bootstrap-md": "^13.0.0",
     "angular-oauth2-oidc": "^13.0.1",
     "angularx-social-login": "^4.1.0",
     "aws-sdk": "^2.1157.0",

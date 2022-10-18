@@ -2,11 +2,29 @@
 
 
 #title{
+    border-radius: 10px 10px 0 0;
     background-color: $Pcolour-2;
+}
+
+#outter{
+    display: flex; 
+    flex-direction: row;
+}
+
+#searchDiv{
+    height: 95%;
+}
+
+#sortDiv{
+    height: 95%;
 }
 
 thead{
     background-color: $Pcolour-3;
+}
+
+#table{
+    border-radius: 0 0 10px 10px;
 }
 
 #table::-webkit-scrollbar {
@@ -53,3 +71,112 @@ thead{
     border-radius: 10px 0 0 10px;
 }
 
+@media(min-width:640px){
+    #icon{
+        display:none;
+    }
+}
+
+@media(max-width:639px){
+    #title{
+        display: flex ; 
+        flex-direction: column;
+    }
+    #header{
+        font-size: xx-large;
+        display:flex;
+        order: 1;
+    }
+
+    #sortWord{
+        display:none;
+    }
+
+    #icon {
+        color: $Pcolour-2;
+    }
+
+    #outter{
+        display:flex; 
+        flex-direction: row;
+        order: 2;
+        margin-top: 12px;
+        height: 60%;
+    }
+
+    #searchDiv{
+        display: flex; 
+        width: 100%;
+        height: 60%
+    }
+
+    #textInput{
+        width: 75%;
+    }
+
+    #search{
+        width: 25%; 
+    }
+
+    #sortDiv{
+        display: flex;
+        height: 60%;
+    }
+
+    #sorting{
+        font-size: small;
+        width: 60%;  
+    }
+
+    #sort{
+        font-size: medium;
+        width:  50%;  
+    }
+
+    table {
+        border: 0;
+      }
+    
+      table caption {
+        font-size: 1.3em;
+      }
+      
+      table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+      
+      table tr {
+        border-bottom: 3px solid $Pcolour-2;
+        display: block;
+        margin-bottom: .625em;
+      }
+      
+      table td {
+        display: block;
+        font-size: .8em;
+        width: 80%;
+        text-align: right;
+        padding-bottom: 2px !important;
+      }
+      
+      table td::before {
+        
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      
+      table td:last-child {
+        border-bottom: 0;
+      }
+    
+
+}

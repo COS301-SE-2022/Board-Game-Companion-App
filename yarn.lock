@@ -3805,6 +3805,13 @@ ajv@^6.10.0, ajv@^6.12.2, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+angular-bootstrap-md@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/angular-bootstrap-md/-/angular-bootstrap-md-13.0.0.tgz#8adf4b69ec115c506894ae89a3d8134a09e40f11"
+  integrity sha512-vOyom1E63/Dpf23VwKpY0eBGE/J1Bc8B98juw5MjEPla0uhth+bjQkqALByv+XV4KGCKOfz185XW7pQjRq9dRg==
+  dependencies:
+    tslib "^2.0.0"
+
 angular-oauth2-oidc@^13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/angular-oauth2-oidc/-/angular-oauth2-oidc-13.0.1.tgz#81a001b19452d19b1972035d742b777d75ef34fa"

@@ -6,12 +6,18 @@ import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { DownloadScriptsComponent } from '../download-scripts/download-scripts.component';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 
+
+
 @Component({
   selector: 'board-game-companion-app-main-scripts',
   templateUrl: './main-scripts.component.html',
   styleUrls: ['./main-scripts.component.scss'],
 }) 
 export class MainScriptsComponent implements OnInit {
+  isShown={
+    dropdown: false, 
+    // other: false,
+  }
   page = 0;
   gridView = true;
   showControlMenu = false;
@@ -112,4 +118,7 @@ export class MainScriptsComponent implements OnInit {
     }
   }
 
+  showMenu():void {
+    this.isShown.dropdown = true; 
+  }
 }
