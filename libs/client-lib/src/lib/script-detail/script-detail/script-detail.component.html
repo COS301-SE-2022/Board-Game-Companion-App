@@ -85,6 +85,7 @@
     </div>
 
     <div id="downrate" class = "mb-4 flex flex-col">
+      <div id="div1">
       <div *ngIf = "updateScript === '' && downloadRequired" id="download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Download</b></div>
         <button id="downloadbtn" *ngIf="!downloading" (click)="download()" type="button"
@@ -136,8 +137,10 @@
           </ul>
         </div>
       </div>
+    </div>
 
-      <div id="download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
+      <div div="div2">
+      <div id="report" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class="script-download-header p-2 text-xl mb-2 j text-left"><b>Report</b></div>
         <button id="downloadbtn" type="button"
           class="hover:opacity-80 hover:scale-105 w-11/12 inline-block px-2 py-2.5 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out"
@@ -148,12 +151,15 @@
         </button>
       </div>
 
-      <div id = "download" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
+      <div id = "oldVersion" class="script-download mb-4 bg-white text-center rounded overflow-hidden">
         <div class = "script-download-header p-2 text-xl mb-2 text-left"><b>Old Versions</b></div>
+        <div id="oldContent">
         <div (click) = "showOldieInfo(script)" class = "version mx-2 p-1 mb-2 rounded-sm text-white text-xs font-medium cursor-pointer" *ngFor = "let script of oldies">
           {{'v' + script.version.major + '.' + script.version.minor + '.' + script.version.patch}} 
         </div>
       </div>
+      </div>
+    </div>
 
 
 

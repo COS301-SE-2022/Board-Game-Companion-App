@@ -1,82 +1,7 @@
-<!-- <div id = "container">
-    <div class = "p-4 pr-0 pt-4"  id = "lastPlayed">
-        <h1 id = "lpTitle">Last game you played</h1>
-        <img [src] =  'url'>
-        <table class = "table-auto">
-            <thead>
-                <tr>
-                    <th>
-                        Session ID:
-                    </th>
-                    <th>
-                        Game:
-                    </th>
-                    <th>
-                        Score:
-                    </th>
-                    <th>
-                        Script:
-                    </th>
-                    <th>
-                        Play Time:
-                    </th>
-                    <th>
-                        Number of Players:
-                    </th>
-                    <th>
-                        Result:
-                    </th>
-                    <th >
-                        <button (click) = "viewSession(id)" id = "explore">Explore</button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        {{id}}
-                    </td>
-                    <td>
-                        {{game}}
-                    </td>
-                    <td>
-                        {{score}}
-                    </td>
-                    <td>
-                        {{script}}
-                    </td>
-                    <td>
-                        {{time}}
-                    </td>
-                    <td>
-                        {{num}}
-                    </td>
-                    <td>
-                        {{result}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class = "ml-8" id = "carousels">
-        <div class = "mb-8" id = "carousel1">
-            <button id="btn1" (click) = "viewCollection(collection)"><h1 class = "T" id = "T1">Some games from your collection</h1></button>
-            <board-game-companion-app-carousel1></board-game-companion-app-carousel1>
-        </div>
-        <div id = "carousel2">
-            <button id="btn2" (click) = "boardGames()"><h1 class = "T" id = "T2">Recommended</h1></button>
-            <board-game-companion-app-carousel2></board-game-companion-app-carousel2>
-        </div>
-    </div>
-</div> -->
 
-<!-- <div *ngIf="ids">
-    <board-game-companion-app-carousel [ids]="ids"></board-game-companion-app-carousel>
-</div> -->
-
-<div class = "w-full h-full flex items-center">
+<div id="outter"  class = "w-full h-full flex sm:items-center">
     <div class = "w-4/5 mx-auto row">
-        <div [ngClass] = "{'col-sm-4':sessionAvailable,'hidden':!sessionAvailable}">
+        <div id= "last" [ngClass] = "{'col-sm-4':sessionAvailable,'hidden':!sessionAvailable}">
             <div class = "m-2 p-1 w-full wrapper shadow-sm rounded">
                 <div class = "w-full text-center text-lg font-medium text-white mb-4">
                     Last game played
@@ -136,13 +61,13 @@
                     </div>
                 </div>
     
-                <div (click) = "viewSession(id)" class = "w-4/5 mx-auto bg-lime-500 text-white cursor-pointer rounded-sm hover:scale-105 p-2 font-medium text-center active:bg-lime-300">
+                <div id="explore" (click) = "viewSession(id)" class = "w-4/5 mx-auto bg-lime-500 text-white cursor-pointer rounded-sm hover:scale-105 p-2 font-medium text-center active:bg-lime-300">
                     Explore
                 </div>
             </div>
         </div>
     
-        <div class = "col-sm-8" [ngClass] = "{'offset-sm-2':!sessionAvailable}">
+        <div id="myGames" class = "col-sm-8" [ngClass] = "{'offset-sm-2':!sessionAvailable}">
             <div class = "m-2 w-full bg-white rounded overflow-hidden shadow-sm relative">
                 <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
                     Your Games
@@ -167,7 +92,7 @@
             </div>
 
 
-            <div class = "m-2 w-full bg-white rounded overflow-hidden shadow-sm relative">
+            <div id="recommendation" class = "sm:m-2 w-full bg-white rounded overflow-hidden shadow-sm relative">
                 <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
                     Recommendation
                 </p>

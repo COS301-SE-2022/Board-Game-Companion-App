@@ -6,6 +6,8 @@ import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { DownloadScriptsComponent } from '../download-scripts/download-scripts.component';
 import { GoogleAuthService } from '../../google-login/GoogleAuth/google-auth.service';
 
+
+
 @Component({
   selector: 'board-game-companion-app-main-scripts',
   templateUrl: './main-scripts.component.html',
@@ -116,9 +118,7 @@ export class MainScriptsComponent implements OnInit {
     }
   }
 
-  DropDown():void {
-    if(window.screen.width <= 639){
-      this.isShown.dropdown = true; 
-    }
+  showMenu():void {
+    this.isShown.dropdown = true; 
   }
 }
