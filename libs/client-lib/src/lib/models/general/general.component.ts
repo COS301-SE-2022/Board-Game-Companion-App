@@ -182,11 +182,6 @@ export class GeneralComponent implements OnInit {
 
   async upload(network:neuralnetwork,model:tf.Sequential): Promise<void>{
     try{
-      const result = model.predict(tf.tensor2d([[123 / 255,23 / 255, 14 / 255],[245 / 255, 123 / 255, 5 / 255]])) as tf.Tensor
-      const prediction = Array.from(result.argMax(1).dataSync());
-      result.print();
-      console.log(prediction)
-
       const user:user = {
         name: sessionStorage.getItem("name") as string,
         email: sessionStorage.getItem("email") as string
