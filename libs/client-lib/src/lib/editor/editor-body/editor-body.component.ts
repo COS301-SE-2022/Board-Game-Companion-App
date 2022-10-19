@@ -342,6 +342,48 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     }
   }
 
+  addElement(lines : string[], openTabs : number, type : string, i : number)
+  {
+    let tabs = ""
+    for(let k = 0; k < openTabs; k++)
+    {
+      tabs = tabs + "\t"
+    }
+    switch(type)
+    {
+      case "create":
+        lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
+        break
+      case "set":
+        lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
+        break
+      case "input":
+        lines.splice(i,0, tabs + "input('yes', 'text')")
+        break
+      case "output":
+        lines.splice(i,0, tabs + "output('yes')")
+        break
+      case "method":
+        lines.splice(i,0, tabs + "addToArr(arr,0)")
+        break
+      case "return":
+        lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
+        break
+      case "for":
+        lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
+        break
+      case "while":
+        lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
+        break
+      case "do":
+        lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
+        break
+      case "if":
+        lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
+        break
+    }
+  }
+
   addToContainer(con : string, type : string)
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
@@ -384,49 +426,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             if(start == 1 && open == 0)
             {
               start = 0
-              let tabs = ""
-              for(let k = 0; k < openTabs; k++)
-              {
-                tabs = tabs + "\t"
-              }
-              switch(type)
-              {
-                case "create":
-                  lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
-                  break
-                case "set":
-                  lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
-                  break
-                case "input":
-                  lines.splice(i,0, tabs + "input('yes', 'text')")
-                  break
-                case "output":
-                  lines.splice(i,0, tabs + "output('yes')")
-                  break
-                case "method":
-                  lines.splice(i,0, tabs + "addToArr(arr,0)")
-                  break
-                case "return":
-                  lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
-                  break
-                case "for":
-                  lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-                case "while":
-                  lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-                case "do":
-                  lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
-                  break
-                case "if":
-                  lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-              }
+              
             }
 
             if(+this.parent === i)
             {
               start = 1
+              this.addElement(lines, openTabs, type, i)
             }
           }
           break
@@ -456,44 +462,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             if(start == 1 && open == 0 && elseStart == 1)
             {
               start = 0
-              let tabs = ""
-              for(let k = 0; k < openTabs; k++)
-              {
-                tabs = tabs + "\t"
-              }
-              switch(type)
-              {
-                case "create":
-                  lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
-                  break
-                case "set":
-                  lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
-                  break
-                case "input":
-                  lines.splice(i,0, tabs + "input('yes', 'text')")
-                  break
-                case "output":
-                  lines.splice(i,0, tabs + "output('yes')")
-                  break
-                case "method":
-                  lines.splice(i,0, tabs + "addToArr(arr,0)")
-                  break
-                case "return":
-                  lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
-                  break
-                case "for":
-                  lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-                case "while":
-                  lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-                case "do":
-                  lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
-                  break
-                case "if":
-                  lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
-                  break
-              }
+              this.addElement(lines, openTabs, type, i)
             }
 
             if(+this.parent === i)
@@ -536,44 +505,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           if(a > -1 && open == 0)
           {
             openTabs++
-            let tabs = ""
-            for(let k = 0; k < openTabs; k++)
-            {
-              tabs = tabs + "\t"
-            }
-            switch(type)
-            {
-              case "create":
-                lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
-                break
-              case "set":
-                lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
-                break
-              case "input":
-                lines.splice(i,0, tabs + "input('yes', 'text')")
-                break
-              case "output":
-                lines.splice(i,0, tabs + "output('yes')")
-                break
-              case "method":
-                lines.splice(i,0, tabs + "addToArr(arr,0)")
-                break
-              case "return":
-                lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
-                break
-              case "for":
-                lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
-                break
-              case "while":
-                lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
-                break
-              case "do":
-                lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
-                break
-              case "if":
-                lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
-                break
-            }
+            this.addElement(lines, openTabs, type, i)
             a = -10
           }
           if(element.includes(con))
@@ -615,46 +547,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
 
           if(a == +this.acIndex && p == +this.pcIndex &&  open == 0)
           {
-            let tabs = ""
             openTabs++
-            console.log(i)
-            for(let k = 0; k < openTabs; k++)
-            {
-              tabs = tabs + "\t"
-            }
-            switch(type)
-            {
-              case "create":
-                lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
-                break
-              case "set":
-                lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
-                break
-              case "input":
-                lines.splice(i,0, tabs + "input('yes', 'text')")
-                break
-              case "output":
-                lines.splice(i,0, tabs + "output('yes')")
-                break
-              case "method":
-                lines.splice(i,0, tabs + "addToArr(arr,0)")
-                break
-              case "return":
-                lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
-                break
-              case "for":
-                lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
-                break
-              case "while":
-                lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
-                break
-              case "do":
-                lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
-                break
-              case "if":
-                lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
-                break
-            }
+            this.addElement(lines, openTabs, type, i)
             a = -10
           }
 
