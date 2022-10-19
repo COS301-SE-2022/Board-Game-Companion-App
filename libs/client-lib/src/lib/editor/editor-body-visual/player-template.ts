@@ -14,7 +14,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                 </summary>
                 <button (click)="addAction()" id = "addAction">Add Action</button>
                 <div class = "ActionConditionPairs" *ngFor = "item of Actions let i = index">
-                    <div id = "action" class = "playerContainers">
+                    <div id = "action" class = "playerContainers" [attr.actionNumber]="i" [attr.playerNumber]="Index">
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
@@ -25,7 +25,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                             <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Actions[i]" [dest] = "Actions[i]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                         </details>
                     </div>
-                    <div id = "condition" class = "playerContainers">
+                    <div id = "condition" class = "playerContainers" [attr.conditionNumber]="i" [attr.playerNumber]="Index">
                         <details open>
                             <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                                 <div class = "title text-xl font-bold ml-4 mt-2">
@@ -37,7 +37,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     </div>
                 </div>
                 <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="PlayerCode[0]" [dest] = "PlayerCode[0]" [dests] = "PlayerLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
-                <div id = "turn" class = "playerContainers">
+                <div id = "turn" class = "playerContainers" [attr.playerNumber]="Index">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
