@@ -55,14 +55,15 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     <!--Variable declaration name-->
                     <input (change)="updateElements($event, item, 'name')" *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
                     <!--List of variables created-->
-                    <select (change)="updateElements($event, item, 'sname')" *ngIf = "item.title === 'Set'">
+                    <input (change)="updateElements($event, item, 'sname')" *ngIf = "item.title === 'Set'" list = "vars" [value]="item.inputs[0]">
+                    <datalist id = "vars">
                         <option>
                             {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let vars of variables">
                             {{vars.name}}
                         </option>
-                    </select>
+                    </datalist>
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
                     </div>
