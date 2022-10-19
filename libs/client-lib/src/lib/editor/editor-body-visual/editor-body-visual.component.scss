@@ -269,6 +269,7 @@
     padding: 2em;
     margin: 2em;
     margin-top: 0;
+    border: 3px solid white;
 }
 
 #trueSection::-webkit-scrollbar, #falseSection::-webkit-scrollbar {
@@ -297,6 +298,7 @@
     display: flex;
     padding: 2em;
     margin: 2em;
+    border: 3px solid white;
 }
 
 .visualW #whileBackground, .visualD #whileBackground{

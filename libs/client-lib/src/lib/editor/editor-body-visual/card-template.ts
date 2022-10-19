@@ -12,7 +12,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
-                <div id = "effect" class = "cardContainers">
+                <div id = "effect" class = "cardContainers" [attr.cardNumber]="Index">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
@@ -22,7 +22,7 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                         <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
-                <div id = "condition" class = "cardContainers">
+                <div id = "condition" class = "cardContainers" [attr.cardNumber]="Index">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">

@@ -54,6 +54,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   action = 0
   condition = 0
   parent = ""
+  acIndex = ""
+  pcIndex = ""
   editorId = (new Date()).getTime().toString();
   constructor(private readonly editorService:EditorService, private readonly dragulaService: DragulaService){
   }
@@ -97,16 +99,17 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           this.container = target.id
           break
       }
-
       if(target.parentElement?.parentElement != null)
       {
         switch(target.parentElement?.parentElement.className)
         {
           case "playerContainers":
             this.parent = "player"
+            this.pcIndex = target.parentElement?.parentElement?.getAttribute('playerNumber') || ""
             break
           case "cardContainers":
             this.parent = "card"
+            this.pcIndex = target.parentElement?.parentElement?.getAttribute('cardNumber') || ""
             break
           case "listItems":
             this.parent = target.parentElement?.previousElementSibling?.getAttribute('item-line') || ""
@@ -120,15 +123,22 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             break
           case "action":
             this.container = "action"
+            this.acIndex = target.parentElement?.parentElement?.getAttribute('actionNumber') || ""
             break
           case "condition":
             this.container = "condition"
+            if(target.parentElement?.parentElement.className == "playerContainers")
+            {
+              this.acIndex = target.parentElement?.parentElement?.getAttribute('conditionNumber') || ""
+            }
             break
           case "turn":
             this.container = "turn"
+            this.acIndex = "0"
             break
           case "effect":
             this.container = "effect"
+            this.acIndex = "0"
             break
         }
         switch(el.id)
@@ -199,349 +209,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         next:(value)=>{
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
-          switch(this.created)
+          this.addState()
+          this.addEndGame()
+          if(this.created != "")
           {
-            case "create":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "create")
-                  break
-                case "action":
-                  this.addToContainer("action", "create")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "create")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "create")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "create")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "create")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "create")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "create")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "create")
-                  break
-            }
-              break
-            case "set":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "set")
-                  break
-                case "action":
-                  this.addToContainer("action", "set")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "set")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "set")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "set")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "set")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "set")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "set")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "set")
-                  break
-              }
-              break
-            case "input":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "input")
-                  break
-                case "action":
-                  this.addToContainer("action", "input")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "input")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "input")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "input")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "input")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "input")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "input")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "input")
-                  break
-              }
-              break
-            case "output":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "output")
-                  break
-                case "action":
-                  this.addToContainer("action", "output")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "output")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "output")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "output")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "output")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "output")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "output")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "output")
-                  break
-              }
-              break
-            case "method":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "method")
-                  break
-                case "action":
-                  this.addToContainer("action", "method")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "method")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "method")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "method")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "method")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "method")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "method")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "method")
-                  break
-              }
-              break
-            case "return":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "return")
-                  break
-                case "action":
-                  this.addToContainer("action", "return")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "return")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "return")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "return")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "return")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "return")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "return")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "return")
-                  break
-              }
-              break
-            case "for":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "for")
-                  break
-                case "action":
-                  this.addToContainer("action", "for")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "for")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "for")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "for")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "for")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "for")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "for")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "for")
-                  break
-              }
-              break
-            case "while":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "while")
-                  break
-                case "action":
-                  this.addToContainer("action", "while")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "while")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "while")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "while")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "while")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "while")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "while")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "while")
-                  break
-              }
-              break
-            case "do":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "do")
-                  break
-                case "action":
-                  this.addToContainer("action", "do")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "do")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "do")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "do")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "do")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "do")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "do")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "do")
-                  break
-              }
-              break
-            case "if":
-              this.addState()
-              this.addEndGame()
-              switch(this.container)
-              {
-                case "endgame":
-                  this.addToContainer("endgame", "if")
-                  break
-                case "action":
-                  this.addToContainer("action", "if")
-                  break
-                case "condition":
-                  this.addToContainer("condition", "if")
-                  break
-                case "turn":
-                  this.addToContainer("turn", "if")
-                  break
-                case "effect":
-                  this.addToContainer("effect", "if")
-                  break
-                case "trueSection":
-                  this.addToContainer("trueSection", "if")
-                  break
-                case "falseSection":
-                  this.addToContainer("falseSection", "if")
-                  break
-                case "codeArea":
-                  this.addToContainer("codeArea", "if")
-                  break
-                case "doArea":
-                  this.addToContainer("doArea", "if")
-                  break
-              }
-              break
-
+            this.addToContainer(this.container, this.created)
           }
           this.updateVDSL()
           this.codeEditor.session.on('change', ()=>{
@@ -673,12 +345,15 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
   addToContainer(con : string, type : string)
   {
     const lines = this.codeEditor.getValue().split(/\r?\n/)
-    let end = 0
-    let a = 0
-    let c = 0
+    let a = -1
     let open = 0
+    let openTabs = 0
     let start = 0
     let elseStart = 0
+    let twice = 0
+    let p = -1
+    console.log(con)
+    console.log(this.parent)
     lines.forEach((element, i) => {
       switch(con)
       {
@@ -691,45 +366,60 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               open++
             }
 
+            if(element.includes("{"))
+            {
+              openTabs++
+            }
+
             if(element.includes("}") && start == 1)
             {
               open--
             }
 
+            if(element.includes("}") && start != 1)
+            {
+              openTabs--
+            }
+
             if(start == 1 && open == 0)
             {
               start = 0
+              let tabs = ""
+              for(let k = 0; k < openTabs; k++)
+              {
+                tabs = tabs + "\t"
+              }
               switch(type)
               {
                 case "create":
-                  lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
                   break
                 case "set":
-                  lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
                   break
                 case "input":
-                  lines.splice(i,0, "\t\tinput('yes', 'text')")
+                  lines.splice(i,0, tabs + "input('yes', 'text')")
                   break
                 case "output":
-                  lines.splice(i,0, "\t\toutput('yes')")
+                  lines.splice(i,0, tabs + "output('yes')")
                   break
                 case "method":
-                  lines.splice(i,0, "\t\taddToArr(arr,0)")
+                  lines.splice(i,0, tabs + "addToArr(arr,0)")
                   break
                 case "return":
-                  lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
                   break
                 case "for":
-                  lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
                   break
                 case "while":
-                  lines.splice(i,0,"\t\twhile(x > 0)\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
                   break
                 case "do":
-                  lines.splice(i,0,"\t\tdo\n\t\t{\n\t\t}\nwhile(x > 0)")
+                  lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
                   break
                 case "if":
-                  lines.splice(i,0,"\t\tif(x > 0)\n\t\t{\n\t\t}\n\telse\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
                   break
               }
             }
@@ -739,7 +429,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               start = 1
             }
           }
-          this.codeEditor.setValue(lines.join("\n"))
           break
         case "falseSection":
           {
@@ -749,46 +438,60 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               open++
             }
 
+            if(element.includes("{"))
+            {
+              openTabs++
+            }
+
             if(element.includes("}") && start == 1)
             {
               open--
             }
 
+            if(element.includes("}") && elseStart != 1)
+            {
+              openTabs--
+            }
+
             if(start == 1 && open == 0 && elseStart == 1)
             {
               start = 0
-              elseStart = 0
+              let tabs = ""
+              for(let k = 0; k < openTabs; k++)
+              {
+                tabs = tabs + "\t"
+              }
               switch(type)
               {
                 case "create":
-                  lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
                   break
                 case "set":
-                  lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
                   break
                 case "input":
-                  lines.splice(i,0, "\t\tinput('yes', 'text')")
+                  lines.splice(i,0, tabs + "input('yes', 'text')")
                   break
                 case "output":
-                  lines.splice(i,0, "\t\toutput('yes')")
+                  lines.splice(i,0, tabs + "output('yes')")
                   break
                 case "method":
-                  lines.splice(i,0, "\t\taddToArr(arr,0)")
+                  lines.splice(i,0, tabs + "addToArr(arr,0)")
                   break
                 case "return":
-                  lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                  lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
                   break
                 case "for":
-                  lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
                   break
                 case "while":
-                  lines.splice(i,0,"\t\twhile(x > 0)\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
                   break
                 case "do":
-                  lines.splice(i,0,"\t\tdo\n\t\t{\n\t\t}\nwhile(x > 0)")
+                  lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
                   break
                 case "if":
-                  lines.splice(i,0,"\t\tif(x > 0)\n\t\t{\n\t\t}\n\telse\n\t\t{\n\t\t}\n")
+                  lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
                   break
               }
             }
@@ -798,251 +501,176 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               start = 1
             }
 
-            if(element.includes("else") && start == 1)
+            if(element.includes("else") && start == 1 && open == 0)
             {
+              console.log(i)
               elseStart = 1
             }
           }
-          this.codeEditor.setValue(lines.join("\n"))
           break
         case "endgame":
-          if (element.includes("endgame"))
+          twice = 0
+          if(element.includes("{"))
           {
-            a++
+            openTabs++
           }
-          if(a > 0 && element == "}")
+
+          if(element.includes("{") && a > -1) 
           {
-            end = i
-            console.log(type)
+            open++
+            twice++
+            console.log(open)
+          }
+
+          if(element.includes("}"))
+          {
+            openTabs--
+          }
+
+          if(element.includes("}") && a > -1)
+          {
+            console.log(i)
+            open--
+          }
+          
+          if(a > -1 && open == 0)
+          {
+            openTabs++
+            let tabs = ""
+            for(let k = 0; k < openTabs; k++)
+            {
+              tabs = tabs + "\t"
+            }
             switch(type)
             {
               case "create":
-                lines.splice(i,0, "\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
                 break
               case "set":
-                lines.splice(i,0, "\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
                 break
               case "input":
-                lines.splice(i,0, "\tinput('yes', 'text')")
+                lines.splice(i,0, tabs + "input('yes', 'text')")
                 break
               case "output":
-                lines.splice(i,0, "\toutput('yes')")
+                lines.splice(i,0, tabs + "output('yes')")
                 break
               case "method":
-                lines.splice(i,0, "\taddToArr(arr,0)")
+                lines.splice(i,0, tabs + "addToArr(arr,0)")
                 break
               case "return":
-                lines.splice(i,0,"\treturn rvalue" + this.count.toString())
+                lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
                 break
               case "for":
-                lines.splice(i,0,"\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
                 break
               case "while":
-                lines.splice(i,0,"\twhile(x > 0)\n\t{\n\t}\n")
+                lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
                 break
               case "do":
-                lines.splice(i,0,"\tdo\n\t{\n\t}\nwhile(x > 0)")
+                lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
                 break
               case "if":
-                console.log("yes")
-                lines.splice(i,0,"\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
-                console.log(lines)
+                lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
                 break
             }
             a = -10
           }
-          this.codeEditor.setValue(lines.join("\n"))
+          if(element.includes(con))
+          {
+            a++
+          }
+
+          if(element.includes("{") && a > -1 && twice == 0)
+          {
+            open++
+            console.log(open)
+          }
           break
         case "turn":
-          if (element.includes("turn"))
-          {
-            a++
-          }
-          if(a > 0 && element == "\t}")
-          {
-            end = i
-            switch(type)
-            {
-              case "create":
-                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
-                break
-              case "set":
-                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
-                break
-              case "input":
-                lines.splice(i,0, "\t\tinput('yes', 'text')")
-                break
-              case "output":
-                lines.splice(i,0, "\t\toutput('yes')")
-                break
-              case "method":
-                lines.splice(i,0, "\t\taddToArr(arr,0)")
-                break
-              case "return":
-                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
-                break
-              case "for":
-                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
-                break
-              case "while":
-                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
-                break
-              case "do":
-                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
-                break
-              case "if":
-                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
-                break
-            }
-            a = -10
-          }
-          this.codeEditor.setValue(lines.join("\n"))
-          break
+        case "effect":
         case "condition":
-          if (element.includes("condition"))
+        case "action":
+          if(element.includes("{"))
           {
-            a++
+            openTabs++
           }
+
+          if(element.includes("}"))
+          {
+            openTabs--
+          }
+
           if(element.includes(this.parent))
           {
-            c++
-            a = 0
+            p++
+            console.log(this.pcIndex)
           }
-          if(a > 0 && c > 0 && element == "\t}")
+
+          if(element.includes("}") && a == +this.acIndex && p == +this.pcIndex)
           {
-            end = i
-            console.log(type)
+            open--
+            console.log(i)
+          }
+
+          if(a == +this.acIndex && p == +this.pcIndex &&  open == 0)
+          {
+            let tabs = ""
+            openTabs++
+            console.log(i)
+            for(let k = 0; k < openTabs; k++)
+            {
+              tabs = tabs + "\t"
+            }
             switch(type)
             {
               case "create":
-                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
+                lines.splice(i,0, tabs + "let create" + this.count.toString() + " = cvalue" + this.count.toString())
                 break
               case "set":
-                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
+                lines.splice(i,0, tabs + "set" + this.count.toString() + " = svalue" + this.count.toString())
                 break
               case "input":
-                lines.splice(i,0, "\t\tinput('yes', 'text')")
+                lines.splice(i,0, tabs + "input('yes', 'text')")
                 break
               case "output":
-                lines.splice(i,0, "\t\toutput('yes')")
+                lines.splice(i,0, tabs + "output('yes')")
                 break
               case "method":
-                lines.splice(i,0, "\t\taddToArr(arr,0)")
+                lines.splice(i,0, tabs + "addToArr(arr,0)")
                 break
               case "return":
-                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
+                lines.splice(i,0, tabs + "return rvalue" + this.count.toString())
                 break
               case "for":
-                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
+                lines.splice(i,0, tabs + "for(x = 0; x < 10; x++)\n" + tabs + "{\n" + tabs + "}\n")
                 break
               case "while":
-                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
+                lines.splice(i,0, tabs + "while(x > 0)\n" + tabs + "{\n" + tabs + "}\n")
                 break
               case "do":
-                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
+                lines.splice(i,0, tabs + "do\n" + tabs + "{\n" + tabs  + "}\n " + tabs +  "while(x > 0)")
                 break
               case "if":
-                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
+                lines.splice(i,0, tabs + "if(x > 0)\n"+ tabs + "{\n" + tabs + "}\n" + tabs + "else\n" + tabs + "{\n" + tabs + "}\n")
                 break
             }
             a = -10
           }
-          this.codeEditor.setValue(lines.join("\n"))
-          break
-        case "action":
-          if (element.includes("action"))
+
+          if(element.includes(con) && p == +this.pcIndex)
           {
             a++
           }
-          if(a > 0 && element == "\t}")
+
+          if(element.includes("{") && a == +this.acIndex && p == +this.pcIndex)
           {
-            end = i
-            console.log(type)
-            switch(type)
-            {
-              case "create":
-                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
-                break
-              case "set":
-                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
-                break
-              case "input":
-                lines.splice(i,0, "\t\tinput('yes', 'text')")
-                break
-              case "output":
-                lines.splice(i,0, "\t\toutput('yes')")
-                break
-              case "method":
-                lines.splice(i,0, "\t\taddToArr(arr,0)")
-                break
-              case "return":
-                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
-                break
-              case "for":
-                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
-                break
-              case "while":
-                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
-                break
-              case "do":
-                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
-                break
-              case "if":
-                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
-                break
-            }
-            a = -10
+            open++
           }
-          this.codeEditor.setValue(lines.join("\n"))
-          break
-        case "effect":
-          if (element.includes("effect"))
-          {
-            a++
-          }
-          if(a > 0 && element == "\t}")
-          {
-            end = i
-            console.log(type)
-            switch(type)
-            {
-              case "create":
-                lines.splice(i,0, "\t\tlet create" + this.count.toString() + " = cvalue" + this.count.toString())
-                break
-              case "set":
-                lines.splice(i,0, "\t\tset" + this.count.toString() + " = svalue" + this.count.toString())
-                break
-              case "input":
-                lines.splice(i,0, "\t\tinput('yes', 'text')")
-                break
-              case "output":
-                lines.splice(i,0, "\t\toutput('yes')")
-                break
-              case "method":
-                lines.splice(i,0, "\t\taddToArr(arr,0)")
-                break
-              case "return":
-                lines.splice(i,0,"\t\treturn rvalue" + this.count.toString())
-                break
-              case "for":
-                lines.splice(i,0,"\t\tfor(x = 0; x < 10; x++)\n\t{\n\t}\n")
-                break
-              case "while":
-                lines.splice(i,0,"\t\twhile(x > 0)\n\t{\n\t}\n")
-                break
-              case "do":
-                lines.splice(i,0,"\t\tdo\n\t{\n\t}\nwhile(x > 0)")
-                break
-              case "if":
-                lines.splice(i,0,"\t\tif(x > 0)\n\t{\n\t}\n\telse\n\t{\n\t}\n")
-                break
-            }
-            a = -10
-          }
-          this.codeEditor.setValue(lines.join("\n"))
           break
       }
     })
+    this.codeEditor.setValue(lines.join("\n"))
   }
 
   
