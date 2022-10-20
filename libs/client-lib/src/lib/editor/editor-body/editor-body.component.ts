@@ -957,23 +957,25 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         break
       case "ifCompare":
       case "ifInput":
-        const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
-        const tabs = this.countTabs(lines, +value[2])
-        if(c[+param - 1].includes("if(") || c[+param - 1].includes("if ("))
         {
-          c[+param - 1] = c[+param - 1].substring(0, c[+param - 1].indexOf("(") + 1) + value[0]
+          const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          const tabs = this.countTabs(lines, +value[2])
+          if(c[+param - 1].includes("if(") || c[+param - 1].includes("if ("))
+          {
+            c[+param - 1] = c[+param - 1].substring(0, c[+param - 1].indexOf("(") + 1) + value[0]
+          }
+          else if (c[+param - 1].includes(")"))
+          {
+            c[+param - 1] =  value[0] + ")"
+          }
+          else
+          {
+            c[+param - 1] = value[0]
+          }
+          c[0] = tabs + c[0]
+          lines[+value[2]] = c.join(" ")
+          this.codeEditor.setValue(lines.join("\n"))
         }
-        else if (c[+param - 1].includes(")"))
-        {
-          c[+param - 1] =  value[0] + ")"
-        }
-        else
-        {
-          c[+param - 1] = value[0]
-        }
-        c[0] = tabs + c[0]
-        lines[+value[2]] = c.join(" ")
-        this.codeEditor.setValue(lines.join("\n"))
         break
     }
   }
