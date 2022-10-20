@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { script, empty } from '../../shared/models/scripts/script';
 import { selection } from '../../shared/models/editor/selection';
 import { ModelsService } from '../../shared/services/models/models.service';
@@ -6,6 +6,8 @@ import { StorageService } from '../../shared/services/storage/storage.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
 import * as tf from '@tensorflow/tfjs'
 import { myScript } from '../../shared/models/scripts/my-script';
+import { Ace } from 'ace-builds';
+import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
 
 @Component({
   selector: 'board-game-companion-app-editor-text-side-bar',
@@ -20,6 +22,7 @@ export class EditorTextSideBarComponent implements OnInit,OnChanges{
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
+  @ViewChildren(EditorEntityComponent) entities: QueryList<EditorEntityComponent> = new QueryList<EditorEntityComponent>();
 
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){}
 
@@ -38,6 +41,12 @@ export class EditorTextSideBarComponent implements OnInit,OnChanges{
 
   remove(value:selection){
     this.removeEvent.emit(value);
+  }
+
+  cursorChange(value:Ace.Point): void{
+    this.entities.forEach((component:EditorEntityComponent)=>{
+      component.cursorChange(value);
+    })
   }
 
   getModels(): void{

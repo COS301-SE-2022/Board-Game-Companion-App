@@ -29,8 +29,18 @@
     ],
     "dataGroups": [
       {
+        "name":"admin",
+        "urls":["http://localhost:3333/api/admin/**","https://board-game-companion-app.herokuapp.com/api/admin/**"],
+        "cacheConfig": {
+          "strategy": "freshness",
+          "maxSize": 100,
+          "maxAge": "3d",
+          "timeout": "5s"
+        }
+      },
+      {
         "name":"collections",
-        "urls":["http://localhost:3333/api/collections/**"],
+        "urls":["http://localhost:3333/api/collections/**","https://board-game-companion-app.herokuapp.com/api/collections/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -40,7 +50,7 @@
       },
       {
         "name":"automata-scripts",
-        "urls":["http://localhost:3333/api/automata-scripts/**"],
+        "urls":["http://localhost:3333/api/automata-scripts/**","https://board-game-companion-app.herokuapp.com/api/automata-scripts/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -50,7 +60,7 @@
       },
       {
         "name":"comments",
-        "urls":["http://localhost:3333/api/comments/**"],
+        "urls":["http://localhost:3333/api/comments/**","https://board-game-companion-app.herokuapp.com/api/comments/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -60,7 +70,7 @@
       },
       {
         "name":"download-scripts",
-        "urls":["http://localhost:3333/api/download-scripts/**"],
+        "urls":["http://localhost:3333/api/download-scripts/**","https://board-game-companion-app.herokuapp.com/api/download-scripts/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -70,7 +80,7 @@
       },
       {
         "name":"files",
-        "urls":["http://localhost:3333/api/files/**"],
+        "urls":["http://localhost:3333/api/files/**","https://board-game-companion-app.herokuapp.com/api/files/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -80,7 +90,7 @@
       },
       {
         "name":"models",
-        "urls":["http://localhost:3333/api/models/**"],
+        "urls":["http://localhost:3333/api/models/**","https://board-game-companion-app.herokuapp.com/api/models/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -90,7 +100,7 @@
       },
       {
         "name":"my-scripts",
-        "urls":["http://localhost:3333/api/my-scripts/**"],
+        "urls":["http://localhost:3333/api/my-scripts/**","https://board-game-companion-app.herokuapp.com/api/my-scripts/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
@@ -100,7 +110,7 @@
       },
       {
         "name":"reports",
-        "urls":["http://localhost:3333/api/reports/**"],
+        "urls":["http://localhost:3333/api/reports/**","https://board-game-companion-app.herokuapp.com/api/reports/**"],
         "cacheConfig": {
           "strategy": "freshness",
           "maxSize": 100,
