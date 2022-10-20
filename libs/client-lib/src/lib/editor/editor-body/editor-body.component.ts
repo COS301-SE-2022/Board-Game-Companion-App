@@ -62,6 +62,19 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
 
   ngAfterViewInit(): void{
     this.createEditor();
+    this.codeEditor.navigateTo(0,0);
+    clearInterval(this.cursorCheckerTimer);
+
+    this.cursorCheckerTimer = window.setInterval(()=>{
+      const value = this.codeEditor.getCursorPosition();
+      if(value.row != this.cursorPosition.row || value.column != this.cursorPosition.column){
+        this.cursorChangeEvent.emit({row:value.row + 1,column:value.column + 1});
+        this.cursorPosition = value;
+      }
+    },500);
+
+    this.updateVDSL()
+    
   }
 
   ngOnInit(): void {
@@ -180,21 +193,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
 
     if(theme != null)
       this.themeEditor = theme;
-
-    this.createEditor();
-    clearInterval(this.cursorCheckerTimer);
-    this.codeEditor.navigateTo(0,0);
-
-    this.cursorCheckerTimer = window.setInterval(()=>{
-      const value = this.codeEditor.getCursorPosition();
-      
-      if(value.row != this.cursorPosition.row || value.column != this.cursorPosition.column){
-        this.cursorChangeEvent.emit({row:value.row + 1,column:value.column + 1});
-        this.cursorPosition = value;
-      }
-    },500);
-    this.updateVDSL()
-    
   }
 
   ngOnDestroy(): void {
@@ -211,6 +209,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           const c = this.codeEditor.getValue()
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
+
           this.addState()
           this.addEndGame()
           if(this.created != "")

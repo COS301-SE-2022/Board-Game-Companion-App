@@ -457,6 +457,7 @@ setCurrPlayer(){
   newMessage(message:string[]): void{
     this.statusMessages = [];
     this.statusMessages = message;
+    this.editorConsole.clear();
   }
 
   printStatusMessages(): void{

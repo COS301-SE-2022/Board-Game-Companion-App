@@ -34,7 +34,7 @@
                 <a class="dropdown-toggle transition duration-150 ease-in-out flex items-center whitespace-nowrap rounded-full p-0.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-bell fa-2x w-full" [ngClass] = "{'fa-shake':alerts.length !== 0}"></i>
                 </a>
-                <ul class="dropdown-menu w-60 absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
+                <ul id = "notifications" class="dropdown-menu max-h-64 w-60 overflow-y-scroll absolute hidden bg-white text-base z-50 float-left py-1 list-none text-left rounded-sm shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" [ngClass] = "{'menu-full-width-2':width>breakpoint,'menu-small-width-2':width<=breakpoint}">
                     <li class = "w-full p-0.5" *ngFor = "let value of alerts">
                         <div (click) = "processAlert(value)" class="border dropdown-item text-sm py-1 px-2 font-normal block w-full whitespace-nowrap text-gray-700 font-medium cursor-pointer" >
                             <div class = "w-full flex flex-row">

@@ -22,10 +22,10 @@
         </div>
 
         <div class = "absolute right-2 left-2 bottom-0 justify-between justify-left flex flex-row py-1.5 px-2 text-xs">
-            <div data-toggle="flag" title="profile" (click) = "flag(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
+            <div data-toggle="flag" title="flag" (click) = "flag(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
                 <i class="fas fa-flag"></i>
             </div>
-            <div *ngIf = "current.script" data-toggle="view" title="profile" (click) = "view(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
+            <div *ngIf = "current.script" data-toggle="view" title="view" (click) = "view(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
                 <i class="fas fa-eye"></i>
             </div>
             <div data-toggle="tooltip" title="ignore" (click) = "ignore(current)" class = "rounded-md bg-slate-200 shadow-sm cursor-pointer hover:scale-105 hover:bg-slate-400 active:bg-slate-600 active:text-white text-gray-700 px-2 py-1">
