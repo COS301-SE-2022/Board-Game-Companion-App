@@ -26,7 +26,7 @@ export class AdminReportsComponent implements OnInit {
   months: string[] = ["None","January","February","March","April","May","June","July","August","September","October","November","December"];
   section = 0;
   year = (new Date()).getFullYear();
-  month = this.months[(new Date()).getMonth()];
+  month = this.months[(new Date()).getMonth() + 1];
 
   constructor(private readonly reportService:ReportService,
               private readonly scriptService:ScriptService,
@@ -70,7 +70,7 @@ export class AdminReportsComponent implements OnInit {
       const issued = new Date(value.dateIssued);
 
       if(issued.getFullYear() === this.year){
-        if(this.month === "None" || this.months[issued.getMonth()] === this.month)
+        if(this.month === "None" || this.months[issued.getMonth() + 1] === this.month)
           this.showScriptReports.push(value)
       }
     })
@@ -79,7 +79,7 @@ export class AdminReportsComponent implements OnInit {
       const issued = new Date(value.dateIssued);
 
       if(issued.getFullYear() === this.year){
-        if(this.month === "None" || this.months[issued.getMonth()] === this.month)
+        if(this.month === "None" || this.months[issued.getMonth() + 1] === this.month)
           this.showCommentReports.push(value)
       }
     })

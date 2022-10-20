@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { Ace } from 'ace-builds';
 import { entity } from '../../shared/models/editor/entity';
 import { script, empty } from '../../shared/models/scripts/script';
@@ -6,6 +6,7 @@ import { selection } from '../../shared/models/editor/selection';
 import { EditorEntityComponent } from '../editor-entity/editor-entity.component';
 import { EditorVisualsComponent } from '../editor-visual-side-bar/editor-visual-side-bar.component';
 import { myScript } from '../../shared/models/scripts/my-script';
+import { EditorTextSideBarComponent } from '../editor-text-side-bar/editor-text-side-bar.component';
 //import * as ace from 'apps/client/src/assets/js/ace-editor/src-min/ace'
 
 @Component({
@@ -22,7 +23,7 @@ export class EditorSideBarComponent implements OnInit{
   @Output() selectionEvent = new EventEmitter<selection>();
   @Output() removeEvent = new EventEmitter<selection>();
   @ViewChildren(EditorEntityComponent) entities: QueryList<EditorEntityComponent> = new QueryList<EditorEntityComponent>();
-
+  @ViewChild(EditorTextSideBarComponent,{static:false}) editorTextSideBar!: EditorTextSideBarComponent;
 
   ngOnInit(): void {
     setInterval(()=>{
@@ -69,8 +70,6 @@ export class EditorSideBarComponent implements OnInit{
   }
 
   cursorChange(value:Ace.Point): void{
-    this.entities.forEach((component:EditorEntityComponent)=>{
-      component.cursorChange(value);
-    })
+    this.editorTextSideBar.cursorChange(value);
   }
 }
