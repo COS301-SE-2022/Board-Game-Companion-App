@@ -717,11 +717,31 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     this.cut();
   }
 
+  countTabs(lines : string[], value : number) : string
+  {
+    let index = 0
+    let count = 0
+    while(lines[value].charAt(index++) === "\t")
+    {
+      count++
+    }
+    let tabs = ""
+    for(let x = 0; x < count; x++)
+    {
+      tabs = tabs + "\t"
+    }
+    return tabs
+  }
+
   updateElement(event : string)
   {
     const value = event.split("+")
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let param = ""
+    if(value[1].includes("ifCompare") || value[1].includes("ifInput"))
+    {
+      console.log("yes")
+    }
     if(value[1].includes("mvalues"))
     {
       param = value[1].substring(value[1].length-1)
@@ -732,8 +752,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "name":
         {
           const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          const tabs = this.countTabs(lines, +value[2])
           c[1] = value[0]
-          c[0] = "\t" + c[0]
+          c[0] = tabs + c[0]
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
         } 
@@ -741,8 +762,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "csvalue":
         {
           const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          const tabs = this.countTabs(lines, +value[2])
           c[c.length-1] = value[0]
-          c[0] = "\t" + c[0]
+          c[0] = tabs + c[0]
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
         }
@@ -750,8 +772,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "sname":
         {
           const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+          const tabs = this.countTabs(lines, +value[2])
           c[0] = value[0]
-          c[0] = "\t" + c[0]
+          c[0] = tabs + c[0]
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
         }
@@ -759,13 +782,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "iovalue":
         {
           const c = lines[+value[2]].split(/,/).filter(a => a !== '')
+          const tabs = this.countTabs(lines, +value[2])
           if(c[0].includes("input("))
           {
-            c[0] = "\tinput(" + value[0] + ","
+            c[0] = tabs + "input(" + value[0] + ","
           }
           else
           {
-            c[0] = "\toutput(" + value[0] + ")"
+            c[0] = tabs + "output(" + value[0] + ")"
           }
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
@@ -775,8 +799,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         {
           const c = lines[+value[2]].split(/,/).filter(a => a !== '')
           const o = this.editorVisual.methods.find(a => a.name === value[0])
-          console.log(c)
-          console.log(o)
+          const tabs = this.countTabs(lines, +value[2])
           let count = ""
           if(o != null)
           {
@@ -790,11 +813,11 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             }
             if(o.name == "consider:")
             {
-              lines[+value[2]] = "\t" + o.name + "this.State.board"
+              lines[+value[2]] = tabs + o.name + "this.State.board"
             }
             else
             {
-              lines[+value[2]] = "\t" + o.name + "(val1" + count + ")"
+              lines[+value[2]] = tabs + o.name + "(val1" + count + ")"
             }
             
           }
@@ -804,7 +827,6 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "mvalues":
         {
           const c = lines[+value[2]].split(/,/).filter(a => a !== '')
-          console.log(c)
           if(+param == 0 && c.length != 1)
           {
             c[+param] = c[+param].substring(0, c[+param].indexOf("(")+1) + value[0]
@@ -824,7 +846,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
       case "rvalue":
         {
           const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
-          c[0] = "\t" + c[0]
+          const tabs = this.countTabs(lines, +value[2])
+          c[0] = tabs + c[0]
           c[1] = value[0]
           lines[+value[2]] = c.join(" ")
           this.codeEditor.setValue(lines.join("\n"))
@@ -929,7 +952,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
                   
                   j++
                 }
-                lines.splice(elseStart, 0, "\telse", "\t{" , "\t}")
+                const tabs = this.countTabs(lines, +value[2])
+                lines.splice(elseStart, 0, tabs + "else", tabs+ "{" , tabs + "}")
                 this.codeEditor.setValue(lines.join("\n"))
               }
               break
