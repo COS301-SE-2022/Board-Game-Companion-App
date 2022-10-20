@@ -738,11 +738,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     const value = event.split("+")
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let param = ""
-    if(value[1].includes("ifCompare") || value[1].includes("ifInput"))
-    {
-      console.log("yes")
-    }
-    if(value[1].includes("mvalues"))
+    if(value[1].includes("mvalues") || value[1].includes("ifCompare") || value[1].includes("ifInput"))
     {
       param = value[1].substring(value[1].length-1)
       value[1] = value[1].substring(0, value[1].length-1)
@@ -959,6 +955,26 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
               break
           }
         }
+        break
+      case "ifCompare":
+      case "ifInput":
+        const c = lines[+value[2]].split(/\s/).filter(a => a !== '')
+        const tabs = this.countTabs(lines, +value[2])
+        if(c[+param - 1].includes("if(") || c[+param - 1].includes("if ("))
+        {
+          c[+param - 1] = c[+param - 1].substring(0, c[+param - 1].indexOf("(") + 1) + value[0]
+        }
+        else if (c[+param - 1].includes(")"))
+        {
+          c[+param - 1] =  value[0] + ")"
+        }
+        else
+        {
+          c[+param - 1] = value[0]
+        }
+        c[0] = tabs + c[0]
+        lines[+value[2]] = c.join(" ")
+        this.codeEditor.setValue(lines.join("\n"))
         break
     }
   }

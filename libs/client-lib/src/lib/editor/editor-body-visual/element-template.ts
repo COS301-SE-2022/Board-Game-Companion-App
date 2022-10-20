@@ -100,13 +100,13 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     <!--If Statement-->
                     <div *ngIf = "item.title === 'If'">
                         <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
-                            <input (change)="updateElements($event, item, 'ifInput' + i + 1)" id = "ifInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <input (change)="updateElements($event, item, 'ifInput' + (i * 4 + 1 ))" id = "ifInput1" [value]="item.inputs[i * 4 + 1 ]">
                             <div>
-                                <input (change)="updateElements($event, item, 'ifCompare' + i + 1)" id = "ifCompare"  [value]="item.inputs[i * 4 + 2]">
+                                <input (change)="updateElements($event, item, 'ifCompare' + (i * 4 + 2))" id = "ifCompare"  [value]="item.inputs[i * 4 + 2]">
                             </div>
-                            <input (change)="updateElements($event, item, 'ifInput'  + i + 2)" id = "ifInput2" [value]="item.inputs[i * 4 + 3]">
+                            <input (change)="updateElements($event, item, 'ifInput'  + (i * 4 + 3))" id = "ifInput2" [value]="item.inputs[i * 4 + 3]">
                             <div>
-                                <input (change)="updateElements($event, item, 'ifCompare'  + i + 2)" *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                                <input (change)="updateElements($event, item, 'ifCompare'  + (i * 4 + 4))" *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
                             </div>  
                         </div>
                     </div>
