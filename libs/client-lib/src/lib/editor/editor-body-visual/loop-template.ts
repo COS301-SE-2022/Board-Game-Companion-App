@@ -184,7 +184,11 @@ export class LoopTemplateComponent{
 
     updateElements(event : any, item : any, type : string)
     {
-        this.updateElement.emit(event.target.value + "+" + type + "+" + item.lineNumber)
+        if(event.target.value != "")
+        {
+            this.updateElement.emit(event.target.value + "+" + type + "+" + item.lineNumber)
+        }
+    
     }
 
 }

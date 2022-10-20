@@ -193,6 +193,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         this.cursorPosition = value;
       }
     },500);
+    this.updateVDSL()
     
   }
 
@@ -207,12 +208,14 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     if(this.fileLocation !== ""){
       this.editorService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
+          const c = this.codeEditor.getValue()
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
           this.addState()
           this.addEndGame()
           if(this.created != "")
           {
+            this.codeEditor.setValue(c)
             this.addToContainer(this.container, this.created)
           }
           this.updateVDSL()
@@ -574,7 +577,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           break
       }
     })
-    this.codeEditor.setValue(lines.join("\n"))
+    this.codeEditor.setValue(lines.join("\n"))    
+    
   }
 
   
