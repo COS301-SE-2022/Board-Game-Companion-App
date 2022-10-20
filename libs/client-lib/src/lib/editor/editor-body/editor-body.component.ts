@@ -72,6 +72,9 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
         this.cursorPosition = value;
       }
     },500);
+
+    this.updateVDSL()
+    
   }
 
   ngOnInit(): void {
@@ -203,6 +206,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     if(this.fileLocation !== ""){
       this.editorService.getFileData(this.fileLocation).subscribe({
         next:(value)=>{
+          const c = this.codeEditor.getValue()
           this.codeEditor.setValue(value);
           this.codeEditor.navigateTo(0,0);
 
@@ -210,6 +214,7 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           this.addEndGame()
           if(this.created != "")
           {
+            this.codeEditor.setValue(c)
             this.addToContainer(this.container, this.created)
           }
           this.updateVDSL()
@@ -231,6 +236,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
     const lines = this.codeEditor.getValue().split(/\r?\n/)
     let open = 0
     let start = 0
+    let c = 0
+    let elseStart = 0
     let end = 0
     switch(type)
     {
@@ -258,13 +265,19 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
 
             if(open == 0 && start == 1)
             {
+              if(lines[i + 1].includes("else") && c == 0)
+              {
+                elseStart = 1
+                c++
+              }
               end = i
               start = 0
             }
 
-            if(element.includes("else"))
+            if(element.includes("else") && elseStart == 1)
             {
               start = 1
+              elseStart = 0
             }
 
             if(+line === i)
@@ -273,6 +286,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             }
 
           })
+          console.log(line)
+          console.log(end)
          lines.splice(+line, end - (+line) + 1)
          this.codeEditor.setValue(lines.join("\n"))
         }
@@ -423,13 +438,13 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
             if(start == 1 && open == 0)
             {
               start = 0
+              this.addElement(lines, openTabs, type, i)
               
             }
 
             if(+this.parent === i)
             {
               start = 1
-              this.addElement(lines, openTabs, type, i)
             }
           }
           break
@@ -561,7 +576,8 @@ export class EditorBodyComponent implements OnInit,OnDestroy,AfterViewInit,OnCha
           break
       }
     })
-    this.codeEditor.setValue(lines.join("\n"))
+    this.codeEditor.setValue(lines.join("\n"))    
+    
   }
 
   

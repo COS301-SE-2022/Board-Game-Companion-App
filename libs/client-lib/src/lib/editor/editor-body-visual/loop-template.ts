@@ -53,15 +53,16 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     <div id = "title" class = "mb-1" *ngIf = "item.title === 'Create' || item.title === 'Set' || item.title === 'Input' || item.title === 'Output'">{{item.title}}</div>
                     <!--Variable declaration name-->
                     <input (change)="updateElements($event, item, 'name')" *ngIf = "item.title === 'Create'" [value]="item.inputs[0]">
-                    <!--List of variables create-->
-                    <select (change)="updateElements($event, item, 'sname')" *ngIf = "item.title === 'Set'">
+                    <!--List of variables created-->
+                    <input (change)="updateElements($event, item, 'sname')" *ngIf = "item.title === 'Set'" list = "vars" [value]="item.inputs[0]">
+                    <datalist id = "vars">
                         <option>
                             {{item.inputs[0]}}
                         </option>
                         <option *ngFor="let vars of Variables">
                             {{vars.name}}
                         </option>
-                    </select>
+                    </datalist>
                     <div class = "my-1" *ngIf = "item.title === 'Create' || item.title === 'Set'">
                         To
                     </div>
@@ -183,7 +184,11 @@ export class LoopTemplateComponent{
 
     updateElements(event : any, item : any, type : string)
     {
-        this.updateElement.emit(event.target.value + "+" + type + "+" + item.lineNumber)
+        if(event.target.value != "")
+        {
+            this.updateElement.emit(event.target.value + "+" + type + "+" + item.lineNumber)
+        }
+    
     }
 
 }
