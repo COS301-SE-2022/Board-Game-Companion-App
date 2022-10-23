@@ -76,20 +76,20 @@ describe('RatingService', () => {
   });
 
 
-  describe('rate', ()=>{
-    it('should rate the script', ()=>{
-        //expect(service.rate(user1, "scrip12", 2)).resolves.toStrictEqual(myRating)
-        service.rate(user1,"scrip12", 2).then(function(response){
-          expect(response.toString()).toStrictEqual(myRating.toString())
-        })
-    });
-  });
+  // describe('rate', ()=>{
+  //   it('should rate the script', ()=>{
+  //       //expect(service.rate(user1, "scrip12", 2)).resolves.toStrictEqual(myRating)
+  //       service.rate(user1,"scrip12", 2).then(function(response){
+  //         expect(response.toString()).toStrictEqual(myRating.toString())
+  //       })
+  //   });
+  // });
 
-  describe('getRating', ()=>{
-    it('should get rating of the script', async()=>{
-        expect(service.getRating(user1, "scrip12")).resolves.toStrictEqual(myRating)
-    });
-  });
+  // describe('getRating', ()=>{
+  //   it('should get rating of the script', async()=>{
+  //       expect(service.getRating(user1, "scrip12")).resolves.toStrictEqual(myRating)
+  //   });
+  // });
 
   // describe('rate', ()=>{
   //   it('should rate the script', async()=>{
