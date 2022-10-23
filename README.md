@@ -18,7 +18,7 @@ The board game companion app allows its users to keep track of their board game 
 <h4> :spiral_calendar: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Project-Management-Tools">Project Management Tools</a></h4> 
 <h4> :scroll: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9846619/Capstone_User_Manual.pdf">User Manual</a></h4>
 <h4> :game_die: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Team-Members">Team Profiles</a></h4>
-<h4> :movie_camera: <a href="#">Video Demo</a></h4> 
+<h4> :movie_camera: <a href="https://drive.google.com/file/d/1AaWNw2G6pPHkfU2eZSF6TUaY263f8RIn/view?usp=sharing">Video Demo</a></h4> 
 <h4> :badminton: <a href="#">Summary Slide Show</a></h4>
 <h4> :tv: <a href="#">Advert</a></h4>
 <h4> :memo: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/files/9680530/DSL_Grammar.pdf">DSL Grammar</a></h4>
