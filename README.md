@@ -28,7 +28,7 @@ Visit the website: https://board-game-companion-app.herokuapp.com
 <h4> :game_die: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Team-Members">Team Profiles</a></h4>
 <h4> :movie_camera: <a href="https://drive.google.com/file/d/1AaWNw2G6pPHkfU2eZSF6TUaY263f8RIn/view?usp=sharing">Video Demo</a></h4> 
 <h4> :badminton: <a href="#">Summary Slide Show</a></h4>
-<h4> :tv: <a href="#">Advert</a></h4>
+<h4> :tv: <a href="https://drive.google.com/file/d/1aXQwcV2B2yhhaCv3CiniYpgoypM7NMEk/view?usp=sharing">Advert</a></h4>
 <h4> :rocket: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Deployment">Deployment</a></h4>
 <h4> :information_source: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Tutorial">Tutorial/How to install Project</a></h4>
  <h4> :bulb: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Contributions">How to participate in development?</a></h4>
