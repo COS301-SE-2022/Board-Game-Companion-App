@@ -1,9 +1,9 @@
-<div class = "row px-4 py-2 bg-white rounded-sm w-full mx-auto">
+<!-- <div class = "px-4 py-2 bg-white rounded-sm w-full">
     <div (click) = "showScripts = !showScripts" class = "col-sm-12 cursor-pointer hover:underline text-2xl w-full font-medium text-gray-700">Scripts</div>
 
-    <div *ngIf = "showScripts">
-        <div class = "col-sm-3 col-md-4 mt-2" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
-            <div class = "rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
+    <div *ngIf = "showScripts" class="flex-row">
+        <div class = "w-1/3 mt-2 mr-0 inline-flex" *ngFor = "let sub of enumerate(scriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
+            <div class = "w-full mr-4 rounded-sm shadow-sm p-2 text-gray-700 h-52 hover:scale-105 text-sm relative" [ngClass] = "{'red-fade':sub % 5 === 0 || sub % 5 === 3,'blue-fade':sub % 5 === 1,'green-fade':sub % 5 === 2,'silver-fade':sub % 5 === 4}">
                 <div class = "font-medium">
                     Issued By
                 </div>
@@ -86,5 +86,54 @@
     </div>
 
     <pagination-controls *ngIf = "commentReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="commentPage = $event"></pagination-controls>
+</div> -->
+<div class = "row">
+    <div class = "col-sm-3 p-2">
+        <div class="sidebar text-center font-medium rounded overflow-hidden">
+            <a (click)="tab(0)" [ngClass]="{'active':section===0}">Scripts</a>
+            <a (click)="tab(1)" [ngClass]="{'active':section===1}">Comments</a>
+        </div>
+    </div>
+    <div class = "col-sm-9 py-2 px-4">
+        <div class = "row main-header mb-4 p-0 rounded">
+            <div class = "main-header-title py-2.5 col-sm-6 font-bold text-white text-4xl text-left">
+                {{section === 0 ? 'Scripts' : 'Comments'}}
+            </div>
+            <div class = "main-control col-sm-6 flex flex-row justify-between items-center">
+                <div class = "flex">
+                    <select id="sorting" class="px-2 py-1 font-medium text-base bg-white text-black" [(ngModel)]="year"  (change)="filter()">
+                        <option *ngFor = "let year of getYears()" [value] = "year">{{year}}</option>
+                    </select>
+                    <button id ="sort" class="px-2 py-1 font-bold text-base">Year</button>
+                </div>
+
+                <div class = "flex">
+                    <select id="sorting" class="px-2 py-1 font-medium text-base bg-white text-black" [(ngModel)]="month"  (change)="filter()">
+                        <option *ngFor = "let value of months" [value] = "value">{{value}}</option>
+                    </select>
+                    <button id ="sort" class="px-2 py-1 font-bold text-base">Month</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf = "section === 0" class = "row w-full">
+            <div class = "col-sm-3 p-2" *ngFor = "let sub of enumerate(showScriptReports.length) | paginate: { itemsPerPage: 8, currentPage: scriptPage }">
+                <board-game-companion-app-report-form (removeEvent) = "removeScriptReport($event)" [current] = "showScriptReports[sub]" [index] = "sub"></board-game-companion-app-report-form>
+            </div>
+
+            <pagination-controls *ngIf = "scriptReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="scriptPage = $event"></pagination-controls>
+        </div>
+
+        <div *ngIf = "section === 1" class = "row w-full">
+            <div class = "col-sm-3 p-2" *ngFor = "let sub of enumerate(showCommentReports.length) | paginate: { itemsPerPage: 8, currentPage: commentPage }">
+                <board-game-companion-app-report-form (removeEvent) = "removeCommentReport($event)" [current] = "showCommentReports[sub]" [index] = "sub"></board-game-companion-app-report-form>
+            </div>
+
+            <pagination-controls *ngIf = "commentReports.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="commentPage = $event"></pagination-controls>
+        </div>
+    </div>
 </div>
+
+
+
 <board-game-companion-app-notification></board-game-companion-app-notification>

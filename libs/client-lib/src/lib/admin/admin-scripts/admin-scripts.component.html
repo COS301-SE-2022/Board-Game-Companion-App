@@ -1,42 +1,64 @@
 <div class = "row">
-    <div class = "col-sm-8">
-        <div class = "rounded-sm bg-white p-2">
-            <div style="display: block">
-                <canvas baseChart
-                    [data]="barChartData"
-                    [options]="barChartOptions"
-                    [type]="barChartType">
-                </canvas>
-            </div>
-
-            <div class="dropdown relative w-20 mt-4">
-                <button class="dropdown-toggle w-full whitespace-nowrap px-3 py-1.5 bg-gray-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center"
-                  type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  {{selectedYear}}
-                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-down" class="w-2 ml-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                    <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
-                  </svg>
-                </button>
-                <ul class="dropdown-menu absolute hidden bg-white text-sm z-50 float-left py-1 list-none text-left rounded-sm shadow-md mt-1 m-0 bg-clip-padding border-none">
-                  <li *ngFor = "let value of getYears()" class = "bg-transparent">
-                    <a (click) = "selectYear(value)" class="capitalize dropdown-item text-center text-sm whitespace-nowrap py-1 px-2 font-normal block w-full text-gray-700 hover:bg-slate-400 hover:text-white cursor-pointer ">{{value}}</a>
-                  </li>
-                </ul>
-            </div>
-
-        </div>
-    </div> 
-    <div class = "col-sm-4">
-        <div class = "rounded-sm bg-white p-2">
-            <div class="chart">
-                <canvas baseChart
-                        [data]="pieChartData"
-                        [type]="pieChartType"
-                        [options]="pieChartOptions">
-                </canvas>
+  <div class = "col-sm-3 p-2">
+      <div class="sidebar text-center font-medium rounded overflow-hidden">
+          <a (click)="tab(0)" [ngClass]="{'active':section===0}">Monthly</a>
+          <a (click)="tab(1)" [ngClass]="{'active':section===1}">Overall</a>
+      </div>
+  </div>
+  <div class = "col-sm-9 p-2">
+      <div class = "main-header mb-4 p-0 rounded">
+          <div class = "row mx-0">
+              <div class = "main-header-title py-2.5 col-sm-4 font-bold text-white text-4xl text-center">
+                  {{section === 0 ? 'Monthly' : 'Overall'}}
               </div>
+              <div class = "main-control col-sm-8 flex flex-row justify-end items-center">
+                <div *ngIf = "section === 0" class = "flex">
+                    <select id="sorting" class="px-2 py-1 font-medium text-base bg-white text-black" [(ngModel)]="selectedYear">
+                        <option *ngFor = "let year of getYears()" [value] = "year">{{selectedYear}}</option>
+                    </select>
+                    <button id ="sort" class="px-2 py-1 font-bold text-base">Year</button>
+                </div>
+            </div>
+          </div>
+      </div>
+
+
+      <div *ngIf = "section === 0" class = "row w-full mx-0">
+        <div class = "col-sm-12">
+          <div class = "bg-white rounded shadow-lg px-4 py-2">
+            <div class = "font-medium text-gray-700 text-2xl mb-4">
+              Monthly Script Creations
+            </div>
+
+            <div style="display: block">
+              <canvas baseChart
+                  [data]="barChartData"
+                  [options]="barChartOptions"
+                  [type]="barChartType">
+              </canvas>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+
+      <div *ngIf = "section === 1" class = "row w-full mx-0">
+        <div class = "col-sm-8 offset-sm-2">
+          <div class = "bg-white rounded shadow-lg px-4 py-2">
+            <div class = "font-medium text-gray-700 text-2xl mb-4">
+              Overall Script Creations
+            </div>
+
+            <div class="chart">
+              <canvas baseChart
+                      [data]="pieChartData"
+                      [type]="pieChartType"
+                      [options]="pieChartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>
 
 

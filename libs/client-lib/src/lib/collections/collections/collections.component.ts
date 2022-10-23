@@ -44,9 +44,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   maxGames = 8;
   digits = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
   carouselPage = 0;
+  width = window.innerWidth;
   widthPerGame = 12;
   selectedGame:Game[] = [];
   selectedCollection:collection[] = [];
+  loadingGames = false;
+  countLoadedGames = 0;
 
   constructor(private readonly bggSearch:BggSearchService,
               private readonly route: ActivatedRoute,
@@ -66,6 +69,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCollections();
     this.onScreenResize();
+  }
+
+  doneGames(): void{
+    this.countLoadedGames++;
+
+    if(this.countLoadedGames === this.collections.length)
+      this.loadingGames = false;
   }
 
   ngOnDestroy(): void {
@@ -165,18 +175,18 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
-    const width = window.innerWidth;
+    this.width = window.innerWidth;
     
-    if(width >= 1200){
+    if(this.width >= 1200){
       this.maxGames = 10;
       this.widthPerGame = 10;
-    }else if(width >= 1000){
+    }else if(this.width >= 1000){
       this.maxGames = 8;
       this.widthPerGame = 12;
-    }else if(width >= 750){
+    }else if(this.width >= 750){
       this.maxGames = 6;
       this.widthPerGame = 16;
-    }else if(width >= 450){
+    }else if(this.width >= 450){
       this.maxGames = 3;
       this.widthPerGame = 32;
     }else{
@@ -230,6 +240,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       })
     }else{
       if(!this.gapi.isLoggedIn()){
+
         this.storageService.getAll("collections").then((response:collection[]) => {
           this.collections = response;
           this.loadGames();
@@ -238,6 +249,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
           this.notifications.add({type:"danger",message:"Failed to load local collections"})
         })        
       }else{
+
         this.collectionService.getCollectionsForUser().subscribe({
           next:(response:collection[]) => {
             this.collections = response;
@@ -253,7 +265,14 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   loadGames(): void{
+    let length = 0;
+
+    this.loadingGames = true;
+    this.countLoadedGames = 0;
+
     this.collections.forEach((value:collection) => {
+      length += value.boardgames.length;
+
       value.boardgames.forEach((id:string) => {
         this.bggSearch.getBoardGameById(id).subscribe({
           next:(gvalue) =>{
@@ -269,11 +288,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
             this.showGames.push(temp);
           },
           error:() => {
+            this.loadingGames = false;
             this.notifications.add({type: "warning",message: `Failed to load board game of ${value.name}.`});
           }
         })
       })
     })
+
+    if(length === 0)
+      this.loadingGames = false;
   }
 
   loadScripts(): void{

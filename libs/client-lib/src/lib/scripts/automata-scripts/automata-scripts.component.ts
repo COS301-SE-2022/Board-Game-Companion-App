@@ -25,7 +25,10 @@ export class AutomataScriptComponent implements OnInit{
   downloading:string[] = [];
   importing:string[] = [];
   downloaded:string[] = [];
-  showImports:string[] = []
+  showImports:string[] = [];
+  loading = false;
+  countLoads = 0;
+
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
 
@@ -56,6 +59,14 @@ export class AutomataScriptComponent implements OnInit{
     this.onScreenResize();
   }
 
+  done(): void{
+    this.countLoads++;
+    console.log("count: " + this.countLoads);
+
+    if(this.countLoads === this.filter.length)
+      this.loading = false;
+  }
+
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
     this.width = window.innerWidth;
@@ -65,6 +76,9 @@ export class AutomataScriptComponent implements OnInit{
     if(this.status === OnlineStatusType.OFFLINE){
       return;
     }
+
+    this.loading = true;
+    this.countLoads = 0;
 
     this.scriptService.getAutomataScripts().subscribe({
       next: (value: automataScript[]) => {
@@ -76,6 +90,7 @@ export class AutomataScriptComponent implements OnInit{
         }
       },
       error: () => {
+        this.loading = false;
         this.notifications.add({type:"danger",message:"An error occurred while trying to retrieve the scripts.You can try again later, or contact the developer if the error persists."})
       }
     })  

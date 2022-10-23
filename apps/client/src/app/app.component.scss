@@ -1,8 +1,4 @@
-#container {
-    position: relative;
-    min-height: 100vh;
-    padding-bottom: 5em;
-}
+
 
 #content{
     background-image: url('../assets/images/image4.avif');
@@ -10,19 +6,34 @@
 }
 
 #content::-webkit-scrollbar {
-    width: 15px;
+    width: 15px; 
 }
   
 #content::-webkit-scrollbar-track {
-background: #f1f1f1;
+    background: transparent;
+    margin-right: 5px;
 }
   
 
 #content::-webkit-scrollbar-thumb {
-background: #888;
+    background: #888;
+    border-radius: 25px;   
 }
   
 
 #content::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+#content::-webkit-scrollbar-corner{
+    background: transparent;
+}
+
+@media (max-width: 640px){
+   #content{
+   // background-size: cover !important;
+    height:100% !important;
+    width: 100% !important;
+    padding-right: 0px !important;
+   } 
 }

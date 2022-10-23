@@ -174,7 +174,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         this.searchResults = value;
         this.searching = false;
       },
-      error:() => {
+      error:(err) => {
         this.notifications.add({type:"danger",message:"Search Failed."});
         this.searching = false;
       }

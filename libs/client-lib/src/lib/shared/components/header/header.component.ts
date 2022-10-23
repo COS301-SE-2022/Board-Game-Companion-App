@@ -137,7 +137,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         this.log = "logout";
       } 
-      this.getAlerts();
+
       this.createFavouritesCollection();
     }
     
@@ -149,13 +149,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     document.addEventListener('editor-exit',(event)=>{
       this.showHeader = true;
+      this.focus = "scripts";
     })
   }
 
   @HostListener('window:resize', ['$event'])
   onScreenResize(): void{
 
-    this.width = window.innerWidth;
+    this.width = window.innerWidth; //listens for window size 
   }
 
 
@@ -187,6 +188,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       else
       {
         this.loggedIn = false;
+        this.alerts = [];
         this.gapi.signOut();
         this.socket.emit("logout",sessionStorage.getItem("email"))
         sessionStorage.removeItem("name");
@@ -378,7 +380,48 @@ export class HeaderComponent implements OnInit, OnDestroy {
             })
           }break;
           case alertType.Flagged:{
-            console.log("flagged")
+            const [type,id] = value.link.split("@");
+            
+            if(type === "download-script"){
+              this.scriptService.getDownloadedScript(id).subscribe({
+                next:(script: downloadScript) => {
+                  this.alerts.push({
+                    subject: "Flagged download",
+                    message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                    alert: value
+                  })                    
+                },
+                error:(err) => {
+                  console.log(err);
+                }
+              })
+            }else if(type === "my-script"){
+              this.scriptService.getMyScriptById(id).subscribe({
+                next:(script: myScript) => {
+                  this.alerts.push({
+                    subject: "Flagged release",
+                    message: `${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                    alert: value
+                  })                    
+                },
+                error:(err) => {
+                  console.log(err);
+                }
+              })
+            }else if(type === "comment"){
+              this.scriptService.getAutomataById(id).subscribe({
+                next:(script: automataScript | oldScript) => {
+                  this.alerts.push({
+                    subject: "Flagged comment",
+                    message: `Your comment on ${script.name} v${script.version.major}.${script.version.minor}.${script.version.patch} has been flagged.`,
+                    alert: value
+                  })                    
+                },
+                error:(err) => {
+                  console.log(err);
+                }
+              })
+            }
           }break;
           case alertType.Reply:{
             const [name,scriptId] = value.link.split("@");

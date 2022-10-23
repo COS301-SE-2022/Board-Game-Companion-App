@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, HttpException, HttpStatus, Delete, Param  } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, HttpException, HttpStatus, Delete, Param, StreamableFile  } from '@nestjs/common';
 import { ModelsService } from '../../services/models/models.service';
 import { FormDataRequest, MemoryStoredFile } from 'nestjs-form-data';
 import fs = require("fs");
@@ -59,6 +59,7 @@ export class ApiModelsController {
     async getAll(@Query('userName')name:string,@Query('userEmail')email:string):Promise<NeuralNetwork[]>{
       return this.modelsService.getAll({name:name,email:email});
     }
+    
 
     @Delete('remove')
     async remove(@Query('id')id:string){
@@ -66,8 +67,8 @@ export class ApiModelsController {
     }
 
     @Get('retrieve-by-id')
-    async getModel(@Query('id')id:string,@Query('userName')userName:string,@Query('userEmail')userEmail:string):Promise<NeuralNetwork>{
-      return this.modelsService.getModel({name:userName,email:userEmail},id);
+    async getModel(@Query('id')id:string):Promise<NeuralNetwork>{
+      return this.modelsService.getModel(id);
     }
 
     @Get('retrieve-by-name')
@@ -85,7 +86,6 @@ export class ApiModelsController {
         }catch(error){
             throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         }
-        
     }
 
     @Get('retrieve-subset-by-id-only')

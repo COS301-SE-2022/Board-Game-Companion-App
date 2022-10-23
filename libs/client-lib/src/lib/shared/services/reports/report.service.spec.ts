@@ -31,14 +31,14 @@ describe('Test service',()=>{
     });
   });
 
-  it('Report a script',(done)=>{
-    window.sessionStorage.setItem('name','Njabulo Ntuli');
-    window.sessionStorage.setItem('email','u19062665@tuks.co.za')
-    reportService.report(true,'63057d312899d807ab3051b9','The script has infinity loop').subscribe((response)=>{
-      expect(response).toBeDefined();
-      done();
-    });
-  });
+  // it('Report a script',(done)=>{
+  //   window.sessionStorage.setItem('name','Njabulo Ntuli');
+  //   window.sessionStorage.setItem('email','u19062665@tuks.co.za')
+  //   reportService.report(true,'63057d312899d807ab3051b9','The script has infinity loop').subscribe((response)=>{
+  //     expect(response).toBeDefined();
+  //     done();
+  //   });
+  // });
 
   it('Script by Id',(done)=>{
       reportService.getByScript('63057d312899d807ab3051b9').subscribe((response)=>{

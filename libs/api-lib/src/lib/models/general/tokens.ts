@@ -78,8 +78,8 @@ export const tAssign=(chevrotain.createToken({name:"Assign",pattern:/=/,longer_a
 export const tFloatLiteral = chevrotain.createToken({name:"FloatLiteral",pattern:/-?([1-9]+[0-9]*\.?[0-9]*|0?\.[0-9]+)/});
 
 
-export const tIntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral}));
-export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("([A-Za-z0-9 )(]*\?*)")|('([A-Za-z0-9 )(]*\?*)')/ }));
+export const tIntegerLiteral=(chevrotain.createToken({name:"IntegerLiteral",pattern:/0|-?[1-9][1-9]*/,longer_alt:tFloatLiteral})); //!@#$^%:<>;/.,'}{-+=
+export const tStringLiteral=(chevrotain.createToken({name:"StringLiteral",pattern:/("([A-Za-z0-9 )(!@#$%:;.,-=}{]*\?*)")|('([A-Za-z0-9 )(!@#$%:;.,-=}{]*\?*)')/ }));
 export const tFalse=(chevrotain.createToken({name:"False",pattern:/false/,longer_alt:tUserDefinedIdentifier}));
 export const tTrue=(chevrotain.createToken({name:"True",pattern:/true/,longer_alt:tUserDefinedIdentifier}));
 export const tNull=(chevrotain.createToken({name:"null",pattern:/null/,longer_alt:tUserDefinedIdentifier}));

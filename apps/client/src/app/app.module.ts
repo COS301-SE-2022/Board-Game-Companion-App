@@ -14,6 +14,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = { url: 'https://board-game-companion-app.herokuapp.com', options: {} };
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

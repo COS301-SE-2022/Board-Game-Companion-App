@@ -12,24 +12,24 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     </div>
                     <button (click)="removeCard()" id = "removeCard"><i class="fa-solid fa-circle-xmark"></i></button>
                 </summary>
-                <div id = "effect" class = "cardContainers">
+                <div id = "effect" class = "cardContainers" [attr.cardNumber]="Index">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
                                 Effect
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Cards[Index].effect" [dest] = "Cards[Index].effect" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
-                <div id = "condition" class = "cardContainers">
+                <div id = "condition" class = "cardContainers" [attr.cardNumber]="Index">
                     <details open>
                         <summary class = "list-none flex flex-wrap items-center cursor-pointer">
                             <div class = "title text-xl font-bold ml-4 mt-2">
                                 Condition
                             </div>
                         </summary>
-                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+                        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" (updateElement)="updateElement($event)" [(dragulaModel)]="Cards[Index].condition" [dest] = "Cards[Index].condition" [dests] = "CardsLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
                     </details>
                 </div>
             </details>
@@ -40,10 +40,10 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
 export class CardTemplateComponent{
     @Input() Name = ""
     @Input() Parameter = ""
-    @Input() Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]}]
-    @Input() CardsLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]]
-    @Input() Effect = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
-    @Input() Condition = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0}]
+    @Input() Cards = [{name: "", parameter: "", effect: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}], condition: [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]}]
+    @Input() CardsLoops = [[{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]]
+    @Input() Effect = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]
+    @Input() Condition = [{title: '', class: '' , id: '', inputs: ["","","","","","","",""], pos: 0, true: 0, false: 0, lineNumber: ""}]
     @Input() Index = 0
     @Input() Variables = [{name: "", value: ""}]
     @Input() methods = [
@@ -54,9 +54,16 @@ export class CardTemplateComponent{
         {name: 'activate', arguments: 2},
         {name: 'removeFromArr', arguments: 2},
         {name: 'chooseAction', arguments: 2},
+        {name: 'consider:', arguments: 1}
       ]
     @Output() removeCards = new EventEmitter<number>()
     @Output() updateCard = new EventEmitter<string>()
+    @Output() updateElements = new EventEmitter<string>()
+
+    updateElement(event : any)
+    {
+        this.updateElements.emit(event)
+    }
 
     removeCard()
     {

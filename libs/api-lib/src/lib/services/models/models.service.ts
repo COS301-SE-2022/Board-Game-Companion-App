@@ -9,6 +9,7 @@ import fs = require("fs");
 import { upload } from '../../models/general/upload';
 import { NeuralNetworkDiscriminator } from '../../models/general/modelDiscriminator'
 import { MongoDbStorageService } from '../mongodb-storage/mongodb-storage.service';
+import { fileType } from '../../models/general/fileType';
 
 @Injectable()
 export class ModelsService {
@@ -27,22 +28,20 @@ export class ModelsService {
             loss: loss,
             accuracy: accuracy,
             model: {name:model.originalName,key:"",location:""},
-            weights: {name:weights.originalName,key:"",location:""},
             discriminator: NeuralNetworkDiscriminator.None
         }
         
         const createdNetwork = new this.networkModel(dto);
         const result:NeuralNetworkDocument = await createdNetwork.save();
-        const savedModel:upload = await this.storageService.upload(model.originalName,model.mimetype,model.buffer);
-        const savedWeights:upload = await this.storageService.upload(weights.originalName,weights.mimetype,weights.buffer);
+        const data:string[] = [ Buffer.from(model.buffer).toString('base64'),Buffer.from(weights.buffer).toString('base64')];
+        
+        const savedModel:upload = await this.storageService.upload(model.originalName,fileType.model,data);
         
         result.model.key = savedModel.key;
         result.model.location = savedModel.location;
 
-        result.weights.key = savedWeights.key;
-        result.weights.location = savedWeights.location;
         result.save();
-
+        
         return result;
     }
 
@@ -66,8 +65,8 @@ export class ModelsService {
         return this.networkModel.findByIdAndRemove(id);
     }
 
-    async getModel(user:user,id:string):Promise<NeuralNetwork>{
-        return this.networkModel.findOne({"creator.email":user.email,"creator.name":user.name,"_id":id});
+    async getModel(id:string):Promise<NeuralNetwork>{
+        return this.networkModel.findById(id);
     }
 
     async getModelByName(user:user,name:string):Promise<NeuralNetwork>{
@@ -101,7 +100,6 @@ export class ModelsService {
             loss: current.loss,
             accuracy: current.accuracy,
             model: {name: current.model.name,key: "",location: ""},
-            weights: {name: current.weights.name,key: "",location: ""},
             discriminator: location
         }
 
@@ -111,10 +109,6 @@ export class ModelsService {
         const modelUpload = await this.storageService.copy(current.model.key);
         result.model.key = modelUpload.key; 
         result.model.location = modelUpload.location;
-
-        const weightsUpload = await this.storageService.copy(current.weights.key);
-        result.weights.key = weightsUpload.key;
-        result.weights.location = weightsUpload.location;
 
         await result.save();
         

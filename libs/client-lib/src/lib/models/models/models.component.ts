@@ -15,11 +15,18 @@ import { GeneralComponent } from '../general/general.component';
 export class ModelsComponent implements OnInit {
   tab = 0;
   @ViewChild(GeneralComponent,{static:false}) general: GeneralComponent = new GeneralComponent(this.modelService,this.storageService);
-
+  searchValue = ""
   constructor(private readonly modelService:ModelsService,private readonly storageService:StorageService){}
 
   ngOnInit(): void{
     this.tab = 0;
+  }
+
+  checkSearchOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.search();
+    }
   }
 
   changeTab(value:number): void{
@@ -29,5 +36,9 @@ export class ModelsComponent implements OnInit {
   train(value:modelData):void{
     this.general.train(value);
     this.changeTab(0);
+  }
+
+  search(): void{
+    this.general.search(this.searchValue);
   }
 }

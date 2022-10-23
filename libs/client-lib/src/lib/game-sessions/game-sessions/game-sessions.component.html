@@ -1,15 +1,19 @@
-<div  class = "w-4/5 h-4/5 my-12 mx-auto">
-    <div id = "title" class = "flex justify-between w-full text-white p-6 text-3xl font-bold overflow-x-auto">
-        <div class = "flex mx-2">
+<div  class = "w-4/5 h-4/5 my-12 mx-auto ">
+    
+    <div id = "title" class = "flex justify-between w-full text-white p-6 rounded-t text-3xl font-bold overflow-x-auto">
+        <div id="header" class = "flex mx-2">
             Game Sessions
         </div>
+        <div id="outter">
         <div id="searchDiv" class = "flex mx-2 h-1/2">
             <input id = "textInput" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)] = "search">
             <button id = "search" (click)="Onsearch()" class="px-2 py-1 font-bold text-lg"><i id="searchIcon" class="fa-solid fa-magnifying-glass"></i></button>
         </div>
+    
+        
         <div id = "sortDiv" class = "flex mx-2 h-1/2">
             <select id="sorting" class="px-2 py-1 font-medium text-lg bg-white text-black" [(ngModel)]="selected"  (change)="onSort()">
-                <option value="" disabled selected>Sort By..</option>
+                <option value="" disabled selected><i id="icon" class="fa-solid fa-filter"></i><a id="sortWord">Sort By..</a></option>
                 <option value="alphabetical">Alphabet</option>
                 <option value="score">Score</option>
                 <option value="date">Date</option>
@@ -17,63 +21,64 @@
             <button id ="sort" class="px-2 py-1 font-bold text-lg">Sort</button>
         </div>
     </div>
+    </div>
     <div id = "table" class=" h-full overflow-y-auto overflow-x-auto relative bg-white">
         <table class="w-full text-left">
             <thead class="text">
                 <tr>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Session
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Game
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Script
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Score
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Play Time
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Players
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Result
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
                         Date
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" class="py-3 sm:px-6">
 
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let results of listResults" class="border-b">
-                    <td scope="row" class="py-4 px-6 font-medium whitespace-nowrap">
+                    <td data-label="Session" scope="row" class="py-4 px-6 font-medium whitespace-nowrap">
                         {{results.getID()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Game" class="py-4 px-6 whitespace-nowrap">
                         {{results.getBoardGame()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Script" class="py-4 px-6 whitespace-nowrap">
                         {{results.getScript()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Score" class="py-4 px-6 whitespace-nowrap">
                         {{results.getScore()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Play Time" class="py-4 px-6 whitespace-nowrap">
                         {{results.getTimePlayed()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Players" class="py-4 px-6 whitespace-nowrap">
                         {{results.getNumOpponents()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Result" class="py-4 px-6 whitespace-nowrap">
                         {{results.getResult()}}
                     </td>
-                    <td class="py-4 px-6 whitespace-nowrap">
+                    <td data-label="Date" class="py-4 px-6 whitespace-nowrap">
                         {{results.getDate()}}
                     </td>
                     <td scope="row" class="py-4 px-6 text-2xl">

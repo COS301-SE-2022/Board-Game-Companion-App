@@ -1,70 +1,94 @@
-<div class = "row mt-2 w-4/5 mx-auto">
-    <div id = "board-games" class = "offset-sm-2 col-sm-10 flex flex-row mb-2 p-1 ">
-        <div (click) = "back()" class = "back h-32 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
-            <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
-        </div>
-        <div class = "middle h-32 space-x-2 p-1 flex flex-row border-2 rounded-sm" [style.width.%] = '92'>
-            <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
-                <img class = "w-full h-full" [src] = "value.image">
-
-                <div class = "board-game-black-screen absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-xs cursor-pointer" style = "background-color:rgba(0,0,0,0.5)">
-                    <div class = "w-full absolute bottom-10 content-center space-x-4">
-                        <button (click) = "showGameInfo(value)" class="hover:scale-110 p-1 text-white">
-                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
-                        </button>
-                        <button (click) = "removeFromCollection(value)" class="hover:scale-110 p-1 text-white">
-                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
-                        </button>
+<div class = "container mt-4">
+    <div class = "row w-4/5 mx-auto">
+        <div class="col-sm-10 offset-sm-2">
+            <div class = "mx-2 relative rounded overflow-hidden bg-white">
+                <p class = "bg-lime-500 w-fit py-2 px-4 rounded-br-md font-medium text-white">
+                  Board Games
+                </p>
+                <div id = "board-games" class = "w-full flex flex-row mb-2 p-1 ">
+                    <div (click) = "back()" class = "back h-32 text-lime-500 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-left w-full absolute right-0 left-0"></span>
                     </div>
-                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
-                </div>
-            </div>
-            <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-white text-center flex items-center">
-                <p class = "mx-auto">No Board Games</p>
-            </div>
-        </div>
-        <div (click) = "next()" class = "forward h-32 text-white cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
-            <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
-        </div>
-    </div>
-    <div id = "collections" class = "col-sm-2 p-1 ">
-        <div data-bs-toggle="modal" data-bs-target="#create-collection" class = "new-collection text-white font-medium text-center cursor-pointer rounded-sm px-1 py-1.5 mb-4"> 
-            <i class="fas fa-plus"></i>
-        </div>
+                    <div class = "middle h-32 border-2 rounded-sm" [style.width.%] = '92'>
+                        <div class = "w-full h-full flex flex-row space-x-2 p-1" [ngClass] = "{'hidden':loadingGames}">
+                            <div (click) = "selectGame(value)" *ngFor = "let value of showGames.slice(carouselPage * maxGames,(carouselPage + 1) * maxGames)" class = "board-game h-full rounded-sm overflow-hidden relative" [ngClass] = "{'border-4 border-gray-700':selectedGame.includes(value)}" [style.width.%] = "widthPerGame">
+                                <img (load) = "doneGames()" (error) = "doneGames()" class = "w-full h-full" [src] = "value.image">
+        
+                                <div class = "board-game-black-screen absolute bottom-0 right-0 left-0 top-0 w-full z-10 text-center text-white text-xs cursor-pointer" style = "background-color:rgba(0,0,0,0.5)">
+                                    <div class = "w-full absolute bottom-10 content-center space-x-4">
+                                        <button (click) = "showGameInfo(value)" class="hover:scale-110 p-1 text-white">
+                                            <i class="fas fa-info-circle" data-toggle="tooltip" title="profile"></i>
+                                        </button>
+                                        <button (click) = "removeFromCollection(value)" class="hover:scale-110 p-1 text-white">
+                                            <i class="fas fa-trash" data-toggle="tooltip" title="remove"></i>
+                                        </button>
+                                    </div>
+                                    <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+                                </div>
+                            </div>
 
-        <div *ngFor = "let value of collections" [ngClass] = "{'bg-gray-700':selectedCollection.includes(value),'bg-lime-500':!selectedCollection.includes(value)}" class = "collection rounded-sm mt-1 overflow-hidden text-white text-center cursor-pointer font-medium flex flex-row">
-            <div (click) = "selectCollection(value)" class = "collection-name h-full  bg-inherit py-1.5  text-xs capitalize" [ngClass] = "{'border-r-2 w-4/5':value.name !== 'favourites','w-full':value.name === 'favourites'}">
-                {{value.name}}
-            </div>
-            <div *ngIf = "value.name !== 'favourites'" (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
-                <i class="fas fa-times"></i>
-            </div>
-        </div>
-    </div>
-    <div id = "scripts" class = "col-sm-10">
-        <div class = "row">
-            <div class = "col-sm-12 mt-1 mb-2">
-                <div class="input-group relative w-full">
-                    <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
-                    <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class = "col-sm-3 col-xs-6 mt-2 active:bg-gray-700" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
-                <div [id] = "value._id" class="parent relative rounded-md xs:h-32 sm:h-32 md:h-40 lg:48 max-h-48 overflow-hidden">
-                    <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span>   
-                    <img class="w-full h-full" [src]="value.icon.location" alt=""/>
-                    
-                    <div (click) = "showInfo(value)" id="child" class = "child absolute bottom-0 right-0 left-0 top-0 cursor-pointer w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
-                        <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span> 
-                        <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+                            <div *ngIf = "showGames.length === 0" class = "h-full w-full font-medium text-lg text-lime-500 text-center flex items-center">
+                                <p class = "mx-auto">No Board Games</p>
+                            </div>
+                        </div>
+
+                        <div *ngIf = "loadingGames" class = "w-full h-full font-bold flex items-center text-gray-800">
+                            <i class="fas fa-spinner fa-pulse mx-auto" data-toggle="tooltip" title="loading"></i>
+                        </div>
+                    </div>
+                    <div (click) = "next()" class = "forward h-32 text-lime-500 cursor-pointer text-center sm:text-xl md:text-4xl relative flex items-center active:text-white active:bg-gray-700" [style.width.%] = '4'>
+                        <span class = "fas fa-angle-right w-full absolute right-0 left-0"></span>
                     </div>
                 </div>
-            </div> 
+            </div>
+        </div>
+        <div id = "collections" class = "col-sm-2 p-1 mt-4">
+            <div data-bs-toggle="modal" data-bs-target="#create-collection" class = "new-collection text-white font-medium text-center cursor-pointer rounded-sm px-1 py-1.5 mb-4"> 
+                <i class="fas fa-plus"></i>
+            </div>
+    
+            <div *ngFor = "let value of collections" [ngClass] = "{'bg-gray-700':selectedCollection.includes(value),'bg-lime-500':!selectedCollection.includes(value)}" class = "collection rounded-sm mt-1 overflow-hidden text-white text-center cursor-pointer font-medium flex flex-row">
+                <div (click) = "selectCollection(value)" class = "collection-name h-full  bg-inherit py-1.5  text-xs capitalize" [ngClass] = "{'border-r-2 w-4/5':value.name !== 'favourites','w-full':value.name === 'favourites'}">
+                    {{value.name}}
+                </div>
+                <div *ngIf = "value.name !== 'favourites'" (click) = "removeCollection(value)" class = "collection-remove h-full w-1/5 text-xs text-white py-1.5 hover:bg-red-700">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+        </div>
+        <div id = "scripts" class = "col-sm-10 mt-4">
+            <div class = "row">
+                <div class = "col-sm-12">
+                    <div class = "row heading mx-2 rounded">
+                        <div class = "main-header-title py-1.5 col-sm-4 font-bold text-white text-4xl text-center">
+                            Scripts
+                        </div>
+                        <div class = "col-sm-8 mt-1 mb-2">
+                            <div class="input-group relative px-2.5 py-2">
+                                <input (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchTerm" name = "searchTerm" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="add" aria-describedby="add-input">
+                                <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class = "col-sm-3 col-xs-6 mt-2 active:bg-gray-700" *ngFor="let value of filter | paginate: { itemsPerPage: 8, currentPage: page }">
+                    <div [id] = "value._id" class="parent relative rounded-md max-h-48 overflow-hidden" [ngClass] = "{'h-52':width < 400,'h-44':width >= 400}">
+                        <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span>   
+                        <img class="w-full h-full" [src]="value.icon.location" alt=""/>
+                        
+                        <div (click) = "showInfo(value)" id="child" class = "child absolute bottom-0 right-0 left-0 top-0 cursor-pointer w-full z-10 text-center text-white text-base" style = "background-color:rgba(0,0,0,0.5)">
+                            <span class = "absolute right-0 top-0 mr-2 mt-1 text-white text-xs">{{'v' + value.version.major + '.' + value.version.minor + '.' + value.version.patch}}</span> 
+                            <p class = "absolute bottom-0 h-8 text-center w-full"><b>{{value.name}}</b></p>
+                        </div>
+                    </div>
+                </div> 
+            </div>
         </div>
     </div>
 </div>
+
 
 <board-game-companion-app-create-collection (createCollectionEvent)="newCollection($event)"></board-game-companion-app-create-collection>
 <board-game-companion-app-notification></board-game-companion-app-notification>

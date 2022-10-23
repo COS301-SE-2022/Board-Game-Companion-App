@@ -1,7 +1,7 @@
-<div class="bg-white w-full shadow-sm text-gray-700 p-2 mt-2">
+<div class="bg-white rounded w-full shadow-sm text-gray-700 p-4 mt-2">
     <div class = "mb-4">
-        <label for="data-partition" class="form-label font-medium"><b>Optimizer</b></label>
-        <div class = "row p-2 border-2 border-green-800 bg-slate-300 mx-1 rounded-md">
+        <label for="data-partition" class="form-label font-medium mb-3"><b>Optimizer</b></label>
+        <div class = "row p-3 border-2 border-green-800 bg-slate-300 mx-1 rounded-md">
             <div class = "col-sm-4 border-r-2 border-green-800">
                 <div class="form-check">
                     <input (click)="setOptimizer(0)" [checked] = "optimizer === 0" class="form-check-input" type="radio" name="adadelta" id="adadelta">
@@ -54,7 +54,7 @@
 
                 
             </div>
-            <div class = "col-sm-8">
+            <div class = "col-sm-8 px-2">
 
                 <div id = "momentum" class = "row" *ngIf = "optimizer === 0">
                     <div class = "col-sm-6">
@@ -173,14 +173,14 @@
 
         <div class = "w-full mt-4">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label"><b>Neural network name</b></label>
+                <label for="exampleFormControlInput1" class="form-label mb-3"><b>Neural network name</b></label>
                 <input type="text" autocomplete="off" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "name" name = "name" id="name" placeholder="name">
             </div>
         </div>
 
         <div class = "w-full mt-4">
             <div class="mb-3">
-                <label for="epochs" class="form-label"><b>Epochs</b></label>
+                <label for="epochs" class="form-label mb-3"><b>Epochs</b></label>
                 <input type="number" class="form-control form-control relative flex-auto min-w-0 block w-60 px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" [(ngModel)] = "epochs" name = "epochs" id="epochs" min = "1" placeholder="epochs">
             </div>
         </div>

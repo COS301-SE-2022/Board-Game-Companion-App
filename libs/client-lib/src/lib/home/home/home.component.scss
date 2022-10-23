@@ -1,5 +1,6 @@
 @import 'apps/client/src/assets/globalstylesheet/global';
 
+
 #container{
     margin: auto;
     margin-top: 8em;
@@ -119,7 +120,25 @@ h1:hover{
         display: flex;
         flex-direction: column;
     }
+    
+    #outter{
+        margin-top: 40px;
+    }
 
+    #last{
+        height: 30%;
+    }
+
+    #myGames{
+        height: 50%
+    }
+
+    #recommendation{
+        margin-top: 26px;
+    }
+    #explore{
+        margin-bottom: 26px;
+    }
     tr {
         display: inline-flex;
         flex-direction: column;

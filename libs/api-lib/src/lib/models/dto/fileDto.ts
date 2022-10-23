@@ -1,5 +1,7 @@
+import { fileType } from "../general/fileType";
+
 export interface fileDto{
     name: string;
-    mimeType: string;
-    data: string;
+    type: fileType;
+    data: string[];
 }

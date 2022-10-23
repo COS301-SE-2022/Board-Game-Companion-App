@@ -76,11 +76,11 @@
 </div>
 <div id = "players">
     <button (click)="addNewPlayer()" id = "addNewPlayer">Add New Player</button>
-    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" (playerRemove)="removePlayer($event)" (playerNames)="playerName($event)" (addActionCondition)="addActionCondition($event)" (removeActionCondition)="removeActionCondition($event)" (actionNames)="actionName($event)" (actionParams)="actionParam($event)" (conditionParams)="conditionParam($event)" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerCode]="player.playerCode" [PlayerLoops]="PlayersLoops" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-player-template>
+    <board-game-companion-app-player-template *ngFor = "let player of Players let i = index" [id] = "'p'+ i.toString()" (updateElements)="updateElement($event)" (playerRemove)="removePlayer($event)" (playerNames)="playerName($event)" (addActionCondition)="addActionCondition($event)" (removeActionCondition)="removeActionCondition($event)" (actionNames)="actionName($event)" (actionParams)="actionParam($event)" (conditionParams)="conditionParam($event)" [Index]="i" [Players]="Players" [Actions]="player.actions" [Conditions]="player.conditions" [Turn]="player.turn" [PlayerCode]="player.playerCode" [PlayerLoops]="PlayersLoops" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-player-template>
 </div>
 <div id = "Cards">
     <button (click)="addNewCard()" id = "addNewCard">Add New Card</button>
-    <board-game-companion-app-card-template *ngFor = "let card of Cards let i = index" [id] = "'c'+ i.toString()" (updateCard)="updateCard($event)" (removeCards)="removeCard($event)" [Index]="i" [Cards]="Cards" [Name]="card.name" [Parameter]="card.parameter" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-card-template>
+    <board-game-companion-app-card-template *ngFor = "let card of Cards let i = index" [id] = "'c'+ i.toString()" (updateElements)="updateElement($event)" (updateCard)="updateCard($event)" (removeCards)="removeCard($event)" [Index]="i" [Cards]="Cards" [Name]="card.name" [Parameter]="card.parameter" [Effect]="card.effect" [Condition]="card.condition" [CardsLoops]="CardsLoop" [methods]="methods" [Variables]="Variables" open></board-game-companion-app-card-template>
 </div>
 <div id = "endGame" class = "boardContainers">
     <details open>
@@ -89,6 +89,6 @@
                 Endgame
             </div>
         </summary>
-        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
+        <board-game-companion-app-element-template class="wrapper" dragula="COPYABLE" [(dragulaModel)]="Endgame" (updateElement)="updateElement($event)" [dest] = "Endgame" [dests] = "EndgameLoops" [methods] = "methods" [variables]="Variables"></board-game-companion-app-element-template>
     </details>
 </div>

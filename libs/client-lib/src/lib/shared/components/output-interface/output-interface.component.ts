@@ -9,10 +9,15 @@ export class OutputInterfaceComponent implements OnInit{
   @Input()output = "";
   @Input()show = false;
   @Output()okayEvent = new EventEmitter<any[]>();
+  @Output()stopExecutionEvent = new EventEmitter();
   result:any[] = [];
 
   ngOnInit(): void {
     console.log("input-interface");
+  }
+
+  stopExecution(): void{
+    this.stopExecutionEvent.emit();
   }
 
   okay(): void{

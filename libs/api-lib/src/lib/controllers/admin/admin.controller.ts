@@ -63,6 +63,7 @@ export class ApiAdminController {
 
     @Get('search')
     async search(@Query('term')term:string):Promise<userSearch[]>{
+        
         return this.adminService.search(term);
     }
 

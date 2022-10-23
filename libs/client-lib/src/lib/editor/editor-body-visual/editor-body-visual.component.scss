@@ -5,7 +5,7 @@
     height: 100%;
     display: flex;
     padding: 2em;
-    overflow-x: auto;
+    overflow: auto;
 }
 
 .container{
@@ -30,7 +30,7 @@
     padding: 2em;
 }
 
-.listItems:not(:first-child, :last-child):after {
+.listItems:not(:first-child):not(:last-child):not(:only-child):after {
     content: '';
     height: 3px;
     background: white;
@@ -38,7 +38,7 @@
     position: relative;
 }
 
-.listItems:not(:first-child, :nth-child(2)):before {
+.listItems:not(:first-child):not(:nth-child(2)):before {
     content: '';
     position: relative;
     top: 7px;
@@ -48,7 +48,7 @@
     border-width:  7px 0 7px 20px;
     border-color: transparent transparent transparent white;
     transform: translateY(-50%);
-  }
+}
 
 .boardContainers{
     background-color: grey;
@@ -106,17 +106,18 @@
     height: 37px;
 }
 
-.playerContainers{
+.cardContainers, .playerContainers{
     background-color: darkgray;
     border: 6px solid darkgray;
-    min-height: 15%;
-    min-width: 15%;
+    min-height: 25%;
+    min-width: 25%;
     max-width: 90%;
     width:fit-content;
     border-radius: 2em;
     margin-left: 2em;
     margin-right: 2em;
     margin-bottom: 2em;
+    overflow: auto;
     color: white;
     transition: border-color 0.6s linear;
 }
@@ -146,25 +147,6 @@
     background: $Background;   
     border-radius: 55px;      
     border: 3px solid $Background;  
-}
-
-.playerContainers .wrapper{
-    max-height: 450px;
-}
-
-.cardContainers{
-    background-color: darkgray;
-    border: 6px solid darkgray;
-    min-height: 25%;
-    min-width: 25%;
-    max-width: 90%;
-    width:fit-content;
-    border-radius: 2em;
-    margin-left: 2em;
-    margin-right: 2em;
-    margin-bottom: 2em;
-    color: white;
-    transition: border-color 0.6s linear;
 }
 
 .cardContainers:hover{
@@ -264,15 +246,29 @@
     min-height: 150px;
     height: fit-content;
     background-color: $Pcolour-2;
-    border: 5px solid $Pcolour-2;
     display: flex;
     padding: 2em;
     margin: 2em;
     margin-top: 0;
+    border: 3px solid white;
+    border-radius: 2em;
+}
+
+#falseSection{
+    min-width: 400px;
+    min-height: 150px;
+    height: fit-content;
+    background-color: $Pcolour-4;
+    display: flex;
+    padding: 2em;
+    margin: 2em;
+    border: 3px solid white;
+    border-radius: 2em;
 }
 
 #trueSection::-webkit-scrollbar, #falseSection::-webkit-scrollbar {
     height: 10px;
+    width: 10px;
 }
 
 #trueSection::-webkit-scrollbar-track, #falseSection::-webkit-scrollbar-track {
@@ -288,15 +284,14 @@
     border: 3px solid $Background;  
 }
 
-#falseSection{
-    min-width: 400px;
-    min-height: 150px;
-    height: fit-content;
-    background-color: $Pcolour-4;
-    border: 5px solid $Pcolour-4;
-    display: flex;
-    padding: 2em;
-    margin: 2em;
+#trueSection::-webkit-scrollbar-button:end, #trueSection::-webkit-scrollbar-button:start, #falseSection::-webkit-scrollbar-button:start, #falseSection-webkit-scrollbar-button:end{
+    height: 12px; 
+    width: 5%;
+}
+
+
+.visualW #whileBackground, .visualD #whileBackground{
+    margin-top: 0;
 }
 
 .visualIf #content, .visualW #content, .visualD #content{

@@ -19,6 +19,7 @@ export class LoadDataComponent implements OnInit {
   analysis:string[] = [];
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   @Output()checkEvent = new EventEmitter();
+  dataFilename = "No File";
 
   constructor(private readonly storageService:StorageService){
 
@@ -53,7 +54,8 @@ export class LoadDataComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsText(value.target.files[0]);
     const type = value.target.files[0].type;
-
+    this.dataFilename = value.target.files[0].name;
+    console.log(value.target.files[0])
    
    if(type === "text/csv"){
       reader.onload = (event)=>{

@@ -19,6 +19,15 @@ background: #888;
     background: #555;
 }
 
+.search-btn{
+    background-color: $Pcolour-3;
+}
+  
+.search-input{
+border:2px solid $Pcolour-3
+}
+  
+
 
 .sidebar{
     background-color: $Pcolour-3;
@@ -43,6 +52,11 @@ background-color: $Pcolour-3;
 color: $Pcolour-2;
 cursor: pointer;
 }
+
+.main-header{
+    background-color: $Pcolour-2;
+}
+  
 
   
 .red-fade{

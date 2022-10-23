@@ -1,44 +1,35 @@
 <div class = "w-full h-full">
     <div class = "row w-4/5 mx-auto mt-4">
         <div class = "col-sm-3 p-2">
-            <div class="sidebar text-center font-medium">
+            <div class="sidebar text-center font-medium rounded overflow-hidden">
                 <a (click)="changeTab(0)" [ngClass]="{'active':tab===0}">General</a>
                 <a (click)="changeTab(1)" [ngClass]="{'active':tab===1}">Train</a>
                 <!-- <a (click)="changeTab(2)" [ngClass]="{'active':tab===2}">Upload</a> -->
             </div>
         </div>
         <div class = "col-sm-9 p-2">
+            <div class = "main-header mb-4 p-0 rounded">
+                <div class = "row mx-0">
+                    <div class = "main-header-title py-1 col-sm-4 font-bold text-white text-4xl text-center">
+                        {{tab === 0 ? 'General' : 'Train'}}
+                    </div>
+                    <div class = "main-control col-sm-8">
+                        <div class = "px-2.5 py-2.5">                           
+                            <div *ngIf = "tab===0" class="input-group relative w-full mb-2">
+                                <input autocomplete="off" (keypress)="checkSearchOnEnter($event)" [(ngModel)] = "searchValue" name = "searchValue" type = "search" class="search-input form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none" placeholder="search" aria-label="search" aria-describedby="email-input">
+                                <button (click) = "search()" class="search-btn btn inline-block px-3 py-1 text-white font-medium text-xs leading-tight uppercase shadow-sm hover:shadow-sm focus:outline-none focus:ring-0 transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
+                                    <i class="fas fa-search fa-2x"></i>
+                                </button>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
             <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
             <!-- <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload> -->
         </div>
     </div>        
 </div>
-
-<!-- <div class = "w-full" style = "padding:5rem 10rem;">
-    <div class = "models-wrapper w-full">
-        <div class="row p-5">
-            <div class="col-md-2 mb-3">
-                <ul class="nav nav-pills flex-column" id="modelstabs" role="tablist">
-                    <li class="nav-item">
-                        <a (click) = "changeTab(0)" [ngClass]="{'active':tab===0,'hover:bg-zinc-400':tab !== 0}" class="cursor-pointer nav-link" id="general-tab" data-toggle="tab" role="tab" aria-controls="general-tab" aria-selected="true">General</a>
-                    </li>
-                
-                    <li class="nav-item">
-                        <a (click) = "changeTab(1)" [ngClass]="{'active':tab===1,'hover:bg-zinc-400':tab !== 1}" class="cursor-pointer nav-link" id="train-tab" data-toggle="tab" role="tab" aria-controls="train-tab" aria-selected="false">Train</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a (click) = "changeTab(2)" [ngClass]="{'active':tab===2,'hover:bg-zinc-400':tab !== 2}" class="cursor-pointer nav-link" id="pre-train-tab" data-toggle="tab" role="tab" aria-controls="pre-train-tab" aria-selected="false">Upload</a>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="col-md-10 px-4">
-                <board-game-companion-app-general [ngClass] = "{'hidden': tab !== 0}"></board-game-companion-app-general>
-                <board-game-companion-app-train (trainEvent)="train($event)" [ngClass] = "{'hidden': tab !== 1}"></board-game-companion-app-train>
-                <board-game-companion-app-upload [ngClass] = "{'hidden': tab !== 2}"></board-game-companion-app-upload>
-            </div>
-        </div>
-    </div>
-</div> -->
