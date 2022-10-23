@@ -26,19 +26,19 @@ describe('CommentService', () => {
 
   const thisDate = new Date("12-01-18");
 
-  const myNeural: NeuralNetwork = {
-    creator: newUser,
-    name: "modelName",
-    created: thisDate,
-    labels: [],
-    min: [0, 1],
-    max: [8, 9],
-    model: { name: "memoryName", key: "mem112", location: "./desktop/memory" },
-    weights: { name: "myweight", key: "www112", location: "./desktop/memory" },
-    discriminator: 3,
-    loss: 0,
-    accuracy: 0
-  }
+  // const myNeural: NeuralNetwork = {
+  //   creator: newUser,
+  //   name: "modelName",
+  //   created: thisDate,
+  //   labels: [],
+  //   min: [0, 1],
+  //   max: [8, 9],
+  //   model: { name: "memoryName", key: "mem112", location: "./desktop/memory" },
+  //   weights: { name: "myweight", key: "www112", location: "./desktop/memory" },
+  //   discriminator: 3,
+  //   loss: 0,
+  //   accuracy: 0
+  // }
 
 
 
