@@ -12,6 +12,10 @@
 The board game companion app allows its users to keep track of their board game collections, gather play statistics and provides an opportunity to play against an AI opponent. The application also provides a built-in editor for writing and uploading scripts that are used by the AI opponent. 
 </p>
 
+<p align="center">
+Visit the website: https://board-game-companion-app.herokuapp.com
+</p>
+
 ## Status
 ![issues](https://img.shields.io/github/issues/COS301-SE-2022/Board-Game-Companion-App?cacheSeconds=3600)
 [![builds](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml/badge.svg)](https://github.com/COS301-SE-2022/Board-Game-Companion-App/actions/workflows/build.yml)
