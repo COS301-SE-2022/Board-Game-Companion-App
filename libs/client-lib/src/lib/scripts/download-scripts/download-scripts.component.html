@@ -31,7 +31,7 @@
     <i class="fas fa-spinner fa-pulse fa-10x mx-auto" data-toggle="tooltip" title="loading"></i>
 </div>
 
-<pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="page = $event"></pagination-controls>
+<pagination-controls *ngIf = "filter.length > 8" class="d-flex justify-content-center mt-4" (pageChange)="changePage($event)"></pagination-controls>
 
 
 <board-game-companion-app-notification></board-game-companion-app-notification>
