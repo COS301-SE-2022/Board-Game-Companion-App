@@ -13,11 +13,11 @@ describe('MongoDbStorageService', () => {
         email: "user1@tuks.co.za",
     };
 
-    const mockFileDoc= (mock?:Partial<File>): Partial<FileDocument>=>({
-        name: mock?.name || "myFile",
-        mimeType: mock?.mimeType || ".json",
-        data: mock?.data|| "someData"
-    });
+    // const mockFileDoc= (mock?:Partial<File>): Partial<FileDocument>=>({
+    //     name: mock?.name || "myFile",
+    //     mimeType: mock?.mimeType || ".json",
+    //     data: mock?.data|| "someData"
+    // });
 
     const myUpload : upload ={
         location: "iconLocation",

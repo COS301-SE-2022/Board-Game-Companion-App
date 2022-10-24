@@ -15,7 +15,7 @@ describe('ReportFormComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ReportFormComponent,NotificationComponent],
       providers: [CommentService,ReportService,OAuthLogger,OAuthService,
-        GoogleAuthService,DateTimeProvider,UrlHelperService],
+        GoogleAuthService,DateTimeProvider,UrlHelperService,ReportService],
       imports: [HttpClientTestingModule,FormsModule]
     }).compileComponents();
   });

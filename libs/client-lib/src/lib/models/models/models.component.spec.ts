@@ -10,6 +10,7 @@ import { GeneralComponent } from '../general/general.component';
 import { ModelsService } from '../../shared/services/models/models.service';
 import { StorageService } from '../../shared/services/storage/storage.service';
 import { NotificationComponent } from '../../shared/components/notification/notification.component';
+import { FormsModule } from '@angular/forms';
 
 describe('ModelsComponent', () => {
   let component: ModelsComponent;
@@ -17,7 +18,7 @@ describe('ModelsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot()],
+      imports: [RouterTestingModule,HttpClientTestingModule,OAuthModule.forRoot(),FormsModule],
       declarations: [ModelsComponent,GeneralComponent,NotificationComponent],
       providers:[ModelsService,StorageService]
     }).compileComponents(); 
