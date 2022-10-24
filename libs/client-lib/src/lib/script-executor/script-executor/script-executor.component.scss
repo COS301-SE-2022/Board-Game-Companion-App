@@ -9,3 +9,21 @@
         color:black;
     }    
 }
+
+#TextOutput::-webkit-scrollbar {
+    width: 10px;
+}
+  
+#TextOutput::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+  
+
+#TextOutput::-webkit-scrollbar-thumb {
+background: #888;
+}
+  
+
+#TextOutput::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
