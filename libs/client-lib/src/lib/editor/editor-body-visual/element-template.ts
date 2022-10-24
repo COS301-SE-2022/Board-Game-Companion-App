@@ -87,13 +87,13 @@ import { Component, Input, Output, EventEmitter} from "@angular/core";
                     <!--While/do While Loop-->
                     <div *ngIf = "item.title === 'While' || item.title === 'doWhile'">
                         <div class = "conditions" *ngFor="let con of [].constructor(+item.inputs[0]) let i = index">
-                            <input id = "whileInput1" [value]="item.inputs[i * 4 + 1 ]">
+                            <input (change)="updateElements($event, item, 'whileInput' + (i * 4 + 1 ))" id = "whileInput1" [value]="item.inputs[i * 4 + 1 ]">
                             <div>
-                                <input id = "whileCompare" [value]="item.inputs[i * 4 + 2]">
+                                <input (change)="updateElements($event, item, 'whileCompare' + (i * 4 + 2 ))" id = "whileCompare" [value]="item.inputs[i * 4 + 2]">
                             </div>
-                            <input id = "whileInput2" [value]="item.inputs[i * 4 + 3]">
+                            <input (change)="updateElements($event, item, 'whileInput' + (i * 4 + 3 ))" id = "whileInput2" [value]="item.inputs[i * 4 + 3]">
                             <div>
-                                <input *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
+                                <input (change)="updateElements($event, item, 'whileCompare' + (i * 4 + 4 ))" *ngIf="+item.inputs[0] > 1 && i !== +item.inputs[0] - 1" class = "AndOr" [value]="item.inputs[i * 4 + 4]">
                             </div>  
                         </div>
                     </div>

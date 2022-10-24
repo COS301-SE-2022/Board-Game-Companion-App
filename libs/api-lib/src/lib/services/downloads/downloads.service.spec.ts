@@ -94,7 +94,6 @@ describe('DownloadsService', () => {
     min: [1, 2],
     max: [8, 9],
     model: { name: "thisFile", key: "fileKey", location: "./desktop/models" },
-    weights: { name: "thisWeights", key: "weightKey", location: "./desktop/weights" },
     discriminator: 5,
     loss: 0,
     accuracy: 0
