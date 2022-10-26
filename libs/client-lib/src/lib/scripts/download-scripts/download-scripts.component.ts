@@ -29,6 +29,7 @@ export class DownloadScriptsComponent implements OnInit {
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
   loading = false;
   countLoads = 0;
+  maxOfPage = 8;
 
   constructor(private readonly scriptService:ScriptService,
               private readonly router:Router,
@@ -47,7 +48,8 @@ export class DownloadScriptsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDownloadScripts();
-    this.onScreenResize()
+    this.onScreenResize();
+    this.changePage(1);
   }
 
   
@@ -74,8 +76,25 @@ export class DownloadScriptsComponent implements OnInit {
     this.countLoads++;
     console.log("count: " + this.countLoads);
 
-    if(this.countLoads === this.filter.length)
+    if(this.countLoads === this.maxOfPage)
       this.loading = false;
+  }
+
+  changePage(newPage:number): void{
+    this.page = newPage;
+    const temp = Math.ceil(this.filter.length / 8 )
+    const mod = this.filter.length % 8;
+    
+    if(temp === newPage){
+      if(mod === 0){
+        this.maxOfPage = 8;
+      }else
+        this.maxOfPage = mod;
+    }else
+      this.maxOfPage = 8;
+
+    this.loading = true;
+    this.countLoads = 0;
   }
 
 

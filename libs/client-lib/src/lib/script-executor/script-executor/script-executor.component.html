@@ -8,16 +8,16 @@
         </div>
         <div class = "w-full mb-2 px-4">
             <label for="data-partition" class="form-label font-medium text-base"><b>Enter value</b></label>
-            <input id="inputBox" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="input" aria-label="input" aria-describedby="input">
+            <input (keypress)="checkOnEnter($event)" id="inputBox" type="search" class="form-control relative flex-auto min-w-0 block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="input" aria-label="input" aria-describedby="input">
         </div>
         <div class = "w-full mb-4 px-4">
-            <div id ="TextOutput" class = "w-full display-panel bg-gray-200 h-24 shadow-sm overflow-y-scroll " style="color: black;">
+            <div id ="TextOutput" class = "w-full rounded-sm p-2 display-panel bg-gray-200 h-24 shadow-sm overflow-y-scroll " style="color: black;">
                 
             </div>
         </div>
         
         <button id= "EnterButton" class = "w-full mb-2 px-4 text-center" (click)="submitInput()">
-            <div >
+            <div>
                 <div  class = "hover:bg-gray-600 cursor-pointer py-1 display-panel bg-gray-400 h-8 shadow-sm rounded-sm font-medium" >
                     Enter
                 </div>

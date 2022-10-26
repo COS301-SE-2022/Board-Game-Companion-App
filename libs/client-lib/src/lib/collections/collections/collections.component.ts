@@ -50,6 +50,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   selectedCollection:collection[] = [];
   loadingGames = false;
   countLoadedGames = 0;
+  countLoadedScripts = 0;
+  loadingScripts = false;
+  maxOfPage = 8;
 
   constructor(private readonly bggSearch:BggSearchService,
               private readonly route: ActivatedRoute,
@@ -69,6 +72,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCollections();
     this.onScreenResize();
+    this.changePage(1)
   }
 
   doneGames(): void{
@@ -76,6 +80,30 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
     if(this.countLoadedGames === this.collections.length)
       this.loadingGames = false;
+  }
+
+  changePage(newPage:number): void{
+    this.page = newPage;
+    const temp = Math.ceil(this.filter.length / 8 )
+    const mod = this.filter.length % 8;
+    
+    if(temp === newPage){
+      if(mod === 0){
+        this.maxOfPage = 8;
+      }else
+        this.maxOfPage = mod;
+    }else
+      this.maxOfPage = 8;
+
+    this.loadingScripts = true;
+    this.countLoadedScripts = 0;
+  }
+
+  doneScripts(): void{
+    this.countLoadedScripts++;
+
+    if(this.countLoadedScripts === this.filter.length || this.countLoadedScripts === this.maxOfPage)
+      this.loadingScripts = false;
   }
 
   ngOnDestroy(): void {
@@ -301,20 +329,38 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   loadScripts(): void{
     if(this.status === OnlineStatusType.ONLINE && this.gapi.isLoggedIn()){
+      this.countLoadedScripts = 0;
+      this.loadingScripts = true;
+      let length = 0;
+
       this.collections.forEach((value:collection) => {
+        length += value.boardgames.length;
+
         this.collectionService.getScripts(value._id).subscribe({
-          next:(response:automataScript[]) => {  
+          next:(response:automataScript[]) => {
             this.scripts = this.scripts.concat(...response);
             this.sortScripts();
             this.filter = this.scripts;
           },
           error:() => {
+            this.loadingScripts = false;
             this.notifications.add({type: "warning",message: `Failed to load the scripts for ${value.name}.`})
           }
         })
       })
+
+      if(length === 0)
+        this.loadingScripts = false;
+
     }else{
+      this.countLoadedScripts = 0;
+      this.loadingScripts = true;
+      let length = 0;
+
       this.collections.forEach((value:collection) => {
+
+        length += value.boardgames.length;
+
         value.boardgames.forEach((id:string) => {
           this.scriptService.getByGame(id).subscribe({
             next:(response:automataScript[]) => {
@@ -323,11 +369,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
               this.filter = this.scripts;
             },
             error: () => {
+              this.loadingScripts = false;
               this.notifications.add({type: "warning",message: `Failed to load the scripts for ${value.name}.`})
             }
           })
         })
-      }) 
+      })
+      
+      if(length === 0)
+        this.loadingScripts = false;
     }
   }
 

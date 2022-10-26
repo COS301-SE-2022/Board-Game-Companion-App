@@ -134,6 +134,13 @@ export class ScriptExecutorComponent implements OnInit {
   {
     this.back()
   }
+
+  checkOnEnter(value:any): void{
+    if(value.key === "Enter"){
+      value?.preventDefault();
+      this.submitInput();
+    }
+  }
   
   loadModels(): void{
     this.current.models.forEach((id:string) => {

@@ -34,6 +34,7 @@ export class MyScriptsComponent implements OnInit{
   version:version = {major: 0, minor: 0, patch: 0}
   loading = false;
   countLoads = 0;
+  maxOfPage = 8;
 
   @ViewChild(NotificationComponent,{static:true}) notifications: NotificationComponent = new NotificationComponent();
 
@@ -61,7 +62,8 @@ export class MyScriptsComponent implements OnInit{
 
   ngOnInit(): void {
     this.getMyScripts();
-    this.onScreenResize()
+    this.onScreenResize();
+    this.changePage(1);
   }
 
   getMyScripts():void{
@@ -97,7 +99,7 @@ export class MyScriptsComponent implements OnInit{
     this.countLoads++;
     console.log("count: " + this.countLoads);
 
-    if(this.countLoads === this.filter.length)
+    if(this.countLoads === this.filter.length || this.countLoads === this.maxOfPage)
       this.loading = false;
   }
 
@@ -290,5 +292,22 @@ export class MyScriptsComponent implements OnInit{
 
   play(value:myScript): void{
     this.router.navigate(['script-exec'], { state: { value: value } });
+  }
+
+  changePage(newPage:number): void{
+    this.page = newPage;
+    const temp = Math.ceil(this.filter.length / 8 )
+    const mod = this.filter.length % 8;
+    
+    if(temp === newPage){
+      if(mod === 0){
+        this.maxOfPage = 8;
+      }else
+        this.maxOfPage = mod;
+    }else
+      this.maxOfPage = 8;
+
+    this.loading = true;
+    this.countLoads = 0;
   }
 }
