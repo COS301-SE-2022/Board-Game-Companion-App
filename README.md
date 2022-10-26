@@ -27,7 +27,7 @@ Visit the website: https://board-game-companion-app.herokuapp.com
 <h4> :books: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Documentation">Documentation</a></h4>
 <h4> :spiral_calendar: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Project-Management-Tools">Project Management Tools</a></h4> 
 <h4> :game_die: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Team-Members">Team Profiles</a></h4>
-<h4> :movie_camera: <a href="https://drive.google.com/file/d/1AaWNw2G6pPHkfU2eZSF6TUaY263f8RIn/view?usp=sharing">Video Demo</a></h4> 
+<h4> :movie_camera: <a href="https://drive.google.com/file/d/1bybaQBvZmMLYQSCqDYnwOHj4ArrW2JjC/view?usp=sharing">Video Demo</a></h4> 
 <h4> :badminton: <a href="https://docs.google.com/presentation/d/1DW50j4aGTvPhq5uAVDz9S0irfKdG0bdcov8CDF_C1bw/edit?usp=sharing">Summary Slide Show</a></h4>
 <h4> :tv: <a href="https://drive.google.com/file/d/1aXQwcV2B2yhhaCv3CiniYpgoypM7NMEk/view?usp=sharing">Advert</a></h4>
 <h4> :rocket: <a href="https://github.com/COS301-SE-2022/Board-Game-Companion-App/wiki/Deployment">Deployment</a></h4>
